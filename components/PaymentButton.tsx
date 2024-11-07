@@ -1,0 +1,357 @@
+'use client';
+import { useState, useEffect } from 'react';
+import { FileIcon, Loader2Icon } from 'lucide-react';
+import { fetchExchangeRates, convertCurrency } from '@/utils/currency';
+import { createClient } from "@/utils/supabase/client";
+import {
+    AlertDialog,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { useToast } from "@/hooks/use-toast"
+import { exchangeRatesCache } from "@/utils/cache"
+
+interface PaymentButtonProps {
+    amount: number; // Amount in INR from your database
+    notes?: object;
+    userId: string;
+    productId: string;
+}
+
+export interface ExchangeRates {
+    [key: string]: number;
+}
+
+type UrlInfo = {
+    downloadUrl: string;
+    fileName: string;
+    fileType: 'jpeg' | 'pdf';  // You can add more file types if needed
+};
+
+
+export default function PaymentButton({ amount, notes, userId, productId }: PaymentButtonProps) {
+    const supabase = createClient();
+    const { toast } = useToast();
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [localAmount, setLocalAmount] = useState(amount);
+    const [localCurrency, setLocalCurrency] = useState('INR');
+    const [exchangeRates, setExchangeRates] = useState<ExchangeRates>({});
+    const [hasPurchased, setHasPurchased] = useState(false);
+
+    const [isInitialFetching, setIsInitialFetching] = useState(true);
+
+    const [isFetchingDownloadUrls, setIsFetchingDownloadUrls] = useState(false);
+    const [downloadUrls, setDownloadUrls] = useState<UrlInfo[]>([]);
+    const [isDownloadDialogOpen, setIsDownloadDialogOpen] = useState(false);
+
+    useEffect(() => {
+        // Detect user's locale and currency
+        const getUserCurrency = (): string => {
+            try {
+                const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
+                return new Intl.NumberFormat(userLocale, {
+                    style: 'currency',
+                    currency: 'USD'
+                }).resolvedOptions().currency || 'INR';
+            } catch (error) {
+                console.warn('Error detecting user currency:', error);
+                return 'INR';
+            }
+        };
+
+        // Fetch exchange rates and convert amount
+        async function setupLocalCurrency() {
+            try {
+                const detectedCurrency = getUserCurrency();
+                const cachedRates = exchangeRatesCache.get();
+                setIsInitialFetching(true);
+
+                let rates: ExchangeRates;
+                if (cachedRates) {
+                    rates = cachedRates;
+                    console.log('Using cached exchange rates');
+                } else {
+                    rates = await fetchExchangeRates();
+                    exchangeRatesCache.set(rates);
+                    console.log('Fetched new exchange rates');
+                }
+
+                if (rates[detectedCurrency]) {
+                    setLocalCurrency(detectedCurrency);
+                    // setLocalCurrency('BRL');
+                    const convertedAmount = convertCurrency(amount, 'INR', detectedCurrency, rates);
+                    setLocalAmount(convertedAmount);
+                }
+                setIsInitialFetching(false)
+            } catch (error) {
+                console.error('Error setting up local currency:', error);
+                setLocalCurrency('INR');
+                setLocalAmount(amount);
+            }
+        }
+
+        setupLocalCurrency();
+    }, [amount]);
+
+    useEffect(() => {
+        if (productId && productId?.length) {
+            checkPurchaseViaAPI(productId)
+        }
+    }, [productId])
+
+    const checkPurchaseViaAPI = async (productId: string) => {
+        try {
+            setIsInitialFetching(true);
+            const response = await fetch('/api/check-purchase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productId })
+            });
+            const data = await response.json();
+            setHasPurchased(data.hasPurchased);
+            setIsInitialFetching(false);
+        } catch (error) {
+            setIsInitialFetching(false);
+            console.error('Error:', error);
+        }
+    };
+
+    const initializeRazorpay = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.onload = () => {
+                resolve(true);
+            };
+            script.onerror = () => {
+                resolve(false);
+            };
+            document.body.appendChild(script);
+        });
+    };
+
+    const handlePayment = async () => {
+        setIsLoading(true);
+
+        try {
+            const res = await initializeRazorpay();
+
+            if (!res) {
+                alert('Razorpay SDK failed to load');
+                return;
+            }
+
+            // Create order
+            const response = await fetch('/api/create-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    amount: localAmount,
+                    currency: localCurrency,
+                    notes: {
+                        ...notes,
+                        original_currency: localCurrency,
+                    },
+                }),
+            });
+
+            const { orderId, amountInINR } = await response.json();
+
+            // Configure payment options
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                amount: Math.round(amountInINR * 100), // in paise
+                currency: 'INR',
+                name: 'Your Company Name',
+                description: `Payment of ${localAmount} ${localCurrency}`,
+                order_id: orderId,
+                handler: async (response: any) => {
+                    try {
+                        const verificationResponse = await fetch('/api/verify-payment', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                                original_currency: localCurrency,
+                                original_amount: localAmount,
+                                user_id: userId ?? '',
+                                product_id: productId,
+                                quantity: 1,
+                                // shipping_address: {
+                                //     street: '123 Main St',
+                                //     city: 'Mumbai',
+                                //     state: 'Maharashtra',
+                                //     postal_code: '400001',
+                                //     country: 'India'
+                                // },
+                                // contact_number: '+919876543210',
+                                // email: 'customer@example.com'
+                            }),
+                        });
+
+                        const data = await verificationResponse.json();
+
+                        if (data.error) {
+                            // Handle payment failure
+                            alert(`Payment failed: ${data.errorDetails || data.error}`);
+                            // You might want to redirect to a failure page
+                            // window.location.href = '/payment/failed';
+                        } else {
+                            // Handle different payment statuses
+                            switch (data.status) {
+                                case 'completed':
+                                    alert('Payment successful!');
+                                    // Redirect to success page
+                                    // window.location.href = '/payment/success';
+                                    break;
+                                case 'authorized':
+                                    alert('Payment authorized, awaiting capture');
+                                    // Maybe redirect to a pending page
+                                    break;
+                                case 'pending':
+                                    alert('Payment is pending');
+                                    // Show pending status
+                                    break;
+                                default:
+                                    alert(`Payment status: ${data.status}`);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Payment verification failed');
+                        // Redirect to failure page
+                        // window.location.href = '/payment/failed';
+                    }
+                },
+                prefill: {
+                    name: '',
+                    email: '',
+                    contact: '',
+                },
+                theme: {
+                    color: '#F37254',
+                },
+            };
+
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.open();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Something went wrong!');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    async function handleDownload(bookId: string) {
+        try {
+            setIsFetchingDownloadUrls(true);
+            const response = await fetch('/api/get-book-download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    bookId,
+                    // bookId: '103f22f7-f189-48be-83ea-36ef5b42ee55',
+                }),
+            });
+
+            if (!response.ok) throw new Error('Failed to get download URL');
+
+            const { urls } = await response.json();
+            setIsFetchingDownloadUrls(false);
+            setDownloadUrls(urls);
+            setIsDownloadDialogOpen(true);
+        } catch (error) {
+            console.error('Error downloading file:', error);
+            setIsFetchingDownloadUrls(false);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Failed to fetch download links",
+            });
+        }
+    }
+
+    // Format amount according to user's locale
+    const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
+    const formattedAmount = new Intl.NumberFormat(userLocale, {
+        style: 'currency',
+        currency: localCurrency,
+    }).format(localAmount);
+    // console.log("super......", localCurrency)
+
+    if (hasPurchased) {
+        return (
+            <>
+                <button
+                    onClick={() => {
+                        handleDownload(productId)
+                    }}
+                    className="px-4 py-2 flex bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+                >
+                    {isFetchingDownloadUrls && (
+                        <Loader2Icon width={20} className='animate-spin mr-2' />
+                    )}
+                    <span>{isFetchingDownloadUrls ? 'Processing' : 'Download'}</span>
+                </button>
+                <AlertDialog open={isDownloadDialogOpen} onOpenChange={setIsDownloadDialogOpen}>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Download File</AlertDialogTitle>
+                        </AlertDialogHeader>
+                        <AlertDialogDescription>
+                            <div className="grid grid-cols-2 gap-4">
+                                {downloadUrls.map((downloadUrl, downloadUrlIndex) => (
+
+                                    <div key={`${downloadUrlIndex}_download_file`}>
+                                        <a href={downloadUrl?.downloadUrl} download={downloadUrl?.fileName}
+                                            target="_blank"
+                                            className="flex items-center space-x-2 rounded-sm px-4 py-3 hover:underline text-white bg-blue-400">
+                                            <FileIcon width={24} />
+                                            <span>{downloadUrl?.fileType?.toUpperCase()} file</span>
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </AlertDialogDescription>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Close</AlertDialogCancel>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </>
+        )
+    }
+
+    return (
+        <button
+            onClick={handlePayment}
+            disabled={isLoading}
+            className="px-4 py-2 h-[40px] bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+        >
+            {isLoading ?
+                'Processing...' :
+                isInitialFetching ?
+                    <span className='inline-flex'>
+                        <Loader2Icon width={16} className='animate-spin mr-1' />
+                        <span>Fetching</span>
+                    </span>
+                    : `Pay ${formattedAmount}`}
+        </button>
+    );
+}
