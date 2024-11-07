@@ -1,12 +1,11 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY); // Use environment variable for security
-
 export async function POST(request: Request) {
     try {
         // Parse incoming JSON body
         const { name, email, message } = await request.json();
+const resend = new Resend(process.env.RESEND_API_KEY); // Use environment variable for security
 
         // 1. Validate required fields
         if (!name || !email || !message) {
