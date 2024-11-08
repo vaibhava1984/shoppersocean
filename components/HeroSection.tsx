@@ -31,9 +31,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         </h1>
                         <p className="text-xl md:text-2xl mb-10 opacity-90 italic">{subtitle}</p>
                         {buttonLink && (
-                            <Link href={buttonLink} className="bg-white text-blue-600 hover:bg-blue-50 text-lg px-20 py-5 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300">
+                            <a href={buttonLink} className="inline-block bg-white text-blue-600 hover:bg-blue-50 text-lg px-10 py-5 rounded-full shadow-lg hover:scale-105 transition-all duration-300">
                                 {buttonText}
-                            </Link>
+                            </a>
                         )}
                     </div>
 

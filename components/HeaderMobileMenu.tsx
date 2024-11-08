@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import Link from 'next/link'
 
 export default function MobileMenu({ user }: {
     user: any
@@ -35,18 +36,14 @@ export default function MobileMenu({ user }: {
             >
                 <div className="flex flex-col p-4 space-y-4 mt-16">
                     <a href="/" className="text-slate-600 hover:text-blue-600 py-2">Home</a>
-                    <a href="/bookShelf" className="text-slate-600 hover:text-blue-600 py-2">Books</a>
+                    <a href="/bookShelf" className="text-slate-600 hover:text-blue-600 py-2">Bookshelf</a>
                     <a href="/about" className="text-slate-600 hover:text-blue-600 py-2">About</a>
-                    <a href="/contact" className="text-slate-600 hover:text-blue-600 py-2">Contact</a>
+                    <a href="/contact" className="text-slate-600 hover:text-blue-600 py-2">Contact us</a>
 
                     {!user && (
                         <div className="flex flex-col space-y-2 pt-4">
-                            <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white w-full">
-                                Sign Up
-                            </Button>
-                            <Button className="bg-blue-600 text-white hover:bg-blue-700 w-full">
-                                Sign In
-                            </Button>
+                            <Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link>
+                            <Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link>
                         </div>
                     )}
                 </div>
