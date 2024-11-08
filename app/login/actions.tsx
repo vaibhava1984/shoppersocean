@@ -15,12 +15,20 @@ export async function signIn(formData: {
   const data = {
     email: formData.email as string,
     password: formData.password as string,
+    redirect: '/'
   }
 
   const { error } = await supabase.auth.signInWithPassword(data)
 
+  // console.log("signin error=>", error)
+  // console.log("signin error code=>", error?.code)
+
   if (error) {
-    redirect("/error")
+    if (error.code === "email_not_confirmed") {
+      redirect("/login?authError=email_not_confirmed")
+    } else {
+      redirect("/login?authError=internalError")
+    }
   }
 
   revalidatePath("/", "layout")
@@ -52,20 +60,11 @@ export async function signUp(formData: {
   // console.log("authdata error=>", error)
 
   if (error) {
-    redirect("/error")
+    redirect("/login?authError=internalError")
   } else {
     if (authData.user) {
-      const { error: roleError } = await supabase
-        .from('user_roles')
-        .insert({
-          user_id: authData.user.id,
-          role: 'publisher' // Default to 'user' if no role specified
-        })
-
-      if (roleError) throw roleError
-
       revalidatePath("/", "layout")
-      redirect("/")
+      redirect("/login?accountCreated=success")
     }
   }
 }

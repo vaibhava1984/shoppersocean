@@ -14,8 +14,8 @@ const notoSerif = Noto_Serif({
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: {
-    template: '%s | ShoppersOcean',
-    default: 'ShoppersOcean',
+    template: '%s | Shoppers Ocean',
+    default: 'Shoppers Ocean',
   },
   description: "The fastest way to build apps with Next.js and Supabase",
 };

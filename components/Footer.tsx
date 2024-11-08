@@ -9,7 +9,7 @@ export default function Footer() {
                     <div className="flex flex-col md:flex-row justify-between items-center">
                         <div className="flex items-center space-x-2 mb-4 md:mb-0">
                             <BookOpen className="h-8 w-8 text-blue-300" />
-                            <span className="text-2xl font-bold text-blue-300">shoppersocean</span>
+                            <span className="text-2xl font-bold text-blue-300">Shoppers Ocean</span>
                         </div>
                         <div className="flex space-x-4">
                             <a href="/services" className="hover:text-blue-300">Services</a>
@@ -18,7 +18,7 @@ export default function Footer() {
                         </div>
                     </div>
                     <div className="mt-8 text-center text-blue-200">
-                        <p>&copy; 2024 shoppersocean. All rights reserved.</p>
+                        <p>&copy; 2024 Shoppers Ocean. All rights reserved.</p>
                     </div>
                 </div>
             </footer>

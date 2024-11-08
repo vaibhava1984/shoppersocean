@@ -16,7 +16,7 @@ export default function AboutPage() {
             <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-32">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                        About shoppersocean
+                        About Shoppers Ocean
                     </h1>
                     <p className="text-xl md:text-2xl mb-8 opacity-90 italic">Discover Our Story and Mission</p>
                 </div>
@@ -30,7 +30,7 @@ export default function AboutPage() {
 
                         <div className="prose prose-lg max-w-none">
                             <p className="lead text-xl text-slate-600 mb-8">
-                                At shoppersocean, we invite you to dive into a world of amazing books where every reader, regardless of taste or preference, can discover something extraordinary. Our expansive collection spans all genres, offering endless opportunities for entertainment, learning and inspiration.
+                                At Shoppers Ocean, we invite you to dive into a world of amazing books where every reader, regardless of taste or preference, can discover something extraordinary. Our expansive collection spans all genres, offering endless opportunities for entertainment, learning and inspiration.
                             </p>
 
                             <p className="text-xl text-slate-600 mb-6">
@@ -42,7 +42,7 @@ export default function AboutPage() {
                             </p>
 
                             <p className="text-xl text-slate-600 mb-6">
-                                In addition to serving our readers, shoppersocean is proud to support both established and emerging authors. We offer a platform where their works can reach a vast and eager audience, ensuring that their creative efforts receive the recognition and financial reward they deserve.
+                                In addition to serving our readers, Shoppers Ocean is proud to support both established and emerging authors. We offer a platform where their works can reach a vast and eager audience, ensuring that their creative efforts receive the recognition and financial reward they deserve.
                             </p>
 
                             <p className="text-xl text-slate-600 mb-6">
@@ -58,7 +58,7 @@ export default function AboutPage() {
                                 <p className="text-xl font-bold text-blue-600 mt-2">Vaibhav Ahuja</p>
                                 <p className="text-xl text-slate-600">Founder</p>
                                 <div className="w-[100px] h-[100px] rounded-full overflow-hidden mt-2">
-                                    <img src="/founder.jpeg" alt="shoppersocean Team" className="object-contain bg-gray-50 object-top" />
+                                    <img src="/founder.jpeg" alt="Shoppers Ocean Team" className="object-contain bg-gray-50 object-top" />
                                 </div>
                             </div>
                         </div>

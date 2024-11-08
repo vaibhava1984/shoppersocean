@@ -5,7 +5,7 @@ export default function AdminSidebar() {
     return (
         <aside className="w-64 bg-white shadow-md">
             <div className="p-4">
-                <h1 className="text-2xl font-bold text-blue-600">shoppersocean</h1>
+                <h1 className="text-2xl font-bold text-blue-600">Shoppers Ocean</h1>
                 <p className="text-sm text-gray-500">Admin Panel</p>
             </div>
             <nav className="mt-4">

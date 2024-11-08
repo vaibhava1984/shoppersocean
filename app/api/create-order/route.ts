@@ -14,27 +14,22 @@ export async function POST(req: Request) {
     try {
         const { amount, currency = 'INR', notes } = await req.json();
 
-        // Fetch current exchange rates
-        const rates = await fetchExchangeRates();
-
-        // Convert amount to INR for storage
-        const amountInINR = convertCurrency(amount, currency, 'INR', rates);
-
-        // Create order with the converted amount
+        // Create order in the user's local currency
         const order = await razorpay.orders.create({
-            amount: Math.round(amountInINR * 100), // Razorpay expects amount in paise
-            currency: 'INR', // Always create order in INR
+            amount: Math.round(amount * 100),
+            currency: currency, // Use the local currency directly
             notes: {
                 ...notes,
                 original_currency: currency,
                 original_amount: amount,
-                exchange_rate: rates[currency],
+                base_currency: 'INR'
             },
         });
 
         return NextResponse.json({
             orderId: order.id,
-            amountInINR,
+            amount: amount,
+            currency: currency
         });
     } catch (error) {
         console.error('Error creating order:', error);

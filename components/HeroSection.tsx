@@ -11,7 +11,7 @@ interface HeroSectionProps {
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
-    title = "ShoppersOcean",
+    title = "Shoppers Ocean",
     subtitle = "Where every wave brings a new deal",
     imageSrc = "/homepage_hero.jpeg",
     imageAlt = "Featured Book",

@@ -88,7 +88,7 @@ export default function TermsAndConditionsPage() {
                         <Card className="mb-8">
                             <CardContent className="p-6">
                                 <p className="text-xl text-slate-600 mb-4">
-                                    Welcome to shoppersocean. By accessing our website and using our services, you agree to comply with and be bound by the following terms and conditions. Please read them carefully before proceeding to use our website.
+                                    Welcome to Shoppers Ocean. By accessing our website and using our services, you agree to comply with and be bound by the following terms and conditions. Please read them carefully before proceeding to use our website.
                                 </p>
                                 <p className="text-xl text-slate-600">
                                     If you disagree with any part of these terms and conditions, please do not use our website or services.

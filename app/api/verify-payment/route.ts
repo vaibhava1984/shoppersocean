@@ -29,6 +29,13 @@ export async function POST(req: Request) {
             contact_number,
             email
         } = await req.json();
+        const rates = await fetchExchangeRates();
+        const amountInINR = convertCurrency(
+            original_amount,
+            original_currency,
+            'INR',
+            rates
+        );
 
         // Step 1: Verify signature
         const body = razorpay_order_id + '|' + razorpay_payment_id;
@@ -48,6 +55,7 @@ export async function POST(req: Request) {
 
         // Step 2: Fetch payment details from Razorpay
         const payment = await razorpay.payments.fetch(razorpay_payment_id);
+        console.log("payment===>", payment)
 
         // Step 3: Check payment status
         let paymentStatus;
@@ -103,8 +111,10 @@ export async function POST(req: Request) {
                 email,
                 status: paymentStatus,
                 order_date: new Date().toISOString(),
-                total_amount: Number(original_amount),
-                currency: original_currency
+                total_amount: Number(amountInINR), // Store INR amount
+                display_amount: Number(original_amount), // Store display amount
+                currency: 'INR', // Store base currency
+                display_currency: original_currency, // Store display currency
             },
             p_payment_details: {
                 order_id: razorpay_order_id,

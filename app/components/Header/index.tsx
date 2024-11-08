@@ -12,7 +12,7 @@ export default function Header() {
                     <div className="flex justify-between items-center py-4">
                         <div className="flex items-center space-x-2">
                             <BookOpen className="h-8 w-8 text-blue-600" />
-                            <a href="/" className="text-slate-600 hover:text-blue-600"><span className="text-2xl font-bold text-blue-600">shoppersocean</span></a>
+                            <a href="/" className="text-slate-600 hover:text-blue-600"><span className="text-2xl font-bold text-blue-600">Shoppers Ocean</span></a>
                         </div>
                         <div className="hidden md:flex space-x-4">
                             <a href="/" className="text-slate-600 hover:text-blue-600">Home</a>

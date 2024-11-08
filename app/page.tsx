@@ -26,7 +26,7 @@ export default async function LandingPage() {
       <Header />
       <div>
         <HeroSection
-          title="ShoppersOcean"
+          title="Shoppers Ocean"
           subtitle="Where every wave brings a new deal"
           buttonText=" Embark on Your Adventure"
           buttonLink="/bookShelf"

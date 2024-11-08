@@ -1,11 +1,12 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
+const resend = new Resend(process.env.RESEND_API_KEY); // Use environment variable for security
+
 export async function POST(request: Request) {
     try {
         // Parse incoming JSON body
         const { name, email, message } = await request.json();
-const resend = new Resend(process.env.RESEND_API_KEY); // Use environment variable for security
 
         // 1. Validate required fields
         if (!name || !email || !message) {
@@ -41,7 +42,7 @@ const resend = new Resend(process.env.RESEND_API_KEY); // Use environment variab
         const response = await resend.emails.send({
             from: 'onboarding@resend.dev', // Sender email
             to: yourEmail, // Send to your own email address
-            subject: 'New Message Submission | ShoppersOcean', // Customize the subject line
+            subject: 'New Message Submission | Shoppers Ocean', // Customize the subject line
             html: `
                 <p><strong>New Message Submitted:</strong></p>
                 <p><strong>Name:</strong> ${name}</p>

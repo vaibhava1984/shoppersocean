@@ -32,7 +32,7 @@ export default function ServicePage() {
                     <div className="max-w-4xl mx-auto">
                         <div className="prose prose-lg max-w-none">
                             <p className="lead text-xl text-slate-600 mb-12">
-                                At shoppersocean, we are committed to providing a diverse range of services to both our readers and writers. Our goal is to create a thriving ecosystem where literature flourishes and creativity knows no bounds.
+                                At Shoppers Ocean, we are committed to providing a diverse range of services to both our readers and writers. Our goal is to create a thriving ecosystem where literature flourishes and creativity knows no bounds.
                             </p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">

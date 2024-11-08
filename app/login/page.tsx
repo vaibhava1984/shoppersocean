@@ -2,20 +2,31 @@
 import Link from "next/link"
 import { SubmitButton } from "./submit-button"
 import { signIn, signUp } from "./actions"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import React from "react"
+import { createClient } from "@/utils/supabase/client"
+import { useRouter } from "next/navigation"
 
 export default function Login({ searchParams }: {
   searchParams: any
 }) {
+  const supabase = createClient()
+  const router = useRouter()
+
   // @ts-ignore
-  const { message } = React.use(searchParams)
-  const [isSignIn, setIsSignIn] = useState(true)
+  const { accountCreated, type, authError } = React.use(searchParams)
+  const [isSignIn, setIsSignIn] = useState(type === "signup" ? false : true)
   const [username, setUsername] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null)
   const [password, setPassword] = useState<string | null>(null)
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    username?: string;
+    general?: string;
+  }>({})
   const [dialogState, setDialogState] = useState<{
     isOpen: boolean
     title: string
@@ -25,6 +36,20 @@ export default function Login({ searchParams }: {
     title: "",
     description: "",
   })
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data?.user) {
+        router.push('/')
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    if (accountCreated === "success") {
+      setIsSignIn(true)
+    }
+  }, [accountCreated])
 
   const showDialog = (title: string, description: string) => {
     setDialogState({
@@ -38,38 +63,109 @@ export default function Login({ searchParams }: {
     setDialogState(prev => ({ ...prev, isOpen: false }))
   }
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validatePassword = (password: string): boolean => {
+    return password.length >= 5
+  }
+
+  const validateUsername = (username: string): boolean => {
+    return username.length >= 2
+  }
+
+  const validateInputs = (isSigningIn: boolean): boolean => {
+    const newErrors: typeof errors = {}
+    let isValid = true
+
+    if (!email) {
+      newErrors.email = "Email is required"
+      isValid = false
+    } else if (!validateEmail(email)) {
+      newErrors.email = "Please enter a valid email address"
+      isValid = false
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required"
+      isValid = false
+    } else if (!validatePassword(password)) {
+      newErrors.password = "Password must be at least 8 characters long"
+      isValid = false
+    }
+
+    if (!isSigningIn && !username) {
+      newErrors.username = "Name is required"
+      isValid = false
+    } else if (!isSigningIn && !validateUsername(username!)) {
+      newErrors.username = "Name must be at least 2 characters long"
+      isValid = false
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
+
   const handleSignIn = async () => {
     try {
-      if (email && password) {
-        await signIn({
-          email: email,
-          password: password
-        })
-        showDialog("Success", "You have successfully signed in!")
+      if (!validateInputs(true)) {
+        return
       }
+
+      const result = await signIn({
+        email: email!,
+        password: password!
+      })
+
+      // @ts-ignore
+      if (result?.error) {
+        setErrors({ general: "Invalid email or password" })
+        return
+      }
+
+      showDialog("Success", "You have successfully signed in!")
     } catch (error) {
-      showDialog("Error", "Failed to sign in. Please check your credentials and try again.")
+      // console.log("error what?", error.message)
+      // @ts-ignore
+      if (error?.message !== "NEXT_REDIRECT") {
+        setErrors({ general: "An error occurred during sign in. Please try again." })
+      }
     }
-    const form = document.getElementById('loginForm') as HTMLFormElement
-    if (form) form.reset()
   }
 
   const handleSignUp = async () => {
     try {
-      if (email && password && username) {
-        await signUp({
-          email,
-          password,
-          fullName: username
-        })
-        showDialog("Success", "Your account has been created successfully!")
+      if (!validateInputs(false)) {
+        return
       }
+
+      const result = await signUp({
+        email: email!,
+        password: password!,
+        fullName: username!
+      })
+
+      if (result?.error) {
+        setErrors({ general: "Error creating account. Email might already be in use." })
+        return
+      }
+
+      showDialog("Success", "Your account has been created successfully!")
     } catch (error) {
-      if (error instanceof Error && error.message === "Account already exists") {
-        showDialog("Account Exists", "An account with this email already exists. Please sign in instead.")
-      } else {
-        showDialog("Error", "Failed to create account. Please try again later.")
+      // @ts-ignore
+      if (error?.message !== "NEXT_REDIRECT") {
+        setErrors({ general: "An error occurred during sign up. Please try again." })
       }
+    }
+  }
+
+  function getAuthErrorMessage(code: string) {
+    if (code === "email_not_confirmed") {
+      return "Please confirm your email address and try again."
+    } else {
+      return "Internal server error occurred"
     }
   }
 
@@ -104,13 +200,24 @@ export default function Login({ searchParams }: {
         </h2>
 
         <div className="space-y-4">
+          {accountCreated === "success" && (
+            <div className="bg-green-400 text-white p-2 rounded">
+              Account created successfully. Please confirm your mail and login.
+            </div>
+          )}
+          {(authError || errors.general) && (
+            <div className="bg-red-400 text-white p-2 rounded">
+              {authError ? getAuthErrorMessage(authError) : errors.general}
+            </div>
+          )}
           {!isSignIn && (
             <div>
               <label className="text-sm font-medium text-gray-700" htmlFor="name">
                 Name
               </label>
               <input
-                className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors"
+                className={`mt-1 w-full rounded-md border ${errors.username ? 'border-red-500' : 'border-gray-300'
+                  } px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors`}
                 name="name"
                 type="text"
                 id="name"
@@ -120,8 +227,12 @@ export default function Login({ searchParams }: {
                 value={username ?? ''}
                 onChange={(e) => {
                   setUsername(e.target.value)
+                  setErrors(prev => ({ ...prev, username: undefined }))
                 }}
               />
+              {errors.username && (
+                <p className="mt-1 text-sm text-red-500">{errors.username}</p>
+              )}
             </div>
           )}
 
@@ -130,7 +241,8 @@ export default function Login({ searchParams }: {
               Email
             </label>
             <input
-              className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors"
+              className={`mt-1 w-full rounded-md border ${errors.email ? 'border-red-500' : 'border-gray-300'
+                } px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors`}
               name="email"
               type="email"
               id="email"
@@ -141,8 +253,12 @@ export default function Login({ searchParams }: {
               value={email ?? ''}
               onChange={(e) => {
                 setEmail(e.target.value)
+                setErrors(prev => ({ ...prev, email: undefined }))
               }}
             />
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+            )}
           </div>
 
           <div>
@@ -150,7 +266,8 @@ export default function Login({ searchParams }: {
               Password
             </label>
             <input
-              className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors"
+              className={`mt-1 w-full rounded-md border ${errors.password ? 'border-red-500' : 'border-gray-300'
+                } px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors`}
               type="password"
               name="password"
               id="password"
@@ -160,14 +277,18 @@ export default function Login({ searchParams }: {
               value={password ?? ''}
               onChange={(e) => {
                 setPassword(e.target.value)
+                setErrors(prev => ({ ...prev, password: undefined }))
               }}
             />
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-500">{errors.password}</p>
+            )}
           </div>
 
           {isSignIn ? (
             <SubmitButton
               onClick={handleSignIn}
-              className="bg-blue-600 text-white rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors"
+              className="w-full bg-blue-600 text-white rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors"
               pendingText="Signing In..."
             >
               Sign In
@@ -175,7 +296,7 @@ export default function Login({ searchParams }: {
           ) : (
             <SubmitButton
               onClick={handleSignUp}
-              className="bg-blue-600 text-white rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors"
+              className="w-full bg-blue-600 text-white rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors"
               pendingText="Creating Account..."
             >
               Create Account
@@ -199,16 +320,12 @@ export default function Login({ searchParams }: {
             setUsername(null)
             setEmail(null)
             setPassword(null)
+            setErrors({})
           }}
-          className="text-blue-600 hover:text-blue-700 text-sm font-medium text-center transition-colors"
+          className="w-full text-blue-600 hover:text-blue-700 text-sm font-medium text-center transition-colors"
         >
           {isSignIn ? "Need an account? Sign up" : "Already have an account? Sign in"}
         </button>
-        {message && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-100 text-red-600 text-sm rounded-md">
-            {message}
-          </div>
-        )}
       </div>
 
       <Dialog open={dialogState.isOpen} onOpenChange={closeDialog}>

@@ -49,54 +49,54 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
     const [downloadUrls, setDownloadUrls] = useState<UrlInfo[]>([]);
     const [isDownloadDialogOpen, setIsDownloadDialogOpen] = useState(false);
 
-    useEffect(() => {
-        // Detect user's locale and currency
-        const getUserCurrency = (): string => {
-            try {
-                const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
-                return new Intl.NumberFormat(userLocale, {
-                    style: 'currency',
-                    currency: 'USD'
-                }).resolvedOptions().currency || 'INR';
-            } catch (error) {
-                console.warn('Error detecting user currency:', error);
-                return 'INR';
-            }
-        };
+    // useEffect(() => {
+    //     // Detect user's locale and currency
+    //     const getUserCurrency = (): string => {
+    //         try {
+    //             const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
+    //             return new Intl.NumberFormat(userLocale, {
+    //                 style: 'currency',
+    //                 currency: 'USD'
+    //             }).resolvedOptions().currency || 'INR';
+    //         } catch (error) {
+    //             console.warn('Error detecting user currency:', error);
+    //             return 'INR';
+    //         }
+    //     };
 
-        // Fetch exchange rates and convert amount
-        async function setupLocalCurrency() {
-            try {
-                const detectedCurrency = getUserCurrency();
-                const cachedRates = exchangeRatesCache.get();
-                setIsInitialFetching(true);
+    //     // Fetch exchange rates and convert amount
+    //     async function setupLocalCurrency() {
+    //         try {
+    //             const detectedCurrency = getUserCurrency();
+    //             const cachedRates = exchangeRatesCache.get();
+    //             setIsInitialFetching(true);
 
-                let rates: ExchangeRates;
-                if (cachedRates) {
-                    rates = cachedRates;
-                    console.log('Using cached exchange rates');
-                } else {
-                    rates = await fetchExchangeRates();
-                    exchangeRatesCache.set(rates);
-                    console.log('Fetched new exchange rates');
-                }
+    //             let rates: ExchangeRates;
+    //             if (cachedRates) {
+    //                 rates = cachedRates;
+    //                 console.log('Using cached exchange rates');
+    //             } else {
+    //                 rates = await fetchExchangeRates();
+    //                 exchangeRatesCache.set(rates);
+    //                 console.log('Fetched new exchange rates');
+    //             }
 
-                if (rates[detectedCurrency]) {
-                    setLocalCurrency(detectedCurrency);
-                    // setLocalCurrency('BRL');
-                    const convertedAmount = convertCurrency(amount, 'INR', detectedCurrency, rates);
-                    setLocalAmount(convertedAmount);
-                }
-                setIsInitialFetching(false)
-            } catch (error) {
-                console.error('Error setting up local currency:', error);
-                setLocalCurrency('INR');
-                setLocalAmount(amount);
-            }
-        }
+    //             if (rates[detectedCurrency]) {
+    //                 setLocalCurrency(detectedCurrency);
+    //                 // setLocalCurrency('BRL');
+    //                 const convertedAmount = convertCurrency(amount, 'INR', detectedCurrency, rates);
+    //                 setLocalAmount(convertedAmount);
+    //             }
+    //             setIsInitialFetching(false)
+    //         } catch (error) {
+    //             console.error('Error setting up local currency:', error);
+    //             setLocalCurrency('INR');
+    //             setLocalAmount(amount);
+    //         }
+    //     }
 
-        setupLocalCurrency();
-    }, [amount]);
+    //     setupLocalCurrency();
+    // }, [amount]);
 
     useEffect(() => {
         if (productId && productId?.length) {
@@ -169,9 +169,9 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
             // Configure payment options
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-                amount: Math.round(amountInINR * 100), // in paise
-                currency: 'INR',
-                name: 'Your Company Name',
+                amount: Math.round(localAmount * 100), // Use local amount directly
+                currency: localCurrency, // Use local currency
+                name: 'Shoppers Ocean',
                 description: `Payment of ${localAmount} ${localCurrency}`,
                 order_id: orderId,
                 handler: async (response: any) => {
@@ -250,7 +250,12 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
             paymentObject.open();
         } catch (error) {
             console.error('Error:', error);
-            alert('Something went wrong!');
+            // alert('Something went wrong!');
+            toast({
+                variant: "destructive",
+                title: "Payment Error",
+                description: "Unable to process payment. Please try again."
+            });
         } finally {
             setIsLoading(false);
         }
