@@ -17,7 +17,7 @@ export const metadata = {
     template: '%s | Shoppers Ocean',
     default: 'Shoppers Ocean',
   },
-  description: "The fastest way to build apps with Next.js and Supabase",
+  description: "The fastest 1way to build apps with Next.js and Supabase",
 };
 
 export default function RootLayout({
