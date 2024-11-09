@@ -4,6 +4,7 @@ import { Mail, MapPin, Facebook, Twitter, Instagram } from 'lucide-react'
 import Header from "@/components/Header";
 import Footer from "@/components/Footer"
 import ContactForm from '../components/ContactForm';
+import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 export const metadata = {
     title: 'Contact',
@@ -29,6 +30,9 @@ export default function ContactPage() {
                     <p className="text-xl md:text-2xl mb-8 opacity-90 italic">We'd love to hear from you</p>
                 </div>
             </section>
+            <div>
+                <AuthorApplicationBanner />
+            </div>
 
             {/* Main Content */}
             <section className="py-20 bg-white">

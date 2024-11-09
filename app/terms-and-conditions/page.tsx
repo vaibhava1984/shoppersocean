@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer"
+import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 export const metadata = {
     title: 'Terms and Conditions',
@@ -80,6 +81,9 @@ export default function TermsAndConditionsPage() {
                     <p className="text-xl md:text-2xl mb-8 opacity-90 italic">Please read these terms carefully before using our services</p>
                 </div>
             </section>
+            <div>
+                <AuthorApplicationBanner />
+            </div>
 
             {/* Main Content */}
             <section className="py-20 bg-white">

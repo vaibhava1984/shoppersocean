@@ -36,7 +36,7 @@ export async function POST(request: Request) {
         const sanitizedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // basic XSS protection (simple sanitization)
 
         // Send email to your email address using Resend
-        const yourEmail = "ajanyakshay16@gmail.com"; // Replace with your actual email address
+        const yourEmail = "kochimonu@gmail.com"; // Replace with your actual email address
 
         const response = await resend.emails.send({
             from: 'no-reply@shoppersocean.com', // Sender email

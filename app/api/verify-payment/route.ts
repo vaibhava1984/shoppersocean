@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import Razorpay from 'razorpay';
+import { Resend } from 'resend';
+import { createClient } from "@/utils/supabase/server";
 import { convertCurrency, fetchExchangeRates } from '@/utils/currency';
 
 const razorpay = new Razorpay({
@@ -9,13 +10,12 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET!,
 });
 
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export async function POST(req: Request) {
     try {
+        const supabase = createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
         const {
             razorpay_order_id,
             razorpay_payment_id,
@@ -135,6 +135,25 @@ export async function POST(req: Request) {
         });
 
         if (error) throw error;
+
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+        const yourEmail = "kochimonu@gmail.com"; // Replace with your actual email address
+        const { data: currentBookDetails, error: currentBookDetailsError } = await supabase.from('books').select(`
+            *
+         `).eq('id', product_id).single();
+
+        const response = await resend.emails.send({
+            from: 'no-reply@shoppersocean.com', // Sender email
+            to: yourEmail, // Send to your own email address
+            subject: 'New Sale | Shoppers Ocean', // Customize the subject line
+            html: `
+                <p><strong>New Sale details:</strong></p>
+                <p><strong>Email:</strong> ${user?.email}</p>
+                <p><strong>Book ID:</strong>${product_id}</p>
+                 <p><strong>Book Name:</strong>${currentBookDetails?.title}</p>
+            `,
+        });
 
         // Return success response
         return NextResponse.json({

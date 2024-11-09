@@ -4,6 +4,7 @@ import { BookIcon, Users, Globe, PenTool } from 'lucide-react'
 import Header from "@/components/Header";
 import Footer from "@/components/Footer"
 import Link from "next/link";
+import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 export const metadata = {
     title: 'Services',
@@ -25,6 +26,9 @@ export default function ServicePage() {
                     <p className="text-xl md:text-2xl mb-8 opacity-90 italic">Empowering readers and writers worldwide</p>
                 </div>
             </section>
+            <div>
+                <AuthorApplicationBanner />
+            </div>
 
             {/* Main Content */}
             <section className="py-20 bg-white">

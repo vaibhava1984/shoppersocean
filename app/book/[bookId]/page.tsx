@@ -5,6 +5,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Footer from "@/components/Footer"
 import dynamic from 'next/dynamic'
 import type { Metadata, ResolvingMetadata } from 'next'
+import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 const DynamicPaymentButton = dynamic(() => import('@/components/PaymentButton'), {
     loading: () => <p>Loading...</p>,
@@ -36,6 +37,9 @@ export default async function BookDetailPage({ params }: {
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
             <Header />
+            <div>
+                <AuthorApplicationBanner />
+            </div>
             {/* Book Detail Content */}
             <section className="py-12 bg-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">

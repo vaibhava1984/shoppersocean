@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
+import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 const PurchaseHistory = () => {
     const [purchases, setPurchases] = useState([]);
@@ -102,6 +103,9 @@ const PurchaseHistory = () => {
                 <CardTitle>Purchase History</CardTitle>
             </CardHeader>
             <CardContent>
+                <div>
+                    <AuthorApplicationBanner />
+                </div>
                 {purchases.length === 0 ? (
                     <div className="text-center py-8 text-gray-500">
                         No purchases found

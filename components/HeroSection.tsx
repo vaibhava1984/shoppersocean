@@ -30,11 +30,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                             </span>
                         </h1>
                         <p className="text-xl md:text-2xl mb-10 opacity-90 italic">{subtitle}</p>
-                        {buttonLink && (
+                        {/* {buttonLink && (
                             <a href={buttonLink} className="inline-block bg-white text-blue-600 hover:bg-blue-50 text-lg px-10 py-5 rounded-full shadow-lg hover:scale-105 transition-all duration-300">
                                 {buttonText}
                             </a>
-                        )}
+                        )} */}
                     </div>
 
                     {/* Right Column */}

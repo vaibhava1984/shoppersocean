@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer"
+import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 export const metadata = {
     title: 'About',
@@ -21,6 +22,9 @@ export default function AboutPage() {
                     <p className="text-xl md:text-2xl mb-8 opacity-90 italic">Discover Our Story and Mission</p>
                 </div>
             </section>
+            <div>
+                <AuthorApplicationBanner />
+            </div>
 
             {/* Main Content */}
             <section className="py-20 bg-white">
@@ -34,7 +38,7 @@ export default function AboutPage() {
                             </p>
 
                             <p className="text-xl text-slate-600 mb-6">
-                                Founded on ________, we embarked on this journey with a commitment to providing our global audience with high-quality content. Our diverse selection of books ensures that every reader can immerse themselves in a sea of knowledge and enjoyment.
+                                Founded on November 10<sup>th</sup> 2024, we embarked on this journey with a commitment to providing our global audience with high-quality content. Our diverse selection of books ensures that every reader can immerse themselves in a sea of knowledge and enjoyment.
                             </p>
 
                             <p className="text-xl text-slate-600 mb-6">
@@ -54,11 +58,11 @@ export default function AboutPage() {
                             </p>
 
                             <div className="mt-12 text-right flex flex-col items-end">
-                                <p className="text-xl font-semibold">With gratitude,</p>
+                                {/* <p className="text-xl font-semibold">With gratitude,</p> */}
                                 <p className="text-xl font-bold text-blue-600 mt-2">Vaibhav Ahuja</p>
                                 <p className="text-xl text-slate-600">Founder</p>
-                                <div className="w-[100px] h-[100px] rounded-full overflow-hidden mt-2">
-                                    <img src="/founder.jpeg" alt="Shoppers Ocean Team" className="object-contain bg-gray-50 object-top" />
+                                <div className="w-[100px] mt-2">
+                                    <img src="/founder.jpeg" alt="Shoppers Ocean Team" className="bg-gray-50" />
                                 </div>
                             </div>
                         </div>

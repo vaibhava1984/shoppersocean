@@ -12,6 +12,7 @@ import { Star } from 'lucide-react'
 import dynamic from "next/dynamic";
 import BookCard from "@/components/BookCard"
 import HeroSection from "@/components/HeroSection";
+import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 // const DynamicPaymentButton = dynamic(() => import('@/components/PaymentButton'), {
 //     loading: () => <p>Loading...</p>,
@@ -161,6 +162,9 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                     imageSrc="/bookshelf_hero_image.jpeg"
                     imageAlt=" Embark on Your Adventure"
                 />
+            </div>
+            <div>
+                <AuthorApplicationBanner />
             </div>
             {/* Main Content */}
             <section className="py-20 bg-white">
