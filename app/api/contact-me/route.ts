@@ -39,7 +39,7 @@ export async function POST(request: Request) {
         const yourEmail = "ajanyakshay16@gmail.com"; // Replace with your actual email address
 
         const response = await resend.emails.send({
-            from: 'onboarding@resend.dev', // Sender email
+            from: 'no-reply@shoppersocean.com', // Sender email
             to: yourEmail, // Send to your own email address
             subject: 'New Message Submission | Shoppers Ocean', // Customize the subject line
             html: `

@@ -5,11 +5,13 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { createClient } from "@/utils/supabase/client";
+import ContactForm from '../components/ContactForm';
 
 export default function AuthorApplicationBanner() {
     const supabase = createClient();
     const { toast } = useToast()
     const [isOpen, setIsOpen] = useState(false)
+    const [isContactFormOpen, setIsContactFormOpen] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
     const [isAuthor, setIsAuthor] = useState(false);
 
@@ -38,7 +40,7 @@ export default function AuthorApplicationBanner() {
         } else {
             toast({
                 title: "Success!",
-                description: "You've been registered as an author. We'll send you an follow up mail within next 24 hours.",
+                description: "We'll send you an follow up mail within next 24 hours.",
             })
             setIsOpen(false)
         }
@@ -53,10 +55,17 @@ export default function AuthorApplicationBanner() {
                         }`}
                 >
                     <div className="animate-bounce">
-                        <Button
+                        {/* <Button
                             variant="outline"
                             className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-lg"
                             onClick={() => setIsOpen(true)}
+                        >
+                            Are you an author?
+                        </Button> */}
+                        <Button
+                            variant="outline"
+                            className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground shadow-lg"
+                            onClick={() => setIsContactFormOpen(true)}
                         >
                             Are you an author?
                         </Button>
@@ -76,6 +85,16 @@ export default function AuthorApplicationBanner() {
                         <Button variant="outline" onClick={() => setIsOpen(false)}>Cancel</Button>
                         <Button onClick={handleConfirm}>Confirm</Button>
                     </DialogFooter>
+                </DialogContent>
+            </Dialog>
+            <Dialog open={isContactFormOpen} onOpenChange={setIsContactFormOpen}>
+                <DialogContent className='bg-white overflow-y-auto max-h-[85%]'>
+                    <DialogHeader>
+                        <DialogTitle className='hidden'>Confirm Application</DialogTitle>
+                    </DialogHeader>
+                    <div>
+                        <ContactForm title='Are you an Author?' hideDescription successMessage="Thank you for your interest" />
+                    </div>
                 </DialogContent>
             </Dialog>
         </>

@@ -6,18 +6,28 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 
-const ContactForm = () => {
+const ContactForm = ({
+    title = 'Have a Question?',
+    description = "We're here to help! Reach out to us with any queries or suggestions.",
+    successMessage = 'Thank you for your message!',
+    hideDescription = false,
+}: {
+    title?: string,
+    description?: string,
+    successMessage?: string,
+    hideDescription?: boolean,
+}) => {
     const [showThankYou, setShowThankYou] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState(''); // Track validation errors
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
 
         // Collect form data
         const formData = new FormData(event.target);
         const name = formData.get('name');
-        const email = formData.get('email');
+        const email = formData.get('email') as string;
         const message = formData.get('message');
 
         // Basic Validation
@@ -60,8 +70,8 @@ const ContactForm = () => {
 
             // Show the thank you message
             setShowThankYou(true);
-        } catch (error) {
-            setErrorMessage(error.message || 'An error occurred, please try again later.');
+        } catch (error: any) {
+            setErrorMessage(error?.message || 'An error occurred, please try again later.');
         } finally {
             setIsSubmitting(false);
         }
@@ -70,15 +80,19 @@ const ContactForm = () => {
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-4 text-slate-800">Have a Question?</h2>
-                <p className="text-xl mb-8 text-slate-600">
-                    We're here to help! Reach out to us with any queries or suggestions.
-                </p>
+                {title && (
+                    <h2 className="text-3xl font-bold text-slate-800 mb-6">{title}</h2>
+                )}
+                {!hideDescription && (
+                    <p className="text-xl mb-8 text-slate-600">
+                        {description}
+                    </p>
+                )}
 
                 {showThankYou ? (
                     <Card className="bg-blue-50 border-blue-200">
                         <CardContent className="p-6">
-                            <p className="text-2xl font-semibold text-blue-600">Thank you for your message!</p>
+                            <p className="text-2xl font-semibold text-blue-600">{successMessage}</p>
                             <p className="mt-2 text-slate-600">We'll get back to you shortly.</p>
                         </CardContent>
                     </Card>
