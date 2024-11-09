@@ -15,7 +15,7 @@ export default function AdminSidebar() {
                     { icon: Home, label: 'Home Section', value: 'home_section' },
                     { icon: BookOpen, label: 'Books', value: 'books' },
                     { icon: PenTool, label: 'Authors', value: 'authors' },
-                    { icon: PenTool, label: 'Authors Approvals', value: 'authors_approvals' },
+                    // { icon: PenTool, label: 'Authors Approvals', value: 'authors_approvals' },
                     { icon: Users, label: 'Users', value: 'users' },
                     { icon: PenTool, label: 'Review Section', value: 'review_section' },
                     // { icon: Settings, label: 'Settings', value: 'settings' },

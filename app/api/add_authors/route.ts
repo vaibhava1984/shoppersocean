@@ -8,9 +8,9 @@ export async function POST(request: Request) {
             data: { user },
         } = await supabase.auth.getUser();
         if (user?.app_metadata?.userrole === "ADMIN") {
-            const { name, bio, user_id } = await request.json()
+            const { name, user_id } = await request.json()
             // Input validation
-            if (!name || !bio || !user_id) {
+            if (!name || !user_id) {
                 return NextResponse.json(
                     { error: 'Some Form fields are missing' },
                     { status: 400 }
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
                 .from('authors')
                 .insert([{
                     name: name,
-                    bio: bio,
+                    // bio: bio,
                     user_id: user_id
                 }])
                 .single();

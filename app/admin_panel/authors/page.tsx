@@ -130,13 +130,17 @@ const AuthorsManagement = () => {
 
 
     const handleAddAuthor = async () => {
-        if (newAuthor.name && newAuthor.bio && newAuthor.author_id) {
+        if (newAuthor.name && newAuthor.author_id) {
             const response = await fetch('/api/add_authors', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name: newAuthor.name, bio: newAuthor.bio, user_id: newAuthor.author_id }),
+                body: JSON.stringify({
+                    name: newAuthor.name,
+                    // bio: newAuthor.bio, 
+                    user_id: newAuthor.author_id
+                }),
             });
 
             const data = await response.json();
@@ -190,7 +194,7 @@ const AuthorsManagement = () => {
                                             className="col-span-3"
                                         />
                                     </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
+                                    {/* <div className="grid grid-cols-4 items-center gap-4">
                                         <Label htmlFor="bio" className="text-right">
                                             Bio
                                         </Label>
@@ -200,9 +204,9 @@ const AuthorsManagement = () => {
                                             onChange={(e) => setNewAuthor({ ...newAuthor, bio: e.target.value })}
                                             className="col-span-3"
                                         />
-                                    </div>
+                                    </div> */}
                                     <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="author">Author <span className="text-red-500">*</span></Label>
+                                        <Label htmlFor="author">Users <span className="text-red-500">*</span></Label>
                                         <Select
                                             name="author"
                                             value={newAuthor.author_id}

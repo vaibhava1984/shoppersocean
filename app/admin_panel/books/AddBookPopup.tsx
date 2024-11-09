@@ -206,17 +206,17 @@ export default function AddBookPopup(props: propsType) {
             return; // Show alert if author name is not provided
         }
         if (!formData.author_id) validationErrors.author = 'Author is required';
-        if (!formData.isbn) validationErrors.isbn = 'ISBN is required';
+        // if (!formData.isbn) validationErrors.isbn = 'ISBN is required';
         if (!formData.price || isNaN(Number(formData.price))) validationErrors.price = 'Valid price is required';
         if (!formData.pages || isNaN(Number(formData.pages))) validationErrors.pages = 'Valid pages number is required';
         if (!formData.published_date) validationErrors.published_date = 'Published date is required';
 
         if (Object.keys(validationErrors).length === 0) {
-            const isbnExists = await checkIsbnExists(formData.isbn);
-            if (isbnExists && !book) {
-                alert('ISBN already exists, please provide a correct ISBN number.');
-                return;
-            }
+            // const isbnExists = await checkIsbnExists(formData.isbn);
+            // if (isbnExists && !book) {
+            //     alert('ISBN already exists, please provide a correct ISBN number.');
+            //     return;
+            // }
             await addOrUpdateBook();
         } else {
             setErrors(validationErrors);
@@ -383,7 +383,7 @@ export default function AddBookPopup(props: propsType) {
                         {errors.published_date && <span className="text-red-500">{errors.published_date}</span>}
                     </div>
 
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                         <Label htmlFor="isbn">ISBN <span className="text-red-500">*</span></Label>
                         <Input
                             id="isbn"
@@ -393,7 +393,7 @@ export default function AddBookPopup(props: propsType) {
                             required
                         />
                         {errors.isbn && <span className="text-red-500">{errors.isbn}</span>}
-                    </div>
+                    </div> */}
                     <div className="space-y-2">
                         <Label htmlFor="price">Price <span className="text-red-500">*</span></Label>
                         <Input
@@ -431,7 +431,7 @@ export default function AddBookPopup(props: propsType) {
                             onChange={handleFileChange}
                         />
                     </div>
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                         <Label htmlFor="binding">Binding</Label>
                         <Input
                             id="binding"
@@ -439,7 +439,7 @@ export default function AddBookPopup(props: propsType) {
                             value={formData.binding}
                             onChange={(e) => setFormData({ ...formData, binding: e.target.value })}
                         />
-                    </div>
+                    </div> */}
                     <div className="space-y-2">
                         <Label htmlFor="language">Language</Label>
                         <Select name="language" value={formData.language} onValueChange={(value) => setFormData({ ...formData, language: value })}>
@@ -452,7 +452,7 @@ export default function AddBookPopup(props: propsType) {
                             </SelectContent>
                         </Select>
                     </div>
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                         <Label htmlFor="publisher">Publisher</Label>
                         <Input
                             id="publisher"
@@ -460,7 +460,7 @@ export default function AddBookPopup(props: propsType) {
                             value={formData.publisher}
                             onChange={(e) => setFormData({ ...formData, publisher: e.target.value })}
                         />
-                    </div>
+                    </div> */}
                     <div className="space-y-2">
                         <Label htmlFor="pages">Pages <span className="text-red-500">*</span></Label>
                         <Input
@@ -477,50 +477,50 @@ export default function AddBookPopup(props: propsType) {
                         />
                         {errors.pages && <span className="text-red-500">{errors.pages}</span>}
                     </div>
-                    {/* {book?.id && ( */}
-                    <div className="space-y-2">
-                        <Label htmlFor="book_files">Downloadable Book Files</Label>
-                        <Input
-                            id="book_files"
-                            name="book_files"
-                            type="file"
-                            accept=".pdf,.epub,.mobi,.jpeg"
-                            multiple
-                            onChange={handleBookFileUpload}
-                            disabled={isUploading}
-                        />
-                        {isUploading && (
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                <div
-                                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                    style={{ width: `${uploadProgress}%` }}
-                                ></div>
-                            </div>
-                        )}
+                    {book?.id && (
+                        <div className="space-y-2">
+                            <Label htmlFor="book_files">Downloadable Book Files</Label>
+                            <Input
+                                id="book_files"
+                                name="book_files"
+                                type="file"
+                                accept=".pdf,.epub,.mobi,.jpeg"
+                                multiple
+                                onChange={handleBookFileUpload}
+                                disabled={isUploading}
+                            />
+                            {isUploading && (
+                                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div
+                                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                        style={{ width: `${uploadProgress}%` }}
+                                    ></div>
+                                </div>
+                            )}
 
-                        {/* Display uploaded files */}
-                        {bookFiles.length > 0 && (
-                            <div className="mt-4">
-                                <h4 className="font-medium">Uploaded Files:</h4>
-                                <ul className="list-disc">
-                                    {bookFiles.map((file) => (
-                                        <li key={file.id} className="flex items-center justify-between">
-                                            <span>{file.file_name}</span>
-                                            <Button
-                                                type="button"
-                                                variant="destructive"
-                                                size="sm"
-                                                onClick={() => removeBookFile(file.id, file.file_path)}
-                                            >
-                                                Remove
-                                            </Button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-                    </div>
-                    {/* )} */}
+                            {/* Display uploaded files */}
+                            {bookFiles.length > 0 && (
+                                <div className="mt-4">
+                                    <h4 className="font-medium">Uploaded Files:</h4>
+                                    <ul className="list-disc">
+                                        {bookFiles.map((file) => (
+                                            <li key={file.id} className="flex items-center justify-between">
+                                                <span>{file.file_name}</span>
+                                                <Button
+                                                    type="button"
+                                                    variant="destructive"
+                                                    size="sm"
+                                                    onClick={() => removeBookFile(file.id, file.file_path)}
+                                                >
+                                                    Remove
+                                                </Button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
                 <div className="flex space-x-4 mt-4">
                     <Button type="submit">Save</Button>
