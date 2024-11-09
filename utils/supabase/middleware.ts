@@ -42,6 +42,7 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith("/bookShelf") &&
     !request.nextUrl.pathname.startsWith("/about") &&
     !request.nextUrl.pathname.startsWith("/contact") &&
+    !request.nextUrl.pathname.startsWith("/api/contact-me") &&
     !request.nextUrl.pathname.startsWith("/services") &&
     !request.nextUrl.pathname.startsWith("/book/") &&
     !request.nextUrl.pathname.startsWith("/terms-and-conditions") &&
