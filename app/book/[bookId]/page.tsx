@@ -98,10 +98,10 @@ export default async function BookDetailPage({ params }: {
                                 <CardContent className="p-4">
                                     <h2 className="text-lg font-semibold mb-2">Book Details</h2>
                                     <ul className="space-y-1 text-sm">
-                                        <li><span className="font-medium">ISBN:</span> {currentBookDetails?.isbn}</li>
+                                        {/* <li><span className="font-medium">ISBN:</span> {currentBookDetails?.isbn}</li> */}
                                         <li><span className="font-medium">Language:</span> {currentBookDetails?.language}</li>
-                                        <li><span className="font-medium">Binding:</span> {currentBookDetails?.binding}</li>
-                                        <li><span className="font-medium">Publisher:</span> {currentBookDetails?.publisher}</li>
+                                        {/* <li><span className="font-medium">Binding:</span> {currentBookDetails?.binding}</li> */}
+                                        {/* <li><span className="font-medium">Publisher:</span> {currentBookDetails?.publisher}</li> */}
                                         <li><span className="font-medium">Published Date:</span> {currentBookDetails?.published_date}</li>
                                         <li><span className="font-medium">Pages:</span> {currentBookDetails?.pages}</li>
                                     </ul>
