@@ -22,8 +22,8 @@ export default function TermsAndConditionsPage() {
             content: "Any order of an ebook/paperback book once placed by a customer/client is subject to its own responsibility and any order placed willingly or mistakenly shall be taken as an order placed by you with your descretion and we shall not be liable to return any amount paid by you or replace it with any other services. Also, we dont hold any responsibility for any amount paid by you being stuck/lost due to technical errors belong to payment gateways, server down etc."
         },
         {
-            title: "Policy for Our Authors/ Business Partners",
-            content: "Authors/ business partners who are inclined to be associated with us to rendering their services through us, must communicate with us directly on the e-mail provided by us and must agree to the terms and conditions about their profit share on their products and about the duration/minimum threshold/way of being paid determined by us."
+            title: "Policy for Our Authors/Business Partners",
+            content: "Authors/Business partners who are inclined to be associated with us to rendering their services through us, must communicate with us directly on the e-mail provided by us and must agree to the terms and conditions about their profit share on their products and about the duration/minimum threshold/way of being paid determined by us."
         },
         {
             title: "Use of Our Website",
@@ -76,12 +76,12 @@ export default function TermsAndConditionsPage() {
             <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-32 overflow-hidden">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h1
-                        className="text-4xl md:text-6xl font-bold mb-6 leading-tight opacity-0 translate-y-4 animate-[fadeInUp_1s_ease-out_forwards]"
+                        className="text-4xl md:text-6xl font-bold mb-6 leading-tight opacity-0 translate-y-4 animate-[fadeInUp_3s_ease-out_forwards]"
                     >
                         Privacy Policy
                     </h1>
                     <p
-                        className="text-xl md:text-2xl mb-8 translate-y-4 opacity-0 animate-[fadeInUp_1s_ease-out_0.3s_forwards] italic"
+                        className="text-xl md:text-2xl mb-8 translate-y-4 opacity-0 animate-[fadeInUp_3s_ease-out_forwards] italic"
                     >
                         Please read our privacy policy carefully before using our services
                     </p>
@@ -110,7 +110,7 @@ export default function TermsAndConditionsPage() {
                             {termsContent.map((section, index) => (
                                 <div key={index} className="mb-6">
                                     <h2 className="text-2xl font-semibold text-slate-800">{section.title}</h2>
-                                    <p className="text-xl text-slate-600 mt-2 text-justify">{section.content}</p>
+                                    <p className="text-xl text-slate-600 mt-2 text-start">{section.content}</p>
                                     {index < termsContent.length - 1 && (
                                         <hr className="my-4 border-gray-300" />
                                     )}

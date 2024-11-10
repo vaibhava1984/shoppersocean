@@ -25,12 +25,12 @@ export default function ContactPage() {
             <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-32 overflow-hidden">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h1
-                        className="text-4xl md:text-6xl font-bold mb-6 leading-tight opacity-0 translate-y-4 animate-[fadeInUp_1s_ease-out_forwards]"
+                        className="text-4xl md:text-6xl font-bold mb-6 leading-tight opacity-0 translate-y-4 animate-[fadeInUp_3s_ease-out_forwards]"
                     >
                         Get in Touch
                     </h1>
                     <p
-                        className="text-xl md:text-2xl mb-8 translate-y-4 opacity-0 animate-[fadeInUp_1s_ease-out_0.3s_forwards] italic"
+                        className="text-xl md:text-2xl mb-8 translate-y-4 opacity-0 animate-[fadeInUp_3s_ease-out_forwards] italic"
                     >
                         We'd love to hear from you
                     </p>

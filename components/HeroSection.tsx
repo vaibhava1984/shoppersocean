@@ -26,12 +26,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                     {/* Left Column */}
                     <div className="md:w-1/2 mb-8 md:mb-0">
                         <h1
-                            className="text-4xl md:text-6xl font-bold mb-6 leading-tight italic opacity-0 translate-y-4 animate-[fadeInUp_1s_ease-out_forwards]"
+                            className="text-4xl md:text-6xl font-bold mb-6 leading-tight italic opacity-0 translate-y-4 animate-[fadeInUp_3s_ease-out_forwards]"
                         >
                             {title}
                         </h1>
                         <p
-                            className="text-xl md:text-2xl mb-10 opacity-0 translate-y-4 animate-[fadeInUp_1s_ease-out_0.3s_forwards] italic"
+                            className="text-xl md:text-2xl mb-10 opacity-0 translate-y-4 animate-[fadeInUp_3s_ease-out_forwards] italic"
                         >
                             {subtitle}
                         </p>
@@ -42,7 +42,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         <img
                             src={imageSrc}
                             alt={imageAlt}
-                            className="w-full max-w-md mx-auto rounded-lg shadow-2xl opacity-0 scale-95 animate-[zoomIn_1s_ease-out_0.6s_forwards]"
+                            className="w-full max-w-md mx-auto rounded-lg shadow-2xl opacity-0 scale-95 animate-[fadeInUp_3s_ease-out_forwards]"
                         />
                     </div>
                 </div>

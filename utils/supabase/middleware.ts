@@ -54,6 +54,15 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  // console.log("user?.app_metadata?.userrole before=============>", user?.app_metadata?.userrole)
+
+  if (request.nextUrl.pathname.startsWith("/admin_panel") && user?.app_metadata?.userrole !== "ADMIN") {
+    // console.log("user?.app_metadata?.userrole=============>", user?.app_metadata?.userrole)
+    const url = request.nextUrl.clone()
+    url.pathname = "/"
+    return NextResponse.redirect(url)
+  }
+
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:
