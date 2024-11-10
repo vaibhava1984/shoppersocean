@@ -53,13 +53,28 @@ export default function BookCard({ book, loggedinUserId }: {
                         ))}
                         <span className="ml-2 text-sm text-gray-600">({book.numRatings} ratings)</span>
                     </div> */}
-                        <div className="mt-2">{book.description}</div>
+                        <div className="mt-2">
+                            {book.description.length > 100 ? (
+                                <>
+                                    {book.description.slice(0, 100)}...
+                                    <button
+                                        onClick={() => window.open(`/book/${book.id}`, '_self')}
+                                        className="text-blue-500 hover:underline ml-1"
+                                    >
+                                        Read More
+                                    </button>
+                                </>
+                            ) : (
+                                book.description
+                            )}
+                        </div>
                     </div>
                     <div className="mt-2">
                         {/* <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-4">
                             <ShoppingCart className="mr-2 h-4 w-4" /> Buy
                         </Button> */}
-                        {loggedinUserId && book?.id && (
+                        {/* {loggedinUserId && book?.id && ( */}
+                        {book?.id && (
                             <DynamicPaymentButton
                                 amount={book?.price}
                                 notes={{ product_name: 'Test Product' }}

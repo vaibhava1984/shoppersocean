@@ -73,12 +73,18 @@ export default function TermsAndConditionsPage() {
             <Header />
 
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-32">
+            <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-32 overflow-hidden">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    <h1
+                        className="text-4xl md:text-6xl font-bold mb-6 leading-tight opacity-0 translate-y-4 animate-[fadeInUp_1s_ease-out_forwards]"
+                    >
                         Terms and Conditions
                     </h1>
-                    <p className="text-xl md:text-2xl mb-8 opacity-90 italic">Please read these terms carefully before using our services</p>
+                    <p
+                        className="text-xl md:text-2xl mb-8 translate-y-4 opacity-0 animate-[fadeInUp_1s_ease-out_0.3s_forwards] italic"
+                    >
+                        Please read these terms carefully before using our services
+                    </p>
                 </div>
             </section>
             <div>

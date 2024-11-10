@@ -14,11 +14,15 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast"
 import { exchangeRatesCache } from "@/utils/cache"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import Link from 'next/link'
+import { X } from 'lucide-react'
+import { Button } from "@/components/ui/button"
 
 interface PaymentButtonProps {
     amount: number; // Amount in INR from your database
     notes?: object;
-    userId: string;
+    userId?: string;
     productId: string;
 }
 
@@ -43,11 +47,12 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
     const [exchangeRates, setExchangeRates] = useState<ExchangeRates>({});
     const [hasPurchased, setHasPurchased] = useState(false);
 
-    const [isInitialFetching, setIsInitialFetching] = useState(true);
+    const [isInitialFetching, setIsInitialFetching] = useState(userId ? true : false);
 
     const [isFetchingDownloadUrls, setIsFetchingDownloadUrls] = useState(false);
     const [downloadUrls, setDownloadUrls] = useState<UrlInfo[]>([]);
     const [isDownloadDialogOpen, setIsDownloadDialogOpen] = useState(false);
+    const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false);
 
     // useEffect(() => {
     //     // Detect user's locale and currency
@@ -99,10 +104,10 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
     // }, [amount]);
 
     useEffect(() => {
-        if (productId && productId?.length) {
+        if (productId && productId?.length && userId) {
             checkPurchaseViaAPI(productId)
         }
-    }, [productId])
+    }, [productId, userId])
 
     const checkPurchaseViaAPI = async (productId: string) => {
         try {
@@ -236,10 +241,22 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                         // window.location.href = '/payment/failed';
                     }
                 },
-                prefill: {
-                    name: '',
-                    email: '',
-                    contact: '',
+                // prefill: {
+                //     name: 'Guest User',     // Set a default name
+                //     email: "",  // Set a default email
+                //     contact: "",   // Set a default contact
+                //     // readonly: true,
+                //     // readOnly: true
+                // },
+                // readonly: true,
+                // readOnly: true,
+                readonly: {
+                    contact: true,
+                    email: true,
+                    name: true
+                },
+                notes: {
+                    skip_contact_form: 1
                 },
                 theme: {
                     color: '#F37254',
@@ -344,19 +361,51 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
     }
 
     return (
-        <button
-            onClick={handlePayment}
-            disabled={isLoading}
-            className="px-4 py-2 h-[40px] bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
-        >
-            {isLoading ?
-                'Processing...' :
-                isInitialFetching ?
-                    <span className='inline-flex'>
-                        <Loader2Icon width={16} className='animate-spin mr-1' />
-                        <span>Fetching</span>
-                    </span>
-                    : `Pay ${formattedAmount}`}
-        </button>
+        <>
+            <button
+                onClick={userId ? handlePayment : () => {
+                    setIsLoginNeededDialogOpen(true)
+                }}
+                disabled={isLoading}
+                className="px-4 py-2 h-[40px] bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+            >
+                {isLoading ?
+                    'Processing...' :
+                    isInitialFetching ?
+                        <span className='inline-flex'>
+                            <Loader2Icon width={16} className='animate-spin mr-1' />
+                            <span>Fetching</span>
+                        </span>
+                        : `Pay ${formattedAmount}`}
+            </button>
+            <AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}>
+                <AlertDialogContent className='bg-white'>
+                    <AlertDialogTitle className='hidden'></AlertDialogTitle>
+                    <Card className="w-full max-w-md border-0">
+                        <CardHeader className="relative">
+                            <CardTitle className="text-2xl font-bold text-center">Login Required</CardTitle>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="absolute right-2 top-2"
+                                onClick={() => setIsLoginNeededDialogOpen(false)}
+                                aria-label="Close popup"
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-center text-muted-foreground">
+                                You need to be logged in to make a purchase. Please sign up or sign in to continue.
+                            </p>
+                        </CardContent>
+                        <CardFooter className="flex justify-center space-x-4">
+                            <Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link>
+                            <Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link>
+                        </CardFooter>
+                    </Card>
+                </AlertDialogContent>
+            </AlertDialog>
+        </>
     );
 }

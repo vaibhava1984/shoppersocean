@@ -18,23 +18,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     buttonText,
     buttonLink
 }) => {
+
     return (
-        <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-18">
+        <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-18 overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row items-center justify-between">
                     {/* Left Column */}
                     <div className="md:w-1/2 mb-8 md:mb-0">
-                        <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight italic">
-                            <span className="block transform hover:scale-105 transition-transform duration-300">
-                                {title}
-                            </span>
+                        <h1
+                            className="text-4xl md:text-6xl font-bold mb-6 leading-tight italic opacity-0 translate-y-4 animate-[fadeInUp_1s_ease-out_forwards]"
+                        >
+                            {title}
                         </h1>
-                        <p className="text-xl md:text-2xl mb-10 opacity-90 italic">{subtitle}</p>
-                        {/* {buttonLink && (
-                            <a href={buttonLink} className="inline-block bg-white text-blue-600 hover:bg-blue-50 text-lg px-10 py-5 rounded-full shadow-lg hover:scale-105 transition-all duration-300">
-                                {buttonText}
-                            </a>
-                        )} */}
+                        <p
+                            className="text-xl md:text-2xl mb-10 opacity-0 translate-y-4 animate-[fadeInUp_1s_ease-out_0.3s_forwards] italic"
+                        >
+                            {subtitle}
+                        </p>
                     </div>
 
                     {/* Right Column */}
@@ -42,13 +42,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         <img
                             src={imageSrc}
                             alt={imageAlt}
-                            className="w-full max-w-md mx-auto rounded-lg shadow-2xl transform hover:scale-110 transition-transform duration-300"
+                            className="w-full max-w-md mx-auto rounded-lg shadow-2xl opacity-0 scale-95 animate-[zoomIn_1s_ease-out_0.6s_forwards]"
                         />
                     </div>
                 </div>
             </div>
         </section>
-    );
+    )
 };
 
 export default HeroSection;
