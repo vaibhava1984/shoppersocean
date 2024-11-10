@@ -13,7 +13,7 @@ export default function Footer() {
                         </div>
                         <div className="flex space-x-4">
                             <a href="/services" className="hover:text-blue-300">Services</a>
-                            <a href="/terms-and-conditions" className="hover:text-blue-300">Terms and conditions</a>
+                            <a href="/privacy-policy" className="hover:text-blue-300">Privacy Policy</a>
                             <a href="/contact" className="hover:text-blue-300">Contact Us</a>
                         </div>
                     </div>

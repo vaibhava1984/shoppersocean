@@ -42,7 +42,7 @@ export default function ServicePage() {
                     <div className="max-w-4xl mx-auto">
                         <div className="prose prose-lg max-w-none">
                             <p className="lead text-xl text-slate-600 mb-12">
-                                At Shoppers Ocean, we are committed to providing a diverse range of services to both our readers and writers. Our goal is to create a thriving ecosystem where literature flourishes and creativity knows no bounds.
+                                At Shoppers Ocean, we are committed to providing a diverse range of ebooks/paperback books to both our readers and writers. Our goal is to create a thriving ecosystem where literature flourishes and creativity knows no bounds.
                             </p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -81,7 +81,7 @@ export default function ServicePage() {
 
                             <h2 className="text-3xl font-bold text-slate-800 mb-6">Future Plans</h2>
                             <p className="mb-6">
-                                We are expanding quickly so that we can provide our esteemed writers and readers with even more and we plan to continue this entertaining trip into more languages in the near future in order to better serve our esteemed writers and readers.
+                                We are expanding quickly so that we can provide our esteemed writers and readers with even more and we plan to continue this entertaining trip into more languages as paperback editions in the near future in order to better serve our esteemed writers and readers.
                             </p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">

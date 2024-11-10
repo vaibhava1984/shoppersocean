@@ -376,7 +376,7 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                             <Loader2Icon width={16} className='animate-spin mr-1' />
                             <span>Fetching</span>
                         </span>
-                        : `Pay ${formattedAmount}`}
+                        : `Buy ebook ${formattedAmount}`}
             </button>
             <AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}>
                 <AlertDialogContent className='bg-white'>
