@@ -241,20 +241,20 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                         // window.location.href = '/payment/failed';
                     }
                 },
-                // prefill: {
-                //     name: 'Guest User',     // Set a default name
-                //     email: "",  // Set a default email
-                //     contact: "",   // Set a default contact
-                //     // readonly: true,
-                //     // readOnly: true
-                // },
+                prefill: {
+                    name: 'Guest User',     // Set a default name
+                    email: "",  // Set a default email
+                    contact: "9999999999",   // Set a default contact
+                    // readonly: true,
+                    // readOnly: true
+                },
                 // readonly: true,
                 // readOnly: true,
-                readonly: {
-                    contact: true,
-                    email: true,
-                    name: true
-                },
+                // readonly: {
+                //     contact: true,
+                //     email: true,
+                //     name: true
+                // },
                 notes: {
                     skip_contact_form: 1
                 },
