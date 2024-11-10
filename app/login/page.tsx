@@ -1,8 +1,9 @@
 "use client"
+import { useEffect, useState } from "react"
+import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
 import { SubmitButton } from "./submit-button"
 import { signIn, signUp } from "./actions"
-import { useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import React from "react"
@@ -18,6 +19,7 @@ export default function Login({ searchParams }: {
   // @ts-ignore
   const { accountCreated, type, authError } = React.use(searchParams)
   const [isSignIn, setIsSignIn] = useState(type === "signup" ? false : true)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [username, setUsername] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null)
   const [password, setPassword] = useState<string | null>(null)
@@ -110,7 +112,9 @@ export default function Login({ searchParams }: {
 
   const handleSignIn = async () => {
     try {
+      setIsSubmitting(true);
       if (!validateInputs(true)) {
+        setIsSubmitting(false);
         return
       }
 
@@ -121,12 +125,15 @@ export default function Login({ searchParams }: {
 
       // @ts-ignore
       if (result?.error) {
+        setIsSubmitting(false);
         setErrors({ general: "Invalid email or password" })
         return
       }
 
+      setIsSubmitting(false);
       showDialog("Success", "You have successfully signed in!")
     } catch (error) {
+      setIsSubmitting(false);
       // console.log("error what?", error.message)
       // @ts-ignore
       if (error?.message !== "NEXT_REDIRECT") {
@@ -137,7 +144,9 @@ export default function Login({ searchParams }: {
 
   const handleSignUp = async () => {
     try {
+      setIsSubmitting(true);
       if (!validateInputs(false)) {
+        setIsSubmitting(false);
         return
       }
 
@@ -148,12 +157,15 @@ export default function Login({ searchParams }: {
       })
 
       if (result?.error) {
+        setIsSubmitting(false);
         setErrors({ general: "Error creating account. Email might already be in use." })
         return
       }
 
+      setIsSubmitting(false);
       showDialog("Success", "Your account has been created successfully!")
     } catch (error) {
+      setIsSubmitting(false);
       // @ts-ignore
       if (error?.message !== "NEXT_REDIRECT") {
         setErrors({ general: "An error occurred during sign up. Please try again." })
@@ -288,18 +300,34 @@ export default function Login({ searchParams }: {
           {isSignIn ? (
             <SubmitButton
               onClick={handleSignIn}
-              className="w-full bg-blue-600 text-white rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors"
+              disabled={isSubmitting}
+              className={`w-full bg-blue-600 text-white rounded-md px-4 py-3 font-medium hover:bg-blue-700 transition-colors inline-flex ${isSubmitting ? 'opacity-40' : ''}`}
               pendingText="Signing In..."
             >
-              Sign In
+              {isSubmitting && (
+                <span className="mr-2">
+                  <Loader2Icon className="animate-spin" />
+                </span>
+              )}
+              <span>
+                {isSubmitting ? 'processing...' : 'Sign In'}
+              </span>
             </SubmitButton>
           ) : (
             <SubmitButton
               onClick={handleSignUp}
-              className="w-full bg-blue-600 text-white rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors"
+              disabled={isSubmitting}
+              className={`w-full bg-blue-600 text-white rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors inline-flex ${isSubmitting ? 'opacity-40' : ''}`}
               pendingText="Creating Account..."
             >
-              Create Account
+              {isSubmitting && (
+                <span className="mr-2">
+                  <Loader2Icon className="animate-spin" />
+                </span>
+              )}
+              <span>
+                {isSubmitting ? 'processing...' : 'Create Account'}
+              </span>
             </SubmitButton>
           )}
         </div>

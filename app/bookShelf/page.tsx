@@ -23,76 +23,6 @@ export const metadata = {
     description: 'Escape into Entertainment',
 }
 
-// const BookCard = ({ book }: {
-//     book: any
-// }) => {
-//     const showFullSummary = true;
-
-//     return (
-//         <Card className="overflow-hidden transition-shadow hover:shadow-lg">
-//             <CardContent className="p-0">
-//                 <Dialog>
-//                     <DialogTrigger asChild>
-//                         <div className="relative cursor-pointer">
-//                             {/* Show first image as preview */}
-//                             <img
-//                                 src={book.cover_images[0]}
-//                                 alt={book.title}
-//                                 className="w-full h-64 object-cover"
-//                             />
-//                             <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-//                                 Click to view more images
-//                             </div>
-//                         </div>
-//                     </DialogTrigger>
-//                     <DialogContent className="max-w-3xl">
-//                         <DialogTitle>{book.title}</DialogTitle>
-//                         <Carousel>
-//                             <CarouselContent>
-//                                 {book.cover_images.map((image: string, index: number) => (
-//                                     <CarouselItem key={index}>
-//                                         <div className="flex items-center justify-center p-2">
-//                                             <img
-//                                                 src={image}
-//                                                 alt={`${book.title} - Image ${index + 1}`}
-//                                                 className="w-full h-auto max-h-[70vh] object-contain"
-//                                             />
-//                                         </div>
-//                                     </CarouselItem>
-//                                 ))}
-//                             </CarouselContent>
-//                             <CarouselPrevious />
-//                             <CarouselNext />
-//                         </Carousel>
-//                     </DialogContent>
-//                 </Dialog>
-//                 <div className="p-6">
-//                     <Link href={`/book/${book.id}`}>
-//                         <h3 className="text-xl font-semibold mb-2 text-slate-800">{book.title}</h3>
-//                         <p className="text-sm text-slate-600 mb-2">{book.author}</p>
-//                         {/* <div className="flex items-center mb-2">
-//                             {[...Array(5)].map((_, i) => (
-//                                 <Star key={i} className={`h-5 w-5 ${i < Math.floor(book.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} />
-//                             ))}
-//                             <span className="ml-2 text-sm text-gray-600">({book.numRatings} ratings)</span>
-//                         </div> */}
-//                         <p className="text-slate-600 mb-4">
-//                             {`${book.description.slice(0, 100)}...`}
-//                         </p>
-//                     </Link>
-//                     <div className="flex justify-between items-center">
-//                         <span className="text-lg font-bold text-blue-600">₹{book.price}</span>
-//                         <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-//                             Buy now
-//                         </Button>
-//                     </div>
-//                 </div>
-
-//             </CardContent>
-//         </Card>
-//     )
-// }
-
 export default async function BookShelfPage({ params, searchParams }: { params: any; searchParams: any }) {
     const searchparams1 = await searchParams;
     const searchFilters = {
@@ -151,6 +81,17 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         "Sudha Murty": `Sudha Murty is an Indian engineering teacher, author and social worker. She is the chairperson of the Infosys Foundation and a member of public health care initiatives of the Gates Foundation. She has written many books, including novels, non-fiction, travelogues, technical books, and memoirs.`
     }
 
+    function getPageHeader() {
+        if (searchFilters.language === 'en') {
+            return 'English Books'
+        }
+        if (searchFilters.language === 'hindi') {
+            return 'Hindi Books'
+        }
+
+        return 'All Books'
+    }
+
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
             {/* Navigation */}
@@ -187,7 +128,7 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                         <div className="md:w-3/4">
                             <div className="flex justify-between items-center mb-8">
                                 <h2 className="text-3xl font-bold text-slate-800">
-                                    {selectedAuthor === "All" ? "All Books" : `Books by ${selectedAuthor}`}
+                                    {selectedAuthor === "All" ? getPageHeader() : `Books by ${selectedAuthor}`}
                                 </h2>
                                 {/* <select
                                     value={selectedAuthor}
