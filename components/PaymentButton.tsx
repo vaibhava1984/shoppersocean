@@ -250,11 +250,6 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                         // window.location.href = '/payment/failed';
                     }
                 },
-                prefill: {
-                    name: 'Guest User',
-                    email: "",
-                    contact: "9999999999",
-                },
                 notes: {
                     skip_contact_form: 1
                 },
@@ -321,9 +316,15 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
         }
     }
 
-    async function downloadFile(url: string) {
+    async function downloadFile(downloadData: {
+        downloadUrl: string,
+        fileName: string,
+        fileType: string,
+    }) {
         try {
-            const response = await fetch(url);
+            const { downloadUrl: downlaodUrlMain, fileName, fileType } = downloadData;
+            if (!downlaodUrlMain || !fileName) return;
+            const response = await fetch(downlaodUrlMain);
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
 
@@ -331,7 +332,7 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
             link.href = downloadUrl;
 
             // Fix: Add null check for filename
-            const filename = url.split('/').pop() || 'download';
+            const filename = fileName || 'download';
             link.download = filename;
 
             document.body.appendChild(link);
@@ -357,9 +358,9 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
             <>
                 <button
                     onClick={() => {
-                        // handleDownload(productId)
+                        // console.log("downloadUrls=>", downloadUrls)
                         if (downloadUrls?.length) {
-                            downloadFile(downloadUrls[0]?.downloadUrl)
+                            downloadFile(downloadUrls[0])
                         } else {
                             alert("File not found!")
                         }

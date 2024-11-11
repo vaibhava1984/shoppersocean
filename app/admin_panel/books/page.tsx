@@ -90,7 +90,7 @@ export default function Books() {
                 )
             `);
             if (error) throw error;
-            console.log("data=>", data)
+            // console.log("data=>", data)
             setBooks(data);
         } catch (error) {
             console.error('Error fetching books:', error);

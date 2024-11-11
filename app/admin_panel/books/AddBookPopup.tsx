@@ -421,16 +421,26 @@ export default function AddBookPopup(props: propsType) {
                             onChange={(e) => setFormData({ ...formData, ratings: parseInt(e.target.value) })}
                         />
                     </div> */}
-                    <div className="space-y-2">
-                        <Label htmlFor="cover_images">Cover Image</Label>
-                        <Input
-                            id="cover_images"
-                            name="cover_images"
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={handleFileChange}
-                        />
+                    <div>
+                        <div className="space-y-2">
+                            <Label htmlFor="cover_images">Cover Image</Label>
+                            <Input
+                                id="cover_images"
+                                name="cover_images"
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={handleFileChange}
+                            />
+                        </div>
+                        {/* {console.log("yeah, formdata=>", formData)} */}
+                        <div className='py-2'>
+                            {formData.cover_images?.map((cimage) => {
+                                return (
+                                    <img src={cimage} className='w-10 border' />
+                                )
+                            })}
+                        </div>
                     </div>
                     {/* <div className="space-y-2">
                         <Label htmlFor="binding">Binding</Label>
