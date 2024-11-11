@@ -48,7 +48,7 @@ export default function BooksCollections({ loggedinUserId }: {
                 const { data: booksData, error: booksError } = await supabase
                     .from('books')
                     .select('id, title,description,cover_images, author_name, price')
-                    .in('id', bookIds)
+                    .in('id', bookIds).eq('isCompletelyFilled', true)
 
                 if (booksError) {
                     console.error('Error fetching books:', booksError)

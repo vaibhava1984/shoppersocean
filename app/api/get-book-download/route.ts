@@ -41,6 +41,13 @@ export async function POST(request: Request) {
 
         console.log("privateBookPaths===>", privateBookPaths)
 
+        if (privateBookPaths?.length === 0) {
+            return NextResponse.json(
+                { error: 'Files not found' },
+                { status: 500 }
+            )
+        }
+
         // Generate signed URL
         const folderPaths = privateBookPaths?.map(p => p.file_path)
         const { data: signedUrls, error: signedUrlError } = await supabase

@@ -35,7 +35,7 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         data: { user },
     } = await supabase.auth.getUser();
 
-    const dataPromise = supabase.from('books').select(`*`);
+    const dataPromise = supabase.from('books').select(`*`).eq('isCompletelyFilled', true);
 
     if (searchFilters.language !== 'all') {
         if (searchFilters.language === 'en') {

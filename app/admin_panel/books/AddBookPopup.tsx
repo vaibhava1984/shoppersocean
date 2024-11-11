@@ -98,7 +98,7 @@ export default function AddBookPopup(props: propsType) {
                 const file = files[i];
                 const fileExt = file.name.split('.').pop()?.toLowerCase() || '';
                 const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-                const filePath = `protected-books/${book.isbn}/${fileName}`;
+                const filePath = `protected-books/${fileName}`;
 
                 // Upload file to storage
                 const { error: uploadError } = await supabase.storage
@@ -244,7 +244,8 @@ export default function AddBookPopup(props: propsType) {
             if (book) {
                 const { data, error } = await supabase.from('books').update({
                     ...formData,
-                    updated_at: new Date().toISOString()
+                    updated_at: new Date().toISOString(),
+                    isCompletelyFilled: bookFiles?.length > 0,
                 }).eq('id', book.id);
 
                 // console.log("data update===>", data);

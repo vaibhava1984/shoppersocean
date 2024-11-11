@@ -39,6 +39,8 @@ export async function POST(req: Request) {
 
         // Step 1: Verify signature
         const body = razorpay_order_id + '|' + razorpay_payment_id;
+        console.log("backend body===>", body)
+        console.log("backend secret===>", process.env.RAZORPAY_KEY_SECRET)
         const expectedSignature = crypto
             .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET!)
             .update(body.toString())

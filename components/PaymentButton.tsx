@@ -109,6 +109,12 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
         }
     }, [productId, userId])
 
+    useEffect(() => {
+        if (productId && productId?.length && userId && hasPurchased) {
+            handleDownload(productId)
+        }
+    }, [productId, userId, hasPurchased])
+
     const checkPurchaseViaAPI = async (productId: string) => {
         try {
             setIsInitialFetching(true);
@@ -181,6 +187,8 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                 order_id: orderId,
                 handler: async (response: any) => {
                     try {
+                        setIsLoading(true)
+                        // console.log("response=>", response)
                         const verificationResponse = await fetch('/api/verify-payment', {
                             method: 'POST',
                             headers: {
@@ -219,8 +227,9 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                             switch (data.status) {
                                 case 'completed':
                                     alert('Payment successful!');
-                                    // Redirect to success page
-                                    // window.location.href = '/payment/success';
+                                    setIsLoading(false)
+                                    setHasPurchased(true);
+                                    handleDownload(productId)
                                     break;
                                 case 'authorized':
                                     alert('Payment authorized, awaiting capture');
@@ -242,19 +251,10 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                     }
                 },
                 prefill: {
-                    name: 'Guest User',     // Set a default name
-                    email: "",  // Set a default email
-                    contact: "9999999999",   // Set a default contact
-                    // readonly: true,
-                    // readOnly: true
+                    name: 'Guest User',
+                    email: "",
+                    contact: "9999999999",
                 },
-                // readonly: true,
-                // readOnly: true,
-                // readonly: {
-                //     contact: true,
-                //     email: true,
-                //     name: true
-                // },
                 notes: {
                     skip_contact_form: 1
                 },
@@ -292,20 +292,55 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                 }),
             });
 
-            if (!response.ok) throw new Error('Failed to get download URL');
+            const allData = await response.json();
+            const { urls, error } = allData
 
-            const { urls } = await response.json();
+            if (!response.ok) {
+                // throw new Error(error ?? 'Failed to get download URL');
+                setIsFetchingDownloadUrls(false);
+                // toast({
+                //     variant: "destructive",
+                //     title: "Error",
+                //     description: error ?? 'Failed to get download URL',
+                // });
+                return;
+            }
+
+
             setIsFetchingDownloadUrls(false);
             setDownloadUrls(urls);
-            setIsDownloadDialogOpen(true);
-        } catch (error) {
+            // setIsDownloadDialogOpen(true);
+        } catch (error: any) {
             console.error('Error downloading file:', error);
             setIsFetchingDownloadUrls(false);
             toast({
                 variant: "destructive",
                 title: "Error",
-                description: "Failed to fetch download links",
+                description: error?.message ?? "Failed to fetch download links",
             });
+        }
+    }
+
+    async function downloadFile(url: string) {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+
+            // Fix: Add null check for filename
+            const filename = url.split('/').pop() || 'download';
+            link.download = filename;
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            window.URL.revokeObjectURL(downloadUrl);
+        } catch (error) {
+            console.error('Download failed:', error);
         }
     }
 
@@ -322,7 +357,12 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
             <>
                 <button
                     onClick={() => {
-                        handleDownload(productId)
+                        // handleDownload(productId)
+                        if (downloadUrls?.length) {
+                            downloadFile(downloadUrls[0]?.downloadUrl)
+                        } else {
+                            alert("File not found!")
+                        }
                     }}
                     className="px-4 py-2 flex bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
                 >
