@@ -187,6 +187,8 @@ export default function Login({ searchParams }: {
   function getAuthErrorMessage(code: string) {
     if (code === "email_not_confirmed") {
       return "Please confirm your email address and try again."
+    } else if (code === "invalid_credentials") {
+      return "Invalid credentials"
     } else {
       return "Internal server error occurred"
     }
@@ -341,7 +343,10 @@ export default function Login({ searchParams }: {
             <SubmitButton
               onClick={handleSignIn}
               disabled={isSubmitting}
-              className={`w-full bg-blue-600 text-white rounded-md px-4 py-3 font-medium hover:bg-blue-700 transition-colors inline-flex ${isSubmitting ? 'opacity-40' : ''}`}
+              className={`w-full bg-blue-600 text-white rounded-md px-4 py-3 font-medium hover:bg-blue-700 transition-colors inline-flex ${isSubmitting ? 'opacity-40' : ''} hover:scale-101 hover:shadow-lg
+                    active:scale-95 
+                    transition-all duration-200
+                    disabled:bg-gray-400`}
               pendingText="Signing In..."
             >
               {isSubmitting && (
@@ -357,7 +362,10 @@ export default function Login({ searchParams }: {
             <SubmitButton
               onClick={handleSignUp}
               disabled={isSubmitting}
-              className={`w-full bg-blue-600 text-white rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors inline-flex ${isSubmitting ? 'opacity-40' : ''}`}
+              className={`w-full bg-blue-600 text-white rounded-md px-4 py-3 font-medium hover:bg-blue-700 transition-colors inline-flex ${isSubmitting ? 'opacity-40' : ''} hover:scale-101 hover:shadow-lg
+                    active:scale-95 
+                    transition-all duration-200
+                    disabled:bg-gray-400`}
               pendingText="Creating Account..."
             >
               {isSubmitting && (
@@ -395,6 +403,14 @@ export default function Login({ searchParams }: {
         >
           {isSignIn ? "Need an account? Sign up" : "Already have an account? Sign in"}
         </button>
+        <div className="text-sm text-center">
+          <Link
+            href="/reset-password"
+            className="text-blue-600 hover:text-blue-700 font-medium"
+          >
+            Forgot your password?
+          </Link>
+        </div>
       </div>
 
       <Dialog open={dialogState.isOpen} onOpenChange={closeDialog}>

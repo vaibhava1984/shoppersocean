@@ -26,7 +26,10 @@ export async function signIn(formData: {
   if (error) {
     if (error.code === "email_not_confirmed") {
       redirect("/login?authError=email_not_confirmed")
-    } else {
+    } else if (error.code === "invalid_credentials") {
+      redirect("/login?authError=invalid_credentials")
+    }
+    else {
       redirect("/login?authError=internalError")
     }
   }

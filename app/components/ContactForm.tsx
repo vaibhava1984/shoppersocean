@@ -126,7 +126,10 @@ const ContactForm = ({
                                 <Button
                                     type="submit"
                                     size="lg"
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white hover:scale-101 hover:shadow-lg
+                    active:scale-95 
+                    transition-all duration-200
+                    disabled:bg-gray-400"
                                     disabled={isSubmitting}
                                 >
                                     {isSubmitting ? 'Sending...' : <><Mail className="mr-2 h-4 w-4" /> Send Message</>}

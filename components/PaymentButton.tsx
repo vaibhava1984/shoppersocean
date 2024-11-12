@@ -375,7 +375,10 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                             alert("File not found!")
                         }
                     }}
-                    className="px-4 py-2 flex bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+                    className="px-4 py-2 flex bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg
+                    active:scale-95 
+                    transition-all duration-200
+                    disabled:bg-gray-400"
                 >
                     {isFetchingDownloadUrls && (
                         <Loader2Icon width={20} className='animate-spin mr-2' />
@@ -418,7 +421,10 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                     setIsLoginNeededDialogOpen(true)
                 }}
                 disabled={isLoading}
-                className="px-4 py-2 h-[40px] bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+                className="px-4 py-2 bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg
+                    active:scale-95 
+                    transition-all duration-200
+                    disabled:bg-gray-400"
             >
                 {isLoading ?
                     'Processing...' :
