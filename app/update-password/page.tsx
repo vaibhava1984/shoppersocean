@@ -28,7 +28,7 @@ export default function UpdatePassword() {
         const checkSession = async () => {
             const { data: { session } } = await supabase.auth.getSession()
             if (!session) {
-                router.push('/login')
+                router.push('/login?authError=reset_mail_expired')
             }
         }
         checkSession()
@@ -45,7 +45,7 @@ export default function UpdatePassword() {
     const closeDialog = () => {
         setDialogState(prev => ({ ...prev, isOpen: false }))
         if (dialogState.title === "Success") {
-            router.push('/login')
+            // router.push('/login')
         }
     }
 

@@ -189,6 +189,8 @@ export default function Login({ searchParams }: {
       return "Please confirm your email address and try again."
     } else if (code === "invalid_credentials") {
       return "Invalid credentials"
+    } else if (code === "reset_mail_expired") {
+      return "Reset link expired. please try again."
     } else {
       return "Internal server error occurred"
     }
