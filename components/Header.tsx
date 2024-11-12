@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, LogOut, HistoryIcon, ShieldIcon, ChartBarIcon } from "lucide-react";
+import { ChevronDown, LogOut, HistoryIcon, ShieldIcon, ChartBarIcon, SettingsIcon } from "lucide-react";
 import HeaderMobileMenu from "./HeaderMobileMenu";
 
 export default async function Header() {
@@ -70,6 +70,14 @@ export default async function Header() {
                     <Link href="/my-purchases" className="flex items-center gap-2">
                       <HistoryIcon width={18} />
                       My Orders
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className=""
+                  >
+                    <Link href="/settings" className="flex items-center gap-2">
+                      <SettingsIcon width={18} />
+                      Settings
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem

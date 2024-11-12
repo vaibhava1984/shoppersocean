@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { FileIcon, Loader2Icon } from 'lucide-react';
-import { fetchExchangeRates, convertCurrency } from '@/utils/currency';
+import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
 import { createClient } from "@/utils/supabase/client";
 import {
     AlertDialog,
@@ -43,8 +43,7 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
 
     const [isLoading, setIsLoading] = useState(false);
     const [localAmount, setLocalAmount] = useState(amount);
-    const [localCurrency, setLocalCurrency] = useState('INR');
-    const [exchangeRates, setExchangeRates] = useState<ExchangeRates>({});
+    const [localCurrency, setLocalCurrency] = useState<string | null>(null);
     const [hasPurchased, setHasPurchased] = useState(false);
 
     const [isInitialFetching, setIsInitialFetching] = useState(userId ? true : false);
@@ -54,54 +53,65 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
     const [isDownloadDialogOpen, setIsDownloadDialogOpen] = useState(false);
     const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false);
 
-    // useEffect(() => {
-    //     // Detect user's locale and currency
-    //     const getUserCurrency = (): string => {
-    //         try {
-    //             const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
-    //             return new Intl.NumberFormat(userLocale, {
-    //                 style: 'currency',
-    //                 currency: 'USD'
-    //             }).resolvedOptions().currency || 'INR';
-    //         } catch (error) {
-    //             console.warn('Error detecting user currency:', error);
-    //             return 'INR';
-    //         }
-    //     };
+    useEffect(() => {
+        // Detect user's locale and currency
+        const getUserCurrency = (): string => {
+            try {
+                const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
+                return new Intl.NumberFormat(userLocale, {
+                    style: 'currency',
+                    currency: 'USD'
+                }).resolvedOptions().currency || 'INR';
+            } catch (error) {
+                console.warn('Error detecting user currency:', error);
+                return 'INR';
+            }
+        };
 
-    //     // Fetch exchange rates and convert amount
-    //     async function setupLocalCurrency() {
-    //         try {
-    //             const detectedCurrency = getUserCurrency();
-    //             const cachedRates = exchangeRatesCache.get();
-    //             setIsInitialFetching(true);
+        // Fetch exchange rates and convert amount
+        async function setupLocalCurrency(passedCurrency?: string) {
+            try {
+                const detectedCurrency = passedCurrency ?? getUserCurrency();
+                const cachedRates = exchangeRatesCache.get();
+                setIsInitialFetching(true);
 
-    //             let rates: ExchangeRates;
-    //             if (cachedRates) {
-    //                 rates = cachedRates;
-    //                 console.log('Using cached exchange rates');
-    //             } else {
-    //                 rates = await fetchExchangeRates();
-    //                 exchangeRatesCache.set(rates);
-    //                 console.log('Fetched new exchange rates');
-    //             }
+                let rates: ExchangeRates;
+                if (cachedRates) {
+                    rates = cachedRates;
+                    console.log('Using cached exchange rates');
+                } else {
+                    rates = await fetchExchangeRates();
+                    exchangeRatesCache.set(rates);
+                    console.log('Fetched new exchange rates');
+                }
 
-    //             if (rates[detectedCurrency]) {
-    //                 setLocalCurrency(detectedCurrency);
-    //                 // setLocalCurrency('BRL');
-    //                 const convertedAmount = convertCurrency(amount, 'INR', detectedCurrency, rates);
-    //                 setLocalAmount(convertedAmount);
-    //             }
-    //             setIsInitialFetching(false)
-    //         } catch (error) {
-    //             console.error('Error setting up local currency:', error);
-    //             setLocalCurrency('INR');
-    //             setLocalAmount(amount);
-    //         }
-    //     }
+                if (rates[detectedCurrency]) {
+                    setLocalCurrency(detectedCurrency);
+                    // setLocalCurrency('BRL');
+                    const convertedAmount = convertCurrency(amount, 'INR', detectedCurrency, rates);
+                    setLocalAmount(convertedAmount);
+                }
+                setIsInitialFetching(false)
+            } catch (error) {
+                console.error('Error setting up local currency:', error);
+                setLocalCurrency('INR');
+                setLocalAmount(amount);
+            }
+        }
 
-    //     setupLocalCurrency();
-    // }, [amount]);
+        supabase.auth.getUser().then(({ data }) => {
+            const { user } = data;
+            // console.log("wow===>", user)
+            if (user && user?.user_metadata?.country) {
+                // console.log("using country from DB")
+                const currencyCode = getCurrencyCode(user?.user_metadata?.country);
+                // console.log("using country from DB currencyCode=>", currencyCode)
+                setupLocalCurrency(currencyCode)
+            } else {
+                setupLocalCurrency();
+            }
+        })
+    }, [amount]);
 
     useEffect(() => {
         if (productId && productId?.length && userId) {
@@ -347,10 +357,10 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
 
     // Format amount according to user's locale
     const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
-    const formattedAmount = new Intl.NumberFormat(userLocale, {
+    const formattedAmount = localCurrency ? new Intl.NumberFormat(userLocale, {
         style: 'currency',
         currency: localCurrency,
-    }).format(localAmount);
+    }).format(localAmount) : null;
     // console.log("super......", localCurrency)
 
     if (hasPurchased) {
@@ -417,7 +427,7 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                             <Loader2Icon width={16} className='animate-spin mr-1' />
                             <span>Fetching</span>
                         </span>
-                        : `Buy ebook ${formattedAmount}`}
+                        : `Buy ebook ${formattedAmount ?? '-'}`}
             </button>
             <AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}>
                 <AlertDialogContent className='bg-white'>

@@ -34,6 +34,7 @@ const AdminPurchaseHistory = () => {
 
     const fetchStats = async () => {
         try {
+            // console.log("fetchstats called=>", dateFilter, statusFilter)
             const { data, error } = await supabase
                 .rpc('get_order_stats', {
                     p_date_filter: dateFilter,
@@ -87,7 +88,7 @@ const AdminPurchaseHistory = () => {
             // Fetch orders with pagination
             let query = supabase
                 .from('orders')
-                .select('*')
+                .select('*, profiles(id,full_name,email)')
                 .order('order_date', { ascending: false })
                 .range(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE - 1);
 
@@ -137,6 +138,7 @@ const AdminPurchaseHistory = () => {
                 product: productsData.find(p => p.id === order.product_id),
                 payment: paymentsData.find(p => p.order_id === order.id)
             }));
+            // console.log("combinedData=>", combinedData)
 
             // Apply search filter
             const filteredData = searchQuery
@@ -201,26 +203,6 @@ const AdminPurchaseHistory = () => {
                         <div className="text-2xl font-bold">₹{stats.totalRevenue.toFixed(2)}</div>
                     </CardContent>
                 </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">
-                            Successful Orders
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-green-600">{stats.successfulOrders}</div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">
-                            Pending Orders
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-yellow-600">{stats.pendingOrders}</div>
-                    </CardContent>
-                </Card>
             </div>
 
             {/* Filters */}
@@ -232,7 +214,7 @@ const AdminPurchaseHistory = () => {
                             <div className="relative">
                                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                                 <Input
-                                    placeholder="Search by book title, email, or order ID..."
+                                    placeholder="Search by book title, or order ID..."
                                     className="pl-8"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -246,14 +228,14 @@ const AdminPurchaseHistory = () => {
                                     <SelectValue placeholder="Select date range" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">All Time</SelectItem>
                                     <SelectItem value="today">Today</SelectItem>
                                     <SelectItem value="month">This Month</SelectItem>
                                     <SelectItem value="year">This Year</SelectItem>
+                                    <SelectItem value="all">Until Now</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div>
+                        {/* <div>
                             <div className="text-sm font-medium mb-2">Status</div>
                             <Select value={statusFilter} onValueChange={setStatusFilter}>
                                 <SelectTrigger className="w-[180px]">
@@ -266,7 +248,7 @@ const AdminPurchaseHistory = () => {
                                     <SelectItem value="failed">Failed</SelectItem>
                                 </SelectContent>
                             </Select>
-                        </div>
+                        </div> */}
                         <div className="flex gap-2">
                             <Button variant="outline" onClick={() => {
                                 fetchStats();
@@ -301,7 +283,7 @@ const AdminPurchaseHistory = () => {
                                             <TableHead>Order Date</TableHead>
                                             <TableHead>Book Title</TableHead>
                                             <TableHead>Customer</TableHead>
-                                            <TableHead>Amount</TableHead>
+                                            <TableHead>Amount(INR)</TableHead>
                                             <TableHead>Status</TableHead>
                                             <TableHead>Payment</TableHead>
                                             <TableHead>Order ID</TableHead>
@@ -320,10 +302,10 @@ const AdminPurchaseHistory = () => {
                                                     <div className="text-sm text-muted-foreground">{purchase.product?.author}</div>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <div className="font-medium">{purchase.email}</div>
+                                                    <div className="font-medium">{purchase.profiles?.full_name}({purchase.profiles?.email})</div>
                                                     <div className="text-sm text-muted-foreground">{purchase.contact_number}</div>
                                                 </TableCell>
-                                                <TableCell>{purchase.payment?.original_amount} {purchase.payment?.original_currency}</TableCell>
+                                                <TableCell>{purchase.payment?.amount_in_inr} INR</TableCell>
                                                 <TableCell>
                                                     <Badge
                                                         variant="secondary"

@@ -38,7 +38,8 @@ export async function signIn(formData: {
 export async function signUp(formData: {
   fullName: string,
   email: string,
-  password: string
+  password: string,
+  country: string,
 }) {
   const supabase = createClient()
 
@@ -50,6 +51,7 @@ export async function signUp(formData: {
     options: {
       data: {
         full_name: formData.fullName as string,
+        country: formData.country as string,
       },
     },
   }

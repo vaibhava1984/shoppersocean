@@ -8,7 +8,7 @@ export async function POST(request: Request) {
             data: { user },
         } = await supabase.auth.getUser();
         const userId = user?.id; // Get authenticated user ID
-        console.log("userId 1=>", userId)
+        // console.log("userId 1=>", userId)
         if (!userId) {
             return NextResponse.json(
                 { error: 'Not authorized' },
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
             .eq('product_id', bookId)
             .single();
 
-        console.log("purchase 1=>", purchase)
+        // console.log("purchase 1=>", purchase)
 
         if (purchaseError || !purchase) {
             return NextResponse.json(
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
             .select()
             .eq('book_id', bookId);
 
-        console.log("privateBookPaths===>", privateBookPaths)
+        // console.log("privateBookPaths===>", privateBookPaths)
 
         if (privateBookPaths?.length === 0) {
             return NextResponse.json(
@@ -53,13 +53,13 @@ export async function POST(request: Request) {
         const { data: signedUrls, error: signedUrlError } = await supabase
             .storage
             .from('books-content')
-            .createSignedUrls(folderPaths, 300); // 5 minutes expiry
+            .createSignedUrls(folderPaths ?? [], 300); // 5 minutes expiry
 
         if (signedUrlError) {
             throw signedUrlError;
         }
 
-        console.log("signedUrls===>", signedUrls)
+        // console.log("signedUrls===>", signedUrls)
 
         const signedUrlsFinal = signedUrls?.map(d => {
             const findFromPrivatePaths = privateBookPaths?.filter(p => p.file_path === d.path)

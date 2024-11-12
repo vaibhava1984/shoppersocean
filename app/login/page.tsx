@@ -4,8 +4,10 @@ import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
 import { SubmitButton } from "./submit-button"
 import { signIn, signUp } from "./actions"
+import { COUNTRIES } from "@/utils/countries"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
 import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
@@ -23,10 +25,12 @@ export default function Login({ searchParams }: {
   const [username, setUsername] = useState<string | null>(null)
   const [email, setEmail] = useState<string | null>(null)
   const [password, setPassword] = useState<string | null>(null)
+  const [country, setCountry] = useState<string | null>(null)
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
     username?: string;
+    country?: string;
     general?: string;
   }>({})
   const [dialogState, setDialogState] = useState<{
@@ -98,12 +102,19 @@ export default function Login({ searchParams }: {
       isValid = false
     }
 
-    if (!isSigningIn && !username) {
-      newErrors.username = "Name is required"
-      isValid = false
-    } else if (!isSigningIn && !validateUsername(username!)) {
-      newErrors.username = "Name must be at least 2 characters long"
-      isValid = false
+    if (!isSigningIn) {
+      if (!username) {
+        newErrors.username = "Name is required"
+        isValid = false
+      } else if (!validateUsername(username)) {
+        newErrors.username = "Name must be at least 2 characters long"
+        isValid = false
+      }
+
+      if (!country) {
+        newErrors.country = "Country is required"
+        isValid = false
+      }
     }
 
     setErrors(newErrors)
@@ -134,7 +145,6 @@ export default function Login({ searchParams }: {
       showDialog("Success", "You have successfully signed in!")
     } catch (error) {
       setIsSubmitting(false);
-      // console.log("error what?", error.message)
       // @ts-ignore
       if (error?.message !== "NEXT_REDIRECT") {
         setErrors({ general: "An error occurred during sign in. Please try again." })
@@ -153,7 +163,8 @@ export default function Login({ searchParams }: {
       const result = await signUp({
         email: email!,
         password: password!,
-        fullName: username!
+        fullName: username!,
+        country: country! // Add country to signup payload
       })
 
       if (result?.error) {
@@ -223,29 +234,58 @@ export default function Login({ searchParams }: {
             </div>
           )}
           {!isSignIn && (
-            <div>
-              <label className="text-sm font-medium text-gray-700" htmlFor="name">
-                Name
-              </label>
-              <input
-                className={`mt-1 w-full rounded-md border ${errors.username ? 'border-red-500' : 'border-gray-300'
-                  } px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors`}
-                name="name"
-                type="text"
-                id="name"
-                placeholder="Your full name"
-                required={!isSignIn}
-                autoComplete="name"
-                value={username ?? ''}
-                onChange={(e) => {
-                  setUsername(e.target.value)
-                  setErrors(prev => ({ ...prev, username: undefined }))
-                }}
-              />
-              {errors.username && (
-                <p className="mt-1 text-sm text-red-500">{errors.username}</p>
-              )}
-            </div>
+            <>
+              <div>
+                <label className="text-sm font-medium text-gray-700" htmlFor="name">
+                  Name
+                </label>
+                <input
+                  className={`mt-1 w-full rounded-md border ${errors.username ? 'border-red-500' : 'border-gray-300'
+                    } px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors`}
+                  name="name"
+                  type="text"
+                  id="name"
+                  placeholder="Your full name"
+                  required={!isSignIn}
+                  autoComplete="name"
+                  value={username ?? ''}
+                  onChange={(e) => {
+                    setUsername(e.target.value)
+                    setErrors(prev => ({ ...prev, username: undefined }))
+                  }}
+                />
+                {errors.username && (
+                  <p className="mt-1 text-sm text-red-500">{errors.username}</p>
+                )}
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700" htmlFor="country">
+                  Country
+                </label>
+                <Select
+                  value={country ?? ''}
+                  onValueChange={(value) => {
+                    setCountry(value)
+                    setErrors(prev => ({ ...prev, country: undefined }))
+                  }}
+                >
+                  <SelectTrigger className={`w-full text-black ${errors.country ? 'border-red-500' : ''}`}>
+                    <SelectValue placeholder="Select your country" className="text-black" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {COUNTRIES.map((country) => (
+                      <SelectItem key={country.code} value={country.code}>
+                        {country.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.country && (
+                  <p className="mt-1 text-sm text-red-500">{errors.country}</p>
+                )}
+              </div>
+            </>
           )}
 
           <div>
@@ -348,6 +388,7 @@ export default function Login({ searchParams }: {
             setUsername(null)
             setEmail(null)
             setPassword(null)
+            setCountry(null)
             setErrors({})
           }}
           className="w-full text-blue-600 hover:text-blue-700 text-sm font-medium text-center transition-colors"
