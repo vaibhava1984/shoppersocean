@@ -142,7 +142,7 @@ const AuthorOrdersDashboard = ({ authorId }: {
                         <SelectValue placeholder="Select timeframe" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="today">Daily</SelectItem>
+                        <SelectItem value="today">Today</SelectItem>
                         <SelectItem value="week">Weekly</SelectItem>
                         <SelectItem value="month">Monthly</SelectItem>
                         <SelectItem value="year">Yearly</SelectItem>
