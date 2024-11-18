@@ -156,7 +156,7 @@ export default function Books() {
                                         {displayedBooks.map((book) => (
                                             <TableRow key={book.id}>
                                                 {Array.from(selectedColumns).map((column, columnIndex) => (
-                                                    <TableCell key={`${column}_${columnIndex}`}>{book[column]}</TableCell>
+                                                    <TableCell key={`${column}_${columnIndex}`}>{column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : book[column]}</TableCell>
                                                 ))}
                                                 <TableCell>
                                                     <Button

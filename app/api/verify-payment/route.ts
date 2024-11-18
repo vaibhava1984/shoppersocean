@@ -155,17 +155,17 @@ export async function POST(req: Request) {
         .eq("id", product_id)
         .single();
 
-    // const response = await resend.emails.send({
-    //     from: 'no-reply@shoppersocean.com', // Sender email
-    //     to: yourEmail, // Send to your own email address
-    //     subject: 'New Sale | Shoppers Ocean', // Customize the subject line
-    //     html: `
-    //         <p><strong>New Sale details:</strong></p>
-    //         <p><strong>Email:</strong> ${user?.email}</p>
-    //         <p><strong>Book ID:</strong>${product_id}</p>
-    //          <p><strong>Book Name:</strong>${currentBookDetails?.title}</p>
-    //     `,
-    // });
+    const response = await resend.emails.send({
+      from: "no-reply@shoppersocean.com", // Sender email
+      to: yourEmail, // Send to your own email address
+      subject: "New Sale | Shoppers Ocean", // Customize the subject line
+      html: `
+            <p><strong>New Sale details:</strong></p>
+            <p><strong>Email:</strong> ${user?.email}</p>
+            <p><strong>Book ID:</strong>${product_id}</p>
+             <p><strong>Book Name:</strong>${currentBookDetails?.title}</p>
+        `,
+    });
 
     // Return success response
     return NextResponse.json({

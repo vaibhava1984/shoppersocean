@@ -39,6 +39,8 @@ const AuthorOrdersDashboard = ({ authorId }: {
             case 'year':
                 const startOfYear = new Date(now.getFullYear(), 0, 1);
                 return startOfYear.toISOString();
+            case 'untilnow':
+                return new Date(0).toISOString(); // Returns "1970-01-01T00:00:00.000Z"
             default:
                 return null; // for all time
         }
@@ -144,8 +146,9 @@ const AuthorOrdersDashboard = ({ authorId }: {
                     <SelectContent>
                         <SelectItem value="today">Today</SelectItem>
                         <SelectItem value="week">Weekly</SelectItem>
-                        <SelectItem value="month">Monthly</SelectItem>
-                        <SelectItem value="year">Yearly</SelectItem>
+                        <SelectItem value="month">This Month</SelectItem>
+                        <SelectItem value="year">This Year</SelectItem>
+                        <SelectItem value="untilnow">Until Now</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
