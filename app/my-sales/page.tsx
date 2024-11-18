@@ -23,9 +23,13 @@ export default async function MySalesPage() {
         redirect("/")
     }
 
+    // console.log("user 1===>", user)
+
     const { data: currentAuthorDetails, error: currentAuthorDetailsError } = await supabase.from('authors').select(`
         *
-     `).eq('id', user.id).single();
+     `).eq('user_id', user.id).single();
+
+    // console.log("currentAuthorDetails 111111111===>", currentAuthorDetails)
 
     if (!currentAuthorDetails?.author_id) {
         redirect("/")
@@ -34,7 +38,7 @@ export default async function MySalesPage() {
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
             <Header />
-            <section className="py-20 bg-white">
+            <section className="py-10 bg-white">
                 <MySales authorId={currentAuthorDetails?.author_id} />
             </section>
             <Footer />
