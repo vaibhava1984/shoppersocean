@@ -48,7 +48,7 @@ const AuthorsManagement = () => {
     }, []);
 
     const fetchAuthors = async () => {
-        const { data, error } = await supabase.from('authors').select('*, profiles(email)');
+        const { data, error } = await supabase.from('authors').select('*, profiles(email)').eq('is_deleted', false);
         if (error) {
             console.error('Error fetching authors:', error);
         } else {

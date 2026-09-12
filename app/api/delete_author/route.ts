@@ -22,7 +22,8 @@ export async function POST(request: Request) {
             const { data: books, error: booksError } = await supabase
                 .from('books')
                 .select('*')
-                .eq('author_id', author_id);
+                .eq('author_id', author_id)
+                .eq('is_deleted', false);
 
             if (booksError) {
                 console.error('Error checking books:', booksError);
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
                 // No books found, proceed with deletion
                 const { error: authorsDeletionError } = await supabase
                     .from('authors')
-                    .delete()
+                    .update({ is_deleted: true })
                     .eq('author_id', author_id);
 
                 if (authorsDeletionError) {

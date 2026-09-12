@@ -21,7 +21,7 @@ export default function AuthorsMenusLists() {
             const { data, error } = await supabase.from('authors').select(`
                 author_id,
                 name
-            `)
+            `).eq('is_deleted', false)
             if (error) throw error
             setAuthorsMenuLists([
                 { author_id: 'all', name: 'All Authors' },

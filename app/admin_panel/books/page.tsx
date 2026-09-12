@@ -88,7 +88,7 @@ export default function Books() {
                 authors (
                     name
                 )
-            `);
+            `).eq('is_deleted', false);
             if (error) throw error;
             // console.log("data=>", data)
             setBooks(data);
@@ -101,7 +101,7 @@ export default function Books() {
         try {
             const { error } = await supabase
                 .from('books')
-                .delete()
+                .update({ is_deleted: true })
                 .eq('id', book.id);
 
             if (error) throw error;
