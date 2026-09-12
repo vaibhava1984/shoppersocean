@@ -186,6 +186,7 @@ export default function AddBookPopup(props: propsType) {
             const { data, error } = await supabase
                 .from('authors')
                 .select('author_id, name')
+                .eq('is_deleted', false)
                 .order('name');
 
             if (error) throw error;

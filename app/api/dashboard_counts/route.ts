@@ -10,10 +10,12 @@ export async function POST(request: Request) {
         if (user?.app_metadata?.userrole === "ADMIN") {
             const { count: booksCount, error: booksError } = await supabase
                 .from('books')
-                .select('*', { count: 'exact' });
+                .select('*', { count: 'exact' })
+                .eq('is_deleted', false);
             const { count: authorsCount, error: authorsError } = await supabase
                 .from('authors')
-                .select('*', { count: 'exact' });
+                .select('*', { count: 'exact' })
+                .eq('is_deleted', false);
             const { count: profilesCount, error: profilesError } = await supabase
                 .from('profiles')
                 .select('*', { count: 'exact' });
