@@ -22,7 +22,9 @@ export async function POST(request: Request) {
             .select()
             .eq('user_id', userId)
             .eq('product_id', bookId)
-            .single();
+            .order('order_date', { ascending: false })
+            .limit(1)
+            .maybeSingle();
 
         // console.log("purchase 1=>", purchase)
 
