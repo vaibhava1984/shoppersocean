@@ -42,10 +42,11 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         console.error('Error fetching user:', error);
     }
 
-    // ✅ FIX: Only fetch columns that exist in database
+    // ✅ FIX: Only fetch active books (not deleted)
     let query = supabase
         .from('books')
         .select('id,title,language,author_id,author_name,description,price,cover_images')
+        .eq('is_deleted', false) // ✅ Only show non-deleted books
         .limit(100)
         .order('title', { ascending: true });
 
