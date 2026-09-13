@@ -44,12 +44,11 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         console.error('Error fetching user:', error);
     }
 
-    // ✅ Build query with only needed columns
+    // ✅ TEMPORARY: Get ALL books to see if any exist at all
+    // Remove filters to debug data availability
     let query = supabase
         .from('books')
         .select('id,title,language,author_id,author,description,price,cover_images')
-        .eq('isCompletelyFilled', true)
-        .eq('is_deleted', false)
         .limit(100)
         .order('title', { ascending: true });
 
@@ -81,7 +80,8 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         console.log('[BookShelf] Successfully fetched books:', {
             count: data?.length || 0,
             filters: searchFilters,
-            first_book: data?.[0]
+            first_book: data?.[0],
+            all_languages: [...new Set(data?.map((b: any) => b.language))]
         });
     }
 
@@ -191,7 +191,7 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                                         {searchFilters.author_id !== 'all' && `Author: ${searchFilters.author_id}`}
                                     </p>
                                     <p className="text-slate-400 text-xs mt-4">
-                                        💡 Tip: Check your Supabase database to verify books exist with isCompletelyFilled=true and is_deleted=false
+                                        💡 DEBUG: Check browser console and Vercel logs for database connection details
                                     </p>
                                 </div>
                             )}
