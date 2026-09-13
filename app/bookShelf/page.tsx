@@ -19,9 +19,8 @@ export const metadata = {
     description: 'Escape into Entertainment',
 }
 
-// ✅ ISR: Revalidate every 1 hour (3600 seconds)
-// This generates a static page and regenerates it in the background if needed
-export const revalidate = 3600;
+// ✅ Reduced cache to 5 minutes for debugging (change to 3600 once fixed)
+export const revalidate = 300;
 
 // ✅ Dynamic rendering based on search params
 export const dynamicParams = true;
@@ -52,7 +51,7 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         .eq('isCompletelyFilled', true)
         .eq('is_deleted', false)
         .limit(100)
-        .order('title', { ascending: true }); // Add consistent ordering for caching
+        .order('title', { ascending: true });
 
     // ✅ Apply filters at database level
     if (searchFilters.language !== 'all') {
@@ -72,8 +71,18 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
 
     const { data, error } = await query;
 
+    // ✅ Debug logging
     if (error) {
-        console.error('Error fetching books:', error);
+        console.error('[BookShelf] Error fetching books:', {
+            error: error.message,
+            filters: searchFilters
+        });
+    } else {
+        console.log('[BookShelf] Successfully fetched books:', {
+            count: data?.length || 0,
+            filters: searchFilters,
+            first_book: data?.[0]
+        });
     }
 
     const books = data || [];
@@ -150,6 +159,12 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                                 <h2 className="text-3xl font-bold text-slate-800">
                                     {getPageHeader()}
                                 </h2>
+                                {/* Debug info - remove in production */}
+                                {process.env.NODE_ENV === 'development' && (
+                                    <div className="text-sm text-gray-500">
+                                        Found: {filteredBooks.length} books
+                                    </div>
+                                )}
                             </div>
 
                             {selectedAuthorInfo && filteredBooks.length > 0 && (
@@ -168,8 +183,16 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                                     ))}
                                 </div>
                             ) : (
-                                <div className="text-center py-12">
+                                <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded">
                                     <p className="text-slate-600 text-lg">No books found matching your criteria.</p>
+                                    <p className="text-slate-500 text-sm mt-2">
+                                        {searchFilters.language !== 'all' && `Language: ${searchFilters.language}`}
+                                        {searchFilters.language !== 'all' && searchFilters.author_id !== 'all' && ' | '}
+                                        {searchFilters.author_id !== 'all' && `Author: ${searchFilters.author_id}`}
+                                    </p>
+                                    <p className="text-slate-400 text-xs mt-4">
+                                        💡 Tip: Check your Supabase database to verify books exist with isCompletelyFilled=true and is_deleted=false
+                                    </p>
                                 </div>
                             )}
                         </div>
