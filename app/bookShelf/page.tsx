@@ -14,14 +14,12 @@ import BookCard from "@/components/BookCard"
 import HeroSection from "@/components/HeroSection";
 import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
-// const DynamicPaymentButton = dynamic(() => import('@/components/PaymentButton'), {
-//     loading: () => <p>Loading...</p>,
-// })
-
 export const metadata = {
     title: 'BookShelf',
     description: 'Escape into Entertainment',
 }
+
+export const revalidate = 3600; // Cache for 1 hour
 
 export default async function BookShelfPage({ params, searchParams }: { params: any; searchParams: any }) {
     const searchparams1 = await searchParams;
@@ -35,50 +33,56 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         data: { user },
     } = await supabase.auth.getUser();
 
-    const dataPromise = supabase.from('books').select(`*`).eq('isCompletelyFilled', true).eq('is_deleted', false);
+    // ✅ FIX 1: Build query dynamically with only needed columns
+    let query = supabase
+        .from('books')
+        .select('id,title,language,author_id,author,description,price,cover_images,isCompletelyFilled,is_deleted')
+        .eq('isCompletelyFilled', true)
+        .eq('is_deleted', false)
+        .limit(100); // Add limit for safety
 
+    // ✅ FIX 2: Apply filters at database level BEFORE fetching
     if (searchFilters.language !== 'all') {
-        if (searchFilters.language === 'en') {
-            dataPromise.eq('language', 'English')
-        }
-        if (searchFilters.language === 'hindi') {
-            dataPromise.eq('language', 'Hindi')
+        const languageMap: Record<string, string> = {
+            'en': 'English',
+            'hindi': 'Hindi'
+        };
+        const language = languageMap[searchFilters.language];
+        if (language) {
+            query = query.eq('language', language);
         }
     }
 
-    if (searchFilters.author_id !== 'all' && (searchFilters.author_id?.length) > 0) {
-        dataPromise.eq('author_id', searchFilters.author_id)
+    if (searchFilters.author_id !== 'all' && searchFilters.author_id?.length > 0) {
+        query = query.eq('author_id', searchFilters.author_id);
     }
 
-    const { data, error } = await dataPromise;
-    const books = data;
-    const selectedLanguage = 'All';
-    const selectedAuthor = 'All';
+    const { data, error } = await query;
 
+    if (error) {
+        console.error('Error fetching books:', error);
+    }
 
-    const filteredBooks = (books ?? []).filter(book =>
-        (selectedLanguage === "All" || book.language === selectedLanguage) &&
-        (selectedAuthor === "All" || book.author === selectedAuthor)
-    ).map(d => {
-        return {
-            ...d,
-            coverImage: d?.cover_images?.[0],
-            images: d?.cover_images,
-        }
-    })
+    const books = data || [];
+
+    const filteredBooks = books.map(d => ({
+        ...d,
+        coverImage: d?.cover_images?.[0],
+        images: d?.cover_images,
+    }));
 
     const authorInfo = {
-        "Chetan Bhagat": `Chetan Bhagat is the author of seven blockbuster books. These include six novels—Five Point Someone (2004), One Night @ the Call Center (2005), The 3 Mistakes of My Life (2008), 2 States (2009), Revolution 2020 (2011), One Indian Girl (2016)—and the non-fiction title What Young India Wants (2012).
+        "Chetan Bhagat": `Chetan Bhagat is the author of seven blockbuster books. These include six novels—Five Point Someone (2004), One Night @ the Call Center (2005), The 3 Mistakes of My Lif[...]
 
     Chetan's books have remained bestsellers since their release and have been equally celebrated on the big screen.
 
-    The New York Times called him the 'the biggest selling English language novelist in India's history'. TIME magazine named him amongst the '100 most influential people in the world' and Fast Company, USA, listed him as one of the world's '100 most creative people in business'.
+    The New York Times called him the 'the biggest selling English language novelist in India's history'. TIME magazine named him amongst the '100 most influential people in the world' and Fast Co[...]
 
     Chetan writes columns for leading English and Hindi newspapers, focusing on youth and national development issues. He is also a motivational speaker and screenplay writer.
 
-    Chetan quit his international investment banking career in 2009 to devote his entire time to writing and making change happen in the country. He lives in Mumbai with his wife, Anusha, an ex-classmate from IIM-A, and his twin sons, Shyam and Ishaan.`,
-        "Amish Tripathi": `Amish Tripathi is an Indian author known for his novels The Shiva Trilogy and the Ram Chandra Series. His debut work, The Immortals of Meluha, was a bestseller that earned him recognition as a significant contemporary Indian writer.`,
-        "Sudha Murty": `Sudha Murty is an Indian engineering teacher, author and social worker. She is the chairperson of the Infosys Foundation and a member of public health care initiatives of the Gates Foundation. She has written many books, including novels, non-fiction, travelogues, technical books, and memoirs.`
+    Chetan quit his international investment banking career in 2009 to devote his entire time to writing and making change happen in the country. He lives in Mumbai with his wife, Anusha, an ex-cl[...]`,
+        "Amish Tripathi": `Amish Tripathi is an Indian author known for his novels The Shiva Trilogy and the Ram Chandra Series. His debut work, The Immortals of Meluha, was a bestseller that earn[...]`,
+        "Sudha Murty": `Sudha Murty is an Indian engineering teacher, author and social worker. She is the chairperson of the Infosys Foundation and a member of public health care initiatives of t[...]`
     }
 
     function getPageHeader() {
@@ -91,6 +95,8 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
 
         return 'All Books'
     }
+
+    const selectedAuthor = searchFilters.author_id !== 'all' ? authorInfo[searchFilters.author_id as keyof typeof authorInfo] ? 'Selected' : 'All' : 'All';
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -128,34 +134,30 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                         <div className="md:w-3/4">
                             <div className="flex justify-between items-center mb-8">
                                 <h2 className="text-3xl font-bold text-slate-800">
-                                    {selectedAuthor === "All" ? getPageHeader() : `Books by ${selectedAuthor}`}
+                                    {getPageHeader()}
                                 </h2>
-                                {/* <select
-                                    value={selectedAuthor}
-                                    onChange={(e) => setSelectedAuthor(e.target.value)}
-                                    className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                >
-                                    <option value="All">All Authors</option>
-                                    {authorsMenuLists.map(author => (
-                                        <option key={`${author.author_id}_dropdown_filter`} value={author.author_id}>{author.name}</option>
-                                    ))}
-                                </select> */}
                             </div>
 
-                            {selectedAuthor !== "All" && (
+                            {selectedAuthor !== "All" && filteredBooks.length > 0 && (
                                 <Card className="mb-8">
                                     <CardContent className="p-6">
-                                        <h3 className="text-2xl font-bold mb-4 text-slate-800">{selectedAuthor}</h3>
-                                        <p className="text-slate-600 whitespace-pre-line">{authorInfo[selectedAuthor]}</p>
+                                        <h3 className="text-2xl font-bold mb-4 text-slate-800">{filteredBooks[0]?.author}</h3>
+                                        <p className="text-slate-600 whitespace-pre-line">{authorInfo[filteredBooks[0]?.author as keyof typeof authorInfo]}</p>
                                     </CardContent>
                                 </Card>
                             )}
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {filteredBooks.map(book => (
-                                    <BookCard key={book.id} book={book} loggedinUserId={user?.id} />
-                                ))}
-                            </div>
+                            {filteredBooks.length > 0 ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                    {filteredBooks.map(book => (
+                                        <BookCard key={book.id} book={book} loggedinUserId={user?.id} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center py-12">
+                                    <p className="text-slate-600 text-lg">No books found matching your criteria.</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
