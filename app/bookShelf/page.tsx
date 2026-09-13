@@ -19,10 +19,8 @@ export const metadata = {
     description: 'Escape into Entertainment',
 }
 
-// ✅ Reduced cache to 5 minutes for debugging (change to 3600 once fixed)
-export const revalidate = 300;
-
-// ✅ Dynamic rendering based on search params
+// ✅ ISR: Revalidate every 1 hour
+export const revalidate = 3600;
 export const dynamicParams = true;
 
 export default async function BookShelfPage({ params, searchParams }: { params: any; searchParams: any }) {
@@ -44,15 +42,14 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         console.error('Error fetching user:', error);
     }
 
-    // ✅ TEMPORARY: Get ALL books to see if any exist at all
-    // Remove filters to debug data availability
+    // ✅ FIX: Only fetch columns that exist in database
     let query = supabase
         .from('books')
-        .select('id,title,language,author_id,author,description,price,cover_images')
+        .select('id,title,language,author_id,author_name,description,price,cover_images')
         .limit(100)
         .order('title', { ascending: true });
 
-    // ✅ Apply filters at database level
+    // ✅ Apply language filter
     if (searchFilters.language !== 'all') {
         const languageMap: Record<string, string> = {
             'en': 'English',
@@ -64,13 +61,13 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         }
     }
 
+    // ✅ Apply author_id filter
     if (searchFilters.author_id !== 'all' && searchFilters.author_id?.length > 0) {
         query = query.eq('author_id', searchFilters.author_id);
     }
 
     const { data, error } = await query;
 
-    // ✅ Debug logging
     if (error) {
         console.error('[BookShelf] Error fetching books:', {
             error: error.message,
@@ -79,9 +76,7 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
     } else {
         console.log('[BookShelf] Successfully fetched books:', {
             count: data?.length || 0,
-            filters: searchFilters,
-            first_book: data?.[0],
-            all_languages: [...new Set(data?.map((b: any) => b.language))]
+            filters: searchFilters
         });
     }
 
@@ -91,6 +86,7 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         ...d,
         coverImage: d?.cover_images?.[0],
         images: d?.cover_images,
+        author: d?.author_name, // Use author_name from database
     }));
 
     const authorInfo = {
@@ -159,12 +155,6 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                                 <h2 className="text-3xl font-bold text-slate-800">
                                     {getPageHeader()}
                                 </h2>
-                                {/* Debug info - remove in production */}
-                                {process.env.NODE_ENV === 'development' && (
-                                    <div className="text-sm text-gray-500">
-                                        Found: {filteredBooks.length} books
-                                    </div>
-                                )}
                             </div>
 
                             {selectedAuthorInfo && filteredBooks.length > 0 && (
@@ -189,9 +179,6 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                                         {searchFilters.language !== 'all' && `Language: ${searchFilters.language}`}
                                         {searchFilters.language !== 'all' && searchFilters.author_id !== 'all' && ' | '}
                                         {searchFilters.author_id !== 'all' && `Author: ${searchFilters.author_id}`}
-                                    </p>
-                                    <p className="text-slate-400 text-xs mt-4">
-                                        💡 DEBUG: Check browser console and Vercel logs for database connection details
                                     </p>
                                 </div>
                             )}
