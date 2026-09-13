@@ -19,7 +19,12 @@ export const metadata = {
     description: 'Escape into Entertainment',
 }
 
-export const revalidate = 3600; // Cache for 1 hour
+// ✅ ISR: Revalidate every 1 hour (3600 seconds)
+// This generates a static page and regenerates it in the background if needed
+export const revalidate = 3600;
+
+// ✅ Dynamic rendering based on search params
+export const dynamicParams = true;
 
 export default async function BookShelfPage({ params, searchParams }: { params: any; searchParams: any }) {
     const searchparams1 = await searchParams;
@@ -29,19 +34,27 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
     }
 
     const supabase = createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+    
+    let user = null;
+    try {
+        const {
+            data: { user: authUser },
+        } = await supabase.auth.getUser();
+        user = authUser;
+    } catch (error) {
+        console.error('Error fetching user:', error);
+    }
 
-    // ✅ FIX 1: Build query dynamically with only needed columns
+    // ✅ Build query with only needed columns
     let query = supabase
         .from('books')
-        .select('id,title,language,author_id,author,description,price,cover_images,isCompletelyFilled,is_deleted')
+        .select('id,title,language,author_id,author,description,price,cover_images')
         .eq('isCompletelyFilled', true)
         .eq('is_deleted', false)
-        .limit(100); // Add limit for safety
+        .limit(100)
+        .order('title', { ascending: true }); // Add consistent ordering for caching
 
-    // ✅ FIX 2: Apply filters at database level BEFORE fetching
+    // ✅ Apply filters at database level
     if (searchFilters.language !== 'all') {
         const languageMap: Record<string, string> = {
             'en': 'English',
@@ -96,7 +109,8 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
         return 'All Books'
     }
 
-    const selectedAuthor = searchFilters.author_id !== 'all' ? authorInfo[searchFilters.author_id as keyof typeof authorInfo] ? 'Selected' : 'All' : 'All';
+    const selectedAuthorName = searchFilters.author_id !== 'all' ? filteredBooks[0]?.author : null;
+    const selectedAuthorInfo = selectedAuthorName ? authorInfo[selectedAuthorName as keyof typeof authorInfo] : null;
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -138,11 +152,11 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                                 </h2>
                             </div>
 
-                            {selectedAuthor !== "All" && filteredBooks.length > 0 && (
+                            {selectedAuthorInfo && filteredBooks.length > 0 && (
                                 <Card className="mb-8">
                                     <CardContent className="p-6">
-                                        <h3 className="text-2xl font-bold mb-4 text-slate-800">{filteredBooks[0]?.author}</h3>
-                                        <p className="text-slate-600 whitespace-pre-line">{authorInfo[filteredBooks[0]?.author as keyof typeof authorInfo]}</p>
+                                        <h3 className="text-2xl font-bold mb-4 text-slate-800">{selectedAuthorName}</h3>
+                                        <p className="text-slate-600 whitespace-pre-line">{selectedAuthorInfo}</p>
                                     </CardContent>
                                 </Card>
                             )}
