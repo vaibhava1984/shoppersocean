@@ -29,12 +29,21 @@ type Book = {
     author: string
 }
 
-type SortableBookItemProps = {
-    book: Book
-    onRemove: (title: string) => void
+type SectionEntry = {
+    entryId: number
+    pageSection: string
+    id: string
+    title: string | null
+    author: string | null
+    missing: boolean
 }
 
-function SortableBookItem({ book, onRemove }: SortableBookItemProps) {
+type SortableBookItemProps = {
+    entry: SectionEntry
+    onRemove: (entryId: number) => void
+}
+
+function SortableBookItem({ entry, onRemove }: SortableBookItemProps) {
 
     return (
         <div
@@ -42,15 +51,21 @@ function SortableBookItem({ book, onRemove }: SortableBookItemProps) {
         >
             <div className="flex items-center justify-between rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
                 <div>
-                    <h4 className="text-sm font-medium">{book.title}</h4>
-                    <p className="text-sm text-muted-foreground">{book.author}</p>
+                    <h4 className="text-sm font-medium">
+                        {entry.title ?? 'Book no longer available'}
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                        {entry.missing
+                            ? 'This book was deleted — remove it to free up a slot'
+                            : entry.author}
+                    </p>
                 </div>
                 <Button
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8"
                     onClick={() => {
-                        onRemove(book.id)
+                        onRemove(entry.entryId)
                     }}
                 >
                     <X className="h-4 w-4" />
@@ -63,30 +78,42 @@ function SortableBookItem({ book, onRemove }: SortableBookItemProps) {
 
 type BookSectionProps = {
     title: string
-    books: Book[]
+    entries: SectionEntry[]
     maxBooks: number
     sectionType: 'HOMEPAGE_TRENDING' | 'HOMEPAGE_COLLECTION' | 'HS'
-    onUpdateBooks: (books: Book[]) => void
+    onAdded: (entry: SectionEntry) => void
+    onRemoved: (entryId: number) => void
 }
 
-function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: BookSectionProps) {
+function BookSection({ title, entries, maxBooks, sectionType, onAdded, onRemoved }: BookSectionProps) {
     const [isDialogOpen, setIsDialogOpen] = React.useState(false)
     const [searchQuery, setSearchQuery] = React.useState('')
     const [searchResults, setSearchResults] = React.useState<Book[]>([])
+    const [isSaving, setIsSaving] = React.useState(false)
     const { toast } = useToast()
 
     async function handleSearch(query: string) {
         setSearchQuery(query)
-        if (query.length < 2) return
+        if (query.length < 2) {
+            setSearchResults([])
+            return
+        }
 
         const { data, error } = await supabase
             .from('books')
             .select('id, title, author_name')
             .or(`title.ilike.%${query}%,author_name.ilike.%${query}%`)
+            .eq('isCompletelyFilled', true)
+            .eq('is_deleted', false)
             .limit(15);
 
         if (error) {
             console.error('Error searching books:', error)
+            toast({
+                title: "Search failed",
+                description: error.message,
+                variant: "destructive",
+            })
             return
         }
 
@@ -100,10 +127,9 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
     }
 
     async function handleBookSelect(book: Book) {
-        if (books.length >= maxBooks) return
+        if (entries.length >= maxBooks || isSaving) return
 
-        // Check if the book is already selected
-        if (books.some(b => b.id === book.id)) {
+        if (entries.some(entry => entry.id === book.id)) {
             toast({
                 title: "Book already selected",
                 description: "This book is already in the list.",
@@ -112,54 +138,74 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
             return
         }
 
-        // Save to layout_settings table
-        const { error } = await supabase
-            .from('layout_settings')
-            .insert([
-                {
-                    page_section: sectionType,
-                    value: book.id,
-                },
-            ])
+        setIsSaving(true)
+        try {
+            const response = await fetch('/api/homepage_sections', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pageSection: sectionType, bookId: book.id }),
+            })
+            const payload = await response.json()
 
-        if (error) {
+            if (!response.ok) {
+                toast({
+                    title: "Could not add book",
+                    description: payload.error ?? 'Please try again.',
+                    variant: "destructive",
+                })
+                return
+            }
+
+            onAdded(payload.entry)
+            setIsDialogOpen(false)
+            setSearchQuery('')
+            setSearchResults([])
+            toast({
+                title: "Success",
+                description: `"${book.title}" added to ${title}.`,
+            })
+        } catch (error) {
             console.error('Error saving book selection:', error)
-            return
+            toast({
+                title: "Could not add book",
+                description: "Please check your connection and try again.",
+                variant: "destructive",
+            })
+        } finally {
+            setIsSaving(false)
         }
-
-        onUpdateBooks([...books, book])
-        setIsDialogOpen(false)
     }
 
-    async function handleRemoveBook(id: string) {
-        // console.log("Removing book:", id);
+    async function handleRemoveBook(entryId: number) {
+        try {
+            const response = await fetch('/api/homepage_sections', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ entryId }),
+            })
 
-        // Remove from UI
-        const newBooks = books.filter((book) => book.id !== id);
-        onUpdateBooks(newBooks);  // Ensure the parent state is updated
+            if (!response.ok) {
+                const payload = await response.json()
+                toast({
+                    title: "Error",
+                    description: payload.error ?? 'Failed to remove book. Please try again.',
+                    variant: "destructive",
+                })
+                return
+            }
 
-        // Remove from database
-        const { error } = await supabase
-            .from('layout_settings')
-            .delete()
-            .match({ page_section: sectionType, value: id });
-
-        if (error) {
-            console.error('Error removing book from database:', error);
-            toast({
-                title: "Error",
-                description: "Failed to remove book from database. Please try again.",
-                variant: "destructive",
-            });
-
-            // Revert UI change if database operation failed
-            // In case of an error, we want to revert the UI back to its original state
-            onUpdateBooks(books);  // Revert to original state
-        } else {
+            onRemoved(entryId)
             toast({
                 title: "Success",
                 description: "Book removed successfully.",
-            });
+            })
+        } catch (error) {
+            console.error('Error removing book from database:', error)
+            toast({
+                title: "Error",
+                description: "Failed to remove book. Please try again.",
+                variant: "destructive",
+            })
         }
     }
 
@@ -174,15 +220,17 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
             <CardContent>
                 <Button
                     onClick={() => setIsDialogOpen(true)}
-                    disabled={books.length >= maxBooks}
+                    disabled={entries.length >= maxBooks}
                     className="mb-4"
                 >
-                    Add {maxBooks} books for {title}
+                    {entries.length >= maxBooks
+                        ? `${title} is full (${maxBooks}/${maxBooks}) — remove a book to add another`
+                        : `Add books for ${title} (${entries.length}/${maxBooks})`}
                 </Button>
-                {books.map((book) => (
+                {entries.map((entry) => (
                     <SortableBookItem
-                        key={book.title}
-                        book={book}
+                        key={entry.entryId}
+                        entry={entry}
                         onRemove={handleRemoveBook}
                     />
                 ))}
@@ -201,9 +249,10 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
                             <div className="space-y-2">
                                 {searchResults.map((book) => (
                                     <Button
-                                        key={book.title}
+                                        key={book.id}
                                         variant="outline"
                                         className="w-full justify-start"
+                                        disabled={isSaving}
                                         onClick={() => handleBookSelect(book)}
                                     >
                                         <div className="text-left">
@@ -224,75 +273,49 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
 }
 
 export default function HomeSection() {
-    const [trendingBooks, setTrendingBooks] = React.useState<Book[]>([])
-    const [collectionBooks, setCollectionBooks] = React.useState<Book[]>([])
-    const [heroSectionImage, setHeroSectionImage] = React.useState<Book[]>([])
+    const [entries, setEntries] = React.useState<SectionEntry[]>([])
     const [isLoading, setIsLoading] = React.useState(true)
+    const { toast } = useToast()
 
     React.useEffect(() => {
-        async function fetchBooks() {
+        async function fetchSections() {
             setIsLoading(true)
             try {
-                const { data: layoutData, error: layoutError } = await supabase
-                    .from('layout_settings')
-                    .select('page_section, value')
+                const response = await fetch('/api/homepage_sections')
+                const payload = await response.json()
 
-                if (layoutError) {
-                    console.error('Error fetching layout settings:', layoutError)
+                if (!response.ok) {
+                    toast({
+                        title: "Could not load homepage sections",
+                        description: payload.error ?? 'Please try again.',
+                        variant: "destructive",
+                    })
                     return
                 }
 
-                if (!layoutData || layoutData.length === 0) {
-                    console.log('No layout settings found')
-                    setIsLoading(false)
-                    return
-                }
-
-                const bookIds = layoutData.map(item => item.value)
-
-                const { data: booksData, error: booksError } = await supabase
-                    .from('books')
-                    .select('id, title, author_name')
-                    .in('id', bookIds)
-
-                if (booksError) {
-                    console.error('Error fetching books:', booksError)
-                    return
-                }
-
-                const books = booksData.map(book => ({
-                    id: book.id,
-                    title: book.title,
-                    author: book.author_name,
-                }))
-
-                const trending = layoutData
-                    .filter(item => item.page_section === 'HOMEPAGE_TRENDING')
-                    .map(item => books.find(book => book.id === item.value))
-                    .filter(Boolean) as Book[]
-
-                const collection = layoutData
-                    .filter(item => item.page_section === 'HOMEPAGE_COLLECTION')
-                    .map(item => books.find(book => book.id === item.value))
-                    .filter(Boolean) as Book[]
-
-                const heroSection = layoutData
-                    .filter(item => item.page_section === 'HS')
-                    .map(item => books.find(book => book.id === item.value))
-                    .filter(Boolean) as Book[]
-
-                setTrendingBooks(trending)
-                setCollectionBooks(collection)
-                setHeroSectionImage(heroSection)
+                setEntries(payload.sections)
             } catch (error) {
-                console.error('Unexpected error in fetchBooks:', error)
+                console.error('Unexpected error in fetchSections:', error)
+                toast({
+                    title: "Could not load homepage sections",
+                    description: "Please check your connection and try again.",
+                    variant: "destructive",
+                })
             } finally {
                 setIsLoading(false)
             }
         }
 
-        fetchBooks()
-    }, [])
+        fetchSections()
+    }, [toast])
+
+    function handleAdded(entry: SectionEntry) {
+        setEntries((current) => [...current, entry])
+    }
+
+    function handleRemoved(entryId: number) {
+        setEntries((current) => current.filter((entry) => entry.entryId !== entryId))
+    }
 
     return (
         <div className="flex h-screen bg-gray-100">
@@ -304,17 +327,19 @@ export default function HomeSection() {
                     <>
                         <BookSection
                             title="Trending Books"
-                            books={trendingBooks}
+                            entries={entries.filter((entry) => entry.pageSection === 'HOMEPAGE_TRENDING')}
                             maxBooks={3}
                             sectionType="HOMEPAGE_TRENDING"
-                            onUpdateBooks={setTrendingBooks}
+                            onAdded={handleAdded}
+                            onRemoved={handleRemoved}
                         />
                         <BookSection
                             title="Books Collection"
-                            books={collectionBooks}
+                            entries={entries.filter((entry) => entry.pageSection === 'HOMEPAGE_COLLECTION')}
                             maxBooks={4}
                             sectionType="HOMEPAGE_COLLECTION"
-                            onUpdateBooks={setCollectionBooks}
+                            onAdded={handleAdded}
+                            onRemoved={handleRemoved}
                         />
                     </>
                 )}

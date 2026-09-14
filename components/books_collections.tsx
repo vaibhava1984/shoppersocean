@@ -31,6 +31,7 @@ export default function BooksCollections({ loggedinUserId }: {
                 const { data: layoutData, error: layoutError } = await supabase
                     .from('layout_settings')
                     .select('page_section, value')
+                    .order('id', { ascending: true })
 
                 if (layoutError) {
                     console.error('Error fetching layout settings:', layoutError)
@@ -48,7 +49,7 @@ export default function BooksCollections({ loggedinUserId }: {
                 const { data: booksData, error: booksError } = await supabase
                     .from('books')
                     .select('id, title,description,cover_images, author_name, price')
-                    .in('id', bookIds).eq('isCompletelyFilled', true)
+                    .in('id', bookIds).eq('isCompletelyFilled', true).eq('is_deleted', false)
 
                 if (booksError) {
                     console.error('Error fetching books:', booksError)
