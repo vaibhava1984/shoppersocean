@@ -31,6 +31,7 @@ export default function TrendingBooksCollections({ loggedinUserId }: {
                 const { data: layoutData, error: layoutError } = await supabase
                     .from('layout_settings')
                     .select('page_section, value')
+                    .order('id', { ascending: true })
 
                 if (layoutError) {
                     console.error('Error fetching layout settings:', layoutError)
