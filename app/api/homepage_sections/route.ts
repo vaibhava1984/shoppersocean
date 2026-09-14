@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/utils/supabase/server_admin";
+import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from 'next/server'
 
 const SECTION_TYPES = ['HOMEPAGE_TRENDING', 'HOMEPAGE_COLLECTION', 'HS'] as const
@@ -9,11 +10,10 @@ function isSectionType(value: unknown): value is SectionType {
 }
 
 async function getAdminClient() {
-    const supabase = createAdminClient();
     const {
         data: { user },
-    } = await supabase.auth.getUser();
-    return { supabase, isAdmin: user?.app_metadata?.userrole === "ADMIN" }
+    } = await createClient().auth.getUser();
+    return { supabase: createAdminClient(), isAdmin: user?.app_metadata?.userrole === "ADMIN" }
 }
 
 export async function GET() {
