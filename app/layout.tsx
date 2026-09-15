@@ -1,16 +1,10 @@
 import { GeistSans } from "geist/font/sans";
-import { Noto_Serif } from 'next/font/google'
 import "./globals.css";
 import InteractionFeedback from "@/components/InteractionFeedback";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
-
-const notoSerif = Noto_Serif({
-  subsets: ['latin'],
-  display: 'swap',
-})
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
@@ -27,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={notoSerif.className}>
+    <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
         <InteractionFeedback />
         <main className="min-h-screen flex flex-col">
