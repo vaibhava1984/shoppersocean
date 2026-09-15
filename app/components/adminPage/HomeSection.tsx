@@ -56,7 +56,7 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
         } catch (error) {
             console.error('Error searching books:', error)
             setSearchResults([])
-            setErrorMessage('Unable to search books. Please try again.')
+            setErrorMessage(error instanceof Error ? error.message : 'Unable to search books. Please try again.')
         } finally { setIsSearching(false) }
     }
 
@@ -66,7 +66,7 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
         setErrorMessage('')
         try {
             const response = await fetch('/api/homepage_sections', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store',
                 body: JSON.stringify({ pageSection: sectionType, bookId: book.id }),
             })
             const payload = await response.json()
@@ -111,9 +111,26 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
                             {errorMessage && <p className="text-sm text-destructive">{errorMessage}</p>}
                             <div className="max-h-80 space-y-2 overflow-y-auto">
                                 {isSearching ? <p className="py-3 text-sm text-muted-foreground">Searching...</p> : searchResults.length === 0 && searchQuery.trim().length >= 2 ? <p className="py-3 text-sm text-muted-foreground">No books found.</p> : searchResults.map((book) => (
-                                    <Button key={book.id} type="button" variant="outline" className="h-auto min-h-12 w-full justify-start whitespace-normal py-3 text-left" disabled={isSaving} onClick={(event) => { event.preventDefault(); event.stopPropagation(); void handleBookSelect(book) }}>
-                                        <div className="text-left"><div className="font-medium">{book.title}</div><div className="text-sm text-muted-foreground">{book.author}</div></div>
-                                    </Button>
+                                    <button
+                                        key={book.id}
+                                        type="button"
+                                        disabled={isSaving}
+                                        className="flex min-h-12 w-full cursor-pointer items-center justify-start rounded-md border border-input bg-background px-4 py-3 text-left text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
+                                        onPointerDown={(event) => {
+                                            event.preventDefault()
+                                            event.stopPropagation()
+                                        }}
+                                        onClick={(event) => {
+                                            event.preventDefault()
+                                            event.stopPropagation()
+                                            void handleBookSelect(book)
+                                        }}
+                                    >
+                                        <div className="text-left">
+                                            <div className="font-medium">{book.title}</div>
+                                            <div className="text-sm text-muted-foreground">{book.author || 'Unknown author'}</div>
+                                        </div>
+                                    </button>
                                 ))}
                             </div>
                         </div>
