@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 type Book = { id: string; title: string; author: string }
+type SectionType = 'HOMEPAGE_TRENDING' | 'HOMEPAGE_COLLECTION'
 
 type SortableBookItemProps = { book: Book; onRemove: (id: string) => void }
 
@@ -30,7 +31,7 @@ function SortableBookItem({ book, onRemove }: SortableBookItemProps) {
     )
 }
 
-type BookSectionProps = { title: string; books: Book[]; maxBooks: number; sectionType: 'TRENDING' | 'COLLECTION'; onUpdateBooks: (books: Book[]) => void }
+type BookSectionProps = { title: string; books: Book[]; maxBooks: number; sectionType: SectionType; onUpdateBooks: (books: Book[]) => void }
 
 function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: BookSectionProps) {
     const [isDialogOpen, setIsDialogOpen] = React.useState(false)
@@ -127,7 +128,7 @@ export default function HomeSection() {
     const [trendingBooks, setTrendingBooks] = React.useState<Book[]>([])
     const [collectionBooks, setCollectionBooks] = React.useState<Book[]>([])
     return <div className="space-y-8">
-        <BookSection title="Trending Books" books={trendingBooks} maxBooks={3} sectionType="TRENDING" onUpdateBooks={setTrendingBooks} />
-        <BookSection title="Books Collection" books={collectionBooks} maxBooks={4} sectionType="COLLECTION" onUpdateBooks={setCollectionBooks} />
+        <BookSection title="Trending Books" books={trendingBooks} maxBooks={3} sectionType="HOMEPAGE_TRENDING" onUpdateBooks={setTrendingBooks} />
+        <BookSection title="Books Collection" books={collectionBooks} maxBooks={4} sectionType="HOMEPAGE_COLLECTION" onUpdateBooks={setCollectionBooks} />
     </div>
 }
