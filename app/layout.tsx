@@ -1,6 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import { Noto_Serif } from 'next/font/google'
 import "./globals.css";
+import InteractionFeedback from "@/components/InteractionFeedback";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -27,8 +28,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={notoSerif.className}>
-
       <body className="bg-background text-foreground">
+        <InteractionFeedback />
         <main className="min-h-screen flex flex-col">
           {children}
         </main>
