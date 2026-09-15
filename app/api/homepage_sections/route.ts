@@ -16,11 +16,37 @@ async function getAdminClient() {
     return { supabase: createAdminClient(), isAdmin: user?.app_metadata?.userrole === "ADMIN" }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
         const { supabase, isAdmin } = await getAdminClient()
         if (!isAdmin) {
             return NextResponse.json({ error: 'Not allowed' }, { status: 403 })
+        }
+
+        const search = new URL(request.url).searchParams.get('search')?.trim() ?? ''
+        if (search.length >= 2) {
+            const escapedSearch = search.replace(/[%,]/g, (character) => `\\${character}`)
+            const { data, error } = await supabase
+                .from('books')
+                .select('id, title, author_name')
+                .or(`title.ilike.%${escapedSearch}%,author_name.ilike.%${escapedSearch}%`)
+                .eq('isCompletelyFilled', true)
+                .eq('is_deleted', false)
+                .order('title', { ascending: true })
+                .limit(15)
+
+            if (error) {
+                console.error('Error searching books:', error)
+                return NextResponse.json({ error: 'Failed to search books' }, { status: 500 })
+            }
+
+            return NextResponse.json({
+                books: (data ?? []).map(book => ({
+                    id: book.id,
+                    title: book.title,
+                    author: book.author_name,
+                })),
+            }, { status: 200 })
         }
 
         const { data: layoutData, error: layoutError } = await supabase
@@ -82,7 +108,7 @@ export async function POST(request: Request) {
 
         const { data: book, error: bookError } = await supabase
             .from('books')
-            .select('id, title, author_name')
+            .select('id, title, author_name, isCompletelyFilled, is_deleted')
             .eq('id', bookId)
             .maybeSingle()
 
@@ -92,6 +118,12 @@ export async function POST(request: Request) {
         }
         if (!book) {
             return NextResponse.json({ error: 'Book not found' }, { status: 404 })
+        }
+        if (book.is_deleted) {
+            return NextResponse.json({ error: 'This book has been deleted' }, { status: 400 })
+        }
+        if (!book.isCompletelyFilled) {
+            return NextResponse.json({ error: 'This book is not complete and cannot be displayed on the homepage' }, { status: 400 })
         }
 
         const { data: existing, error: existingError } = await supabase
@@ -105,6 +137,23 @@ export async function POST(request: Request) {
         }
         if (existing && existing.length > 0) {
             return NextResponse.json({ error: 'Book is already in this section' }, { status: 409 })
+        }
+
+        const maxBooks = pageSection === 'HOMEPAGE_TRENDING' ? 3 : pageSection === 'HOMEPAGE_COLLECTION' ? 4 : null
+        if (maxBooks !== null) {
+            const { data: sectionEntries, error: countError } = await supabase
+                .from('layout_settings')
+                .select('id')
+                .eq('page_section', pageSection)
+
+            if (countError) {
+                console.error('Error checking section size:', countError)
+                return NextResponse.json({ error: 'Failed to validate section size' }, { status: 500 })
+            }
+
+            if ((sectionEntries?.length ?? 0) >= maxBooks) {
+                return NextResponse.json({ error: `This section is full. Maximum ${maxBooks} books allowed.` }, { status: 409 })
+            }
         }
 
         const { data: inserted, error: insertError } = await supabase
