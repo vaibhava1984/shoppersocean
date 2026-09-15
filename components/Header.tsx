@@ -80,8 +80,9 @@ export default async function Header() {
                 <Link href="/login" className="inline-flex items-center justify-center px-3 sm:px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm font-semibold shadow-sm transition-colors whitespace-nowrap">
                   Sign In
                 </Link>
-                <Link href="/login?type=signup" className="inline-flex items-center justify-center px-3 sm:px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm font-semibold shadow-sm transition-colors whitespace-nowrap">
-                  New user? Create account now
+                <Link href="/login?type=signup" className="inline-flex min-w-[150px] flex-col items-center justify-center px-3 sm:px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm font-semibold leading-tight text-center shadow-sm transition-colors">
+                  <span>New user?</span>
+                  <span>Create account now</span>
                 </Link>
               </div>
             )}
