@@ -20,7 +20,7 @@ import { X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 
 interface PaymentButtonProps {
-    amount: number; // Amount in INR from your database
+    amount: number;
     notes?: object;
     userId?: string;
     productId: string;
@@ -33,9 +33,32 @@ export interface ExchangeRates {
 type UrlInfo = {
     downloadUrl: string;
     fileName: string;
-    fileType: 'jpeg' | 'pdf';  // You can add more file types if needed
+    fileType: 'jpeg' | 'pdf';
 };
 
+// Homepage renders several PaymentButtons at once. Share the initial network
+// work so every card does not start its own identical request.
+let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
+let currentUserPromise: ReturnType<ReturnType<typeof createClient>['auth']['getUser']> | null = null;
+
+function getExchangeRatesOnce(): Promise<ExchangeRates> {
+    const cachedRates = exchangeRatesCache.get();
+    if (cachedRates) return Promise.resolve(cachedRates);
+
+    if (!exchangeRatesPromise) {
+        exchangeRatesPromise = fetchExchangeRates()
+            .then(rates => {
+                exchangeRatesCache.set(rates);
+                return rates;
+            })
+            .catch(error => {
+                exchangeRatesPromise = null;
+                throw error;
+            });
+    }
+
+    return exchangeRatesPromise;
+}
 
 export default function PaymentButton({ amount, notes, userId, productId }: PaymentButtonProps) {
     const supabase = createClient();
@@ -54,7 +77,15 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
     const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false);
 
     useEffect(() => {
-        // Detect user's locale and currency
+        let active = true;
+
+        const getUserOnce = async () => {
+            if (!currentUserPromise) {
+                currentUserPromise = supabase.auth.getUser();
+            }
+            return currentUserPromise;
+        };
+
         const getUserCurrency = (): string => {
             try {
                 const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
@@ -68,50 +99,49 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
             }
         };
 
-        // Fetch exchange rates and convert amount
         async function setupLocalCurrency(passedCurrency?: string) {
             try {
                 const detectedCurrency = passedCurrency ?? getUserCurrency();
-                const cachedRates = exchangeRatesCache.get();
-                setIsInitialFetching(true);
+                if (active) setIsInitialFetching(true);
 
-                let rates: ExchangeRates;
-                if (cachedRates) {
-                    rates = cachedRates;
-                    console.log('Using cached exchange rates');
-                } else {
-                    rates = await fetchExchangeRates();
-                    exchangeRatesCache.set(rates);
-                    console.log('Fetched new exchange rates');
-                }
+                const rates = await getExchangeRatesOnce();
 
+                if (!active) return;
                 if (rates[detectedCurrency]) {
                     setLocalCurrency(detectedCurrency);
-                    // setLocalCurrency('BRL');
-                    const convertedAmount = convertCurrency(amount, 'INR', detectedCurrency, rates);
-                    setLocalAmount(convertedAmount);
+                    setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates));
+                } else {
+                    setLocalCurrency('INR');
+                    setLocalAmount(amount);
                 }
-                setIsInitialFetching(false)
+                setIsInitialFetching(false);
             } catch (error) {
+                if (!active) return;
                 console.error('Error setting up local currency:', error);
                 setLocalCurrency('INR');
                 setLocalAmount(amount);
+                setIsInitialFetching(false);
             }
         }
 
-        supabase.auth.getUser().then(({ data }) => {
-            const { user } = data;
-            // console.log("wow===>", user)
-            if (user && user?.user_metadata?.country) {
-                // console.log("using country from DB")
-                const currencyCode = getCurrencyCode(user?.user_metadata?.country);
-                // console.log("using country from DB currencyCode=>", currencyCode)
-                setupLocalCurrency(currencyCode)
-            } else {
-                setupLocalCurrency();
-            }
-        })
-    }, [amount]);
+        // Anonymous visitors do not need an auth request just to display a
+        // price. Logged-in cards share one auth request across the page.
+        if (userId) {
+            getUserOnce()
+                .then(({ data }) => {
+                    if (!active) return;
+                    const country = data.user?.user_metadata?.country;
+                    setupLocalCurrency(country ? getCurrencyCode(country) : undefined);
+                })
+                .catch(() => setupLocalCurrency());
+        } else {
+            setupLocalCurrency();
+        }
+
+        return () => {
+            active = false;
+        };
+    }, [amount, userId, supabase]);
 
     useEffect(() => {
         if (productId && productId?.length && userId) {
@@ -146,14 +176,15 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
 
     const initializeRazorpay = () => {
         return new Promise((resolve) => {
+            const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+            if (existingScript && (window as any).Razorpay) {
+                resolve(true);
+                return;
+            }
             const script = document.createElement('script');
             script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-            script.onload = () => {
-                resolve(true);
-            };
-            script.onerror = () => {
-                resolve(false);
-            };
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
             document.body.appendChild(script);
         });
     };
@@ -169,7 +200,6 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                 return;
             }
 
-            // Create order
             const response = await fetch('/api/create-order', {
                 method: 'POST',
                 headers: {
@@ -185,20 +215,18 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                 }),
             });
 
-            const { orderId, amountInINR } = await response.json();
+            const { orderId } = await response.json();
 
-            // Configure payment options
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-                amount: Math.round(localAmount * 100), // Use local amount directly
-                currency: localCurrency, // Use local currency
+                amount: Math.round(localAmount * 100),
+                currency: localCurrency,
                 name: 'Shoppers Ocean',
                 description: `Payment of ${localAmount} ${localCurrency}`,
                 order_id: orderId,
                 handler: async (response: any) => {
                     try {
                         setIsLoading(true)
-                        // console.log("response=>", response)
                         const verificationResponse = await fetch('/api/verify-payment', {
                             method: 'POST',
                             headers: {
@@ -213,27 +241,14 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                                 user_id: userId ?? '',
                                 product_id: productId,
                                 quantity: 1,
-                                // shipping_address: {
-                                //     street: '123 Main St',
-                                //     city: 'Mumbai',
-                                //     state: 'Maharashtra',
-                                //     postal_code: '400001',
-                                //     country: 'India'
-                                // },
-                                // contact_number: '+919876543210',
-                                // email: 'customer@example.com'
                             }),
                         });
 
                         const data = await verificationResponse.json();
 
                         if (data.error) {
-                            // Handle payment failure
                             alert(`Payment failed: ${data.errorDetails || data.error}`);
-                            // You might want to redirect to a failure page
-                            // window.location.href = '/payment/failed';
                         } else {
-                            // Handle different payment statuses
                             switch (data.status) {
                                 case 'completed':
                                     alert('Payment successful!');
@@ -243,11 +258,9 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                                     break;
                                 case 'authorized':
                                     alert('Payment authorized, awaiting capture');
-                                    // Maybe redirect to a pending page
                                     break;
                                 case 'pending':
                                     alert('Payment is pending');
-                                    // Show pending status
                                     break;
                                 default:
                                     alert(`Payment status: ${data.status}`);
@@ -256,8 +269,6 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                     } catch (error) {
                         console.error('Error:', error);
                         alert('Payment verification failed');
-                        // Redirect to failure page
-                        // window.location.href = '/payment/failed';
                     }
                 },
                 notes: {
@@ -268,11 +279,10 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                 },
             };
 
-            const paymentObject = new window.Razorpay(options);
+            const paymentObject = new (window as any).Razorpay(options);
             paymentObject.open();
         } catch (error) {
             console.error('Error:', error);
-            // alert('Something went wrong!');
             toast({
                 variant: "destructive",
                 title: "Payment Error",
@@ -291,30 +301,19 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    bookId,
-                    // bookId: '103f22f7-f189-48be-83ea-36ef5b42ee55',
-                }),
+                body: JSON.stringify({ bookId }),
             });
 
             const allData = await response.json();
             const { urls, error } = allData
 
             if (!response.ok) {
-                // throw new Error(error ?? 'Failed to get download URL');
                 setIsFetchingDownloadUrls(false);
-                // toast({
-                //     variant: "destructive",
-                //     title: "Error",
-                //     description: error ?? 'Failed to get download URL',
-                // });
                 return;
             }
 
-
             setIsFetchingDownloadUrls(false);
             setDownloadUrls(urls);
-            // setIsDownloadDialogOpen(true);
         } catch (error: any) {
             console.error('Error downloading file:', error);
             setIsFetchingDownloadUrls(false);
@@ -332,7 +331,7 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
         fileType: string,
     }) {
         try {
-            const { downloadUrl: downlaodUrlMain, fileName, fileType } = downloadData;
+            const { downloadUrl: downlaodUrlMain, fileName } = downloadData;
             if (!downlaodUrlMain || !fileName) return;
             const response = await fetch(downlaodUrlMain);
             const blob = await response.blob();
@@ -340,49 +339,33 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
 
             const link = document.createElement('a');
             link.href = downloadUrl;
-
-            // Fix: Add null check for filename
-            const filename = fileName || 'download';
-            link.download = filename;
-
+            link.download = fileName || 'download';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-
             window.URL.revokeObjectURL(downloadUrl);
         } catch (error) {
             console.error('Download failed:', error);
         }
     }
 
-    // Format amount according to user's locale
     const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
     const formattedAmount = localCurrency ? new Intl.NumberFormat(userLocale, {
         style: 'currency',
         currency: localCurrency,
     }).format(localAmount) : null;
-    // console.log("super......", localCurrency)
 
     if (hasPurchased) {
         return (
             <>
                 <button
                     onClick={() => {
-                        // console.log("downloadUrls=>", downloadUrls)
-                        if (downloadUrls?.length) {
-                            downloadFile(downloadUrls[0])
-                        } else {
-                            alert("File not found!")
-                        }
+                        if (downloadUrls?.length) downloadFile(downloadUrls[0])
+                        else alert("File not found!")
                     }}
-                    className="px-4 py-2 flex bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg
-                    active:scale-95 
-                    transition-all duration-200
-                    disabled:bg-gray-400"
+                    className="px-4 py-2 flex bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200 disabled:bg-gray-400"
                 >
-                    {isFetchingDownloadUrls && (
-                        <Loader2Icon width={20} className='animate-spin mr-2' />
-                    )}
+                    {isFetchingDownloadUrls && <Loader2Icon width={20} className='animate-spin mr-2' />}
                     <span>{isFetchingDownloadUrls ? 'Processing' : 'Download'}</span>
                 </button>
                 <AlertDialog open={isDownloadDialogOpen} onOpenChange={setIsDownloadDialogOpen}>
@@ -393,11 +376,8 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                         <AlertDialogDescription>
                             <div className="grid grid-cols-2 gap-4">
                                 {downloadUrls.map((downloadUrl, downloadUrlIndex) => (
-
                                     <div key={`${downloadUrlIndex}_download_file`}>
-                                        <a href={downloadUrl?.downloadUrl} download={downloadUrl?.fileName}
-                                            target="_blank"
-                                            className="flex items-center space-x-2 rounded-sm px-4 py-3 hover:underline text-white bg-blue-400">
+                                        <a href={downloadUrl?.downloadUrl} download={downloadUrl?.fileName} target="_blank" className="flex items-center space-x-2 rounded-sm px-4 py-3 hover:underline text-white bg-blue-400">
                                             <FileIcon width={24} />
                                             <span>{downloadUrl?.fileType?.toUpperCase()} file</span>
                                         </a>
@@ -417,23 +397,11 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
     return (
         <>
             <button
-                onClick={userId ? handlePayment : () => {
-                    setIsLoginNeededDialogOpen(true)
-                }}
+                onClick={userId ? handlePayment : () => setIsLoginNeededDialogOpen(true)}
                 disabled={isLoading}
-                className="px-4 py-2 bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg
-                    active:scale-95 
-                    transition-all duration-200
-                    disabled:bg-gray-400"
+                className="px-4 py-2 bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200 disabled:bg-gray-400"
             >
-                {isLoading ?
-                    'Processing...' :
-                    isInitialFetching ?
-                        <span className='inline-flex'>
-                            <Loader2Icon width={16} className='animate-spin mr-1' />
-                            <span>Fetching</span>
-                        </span>
-                        : `Buy ebook ${formattedAmount ?? '-'}`}
+                {isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex'><Loader2Icon width={16} className='animate-spin mr-1' /><span>Fetching</span></span> : `Buy ebook ${formattedAmount ?? '-'}`}
             </button>
             <AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}>
                 <AlertDialogContent className='bg-white'>
@@ -441,21 +409,9 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
                     <Card className="w-full max-w-md border-0">
                         <CardHeader className="relative">
                             <CardTitle className="text-2xl font-bold text-center">Login Required</CardTitle>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="absolute right-2 top-2"
-                                onClick={() => setIsLoginNeededDialogOpen(false)}
-                                aria-label="Close popup"
-                            >
-                                <X className="h-4 w-4" />
-                            </Button>
+                            <Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsLoginNeededDialogOpen(false)} aria-label="Close popup"><X className="h-4 w-4" /></Button>
                         </CardHeader>
-                        <CardContent>
-                            <p className="text-center text-muted-foreground">
-                                You need to be logged in to make a purchase. Please sign up or sign in to continue.
-                            </p>
-                        </CardContent>
+                        <CardContent><p className="text-center text-muted-foreground">You need to be logged in to make a purchase. Please sign up or sign in to continue.</p></CardContent>
                         <CardFooter className="flex justify-center space-x-4">
                             <Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link>
                             <Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link>
