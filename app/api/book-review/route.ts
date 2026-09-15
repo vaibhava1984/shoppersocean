@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/server_admin'
 
+const REVIEW_SCHEMA_ERROR = 'The review database setup is incomplete. Please apply the latest Supabase migration before submitting reviews.'
+
 export async function GET(request: Request) {
   try {
     const bookId = new URL(request.url).searchParams.get('bookId')
@@ -16,7 +18,8 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error('Error fetching book reviews:', error)
-      return NextResponse.json({ error: 'Failed to fetch reviews.' }, { status: 500 })
+      const isSchemaError = error.code === 'PGRST204' || error.code === '42703' || /book_id|user_id/i.test(error.message || '')
+      return NextResponse.json({ error: isSchemaError ? REVIEW_SCHEMA_ERROR : 'Failed to fetch reviews.' }, { status: 500 })
     }
 
     return NextResponse.json({ reviews: data || [] })
@@ -69,7 +72,8 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'You have already reviewed this book.' }, { status: 409 })
       }
       console.error('Error inserting book review:', reviewError)
-      return NextResponse.json({ error: 'Failed to submit your review.' }, { status: 500 })
+      const isSchemaError = reviewError.code === 'PGRST204' || reviewError.code === '42703' || /book_id|user_id/i.test(reviewError.message || '')
+      return NextResponse.json({ error: isSchemaError ? REVIEW_SCHEMA_ERROR : 'Failed to submit your review.' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Review submitted successfully.' }, { status: 201 })
