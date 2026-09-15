@@ -40,12 +40,10 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
     const [isSearching, setIsSearching] = React.useState(false)
     const [isSaving, setIsSaving] = React.useState(false)
     const [errorMessage, setErrorMessage] = React.useState('')
-
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
 
     async function handleSearch(query: string) {
-        setSearchQuery(query)
-        setErrorMessage('')
+        setSearchQuery(query); setErrorMessage('')
         if (query.trim().length < 2) { setSearchResults([]); return }
         setIsSearching(true)
         try {
@@ -53,41 +51,26 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
             const payload = await response.json()
             if (!response.ok) throw new Error(payload.error || 'Unable to search books')
             setSearchResults(payload.books || [])
-        } catch (error) {
-            console.error('Error searching books:', error)
-            setSearchResults([])
-            setErrorMessage(error instanceof Error ? error.message : 'Unable to search books. Please try again.')
-        } finally { setIsSearching(false) }
+        } catch (error) { console.error('Error searching books:', error); setSearchResults([]); setErrorMessage(error instanceof Error ? error.message : 'Unable to search books. Please try again.') }
+        finally { setIsSearching(false) }
     }
 
     async function handleBookSelect(book: Book) {
         if (books.length >= maxBooks || isSaving) return
-        setIsSaving(true)
-        setErrorMessage('')
+        setIsSaving(true); setErrorMessage('')
         try {
-            const response = await fetch('/api/homepage_sections', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store',
-                body: JSON.stringify({ pageSection: sectionType, bookId: book.id }),
-            })
+            const response = await fetch('/api/homepage_sections', { method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store', body: JSON.stringify({ pageSection: sectionType, bookId: book.id }) })
             const payload = await response.json()
             if (!response.ok) throw new Error(payload.error || 'Unable to save book')
-            onUpdateBooks([...books, book])
-            setSearchResults([]); setSearchQuery(''); setIsDialogOpen(false)
-        } catch (error) {
-            console.error('Error saving book selection:', error)
-            setErrorMessage(error instanceof Error ? error.message : 'Unable to save book. Please try again.')
-        } finally { setIsSaving(false) }
+            onUpdateBooks([...books, book]); setSearchResults([]); setSearchQuery(''); setIsDialogOpen(false)
+        } catch (error) { console.error('Error saving book selection:', error); setErrorMessage(error instanceof Error ? error.message : 'Unable to save book. Please try again.') }
+        finally { setIsSaving(false) }
     }
 
     function handleDragEnd(event: DragEndEvent) {
         const { active, over } = event
-        if (over && active.id !== over.id) {
-            const oldIndex = books.findIndex((book) => book.id === active.id)
-            const newIndex = books.findIndex((book) => book.id === over.id)
-            onUpdateBooks(arrayMove(books, oldIndex, newIndex))
-        }
+        if (over && active.id !== over.id) { const oldIndex = books.findIndex((book) => book.id === active.id); const newIndex = books.findIndex((book) => book.id === over.id); onUpdateBooks(arrayMove(books, oldIndex, newIndex)) }
     }
-
     function handleRemoveBook(id: string) { onUpdateBooks(books.filter((book) => book.id !== id)) }
 
     return (
@@ -95,46 +78,13 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
             <CardHeader><CardTitle>{title}</CardTitle><CardDescription>Select up to {maxBooks} books for this section</CardDescription></CardHeader>
             <CardContent>
                 <Button type="button" onClick={() => setIsDialogOpen(true)} disabled={books.length >= maxBooks} className="mb-4">Add {maxBooks} books for {title}</Button>
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                    <SortableContext items={books.map((book) => book.id)} strategy={verticalListSortingStrategy}>
-                        {books.map((book) => <SortableBookItem key={book.id} book={book} onRemove={handleRemoveBook} />)}
-                    </SortableContext>
-                </DndContext>
-                <Dialog open={isDialogOpen} onOpenChange={(open) => {
-                    setIsDialogOpen(open)
-                    if (!open) { setSearchResults([]); setSearchQuery(''); setErrorMessage('') }
-                }}>
-                    <DialogContent>
-                        <DialogHeader><DialogTitle>Search Books</DialogTitle></DialogHeader>
-                        <div className="space-y-4">
-                            <Input placeholder="Search by title or author..." value={searchQuery} onChange={(e) => handleSearch(e.target.value)} autoFocus />
-                            {errorMessage && <p className="text-sm text-destructive">{errorMessage}</p>}
-                            <div className="max-h-80 space-y-2 overflow-y-auto">
-                                {isSearching ? <p className="py-3 text-sm text-muted-foreground">Searching...</p> : searchResults.length === 0 && searchQuery.trim().length >= 2 ? <p className="py-3 text-sm text-muted-foreground">No books found.</p> : searchResults.map((book) => (
-                                    <button
-                                        key={book.id}
-                                        type="button"
-                                        disabled={isSaving}
-                                        className="flex min-h-12 w-full cursor-pointer items-center justify-start rounded-md border border-input bg-background px-4 py-3 text-left text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
-                                        onPointerDown={(event) => {
-                                            event.preventDefault()
-                                            event.stopPropagation()
-                                        }}
-                                        onClick={(event) => {
-                                            event.preventDefault()
-                                            event.stopPropagation()
-                                            void handleBookSelect(book)
-                                        }}
-                                    >
-                                        <div className="text-left">
-                                            <div className="font-medium">{book.title}</div>
-                                            <div className="text-sm text-muted-foreground">{book.author || 'Unknown author'}</div>
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </DialogContent>
+                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}><SortableContext items={books.map((book) => book.id)} strategy={verticalListSortingStrategy}>{books.map((book) => <SortableBookItem key={book.id} book={book} onRemove={handleRemoveBook} />)}</SortableContext></DndContext>
+                <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (!open) { setSearchResults([]); setSearchQuery(''); setErrorMessage('') } }}>
+                    <DialogContent><DialogHeader><DialogTitle>Search Books</DialogTitle></DialogHeader><div className="space-y-4">
+                        <Input placeholder="Search by title or author..." value={searchQuery} onChange={(e) => handleSearch(e.target.value)} autoFocus />
+                        {errorMessage && <p className="text-sm text-destructive">{errorMessage}</p>}
+                        <div className="max-h-80 space-y-2 overflow-y-auto">{isSearching ? <p className="py-3 text-sm text-muted-foreground">Searching...</p> : searchResults.length === 0 && searchQuery.trim().length >= 2 ? <p className="py-3 text-sm text-muted-foreground">No books found.</p> : searchResults.map((book) => <button key={book.id} type="button" disabled={isSaving} className="flex min-h-12 w-full cursor-pointer items-center justify-start rounded-md border border-input bg-background px-4 py-3 text-left text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50" onClick={() => void handleBookSelect(book)}><div className="text-left"><div className="font-medium">{book.title}</div><div className="text-sm text-muted-foreground">{book.author || 'Unknown author'}</div></div></button>)}</div>
+                    </div></DialogContent>
                 </Dialog>
             </CardContent>
         </Card>
@@ -144,8 +94,5 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
 export default function HomeSection() {
     const [trendingBooks, setTrendingBooks] = React.useState<Book[]>([])
     const [collectionBooks, setCollectionBooks] = React.useState<Book[]>([])
-    return <div className="space-y-8">
-        <BookSection title="Trending Books" books={trendingBooks} maxBooks={3} sectionType="HOMEPAGE_TRENDING" onUpdateBooks={setTrendingBooks} />
-        <BookSection title="Books Collection" books={collectionBooks} maxBooks={4} sectionType="HOMEPAGE_COLLECTION" onUpdateBooks={setCollectionBooks} />
-    </div>
+    return <div className="space-y-8"><BookSection title="Trending Books" books={trendingBooks} maxBooks={3} sectionType="HOMEPAGE_TRENDING" onUpdateBooks={setTrendingBooks} /><BookSection title="Books Collection" books={collectionBooks} maxBooks={4} sectionType="HOMEPAGE_COLLECTION" onUpdateBooks={setCollectionBooks} /></div>
 }
