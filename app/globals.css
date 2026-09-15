@@ -47,9 +47,7 @@
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --popover-foreground: 0 0% 9%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
@@ -103,6 +101,30 @@
   button,
   [role="button"] {
     touch-action: manipulation;
+  }
+}
+
+.interaction-feedback-ripple {
+  position: fixed;
+  z-index: 2147483647;
+  pointer-events: none;
+  border: 2px solid currentColor;
+  border-radius: 9999px;
+  opacity: 0.35;
+  transform: scale(0.35);
+  animation: interactionFeedbackRipple 360ms ease-out forwards;
+}
+
+@keyframes interactionFeedbackRipple {
+  to {
+    opacity: 0;
+    transform: scale(1.65);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interaction-feedback-ripple {
+    display: none;
   }
 }
 
