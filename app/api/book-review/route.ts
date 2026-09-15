@@ -19,10 +19,16 @@ export async function GET(request: Request) {
     if (error) {
       console.error('Error fetching book reviews:', error)
       const isSchemaError = error.code === 'PGRST204' || error.code === '42703' || /book_id|user_id/i.test(error.message || '')
-      return NextResponse.json({ error: isSchemaError ? REVIEW_SCHEMA_ERROR : 'Failed to fetch reviews.' }, { status: 500 })
+      return NextResponse.json(
+        { error: isSchemaError ? REVIEW_SCHEMA_ERROR : 'Failed to fetch reviews.' },
+        { status: 500, headers: { 'Cache-Control': 'no-store' } }
+      )
     }
 
-    return NextResponse.json({ reviews: data || [] })
+    return NextResponse.json(
+      { reviews: data || [] },
+      { headers: { 'Cache-Control': 'no-store, max-age=0' } }
+    )
   } catch (error) {
     console.error('Unexpected book review fetch error:', error)
     return NextResponse.json({ error: 'Unable to fetch reviews.' }, { status: 500 })
@@ -57,7 +63,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Book not found.' }, { status: 404 })
     }
 
-    const { error: reviewError } = await supabase
+    const { data: insertedReview, error: reviewError } = await supabase
       .from('testimonials')
       .insert({
         description: cleanDescription,
@@ -66,6 +72,8 @@ export async function POST(request: Request) {
         user_id: user.id,
         book_id: String(book.id),
       })
+      .select('id, description, rating, users, user_id, book_id, created_at')
+      .single()
 
     if (reviewError) {
       if (reviewError.code === '23505') {
@@ -76,7 +84,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: isSchemaError ? REVIEW_SCHEMA_ERROR : 'Failed to submit your review.' }, { status: 500 })
     }
 
-    return NextResponse.json({ message: 'Review submitted successfully.' }, { status: 201 })
+    return NextResponse.json(
+      { message: 'Review submitted successfully.', review: insertedReview },
+      { status: 201, headers: { 'Cache-Control': 'no-store' } }
+    )
   } catch (error) {
     console.error('Unexpected book review error:', error)
     return NextResponse.json({ error: 'Unable to submit your review.' }, { status: 500 })
