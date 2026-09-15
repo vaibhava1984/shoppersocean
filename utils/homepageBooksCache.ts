@@ -10,9 +10,13 @@ export type HomepageBook = {
     price: number
 }
 
-let homepageBooksPromise: Promise<HomepageBook[]> | null = null
+export type HomepageBookPlacement = HomepageBook & {
+    pageSection: string
+}
 
-export function getHomepageBooks(): Promise<HomepageBook[]> {
+let homepageBooksPromise: Promise<HomepageBookPlacement[]> | null = null
+
+export function getHomepageBooks(): Promise<HomepageBookPlacement[]> {
     if (homepageBooksPromise) return homepageBooksPromise
 
     const supabase = createClient()
@@ -36,15 +40,24 @@ export function getHomepageBooks(): Promise<HomepageBook[]> {
 
         if (booksError) throw booksError
 
-        return (booksData ?? []).map(book => ({
-            id: book.id,
-            title: book.title,
-            description: book.description ?? '',
-            coverImage: book.cover_images?.[0],
-            images: book.cover_images,
-            author: book.author_name,
-            price: book.price,
-        }))
+        const booksById = new Map(
+            (booksData ?? []).map(book => [book.id, {
+                id: book.id,
+                title: book.title,
+                description: book.description ?? '',
+                coverImage: book.cover_images?.[0],
+                images: book.cover_images,
+                author: book.author_name,
+                price: book.price,
+            }])
+        )
+
+        return layoutData
+            .map(item => {
+                const book = booksById.get(item.value)
+                return book ? { ...book, pageSection: item.page_section } : null
+            })
+            .filter((book): book is HomepageBookPlacement => Boolean(book))
     })().catch(error => {
         homepageBooksPromise = null
         throw error
