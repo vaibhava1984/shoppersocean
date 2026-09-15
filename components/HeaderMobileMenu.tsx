@@ -26,12 +26,15 @@ export default function MobileMenu({ user }: {
 
             {/* Mobile menu overlay */}
             {isOpen && (
-                <div className="fixed inset-0 z-40 bg-black bg-opacity-50" onClick={() => setIsOpen(false)} />
+                <div
+                    className="fixed inset-0 z-40 bg-black bg-opacity-50 pointer-events-auto"
+                    onClick={() => setIsOpen(false)}
+                />
             )}
 
             {/* Mobile menu panel */}
             <div
-                className={`fixed top-0 right-0 z-40 h-full w-64 bg-white transform transition-transform duration-200 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'
+                className={`fixed top-0 right-0 z-40 h-full w-64 bg-white transform transition-transform duration-200 ease-in-out pointer-events-none ${isOpen ? 'translate-x-0 pointer-events-auto' : 'translate-x-full'
                     }`}
             >
                 <div className="flex flex-col p-4 space-y-4 mt-16">
