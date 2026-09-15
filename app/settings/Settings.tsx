@@ -98,7 +98,7 @@ const Settings = () => {
     }
 
     window.alert('Your details have been successfully uploaded');
-    window.location.reload();
+    window.location.href = '/';
   };
 
   return (
@@ -154,7 +154,6 @@ const Settings = () => {
                   placeholder="Enter your email address"
                   autoComplete="email"
                 />
-                <p className="text-xs text-slate-500 mt-1">Changing your email may require confirmation from Supabase.</p>
               </div>
 
               <div>
