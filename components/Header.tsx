@@ -27,7 +27,7 @@ export default async function Header() {
     <>
       <nav className="bg-white sticky top-0 z-50 shadow-md">
         <div className="container mx-auto px-2 sm:px-6 lg:px-8">
-          <div className="relative flex min-h-[68px] items-center gap-2 py-2 sm:min-h-[76px] sm:py-3">
+          <div className="relative flex items-center justify-between gap-2 py-3 sm:py-4 min-h-[72px]">
             <div className="flex-shrink-0">
               <Link href="/" className="text-slate-600 hover:text-blue-600">
                 <img src="/logo.jpeg" alt="shoppers ocean" className="w-[52px] sm:w-[60px]" />
@@ -36,7 +36,7 @@ export default async function Header() {
 
             {user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="absolute left-1/2 top-1/2 flex max-w-[48%] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-1 rounded-md px-2 py-2 text-sm font-semibold hover:bg-gray-100 transition-colors sm:max-w-[42%] sm:text-base">
+                <DropdownMenuTrigger className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors max-w-[58vw] sm:max-w-[360px]">
                   <span className="truncate">Hi {user?.user_metadata?.full_name ?? user.email}</span>
                   <ChevronDown className="h-4 w-4 flex-shrink-0" />
                 </DropdownMenuTrigger>
@@ -76,17 +76,11 @@ export default async function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="ml-auto flex max-w-[68%] flex-shrink-0 items-center justify-end gap-1 sm:gap-2">
-                <Link
-                  href="/login"
-                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md bg-blue-600 px-2.5 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 sm:px-4 sm:text-sm"
-                >
+              <div className="ml-auto flex flex-shrink-0 items-center gap-2">
+                <Link href="/login" className="inline-flex items-center justify-center px-3 sm:px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm font-semibold shadow-sm transition-colors whitespace-nowrap">
                   Sign In
                 </Link>
-                <Link
-                  href="/login?type=signup"
-                  className="inline-flex items-center justify-center rounded-md border border-blue-600 px-2.5 py-2 text-center text-xs font-semibold leading-tight text-blue-600 transition-colors hover:bg-blue-50 sm:px-4 sm:text-sm"
-                >
+                <Link href="/login?type=signup" className="inline-flex items-center justify-center px-3 sm:px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm font-semibold shadow-sm transition-colors whitespace-nowrap">
                   New user? Create account now
                 </Link>
               </div>
