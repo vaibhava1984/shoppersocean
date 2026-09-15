@@ -14,7 +14,7 @@ export default function MobileMenu({ user }: {
             <Button
                 variant="ghost"
                 size="icon"
-                className="relative z-50"
+                className="relative z-50 text-white hover:bg-white/15"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {isOpen ? (
@@ -41,7 +41,7 @@ export default function MobileMenu({ user }: {
                     <a href="/" className="text-slate-600 hover:text-blue-600 py-2">Home</a>
                     <a href="/bookShelf" className="text-slate-600 hover:text-blue-600 py-2">Bookshelf</a>
                     <a href="/about" className="text-slate-600 hover:text-blue-600 py-2">About</a>
-                    <a href="/contact" className="text-slate-600 hover:text-blue-600 py-2">Contact us</a>
+                    <a href="/contact" className="text-slate-600 hover:text-blue-600 py-2">Have a question</a>
 
                     {!user && (
                         <div className="flex flex-col space-y-2 pt-4">
