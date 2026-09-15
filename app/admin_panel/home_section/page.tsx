@@ -11,8 +11,8 @@ type Book = { id: string; title: string; author: string }
 type Entry = { entryId: number; pageSection: string; id: string; title: string | null; author: string | null; missing: boolean }
 type SectionType = 'HOMEPAGE_TRENDING' | 'HOMEPAGE_COLLECTION'
 
-function Picker({ open, title, query, results, searching, saving, onClose, onQuery, onSelect }: {
-    open: boolean; title: string; query: string; results: Book[]; searching: boolean; saving: boolean
+function Picker({ open, title, query, results, searching, saving, message, onClose, onQuery, onSelect }: {
+    open: boolean; title: string; query: string; results: Book[]; searching: boolean; saving: boolean; message: string
     onClose: () => void; onQuery: (value: string) => void; onSelect: (book: Book) => void
 }) {
     if (!open) return null
@@ -24,8 +24,9 @@ function Picker({ open, title, query, results, searching, saving, onClose, onQue
             </div>
             <Input autoFocus placeholder="Search by title or author..." value={query} onChange={(e) => onQuery(e.target.value)} />
             <p className="mt-2 text-xs text-muted-foreground">Adding to: {title}</p>
+            {message && <div className="mt-3 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">{message}</div>}
             <div className="mt-4 max-h-[55vh] space-y-2 overflow-y-auto">
-                {searching ? <p className="py-4 text-sm text-muted-foreground">Searching...</p> : query.trim().length >= 2 && results.length === 0 ? <p className="py-4 text-sm text-muted-foreground">No books found.</p> : results.map((book) => <button key={book.id} type="button" disabled={saving} className="block min-h-14 w-full rounded-md border bg-white px-4 py-3 text-left touch-manipulation hover:bg-gray-50 disabled:opacity-50" onClick={() => onSelect(book)}><div className="font-medium">{book.title}</div><div className="text-sm text-muted-foreground">{book.author || 'Unknown author'}</div></button>)}
+                {searching ? <p className="py-4 text-sm text-muted-foreground">Searching...</p> : query.trim().length >= 2 && results.length === 0 ? <p className="py-4 text-sm text-muted-foreground">No books found.</p> : results.map((book) => <button key={book.id} type="button" disabled={saving} className="block min-h-14 w-full rounded-md border bg-white px-4 py-3 text-left touch-manipulation hover:bg-gray-50 disabled:opacity-50" onPointerUp={() => { if (!saving) onSelect(book) }} onClick={(event) => event.preventDefault()}><div className="font-medium">{book.title}</div><div className="text-sm text-muted-foreground">{book.author || 'Unknown author'}</div></button>)}
             </div>
         </div>
     </div>
@@ -40,10 +41,12 @@ function BookSection({ title, sectionType, entries, maxBooks, onAdded, onRemoved
     const [results, setResults] = React.useState<Book[]>([])
     const [searching, setSearching] = React.useState(false)
     const [saving, setSaving] = React.useState(false)
+    const [message, setMessage] = React.useState('')
     const { toast } = useToast()
 
     async function search(value: string) {
         setQuery(value)
+        setMessage('')
         if (value.trim().length < 2) { setResults([]); return }
         setSearching(true)
         try {
@@ -53,22 +56,27 @@ function BookSection({ title, sectionType, entries, maxBooks, onAdded, onRemoved
             setResults(payload.books || [])
         } catch (error) {
             setResults([])
-            toast({ title: 'Search failed', description: error instanceof Error ? error.message : 'Please try again.', variant: 'destructive' })
+            const text = error instanceof Error ? error.message : 'Please try again.'
+            setMessage(text)
+            toast({ title: 'Search failed', description: text, variant: 'destructive' })
         } finally { setSearching(false) }
     }
 
     async function selectBook(book: Book) {
         if (saving || entries.length >= maxBooks || entries.some((e) => e.id === book.id)) return
         setSaving(true)
+        setMessage(`Saving “${book.title}”…`)
         try {
             const response = await fetch('/api/homepage_sections', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pageSection: sectionType, bookId: book.id }), cache: 'no-store' })
             const payload = await response.json()
             if (!response.ok) throw new Error(payload.error || `Save failed (${response.status})`)
             onAdded(payload.entry)
-            setOpen(false); setQuery(''); setResults([])
+            setOpen(false); setQuery(''); setResults([]); setMessage('')
             toast({ title: 'Book added', description: `“${book.title}” added to ${title}.` })
         } catch (error) {
-            toast({ title: 'Could not add book', description: error instanceof Error ? error.message : 'Please try again.', variant: 'destructive' })
+            const text = error instanceof Error ? error.message : 'Please try again.'
+            setMessage(`Could not add book: ${text}`)
+            toast({ title: 'Could not add book', description: text, variant: 'destructive' })
         } finally { setSaving(false) }
     }
 
@@ -86,9 +94,9 @@ function BookSection({ title, sectionType, entries, maxBooks, onAdded, onRemoved
     return <section className="mb-8 rounded-lg border bg-white p-6 shadow-sm">
         <h2 className="text-xl font-semibold">{title}</h2>
         <p className="mt-1 text-sm text-gray-500">Select up to {maxBooks} books ({entries.length}/{maxBooks})</p>
-        <Button type="button" className="mt-4" disabled={entries.length >= maxBooks} onClick={() => setOpen(true)}>Add book</Button>
+        <Button type="button" className="mt-4" disabled={entries.length >= maxBooks} onClick={() => { setMessage(''); setOpen(true) }}>Add book</Button>
         <div className="mt-4 space-y-2">{entries.map((entry) => <div key={entry.entryId} className="flex items-center justify-between rounded-lg border p-4"><div><div className="font-medium">{entry.title ?? 'Book no longer available'}</div><div className="text-sm text-gray-500">{entry.author ?? ''}</div></div><Button type="button" variant="ghost" size="icon" onClick={() => void removeBook(entry.entryId)}><X className="h-4 w-4" /></Button></div>)}</div>
-        <Picker open={open} title={title} query={query} results={results} searching={searching} saving={saving} onClose={() => { setOpen(false); setQuery(''); setResults([]) }} onQuery={search} onSelect={(book) => void selectBook(book)} />
+        <Picker open={open} title={title} query={query} results={results} searching={searching} saving={saving} message={message} onClose={() => { setOpen(false); setQuery(''); setResults([]); setMessage('') }} onQuery={search} onSelect={(book) => void selectBook(book)} />
     </section>
 }
 
