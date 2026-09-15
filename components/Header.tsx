@@ -89,12 +89,12 @@ export default async function Header() {
 
       <nav className="relative z-40 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 shadow-md">
         <div className="container mx-auto px-2 sm:px-4 py-2">
-          <div className="flex items-center justify-center gap-1 sm:gap-3 overflow-x-auto">
+          <div className="flex items-center justify-center gap-1 sm:gap-2 overflow-x-auto scrollbar-hide">
             {navigationItems.map(([href, label]) => (
               <Link
                 key={href}
                 href={href}
-                className="flex-1 min-w-0 text-center px-3 py-2.5 rounded-lg text-sm sm:text-base font-bold text-white hover:bg-white/15 active:bg-white/20 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-white/70"
+                className="flex-1 min-w-[72px] text-center px-2 py-2 rounded-md text-xs sm:text-sm font-medium text-white hover:bg-white/15 transition-colors whitespace-nowrap"
               >
                 {label}
               </Link>
