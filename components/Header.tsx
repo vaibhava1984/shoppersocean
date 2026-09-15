@@ -27,22 +27,20 @@ export default async function Header() {
     <>
       <nav className="bg-white sticky top-0 z-50 shadow-md">
         <div className="container mx-auto px-2 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 py-3 sm:py-4">
+          <div className="relative flex min-h-[68px] items-center gap-2 py-2 sm:min-h-[76px] sm:py-3">
             <div className="flex-shrink-0">
               <Link href="/" className="text-slate-600 hover:text-blue-600">
                 <img src="/logo.jpeg" alt="shoppers ocean" className="w-[52px] sm:w-[60px]" />
               </Link>
             </div>
 
-            <div className="flex-1 min-w-0" />
-
             {user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex flex-shrink-0 items-center gap-1 px-2 py-2 text-sm font-medium hover:bg-gray-100 rounded-md transition-colors max-w-[120px] sm:max-w-none">
+                <DropdownMenuTrigger className="absolute left-1/2 top-1/2 flex max-w-[48%] -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-1 rounded-md px-2 py-2 text-sm font-semibold hover:bg-gray-100 transition-colors sm:max-w-[42%] sm:text-base">
                   <span className="truncate">Hi {user?.user_metadata?.full_name ?? user.email}</span>
                   <ChevronDown className="h-4 w-4 flex-shrink-0" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="center" className="w-48">
                   {user?.app_metadata?.userrole === "ADMIN" && (
                     <DropdownMenuItem asChild>
                       <Link href="/admin_panel" className="flex items-center gap-2">
@@ -78,9 +76,19 @@ export default async function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="flex flex-shrink-0 space-x-1 sm:space-x-2">
-                <Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 hover:bg-gray-200 text-sm">Sign Up</Link>
-                <Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-sm">Sign In</Link>
+              <div className="ml-auto flex max-w-[68%] flex-shrink-0 items-center justify-end gap-1 sm:gap-2">
+                <Link
+                  href="/login"
+                  className="inline-flex items-center justify-center whitespace-nowrap rounded-md bg-blue-600 px-2.5 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 sm:px-4 sm:text-sm"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/login?type=signup"
+                  className="inline-flex items-center justify-center rounded-md border border-blue-600 px-2.5 py-2 text-center text-xs font-semibold leading-tight text-blue-600 transition-colors hover:bg-blue-50 sm:px-4 sm:text-sm"
+                >
+                  New user? Create account now
+                </Link>
               </div>
             )}
           </div>
