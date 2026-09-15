@@ -1,32 +1,16 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr"
-import { cookies } from "next/headers"
+import { createClient } from "@supabase/supabase-js"
 
+// Server-only Supabase client for trusted admin database operations.
+// Do not attach browser/session cookies here: the service-role key must
+// remain the authenticated database role so RLS does not block admin writes.
 export function createAdminClient() {
-  const cookieStore = cookies()
-
-  return createServerClient(
+  return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {
       auth: {
         autoRefreshToken: false,
-        persistSession: false
-      },
-      cookies: {
-        async getAll() {
-          return (await cookieStore).getAll()
-        },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(async ({ name, value, options }) =>
-              (await cookieStore).set(name, value, options)
-            )
-          } catch {
-            // The `setAll` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
-          }
-        },
+        persistSession: false,
       },
     }
   )
