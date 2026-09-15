@@ -58,18 +58,24 @@ export async function signUp(formData: {
       },
     },
   }
-  // console.log("data 111=>", data)
 
   const { data: authData, error } = await supabase.auth.signUp(data)
-  // console.log("authdata=>", authData)
-  // console.log("authdata error=>", error)
 
   if (error) {
     redirect("/login?authError=internalError")
-  } else {
-    if (authData.user) {
-      revalidatePath("/", "layout")
-      redirect("/login?accountCreated=success")
-    }
   }
+
+  // Supabase intentionally returns an obfuscated user for an already-registered
+  // confirmed email when email confirmation is enabled. In that case the user
+  // object can be present even though no new account was created.
+  if (authData.user && authData.user.identities?.length === 0) {
+    redirect("/login?authError=account_already_registered")
+  }
+
+  if (authData.user) {
+    revalidatePath("/", "layout")
+    redirect("/login?accountCreated=success")
+  }
+
+  redirect("/login?authError=internalError")
 }
