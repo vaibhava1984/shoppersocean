@@ -48,15 +48,14 @@ export default function BooksCollections({ loggedinUserId }: {
 
                 const { data: booksData, error: booksError } = await supabase
                     .from('books')
-                    .select('id, title,description,cover_images, author_name, price')
-                    .in('id', bookIds).eq('isCompletelyFilled', true).eq('is_deleted', false)
+                    .select('id, title,description,cover_images, author_name, price, is_deleted')
+                    .in('id', bookIds)
+                    .eq('is_deleted', false)
 
                 if (booksError) {
                     console.error('Error fetching books:', booksError)
                     return
                 }
-
-                // console.log("booksData=>", booksData)
 
                 const books = booksData.map(book => ({
                     id: book.id,

@@ -30,7 +30,6 @@ export async function GET(request: Request) {
                 .from('books')
                 .select('id, title, author_name')
                 .or(`title.ilike.%${escapedSearch}%,author_name.ilike.%${escapedSearch}%`)
-                .eq('isCompletelyFilled', true)
                 .eq('is_deleted', false)
                 .order('title', { ascending: true })
                 .limit(15)
@@ -108,7 +107,7 @@ export async function POST(request: Request) {
 
         const { data: book, error: bookError } = await supabase
             .from('books')
-            .select('id, title, author_name, isCompletelyFilled, is_deleted')
+            .select('id, title, author_name, is_deleted')
             .eq('id', bookId)
             .maybeSingle()
 
@@ -121,9 +120,6 @@ export async function POST(request: Request) {
         }
         if (book.is_deleted) {
             return NextResponse.json({ error: 'This book has been deleted' }, { status: 400 })
-        }
-        if (!book.isCompletelyFilled) {
-            return NextResponse.json({ error: 'This book is not complete and cannot be displayed on the homepage' }, { status: 400 })
         }
 
         const { data: existing, error: existingError } = await supabase
