@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
+import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +14,7 @@ const navigationItems = [
   ["/", "Home"],
   ["/bookShelf", "Bookshelf"],
   ["/about", "About"],
-  ["/contact", "Have a question"],
+  ["/contact", "Have a question?"],
 ] as const;
 
 export default async function Header() {
@@ -92,7 +93,7 @@ export default async function Header() {
 
       <nav className="relative z-40 pointer-events-auto bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 shadow-md">
         <div className="container mx-auto px-2 sm:px-4 py-2">
-          <div className="relative z-50 flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
+          <div className="relative z-50 flex items-center justify-center gap-2 sm:gap-4 flex-nowrap overflow-x-auto">
             {navigationItems.map(([href, label]) => (
               <a
                 key={href}
@@ -102,6 +103,7 @@ export default async function Header() {
                 {label}
               </a>
             ))}
+            <HeaderAuthorButton />
           </div>
         </div>
       </nav>
