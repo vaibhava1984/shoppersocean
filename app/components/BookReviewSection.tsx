@@ -3,8 +3,18 @@
 import { useEffect, useState } from "react"
 import { Star } from "lucide-react"
 
+type Review = {
+  id: string
+  description: string
+  rating: number
+  users: string
+  user_id?: string
+  book_id?: string
+  created_at?: string
+}
+
 export default function BookReviewSection({ bookId, userId }: { bookId: string; userId?: string }) {
-  const [reviews, setReviews] = useState<any[]>([])
+  const [reviews, setReviews] = useState<Review[]>([])
   const [description, setDescription] = useState("")
   const [rating, setRating] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -14,16 +24,23 @@ export default function BookReviewSection({ bookId, userId }: { bookId: string; 
   useEffect(() => {
     const loadReviews = async () => {
       try {
-        const response = await fetch(`/api/book-review?bookId=${encodeURIComponent(bookId)}`)
+        const response = await fetch(`/api/book-review?bookId=${encodeURIComponent(bookId)}&t=${Date.now()}`, {
+          cache: "no-store",
+        })
         const result = await response.json()
         if (response.ok) {
-          setReviews(result.reviews || [])
-          const mine = (result.reviews || []).find((review: any) => review.user_id === userId)
+          const loadedReviews = result.reviews || []
+          setReviews(loadedReviews)
+          const mine = loadedReviews.find((review: Review) => review.user_id === userId)
           if (mine) {
             setDescription(mine.description)
             setRating(mine.rating)
           }
+        } else {
+          setMessage(result.error || "Unable to load reviews.")
         }
+      } catch {
+        setMessage("Unable to load reviews.")
       } finally {
         setLoading(false)
       }
@@ -42,22 +59,29 @@ export default function BookReviewSection({ bookId, userId }: { bookId: string; 
     setSubmitting(true)
     setMessage("")
 
-    const response = await fetch("/api/book-review", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bookId, description, rating }),
-    })
-    const result = await response.json().catch(() => ({}))
+    try {
+      const response = await fetch("/api/book-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        cache: "no-store",
+        body: JSON.stringify({ bookId, description, rating }),
+      })
+      const result = await response.json().catch(() => ({}))
 
-    if (!response.ok) {
-      setMessage(result.error || "Unable to submit your review.")
+      if (!response.ok) {
+        setMessage(result.error || "Unable to submit your review.")
+        return
+      }
+
+      if (result.review) {
+        setReviews((current) => [result.review, ...current.filter((review) => review.id !== result.review.id)])
+      }
+      setMessage("Your review has been submitted successfully.")
+    } catch {
+      setMessage("Unable to submit your review. Please try again.")
+    } finally {
       setSubmitting(false)
-      return
     }
-
-    setMessage("Your review has been submitted successfully.")
-    setSubmitting(false)
-    window.location.reload()
   }
 
   return (
