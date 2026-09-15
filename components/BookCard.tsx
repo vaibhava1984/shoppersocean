@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Star, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
-import { Toaster } from "@/components/ui/toaster"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 
@@ -18,7 +17,6 @@ export default function BookCard({ book, loggedinUserId }: {
 }) {
     return (
         <Card className="overflow-hidden transition-shadow hover:shadow-lg">
-            <Toaster />
             <CardContent className="p-0 h-full flex flex-col">
                 <Dialog>
                     <DialogTrigger asChild>
