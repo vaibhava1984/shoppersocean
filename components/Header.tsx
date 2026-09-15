@@ -8,7 +8,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, LogOut, HistoryIcon, ShieldIcon, ChartBarIcon, SettingsIcon } from "lucide-react";
-import HeaderMobileMenu from "./HeaderMobileMenu";
 
 export default async function Header() {
   const supabase = createClient();
@@ -19,24 +18,28 @@ export default async function Header() {
 
   return (
     <nav className="bg-white sticky top-0 z-50 shadow-md">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          <div className="flex items-center space-x-2">
+      <div className="container mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2 py-3 sm:py-4">
+          <div className="flex-shrink-0">
             <Link href="/" className="text-slate-600 hover:text-blue-600">
-              <img src="/logo.jpeg" alt="shoppers ocean" className="w-[60px]" />
+              <img src="/logo.jpeg" alt="shoppers ocean" className="w-[52px] sm:w-[60px]" />
             </Link>
           </div>
-          <div className="hidden md:flex space-x-4">
-            <Link href="/" className="text-slate-600 hover:text-blue-600">Home</Link>
-            <Link href="/bookShelf" className="text-slate-600 hover:text-blue-600">Bookshelf</Link>
-            <Link href="/about" className="text-slate-600 hover:text-blue-600">About</Link>
-            <Link href="/contact" className="text-slate-600 hover:text-blue-600">Have a question</Link>
+
+          <div className="flex-1 min-w-0 overflow-x-auto scrollbar-hide">
+            <div className="flex items-center justify-center gap-1 sm:gap-4 min-w-max">
+              <Link href="/" className="whitespace-nowrap px-2 py-2 text-sm sm:text-base font-medium text-slate-600 hover:text-blue-600 hover:bg-gray-100 rounded-md">Home</Link>
+              <Link href="/bookShelf" className="whitespace-nowrap px-2 py-2 text-sm sm:text-base font-medium text-slate-600 hover:text-blue-600 hover:bg-gray-100 rounded-md">Bookshelf</Link>
+              <Link href="/about" className="whitespace-nowrap px-2 py-2 text-sm sm:text-base font-medium text-slate-600 hover:text-blue-600 hover:bg-gray-100 rounded-md">About</Link>
+              <Link href="/contact" className="whitespace-nowrap px-2 py-2 text-sm sm:text-base font-medium text-slate-600 hover:text-blue-600 hover:bg-gray-100 rounded-md">Have a question</Link>
+            </div>
           </div>
+
           {user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded-md transition-colors">
-                Hi {user?.user_metadata?.full_name ?? user.email}
-                <ChevronDown className="h-4 w-4" />
+              <DropdownMenuTrigger className="flex flex-shrink-0 items-center gap-1 px-2 py-2 text-sm font-medium hover:bg-gray-100 rounded-md transition-colors max-w-[120px] sm:max-w-none">
+                <span className="truncate">Hi {user?.user_metadata?.full_name ?? user.email}</span>
+                <ChevronDown className="h-4 w-4 flex-shrink-0" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 {user?.app_metadata?.userrole === "ADMIN" && (
@@ -74,12 +77,11 @@ export default async function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="hidden md:flex space-x-2">
-              <Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link>
-              <Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link>
+            <div className="flex flex-shrink-0 space-x-1 sm:space-x-2">
+              <Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 hover:bg-gray-200 text-sm">Sign Up</Link>
+              <Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-sm">Sign In</Link>
             </div>
           )}
-          <HeaderMobileMenu user={user} />
         </div>
       </div>
     </nav>
