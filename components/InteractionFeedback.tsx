@@ -29,31 +29,34 @@ const INTERACTIVE_SELECTOR = [
 let audioContext: AudioContext | null = null
 let lastFeedbackAt = 0
 
-function playClickSound() {
+async function playClickSound() {
   try {
     const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
     if (!AudioContextClass) return
 
     audioContext ??= new AudioContextClass()
+
     if (audioContext.state === "suspended") {
-      void audioContext.resume()
+      await audioContext.resume()
     }
+
+    if (audioContext.state !== "running") return
 
     const oscillator = audioContext.createOscillator()
     const gain = audioContext.createGain()
     const now = audioContext.currentTime
 
     oscillator.type = "sine"
-    oscillator.frequency.setValueAtTime(620, now)
-    oscillator.frequency.exponentialRampToValueAtTime(420, now + 0.04)
+    oscillator.frequency.setValueAtTime(680, now)
+    oscillator.frequency.exponentialRampToValueAtTime(440, now + 0.07)
     gain.gain.setValueAtTime(0.0001, now)
-    gain.gain.exponentialRampToValueAtTime(0.025, now + 0.005)
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05)
+    gain.gain.exponentialRampToValueAtTime(0.055, now + 0.008)
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075)
 
     oscillator.connect(gain)
     gain.connect(audioContext.destination)
     oscillator.start(now)
-    oscillator.stop(now + 0.055)
+    oscillator.stop(now + 0.08)
   } catch {
     // Audio feedback is optional; never let it interfere with the action.
   }
@@ -89,15 +92,18 @@ export default function InteractionFeedback() {
 
       createRipple(event)
 
-      if (event.pointerType !== "mouse" && "vibrate" in navigator) {
+      // Trigger haptics directly from the user's touch gesture.
+      if (event.pointerType !== "mouse" && typeof navigator.vibrate === "function") {
         try {
-          navigator.vibrate(8)
+          navigator.vibrate(18)
         } catch {
           // Haptic feedback is optional.
         }
       }
 
-      playClickSound()
+      // Start/resume Web Audio from the same user gesture so mobile browsers
+      // are allowed to play the feedback sound.
+      void playClickSound()
     }
 
     document.addEventListener("pointerdown", handlePointerDown, { passive: true })
