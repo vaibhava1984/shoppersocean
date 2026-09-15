@@ -1,94 +1,76 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { createClient } from "@/utils/supabase/server";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog"
 import Header from "@/components/Header"
+import { Card, CardContent } from "@/components/ui/card"
+import { createClient } from "@/utils/supabase/server"
 import LanguageMenusLists from "@/app/components/LanguageMenusLists"
 import AuthorsMenusLists from "@/app/components/AuthorsMenusLists"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import Footer from "@/components/Footer"
-import { Star } from 'lucide-react'
-import dynamic from "next/dynamic";
 import BookCard from "@/components/BookCard"
-import HeroSection from "@/components/HeroSection";
-import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
+import HeroSection from "@/components/HeroSection"
+import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner'
 
 export const metadata = {
     title: 'BookShelf',
     description: 'Escape into Entertainment',
 }
 
-// ✅ ISR: Revalidate every 1 hour
-export const revalidate = 3600;
-export const dynamicParams = true;
+// Keep the bookshelf response cacheable when possible while still refreshing book data regularly.
+export const revalidate = 3600
+export const dynamicParams = true
 
-export default async function BookShelfPage({ params, searchParams }: { params: any; searchParams: any }) {
-    const searchparams1 = await searchParams;
+export default async function BookShelfPage({ searchParams }: { params: any; searchParams: any }) {
+    const searchparams1 = await searchParams
     const searchFilters = {
         language: searchparams1?.lang ?? 'all',
         author_id: searchparams1?.author ?? 'all'
     }
 
-    const supabase = createClient();
-    
-    let user = null;
-    try {
-        const {
-            data: { user: authUser },
-        } = await supabase.auth.getUser();
-        user = authUser;
-    } catch (error) {
-        console.error('Error fetching user:', error);
-    }
+    const supabase = createClient()
 
-    // ✅ FIX: Only fetch active books (not deleted)
+    // Start auth and book retrieval together so the slower auth request no longer blocks
+    // the bookshelf database request.
+    const userPromise = supabase.auth.getUser().catch((error) => {
+        console.error('Error fetching user:', error)
+        return { data: { user: null } }
+    })
+
     let query = supabase
         .from('books')
         .select('id,title,language,author_id,author_name,description,price,cover_images')
-        .eq('is_deleted', false) // ✅ Only show non-deleted books
+        .eq('is_deleted', false)
         .limit(100)
-        .order('title', { ascending: true });
+        .order('title', { ascending: true })
 
-    // ✅ Apply language filter
     if (searchFilters.language !== 'all') {
         const languageMap: Record<string, string> = {
             'en': 'English',
             'hindi': 'Hindi'
-        };
-        const language = languageMap[searchFilters.language];
-        if (language) {
-            query = query.eq('language', language);
         }
+        const language = languageMap[searchFilters.language]
+        if (language) query = query.eq('language', language)
     }
 
-    // ✅ Apply author_id filter
     if (searchFilters.author_id !== 'all' && searchFilters.author_id?.length > 0) {
-        query = query.eq('author_id', searchFilters.author_id);
+        query = query.eq('author_id', searchFilters.author_id)
     }
 
-    const { data, error } = await query;
+    const [userResult, booksResult] = await Promise.all([userPromise, query])
+    const user = userResult.data.user
+    const { data, error } = booksResult
 
     if (error) {
         console.error('[BookShelf] Error fetching books:', {
             error: error.message,
             filters: searchFilters
-        });
-    } else {
-        console.log('[BookShelf] Successfully fetched books:', {
-            count: data?.length || 0,
-            filters: searchFilters
-        });
+        })
     }
 
-    const books = data || [];
-
+    const books = data || []
     const filteredBooks = books.map(d => ({
         ...d,
         coverImage: d?.cover_images?.[0],
         images: d?.cover_images,
-        author: d?.author_name, // Use author_name from database
-    }));
+        author: d?.author_name,
+    }))
 
     const authorInfo = {
         "Chetan Bhagat": `Chetan Bhagat is the author of seven blockbuster books. These include six novels—Five Point Someone (2004), One Night @ the Call Center (2005), The 3 Mistakes of My Lif[...]
@@ -105,39 +87,27 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
     }
 
     function getPageHeader() {
-        if (searchFilters.language === 'en') {
-            return 'English Books'
-        }
-        if (searchFilters.language === 'hindi') {
-            return 'Hindi Books'
-        }
-
+        if (searchFilters.language === 'en') return 'English Books'
+        if (searchFilters.language === 'hindi') return 'Hindi Books'
         return 'All Books'
     }
 
-    const selectedAuthorName = searchFilters.author_id !== 'all' ? filteredBooks[0]?.author : null;
-    const selectedAuthorInfo = selectedAuthorName ? authorInfo[selectedAuthorName as keyof typeof authorInfo] : null;
+    const selectedAuthorName = searchFilters.author_id !== 'all' ? filteredBooks[0]?.author : null
+    const selectedAuthorInfo = selectedAuthorName ? authorInfo[selectedAuthorName as keyof typeof authorInfo] : null
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
-            {/* Navigation */}
             <Header />
-            <div>
-                <HeroSection
-                    title=" Escape into Entertainment"
-                    subtitle="Discover your next favorite book"
-                    imageSrc="/bookshelf_hero_image.jpeg"
-                    imageAlt=" Embark on Your Adventure"
-                />
-            </div>
-            <div>
-                <AuthorApplicationBanner />
-            </div>
-            {/* Main Content */}
+            <HeroSection
+                title=" Escape into Entertainment"
+                subtitle="Discover your next favorite book"
+                imageSrc="/bookshelf_hero_image.jpeg"
+                imageAlt=" Embark on Your Adventure"
+            />
+            <AuthorApplicationBanner />
             <section className="py-20 bg-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row gap-8">
-                        {/* Left Sidebar */}
                         <div className="md:w-1/4">
                             <h2 className="text-2xl font-bold mb-4 text-slate-800">Categories</h2>
                             <div className="mb-8">
@@ -150,12 +120,9 @@ export default async function BookShelfPage({ params, searchParams }: { params: 
                             </div>
                         </div>
 
-                        {/* Right Content */}
                         <div className="md:w-3/4">
                             <div className="flex justify-between items-center mb-8">
-                                <h2 className="text-3xl font-bold text-slate-800">
-                                    {getPageHeader()}
-                                </h2>
+                                <h2 className="text-3xl font-bold text-slate-800">{getPageHeader()}</h2>
                             </div>
 
                             {selectedAuthorInfo && filteredBooks.length > 0 && (
