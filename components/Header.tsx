@@ -17,13 +17,6 @@ export default async function Header() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/bookShelf", label: "Bookshelf" },
-    { href: "/about", label: "About" },
-    { href: "/contact", label: "Have a question" },
-  ];
-
   return (
     <nav className="bg-white sticky top-0 z-50 shadow-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -87,23 +80,6 @@ export default async function Header() {
             </div>
           )}
           <HeaderMobileMenu user={user} />
-        </div>
-      </div>
-
-      {/* Navigation row in the existing blue section below the white header */}
-      <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex w-full items-center justify-center gap-1 sm:gap-2 py-2 overflow-x-auto">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex-1 min-w-0 text-center px-2 py-2 rounded-md text-xs sm:text-sm font-medium text-white hover:bg-white/15 active:bg-white/25 transition-colors whitespace-nowrap"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
         </div>
       </div>
     </nav>
