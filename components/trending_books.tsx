@@ -23,10 +23,13 @@ export default function TrendingBooksCollections({ loggedinUserId }: { loggedinU
         let active = true
 
         getHomepageBooks()
-            .then(books => {
+            .then(placements => {
                 if (!active) return
-                const trendingIds = new Set(books.map(book => book.id))
-                setAuthorBooks(books.filter(book => trendingIds.has(book.id)))
+                setAuthorBooks(
+                    placements
+                        .filter(item => item.pageSection === 'HOMEPAGE_TRENDING')
+                        .map(({ pageSection, ...book }) => book)
+                )
             })
             .catch(error => console.error('Unexpected error in fetchBooks:', error))
             .finally(() => {
@@ -43,8 +46,8 @@ export default function TrendingBooksCollections({ loggedinUserId }: { loggedinU
             {isLoading ? (
                 [...Array(3)].map((_, index) => <BookCardSkeleton key={index} />)
             ) : (
-                authorBooks.map(book => (
-                    <BookCard key={book.id} book={book} loggedinUserId={loggedinUserId} />
+                authorBooks.map((book, index) => (
+                    <BookCard key={`${book.id}-${index}`} book={book} loggedinUserId={loggedinUserId} />
                 ))
             )}
         </div>
