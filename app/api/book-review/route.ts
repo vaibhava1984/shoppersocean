@@ -2,6 +2,30 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/server_admin'
 
+export async function GET(request: Request) {
+  try {
+    const bookId = new URL(request.url).searchParams.get('bookId')
+    if (!bookId) return NextResponse.json({ error: 'Book ID is required.' }, { status: 400 })
+
+    const supabase = createAdminClient()
+    const { data, error } = await supabase
+      .from('testimonials')
+      .select('id, description, rating, users, user_id, book_id, created_at')
+      .eq('book_id', bookId)
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      console.error('Error fetching book reviews:', error)
+      return NextResponse.json({ error: 'Failed to fetch reviews.' }, { status: 500 })
+    }
+
+    return NextResponse.json({ reviews: data || [] })
+  } catch (error) {
+    console.error('Unexpected book review fetch error:', error)
+    return NextResponse.json({ error: 'Unable to fetch reviews.' }, { status: 500 })
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const authClient = createClient()
@@ -20,7 +44,6 @@ export async function POST(request: Request) {
     }
 
     const supabase = createAdminClient()
-
     const { data: book, error: bookError } = await supabase
       .from('books')
       .select('id')
