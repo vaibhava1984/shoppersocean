@@ -39,7 +39,9 @@ const TestimonialSection: React.FC = () => {
         };
 
         fetchTestimonialsAndUser();
-    }, [supabase]);
+        // The Supabase browser client is intentionally created once for this component.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleDeleteAccount = async () => {
         if (isDeleting) return;
