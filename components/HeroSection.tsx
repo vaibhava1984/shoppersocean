@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link'; // If using Next.js, otherwise use standard 'react-router-dom' for routing in React
+import Link from 'next/link';
 
 interface HeroSectionProps {
     title?: string;
@@ -15,15 +15,32 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     subtitle = "Where every wave brings a new deal",
     imageSrc = "/homepage_hero.jpeg",
     imageAlt = "Featured Book",
-    buttonText,
-    buttonLink
 }) => {
+    const navigation = [
+        ["/", "Home"],
+        ["/bookShelf", "Bookshelf"],
+        ["/about", "About"],
+        ["/contact", "Have a question"],
+    ];
 
     return (
         <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-18 overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <nav aria-label="Main navigation" className="mb-12">
+                    <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
+                        {navigation.map(([href, label]) => (
+                            <Link
+                                key={href}
+                                href={href}
+                                className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-white/10 border border-white/30 text-white font-bold text-sm sm:text-base tracking-wide shadow-sm hover:bg-white/20 hover:border-white/50 hover:scale-105 active:scale-95 transition-all duration-200 whitespace-nowrap"
+                            >
+                                {label}
+                            </Link>
+                        ))}
+                    </div>
+                </nav>
+
                 <div className="flex flex-col md:flex-row items-center justify-between">
-                    {/* Left Column */}
                     <div className="md:w-1/2 mb-8 md:mb-0">
                         <h1
                             className="text-4xl md:text-6xl font-bold mb-6 leading-tight italic opacity-0 translate-y-4 animate-[fadeInUp_3s_ease-out_forwards]"
@@ -37,7 +54,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         </p>
                     </div>
 
-                    {/* Right Column */}
                     <div className="md:w-1/2 relative">
                         <img
                             src={imageSrc}
