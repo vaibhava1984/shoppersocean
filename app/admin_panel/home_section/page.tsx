@@ -54,6 +54,7 @@ function SortableBookItem({ entry, onRemove }: SortableBookItemProps) {
                     </p>
                 </div>
                 <Button
+                    type="button"
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8"
@@ -93,7 +94,9 @@ function BookSection({ title, entries, maxBooks, sectionType, onAdded, onRemoved
 
         setIsSearching(true)
         try {
-            const response = await fetch(`/api/homepage_sections?search=${encodeURIComponent(query.trim())}`)
+            const response = await fetch(`/api/homepage_sections?search=${encodeURIComponent(query.trim())}`, {
+                cache: 'no-store',
+            })
             const payload = await response.json()
 
             if (!response.ok) {
@@ -137,6 +140,7 @@ function BookSection({ title, entries, maxBooks, sectionType, onAdded, onRemoved
             const response = await fetch('/api/homepage_sections', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                cache: 'no-store',
                 body: JSON.stringify({ pageSection: sectionType, bookId: book.id }),
             })
             const payload = await response.json()
@@ -213,6 +217,7 @@ function BookSection({ title, entries, maxBooks, sectionType, onAdded, onRemoved
             </CardHeader>
             <CardContent>
                 <Button
+                    type="button"
                     onClick={() => setIsDialogOpen(true)}
                     disabled={entries.length >= maxBooks}
                     className="mb-4"
@@ -238,26 +243,28 @@ function BookSection({ title, entries, maxBooks, sectionType, onAdded, onRemoved
                             <Input
                                 placeholder="Search by title or author..."
                                 value={searchQuery}
+                                autoFocus
                                 onChange={(e) => handleSearch(e.target.value)}
                             />
-                            <div className="space-y-2">
+                            <div className="space-y-2 max-h-80 overflow-y-auto">
                                 {isSearching ? (
                                     <div className="py-3 text-sm text-muted-foreground">Searching...</div>
                                 ) : searchQuery.trim().length >= 2 && searchResults.length === 0 ? (
-                                    <div className="py-3 text-sm text-muted-foreground">No completed books found.</div>
+                                    <div className="py-3 text-sm text-muted-foreground">No books found.</div>
                                 ) : (
                                     searchResults.map((book) => (
                                         <Button
                                             key={book.id}
+                                            type="button"
                                             variant="outline"
-                                            className="w-full justify-start"
+                                            className="w-full justify-start h-auto py-3"
                                             disabled={isSaving}
                                             onClick={() => handleBookSelect(book)}
                                         >
                                             <div className="text-left">
                                                 <div className="font-medium">{book.title}</div>
                                                 <div className="text-sm text-muted-foreground">
-                                                    {book.author}
+                                                    {book.author || 'Unknown author'}
                                                 </div>
                                             </div>
                                         </Button>
@@ -281,7 +288,7 @@ export default function HomeSection() {
         async function fetchSections() {
             setIsLoading(true)
             try {
-                const response = await fetch('/api/homepage_sections')
+                const response = await fetch('/api/homepage_sections', { cache: 'no-store' })
                 const payload = await response.json()
 
                 if (!response.ok) {
@@ -293,7 +300,7 @@ export default function HomeSection() {
                     return
                 }
 
-                setEntries(payload.sections)
+                setEntries(payload.sections ?? [])
             } catch (error) {
                 console.error('Unexpected error in fetchSections:', error)
                 toast({
