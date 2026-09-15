@@ -25,28 +25,23 @@ export default async function Header() {
   ];
 
   return (
-    <nav className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 sticky top-0 z-50 shadow-md text-white">
+    <nav className="bg-white sticky top-0 z-50 shadow-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-2">
-            <Link href="/" className="text-white hover:text-white/80">
+            <Link href="/" className="text-slate-600 hover:text-blue-600">
               <img src="/logo.jpeg" alt="shoppers ocean" className="w-[60px]" />
             </Link>
           </div>
-          <div className="hidden md:flex items-center space-x-2">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="px-3 py-2 rounded-md text-white hover:bg-white/15 hover:text-white transition-colors whitespace-nowrap"
-              >
-                {item.label}
-              </Link>
-            ))}
+          <div className="hidden md:flex space-x-4">
+            <Link href="/" className="text-slate-600 hover:text-blue-600">Home</Link>
+            <Link href="/bookShelf" className="text-slate-600 hover:text-blue-600">Bookshelf</Link>
+            <Link href="/about" className="text-slate-600 hover:text-blue-600">About</Link>
+            <Link href="/contact" className="text-slate-600 hover:text-blue-600">Have a question</Link>
           </div>
           {user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 px-3 py-2 text-sm font-medium hover:bg-white/15 rounded-md transition-colors">
+              <DropdownMenuTrigger className="flex items-center gap-1 px-3 py-2 text-sm font-medium hover:bg-gray-100 rounded-md transition-colors">
                 Hi {user?.user_metadata?.full_name ?? user.email}
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
@@ -87,24 +82,28 @@ export default async function Header() {
             </DropdownMenu>
           ) : (
             <div className="hidden md:flex space-x-2">
-              <Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-white border border-white/70 hover:bg-white/15">Sign Up</Link>
-              <Link href="/login" className="inline-block px-2 py-2 rounded-md bg-white text-blue-600 hover:bg-blue-50">Sign In</Link>
+              <Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link>
+              <Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link>
             </div>
           )}
           <HeaderMobileMenu user={user} />
         </div>
+      </div>
 
-        {/* Always-visible navigation row, including on mobile */}
-        <div className="flex w-full items-center justify-center gap-1 sm:gap-2 pb-3 overflow-x-auto">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex-1 min-w-0 text-center px-2 py-2 rounded-md text-xs sm:text-sm font-medium text-white hover:bg-white/15 active:bg-white/25 transition-colors whitespace-nowrap"
-            >
-              {item.label}
-            </Link>
-          ))}
+      {/* Navigation row in the existing blue section below the white header */}
+      <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex w-full items-center justify-center gap-1 sm:gap-2 py-2 overflow-x-auto">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex-1 min-w-0 text-center px-2 py-2 rounded-md text-xs sm:text-sm font-medium text-white hover:bg-white/15 active:bg-white/25 transition-colors whitespace-nowrap"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </nav>
