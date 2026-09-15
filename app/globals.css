@@ -47,9 +47,7 @@
     --card: 0 0% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --popover-foreground: 0 0% 9%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
@@ -65,7 +63,7 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --chart-5: 340 75% 67%;
   }
 }
 
@@ -96,6 +94,13 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Make taps on links and controls register immediately on touch devices. */
+  a,
+  button,
+  [role="button"] {
+    touch-action: manipulation;
   }
 }
 
