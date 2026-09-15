@@ -1,335 +1,189 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { createClient } from "@/utils/supabase/client";
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle
-} from "@/components/ui/card";
-import {
-    Input
-} from "@/components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2Icon } from "lucide-react"
+import { Loader2Icon } from "lucide-react";
+
+const countryCodes = `AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ BT BO BA BW BR BN BG BF BI KH CM CA CV CF TD CL CN CO KM CG CR HR CU CY CZ DK DJ DM DO EC EG SV GQ ER EE ET FJ FI FR GA GM GE DE GH GR GD GT GN GW GY HT HN HU IS IN ID IR IQ IE IL IT JM JP JO KZ KE KI KP KR KW KG LA LV LB LS LR LY LI LT LU MG MW MY MV ML MT MH MR MU MX FM MD MC MN ME MA MZ MM NA NR NP NL NZ NI NE NG NO OM PK PW PA PG PY PE PH PL PT QA RO RU RW KN LC VC WS SM ST SA SN RS SC SL SG SK SI SB SO ZA SS ES LK SD SR SZ SE CH SY TW TJ TZ TH TL TG TO TT TN TR TM TV UG UA AE GB US UY UZ VU VA VE VN YE ZM ZW`.split(' ');
+
+const countryNames = new Intl.DisplayNames(['en'], { type: 'region' });
+const countries = countryCodes.map((code) => ({
+  code,
+  name: countryNames.of(code) ?? code,
+}));
 
 const Settings = () => {
-    const [country, setCountry] = useState('');
-    const [fullName, setFullName] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [isSaving, setIsSaving] = useState(false);
-    const supabase = createClient();
-    const countries = [
-        { code: 'AF', name: 'Afghanistan' },
-        { code: 'AL', name: 'Albania' },
-        { code: 'DZ', name: 'Algeria' },
-        { code: 'AD', name: 'Andorra' },
-        { code: 'AO', name: 'Angola' },
-        { code: 'AG', name: 'Antigua and Barbuda' },
-        { code: 'AR', name: 'Argentina' },
-        { code: 'AM', name: 'Armenia' },
-        { code: 'AU', name: 'Australia' },
-        { code: 'AT', name: 'Austria' },
-        { code: 'AZ', name: 'Azerbaijan' },
-        { code: 'BS', name: 'Bahamas' },
-        { code: 'BH', name: 'Bahrain' },
-        { code: 'BD', name: 'Bangladesh' },
-        { code: 'BB', name: 'Barbados' },
-        { code: 'BY', name: 'Belarus' },
-        { code: 'BE', name: 'Belgium' },
-        { code: 'BZ', name: 'Belize' },
-        { code: 'BJ', name: 'Benin' },
-        { code: 'BT', name: 'Bhutan' },
-        { code: 'BO', name: 'Bolivia' },
-        { code: 'BA', name: 'Bosnia and Herzegovina' },
-        { code: 'BW', name: 'Botswana' },
-        { code: 'BR', name: 'Brazil' },
-        { code: 'BN', name: 'Brunei' },
-        { code: 'BG', name: 'Bulgaria' },
-        { code: 'BF', name: 'Burkina Faso' },
-        { code: 'BI', name: 'Burundi' },
-        { code: 'KH', name: 'Cambodia' },
-        { code: 'CM', name: 'Cameroon' },
-        { code: 'CA', name: 'Canada' },
-        { code: 'CV', name: 'Cape Verde' },
-        { code: 'CF', name: 'Central African Republic' },
-        { code: 'TD', name: 'Chad' },
-        { code: 'CL', name: 'Chile' },
-        { code: 'CN', name: 'China' },
-        { code: 'CO', name: 'Colombia' },
-        { code: 'KM', name: 'Comoros' },
-        { code: 'CG', name: 'Congo' },
-        { code: 'CR', name: 'Costa Rica' },
-        { code: 'HR', name: 'Croatia' },
-        { code: 'CU', name: 'Cuba' },
-        { code: 'CY', name: 'Cyprus' },
-        { code: 'CZ', name: 'Czech Republic' },
-        { code: 'DK', name: 'Denmark' },
-        { code: 'DJ', name: 'Djibouti' },
-        { code: 'DM', name: 'Dominica' },
-        { code: 'DO', name: 'Dominican Republic' },
-        { code: 'EC', name: 'Ecuador' },
-        { code: 'EG', name: 'Egypt' },
-        { code: 'SV', name: 'El Salvador' },
-        { code: 'GQ', name: 'Equatorial Guinea' },
-        { code: 'ER', name: 'Eritrea' },
-        { code: 'EE', name: 'Estonia' },
-        { code: 'ET', name: 'Ethiopia' },
-        { code: 'FJ', name: 'Fiji' },
-        { code: 'FI', name: 'Finland' },
-        { code: 'FR', name: 'France' },
-        { code: 'GA', name: 'Gabon' },
-        { code: 'GM', name: 'Gambia' },
-        { code: 'GE', name: 'Georgia' },
-        { code: 'DE', name: 'Germany' },
-        { code: 'GH', name: 'Ghana' },
-        { code: 'GR', name: 'Greece' },
-        { code: 'GD', name: 'Grenada' },
-        { code: 'GT', name: 'Guatemala' },
-        { code: 'GN', name: 'Guinea' },
-        { code: 'GW', name: 'Guinea-Bissau' },
-        { code: 'GY', name: 'Guyana' },
-        { code: 'HT', name: 'Haiti' },
-        { code: 'HN', name: 'Honduras' },
-        { code: 'HU', name: 'Hungary' },
-        { code: 'IS', name: 'Iceland' },
-        { code: 'IN', name: 'India' },
-        { code: 'ID', name: 'Indonesia' },
-        { code: 'IR', name: 'Iran' },
-        { code: 'IQ', name: 'Iraq' },
-        { code: 'IE', name: 'Ireland' },
-        { code: 'IL', name: 'Israel' },
-        { code: 'IT', name: 'Italy' },
-        { code: 'JM', name: 'Jamaica' },
-        { code: 'JP', name: 'Japan' },
-        { code: 'JO', name: 'Jordan' },
-        { code: 'KZ', name: 'Kazakhstan' },
-        { code: 'KE', name: 'Kenya' },
-        { code: 'KI', name: 'Kiribati' },
-        { code: 'KP', name: 'North Korea' },
-        { code: 'KR', name: 'South Korea' },
-        { code: 'KW', name: 'Kuwait' },
-        { code: 'KG', name: 'Kyrgyzstan' },
-        { code: 'LA', name: 'Laos' },
-        { code: 'LV', name: 'Latvia' },
-        { code: 'LB', name: 'Lebanon' },
-        { code: 'LS', name: 'Lesotho' },
-        { code: 'LR', name: 'Liberia' },
-        { code: 'LY', name: 'Libya' },
-        { code: 'LI', name: 'Liechtenstein' },
-        { code: 'LT', name: 'Lithuania' },
-        { code: 'LU', name: 'Luxembourg' },
-        { code: 'MG', name: 'Madagascar' },
-        { code: 'MW', name: 'Malawi' },
-        { code: 'MY', name: 'Malaysia' },
-        { code: 'MV', name: 'Maldives' },
-        { code: 'ML', name: 'Mali' },
-        { code: 'MT', name: 'Malta' },
-        { code: 'MH', name: 'Marshall Islands' },
-        { code: 'MR', name: 'Mauritania' },
-        { code: 'MU', name: 'Mauritius' },
-        { code: 'MX', name: 'Mexico' },
-        { code: 'FM', name: 'Micronesia' },
-        { code: 'MD', name: 'Moldova' },
-        { code: 'MC', name: 'Monaco' },
-        { code: 'MN', name: 'Mongolia' },
-        { code: 'ME', name: 'Montenegro' },
-        { code: 'MA', name: 'Morocco' },
-        { code: 'MZ', name: 'Mozambique' },
-        { code: 'MM', name: 'Myanmar' },
-        { code: 'NA', name: 'Namibia' },
-        { code: 'NR', name: 'Nauru' },
-        { code: 'NP', name: 'Nepal' },
-        { code: 'NL', name: 'Netherlands' },
-        { code: 'NZ', name: 'New Zealand' },
-        { code: 'NI', name: 'Nicaragua' },
-        { code: 'NE', name: 'Niger' },
-        { code: 'NG', name: 'Nigeria' },
-        { code: 'NO', name: 'Norway' },
-        { code: 'OM', name: 'Oman' },
-        { code: 'PK', name: 'Pakistan' },
-        { code: 'PW', name: 'Palau' },
-        { code: 'PA', name: 'Panama' },
-        { code: 'PG', name: 'Papua New Guinea' },
-        { code: 'PY', name: 'Paraguay' },
-        { code: 'PE', name: 'Peru' },
-        { code: 'PH', name: 'Philippines' },
-        { code: 'PL', name: 'Poland' },
-        { code: 'PT', name: 'Portugal' },
-        { code: 'QA', name: 'Qatar' },
-        { code: 'RO', name: 'Romania' },
-        { code: 'RU', name: 'Russia' },
-        { code: 'RW', name: 'Rwanda' },
-        { code: 'KN', name: 'Saint Kitts and Nevis' },
-        { code: 'LC', name: 'Saint Lucia' },
-        { code: 'VC', name: 'Saint Vincent and the Grenadines' },
-        { code: 'WS', name: 'Samoa' },
-        { code: 'SM', name: 'San Marino' },
-        { code: 'ST', name: 'Sao Tome and Principe' },
-        { code: 'SA', name: 'Saudi Arabia' },
-        { code: 'SN', name: 'Senegal' },
-        { code: 'RS', name: 'Serbia' },
-        { code: 'SC', name: 'Seychelles' },
-        { code: 'SL', name: 'Sierra Leone' },
-        { code: 'SG', name: 'Singapore' },
-        { code: 'SK', name: 'Slovakia' },
-        { code: 'SI', name: 'Slovenia' },
-        { code: 'SB', name: 'Solomon Islands' },
-        { code: 'SO', name: 'Somalia' },
-        { code: 'ZA', name: 'South Africa' },
-        { code: 'SS', name: 'South Sudan' },
-        { code: 'ES', name: 'Spain' },
-        { code: 'LK', name: 'Sri Lanka' },
-        { code: 'SD', name: 'Sudan' },
-        { code: 'SR', name: 'Suriname' },
-        { code: 'SZ', name: 'Swaziland' },
-        { code: 'SE', name: 'Sweden' },
-        { code: 'CH', name: 'Switzerland' },
-        { code: 'SY', name: 'Syria' },
-        { code: 'TW', name: 'Taiwan' },
-        { code: 'TJ', name: 'Tajikistan' },
-        { code: 'TZ', name: 'Tanzania' },
-        { code: 'TH', name: 'Thailand' },
-        { code: 'TL', name: 'Timor-Leste' },
-        { code: 'TG', name: 'Togo' },
-        { code: 'TO', name: 'Tonga' },
-        { code: 'TT', name: 'Trinidad and Tobago' },
-        { code: 'TN', name: 'Tunisia' },
-        { code: 'TR', name: 'Turkey' },
-        { code: 'TM', name: 'Turkmenistan' },
-        { code: 'TV', name: 'Tuvalu' },
-        { code: 'UG', name: 'Uganda' },
-        { code: 'UA', name: 'Ukraine' },
-        { code: 'AE', name: 'United Arab Emirates' },
-        { code: 'GB', name: 'United Kingdom' },
-        { code: 'US', name: 'United States' },
-        { code: 'UY', name: 'Uruguay' },
-        { code: 'UZ', name: 'Uzbekistan' },
-        { code: 'VU', name: 'Vanuatu' },
-        { code: 'VA', name: 'Vatican City' },
-        { code: 'VE', name: 'Venezuela' },
-        { code: 'VN', name: 'Vietnam' },
-        { code: 'YE', name: 'Yemen' },
-        { code: 'ZM', name: 'Zambia' },
-        { code: 'ZW', name: 'Zimbabwe' }
-    ];
+  const [country, setCountry] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const supabase = createClient();
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            setLoading(true);
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      setLoading(true);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-            if (!user) {
-                console.error('Error fetching user data:', user);
-                return;
-            }
+      if (!user) {
+        setLoading(false);
+        return;
+      }
 
-            setCountry(user?.user_metadata?.country);
-            setFullName(user?.user_metadata?.full_name ?? '');
-            setLoading(false);
-        };
-
-        fetchUserData();
-    }, [supabase]);
-
-    const handleSaveChanges = async () => {
-        setIsSaving(true);
-        const { data, error } = await supabase.auth.updateUser({
-            data: { country: country, full_name: fullName }
-        })
-
-        if (error) {
-            console.error('Error updating user data:', error);
-            setIsSaving(false);
-            return;
-        }
-
-        setIsSaving(false);
+      setCountry(user.user_metadata?.country ?? '');
+      setFullName(user.user_metadata?.full_name ?? '');
+      setEmail(user.email ?? '');
+      setLoading(false);
     };
 
-    return (
-        <div className="space-y-6 p-6 max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold">Settings</h1>
+    fetchUserData();
+  }, [supabase]);
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Account Details</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {loading ? (
-                        <div className="space-y-4">
-                            <div>
-                                <Skeleton className="h-5 w-16 mb-1" /> {/* Country label */}
-                                <Skeleton className="h-10 w-full" /> {/* Select input */}
-                            </div>
+  const handleSaveChanges = async () => {
+    if (!fullName.trim() || !email.trim()) {
+      window.alert('Please enter your name and email address.');
+      return;
+    }
 
-                            <div>
-                                <Skeleton className="h-5 w-20 mb-1" /> {/* Full Name label */}
-                                <Skeleton className="h-10 w-full" /> {/* Text input */}
-                            </div>
+    if (newPassword && newPassword.length < 6) {
+      window.alert('Your new password must be at least 6 characters long.');
+      return;
+    }
 
-                            <Skeleton className="h-10 w-32" /> {/* Button */}
-                        </div>
-                    ) : (
-                        <div className="space-y-4">
-                            <div>
-                                <label htmlFor="country" className="block font-medium mb-1">
-                                    Country
-                                </label>
-                                <Select value={country} onValueChange={(v) => {
-                                    setCountry(v)
-                                }}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select country" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {countries.map((country) => (
-                                            <SelectItem key={country.code} value={country.code}>
-                                                {country.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
+    setIsSaving(true);
 
-                            <div>
-                                <label htmlFor="fullName" className="block font-medium mb-1">
-                                    Full Name
-                                </label>
-                                <Input
-                                    id="fullName"
-                                    value={fullName}
-                                    onChange={(e) => setFullName(e.target.value)}
-                                    placeholder="Enter your full name"
-                                />
-                            </div>
+    const updatePayload: Parameters<typeof supabase.auth.updateUser>[0] = {
+      data: {
+        country,
+        full_name: fullName.trim(),
+      },
+    };
 
-                            <Button onClick={handleSaveChanges} disabled={loading} className='inline-flex'>
-                                {isSaving && (
-                                    <span className="mr-2">
-                                        <Loader2Icon className="animate-spin" />
-                                    </span>
-                                )}
-                                <span>
-                                    {isSaving ? 'Saving...' : 'Save Changes'}
-                                </span>
-                            </Button>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-        </div>
-    );
+    if (email.trim()) {
+      updatePayload.email = email.trim();
+    }
+
+    if (newPassword) {
+      updatePayload.password = newPassword;
+    }
+
+    const { error } = await supabase.auth.updateUser(updatePayload);
+
+    if (error) {
+      console.error('Error updating user data:', error);
+      setIsSaving(false);
+      window.alert(error.message || 'Unable to update your details. Please try again.');
+      return;
+    }
+
+    const emailResponse = await fetch('/api/account-updated', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: fullName.trim(), email: email.trim() }),
+    });
+
+    setNewPassword('');
+    setIsSaving(false);
+
+    if (!emailResponse.ok) {
+      console.error('Account was updated, but the confirmation email could not be sent.');
+    }
+
+    window.alert('Your details have been successfully uploaded');
+    window.location.reload();
+  };
+
+  return (
+    <div className="space-y-6 p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold">Settings</h1>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Account Details</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-32" />
+            </div>
+          ) : (
+            <div className="space-y-5">
+              <div>
+                <label htmlFor="fullName" className="block font-medium mb-1">Name</label>
+                <Input
+                  id="fullName"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Enter your name"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="country" className="block font-medium mb-1">Country</label>
+                <Select value={country} onValueChange={setCountry}>
+                  <SelectTrigger id="country" className="w-full">
+                    <SelectValue placeholder="Select country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {countries.map((item) => (
+                      <SelectItem key={item.code} value={item.code}>{item.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block font-medium mb-1">Email</label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email address"
+                  autoComplete="email"
+                />
+                <p className="text-xs text-slate-500 mt-1">Changing your email may require confirmation from Supabase.</p>
+              </div>
+
+              <div>
+                <label htmlFor="newPassword" className="block font-medium mb-1">Update password</label>
+                <Input
+                  id="newPassword"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter a new password"
+                  autoComplete="new-password"
+                />
+                <p className="text-xs text-slate-500 mt-1">Leave blank if you do not want to change your password.</p>
+              </div>
+
+              <Button
+                onClick={handleSaveChanges}
+                disabled={isSaving}
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6"
+              >
+                {isSaving && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
+                {isSaving ? 'Updating...' : 'Update'}
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
 };
 
 export default Settings;
