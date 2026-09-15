@@ -8,7 +8,7 @@ function escapeHtml(value: string) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+    .replace(/\"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
 
@@ -32,26 +32,46 @@ export async function POST() {
     const safeName = escapeHtml(name);
     const admin = createAdminClient();
 
-    // These are best-effort cleanup operations. They must not block Auth deletion,
-    // because some installations may not have the optional review schema applied.
-    try {
-      const { error } = await admin
-        .from('user_roles')
-        .delete()
-        .eq('user_id', user.id);
-      if (error) console.error('Non-blocking user role cleanup error:', error);
-    } catch (error) {
-      console.error('Non-blocking user role cleanup exception:', error);
+    // Remove application-owned rows first. These operations are best-effort so
+    // an optional table or older installation cannot prevent Auth deletion.
+    for (const table of ['user_roles', 'testimonials', 'orders', 'authors']) {
+      try {
+        const { error } = await admin.from(table).delete().eq('user_id', user.id);
+        if (error) console.error(`Non-blocking ${table} cleanup error:`, error);
+      } catch (error) {
+        console.error(`Non-blocking ${table} cleanup exception:`, error);
+      }
     }
 
+    // Supabase also blocks hard deletion when the Auth user owns Storage objects.
+    // Remove every object owned by this user, grouped by bucket.
     try {
-      const { error } = await admin
-        .from('testimonials')
-        .delete()
-        .eq('user_id', user.id);
-      if (error) console.error('Non-blocking review cleanup error:', error);
+      const { data: ownedObjects, error: storageQueryError } = await admin
+        .from('storage.objects')
+        .select('bucket_id, name')
+        .eq('owner', user.id);
+
+      if (storageQueryError) {
+        console.error('Non-blocking storage ownership lookup error:', storageQueryError);
+      } else if (ownedObjects?.length) {
+        const byBucket = new Map<string, string[]>();
+        for (const object of ownedObjects) {
+          const names = byBucket.get(object.bucket_id) ?? [];
+          names.push(object.name);
+          byBucket.set(object.bucket_id, names);
+        }
+
+        for (const [bucket, names] of byBucket) {
+          try {
+            const { error } = await admin.storage.from(bucket).remove(names);
+            if (error) console.error(`Non-blocking storage cleanup error for ${bucket}:`, error);
+          } catch (error) {
+            console.error(`Non-blocking storage cleanup exception for ${bucket}:`, error);
+          }
+        }
+      }
     } catch (error) {
-      console.error('Non-blocking review cleanup exception:', error);
+      console.error('Non-blocking storage cleanup exception:', error);
     }
 
     const { error: deleteError } = await admin.auth.admin.deleteUser(user.id);
