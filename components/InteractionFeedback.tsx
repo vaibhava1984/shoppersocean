@@ -27,36 +27,58 @@ const INTERACTIVE_SELECTOR = [
 ].join(", ")
 
 let audioContext: AudioContext | null = null
+let clickAudio: HTMLAudioElement | null = null
 let lastFeedbackAt = 0
 
-async function playClickSound() {
+// Tiny self-contained WAV fallback. It avoids depending on an external audio file.
+const CLICK_SOUND = "data:audio/wav;base64,UklGRiQFAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAFAAAA"
+
+function playClickSound() {
+  try {
+    if (!clickAudio) {
+      clickAudio = new Audio(CLICK_SOUND)
+      clickAudio.volume = 0.35
+      clickAudio.preload = "auto"
+    }
+
+    clickAudio.currentTime = 0
+    const audioPlay = clickAudio.play()
+    if (audioPlay) void audioPlay.catch(() => undefined)
+  } catch {
+    // Continue with Web Audio fallback below.
+  }
+
   try {
     const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
     if (!AudioContextClass) return
 
     audioContext ??= new AudioContextClass()
 
-    if (audioContext.state === "suspended") {
-      await audioContext.resume()
+    const startTone = () => {
+      if (!audioContext || audioContext.state !== "running") return
+
+      const oscillator = audioContext.createOscillator()
+      const gain = audioContext.createGain()
+      const now = audioContext.currentTime
+
+      oscillator.type = "sine"
+      oscillator.frequency.setValueAtTime(720, now)
+      oscillator.frequency.exponentialRampToValueAtTime(460, now + 0.06)
+      gain.gain.setValueAtTime(0.0001, now)
+      gain.gain.exponentialRampToValueAtTime(0.07, now + 0.006)
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07)
+
+      oscillator.connect(gain)
+      gain.connect(audioContext.destination)
+      oscillator.start(now)
+      oscillator.stop(now + 0.075)
     }
 
-    if (audioContext.state !== "running") return
-
-    const oscillator = audioContext.createOscillator()
-    const gain = audioContext.createGain()
-    const now = audioContext.currentTime
-
-    oscillator.type = "sine"
-    oscillator.frequency.setValueAtTime(680, now)
-    oscillator.frequency.exponentialRampToValueAtTime(440, now + 0.07)
-    gain.gain.setValueAtTime(0.0001, now)
-    gain.gain.exponentialRampToValueAtTime(0.055, now + 0.008)
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075)
-
-    oscillator.connect(gain)
-    gain.connect(audioContext.destination)
-    oscillator.start(now)
-    oscillator.stop(now + 0.08)
+    if (audioContext.state === "suspended") {
+      void audioContext.resume().then(startTone).catch(() => undefined)
+    } else {
+      startTone()
+    }
   } catch {
     // Audio feedback is optional; never let it interfere with the action.
   }
@@ -92,18 +114,16 @@ export default function InteractionFeedback() {
 
       createRipple(event)
 
-      // Trigger haptics directly from the user's touch gesture.
       if (event.pointerType !== "mouse" && typeof navigator.vibrate === "function") {
         try {
-          navigator.vibrate(18)
+          navigator.vibrate([20, 10, 20])
         } catch {
           // Haptic feedback is optional.
         }
       }
 
-      // Start/resume Web Audio from the same user gesture so mobile browsers
-      // are allowed to play the feedback sound.
-      void playClickSound()
+      // Start audio immediately from the same user gesture.
+      playClickSound()
     }
 
     document.addEventListener("pointerdown", handlePointerDown, { passive: true })
