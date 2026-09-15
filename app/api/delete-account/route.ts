@@ -32,35 +32,26 @@ export async function POST() {
     const safeName = escapeHtml(name);
     const admin = createAdminClient();
 
-    // Remove application-owned records that can participate in the Auth user's
-    // database dependency chain before deleting the Auth account.
-    const { error: roleError } = await admin
-      .from('user_roles')
-      .delete()
-      .eq('user_id', user.id);
-
-    if (roleError) {
-      console.error('Error removing user role during account deletion:', roleError);
-      return NextResponse.json(
-        { error: 'Unable to remove your account data. Please try again.' },
-        { status: 500 }
-      );
+    // These are best-effort cleanup operations. They must not block Auth deletion,
+    // because some installations may not have the optional review schema applied.
+    try {
+      const { error } = await admin
+        .from('user_roles')
+        .delete()
+        .eq('user_id', user.id);
+      if (error) console.error('Non-blocking user role cleanup error:', error);
+    } catch (error) {
+      console.error('Non-blocking user role cleanup exception:', error);
     }
 
-    // Reviews are application data owned by the user. Remove them explicitly
-    // before deleting the Auth account so future schema constraints cannot block
-    // account deletion.
-    const { error: reviewError } = await admin
-      .from('testimonials')
-      .delete()
-      .eq('user_id', user.id);
-
-    if (reviewError) {
-      console.error('Error removing user reviews during account deletion:', reviewError);
-      return NextResponse.json(
-        { error: 'Unable to remove your account data. Please try again.' },
-        { status: 500 }
-      );
+    try {
+      const { error } = await admin
+        .from('testimonials')
+        .delete()
+        .eq('user_id', user.id);
+      if (error) console.error('Non-blocking review cleanup error:', error);
+    } catch (error) {
+      console.error('Non-blocking review cleanup exception:', error);
     }
 
     const { error: deleteError } = await admin.auth.admin.deleteUser(user.id);
