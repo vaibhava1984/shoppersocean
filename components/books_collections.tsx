@@ -1,100 +1,55 @@
 "use client"
 import BookCard from "@/components/BookCard"
-import { useEffect, useState } from "react";
-import { createClient } from '@/utils/supabase/client'
+import { useEffect, useState } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
+import { getHomepageBooks, HomepageBook } from "@/utils/homepageBooksCache"
 
-const BookCardSkeleton = () => {
-    return (
-        <div className="flex flex-col space-y-3">
-            <Skeleton className="h-[200px] w-full rounded-lg" />
-            <div className="space-y-2">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-            </div>
-            <Skeleton className="h-20 w-full" />
+const BookCardSkeleton = () => (
+    <div className="flex flex-col space-y-3">
+        <Skeleton className="h-[200px] w-full rounded-lg" />
+        <div className="space-y-2">
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-4 w-1/2" />
         </div>
-    )
-}
+        <Skeleton className="h-20 w-full" />
+    </div>
+)
 
-export default function BooksCollections({ loggedinUserId }: {
-    loggedinUserId?: string
-}) {
-    const supabase = createClient()
-    const [isLoading, setIsLoading] = useState(true);
-    const [authorBooks, setAuthorBooks] = useState<any>([]);
+export default function BooksCollections({ loggedinUserId }: { loggedinUserId?: string }) {
+    const [isLoading, setIsLoading] = useState(true)
+    const [authorBooks, setAuthorBooks] = useState<HomepageBook[]>([])
 
     useEffect(() => {
-        async function fetchBooks() {
-            setIsLoading(true)
-            try {
-                const { data: layoutData, error: layoutError } = await supabase
-                    .from('layout_settings')
-                    .select('page_section, value')
-                    .order('id', { ascending: true })
+        let active = true
 
-                if (layoutError) {
-                    console.error('Error fetching layout settings:', layoutError)
-                    return
-                }
+        getHomepageBooks()
+            .then(placements => {
+                if (!active) return
+                setAuthorBooks(
+                    placements
+                        .filter(item => item.pageSection === 'HOMEPAGE_COLLECTION')
+                        .map(({ pageSection, ...book }) => book)
+                )
+            })
+            .catch(error => console.error('Unexpected error in fetchBooks:', error))
+            .finally(() => {
+                if (active) setIsLoading(false)
+            })
 
-                if (!layoutData || layoutData.length === 0) {
-                    console.log('No layout settings found')
-                    setIsLoading(false)
-                    return
-                }
-
-                const bookIds = layoutData.map(item => item.value)
-
-                const { data: booksData, error: booksError } = await supabase
-                    .from('books')
-                    .select('id, title,description,cover_images, author_name, price, is_deleted')
-                    .in('id', bookIds)
-                    .eq('is_deleted', false)
-
-                if (booksError) {
-                    console.error('Error fetching books:', booksError)
-                    return
-                }
-
-                const books = booksData.map(book => ({
-                    id: book.id,
-                    title: book.title,
-                    description: book.description,
-                    coverImage: book.cover_images?.[0],
-                    images: book.cover_images,
-                    author: book.author_name,
-                    price: book.price,
-                }))
-
-                const collection = layoutData
-                    .filter(item => item.page_section === 'HOMEPAGE_COLLECTION')
-                    .map(item => books.find(book => book.id === item.value))
-                    .filter(Boolean)
-
-                setAuthorBooks(collection)
-            } catch (error) {
-                console.error('Unexpected error in fetchBooks:', error)
-            } finally {
-                setIsLoading(false)
-            }
+        return () => {
+            active = false
         }
-
-        fetchBooks()
     }, [])
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {isLoading ? (
-                [...Array(4)].map((_, index) => (
-                    <BookCardSkeleton key={index} />
-                ))
+                [...Array(4)].map((_, index) => <BookCardSkeleton key={index} />)
             ) : (
-                authorBooks.map((book: any, index: number) => (
-                    <BookCard key={index} book={book} loggedinUserId={loggedinUserId} />
+                authorBooks.map((book, index) => (
+                    <BookCard key={`${book.id}-${index}`} book={book} loggedinUserId={loggedinUserId} />
                 ))
             )}
         </div>
     )
-
 }
