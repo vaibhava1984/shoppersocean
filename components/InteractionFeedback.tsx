@@ -27,34 +27,16 @@ const INTERACTIVE_SELECTOR = [
 ].join(", ")
 
 let audioContext: AudioContext | null = null
-let clickAudio: HTMLAudioElement | null = null
 let lastFeedbackAt = 0
 
-// Tiny self-contained WAV fallback. It avoids depending on an external audio file.
-const CLICK_SOUND = "data:audio/wav;base64,UklGRiQFAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAFAAAA"
-
 function playClickSound() {
-  try {
-    if (!clickAudio) {
-      clickAudio = new Audio(CLICK_SOUND)
-      clickAudio.volume = 0.35
-      clickAudio.preload = "auto"
-    }
-
-    clickAudio.currentTime = 0
-    const audioPlay = clickAudio.play()
-    if (audioPlay) void audioPlay.catch(() => undefined)
-  } catch {
-    // Continue with Web Audio fallback below.
-  }
-
   try {
     const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
     if (!AudioContextClass) return
 
     audioContext ??= new AudioContextClass()
 
-    const startTone = () => {
+    const playTone = () => {
       if (!audioContext || audioContext.state !== "running") return
 
       const oscillator = audioContext.createOscillator()
@@ -62,25 +44,25 @@ function playClickSound() {
       const now = audioContext.currentTime
 
       oscillator.type = "sine"
-      oscillator.frequency.setValueAtTime(720, now)
-      oscillator.frequency.exponentialRampToValueAtTime(460, now + 0.06)
+      oscillator.frequency.setValueAtTime(880, now)
+      oscillator.frequency.exponentialRampToValueAtTime(520, now + 0.09)
       gain.gain.setValueAtTime(0.0001, now)
-      gain.gain.exponentialRampToValueAtTime(0.07, now + 0.006)
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07)
+      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.008)
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11)
 
       oscillator.connect(gain)
       gain.connect(audioContext.destination)
       oscillator.start(now)
-      oscillator.stop(now + 0.075)
+      oscillator.stop(now + 0.115)
     }
 
     if (audioContext.state === "suspended") {
-      void audioContext.resume().then(startTone).catch(() => undefined)
+      void audioContext.resume().then(playTone).catch(() => undefined)
     } else {
-      startTone()
+      playTone()
     }
   } catch {
-    // Audio feedback is optional; never let it interfere with the action.
+    // Audio feedback is optional; never interfere with the control action.
   }
 }
 
@@ -116,13 +98,13 @@ export default function InteractionFeedback() {
 
       if (event.pointerType !== "mouse" && typeof navigator.vibrate === "function") {
         try {
-          navigator.vibrate([20, 10, 20])
+          navigator.vibrate([25, 15, 25])
         } catch {
           // Haptic feedback is optional.
         }
       }
 
-      // Start audio immediately from the same user gesture.
+      // Audio is started directly from the user's pointer gesture.
       playClickSound()
     }
 
