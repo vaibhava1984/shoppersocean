@@ -14,7 +14,7 @@ export default function MobileMenu({ user }: {
             <Button
                 variant="ghost"
                 size="icon"
-                className="relative z-50 text-white hover:bg-white/15"
+                className="relative z-50 text-slate-600 hover:bg-gray-100"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {isOpen ? (
