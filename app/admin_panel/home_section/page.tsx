@@ -1,7 +1,6 @@
 'use client'
 import * as React from 'react'
 import { X } from 'lucide-react'
-import { createClient } from '@/utils/supabase/client'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -19,9 +18,6 @@ import {
 } from '@/components/ui/card'
 import { useToast } from "@/hooks/use-toast"
 import AdminSidebar from "../adminSidebar"
-
-// Initialize Supabase client
-const supabase = createClient()
 
 type Book = {
     id: string
@@ -44,11 +40,8 @@ type SortableBookItemProps = {
 }
 
 function SortableBookItem({ entry, onRemove }: SortableBookItemProps) {
-
     return (
-        <div
-            className="relative mb-2"
-        >
+        <div className="relative mb-2">
             <div className="flex items-center justify-between rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
                 <div>
                     <h4 className="text-sm font-medium">
@@ -64,9 +57,7 @@ function SortableBookItem({ entry, onRemove }: SortableBookItemProps) {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8"
-                    onClick={() => {
-                        onRemove(entry.entryId)
-                    }}
+                    onClick={() => onRemove(entry.entryId)}
                 >
                     <X className="h-4 w-4" />
                     <span className="sr-only">Remove book</span>
@@ -89,41 +80,44 @@ function BookSection({ title, entries, maxBooks, sectionType, onAdded, onRemoved
     const [isDialogOpen, setIsDialogOpen] = React.useState(false)
     const [searchQuery, setSearchQuery] = React.useState('')
     const [searchResults, setSearchResults] = React.useState<Book[]>([])
+    const [isSearching, setIsSearching] = React.useState(false)
     const [isSaving, setIsSaving] = React.useState(false)
     const { toast } = useToast()
 
     async function handleSearch(query: string) {
         setSearchQuery(query)
-        if (query.length < 2) {
+        if (query.trim().length < 2) {
             setSearchResults([])
             return
         }
 
-        const { data, error } = await supabase
-            .from('books')
-            .select('id, title, author_name')
-            .or(`title.ilike.%${query}%,author_name.ilike.%${query}%`)
-            .eq('isCompletelyFilled', true)
-            .eq('is_deleted', false)
-            .limit(15);
+        setIsSearching(true)
+        try {
+            const response = await fetch(`/api/homepage_sections?search=${encodeURIComponent(query.trim())}`)
+            const payload = await response.json()
 
-        if (error) {
+            if (!response.ok) {
+                toast({
+                    title: "Search failed",
+                    description: payload.error ?? 'Please try again.',
+                    variant: "destructive",
+                })
+                setSearchResults([])
+                return
+            }
+
+            setSearchResults(payload.books ?? [])
+        } catch (error) {
             console.error('Error searching books:', error)
             toast({
                 title: "Search failed",
-                description: error.message,
+                description: "Please check your connection and try again.",
                 variant: "destructive",
             })
-            return
+            setSearchResults([])
+        } finally {
+            setIsSearching(false)
         }
-
-        const mappedBooks = data.map((book: any) => ({
-            id: book.id,
-            title: book.title,
-            author: book.author_name,
-        }));
-
-        setSearchResults(mappedBooks)
     }
 
     async function handleBookSelect(book: Book) {
@@ -247,22 +241,28 @@ function BookSection({ title, entries, maxBooks, sectionType, onAdded, onRemoved
                                 onChange={(e) => handleSearch(e.target.value)}
                             />
                             <div className="space-y-2">
-                                {searchResults.map((book) => (
-                                    <Button
-                                        key={book.id}
-                                        variant="outline"
-                                        className="w-full justify-start"
-                                        disabled={isSaving}
-                                        onClick={() => handleBookSelect(book)}
-                                    >
-                                        <div className="text-left">
-                                            <div className="font-medium">{book.title}</div>
-                                            <div className="text-sm text-muted-foreground">
-                                                {book.author}
+                                {isSearching ? (
+                                    <div className="py-3 text-sm text-muted-foreground">Searching...</div>
+                                ) : searchQuery.trim().length >= 2 && searchResults.length === 0 ? (
+                                    <div className="py-3 text-sm text-muted-foreground">No completed books found.</div>
+                                ) : (
+                                    searchResults.map((book) => (
+                                        <Button
+                                            key={book.id}
+                                            variant="outline"
+                                            className="w-full justify-start"
+                                            disabled={isSaving}
+                                            onClick={() => handleBookSelect(book)}
+                                        >
+                                            <div className="text-left">
+                                                <div className="font-medium">{book.title}</div>
+                                                <div className="text-sm text-muted-foreground">
+                                                    {book.author}
+                                                </div>
                                             </div>
-                                        </div>
-                                    </Button>
-                                ))}
+                                        </Button>
+                                    ))
+                                )}
                             </div>
                         </div>
                     </DialogContent>
