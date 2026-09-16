@@ -2,6 +2,8 @@
 
 import { useEffect } from "react"
 
+// Keep the global feedback listener deliberately small. The feedback must never
+// compete with the actual control action for CPU time.
 const INTERACTIVE_SELECTOR = [
   "a",
   "button",
@@ -21,9 +23,6 @@ const INTERACTIVE_SELECTOR = [
   "[role=\"checkbox\"]",
   "[role=\"radio\"]",
   "[role=\"combobox\"]",
-  "[role=\"slider\"]",
-  "[role=\"spinbutton\"]",
-  "[tabindex]:not([tabindex=\"-1\"])",
 ].join(", ")
 
 let audioContext: AudioContext | null = null
@@ -31,7 +30,9 @@ let lastFeedbackAt = 0
 
 function playClickSound() {
   try {
-    const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
     if (!AudioContextClass) return
 
     audioContext ??= new AudioContextClass()
@@ -44,16 +45,16 @@ function playClickSound() {
       const now = audioContext.currentTime
 
       oscillator.type = "sine"
-      oscillator.frequency.setValueAtTime(880, now)
-      oscillator.frequency.exponentialRampToValueAtTime(520, now + 0.09)
+      oscillator.frequency.setValueAtTime(760, now)
+      oscillator.frequency.exponentialRampToValueAtTime(520, now + 0.06)
       gain.gain.setValueAtTime(0.0001, now)
-      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.008)
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11)
+      gain.gain.exponentialRampToValueAtTime(0.08, now + 0.006)
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.075)
 
       oscillator.connect(gain)
       gain.connect(audioContext.destination)
       oscillator.start(now)
-      oscillator.stop(now + 0.115)
+      oscillator.stop(now + 0.08)
     }
 
     if (audioContext.state === "suspended") {
@@ -70,7 +71,7 @@ function createRipple(event: PointerEvent) {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
   const ripple = document.createElement("span")
-  const size = 42
+  const size = 36
   ripple.className = "interaction-feedback-ripple"
   ripple.style.width = `${size}px`
   ripple.style.height = `${size}px`
@@ -78,7 +79,7 @@ function createRipple(event: PointerEvent) {
   ripple.style.top = `${event.clientY - size / 2}px`
 
   document.body.appendChild(ripple)
-  window.setTimeout(() => ripple.remove(), 280)
+  window.setTimeout(() => ripple.remove(), 220)
 }
 
 export default function InteractionFeedback() {
@@ -91,21 +92,25 @@ export default function InteractionFeedback() {
       if (!control || control.hasAttribute("disabled") || control.getAttribute("aria-disabled") === "true") return
 
       const now = performance.now()
-      if (now - lastFeedbackAt < 45) return
+      if (now - lastFeedbackAt < 60) return
       lastFeedbackAt = now
 
+      // Keep the visual/haptic response immediate and very cheap.
       createRipple(event)
 
       if (event.pointerType !== "mouse" && typeof navigator.vibrate === "function") {
         try {
-          navigator.vibrate([25, 15, 25])
+          navigator.vibrate(18)
         } catch {
           // Haptic feedback is optional.
         }
       }
 
-      // Audio is started directly from the user's pointer gesture.
-      playClickSound()
+      // Avoid creating/resuming Web Audio for ordinary mouse clicks. On touch,
+      // the sound remains part of the requested multimodal feedback.
+      if (event.pointerType !== "mouse") {
+        playClickSound()
+      }
     }
 
     document.addEventListener("pointerdown", handlePointerDown, { passive: true })
