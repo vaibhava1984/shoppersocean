@@ -29,7 +29,7 @@ export default function ResetPassword() {
             if (error) setError(error.message)
             else {
                 setEmailSent(true)
-                showDialog("Check your email", "If an account exists with this email, you will receive a password reset link.")
+                setDialogState(prev => ({ ...prev, isOpen: false }))
             }
         } catch (err) { setError("An error occurred. Please try again.") }
         finally { setIsSubmitting(false) }
