@@ -14,29 +14,27 @@ export async function POST(request: Request) {
     const admin = createAdminClient();
     const { data: orders, error: ordersError } = await admin
       .from('orders')
-      .select('id, status')
+      .select('id, status, razorpay_order_id')
       .eq('user_id', user.id)
       .eq('product_id', bookId);
     if (ordersError) throw ordersError;
 
-    const orderIds = (orders || []).map((order: any) => order.id).filter(Boolean);
+    const paymentLookupIds = Array.from(new Set((orders || []).flatMap((order: any) => [order.id, order.razorpay_order_id]).filter(Boolean).map(String)));
     let payments: any[] = [];
-    if (orderIds.length) {
+    if (paymentLookupIds.length) {
       const { data, error: paymentsError } = await admin
         .from('payments')
         .select('order_id, status')
-        .in('order_id', orderIds);
+        .in('order_id', paymentLookupIds);
       if (paymentsError) throw paymentsError;
       payments = data || [];
     }
 
-    const purchased = (orders || []).some((order: any) =>
-      String(order?.status || '').toLowerCase() === 'completed' ||
-      payments.some((payment: any) =>
-        String(payment?.order_id) === String(order?.id) &&
-        String(payment?.status || '').toLowerCase() === 'completed'
-      )
-    );
+    const purchased = (orders || []).some((order: any) => {
+      if (String(order?.status || '').toLowerCase() === 'completed') return true;
+      const validOrderIds = new Set([String(order?.id || ''), String(order?.razorpay_order_id || '')].filter(Boolean));
+      return payments.some((payment: any) => validOrderIds.has(String(payment?.order_id || '')) && String(payment?.status || '').toLowerCase() === 'completed');
+    });
     if (!purchased) return NextResponse.json({ error: 'Purchase required' }, { status: 403 });
 
     const { data: files, error: filesError } = await admin
