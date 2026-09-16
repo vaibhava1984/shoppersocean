@@ -1,7 +1,30 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
+const isPublicPath = (pathname: string) =>
+  pathname === "/" ||
+  pathname.startsWith("/login") ||
+  pathname.startsWith("/reset-password") ||
+  pathname.startsWith("/update-password") ||
+  pathname.startsWith("/auth") ||
+  pathname.startsWith("/bookShelf") ||
+  pathname.startsWith("/about") ||
+  pathname.startsWith("/contact") ||
+  pathname.startsWith("/api/contact-me") ||
+  pathname.startsWith("/services") ||
+  pathname.startsWith("/book/") ||
+  pathname.startsWith("/privacy-policy")
+
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname
+
+  // Public pages do not need middleware session validation. Skipping the
+  // Supabase round-trip here keeps ordinary navigation fast while protected
+  // pages and API routes continue through the existing auth checks below.
+  if (isPublicPath(pathname)) {
+    return NextResponse.next({ request })
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -35,31 +58,14 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/reset-password") &&
-    !request.nextUrl.pathname.startsWith("/update-password") &&
-    !request.nextUrl.pathname.startsWith("/auth") &&
-    !request.nextUrl.pathname.startsWith("/bookShelf") &&
-    !request.nextUrl.pathname.startsWith("/about") &&
-    !request.nextUrl.pathname.startsWith("/contact") &&
-    !request.nextUrl.pathname.startsWith("/api/contact-me") &&
-    !request.nextUrl.pathname.startsWith("/services") &&
-    !request.nextUrl.pathname.startsWith("/book/") &&
-    !request.nextUrl.pathname.startsWith("/privacy-policy") &&
-    request.nextUrl.pathname !== "/"
-  ) {
+  if (!user) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
     url.pathname = "/login"
     return NextResponse.redirect(url)
   }
 
-  // console.log("user?.app_metadata?.userrole before=============>", user?.app_metadata?.userrole)
-
-  if (request.nextUrl.pathname.startsWith("/admin_panel") && user?.app_metadata?.userrole !== "ADMIN") {
-    // console.log("user?.app_metadata?.userrole=============>", user?.app_metadata?.userrole)
+  if (pathname.startsWith("/admin_panel") && user?.app_metadata?.userrole !== "ADMIN") {
     const url = request.nextUrl.clone()
     url.pathname = "/"
     return NextResponse.redirect(url)
@@ -67,16 +73,10 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
-  // 1. Pass the request in it, like so:
-  //    const myNewResponse = NextResponse.next({ request })
-  // 2. Copy over the cookies, like so:
-  //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-  // 3. Change the myNewResponse object to fit your needs, but avoid changing
-  //    the cookies!
-  // 4. Finally:
-  //    return myNewResponse
-  // If this is not done, you may be causing the browser and server to go out
-  // of sync and terminate the user's session prematurely!
+  // 1. Pass the request in it, like so: const myNewResponse = NextResponse.next({ request })
+  // 2. Copy over the cookies, like so: myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
+  // 3. Change the myNewResponse object to fit your needs, but avoid changing the cookies!
+  // 4. Finally, return myNewResponse
 
   return supabaseResponse
 }
