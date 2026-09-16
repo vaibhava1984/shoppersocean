@@ -34,7 +34,6 @@ type AuthorEditData = {
 
 const AuthorsManagement = () => {
     const { toast } = useToast()
-    const supabase = createClient();
     const [authors, setAuthors] = useState<AuthorData[]>([]);
     const [editingAuthorFullData, setEditingAuthorFullData] = useState<AuthorData | null>(null);
     const [editingAuthor, setEditingAuthor] = useState<AuthorEditData | null>(null);
@@ -48,12 +47,13 @@ const AuthorsManagement = () => {
     }, []);
 
     const fetchAuthors = async () => {
+        const supabase = createClient();
         const { data, error } = await supabase.from('authors').select('*, profiles(email)').eq('is_deleted', false);
         if (error) {
             console.error('Error fetching authors:', error);
         } else {
             console.log("data=>", data)
-            setAuthors(data);
+            setAuthors(data ?? []);
         }
     };
 
@@ -64,12 +64,13 @@ const AuthorsManagement = () => {
     }, [isAddAuthorOpen, isEditAuthorOpen]);
 
     const fetchAllUsers = async () => {
+        const supabase = createClient();
         const { data, error } = await supabase.from('profiles').select('id, full_name, email');
         if (error) {
             console.error('Error fetching authors:', error);
         } else {
             console.log("fetchAllUsers data=>", data)
-            setAllUsersLists(data);
+            setAllUsersLists(data ?? []);
         }
     };
 
@@ -81,11 +82,12 @@ const AuthorsManagement = () => {
 
     const handleUpdateAuthor = async () => {
         if (editingAuthor) {
-            const { data, error } = await supabase
+            const supabase = createClient();
+            const { error } = await supabase
                 .from('authors')
                 .update({
                     ...editingAuthor,
-                    updated_at: new Date().toISOString() // Set updated_at to the current time
+                    updated_at: new Date().toISOString()
                 })
                 .eq('author_id', editingAuthor.author_id);
 
@@ -101,7 +103,6 @@ const AuthorsManagement = () => {
     };
 
     const handleDeleteAuthor = async (author_id: string, user_id: string) => {
-
         const response = await fetch('/api/delete_author', {
             method: 'POST',
             headers: {
@@ -128,7 +129,6 @@ const AuthorsManagement = () => {
         fetchAuthors();
     };
 
-
     const handleAddAuthor = async () => {
         if (newAuthor.name && newAuthor.author_id) {
             const response = await fetch('/api/add_authors', {
@@ -138,7 +138,6 @@ const AuthorsManagement = () => {
                 },
                 body: JSON.stringify({
                     name: newAuthor.name,
-                    // bio: newAuthor.bio, 
                     user_id: newAuthor.author_id
                 }),
             });
@@ -170,7 +169,6 @@ const AuthorsManagement = () => {
             <Toaster />
             <div className="flex h-screen bg-gray-100">
                 <AdminSidebar />
-                {/* Main Content */}
                 <main className="flex-1 overflow-y-auto p-8">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-2xl font-semibold">Authors Management</h3>
@@ -194,17 +192,6 @@ const AuthorsManagement = () => {
                                             className="col-span-3"
                                         />
                                     </div>
-                                    {/* <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="bio" className="text-right">
-                                            Bio
-                                        </Label>
-                                        <Textarea
-                                            id="bio"
-                                            value={newAuthor.bio}
-                                            onChange={(e) => setNewAuthor({ ...newAuthor, bio: e.target.value })}
-                                            className="col-span-3"
-                                        />
-                                    </div> */}
                                     <div className="grid grid-cols-4 items-center gap-4">
                                         <Label htmlFor="author">Users <span className="text-red-500">*</span></Label>
                                         <Select
@@ -247,7 +234,7 @@ const AuthorsManagement = () => {
                             {authors.filter(d => d).map((author) => (
                                 <TableRow key={author.author_id} className='text-black'>
                                     <TableCell>{author.author_id}</TableCell>
-                                    <TableCell>{author.profiles.email}</TableCell>
+                                    <TableCell>{author.profiles?.email}</TableCell>
                                     <TableCell>{author.name}</TableCell>
                                     <TableCell>{author.bio}</TableCell>
                                     <TableCell>{new Date(author.created_at).toLocaleString()}</TableCell>
@@ -265,43 +252,35 @@ const AuthorsManagement = () => {
                                                 </DialogHeader>
                                                 <div className="grid gap-4 py-4">
                                                     <div className="grid grid-cols-4 items-center gap-4">
-                                                        <Label htmlFor="edit-name" className="text-right">
-                                                            Name
-                                                        </Label>
+                                                        <Label htmlFor="edit-name" className="text-right">Name</Label>
                                                         <Input
                                                             id="edit-name"
                                                             value={editingAuthor?.name || ''}
-                                                            onChange={(e) => setEditingAuthor(
-                                                                {
-                                                                    name: e.target.value,
-                                                                    bio: editingAuthor?.bio ?? '',
-                                                                    user_id: editingAuthor?.user_id ?? '',
-                                                                    author_id: editingAuthor?.author_id
-                                                                })}
+                                                            onChange={(e) => setEditingAuthor({
+                                                                name: e.target.value,
+                                                                bio: editingAuthor?.bio ?? '',
+                                                                user_id: editingAuthor?.user_id ?? '',
+                                                                author_id: editingAuthor?.author_id
+                                                            })}
                                                             className="col-span-3"
                                                         />
                                                     </div>
                                                     <div className="grid grid-cols-4 items-center gap-4">
-                                                        <Label htmlFor="edit-bio" className="text-right">
-                                                            Bio
-                                                        </Label>
+                                                        <Label htmlFor="edit-bio" className="text-right">Bio</Label>
                                                         <Textarea
                                                             id="edit-bio"
                                                             value={editingAuthor?.bio || ''}
-                                                            onChange={(e) => setEditingAuthor(
-                                                                {
-                                                                    name: editingAuthor?.name ?? '',
-                                                                    bio: e.target.value,
-                                                                    user_id: editingAuthor?.user_id ?? '',
-                                                                    author_id: editingAuthor?.author_id
-                                                                })}
+                                                            onChange={(e) => setEditingAuthor({
+                                                                name: editingAuthor?.name ?? '',
+                                                                bio: e.target.value,
+                                                                user_id: editingAuthor?.user_id ?? '',
+                                                                author_id: editingAuthor?.author_id
+                                                            })}
                                                             className="col-span-3"
                                                         />
                                                     </div>
                                                     <div className="flex items-center justify-center">
-                                                        <Label htmlFor="edit-author" className="text-right mr-2">
-                                                            Author
-                                                        </Label>
+                                                        <Label htmlFor="edit-author" className="text-right mr-2">Author</Label>
                                                         <div className='bg-gray-100 p-2 grid-col-span-3'>
                                                             {editingAuthorFullData?.profiles?.email}
                                                         </div>
