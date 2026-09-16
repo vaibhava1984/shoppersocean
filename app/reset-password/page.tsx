@@ -12,6 +12,7 @@ export default function ResetPassword() {
     const router = useRouter()
     const [email, setEmail] = useState("")
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [emailSent, setEmailSent] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [dialogState, setDialogState] = useState<{ isOpen: boolean; title: string; description: string }>({ isOpen: false, title: "", description: "" })
 
@@ -26,7 +27,10 @@ export default function ResetPassword() {
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/update-password` })
             if (error) setError(error.message)
-            else showDialog("Check your email", "If an account exists with this email, you will receive a password reset link.")
+            else {
+                setEmailSent(true)
+                showDialog("Check your email", "If an account exists with this email, you will receive a password reset link.")
+            }
         } catch (err) { setError("An error occurred. Please try again.") }
         finally { setIsSubmitting(false) }
     }
@@ -50,18 +54,28 @@ export default function ResetPassword() {
 
             <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8 relative overflow-hidden mt-10">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600" />
-                <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">Reset Password</h2>
-                <form onSubmit={handleResetPassword} className="space-y-4">
-                    {error && <div className="bg-red-400 text-white p-2 rounded">{error}</div>}
-                    <div>
-                        <label className="text-sm font-medium text-gray-700" htmlFor="email">Email</label>
-                        <input className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors" name="email" type="email" id="email" placeholder="you@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                {!emailSent ? (
+                    <>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">Reset Password</h2>
+                        <form onSubmit={handleResetPassword} className="space-y-4">
+                            {error && <div className="bg-red-400 text-white p-2 rounded">{error}</div>}
+                            <div>
+                                <label className="text-sm font-medium text-gray-700" htmlFor="email">Email</label>
+                                <input className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 outline-none transition-colors" name="email" type="email" id="email" placeholder="you@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                            </div>
+                            <Button type="submit" disabled={isSubmitting} className={`w-full bg-blue-600 text-white rounded-md px-4 py-3 font-medium hover:bg-blue-700 transition-colors inline-flex ${isSubmitting ? "opacity-40" : ""} hover:scale-101 hover:shadow-lg active:scale-95 transition-all duration-200 disabled:bg-gray-400`}>
+                                {isSubmitting && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
+                                {isSubmitting ? "Sending..." : "Send Reset Link"}
+                            </Button>
+                        </form>
+                    </>
+                ) : (
+                    <div className="text-center py-4">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4">Check your email</h2>
+                        <p className="text-gray-600 mb-6">If an account exists with this email, you will receive a password reset link.</p>
+                        <Link href="/login" className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-3 font-medium text-white hover:bg-blue-700 transition-colors">Back to Login</Link>
                     </div>
-                    <Button type="submit" disabled={isSubmitting} className={`w-full bg-blue-600 text-white rounded-md px-4 py-3 font-medium hover:bg-blue-700 transition-colors inline-flex ${isSubmitting ? "opacity-40" : ""} hover:scale-101 hover:shadow-lg active:scale-95 transition-all duration-200 disabled:bg-gray-400`}>
-                        {isSubmitting && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
-                        {isSubmitting ? "Sending..." : "Send Reset Link"}
-                    </Button>
-                </form>
+                )}
             </div>
 
             <Dialog open={dialogState.isOpen} onOpenChange={closeDialog}>
