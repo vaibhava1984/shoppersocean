@@ -11,17 +11,34 @@ export async function POST(request: Request) {
     const { bookId } = await request.json();
     if (!bookId) return NextResponse.json({ error: 'Book ID is required' }, { status: 400 });
 
-    const { data: purchase, error: purchaseError } = await supabase
+    const admin = createAdminClient();
+    const { data: orders, error: ordersError } = await admin
       .from('orders')
       .select('id, status')
       .eq('user_id', user.id)
-      .eq('product_id', bookId)
-      .eq('status', 'completed')
-      .limit(1)
-      .maybeSingle();
-    if (purchaseError || !purchase) return NextResponse.json({ error: 'Purchase required' }, { status: 403 });
+      .eq('product_id', bookId);
+    if (ordersError) throw ordersError;
 
-    const admin = createAdminClient();
+    const orderIds = (orders || []).map((order: any) => order.id).filter(Boolean);
+    let payments: any[] = [];
+    if (orderIds.length) {
+      const { data, error: paymentsError } = await admin
+        .from('payments')
+        .select('order_id, status')
+        .in('order_id', orderIds);
+      if (paymentsError) throw paymentsError;
+      payments = data || [];
+    }
+
+    const purchased = (orders || []).some((order: any) =>
+      String(order?.status || '').toLowerCase() === 'completed' ||
+      payments.some((payment: any) =>
+        String(payment?.order_id) === String(order?.id) &&
+        String(payment?.status || '').toLowerCase() === 'completed'
+      )
+    );
+    if (!purchased) return NextResponse.json({ error: 'Purchase required' }, { status: 403 });
+
     const { data: files, error: filesError } = await admin
       .from('private_book_files')
       .select('file_path, file_name, file_type')
