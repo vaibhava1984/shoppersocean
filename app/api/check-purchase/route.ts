@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-import { createAdminClient } from '@/utils/supabase/server_admin';
 
 export async function POST(req: Request) {
   try {
@@ -12,8 +11,7 @@ export async function POST(req: Request) {
     const ids = productId ? [String(productId)] : Array.isArray(productIds) ? productIds.map(String) : [];
     if (!ids.length) return NextResponse.json({ error: 'Product ID or Product IDs are required' }, { status: 400 });
 
-    const admin = createAdminClient();
-    const { data: orders, error: ordersError } = await admin
+    const { data: orders, error: ordersError } = await supabase
       .from('orders')
       .select('id, product_id, order_date, status, razorpay_order_id')
       .eq('user_id', user.id)
@@ -24,7 +22,7 @@ export async function POST(req: Request) {
     const paymentLookupIds = Array.from(new Set(orderRows.flatMap((order: any) => [order.id, order.razorpay_order_id]).filter(Boolean).map(String)));
     let payments: any[] = [];
     if (paymentLookupIds.length) {
-      const { data, error: paymentsError } = await admin
+      const { data, error: paymentsError } = await supabase
         .from('payments')
         .select('order_id, status')
         .in('order_id', paymentLookupIds);
@@ -35,10 +33,7 @@ export async function POST(req: Request) {
     const isCompleted = (order: any) => {
       if (String(order?.status || '').toLowerCase() === 'completed') return true;
       const validOrderIds = new Set([String(order?.id || ''), String(order?.razorpay_order_id || '')].filter(Boolean));
-      return payments.some((payment: any) =>
-        validOrderIds.has(String(payment?.order_id || '')) &&
-        String(payment?.status || '').toLowerCase() === 'completed'
-      );
+      return payments.some((payment: any) => validOrderIds.has(String(payment?.order_id || '')) && String(payment?.status || '').toLowerCase() === 'completed');
     };
 
     if (productId) {
