@@ -134,10 +134,6 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
         if (productId && userId) checkPurchaseViaAPI(productId)
     }, [productId, userId])
 
-    useEffect(() => {
-        if (productId && userId && hasPurchased) handleDownload(productId)
-    }, [productId, userId, hasPurchased])
-
     const checkPurchaseViaAPI = async (id: string) => {
         try {
             setIsInitialFetching(true);
@@ -217,18 +213,21 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
         }
     };
 
-    async function handleDownload(bookId: string) {
+    async function handleDownload(bookId: string): Promise<UrlInfo[]> {
         try {
             setIsFetchingDownloadUrls(true);
             const response = await fetch('/api/get-book-download', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookId }),
             });
             const allData = await response.json();
-            if (!response.ok) return;
-            setDownloadUrls(allData.urls);
+            if (!response.ok) return [];
+            const urls = Array.isArray(allData.urls) ? allData.urls : [];
+            setDownloadUrls(urls);
+            return urls;
         } catch (error: any) {
             console.error('Error downloading file:', error);
             toast({ variant: "destructive", title: "Error", description: error?.message ?? "Failed to fetch download links" });
+            return [];
         } finally {
             setIsFetchingDownloadUrls(false);
         }
@@ -252,9 +251,15 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
     const formattedAmount = localCurrency ? new Intl.NumberFormat(userLocale, { style: 'currency', currency: localCurrency }).format(localAmount) : null;
 
     if (hasPurchased) {
+        const handleDownloadClick = async () => {
+            const urls = downloadUrls.length ? downloadUrls : await handleDownload(productId);
+            if (urls.length) await downloadFile(urls[0]);
+            else alert("File not found!");
+        };
+
         return (
             <>
-                <button onClick={() => downloadUrls?.length ? downloadFile(downloadUrls[0]) : alert("File not found!")} className="px-4 py-2 flex bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200 disabled:bg-gray-400">
+                <button onClick={handleDownloadClick} disabled={isFetchingDownloadUrls} className="px-4 py-2 flex bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200 disabled:bg-gray-400">
                     {isFetchingDownloadUrls && <Loader2Icon width={20} className='animate-spin mr-2' />}
                     <span>{isFetchingDownloadUrls ? 'Processing' : 'Download'}</span>
                 </button>
