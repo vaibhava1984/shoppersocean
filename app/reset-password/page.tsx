@@ -16,19 +16,34 @@ export default function ResetPassword() {
     const [dialogState, setDialogState] = useState<{ isOpen: boolean; title: string; description: string }>({ isOpen: false, title: "", description: "" })
 
     const showDialog = (title: string, description: string) => setDialogState({ isOpen: true, title, description })
-    const closeDialog = () => {
-        setDialogState(prev => ({ ...prev, isOpen: false }))
-        if (dialogState.title === "Success") router.push('/login')
-    }
+    const closeDialog = () => setDialogState(prev => ({ ...prev, isOpen: false }))
 
     const handleResetPassword = async (e: React.FormEvent) => {
-        e.preventDefault(); setIsSubmitting(true); setError(null)
+        e.preventDefault()
+        setIsSubmitting(true)
+        setError(null)
         try {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/update-password` })
-            if (error) setError(error.message)
-            else showDialog("Check your email", "If an account exists with this email, you will receive a password reset link.")
-        } catch (err) { setError("An error occurred. Please try again.") }
-        finally { setIsSubmitting(false) }
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: `${window.location.origin}/update-password`
+            })
+
+            if (error) {
+                setError(error.message)
+                return
+            }
+
+            showDialog("Check your email", "If an account exists with this email, you will receive a password reset link.")
+
+            // Automatically close the confirmation popup and return to login.
+            window.setTimeout(() => {
+                closeDialog()
+                router.push("/login")
+            }, 1500)
+        } catch (err) {
+            setError("An error occurred. Please try again.")
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     return (
@@ -64,8 +79,16 @@ export default function ResetPassword() {
                 </form>
             </div>
 
-            <Dialog open={dialogState.isOpen} onOpenChange={closeDialog}>
-                <DialogContent className="sm:max-w-[425px]"><DialogHeader><DialogTitle>{dialogState.title}</DialogTitle><DialogDescription>{dialogState.description}</DialogDescription></DialogHeader><div className="mt-4 flex justify-end"><Button onClick={closeDialog}>Close</Button></div></DialogContent>
+            <Dialog open={dialogState.isOpen} onOpenChange={(open) => { if (!open) closeDialog() }}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>{dialogState.title}</DialogTitle>
+                        <DialogDescription>{dialogState.description}</DialogDescription>
+                    </DialogHeader>
+                    <div className="mt-4 flex justify-end">
+                        <Button onClick={closeDialog}>Close</Button>
+                    </div>
+                </DialogContent>
             </Dialog>
         </div>
     )
