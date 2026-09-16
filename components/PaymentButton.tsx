@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { FileIcon, Loader2Icon } from 'lucide-react';
 import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
 import { createClient } from "@/utils/supabase/client";
+import { getPurchaseStatus } from '@/utils/purchaseStatusCache';
 import {
     AlertDialog,
     AlertDialogCancel,
@@ -131,23 +132,22 @@ export default function PaymentButton({ amount, notes, userId, productId }: Paym
     }, [amount, userId]);
 
     useEffect(() => {
-        if (productId && userId) checkPurchaseViaAPI(productId)
-    }, [productId, userId])
+        if (!productId || !userId) return;
 
-    const checkPurchaseViaAPI = async (id: string) => {
-        try {
-            setIsInitialFetching(true);
-            const response = await fetch('/api/check-purchase', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ productId: id })
+        let active = true;
+        setIsInitialFetching(true);
+
+        getPurchaseStatus(userId, productId)
+            .then(purchased => {
+                if (active) setHasPurchased(purchased);
+            })
+            .catch(error => console.error('Error checking purchase:', error))
+            .finally(() => {
+                if (active) setIsInitialFetching(false);
             });
-            const data = await response.json();
-            setHasPurchased(data.hasPurchased);
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
-            setIsInitialFetching(false);
-        }
-    };
+
+        return () => { active = false; };
+    }, [productId, userId]);
 
     const initializeRazorpay = () => new Promise((resolve) => {
         const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
