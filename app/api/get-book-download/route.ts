@@ -1,88 +1,45 @@
 import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-    try {
-        const supabase = createClient();
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
-        const userId = user?.id; // Get authenticated user ID
-        // console.log("userId 1=>", userId)
-        if (!userId) {
-            return NextResponse.json(
-                { error: 'Not authorized' },
-                { status: 403 }
-            )
-        }
-        const { bookId, fileName } = await request.json()
-        // Check if user has purchased the book
-        const { data: purchase, error: purchaseError } = await supabase
-            .from('orders')
-            .select()
-            .eq('user_id', userId)
-            .eq('product_id', bookId)
-            .order('order_date', { ascending: false })
-            .limit(1)
-            .maybeSingle();
+  try {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
 
-        // console.log("purchase 1=>", purchase)
+    const { bookId } = await request.json();
+    if (!bookId) return NextResponse.json({ error: 'Book ID is required' }, { status: 400 });
 
-        if (purchaseError || !purchase) {
-            return NextResponse.json(
-                { error: 'Not authorized' },
-                { status: 403 }
-            )
-        }
+    const { data: purchase, error: purchaseError } = await supabase
+      .from('orders')
+      .select('id, status, payments!inner(status)')
+      .eq('user_id', user.id)
+      .eq('product_id', bookId)
+      .eq('payments.status', 'completed')
+      .limit(1)
+      .maybeSingle();
 
-        // Get Book download path
-        const { data: privateBookPaths, error: privateBookPathsError } = await supabase
-            .from('private_book_files')
-            .select()
-            .eq('book_id', bookId);
+    if (purchaseError || !purchase) return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
 
-        // console.log("privateBookPaths===>", privateBookPaths)
+    const { data: privateBookPaths, error: privateBookPathsError } = await supabase
+      .from('private_book_files')
+      .select('file_path, file_name, file_type')
+      .eq('book_id', bookId);
+    if (privateBookPathsError) throw privateBookPathsError;
+    if (!privateBookPaths?.length) return NextResponse.json({ error: 'Files not found' }, { status: 404 });
 
-        if (privateBookPaths?.length === 0) {
-            return NextResponse.json(
-                { error: 'Files not found' },
-                { status: 500 }
-            )
-        }
+    const { data: signedUrls, error: signedUrlError } = await supabase
+      .storage.from('books-content').createSignedUrls(privateBookPaths.map(p => p.file_path), 300);
+    if (signedUrlError) throw signedUrlError;
 
-        // Generate signed URL
-        const folderPaths = privateBookPaths?.map(p => p.file_path)
-        const { data: signedUrls, error: signedUrlError } = await supabase
-            .storage
-            .from('books-content')
-            .createSignedUrls(folderPaths ?? [], 300); // 5 minutes expiry
+    const urls = (signedUrls || []).map(d => {
+      const file = privateBookPaths.find(p => p.file_path === d.path);
+      return file ? { downloadUrl: d.signedUrl, fileType: file.file_type, fileName: file.file_name } : null;
+    }).filter(Boolean);
 
-        if (signedUrlError) {
-            throw signedUrlError;
-        }
-
-        // console.log("signedUrls===>", signedUrls)
-
-        const signedUrlsFinal = signedUrls?.map(d => {
-            const findFromPrivatePaths = privateBookPaths?.filter(p => p.file_path === d.path)
-            if (findFromPrivatePaths?.length) {
-                return {
-                    downloadUrl: d.signedUrl,
-                    fileType: findFromPrivatePaths?.[0]?.file_type,
-                    fileName: findFromPrivatePaths?.[0]?.file_name,
-                }
-            }
-        })
-
-        return NextResponse.json(
-            { urls: signedUrlsFinal },
-            { status: 200 }
-        )
-    } catch (error) {
-        console.error('Error generating download URL:', error);
-        return NextResponse.json(
-            { error: 'Failed to generate download URL' },
-            { status: 500 }
-        )
-    }
+    return NextResponse.json({ urls }, { status: 200 });
+  } catch (error) {
+    console.error('Error generating download URL:', error);
+    return NextResponse.json({ error: 'Failed to generate download URL' }, { status: 500 });
+  }
 }
