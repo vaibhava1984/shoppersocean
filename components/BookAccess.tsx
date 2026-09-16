@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { createClient } from '@/utils/supabase/client';
 import PaymentButton from '@/components/PaymentButton';
 
 const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
@@ -9,14 +10,32 @@ const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
 });
 
 type Props = { bookId: string; title: string; amount: number; userId?: string };
-
 type PurchaseEvent = CustomEvent<{ productId?: string }>;
 
 export default function BookAccess({ bookId, title, amount, userId }: Props) {
+  const [effectiveUserId, setEffectiveUserId] = useState<string | undefined>(userId);
   const [hasPurchased, setHasPurchased] = useState<boolean | null>(null);
 
+  const loadUser = useCallback(async () => {
+    if (userId) {
+      setEffectiveUserId(userId);
+      return userId;
+    }
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      const id = user?.id;
+      setEffectiveUserId(id);
+      return id;
+    } catch {
+      setEffectiveUserId(undefined);
+      return undefined;
+    }
+  }, [userId]);
+
   const checkPurchase = useCallback(async () => {
-    if (!userId) {
+    const id = await loadUser();
+    if (!id) {
       setHasPurchased(false);
       return;
     }
@@ -32,7 +51,7 @@ export default function BookAccess({ bookId, title, amount, userId }: Props) {
     } catch {
       setHasPurchased(false);
     }
-  }, [bookId, userId]);
+  }, [bookId, loadUser]);
 
   useEffect(() => {
     checkPurchase();
@@ -53,9 +72,9 @@ export default function BookAccess({ bookId, title, amount, userId }: Props) {
   }
 
   if (!hasPurchased) {
-    return userId ? (
+    return effectiveUserId ? (
       <div className="mb-6 flex items-center space-x-4">
-        <PaymentButton amount={amount} notes={{ product_name: title }} userId={userId} productId={bookId} />
+        <PaymentButton amount={amount} notes={{ product_name: title }} userId={effectiveUserId} productId={bookId} />
       </div>
     ) : null;
   }
