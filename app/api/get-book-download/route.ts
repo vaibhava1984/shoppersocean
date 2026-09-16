@@ -1,5 +1,6 @@
-import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from 'next/server';
+import { createClient } from '@/utils/supabase/server';
+import { createAdminClient } from '@/utils/supabase/server_admin';
 
 export async function POST(request: Request) {
   try {
@@ -21,22 +22,35 @@ export async function POST(request: Request) {
 
     if (purchaseError || !purchase) return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
 
-    const { data: privateBookPaths, error: privateBookPathsError } = await supabase
+    // File metadata and storage are protected resources. Use the trusted
+    // server client after the purchase has already been verified above.
+    const admin = createAdminClient();
+    const { data: privateBookPaths, error: privateBookPathsError } = await admin
       .from('private_book_files')
       .select('file_path, file_name, file_type')
       .eq('book_id', bookId);
+
     if (privateBookPathsError) throw privateBookPathsError;
     if (!privateBookPaths?.length) return NextResponse.json({ error: 'Files not found' }, { status: 404 });
 
-    const { data: signedUrls, error: signedUrlError } = await supabase
-      .storage.from('books-content').createSignedUrls(privateBookPaths.map(p => p.file_path), 300);
-    if (signedUrlError) throw signedUrlError;
+    const urls = [];
+    for (const file of privateBookPaths) {
+      if (!file.file_path) continue;
+      const { data: signed, error: signedError } = await admin.storage
+        .from('books-content')
+        .createSignedUrl(file.file_path, 300);
+      if (signedError || !signed?.signedUrl) {
+        console.error('Could not sign book file:', file.file_path, signedError);
+        continue;
+      }
+      urls.push({
+        downloadUrl: signed.signedUrl,
+        fileType: file.file_type,
+        fileName: file.file_name,
+      });
+    }
 
-    const urls = (signedUrls || []).map(d => {
-      const file = privateBookPaths.find(p => p.file_path === d.path);
-      return file ? { downloadUrl: d.signedUrl, fileType: file.file_type, fileName: file.file_name } : null;
-    }).filter(Boolean);
-
+    if (!urls.length) return NextResponse.json({ error: 'Book file is missing from storage' }, { status: 404 });
     return NextResponse.json({ urls }, { status: 200 });
   } catch (error) {
     console.error('Error generating download URL:', error);
