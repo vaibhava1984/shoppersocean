@@ -1,19 +1,16 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { createAdminClient } from '@/utils/supabase/server_admin';
 
 export async function POST(request: Request) {
   try {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) {
-      return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
-    }
+    if (!user) return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
 
     const { bookId } = await request.json();
-    if (!bookId) {
-      return NextResponse.json({ error: 'Book ID is required' }, { status: 400 });
-    }
+    if (!bookId) return NextResponse.json({ error: 'Book ID is required' }, { status: 400 });
 
     const { data: purchase, error: purchaseError } = await supabase
       .from('orders')
@@ -28,7 +25,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Purchase required' }, { status: 403 });
     }
 
-    const { data: files, error: filesError } = await supabase
+    // The purchaser is authenticated above. Use the trusted server client
+    // for protected file metadata and storage signing so RLS on those
+    // resources cannot incorrectly hide the purchased book.
+    const admin = createAdminClient();
+    const { data: files, error: filesError } = await admin
       .from('private_book_files')
       .select('file_path, file_name, file_type')
       .eq('book_id', bookId);
@@ -41,12 +42,9 @@ export async function POST(request: Request) {
       return type === 'pdf' || name.endsWith('.pdf');
     });
 
-    if (!pdf) {
-      return NextResponse.json({ error: 'No PDF book is available' }, { status: 404 });
-    }
+    if (!pdf) return NextResponse.json({ error: 'No PDF book is available' }, { status: 404 });
 
-    const { data: signed, error: signedError } = await supabase
-      .storage
+    const { data: signed, error: signedError } = await admin.storage
       .from('books-content')
       .createSignedUrl(pdf.file_path, 300);
 
