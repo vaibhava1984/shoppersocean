@@ -3,13 +3,10 @@ import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Footer from "@/components/Footer";
-import dynamic from 'next/dynamic';
 import type { Metadata, ResolvingMetadata } from 'next';
 import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 import BookReviewSection from '@/app/components/BookReviewSection';
-
-const DynamicPaymentButton = dynamic(() => import('@/components/PaymentButton'), { loading: () => <p>Loading...</p> });
-const DynamicBookFlipbook = dynamic(() => import('@/components/BookFlipbook'), { loading: () => <div className="min-h-[420px] animate-pulse rounded-xl bg-slate-100" /> });
+import BookAccess from '@/components/BookAccess';
 
 type Props = { params: { bookId: string }; searchParams: { [key: string]: string | string[] | undefined } };
 
@@ -19,18 +16,6 @@ export default async function BookDetailPage({ params }: { params: any }) {
   const { data: { user } } = await supabase.auth.getUser();
   const { data: currentBookDetails } = await supabase.from('books').select(`*`).eq('id', bookId).single();
   const { data: currentBookAuthorDetails } = await supabase.from('authors').select(`*`).eq('author_id', currentBookDetails?.author_id);
-
-  let hasPurchased = false;
-  if (user?.id) {
-    const { data: purchases } = await supabase
-      .from('orders')
-      .select('id, payments!inner(status)')
-      .eq('user_id', user.id)
-      .eq('product_id', bookId)
-      .eq('payments.status', 'completed')
-      .limit(1);
-    hasPurchased = Boolean(purchases?.length);
-  }
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -62,17 +47,13 @@ export default async function BookDetailPage({ params }: { params: any }) {
               <p className="text-xl text-slate-600 mb-4">by {currentBookAuthorDetails?.map((author, index) => <span key={`${index}_author_name`}>{author.name}</span>)}</p>
               <div className="mb-6"><span className="text-3xl font-bold text-blue-600">₹{currentBookDetails?.price}</span></div>
 
-              {hasPurchased ? (
-                <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
-                  <p className="font-semibold">You own this book.</p>
-                  <p className="mt-1 text-sm">Your online reader and PDF download are available below.</p>
-                </div>
-              ) : (
-                <div className="flex items-center space-x-4 mb-6">
-                  {user?.id && currentBookDetails?.id && (
-                    <DynamicPaymentButton amount={currentBookDetails?.price} notes={{ product_name: currentBookDetails?.title }} userId={user.id} productId={currentBookDetails.id} />
-                  )}
-                </div>
+              {currentBookDetails?.id && (
+                <BookAccess
+                  bookId={String(bookId)}
+                  title={currentBookDetails?.title || 'Book'}
+                  amount={Number(currentBookDetails?.price || 0)}
+                  userId={user?.id}
+                />
               )}
 
               <Card className="mb-6">
@@ -87,15 +68,6 @@ export default async function BookDetailPage({ params }: { params: any }) {
               </Card>
             </div>
           </div>
-
-          {hasPurchased && (
-            <Card className="mt-10">
-              <CardContent className="p-4 sm:p-6">
-                <h2 className="mb-4 text-2xl font-bold text-slate-800">Your book</h2>
-                <DynamicBookFlipbook bookId={String(bookId)} title={currentBookDetails?.title || 'Book'} />
-              </CardContent>
-            </Card>
-          )}
 
           <Card className="mt-12">
             <CardContent className="p-6">
