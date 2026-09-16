@@ -6,28 +6,25 @@ export async function POST(req: Request) {
   try {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    const { productId, productIds } = await req.json();
-
     if (!user?.id) return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
 
+    const { productId, productIds } = await req.json();
     const ids = productId ? [String(productId)] : Array.isArray(productIds) ? productIds.map(String) : [];
     if (!ids.length) return NextResponse.json({ error: 'Product ID or Product IDs are required' }, { status: 400 });
 
-    // Use the authenticated user only for identity, then use the server admin
-    // client for the ownership lookup. This avoids RLS/relation-query differences
-    // causing a genuine completed purchase to appear as unpaid.
+    // Use the service-role client only after authenticating the current session.
+    // This avoids RLS/relation-join differences from making a genuine purchase
+    // appear as unpaid.
     const admin = createAdminClient();
     const { data: orders, error: ordersError } = await admin
       .from('orders')
       .select('id, product_id, order_date, status')
       .eq('user_id', user.id)
       .in('product_id', ids);
-
     if (ordersError) throw ordersError;
 
-    const orderList = orders || [];
-    const orderIds = orderList.map((order: any) => order.id).filter(Boolean);
-
+    const orderRows = orders || [];
+    const orderIds = orderRows.map((order: any) => order.id).filter(Boolean);
     let payments: any[] = [];
     if (orderIds.length) {
       const { data, error: paymentsError } = await admin
@@ -47,7 +44,7 @@ export async function POST(req: Request) {
     };
 
     if (productId) {
-      const matching = orderList.filter((order: any) =>
+      const matching = orderRows.filter((order: any) =>
         String(order.product_id) === String(productId) && isCompleted(order)
       );
       return NextResponse.json({
@@ -65,7 +62,7 @@ export async function POST(req: Request) {
       result[id] = { hasPurchased: false, orderDetails: [] };
     });
 
-    orderList.forEach((order: any) => {
+    orderRows.forEach((order: any) => {
       const id = String(order.product_id);
       if (id in result && isCompleted(order)) {
         result[id].hasPurchased = true;
