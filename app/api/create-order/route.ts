@@ -2,9 +2,6 @@ import { NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
 import { fetchExchangeRates, convertCurrency } from '@/utils/currency';
 
-console.log("hai 1===>", process.env.RAZORPAY_KEY_ID)
-console.log("hai 2===>", process.env.RAZORPAY_KEY_SECRET)
-
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID!,
     key_secret: process.env.RAZORPAY_KEY_SECRET!,
@@ -17,7 +14,7 @@ export async function POST(req: Request) {
         // Create order in the user's local currency
         const order = await razorpay.orders.create({
             amount: Math.round(amount * 100),
-            currency: currency, // Use the local currency directly
+            currency: currency,
             notes: {
                 ...notes,
                 original_currency: currency,
