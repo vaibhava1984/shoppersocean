@@ -8,7 +8,6 @@ import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
 
 export default function ResetPassword() {
-    const supabase = createClient()
     const router = useRouter()
     const [email, setEmail] = useState("")
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -24,6 +23,7 @@ export default function ResetPassword() {
     const handleResetPassword = async (e: React.FormEvent) => {
         e.preventDefault(); setIsSubmitting(true); setError(null)
         try {
+            const supabase = createClient()
             const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/update-password` })
             if (error) setError(error.message)
             else showDialog("Check your email", "If an account exists with this email, you will receive a password reset link.")
