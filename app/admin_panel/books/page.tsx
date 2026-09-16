@@ -20,7 +20,6 @@ interface Column {
 }
 
 export default function Books() {
-    const supabase = createClient();
     const [books, setBooks] = useState<BookType[]>([]);
     const [filteredBooks, setFilteredBooks] = useState<BookType[]>([]);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -50,7 +49,6 @@ export default function Books() {
 
     useEffect(() => {
         fetchBooks();
-
     }, []);
 
     useEffect(() => {
@@ -69,6 +67,7 @@ export default function Books() {
 
     async function fetchBooks() {
         try {
+            const supabase = createClient();
             const { data, error } = await supabase.from('books').select(`
                 id,
                 title,
@@ -90,7 +89,6 @@ export default function Books() {
                 )
             `).eq('is_deleted', false);
             if (error) throw error;
-            // console.log("data=>", data)
             setBooks(data);
         } catch (error) {
             console.error('Error fetching books:', error);
@@ -99,6 +97,7 @@ export default function Books() {
 
     async function handleDeleteBook(book: BookType) {
         try {
+            const supabase = createClient();
             const { error } = await supabase
                 .from('books')
                 .update({ is_deleted: true })
@@ -121,7 +120,6 @@ export default function Books() {
             <Toaster />
             <div className="flex h-screen bg-gray-100">
                 <AdminSidebar />
-                {/* Main Content */}
                 <main className="flex-1 overflow-y-auto p-8">
                     <div className="space-y-6">
                         <Card>
@@ -186,7 +184,6 @@ export default function Books() {
                             </CardContent>
                         </Card>
 
-                        {/* Add Book Dialog */}
                         <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
                             <DialogContent className="max-h-[80vh] overflow-y-auto">
                                 <DialogHeader>
@@ -195,13 +192,12 @@ export default function Books() {
                                 <AddBookPopup onSuccess={(closePopup) => {
                                     fetchBooks();
                                     if (closePopup) {
-                                        setShowAddForm(false); // Close popup if not adding another
+                                        setShowAddForm(false);
                                     }
                                 }} />
                             </DialogContent>
                         </Dialog>
 
-                        {/* Edit Book Dialog */}
                         <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
                             <DialogContent className="max-h-[80vh] overflow-y-auto">
                                 <DialogHeader>
@@ -209,7 +205,7 @@ export default function Books() {
                                 </DialogHeader>
                                 {selectedBook && (
                                     <AddBookPopup
-                                        book={selectedBook} // Pass the selected book
+                                        book={selectedBook}
                                         onSuccess={() => {
                                             fetchBooks();
                                             setShowEditForm(false);
@@ -219,7 +215,6 @@ export default function Books() {
                             </DialogContent>
                         </Dialog>
 
-                        {/* Column Selector Dialog */}
                         <Dialog open={showColumnSelector} onOpenChange={setShowColumnSelector}>
                             <DialogContent>
                                 <DialogHeader>
@@ -248,7 +243,6 @@ export default function Books() {
                             </DialogContent>
                         </Dialog>
 
-                        {/* Delete Confirmation Dialog */}
                         <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
