@@ -5,10 +5,17 @@ import { Resend } from "resend";
 import { createClient } from "@/utils/supabase/server";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
-const razorpay = new Razorpay({ key_id: process.env.RAZORPAY_KEY_ID!, key_secret: process.env.RAZORPAY_KEY_SECRET! });
-
 export async function POST(req: Request) {
   try {
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+    if (!keyId || !keySecret) {
+      console.error("Razorpay server credentials are not configured.");
+      return NextResponse.json({ error: "Payment service is not configured" }, { status: 503 });
+    }
+
+    const razorpay = new Razorpay({ key_id: keyId, key_secret: keySecret });
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: "Not authorized" }, { status: 403 });
@@ -18,7 +25,7 @@ export async function POST(req: Request) {
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !product_id) return NextResponse.json({ error: "Missing payment details" }, { status: 400 });
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
-    const expectedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!).update(body).digest("hex");
+    const expectedSignature = crypto.createHmac("sha256", keySecret).update(body).digest("hex");
     if (expectedSignature !== razorpay_signature) return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
 
     const payment = await razorpay.payments.fetch(razorpay_payment_id);
