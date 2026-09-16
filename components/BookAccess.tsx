@@ -10,6 +10,8 @@ const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
 
 type Props = { bookId: string; title: string; amount: number; userId?: string };
 
+type PurchaseEvent = CustomEvent<{ productId?: string }>;
+
 export default function BookAccess({ bookId, title, amount, userId }: Props) {
   const [hasPurchased, setHasPurchased] = useState<boolean | null>(null);
 
@@ -35,8 +37,16 @@ export default function BookAccess({ bookId, title, amount, userId }: Props) {
   useEffect(() => {
     checkPurchase();
     const timer = window.setInterval(checkPurchase, 2500);
-    return () => window.clearInterval(timer);
-  }, [checkPurchase]);
+    const onPurchaseCompleted = (event: Event) => {
+      const productId = (event as PurchaseEvent).detail?.productId;
+      if (!productId || productId === bookId) checkPurchase();
+    };
+    window.addEventListener('book-purchase-completed', onPurchaseCompleted);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener('book-purchase-completed', onPurchaseCompleted);
+    };
+  }, [checkPurchase, bookId]);
 
   if (hasPurchased === null) {
     return <div className="mb-6 min-h-[48px] rounded-xl bg-slate-50 p-4 text-sm text-slate-500">Checking your purchase…</div>;
@@ -51,18 +61,10 @@ export default function BookAccess({ bookId, title, amount, userId }: Props) {
   }
 
   return (
-    <CardShell title="Your book">
+    <div className="mt-6 rounded-xl border border-emerald-200 bg-white p-4 shadow-sm sm:p-6">
+      <h2 className="mb-3 text-2xl font-bold text-slate-800">Your book</h2>
       <p className="mb-4 text-sm text-emerald-800">Purchase confirmed. You can read the book online or download the PDF.</p>
       <BookFlipbook bookId={bookId} title={title} />
-    </CardShell>
-  );
-}
-
-function CardShell({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="mt-6 rounded-xl border border-emerald-200 bg-white p-4 shadow-sm sm:p-6">
-      <h2 className="mb-3 text-2xl font-bold text-slate-800">{title}</h2>
-      {children}
     </div>
   );
 }
