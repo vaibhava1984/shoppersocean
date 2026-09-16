@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { getUser } from "@/utils/supabase/server";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card"
 import { Star } from 'lucide-react'
@@ -17,10 +17,7 @@ export const metadata = {
 }
 
 export default async function LandingPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser();
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header />
