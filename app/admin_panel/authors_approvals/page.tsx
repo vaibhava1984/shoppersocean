@@ -17,7 +17,6 @@ type AuthorApprovalsType = {
 
 const AuthorsApproval = () => {
     const { toast } = useToast()
-    const supabase = createClient();
     const [authors, setAuthors] = useState<AuthorApprovalsType[]>([]);
 
     useEffect(() => {
@@ -25,6 +24,7 @@ const AuthorsApproval = () => {
     }, []);
 
     const fetchAuthors = async () => {
+        const supabase = createClient();
         const { data, error } = await supabase.from('authors_interest_submission').select(`
             user_id,
             created_at,
@@ -33,7 +33,6 @@ const AuthorsApproval = () => {
         if (error) {
             console.error('Error fetching authors:', error);
         } else {
-            // console.log("data new=>", data)
             setAuthors(data as unknown as AuthorApprovalsType[]);
         }
     };
@@ -51,7 +50,6 @@ const AuthorsApproval = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                // throw new Error(data.error || 'Failed to approve author');
                 toast({
                     variant: "destructive",
                     title: "Error",
@@ -83,7 +81,6 @@ const AuthorsApproval = () => {
             <Toaster />
             <div className="flex h-screen bg-gray-100">
                 <AdminSidebar />
-                {/* Main Content */}
                 <main className="flex-1 overflow-y-auto p-8">
                     <div className="flex justify-between items-center mb-4">
                         <h3 className="text-2xl font-semibold text-black">Authors Approvals</h3>
