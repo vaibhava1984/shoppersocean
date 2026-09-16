@@ -13,12 +13,12 @@ type Author = {
 export default function AuthorsMenusLists() {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const supabase = createClient()
     const [authorsMenuLists, setAuthorsMenuLists] = useState<Author[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
     async function fetchAllAuthorsForMenu() {
+        const supabase = createClient()
         try {
             setIsLoading(true)
             setError(null)
@@ -27,7 +27,7 @@ export default function AuthorsMenusLists() {
                 .from('authors')
                 .select('author_id,name')
                 .eq('is_deleted', false)
-                .order('name', { ascending: true }) // Add ordering for consistency
+                .order('name', { ascending: true })
             
             if (fetchError) throw fetchError
             
@@ -38,7 +38,6 @@ export default function AuthorsMenusLists() {
         } catch (err) {
             console.error('Error fetching authors:', err)
             setError('Failed to load authors')
-            // Fallback to at least show "All Authors"
             setAuthorsMenuLists([{ author_id: 'all', name: 'All Authors' }])
         } finally {
             setIsLoading(false)
@@ -52,14 +51,12 @@ export default function AuthorsMenusLists() {
     const handleAuthorSelect = (authorId: string): void => {
         const params = new URLSearchParams(searchParams)
 
-        // Handle author parameter
         if (authorId && authorId !== 'all') {
             params.set('author', authorId)
         } else {
             params.delete('author')
         }
 
-        // Preserve language parameter if it exists
         const langParam = searchParams.get('lang')
         if (langParam) {
             params.set('lang', langParam)
@@ -81,11 +78,7 @@ export default function AuthorsMenusLists() {
     }
 
     if (error) {
-        return (
-            <div className="text-red-500 text-sm">
-                {error}
-            </div>
-        )
+        return <div className="text-red-500 text-sm">{error}</div>
     }
 
     return (
