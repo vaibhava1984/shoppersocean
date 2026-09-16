@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation"
 export default function Login({ searchParams }: {
   searchParams: any
 }) {
-  const supabase = createClient()
   const router = useRouter()
 
   // @ts-ignore
@@ -44,12 +43,13 @@ export default function Login({ searchParams }: {
   })
 
   useEffect(() => {
+    const supabase = createClient()
     supabase.auth.getUser().then(({ data }) => {
       if (data?.user) {
         router.push('/')
       }
     })
-  }, [])
+  }, [router])
 
   useEffect(() => {
     if (accountCreated === "success") {
