@@ -11,12 +11,13 @@ export async function GET(request: Request) {
     const bookId = searchParams.get('bookId');
     if (!bookId) return new NextResponse('Book ID is required', { status: 400 });
 
+    // Match the existing, working PDF download purchase check exactly.
     const { data: purchase, error: purchaseError } = await supabase
       .from('orders')
-      .select('id, status')
+      .select()
       .eq('user_id', user.id)
       .eq('product_id', bookId)
-      .eq('status', 'completed')
+      .order('order_date', { ascending: false })
       .limit(1)
       .maybeSingle();
 
