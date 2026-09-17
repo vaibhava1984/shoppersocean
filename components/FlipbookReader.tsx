@@ -47,7 +47,6 @@ function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
   });
 }
 
-// A lightweight page-turn sound generated locally so no extra audio file is required.
 function playPageTurnSound() {
   try {
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
@@ -59,7 +58,6 @@ function playPageTurnSound() {
     gain.gain.exponentialRampToValueAtTime(0.055, now + 0.012);
     gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.13);
     gain.connect(context.destination);
-
     const oscillator = context.createOscillator();
     oscillator.type = 'triangle';
     oscillator.frequency.setValueAtTime(180, now);
@@ -69,7 +67,7 @@ function playPageTurnSound() {
     oscillator.stop(now + 0.14);
     oscillator.addEventListener('ended', () => context.close());
   } catch {
-    // Sound is an enhancement; never let it interfere with page navigation.
+    // Sound must never interfere with reading or navigation.
   }
 }
 
@@ -85,7 +83,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
   useEffect(() => {
     let cancelled = false;
-
     async function load() {
       try {
         setLoading(true);
@@ -101,31 +98,25 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         if (!cancelled) setLoading(false);
       }
     }
-
     load();
     return () => { cancelled = true; };
   }, [pdfUrl]);
 
-  useEffect(() => {
-    setPageInput(String(page));
-  }, [page]);
+  useEffect(() => setPageInput(String(page)), [page]);
 
   useEffect(() => {
     if (!pdf || !stageRef.current) return;
     let cancelled = false;
-
     async function renderPage() {
       try {
         setRendering(true);
         const pageProxy = await pdf.getPage(page);
         if (cancelled || !stageRef.current) return;
-
         const baseViewport = pageProxy.getViewport({ scale: 1 });
         const maxWidth = Math.max(stageRef.current.clientWidth - 32, 280);
         const maxHeight = Math.max(window.innerHeight * 0.68, 320);
         const scale = Math.min(maxWidth / baseViewport.width, maxHeight / baseViewport.height);
         const viewport = pageProxy.getViewport({ scale: Math.max(scale, 0.5) });
-
         const canvas = stageRef.current.querySelector('canvas');
         if (!canvas) return;
         const context = canvas.getContext('2d');
@@ -142,20 +133,9 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         if (!cancelled) setRendering(false);
       }
     }
-
     renderPage();
     return () => { cancelled = true; };
   }, [pdf, page, fullscreen]);
-
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') goToPage(page + 1, true);
-      if (event.key === 'ArrowLeft') goToPage(page - 1, true);
-      if (event.key === 'Escape') setFullscreen(false);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [pdf, page]);
 
   const goToPage = (target: number, withSound = true) => {
     if (!pdf) return;
@@ -167,6 +147,16 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
   const goPrevious = () => goToPage(page - 1);
   const goNext = () => goToPage(page + 1);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowRight') goNext();
+      if (event.key === 'ArrowLeft') goPrevious();
+      if (event.key === 'Escape') setFullscreen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [pdf, page]);
 
   const commitPageInput = () => {
     const requested = Number.parseInt(pageInput, 10);
@@ -185,12 +175,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
             <p className="truncate text-sm font-semibold">{fileName || 'Book'}</p>
             <p className="text-xs text-white/60">Read online as flipbook</p>
           </div>
-          <button
-            type="button"
-            onClick={() => setFullscreen(value => !value)}
-            className="rounded-lg p-2 hover:bg-white/10"
-            aria-label={fullscreen ? 'Close full screen' : 'Open full screen'}
-          >
+          <button type="button" onClick={() => setFullscreen(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={fullscreen ? 'Close full screen' : 'Open full screen'}>
             {fullscreen ? <X size={20} /> : <Maximize2 size={20} />}
           </button>
         </div>
@@ -198,80 +183,60 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         <div ref={stageRef} className="relative flex min-h-[55vh] flex-1 items-center justify-center bg-slate-800 p-4 sm:p-6">
           <div className="relative rounded-lg bg-white shadow-[0_20px_60px_rgba(0,0,0,0.45)] transition-transform duration-300" key={page}>
             <canvas aria-label={`Page ${page}`} />
-            {rendering && pdf && (
-              <div className="absolute inset-0 flex items-center justify-center bg-white/60">
-                <Loader2 className="animate-spin" size={28} />
-              </div>
+            {rendering && pdf && <div className="absolute inset-0 flex items-center justify-center bg-white/60"><Loader2 className="animate-spin" size={28} /></div>}
+
+            {pdf && !error && (
+              <>
+                <button
+                  type="button"
+                  onClick={goPrevious}
+                  disabled={page <= 1 || rendering}
+                  className="absolute bottom-3 left-3 z-10 rounded-full bg-black/65 p-3 text-white shadow-lg transition hover:bg-black/80 disabled:opacity-20"
+                  aria-label="Previous page"
+                  title="Previous page"
+                >
+                  <ChevronLeft size={26} />
+                </button>
+                <button
+                  type="button"
+                  onClick={goNext}
+                  disabled={page >= pdf.numPages || rendering}
+                  className="absolute bottom-3 right-3 z-10 rounded-full bg-black/65 p-3 text-white shadow-lg transition hover:bg-black/80 disabled:opacity-20"
+                  aria-label="Next page"
+                  title="Next page"
+                >
+                  <ChevronRight size={26} />
+                </button>
+              </>
             )}
           </div>
 
-          {loading && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-white">
-              <Loader2 className="animate-spin" size={32} />
-              <span>Opening your book…</span>
-            </div>
-          )}
-
-          {error && (
-            <div className="absolute inset-0 flex items-center justify-center p-6 text-center text-white">
-              <div className="max-w-md rounded-xl bg-white/10 p-6 backdrop-blur">
-                <p>{error}</p>
-              </div>
-            </div>
-          )}
-
-          {pdf && !error && (
-            <>
-              <button type="button" onClick={goPrevious} disabled={page <= 1 || rendering} className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-3 text-white disabled:opacity-30" aria-label="Previous page">
-                <ChevronLeft size={24} />
-              </button>
-              <button type="button" onClick={goNext} disabled={page >= pdf.numPages || rendering} className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 p-3 text-white disabled:opacity-30" aria-label="Next page">
-                <ChevronRight size={24} />
-              </button>
-            </>
-          )}
+          {loading && <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-white"><Loader2 className="animate-spin" size={32} /><span>Opening your book…</span></div>}
+          {error && <div className="absolute inset-0 flex items-center justify-center p-6 text-center text-white"><div className="max-w-md rounded-xl bg-white/10 p-6 backdrop-blur"><p>{error}</p></div></div>}
         </div>
 
         {pdf && !error && (
           <div className="border-t border-white/10 px-4 pt-3 text-white">
             <div className="flex items-center gap-3">
               <span className="w-10 text-right text-xs text-white/60">1</span>
-              <input
-                type="range"
-                min={1}
-                max={pdf.numPages}
-                step={1}
-                value={page}
-                onChange={(event) => goToPage(Number(event.target.value))}
-                className="h-2 w-full cursor-pointer accent-white"
-                aria-label="Jump to page"
-              />
+              <input type="range" min={1} max={pdf.numPages} step={1} value={page} onChange={(event) => goToPage(Number(event.target.value))} className="h-2 w-full cursor-pointer accent-white" aria-label="Jump to page" />
               <span className="w-10 text-xs text-white/60">{pdf.numPages}</span>
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-3 py-3">
-              <button type="button" onClick={goPrevious} disabled={page <= 1 || rendering} className="rounded-lg px-3 py-2 text-sm hover:bg-white/10 disabled:opacity-30">Previous</button>
-
-              <form
-                onSubmit={(event) => { event.preventDefault(); commitPageInput(); }}
-                className="flex items-center gap-2"
-                aria-label="Go to page"
-              >
-                <span className="text-sm text-white/70">Page</span>
-                <input
-                  type="number"
-                  min={1}
-                  max={pdf.numPages}
-                  value={pageInput}
-                  onChange={(event) => setPageInput(event.target.value)}
-                  onBlur={commitPageInput}
-                  className="w-16 rounded-md border border-white/20 bg-white/10 px-2 py-1.5 text-center text-sm text-white outline-none focus:border-white/50"
-                  aria-label="Page number"
-                />
-                <span className="text-sm text-white/70">of {pdf.numPages}</span>
-              </form>
-
-              <button type="button" onClick={goNext} disabled={page >= pdf.numPages || rendering} className="rounded-lg px-3 py-2 text-sm hover:bg-white/10 disabled:opacity-30">Next</button>
+              <span className="text-sm text-white/80">Page</span>
+              <input
+                type="number"
+                min={1}
+                max={pdf.numPages}
+                value={pageInput}
+                onChange={(event) => setPageInput(event.target.value)}
+                onBlur={commitPageInput}
+                onKeyDown={(event) => { if (event.key === 'Enter') commitPageInput(); }}
+                className="w-16 rounded-md border border-white/20 bg-white/10 px-2 py-1.5 text-center text-sm text-white outline-none focus:border-white/50"
+                aria-label="Page number"
+              />
+              <span className="text-sm text-white/70">of {pdf.numPages}</span>
             </div>
           </div>
         )}
