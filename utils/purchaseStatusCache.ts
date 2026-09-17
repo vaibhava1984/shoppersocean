@@ -1,3 +1,5 @@
+import { createClient } from '@/utils/supabase/client'
+
 type PurchaseStatusMap = Record<string, { hasPurchased: boolean }>
 
 type PendingRequest = {
@@ -10,8 +12,6 @@ const pending = new Map<string, PendingRequest[]>()
 const queuedByUser = new Map<string, Set<string>>()
 const scheduledUsers = new Set<string>()
 
-// A short cache prevents repeated checks while avoiding stale ownership state.
-// Successful purchases are kept a little longer; negative results are refreshed quickly.
 const POSITIVE_CACHE_MS = 5 * 60 * 1000
 const NEGATIVE_CACHE_MS = 5 * 1000
 
@@ -27,9 +27,16 @@ async function flush(userId: string) {
     if (!productIds.length) return
 
     try {
+        const supabase = createClient()
+        const { data: { session } } = await supabase.auth.getSession()
+        const accessToken = session?.access_token
+
+        const headers: HeadersInit = { 'Content-Type': 'application/json' }
+        if (accessToken) headers.Authorization = `Bearer ${accessToken}`
+
         const response = await fetch('/api/check-purchase', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify({ productIds }),
             cache: 'no-store',
         })
