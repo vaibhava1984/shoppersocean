@@ -47,10 +47,37 @@ function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
   });
 }
 
+// A lightweight page-turn sound generated locally so no extra audio file is required.
+function playPageTurnSound() {
+  try {
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContextClass) return;
+    const context = new AudioContextClass();
+    const now = context.currentTime;
+    const gain = context.createGain();
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.055, now + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.13);
+    gain.connect(context.destination);
+
+    const oscillator = context.createOscillator();
+    oscillator.type = 'triangle';
+    oscillator.frequency.setValueAtTime(180, now);
+    oscillator.frequency.exponentialRampToValueAtTime(90, now + 0.13);
+    oscillator.connect(gain);
+    oscillator.start(now);
+    oscillator.stop(now + 0.14);
+    oscillator.addEventListener('ended', () => context.close());
+  } catch {
+    // Sound is an enhancement; never let it interfere with page navigation.
+  }
+}
+
 export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps) {
   const stageRef = useRef<HTMLDivElement>(null);
   const [pdf, setPdf] = useState<PdfDocument | null>(null);
   const [page, setPage] = useState(1);
+  const [pageInput, setPageInput] = useState('1');
   const [loading, setLoading] = useState(true);
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -78,6 +105,10 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     load();
     return () => { cancelled = true; };
   }, [pdfUrl]);
+
+  useEffect(() => {
+    setPageInput(String(page));
+  }, [page]);
 
   useEffect(() => {
     if (!pdf || !stageRef.current) return;
@@ -118,16 +149,33 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') setPage(current => pdf ? Math.min(current + 1, pdf.numPages) : current);
-      if (event.key === 'ArrowLeft') setPage(current => Math.max(current - 1, 1));
+      if (event.key === 'ArrowRight') goToPage(page + 1, true);
+      if (event.key === 'ArrowLeft') goToPage(page - 1, true);
       if (event.key === 'Escape') setFullscreen(false);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [pdf]);
+  }, [pdf, page]);
 
-  const goPrevious = () => setPage(current => Math.max(current - 1, 1));
-  const goNext = () => setPage(current => pdf ? Math.min(current + 1, pdf.numPages) : current);
+  const goToPage = (target: number, withSound = true) => {
+    if (!pdf) return;
+    const nextPage = Math.min(Math.max(Math.round(target), 1), pdf.numPages);
+    if (nextPage === page) return;
+    setPage(nextPage);
+    if (withSound) playPageTurnSound();
+  };
+
+  const goPrevious = () => goToPage(page - 1);
+  const goNext = () => goToPage(page + 1);
+
+  const commitPageInput = () => {
+    const requested = Number.parseInt(pageInput, 10);
+    if (!Number.isFinite(requested)) {
+      setPageInput(String(page));
+      return;
+    }
+    goToPage(requested);
+  };
 
   return (
     <div className={fullscreen ? 'fixed inset-0 z-[100] bg-slate-950 p-3 sm:p-6' : 'w-full'}>
@@ -184,11 +232,49 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           )}
         </div>
 
-        <div className="flex items-center justify-center gap-4 border-t border-white/10 px-4 py-3 text-white">
-          <button type="button" onClick={goPrevious} disabled={!pdf || page <= 1 || rendering} className="rounded-lg px-3 py-2 text-sm hover:bg-white/10 disabled:opacity-30">Previous</button>
-          <span className="min-w-[90px] text-center text-sm text-white/80">{pdf ? `${page} / ${pdf.numPages}` : '—'}</span>
-          <button type="button" onClick={goNext} disabled={!pdf || page >= pdf.numPages || rendering} className="rounded-lg px-3 py-2 text-sm hover:bg-white/10 disabled:opacity-30">Next</button>
-        </div>
+        {pdf && !error && (
+          <div className="border-t border-white/10 px-4 pt-3 text-white">
+            <div className="flex items-center gap-3">
+              <span className="w-10 text-right text-xs text-white/60">1</span>
+              <input
+                type="range"
+                min={1}
+                max={pdf.numPages}
+                step={1}
+                value={page}
+                onChange={(event) => goToPage(Number(event.target.value))}
+                className="h-2 w-full cursor-pointer accent-white"
+                aria-label="Jump to page"
+              />
+              <span className="w-10 text-xs text-white/60">{pdf.numPages}</span>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-3 py-3">
+              <button type="button" onClick={goPrevious} disabled={page <= 1 || rendering} className="rounded-lg px-3 py-2 text-sm hover:bg-white/10 disabled:opacity-30">Previous</button>
+
+              <form
+                onSubmit={(event) => { event.preventDefault(); commitPageInput(); }}
+                className="flex items-center gap-2"
+                aria-label="Go to page"
+              >
+                <span className="text-sm text-white/70">Page</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={pdf.numPages}
+                  value={pageInput}
+                  onChange={(event) => setPageInput(event.target.value)}
+                  onBlur={commitPageInput}
+                  className="w-16 rounded-md border border-white/20 bg-white/10 px-2 py-1.5 text-center text-sm text-white outline-none focus:border-white/50"
+                  aria-label="Page number"
+                />
+                <span className="text-sm text-white/70">of {pdf.numPages}</span>
+              </form>
+
+              <button type="button" onClick={goNext} disabled={page >= pdf.numPages || rendering} className="rounded-lg px-3 py-2 text-sm hover:bg-white/10 disabled:opacity-30">Next</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
