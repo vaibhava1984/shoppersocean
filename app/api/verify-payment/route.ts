@@ -5,13 +5,23 @@ import { Resend } from "resend";
 import { createClient } from "@/utils/supabase/server";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+function getRazorpayClient() {
+  const keyId = process.env.RAZORPAY_KEY_ID;
+  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+
+  if (!keyId || !keySecret) {
+    throw new Error("Razorpay server credentials are not configured");
+  }
+
+  return new Razorpay({
+    key_id: keyId,
+    key_secret: keySecret,
+  });
+}
 
 export async function POST(req: Request) {
   try {
+    const razorpay = getRazorpayClient();
     const supabase = createClient();
     const {
       data: { user },
@@ -39,10 +49,13 @@ export async function POST(req: Request) {
 
     // Step 1: Verify signature
     const body = razorpay_order_id + "|" + razorpay_payment_id;
-    console.log("backend body===>", body);
-    console.log("backend secret===>", process.env.RAZORPAY_KEY_SECRET);
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    if (!keySecret) {
+      throw new Error("Razorpay server credentials are not configured");
+    }
+
     const expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
+      .createHmac("sha256", keySecret)
       .update(body.toString())
       .digest("hex");
 
@@ -57,7 +70,6 @@ export async function POST(req: Request) {
 
     // Step 2: Fetch payment details from Razorpay
     const payment = await razorpay.payments.fetch(razorpay_payment_id);
-    console.log("payment===>", payment);
 
     // Step 3: Check payment status
     let paymentStatus;
@@ -89,16 +101,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Step 4: Fetch exchange rates and convert amount
-    // const rates = await fetchExchangeRates();
-    // const amountInINR = convertCurrency(
-    //     original_amount,
-    //     original_currency,
-    //     'INR',
-    //     rates
-    // );
-
-    // Step 5: Store payment details in Supabase
+    // Step 4: Store payment details in Supabase
     const {
       data: { session },
       error: sessionError,
@@ -144,18 +147,13 @@ export async function POST(req: Request) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     const yourEmail = "kochimonu@gmail.com"; // Replace with your actual email address
-    const { data: currentBookDetails, error: currentBookDetailsError } =
-      await supabase
-        .from("books")
-        .select(
-          `
-            *
-         `
-        )
-        .eq("id", product_id)
-        .single();
+    const { data: currentBookDetails } = await supabase
+      .from("books")
+      .select("*")
+      .eq("id", product_id)
+      .single();
 
-    const response = await resend.emails.send({
+    await resend.emails.send({
       from: "no-reply@shoppersocean.com", // Sender email
       to: yourEmail, // Send to your own email address
       subject: "New Sale | Shoppers Ocean", // Customize the subject line
