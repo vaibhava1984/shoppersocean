@@ -19,7 +19,7 @@ export default function TermsAndConditionsPage() {
         },
         {
             title: "Return/Compensation Policy",
-            content: "Any order of an ebook/paperback book once placed by a customer/client is subject to its own responsibility and any order placed willingly or mistakenly shall be taken as an order placed by you with your descretion and we shall not be liable to return any amount paid by you or replace it with any other services. Also, we dont hold any responsibility for any amount paid by you being stuck/lost due to technical errors belong to payment gateways, server down etc."
+            content: "Any order of an e-book/Other products once placed by a customer/client is subject to its own responsibility and any order placed willingly or mistakenly shall be taken as an order placed by you with your descretion and we shall not be liable to return any amount paid by you or replace it with any other services. Also, we dont hold any responsibility for any amount paid by you being stuck/lost due to technical errors belong to payment gateways, server down etc."
         },
         {
             title: "Policy for Our Authors/Business Partners",
@@ -69,20 +69,14 @@ export default function TermsAndConditionsPage() {
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
-            {/* Navigation */}
             <Header />
 
-            {/* Hero Section */}
             <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-32 overflow-hidden">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1
-                        className="text-4xl md:text-6xl font-bold mb-6 leading-tight opacity-0 translate-y-4 animate-[fadeInUp_3s_ease-out_forwards]"
-                    >
+                    <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight opacity-0 translate-y-4 animate-[fadeInUp_3s_ease-out_forwards]">
                         Privacy Policy
                     </h1>
-                    <p
-                        className="text-xl md:text-2xl mb-8 translate-y-4 opacity-0 animate-[fadeInUp_3s_ease-out_forwards] italic"
-                    >
+                    <p className="text-xl md:text-2xl mb-8 translate-y-4 opacity-0 animate-[fadeInUp_3s_ease-out_forwards] italic">
                         Please read our privacy policy carefully before using our services
                     </p>
                 </div>
@@ -91,7 +85,6 @@ export default function TermsAndConditionsPage() {
                 <AuthorApplicationBanner />
             </div>
 
-            {/* Main Content */}
             <section className="py-20 bg-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="max-w-4xl mx-auto">
@@ -111,42 +104,24 @@ export default function TermsAndConditionsPage() {
                                 <div key={index} className="mb-6">
                                     <h2 className="text-2xl font-semibold text-slate-800">{section.title}</h2>
                                     <p className="text-xl text-slate-600 mt-2 text-start">{section.content}</p>
-                                    {index < termsContent.length - 1 && (
-                                        <hr className="my-4 border-gray-300" />
-                                    )}
+                                    {index < termsContent.length - 1 && <hr className="my-4 border-gray-300" />}
                                 </div>
                             ))}
                         </div>
-
-
-                        {/* <Accordion type="single" collapsible className="w-full">
-                            {termsContent.map((section, index) => (
-                                <AccordionItem value={`item-${index}`} key={index}>
-                                    <AccordionTrigger className="text-2xl font-semibold text-slate-800">{section.title}</AccordionTrigger>
-                                    <AccordionContent>
-                                        <p className="text-xl text-slate-600">{section.content}</p>
-                                    </AccordionContent>
-                                </AccordionItem>
-                            ))}
-                        </Accordion> */}
                     </div>
                 </div>
             </section>
 
-            {/* Call to Action */}
             <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 className="text-3xl font-bold mb-6 text-slate-800">Have Questions?</h2>
                     <p className="text-xl mb-8 text-slate-600">If you have any questions about our Terms and Conditions, please don't hesitate to contact us.</p>
                     <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg">
-                        <Link href="/contact" >
-                            Contact Us
-                        </Link>
+                        <Link href="/contact">Contact Us</Link>
                     </Button>
                 </div>
             </section>
 
-            {/* Footer */}
             <Footer />
         </div>
     )
