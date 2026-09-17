@@ -2,16 +2,23 @@ import { NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
 import { fetchExchangeRates, convertCurrency } from '@/utils/currency';
 
-console.log("hai 1===>", process.env.RAZORPAY_KEY_ID)
-console.log("hai 2===>", process.env.RAZORPAY_KEY_SECRET)
+function getRazorpayClient() {
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID!,
-    key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+    if (!keyId || !keySecret) {
+        throw new Error('Razorpay server credentials are not configured');
+    }
+
+    return new Razorpay({
+        key_id: keyId,
+        key_secret: keySecret,
+    });
+}
 
 export async function POST(req: Request) {
     try {
+        const razorpay = getRazorpayClient();
         const { amount, currency = 'INR', notes } = await req.json();
 
         // Create order in the user's local currency
