@@ -75,7 +75,7 @@
   }
 
   html {
-    font-family: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-synthesis: none;
   }
 
@@ -83,7 +83,8 @@
     @apply bg-background text-foreground;
     font-family: inherit;
     font-weight: 500;
-    letter-spacing: 0.005em;
+    font-style: italic;
+    letter-spacing: 0.008em;
     text-rendering: optimizeLegibility;
   }
 
@@ -93,9 +94,10 @@
   h4,
   h5,
   h6 {
-    font-family: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+    font-family: Georgia, "Times New Roman", Times, serif;
     font-weight: 800;
-    letter-spacing: -0.015em;
+    font-style: italic;
+    letter-spacing: -0.012em;
     text-wrap: balance;
   }
 
@@ -103,6 +105,8 @@
   button,
   [role="button"] {
     font-family: inherit;
+    font-style: italic;
+    font-weight: 700;
     touch-action: manipulation;
   }
 
@@ -110,6 +114,7 @@
   textarea,
   select {
     font-family: inherit;
+    font-style: italic;
   }
 }
 
