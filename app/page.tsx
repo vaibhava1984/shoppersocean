@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Star } from 'lucide-react'
 import ContactForm from './components/ContactForm';
 import AuthorApplicationBanner from './components/AuthorApplicationBanner';
+import TestimonialSection from './components/TestimonialSection';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer"
 import TrendingBooks from "@/components/trending_books";
@@ -50,6 +51,13 @@ export default async function LandingPage() {
           <h2 className="text-3xl font-bold mb-6 text-center text-slate-800">Our Book Collection</h2>
           <p className="text-xl text-center mb-12 text-slate-600">Discover the captivating works of esteemed authors across the globe, known for their insightful and thought-provoking narratives.</p>
           <BooksCollections loggedinUserId={user?.id} />
+        </div>
+      </section>
+
+      {/* Testimonials and account controls */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <TestimonialSection />
         </div>
       </section>
 
