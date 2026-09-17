@@ -13,10 +13,10 @@ export async function GET(request: Request) {
 
     const { data: purchase, error: purchaseError } = await supabase
       .from('orders')
-      .select('id, status, payments!inner(status)')
+      .select('id, status')
       .eq('user_id', user.id)
       .eq('product_id', bookId)
-      .eq('payments.status', 'completed')
+      .eq('status', 'completed')
       .limit(1)
       .maybeSingle();
 
