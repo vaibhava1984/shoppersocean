@@ -65,7 +65,8 @@ export default async function Header() {
                     <Link href="/settings" className="flex items-center gap-2">
                       <SettingsIcon width={18} />
                       Settings
-                    </DropdownMenuItem>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem className="flex items-center gap-2">
                     <LogOut />
                     <HeaderLogoutBtn />
