@@ -50,7 +50,6 @@ export default function Books() {
 
     useEffect(() => {
         fetchBooks();
-
     }, []);
 
     useEffect(() => {
@@ -69,29 +68,32 @@ export default function Books() {
 
     async function fetchBooks() {
         try {
-            const { data, error } = await supabase.from('books').select(`
-                id,
-                title,
-                description,
-                published_date,
-                isbn,
-                price,
-                ratings,
-                cover_images,
-                binding,
-                language,
-                publisher,
-                pages,
-                author_id,
-                author_name,
-                updated_at,
-                authors (
-                    name
-                )
-            `).eq('is_deleted', false);
+            // author_name is already stored on each book, so the nested authors
+            // relation is unnecessary and can make this query fail when the
+            // relationship is not exposed in the current Supabase API schema.
+            const { data, error } = await supabase
+                .from('books')
+                .select(`
+                    id,
+                    title,
+                    description,
+                    published_date,
+                    isbn,
+                    price,
+                    ratings,
+                    cover_images,
+                    binding,
+                    language,
+                    publisher,
+                    pages,
+                    author_id,
+                    author_name,
+                    updated_at
+                `)
+                .eq('is_deleted', false);
+
             if (error) throw error;
-            // console.log("data=>", data)
-            setBooks(data);
+            setBooks(data ?? []);
         } catch (error) {
             console.error('Error fetching books:', error);
         }
@@ -156,7 +158,9 @@ export default function Books() {
                                         {displayedBooks.map((book) => (
                                             <TableRow key={book.id}>
                                                 {Array.from(selectedColumns).map((column, columnIndex) => (
-                                                    <TableCell key={`${column}_${columnIndex}`}>{column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : book[column]}</TableCell>
+                                                    <TableCell key={`${column}_${columnIndex}`}>
+                                                        {column === "author_name" ? book.author_name : book[column]}
+                                                    </TableCell>
                                                 ))}
                                                 <TableCell>
                                                     <Button
