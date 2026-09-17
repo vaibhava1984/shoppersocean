@@ -5,10 +5,15 @@ type PendingRequest = {
     reject: (error: unknown) => void
 }
 
-const statusCache = new Map<string, boolean>()
+const statusCache = new Map<string, { hasPurchased: boolean; expiresAt: number }>()
 const pending = new Map<string, PendingRequest[]>()
 const queuedByUser = new Map<string, Set<string>>()
 const scheduledUsers = new Set<string>()
+
+// A short cache prevents repeated checks while avoiding stale ownership state.
+// Successful purchases are kept a little longer; negative results are refreshed quickly.
+const POSITIVE_CACHE_MS = 5 * 60 * 1000
+const NEGATIVE_CACHE_MS = 5 * 1000
 
 function cacheKey(userId: string, productId: string) {
     return `${userId}:${productId}`
@@ -26,6 +31,7 @@ async function flush(userId: string) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ productIds }),
+            cache: 'no-store',
         })
 
         if (!response.ok) throw new Error(`Purchase status request failed (${response.status})`)
@@ -34,7 +40,10 @@ async function flush(userId: string) {
 
         productIds.forEach(productId => {
             const hasPurchased = Boolean(data?.[productId]?.hasPurchased)
-            statusCache.set(cacheKey(userId, productId), hasPurchased)
+            statusCache.set(cacheKey(userId, productId), {
+                hasPurchased,
+                expiresAt: Date.now() + (hasPurchased ? POSITIVE_CACHE_MS : NEGATIVE_CACHE_MS),
+            })
             pending.get(cacheKey(userId, productId))?.forEach(({ resolve }) => resolve(hasPurchased))
             pending.delete(cacheKey(userId, productId))
         })
@@ -50,7 +59,12 @@ async function flush(userId: string) {
 export function getPurchaseStatus(userId: string, productId: string): Promise<boolean> {
     const key = cacheKey(userId, productId)
     const cached = statusCache.get(key)
-    if (cached !== undefined) return Promise.resolve(cached)
+
+    if (cached && cached.expiresAt > Date.now()) {
+        return Promise.resolve(cached.hasPurchased)
+    }
+
+    if (cached) statusCache.delete(key)
 
     const promise = new Promise<boolean>((resolve, reject) => {
         const requests = pending.get(key) ?? []
