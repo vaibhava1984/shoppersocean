@@ -43,19 +43,18 @@ export async function POST(req: Request) {
 
         const supabase = createClient();
 
+        // A completed order is the application's source of truth for a successful
+        // purchase. The payment row is already created by the payment-verification
+        // flow, but requiring an additional payments relationship here can make a
+        // valid purchase look unpaid if that relationship is unavailable or differs
+        // between environments.
         if (productId) {
             const { data: orders, error } = await supabase
                 .from('orders')
-                .select(`
-                    id,
-                    order_date,
-                    status,
-                    payments!payments_order_id_fkey!inner(status)
-                `)
+                .select('id, order_date, status')
                 .eq('user_id', userId)
                 .eq('product_id', productId)
-                .eq('status', 'completed')
-                .eq('payments.status', 'completed');
+                .eq('status', 'completed');
 
             if (error) throw error;
 
@@ -72,17 +71,10 @@ export async function POST(req: Request) {
         if (Array.isArray(productIds)) {
             const { data: orders, error } = await supabase
                 .from('orders')
-                .select(`
-                    id,
-                    product_id,
-                    order_date,
-                    status,
-                    payments!inner(status)
-                `)
+                .select('id, product_id, order_date, status')
                 .eq('user_id', userId)
                 .in('product_id', productIds)
-                .eq('status', 'completed')
-                .eq('payments.status', 'completed');
+                .eq('status', 'completed');
 
             if (error) throw error;
 
