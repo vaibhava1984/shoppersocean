@@ -50,7 +50,6 @@ export default function Books() {
 
     useEffect(() => {
         fetchBooks();
-
     }, []);
 
     useEffect(() => {
@@ -88,10 +87,9 @@ export default function Books() {
                 authors (
                     name
                 )
-            `).eq('is_deleted', false);
+            `).or('is_deleted.eq.false,is_deleted.is.null');
             if (error) throw error;
-            // console.log("data=>", data)
-            setBooks(data);
+            setBooks(data ?? []);
         } catch (error) {
             console.error('Error fetching books:', error);
         }
@@ -121,7 +119,6 @@ export default function Books() {
             <Toaster />
             <div className="flex h-screen bg-gray-100">
                 <AdminSidebar />
-                {/* Main Content */}
                 <main className="flex-1 overflow-y-auto p-8">
                     <div className="space-y-6">
                         <Card>
@@ -156,13 +153,14 @@ export default function Books() {
                                         {displayedBooks.map((book) => (
                                             <TableRow key={book.id}>
                                                 {Array.from(selectedColumns).map((column, columnIndex) => (
-                                                    <TableCell key={`${column}_${columnIndex}`}>{column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : book[column]}</TableCell>
+                                                    <TableCell key={`${column}_${columnIndex}`}>
+                                                        {column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : book[column]}
+                                                    </TableCell>
                                                 ))}
                                                 <TableCell>
                                                     <Button
                                                         onClick={() => {
                                                             setSelectedBook(book);
-                                                            console.log("why ajanya=>", book)
                                                             setShowEditForm(true);
                                                         }}
                                                         className="mr-2"
@@ -186,7 +184,6 @@ export default function Books() {
                             </CardContent>
                         </Card>
 
-                        {/* Add Book Dialog */}
                         <Dialog open={showAddForm} onOpenChange={setShowAddForm}>
                             <DialogContent className="max-h-[80vh] overflow-y-auto">
                                 <DialogHeader>
@@ -195,13 +192,12 @@ export default function Books() {
                                 <AddBookPopup onSuccess={(closePopup) => {
                                     fetchBooks();
                                     if (closePopup) {
-                                        setShowAddForm(false); // Close popup if not adding another
+                                        setShowAddForm(false);
                                     }
                                 }} />
                             </DialogContent>
                         </Dialog>
 
-                        {/* Edit Book Dialog */}
                         <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
                             <DialogContent className="max-h-[80vh] overflow-y-auto">
                                 <DialogHeader>
@@ -209,7 +205,7 @@ export default function Books() {
                                 </DialogHeader>
                                 {selectedBook && (
                                     <AddBookPopup
-                                        book={selectedBook} // Pass the selected book
+                                        book={selectedBook}
                                         onSuccess={() => {
                                             fetchBooks();
                                             setShowEditForm(false);
@@ -219,7 +215,6 @@ export default function Books() {
                             </DialogContent>
                         </Dialog>
 
-                        {/* Column Selector Dialog */}
                         <Dialog open={showColumnSelector} onOpenChange={setShowColumnSelector}>
                             <DialogContent>
                                 <DialogHeader>
@@ -248,7 +243,6 @@ export default function Books() {
                             </DialogContent>
                         </Dialog>
 
-                        {/* Delete Confirmation Dialog */}
                         <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
