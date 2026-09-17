@@ -2,9 +2,10 @@
 import dynamic from "next/dynamic"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
+import { OptimizedImage } from "@/components/OptimizedImage"
 
 const DynamicPaymentButton = dynamic(() => import('@/components/PaymentButton'), {
-    loading: () => <p>Loading...</p>,
+    loading: () => <div className="h-10 w-full" aria-hidden="true" />,
 })
 
 export default function BookCard({ book, loggedinUserId }: {
@@ -19,12 +20,14 @@ export default function BookCard({ book, loggedinUserId }: {
                     className="relative block cursor-pointer"
                     aria-label={`View details for ${book.title}`}
                 >
-                    <img
+                    <OptimizedImage
                         src={book.coverImage}
                         alt={book.title}
-                        loading="lazy"
-                        decoding="async"
+                        width={640}
+                        height={420}
                         className="w-full h-64 object-contain"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        quality={65}
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center text-white">
                         Click to view book details
