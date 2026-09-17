@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from '@/utils/supabase/server';
 import { createClient } from '@/utils/supabase/server';
 
 export async function POST(request: Request) {
@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     if (!user) return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
     const { bookId } = await request.json();
     if (!bookId) return NextResponse.json({ error: 'Book ID is required' }, { status: 400 });
-    const { data: purchase, error: purchaseError } = await supabase.from('orders').select('id, status, payments!inner(status)').eq('user_id', user.id).eq('product_id', bookId).eq('payments.status', 'completed').limit(1).maybeSingle();
+    const { data: purchase, error: purchaseError } = await supabase.from('orders').select('id, status').eq('user_id', user.id).eq('product_id', bookId).eq('status', 'completed').limit(1).maybeSingle();
     if (purchaseError || !purchase) return NextResponse.json({ error: 'Purchase required' }, { status: 403 });
     const { data: files, error: filesError } = await supabase.from('private_book_files').select('file_path, file_name, file_type').eq('book_id', bookId);
     if (filesError) throw filesError;
