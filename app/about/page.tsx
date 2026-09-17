@@ -36,31 +36,29 @@ export default function AboutPage() {
             <section className="py-20 bg-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="max-w-4xl mx-auto">
-
-
-                        <div className="prose prose-lg max-w-none">
-                            <p className="lead text-xl text-slate-600 mb-8">
-                                At Shoppers Ocean, we invite you to dive into a world of amazing books where every reader, regardless of taste or preference, can discover something extraordinary. Our expansive collection spans all genres, offering endless opportunities for entertainment, learning and inspiration.
+                        <div className="max-w-none font-sans">
+                            <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-8">
+                                At Shoppers Ocean, we invite you to dive into a world of amazing e-books and other commodities where everyone, can discover something very interesting as an e-book reader and also, can have great deals as a buyer of other commodities.
                             </p>
 
-                            <p className="text-xl text-slate-600 mb-6">
-                                Founded on November 10<sup>th</sup> 2024, we embarked on this journey with a commitment to providing our global audience with high-quality content. Our diverse selection of books ensures that every reader can immerse themselves in a sea of knowledge and enjoyment.
+                            <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
+                                Founded on November 10<sup>th</sup>, 2024 we embarked on this journey with a commitment to providing our readers with high-quality and intersting e-book content and to our customers of other commodities a trusted product line.
                             </p>
 
-                            <p className="text-xl text-slate-600 mb-6">
-                                We prioritise not only the excellence of our content but also a smooth and hassle-free buying experience. Our goal is to make your reading journey as delightful as possible from selection to purchase.
+                            <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
+                                We prioritise not only the excellence of our content/ products but also a smooth and hassle-free buying experience. Our goal is to make your buying journey as delightful as possible from selection to purchase.
                             </p>
 
-                            <p className="text-xl text-slate-600 mb-6">
-                                In addition to serving our readers, Shoppers Ocean is proud to support both established and emerging authors. We offer a platform where their works can reach a vast and eager audience, ensuring that their creative efforts receive the recognition and financial reward they deserve.
+                            <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
+                                In addition to serving our readers, Shoppers Ocean is proud to support both established and emerging authors. We offer a platform where their writing works can reach a vast and eager audience, ensuring that their creative efforts receive the recognition and financial reward they deserve.
                             </p>
 
-                            <p className="text-xl text-slate-600 mb-6">
+                            <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
                                 Integrity, quality, and responsiveness are at the core of everything we do. We are dedicated to maintaining the highest standards and we promise to address any queries, concerns, or suggestions with prompt and thoughtful attention.
                             </p>
 
-                            <p className="text-xl text-slate-600 mb-6">
-                                We believe that this endeavour to bring knowledge and entertainment to your doorstep will be embraced by readers and writers alike. We are grateful for your support and look forward to accompanying you on this exciting literary journey.
+                            <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
+                                We believe that this endeavour to bring knowledge and entertainment for our readers and a hassle free product delivery at the doorsteps of our buyers will be a great experience for our readers and buyers. We are grateful for your support and look forward to accompanying you on this exciting journey about entertainment and shopping with us. 😊
                             </p>
 
                             <div className="mt-12 text-right flex flex-col items-end">
