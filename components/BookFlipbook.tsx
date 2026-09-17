@@ -27,65 +27,99 @@ function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
       existing.addEventListener('error', () => reject(new Error('PDF.js failed to load')), { once: true });
       return;
     }
-    const script = document.createElement('script'); script.src = PDFJS_URL; script.async = true;
+    const script = document.createElement('script');
+    script.src = PDFJS_URL;
+    script.async = true;
     script.setAttribute('data-shoppers-ocean-pdfjs', 'true');
     script.onload = () => window.pdfjsLib ? resolve(window.pdfjsLib) : reject(new Error('PDF.js failed to initialize'));
-    script.onerror = () => reject(new Error('PDF.js failed to load')); document.head.appendChild(script);
+    script.onerror = () => reject(new Error('PDF.js failed to load'));
+    document.head.appendChild(script);
   });
 }
 
 export default function BookFlipbook({ bookId, title }: Props) {
-  const canvasRef = useRef<HTMLCanvasElement>(null); const viewerRef = useRef<HTMLDivElement>(null);
-  const pdfRef = useRef<any>(null); const renderTaskRef = useRef<any>(null); const touchStartXRef = useRef<number | null>(null);
-  const [opened, setOpened] = useState(false); const [readerUrl, setReaderUrl] = useState(''); const [page, setPage] = useState(1);
-  const [pageCount, setPageCount] = useState(0); const [zoom, setZoom] = useState(1); const [loading, setLoading] = useState(false);
-  const [rendering, setRendering] = useState(false); const [error, setError] = useState(''); const [turning, setTurning] = useState(false);
-  const [fullscreen, setFullscreen] = useState(false); const [downloading, setDownloading] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const viewerRef = useRef<HTMLDivElement>(null);
+  const pdfRef = useRef<any>(null);
+  const renderTaskRef = useRef<any>(null);
+  const touchStartXRef = useRef<number | null>(null);
+  const [opened, setOpened] = useState(false);
+  const [readerUrl, setReaderUrl] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
+  const [zoom, setZoom] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [rendering, setRendering] = useState(false);
+  const [error, setError] = useState('');
+  const [turning, setTurning] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const downloadPdf = async () => {
-    if (downloading) return; setDownloading(true); setError('');
+    if (downloading) return;
+    setDownloading(true); setError('');
     try {
       const response = await fetch('/api/get-book-download', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookId }) });
-      const data = await response.json(); if (!response.ok) throw new Error(data.error || 'Download unavailable');
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Download unavailable');
       const pdfFile = data.urls?.find((file: any) => String(file.fileType).toLowerCase() === 'pdf' || String(file.fileName).toLowerCase().endsWith('.pdf'));
       if (!pdfFile?.downloadUrl) throw new Error('PDF book not found');
       const link = document.createElement('a'); link.href = pdfFile.downloadUrl; link.download = pdfFile.fileName || `${title}.pdf`;
       document.body.appendChild(link); link.click(); link.remove();
-    } catch (err: any) { setError(err?.message || 'Download failed'); } finally { setDownloading(false); }
+    } catch (err: any) { setError(err?.message || 'Download failed'); }
+    finally { setDownloading(false); }
   };
 
   const openReader = async () => {
-    if (loading) return; setOpened(true); setLoading(true); setError(''); setReaderUrl('');
+    if (loading) return;
+    setOpened(true); setLoading(true); setError(''); setReaderUrl('');
     try {
       const response = await fetch('/api/get-book-reader', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookId }) });
-      const data = await response.json(); if (!response.ok || !data.readerUrl) throw new Error(data.error || 'Unable to open book');
+      const data = await response.json();
+      if (!response.ok || !data.readerUrl) throw new Error(data.error || 'Unable to open book');
       setReaderUrl(data.readerUrl);
-    } catch (err: any) { setError(err?.message || 'Unable to open book'); } finally { setLoading(false); }
+    } catch (err: any) { setError(err?.message || 'Unable to open book'); }
+    finally { setLoading(false); }
   };
 
   useEffect(() => {
-    let cancelled = false; if (!readerUrl) return;
+    let cancelled = false;
+    if (!readerUrl) return;
     const load = async () => {
       try {
-        const pdfjs = await loadPdfJs(); if (cancelled) return; pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
-        const pdf = await pdfjs.getDocument({ url: readerUrl }).promise; if (cancelled) return;
+        const pdfjs = await loadPdfJs();
+        if (cancelled) return;
+        pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
+        const pdf = await pdfjs.getDocument({ url: readerUrl }).promise;
+        if (cancelled) return;
         pdfRef.current = pdf; setPageCount(pdf.numPages); setPage(1);
-      } catch (err: any) { if (!cancelled) setError(err?.message || 'Unable to load the purchased book'); }
+      } catch (err: any) {
+        if (!cancelled) setError(err?.message || 'Unable to load the purchased book');
+      }
     };
-    void load(); return () => { cancelled = true; };
+    void load();
+    return () => { cancelled = true; };
   }, [readerUrl]);
 
   const renderPage = useCallback(async () => {
-    const pdf = pdfRef.current; const canvas = canvasRef.current; if (!pdf || !canvas) return;
+    const pdf = pdfRef.current; const canvas = canvasRef.current;
+    if (!pdf || !canvas) return;
     setRendering(true); setError('');
     try {
       if (renderTaskRef.current) renderTaskRef.current.cancel();
-      const pdfPage = await pdf.getPage(page); const viewport = pdfPage.getViewport({ scale: zoom * 1.25 }); const ratio = window.devicePixelRatio || 1;
-      canvas.width = Math.ceil(viewport.width * ratio); canvas.height = Math.ceil(viewport.height * ratio); canvas.style.width = `${viewport.width}px`; canvas.style.height = `${viewport.height}px`;
-      const context = canvas.getContext('2d'); if (!context) throw new Error('Canvas unavailable'); context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      renderTaskRef.current = pdfPage.render({ canvasContext: context, viewport }); await renderTaskRef.current.promise;
-    } catch (err: any) { if (err?.name !== 'RenderingCancelledException') setError(err?.message || 'Unable to render this page'); }
-    finally { setRendering(false); }
+      const pdfPage = await pdf.getPage(page);
+      const viewport = pdfPage.getViewport({ scale: zoom * 1.25 });
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.ceil(viewport.width * ratio); canvas.height = Math.ceil(viewport.height * ratio);
+      canvas.style.width = `${viewport.width}px`; canvas.style.height = `${viewport.height}px`;
+      const context = canvas.getContext('2d');
+      if (!context) throw new Error('Canvas unavailable');
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      renderTaskRef.current = pdfPage.render({ canvasContext: context, viewport });
+      await renderTaskRef.current.promise;
+    } catch (err: any) {
+      if (err?.name !== 'RenderingCancelledException') setError(err?.message || 'Unable to render this page');
+    } finally { setRendering(false); }
   }, [page, zoom]);
 
   useEffect(() => { if (opened && readerUrl && pdfRef.current) void renderPage(); }, [opened, readerUrl, renderPage, pageCount]);
