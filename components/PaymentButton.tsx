@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
 import { createClient } from "@/utils/supabase/client";
-import { getPurchaseStatus } from '@/utils/purchaseStatusCache';
+import { getPurchaseStatus, setPurchaseStatus } from '@/utils/purchaseStatusCache';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
 import { exchangeRatesCache } from "@/utils/cache";
@@ -32,19 +32,11 @@ let currentUserPromise: ReturnType<typeof supabase.auth.getUser> | null = null;
 function getExchangeRatesOnce(): Promise<ExchangeRates> {
     const cachedRates = exchangeRatesCache.get();
     if (cachedRates) return Promise.resolve(cachedRates);
-
     if (!exchangeRatesPromise) {
         exchangeRatesPromise = fetchExchangeRates()
-            .then(rates => {
-                exchangeRatesCache.set(rates);
-                return rates;
-            })
-            .catch(error => {
-                exchangeRatesPromise = null;
-                throw error;
-            });
+            .then(rates => { exchangeRatesCache.set(rates); return rates; })
+            .catch(error => { exchangeRatesPromise = null; throw error; });
     }
-
     return exchangeRatesPromise;
 }
 
@@ -127,10 +119,7 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
     const handlePayment = async () => {
         setIsLoading(true);
         try {
-            if (!(await initializeRazorpay())) {
-                alert('Razorpay SDK failed to load');
-                return;
-            }
+            if (!(await initializeRazorpay())) { alert('Razorpay SDK failed to load'); return; }
             const response = await fetch('/api/create-order', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ amount: localAmount, currency: localCurrency, notes: { ...notes, original_currency: localCurrency } }),
@@ -156,6 +145,7 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
                         if (data.error) alert(`Payment failed: ${data.errorDetails || data.error}`);
                         else if (data.status === 'completed') {
                             alert('Payment successful!');
+                            setPurchaseStatus(userId ?? '', productId, true);
                             setHasPurchased(true);
                         } else if (data.status === 'authorized') alert('Payment authorized, awaiting capture');
                         else if (data.status === 'pending') alert('Payment is pending');
