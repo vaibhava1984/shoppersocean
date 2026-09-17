@@ -2,6 +2,7 @@ import { getUser } from "@/utils/supabase/server";
 import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
+import SiteSearch from "@/components/SiteSearch"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -89,18 +90,21 @@ export default async function Header() {
 
       <nav className="relative z-40 pointer-events-auto bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 shadow-md">
         <div className="container mx-auto px-2 sm:px-4 py-2">
-          <div className="relative z-50 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 max-w-5xl mx-auto">
-            {navigationItems.map(([href, label]) => (
-              <Link
-                key={href}
-                href={href}
-                prefetch
-                className="relative z-50 pointer-events-auto cursor-pointer flex items-center justify-center min-h-[46px] px-2 sm:px-4 py-2.5 rounded-lg bg-white/10 border border-white/30 text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-sm hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-center"
-              >
-                {label}
-              </Link>
-            ))}
-            <HeaderAuthorButton />
+          <div className="relative z-50 max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
+              {navigationItems.map(([href, label]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  prefetch
+                  className="relative z-50 pointer-events-auto cursor-pointer flex items-center justify-center min-h-[46px] px-2 sm:px-4 py-2.5 rounded-lg bg-white/10 border border-white/30 text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-sm hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-center"
+                >
+                  {label}
+                </Link>
+              ))}
+              <HeaderAuthorButton />
+            </div>
+            <SiteSearch />
           </div>
         </div>
       </nav>
