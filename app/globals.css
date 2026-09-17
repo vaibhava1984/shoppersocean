@@ -41,6 +41,7 @@
       --foreground: 200 20% 96%;
     }
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -52,8 +53,7 @@
     --primary-foreground: 0 0% 9%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
+    --muted: 0 0% 63.9%;
     --accent: 0 0% 14.9%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
@@ -71,7 +71,45 @@
 
 @layer base {
   * {
-    @apply border-foreground/20;
+    @apply border-border;
+  }
+
+  html {
+    font-family: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+    font-synthesis: none;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: inherit;
+    font-weight: 500;
+    letter-spacing: 0.005em;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  a,
+  button,
+  [role="button"] {
+    font-family: inherit;
+    touch-action: manipulation;
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
   }
 }
 
@@ -87,22 +125,6 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-
-  /* Make taps on links and controls register immediately on touch devices. */
-  a,
-  button,
-  [role="button"] {
-    touch-action: manipulation;
   }
 }
 
