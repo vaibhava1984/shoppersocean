@@ -17,14 +17,10 @@ type Props = {
     searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export default async function BookDetailPage({ params }: {
-    params: any
-}) {
+export default async function BookDetailPage({ params }: { params: any }) {
     const { bookId } = await params
     const supabase = createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
     const { data: currentBookDetails } = await supabase.from('books').select(`*`).eq('id', bookId).single();
     const { data: currentBookAuthorDetails } = await supabase.from('authors').select(`*`).eq('author_id', currentBookDetails.author_id);
 
@@ -65,9 +61,10 @@ export default async function BookDetailPage({ params }: {
                                 {user?.id && currentBookDetails?.id && (
                                     <DynamicPaymentButton
                                         amount={currentBookDetails?.price}
-                                        notes={{ product_name: 'Test Product' }}
+                                        notes={{ product_name: currentBookDetails?.title }}
                                         userId={user?.id}
                                         productId={currentBookDetails?.id}
+                                        productTitle={currentBookDetails?.title}
                                     />
                                 )}
                             </div>

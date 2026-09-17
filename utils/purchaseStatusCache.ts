@@ -69,3 +69,7 @@ export function getPurchaseStatus(userId: string, productId: string): Promise<bo
 
     return promise
 }
+
+export function setPurchaseStatus(userId: string, productId: string, hasPurchased: boolean) {
+    statusCache.set(cacheKey(userId, productId), hasPurchased)
+}
