@@ -9,7 +9,6 @@ import Footer from "@/components/Footer"
 import TrendingBooks from "@/components/trending_books";
 import BooksCollections from "@/components/books_collections";
 import HeroSection from "@/components/HeroSection";
-import TestimonialSection from "./components/TestimonialSection";
 
 export const metadata = {
   title: 'Home',
@@ -57,14 +56,6 @@ export default async function LandingPage() {
       {/* Query Section */}
       <section className="py-20 bg-white">
         <ContactForm />
-      </section>
-
-      {/* Review Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-12 text-center text-slate-800">What Our Readers Say</h2>
-          <TestimonialSection />
-        </div>
       </section>
       <Footer />
     </div>
