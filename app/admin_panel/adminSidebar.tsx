@@ -13,6 +13,7 @@ export default function AdminSidebar() {
                     { icon: Home, label: 'Dashboard', value: '' },
                     { icon: ShoppingCart, label: 'Orders', value: 'orders' },
                     { icon: Home, label: 'Home Section', value: 'home_section' },
+                    // Restored: keep the Books management page available in the admin menu.
                     { icon: BookOpen, label: 'Books', value: 'books' },
                     { icon: PenTool, label: 'Authors', value: 'authors' },
                     // { icon: PenTool, label: 'Authors Approvals', value: 'authors_approvals' },
