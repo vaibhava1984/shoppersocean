@@ -44,7 +44,7 @@ const LanguageMenusList = () => {
                 <Button
                     key={language.id}
                     variant={currentLang === language.id ? "default" : "ghost"}
-                    className="h-11 justify-start rounded-lg px-4 font-sans text-base font-bold tracking-wide text-indigo-800 transition-all duration-200 hover:bg-indigo-50 hover:text-indigo-950"
+                    className="h-11 justify-start rounded-lg px-4 font-sans text-sm font-bold tracking-normal text-indigo-800 transition-all duration-200 hover:bg-indigo-50 hover:text-indigo-950"
                     onClick={() => handleLanguageSelect(language.param)}
                 >
                     {language.name}
