@@ -27,7 +27,7 @@ export default function AuthorsMenusLists() {
                 .from('authors')
                 .select('author_id,name')
                 .eq('is_deleted', false)
-                .order('name', { ascending: true }) // Add ordering for consistency
+                .order('name', { ascending: true })
             
             if (fetchError) throw fetchError
             
@@ -38,7 +38,6 @@ export default function AuthorsMenusLists() {
         } catch (err) {
             console.error('Error fetching authors:', err)
             setError('Failed to load authors')
-            // Fallback to at least show "All Authors"
             setAuthorsMenuLists([{ author_id: 'all', name: 'All Authors' }])
         } finally {
             setIsLoading(false)
@@ -52,14 +51,12 @@ export default function AuthorsMenusLists() {
     const handleAuthorSelect = (authorId: string): void => {
         const params = new URLSearchParams(searchParams)
 
-        // Handle author parameter
         if (authorId && authorId !== 'all') {
             params.set('author', authorId)
         } else {
             params.delete('author')
         }
 
-        // Preserve language parameter if it exists
         const langParam = searchParams.get('lang')
         if (langParam) {
             params.set('lang', langParam)
@@ -94,7 +91,7 @@ export default function AuthorsMenusLists() {
                 <Button
                     key={author.author_id}
                     variant={currentAuthorId === author.author_id ? "default" : "ghost"}
-                    className="justify-start w-full"
+                    className="h-11 justify-start w-full rounded-lg px-4 text-base font-medium tracking-wide text-slate-700 transition-all duration-200 hover:bg-slate-100 hover:text-slate-950"
                     onClick={() => handleAuthorSelect(author.author_id)}
                     disabled={isLoading}
                 >
