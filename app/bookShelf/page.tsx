@@ -111,11 +111,11 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
                         <div className="md:w-1/4">
                             <h2 className="text-2xl font-bold mb-4 text-slate-800">Categories</h2>
                             <div className="mb-8">
-                                <h3 className="text-xl font-semibold mb-2 text-slate-700">Language</h3>
+                                <h3 className="mb-3 font-serif text-xl font-extrabold italic tracking-wide text-indigo-700">All languages</h3>
                                 <LanguageMenusLists />
                             </div>
                             <div>
-                                <h3 className="text-xl font-semibold mb-2 text-slate-700">Authors</h3>
+                                <h3 className="mb-3 font-serif text-xl font-extrabold italic tracking-wide text-rose-700">All author</h3>
                                 <AuthorsMenusLists />
                             </div>
                         </div>
