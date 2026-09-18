@@ -44,6 +44,8 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const viewerRef = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<any>(null);
   const renderTaskRef = useRef<any>(null);
+  const renderQueueRef = useRef<Promise<void>>(Promise.resolve());
+  const renderRequestRef = useRef(0);
   const touchStartXRef = useRef<number | null>(null);
   const pageTurnAudioRef = useRef<HTMLAudioElement | null>(null);
   const dragStartXRef = useRef<number | null>(null);
@@ -131,32 +133,69 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const renderCanvasPage = useCallback(async (targetPage: number, canvas: HTMLCanvasElement, showLoading = false) => {
     const pdf = pdfRef.current; const frame = pageFrameRef.current;
     if (!pdf || !canvas || !frame) return;
-    if (showLoading) {
+
+    if (!showLoading) {
+      try {
+        const pdfPage = await pdf.getPage(targetPage);
+        const baseViewport = pdfPage.getViewport({ scale: 1 });
+        const availableWidth = Math.max(180, frame.clientWidth - 4);
+        const availableHeight = Math.max(260, frame.clientHeight - 4);
+        const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
+        const scale = Math.max(0.1, fitScale * zoom);
+        const viewport = pdfPage.getViewport({ scale });
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.ceil(viewport.width * ratio); canvas.height = Math.ceil(viewport.height * ratio);
+        canvas.style.width = `${viewport.width}px`; canvas.style.height = `${viewport.height}px`;
+        canvas.style.maxWidth = '100%'; canvas.style.maxHeight = '100%';
+        const context = canvas.getContext('2d');
+        if (!context) throw new Error('Canvas unavailable');
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        await pdfPage.render({ canvasContext: context, viewport }).promise;
+      } catch (err: any) {
+        if (err?.name !== 'RenderingCancelledException') setError(err?.message || 'Unable to render this page');
+      }
+      return;
+    }
+
+    const requestId = ++renderRequestRef.current;
+    const previousRender = renderQueueRef.current;
+    const run = async () => {
+      await previousRender;
+      if (requestId !== renderRequestRef.current) return;
       await cancelRender();
       setRendering(true);
-    }
-    try {
-      const pdfPage = await pdf.getPage(targetPage);
-      const baseViewport = pdfPage.getViewport({ scale: 1 });
-      const availableWidth = Math.max(180, frame.clientWidth - 4);
-      const availableHeight = Math.max(260, frame.clientHeight - 4);
-      const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
-      const scale = Math.max(0.1, fitScale * zoom);
-      const viewport = pdfPage.getViewport({ scale });
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.ceil(viewport.width * ratio); canvas.height = Math.ceil(viewport.height * ratio);
-      canvas.style.width = `${viewport.width}px`; canvas.style.height = `${viewport.height}px`;
-      canvas.style.maxWidth = '100%'; canvas.style.maxHeight = '100%';
-      const context = canvas.getContext('2d');
-      if (!context) throw new Error('Canvas unavailable');
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      const task = pdfPage.render({ canvasContext: context, viewport });
-      if (showLoading) renderTaskRef.current = task;
-      await task.promise;
-      if (showLoading && renderTaskRef.current === task) renderTaskRef.current = null;
-    } catch (err: any) {
-      if (err?.name !== 'RenderingCancelledException') setError(err?.message || 'Unable to render this page');
-    } finally { if (showLoading) setRendering(false); }
+      try {
+        const currentPdf = pdfRef.current;
+        if (!currentPdf) return;
+        const pdfPage = await currentPdf.getPage(targetPage);
+        if (requestId !== renderRequestRef.current) return;
+        const baseViewport = pdfPage.getViewport({ scale: 1 });
+        const availableWidth = Math.max(180, frame.clientWidth - 4);
+        const availableHeight = Math.max(260, frame.clientHeight - 4);
+        const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
+        const scale = Math.max(0.1, fitScale * zoom);
+        const viewport = pdfPage.getViewport({ scale });
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.ceil(viewport.width * ratio); canvas.height = Math.ceil(viewport.height * ratio);
+        canvas.style.width = `${viewport.width}px`; canvas.style.height = `${viewport.height}px`;
+        canvas.style.maxWidth = '100%'; canvas.style.maxHeight = '100%';
+        const context = canvas.getContext('2d');
+        if (!context) throw new Error('Canvas unavailable');
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        const task = pdfPage.render({ canvasContext: context, viewport });
+        renderTaskRef.current = task;
+        await task.promise;
+        if (renderTaskRef.current === task) renderTaskRef.current = null;
+      } catch (err: any) {
+        if (err?.name !== 'RenderingCancelledException') setError(err?.message || 'Unable to render this page');
+      } finally {
+        if (renderTaskRef.current && requestId === renderRequestRef.current) renderTaskRef.current = null;
+        if (requestId === renderRequestRef.current) setRendering(false);
+      }
+    };
+    const queued = run();
+    renderQueueRef.current = queued.catch(() => {});
+    await queued;
   }, [zoom, cancelRender]);
 
   const renderPage = useCallback(async () => {
@@ -220,10 +259,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const rect = sliderRef.current.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     const target = Math.round(ratio * (pageCount - 1)) + 1;
-    if (target !== page) {
-      void cancelRender();
-      setPage(target);
-    }
+    if (target !== page) setPage(target);
   };
   useEffect(() => () => { void cancelRender(); }, [cancelRender]);
 
