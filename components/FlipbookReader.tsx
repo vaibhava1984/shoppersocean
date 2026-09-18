@@ -98,6 +98,10 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const [nextReady, setNextReady] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const soundRef = useRef<HTMLAudioElement | null>(null);
+  const dragStartXRef = useRef<number | null>(null);
+  const dragXRef = useRef(0);
+  const draggingRef = useRef(false);
+  const [dragX, setDragX] = useState(0);
 
   const playPageTurn = useCallback(() => {
     if (!soundEnabled) return;
@@ -116,10 +120,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
-    const hostWidth = Math.max(bookHostRef.current?.clientWidth || 320, 240);
-    const hostHeight = Math.max(bookHostRef.current?.clientHeight || Math.min(window.innerHeight * 0.72, 720), 300);
-    const maxWidth = Math.min(hostWidth - 8, fullscreen ? 980 : 760);
-    const maxHeight = Math.min(hostHeight - 8, fullscreen ? 760 : Math.max(window.innerHeight * 0.70, 360));
+    const maxWidth = Math.min(window.innerWidth * 0.86, fullscreen ? 980 : 760);
+    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.78 : 0.68), fullscreen ? 760 : 680);
     const scale = Math.min(maxWidth / base.width, maxHeight / base.height);
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
@@ -228,6 +230,10 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     next.getContext('2d')?.drawImage(temp, 0, 0);
   }, []);
 
+  const beginDrag = (clientX: number) => { if (!pdf || rendering || turning) return; dragStartXRef.current = clientX; dragXRef.current = 0; draggingRef.current = true; setDragX(0); };
+  const moveDrag = (clientX: number) => { if (!draggingRef.current || dragStartXRef.current === null) return; const raw = clientX - dragStartXRef.current; const bounded = Math.max(-Math.min(window.innerWidth * 0.70, 500), Math.min(window.innerWidth * 0.70, raw)); dragXRef.current = bounded; setDragX(bounded); };
+  const endDrag = () => { if (!draggingRef.current) return; const distance = dragXRef.current; draggingRef.current = false; dragStartXRef.current = null; dragXRef.current = 0; setDragX(0); if (Math.abs(distance) > 55) void goToPage(page + (distance < 0 ? 1 : -1)); };
+
   const goToPage = useCallback(async (target: number) => {
     if (!pdf || rendering || turning) return;
     const targetPage = Math.min(Math.max(Math.round(target), 1), pdf.numPages);
@@ -315,10 +321,10 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           </div>
         </div>
 
-        <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6" style={{ perspective: '1400px' }}>
-          <div ref={bookHostRef} className="relative flex h-[72vh] max-h-[760px] w-[94vw] max-w-[900px] items-center justify-center" aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
-            <div className="relative overflow-hidden rounded-sm bg-white shadow-2xl">
-              <canvas ref={currentCanvasRef} className="block max-h-[70vh] max-w-[94vw]" />
+        <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6" style={{ perspective: '1600px', touchAction: 'pan-y' }} onPointerDown={event => { if (event.pointerType !== 'mouse' || event.button === 0) { event.currentTarget.setPointerCapture?.(event.pointerId); beginDrag(event.clientX); } }} onPointerMove={event => moveDrag(event.clientX)} onPointerUp={endDrag} onPointerCancel={endDrag}>
+          <div ref={bookHostRef} className="relative flex max-h-full max-w-full items-center justify-center" aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
+            <div className="relative overflow-hidden rounded-[2px] bg-white shadow-2xl" style={{ transform: dragX === 0 ? 'rotateY(0deg)' : `rotateY(${Math.max(-72, Math.min(72, dragX * 0.16))}deg) translateX(${dragX * 0.10}px)`, transformOrigin: dragX < 0 ? 'left center' : 'right center', transition: draggingRef.current ? 'none' : 'transform 420ms cubic-bezier(.2,.8,.2,1)', willChange: 'transform' }}>
+              <canvas ref={currentCanvasRef} className="block max-h-[68dvh] max-w-[86vw] select-none" draggable={false} />
               {turning && (
                 <div
                   className={'pointer-events-none absolute inset-0 origin-left bg-white/95 shadow-2xl transition-transform duration-500 ease-in-out ' + (turning === 'next' ? 'animate-[flip-next_520ms_ease-in-out]' : 'animate-[flip-prev_520ms_ease-in-out]')}
@@ -330,10 +336,10 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
           {pdf && !error && !loading && (
             <>
-              <button type="button" onClick={() => void goToPage(page - 1)} disabled={page <= 1 || rendering || !!turning} className="absolute bottom-2 left-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Previous page">
+              <button type="button" onPointerDown={event => event.stopPropagation()} onClick={() => void goToPage(page - 1)} disabled={page <= 1 || rendering || !!turning} className="absolute bottom-2 left-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Previous page">
                 <ChevronLeft size={20} strokeWidth={2.2} />
               </button>
-              <button type="button" onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning || !nextReady} className="absolute bottom-2 right-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Next page">
+              <button type="button" onPointerDown={event => event.stopPropagation()} onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning || !nextReady} className="absolute bottom-2 right-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Next page">
                 <ChevronRight size={20} strokeWidth={2.2} />
               </button>
             </>
