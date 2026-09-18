@@ -25,7 +25,7 @@ export function getHomepageBooks(): Promise<HomepageBookPlacement[]> {
         // Read the admin-selected placements first. These rows are public-readable.
         const { data: layoutData, error: layoutError } = await supabase
             .from('layout_settings')
-            .select('page_section, value')
+               .select('page_section, value')
             .in('page_section', ['HOMEPAGE_TRENDING', 'HOMEPAGE_COLLECTION'])
             .order('id', { ascending: true })
 
