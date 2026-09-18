@@ -17,16 +17,11 @@ export default function FlipbookPageClient({ bookId }: { bookId: string }) {
     async function loadBook() {
       try {
         setLoading(true);
-        const response = await fetch('/api/get-book-download', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookId }),
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data?.error || 'Unable to open this book');
-        const urls = Array.isArray(data?.urls) ? data.urls : [];
-        const pdf = urls.find((item: BookFile) => String(item?.fileType).toLowerCase() === 'pdf') ||
-          urls.find((item: BookFile) => String(item?.fileName).toLowerCase().endsWith('.pdf'));
-        if (!pdf?.downloadUrl) throw new Error('A PDF version of this book is not available.');
-        if (active) setFile(pdf);
+        // Use the protected reader proxy, not the download-URL API. This keeps the
+        // PDF inside the authenticated reader flow and supports HTTP Range requests
+        // needed by PDF.js while never exposing a long-lived storage URL.
+        const downloadUrl = `/api/get-book-reader-pdf?bookId=${encodeURIComponent(bookId)}`;
+        if (active) setFile({ downloadUrl, fileName: 'Book.pdf', fileType: 'pdf' });
       } catch (err) {
         console.error('Flipbook access failed:', err);
         if (active) setError(err instanceof Error ? err.message : 'Unable to open this book');
