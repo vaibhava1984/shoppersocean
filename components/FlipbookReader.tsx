@@ -34,7 +34,7 @@ declare global {
 const PDFJS_VERSION = '3.11.174';
 const PDFJS_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.min.js';
 const PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.worker.min.js';
-const PAGE_TURN_SOUND = 'data:audio/wav;base64,UklGRiQKAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAKAACEeYF/f4B6f32IgH5+fXx+gH6Bfn6Cf31+f4R+foF8foKBgIF4gn17gYF+fH5+g4F/gX58gYJ/fYB4goF7gX2Cen2ChHl+gH6Fe4B8g399eIOAgYJ+fH19hXt+gIGDfHl/g4J/fX99gXx+fX5/h4ODeH19gnmFhHt7e36BhXx/fYSBg3p9fIWCfn1/e3uBiX58enmCg4CBgIF6f4F9f3x+gnx+gYGGdYF7foKCgn2Ee3t/eYaAhXx6foB8gH6HfYV9e3x5f4N+gIV/gH53hHeEgIWAe4F8f4CAgH2AdYF7h4l2gYB8hX54f3+BeoOEeXx/fYuAeXp9i3x9fnuJeoB9gHiKf395eYGDgYJ/e39+e4GDfnuBiH1+fIVyf4V4iIJ6gHR7inmMf4WBcn6DfHuEfnZ7hX2Hin93dX+FgYN8gn6Ae3iBenqFfZKDdoGAeoh5aoh8jX11inaAiH59fYB1gYCPe3aCe4KCint/bXuOfH13hIJ3hH+EeYuAfHh5gnmEgoiEfG6BhoKEeXp3i4B6dHyKgXaGhYGAgX1+c4d9jmuChXqDg4B3eoSGfX5/iXh2g3l+hYZ5inGHdHeKfnx9hYGBiXZ3doeFiHp4hHmHhHN6eI6Xe31lgoR5jnN/hHaLi3NzhoF2fXx7hX6KhX6ChH5rgXqLe39+jX96gHV+fH+ReH99hnV6god/eHOBjYGAgnR+foJ/cImOeX98gmuPeIyAeX+Md3t5aY+GfYpxgpqPalx2koGAhXKCiISDcYB4jp1yYHaDjo90dIxvineDhIOFbX9+hJJ8d3V5iXaOgX1vgIhniot7fpSHcXx9gWaNe4aAh3lvgY12jn10kXOOeINuc46EhX2Kc3eEenl+eXiSio+Be299ZXqLlotugGuEdYGbf5FybIqSdH5pgJKCeWqEiYWAZ5h/gI1efn+GlYRkfYaHdG6LjYhomVN8n32HbZRuh4ZxkWt1gXuLkXx4d3mNe4V9b45xhZx1h219bXx5gZmEjIB6cmN+l4Z3mXp2bnOBpIJydntnh5KJi2xklZFngnyHhXqLjIxtWHtvjpGGeXyObYmCfJNxjnN3d4xzgGeIknWRe5l8Ypp/dXhkg3eil25wf2uJg3F0gpOVfYhwh3GMb3SGjnB9h4VygX2aimlZgpqIkHJli4GMaoR6kHl3eJiBdnNxnmZziY54gX+BdpF9mWuQa2iKcYxwm4Jsf4drgpqJgnmRbVR/d6iKcm6Kd3yAfYF5jJBXo3iPbnyAfYuDaHqLj4F8fm1sm3R+bZGadIJmlIdmj3+EhnNziH1uoXZyb4qUho9henR/ilm1a4eRi4dOdZd7e1+cknaBe2l7hYqYgXSEcWeVeYOMaYyLgYxzW4B2lYZyeo+Mfn9zfI+GjnBjZX+fmnNkjYZljHiRgoyDboB2kGxeiZOclWd2eYZhg4dwgpB6jYZ7f3CSdnKLcISLe3+LimhvnpBjbIF0j4KIaIOZZ5CJhHtla4eMkYmFcGmGkYtufGqHcIGOh5poU4iQloKDgGZ4inWhZXuaeXNqdJqFhnOLgHB3fI97gZpsZ4+Ff4F1h3qQbnWGeo+Ceol+b3V4en+JfY+IcJCIbXqEeYh/hXqFd4dff5KJgolxdHl+k3SRaHqHl3xhi4V2eXeFjWWgdW+DeaOOc3Nudop0nIF+j11wioKIj3qDb2OVcniZknl2emyFfHqIhJiUXopsa5J7gZFxcISTiGZxd5iGgohygodwfoNriYWJcX2PhW12iXaCpHp6bHOYf3J0go51hnOBhYl7fYRpf4OOgX2Bdn6JhXR/aJN/hXJ7hY9ujX92iHl7eIeFgHN0gI58kn5uh29/iHR4nH5/h3d8hmGYeHeOgnWJdn50eYiCg4d6dHqUfoB4foWBf3VzhIaIf3OHhWuJg5Rzc5Fzgnl2a4COhoN3jIKJaYR0hoRuf4uGiXV3coGOhIF2i4Vubn55l4R0eY5vg36LgneAeYR4kHqCdn+Afod4dIt/e42FYHmIi32Qcnd8eoeKe4pwdY19i3p7fX14e4OLgoSDbWmOj4OHdXGDboh4gJKOd4JudoSQe4J8bnuOfoKBbYOHi4x6eHV0doqQfYx1fXhyhoeDf3l/eoJ0goWMiHxzbYKSlGp3fHiJh4GDdHl6i3WBiH2CcnyCj4CEdXWDe4Z+iIpthn2CgIZ1dnaBioiEeW1/f4WOf39rhIF7hXd6jIB/fn59j32Ee3puc4+Ne3yAeZB6emqJf4x3fnt6iIeCdoCFf359dYCMeYKFdoJ4gXx/f3+Bco+Ce32AeX9/hnuBf3yHgHiAfXt9i3+BfYV8eXiFh3h7gYV4f4h/fnx3gYR5gYR+gXmHe4t8enp9f35+g4N8h3x9e4N1doeKiHd9g4F4f3l8jYN3eIR/hX1/gn16fX6Af32BeoWHfHuCgoF+eniBhnyCg358fHWBgImBeHqFh4F+dnx/fYp3foB/h3l+gYB9eoN6fYaGgnp7fH2Ahn98fX2IeoF5enuGgYp4eYGCgHeDgIB9gn5/fIJ8foSAfnuAfIKIgXx6gX1+f3yDeYV9gYN/gnx4gXyAhH5/fYGBe4B7gH+DgXx7foODf36BeIF+hX59en6BhHp7iX9+gXaEf3qDfn6CgX1+e3yDg39+fX99hXx+fnuHf31+e4B+goB6gX59gYCDe39+goB/gHt6gYCAgHyBf4CCgH1+fX+AgHx+goN+gH1+f4CBf319foGAgYF7fYCAfoJ+fIN9gX5/gH2AgH6Cfn5+gIF/gnp8gX6AfX9/gYGBfn9/f35+gHqAf4OBfn96gIJ9gX5+fYGBf3x/gYCBfX1+foSAfn97f4GAf3x+foKBfnuAgICAf32Bf35/e4B/gYJ+f39+fYCAgX99fX9/f39+gICAfn+AfX9/f39+gH6Af35/foCAgH9+fICBgH9+fn6AgH59gYGAf3x9f4F+f4B+f4B/f39/fYF+f4J9f35/fn5+gICBfn9+gH9/gH9+foCAgH5+f3+Bf399foCAf39/f36Bfn9+f4B/f36AfoCAfn5+gX5/fn+Bf39/fX9/gH9/fn9/gX99f39/gn99fn+AgX99foCAf39/fn+Af35/f3+Afn5/fn+Af35+f4B/gH5/f4B+fn9+f4B/fX9/gH9+fn9/gH9/fn5/gH9/f39/f399f4CBf35+f39/f39/f39/fn+Af4B+fn9/gH9+fn5/gX9+foB/f39+f3+Af35/f4B/f35/f39/f35/gYB/fn9/gH9/fn9/f39/foCAf35+f4CAf39+f4B/f35/gIB/fn9/gH9+f3+Af35+f3+Af35/f4B/f39/gH9/fn5/gH9/fn9/gH9+f3+Af39/f39/fn9/f4B/f35/gH9/f3+Af39/f39/f39+f4B/f39/gH9/fn9/';
+const PAGE_TURN_SOUND = 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Turning_a_page.ogg';
 
 function loadPdfJs(): Promise<PdfJs> {
   if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
@@ -53,32 +53,6 @@ function loadPdfJs(): Promise<PdfJs> {
     script.onerror = () => reject(new Error('Could not load PDF viewer'));
     document.head.appendChild(script);
   });
-}
-
-function createPaperSound() {
-  try {
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-    if (!AudioContextClass) return;
-    const context = new AudioContextClass();
-    const buffer = context.createBuffer(1, context.sampleRate * 0.2, context.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < data.length; i += 1) {
-      const envelope = Math.max(0, 1 - i / data.length) ** 2;
-      data[i] = (Math.random() * 2 - 1) * envelope;
-    }
-    const source = context.createBufferSource();
-    const gain = context.createGain();
-    source.buffer = buffer;
-    source.connect(gain);
-    gain.connect(context.destination);
-    const now = context.currentTime;
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.055, now + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
-    source.start(now);
-    source.stop(now + 0.2);
-    source.addEventListener('ended', () => context.close());
-  } catch {}
 }
 
 export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps) {
@@ -108,7 +82,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     try {
       if (!soundRef.current) {
         soundRef.current = new Audio(PAGE_TURN_SOUND);
-        soundRef.current.volume = 0.52;
+        soundRef.current.preload = 'auto';
+        soundRef.current.volume = 0.78;
       }
       soundRef.current.currentTime = 0;
       void soundRef.current.play().catch(() => {});
