@@ -22,14 +22,12 @@ const LanguageMenusList = () => {
     const handleLanguageSelect = (languageParam: string | undefined): void => {
         const params = new URLSearchParams(searchParams)
 
-        // Handle language parameter
         if (languageParam) {
             params.set('lang', languageParam)
         } else {
             params.delete('lang')
         }
 
-        // Preserve author parameter if it exists
         const authorParam = searchParams.get('author')
         if (authorParam) {
             params.set('author', authorParam)
@@ -46,7 +44,7 @@ const LanguageMenusList = () => {
                 <Button
                     key={language.id}
                     variant={currentLang === language.id ? "default" : "ghost"}
-                    className="justify-start"
+                    className="h-11 justify-start rounded-lg px-4 text-base font-medium tracking-wide text-slate-700 transition-all duration-200 hover:bg-slate-100 hover:text-slate-950"
                     onClick={() => handleLanguageSelect(language.param)}
                 >
                     {language.name}
