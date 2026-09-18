@@ -16,7 +16,7 @@ export default function LanguageMenusLists({ currentLang = "all", currentAuthor 
                 if (currentAuthor !== 'all') params.set('author', currentAuthor)
                 return (
                     <Button key={language.id} asChild variant={currentLang === language.id ? "default" : "ghost"} className="h-10 justify-start rounded-lg px-4 font-sans text-sm font-semibold tracking-normal text-emerald-800 transition-colors hover:bg-emerald-50 hover:text-emerald-950">
-                        <Link href={"/bookShelf?" + params.toString()} prefetch>{language.name}</Link>
+                        <Link href={"/bookShelf?" + params.toString()}>{language.name}</Link>
                     </Button>
                 )
             })}
