@@ -263,14 +263,20 @@ export default function BookFlipbook({ bookId, title }: Props) {
   if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
   const dragProgress = pageFrameRef.current?.clientWidth ? Math.max(-1, Math.min(1, dragOffset / pageFrameRef.current.clientWidth)) : 0;
-  const dragAngle = dragProgress * 48;
+  const dragAngle = dragProgress * 52;
   const flipStyle: React.CSSProperties = {
     transformOrigin: dragOffset < 0 || turnDirection === 'next' ? 'right center' : 'left center',
-    transform: dragOffset !== 0
-      ? `translateX(${dragOffset * 0.045}px) rotateY(${dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})`
-      : 'rotateY(0deg) scaleX(1)',
-    transition: isDragging ? 'none' : 'transform 280ms cubic-bezier(.22,.72,.24,1), box-shadow 280ms ease',
-    boxShadow: dragOffset !== 0 ? '0 14px 30px rgba(15,23,42,.22)' : '0 16px 30px rgba(15,23,42,.18)',
+    transform: turning
+      ? `translateX(${turnDirection === 'next' ? '-1.5%' : '1.5%'}) rotateY(${turnDirection === 'next' ? -178 : 178}deg) scaleX(0.985)`
+      : dragOffset !== 0
+        ? `translateX(${dragOffset * 0.045}px) rotateY(${dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})`
+        : 'rotateY(0deg) scaleX(1)',
+    transition: isDragging
+      ? 'none'
+      : turning
+        ? 'transform 620ms cubic-bezier(.22,.72,.24,1), box-shadow 620ms ease'
+        : 'transform 280ms cubic-bezier(.22,.72,.24,1), box-shadow 280ms ease',
+    boxShadow: turning || dragOffset !== 0 ? '0 18px 34px rgba(15,23,42,.26)' : '0 16px 30px rgba(15,23,42,.18)',
     backfaceVisibility: 'hidden',
     transformStyle: 'preserve-3d',
     touchAction: 'none',
