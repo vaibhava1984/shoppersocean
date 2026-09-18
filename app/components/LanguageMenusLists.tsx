@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 type Language = {
     id: string;
     name: string;
-    param: string | undefined;
+    param: string;
 }
 
 const LanguageMenusList = () => {
@@ -14,19 +14,13 @@ const LanguageMenusList = () => {
     const searchParams = useSearchParams()
 
     const languages: Language[] = [
-        { id: 'all', name: 'All Languages', param: undefined },
         { id: 'en', name: 'English', param: 'en' },
         { id: 'hindi', name: 'Hindi', param: 'hindi' }
     ]
 
-    const handleLanguageSelect = (languageParam: string | undefined): void => {
+    const handleLanguageSelect = (languageParam: string): void => {
         const params = new URLSearchParams(searchParams)
-
-        if (languageParam) {
-            params.set('lang', languageParam)
-        } else {
-            params.delete('lang')
-        }
+        params.set('lang', languageParam)
 
         const authorParam = searchParams.get('author')
         if (authorParam) {
@@ -36,7 +30,7 @@ const LanguageMenusList = () => {
         router.push(`/bookShelf?${params.toString()}`)
     }
 
-    const currentLang = searchParams.get('lang') || 'all'
+    const currentLang = searchParams.get('lang')
 
     return (
         <div className="flex flex-col space-y-2">
@@ -44,7 +38,7 @@ const LanguageMenusList = () => {
                 <Button
                     key={language.id}
                     variant={currentLang === language.id ? "default" : "ghost"}
-                    className="h-11 justify-start rounded-lg px-4 font-sans text-sm font-bold tracking-normal text-indigo-800 transition-all duration-200 hover:bg-indigo-50 hover:text-indigo-950"
+                    className="h-10 justify-start rounded-lg px-4 font-sans text-sm font-semibold tracking-normal text-emerald-800 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-950"
                     onClick={() => handleLanguageSelect(language.param)}
                 >
                     {language.name}

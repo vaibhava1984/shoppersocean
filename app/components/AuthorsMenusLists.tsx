@@ -31,14 +31,11 @@ export default function AuthorsMenusLists() {
             
             if (fetchError) throw fetchError
             
-            setAuthorsMenuLists([
-                { author_id: 'all', name: 'All Authors' },
-                ...(data || [])
-            ])
+            setAuthorsMenuLists(data || [])
         } catch (err) {
             console.error('Error fetching authors:', err)
             setError('Failed to load authors')
-            setAuthorsMenuLists([{ author_id: 'all', name: 'All Authors' }])
+            setAuthorsMenuLists([])
         } finally {
             setIsLoading(false)
         }
@@ -50,12 +47,7 @@ export default function AuthorsMenusLists() {
 
     const handleAuthorSelect = (authorId: string): void => {
         const params = new URLSearchParams(searchParams)
-
-        if (authorId && authorId !== 'all') {
-            params.set('author', authorId)
-        } else {
-            params.delete('author')
-        }
+        params.set('author', authorId)
 
         const langParam = searchParams.get('lang')
         if (langParam) {
@@ -65,7 +57,7 @@ export default function AuthorsMenusLists() {
         router.push(`/bookShelf?${params.toString()}`)
     }
 
-    const currentAuthorId = searchParams.get('author') || 'all'
+    const currentAuthorId = searchParams.get('author')
 
     if (isLoading) {
         return (
@@ -91,7 +83,7 @@ export default function AuthorsMenusLists() {
                 <Button
                     key={author.author_id}
                     variant={currentAuthorId === author.author_id ? "default" : "ghost"}
-                    className="h-11 justify-start w-full rounded-lg px-4 font-sans text-sm font-bold tracking-normal text-rose-800 transition-all duration-200 hover:bg-rose-50 hover:text-rose-950"
+                    className="h-10 justify-start w-full rounded-lg px-4 font-sans text-sm font-semibold tracking-normal text-emerald-800 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-950"
                     onClick={() => handleAuthorSelect(author.author_id)}
                     disabled={isLoading}
                 >

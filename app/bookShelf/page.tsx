@@ -1,3 +1,4 @@
+import Link from "next/link"
 import Header from "@/components/Header"
 import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/utils/supabase/server"
@@ -13,7 +14,6 @@ export const metadata = {
     description: 'Escape into Entertainment',
 }
 
-// Keep the bookshelf response cacheable when possible while still refreshing book data regularly.
 export const revalidate = 3600
 export const dynamicParams = true
 
@@ -26,8 +26,6 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
 
     const supabase = createClient()
 
-    // Start auth and book retrieval together so the slower auth request no longer blocks
-    // the bookshelf database request.
     const userPromise = supabase.auth.getUser().catch((error) => {
         console.error('Error fetching user:', error)
         return { data: { user: null } }
@@ -73,17 +71,17 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
     }))
 
     const authorInfo = {
-        "Chetan Bhagat": `Chetan Bhagat is the author of seven blockbuster books. These include six novels—Five Point Someone (2004), One Night @ the Call Center (2005), The 3 Mistakes of My Lif[...]
+        "Chetan Bhagat": `Chetan Bhagat is the author of seven blockbuster books. These include six novels—Five Point Someone (2004), One Night @ the Call Center (2005), The 3 Mistakes of My Life (2008), 2 States (2009), Revolution 2020 (2011), Half Girlfriend (2014), and One Indian Girl (2016). His non-fiction works include What Young India Wants (2012) and India Positive (2019).
 
     Chetan's books have remained bestsellers since their release and have been equally celebrated on the big screen.
 
-    The New York Times called him the 'the biggest selling English language novelist in India's history'. TIME magazine named him amongst the '100 most influential people in the world' and Fast Co[...]
+    The New York Times called him the 'the biggest selling English language novelist in India's history'. TIME magazine named him amongst the '100 most influential people in the world' and Fast Company listed him among the world's 100 most creative people in 2013.
 
     Chetan writes columns for leading English and Hindi newspapers, focusing on youth and national development issues. He is also a motivational speaker and screenplay writer.
 
-    Chetan quit his international investment banking career in 2009 to devote his entire time to writing and making change happen in the country. He lives in Mumbai with his wife, Anusha, an ex-cl[...]`,
-        "Amish Tripathi": `Amish Tripathi is an Indian author known for his novels The Shiva Trilogy and the Ram Chandra Series. His debut work, The Immortals of Meluha, was a bestseller that earn[...]`,
-        "Sudha Murty": `Sudha Murty is an Indian engineering teacher, author and social worker. She is the chairperson of the Infosys Foundation and a member of public health care initiatives of t[...]`
+    Chetan quit his international investment banking career in 2009 to devote his entire time to writing and making change happen in the country. He lives in Mumbai with his wife, Anusha, an ex-client of his.`,
+        "Amish Tripathi": `Amish Tripathi is an Indian author known for his novels The Shiva Trilogy and the Ram Chandra Series. His debut work, The Immortals of Meluha, was a bestseller that earned him the Crossword Book Award and the Raymond Crossword Book Award.`,
+        "Sudha Murty": `Sudha Murty is an Indian engineering teacher, author and social worker. She is the chairperson of the Infosys Foundation and a member of public health care initiatives of the Government of Karnataka.`
     }
 
     function getPageHeader() {
@@ -94,6 +92,14 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
 
     const selectedAuthorName = searchFilters.author_id !== 'all' ? filteredBooks[0]?.author : null
     const selectedAuthorInfo = selectedAuthorName ? authorInfo[selectedAuthorName as keyof typeof authorInfo] : null
+
+    const allLanguagesParams = new URLSearchParams()
+    if (searchFilters.author_id !== 'all') allLanguagesParams.set('author', searchFilters.author_id)
+    const allLanguagesHref = allLanguagesParams.toString() ? `/bookShelf?${allLanguagesParams.toString()}` : '/bookShelf'
+
+    const allAuthorsParams = new URLSearchParams()
+    if (searchFilters.language !== 'all') allAuthorsParams.set('lang', searchFilters.language)
+    const allAuthorsHref = allAuthorsParams.toString() ? `/bookShelf?${allAuthorsParams.toString()}` : '/bookShelf'
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -109,13 +115,21 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row gap-8">
                         <div className="md:w-1/4">
-                            <h2 className="text-2xl font-bold mb-4 text-slate-800">Categories</h2>
+                            <h2 className="mb-5 text-3xl font-black text-black">Categories</h2>
                             <div className="mb-8">
-                                <h3 className="mb-5 font-serif text-3xl font-black italic tracking-widest text-indigo-700">All languages</h3>
+                                <h3 className="mb-4 font-serif text-2xl font-black italic tracking-wide text-blue-700">
+                                    <Link href={allLanguagesHref} className="hover:text-blue-800 transition-colors">
+                                        All languages
+                                    </Link>
+                                </h3>
                                 <LanguageMenusLists />
                             </div>
                             <div>
-                                <h3 className="mb-5 font-serif text-3xl font-black italic tracking-widest text-rose-700">All authors</h3>
+                                <h3 className="mb-4 font-serif text-2xl font-black italic tracking-wide text-blue-700">
+                                    <Link href={allAuthorsHref} className="hover:text-blue-800 transition-colors">
+                                        All authors
+                                    </Link>
+                                </h3>
                                 <AuthorsMenusLists />
                             </div>
                         </div>
