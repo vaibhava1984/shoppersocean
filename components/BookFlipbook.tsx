@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Download, Expand, Loader2, Minus, Plus, Volume2, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, Loader2, Minus, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 declare global {
@@ -60,7 +60,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isSliderDragging, setIsSliderDragging] = useState(false);
-  const [fullscreen, setFullscreen] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
   const playPageTurnSound = useCallback(() => {
@@ -168,7 +167,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     } finally { setRendering(false); }
   }, [page, zoom]);
 
-  useEffect(() => { if (opened && readerUrl && pdfRef.current) void renderPage(); }, [opened, readerUrl, renderPage, pageCount, fullscreen]);
+  useEffect(() => { if (opened && readerUrl && pdfRef.current) void renderPage(); }, [opened, readerUrl, renderPage, pageCount]);
 
   useEffect(() => {
     const onResize = () => { if (opened && pdfRef.current) void renderPage(); };
@@ -185,12 +184,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
       setPage(next);
       window.setTimeout(() => setTurning(false), 280);
     }, 70);
-  };
-
-  const toggleFullscreen = async () => {
-    if (!viewerRef.current) return;
-    if (!document.fullscreenElement) { await viewerRef.current.requestFullscreen?.(); setFullscreen(true); }
-    else { await document.exitFullscreen?.(); setFullscreen(false); }
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -282,21 +275,21 @@ export default function BookFlipbook({ bookId, title }: Props) {
 
   const sliderPercent = pageCount > 1 ? ((page - 1) / (pageCount - 1)) * 100 : 0;
 
-  return <div ref={viewerRef} className={`overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl ${fullscreen ? 'flex min-h-screen flex-col' : ''}`}>
+  return <div ref={viewerRef} className="overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2">
       <div className="min-w-0 truncate font-medium">{title}</div>
       <div className="flex items-center gap-1">
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
         <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.min(1.35, Number((zoom + 0.1).toFixed(2))))} aria-label="Zoom in"><Plus /></Button>
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={toggleFullscreen} aria-label={fullscreen ? 'Exit full screen' : 'Full screen'}>{fullscreen ? <X /> : <Expand />}</Button>
+        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setPage(1); setPageCount(0); }} aria-label="Close flipbook"><X /></Button>
       </div>
     </div>
 
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
 
     <div
-      className={`relative flex flex-1 items-center justify-center overflow-hidden p-2 sm:p-4 ${fullscreen ? 'min-h-0' : 'h-[min(72vh,680px)] min-h-[360px]'}`}
+      className="relative flex h-[min(72vh,680px)] min-h-[360px] flex-1 items-center justify-center overflow-hidden p-2 sm:p-4"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -316,7 +309,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute bottom-2 left-2 z-20 h-8 w-8 rounded-full bg-white/90 text-slate-800 shadow-md ring-1 ring-black/10 hover:bg-white"
+              className="absolute bottom-1 left-1 z-20 h-7 w-7 rounded-none bg-white/75 p-0 text-slate-800 shadow-sm hover:bg-white"
               disabled={page <= 1 || turning}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page - 1)}
@@ -328,7 +321,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute bottom-2 right-2 z-20 h-8 w-8 rounded-full bg-white/90 text-slate-800 shadow-md ring-1 ring-black/10 hover:bg-white"
+              className="absolute bottom-1 right-1 z-20 h-7 w-7 rounded-none bg-white/75 p-0 text-slate-800 shadow-sm hover:bg-white"
               disabled={page >= pageCount || turning}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page + 1)}
@@ -359,7 +352,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
     </div>
 
     <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2">
-      <Volume2 className="h-4 w-4 opacity-70" aria-hidden="true" />
       <span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span>
     </div>
   </div>;
