@@ -70,24 +70,38 @@ export default function BookFlipbook({ bookId, title }: Props) {
       audioContextRef.current = ctx;
       if (ctx.state === 'suspended') void ctx.resume();
 
-      const duration = 0.28;
-      const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * duration), ctx.sampleRate);
+      // Heyzine-style paper-rustle character: a longer layered
+      // broadband rustle with a soft low-frequency body and a quick
+      // high-frequency page-edge sweep.
+      const duration = 0.52;
+      const length = Math.floor(ctx.sampleRate * duration);
+      const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
       const data = buffer.getChannelData(0);
-      for (let i = 0; i < data.length; i += 1) {
-        const t = i / data.length;
-        const envelope = Math.pow(1 - t, 2.1) * Math.sin(Math.PI * t);
-        data[i] = (Math.random() * 2 - 1) * envelope * 0.18;
+      let smooth = 0;
+      for (let i = 0; i < length; i += 1) {
+        const t = i / length;
+        const attack = Math.min(1, t / 0.035);
+        const release = Math.min(1, (1 - t) / 0.22);
+        const body = attack * release;
+        smooth = smooth * 0.965 + (Math.random() * 2 - 1) * 0.035;
+        const crisp = Math.random() * 2 - 1;
+        const sweep = Math.sin(t * Math.PI * 18) * 0.12;
+        data[i] = ((crisp * 0.72) + (smooth * 2.4) + sweep) * body * 0.22;
       }
 
       const source = ctx.createBufferSource();
       const filter = ctx.createBiquadFilter();
+      const lowpass = ctx.createBiquadFilter();
       const gain = ctx.createGain();
       source.buffer = buffer;
       filter.type = 'bandpass';
-      filter.frequency.value = 1550;
-      filter.Q.value = 0.7;
-      gain.gain.value = 0.48;
-      source.connect(filter).connect(gain).connect(ctx.destination);
+      filter.frequency.setValueAtTime(900, ctx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(2400, ctx.currentTime + 0.22);
+      filter.Q.value = 0.55;
+      lowpass.type = 'lowpass';
+      lowpass.frequency.value = 5200;
+      gain.gain.value = 0.42;
+      source.connect(filter).connect(lowpass).connect(gain).connect(ctx.destination);
       source.start();
     } catch {
       // Sound is non-essential; never block navigation if audio is unavailable.
@@ -309,7 +323,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute bottom-1 left-1 z-20 h-7 w-7 rounded-none bg-white/75 p-0 text-slate-800 shadow-sm hover:bg-white"
+              className="absolute bottom-2 left-1 z-20 h-7 w-7 bg-transparent p-0 text-slate-700 drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)] hover:bg-white/20"
               disabled={page <= 1 || turning}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page - 1)}
@@ -321,7 +335,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute bottom-1 right-1 z-20 h-7 w-7 rounded-none bg-white/75 p-0 text-slate-800 shadow-sm hover:bg-white"
+              className="absolute bottom-2 right-1 z-20 h-7 w-7 bg-transparent p-0 text-slate-700 drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)] hover:bg-white/20"
               disabled={page >= pageCount || turning}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page + 1)}
