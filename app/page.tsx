@@ -20,7 +20,7 @@ export default async function LandingPage() {
   const user = await getUser();
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <Header />
+      <Header user={user} />
       <div>
         <HeroSection
           title="Shoppers Ocean"
@@ -57,7 +57,7 @@ export default async function LandingPage() {
       {/* Testimonials and account controls */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <TestimonialSection />
+          <TestimonialSection user={user} />
         </div>
       </section>
 
