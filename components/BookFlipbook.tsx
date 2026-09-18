@@ -39,6 +39,7 @@ function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
 
 export default function BookFlipbook({ bookId, title }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const nextCanvasRef = useRef<HTMLCanvasElement>(null);
   const pageFrameRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<any>(null);
@@ -61,6 +62,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [isSliderDragging, setIsSliderDragging] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [turnDirection, setTurnDirection] = useState<'next' | 'prev' | null>(null);
 
   const playPageTurnSound = useCallback(() => {
     try {
@@ -121,13 +123,12 @@ export default function BookFlipbook({ bookId, title }: Props) {
     return () => { cancelled = true; };
   }, [readerUrl]);
 
-  const renderPage = useCallback(async () => {
-    const pdf = pdfRef.current; const canvas = canvasRef.current; const frame = pageFrameRef.current;
+  const renderCanvasPage = useCallback(async (targetPage: number, canvas: HTMLCanvasElement, showLoading = false) => {
+    const pdf = pdfRef.current; const frame = pageFrameRef.current;
     if (!pdf || !canvas || !frame) return;
-    setRendering(true); setError('');
+    if (showLoading) setRendering(true);
     try {
-      if (renderTaskRef.current) renderTaskRef.current.cancel();
-      const pdfPage = await pdf.getPage(page);
+      const pdfPage = await pdf.getPage(targetPage);
       const baseViewport = pdfPage.getViewport({ scale: 1 });
       const availableWidth = Math.max(180, frame.clientWidth - 4);
       const availableHeight = Math.max(260, frame.clientHeight - 4);
@@ -141,12 +142,19 @@ export default function BookFlipbook({ bookId, title }: Props) {
       const context = canvas.getContext('2d');
       if (!context) throw new Error('Canvas unavailable');
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      renderTaskRef.current = pdfPage.render({ canvasContext: context, viewport });
-      await renderTaskRef.current.promise;
+      const task = pdfPage.render({ canvasContext: context, viewport });
+      if (showLoading) renderTaskRef.current = task;
+      await task.promise;
     } catch (err: any) {
       if (err?.name !== 'RenderingCancelledException') setError(err?.message || 'Unable to render this page');
-    } finally { setRendering(false); }
-  }, [page, zoom]);
+    } finally { if (showLoading) setRendering(false); }
+  }, [zoom]);
+
+  const renderPage = useCallback(async () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    await renderCanvasPage(page, canvas, true);
+  }, [page, renderCanvasPage]);
 
   useEffect(() => { if (opened && readerUrl && pdfRef.current) void renderPage(); }, [opened, readerUrl, renderPage, pageCount]);
 
@@ -156,15 +164,26 @@ export default function BookFlipbook({ bookId, title }: Props) {
     return () => window.removeEventListener('resize', onResize);
   }, [opened, renderPage]);
 
-  const changePage = (next: number) => {
-    if (next < 1 || next > pageCount || turning) return;
-    playPageTurnSound();
+  const changePage = async (next: number) => {
+    if (next < 1 || next > pageCount || turning || rendering) return;
+    const destination = next > page ? 'next' : 'prev';
+    const nextCanvas = nextCanvasRef.current;
+    if (!nextCanvas) return;
     setDragOffset(0);
+    setTurnDirection(destination);
     setTurning(true);
-    window.setTimeout(() => {
-      setPage(next);
-      window.setTimeout(() => setTurning(false), 280);
-    }, 70);
+    playPageTurnSound();
+    try {
+      await renderCanvasPage(next, nextCanvas);
+      window.setTimeout(() => {
+        setPage(next);
+        setTurnDirection(null);
+        setTurning(false);
+      }, 620);
+    } catch {
+      setTurnDirection(null);
+      setTurning(false);
+    }
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -244,13 +263,16 @@ export default function BookFlipbook({ bookId, title }: Props) {
   if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
   const dragProgress = pageFrameRef.current?.clientWidth ? Math.max(-1, Math.min(1, dragOffset / pageFrameRef.current.clientWidth)) : 0;
-  const dragAngle = dragProgress * 55;
+  const dragAngle = dragProgress * 48;
   const flipStyle: React.CSSProperties = {
-    perspective: '1400px',
-    transformOrigin: dragOffset < 0 ? 'right center' : 'left center',
-    transform: dragOffset !== 0 ? `translateX(${dragOffset * 0.08}px) rotateY(${dragAngle}deg)` : (turning ? 'rotateY(-88deg)' : 'rotateY(0deg)'),
-    opacity: turning ? 0.72 : 1,
-    transition: isDragging ? 'none' : 'transform 280ms ease, opacity 280ms ease',
+    transformOrigin: dragOffset < 0 || turnDirection === 'next' ? 'right center' : 'left center',
+    transform: dragOffset !== 0
+      ? `translateX(${dragOffset * 0.045}px) rotateY(${dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})`
+      : 'rotateY(0deg) scaleX(1)',
+    transition: isDragging ? 'none' : 'transform 280ms cubic-bezier(.22,.72,.24,1), box-shadow 280ms ease',
+    boxShadow: dragOffset !== 0 ? '0 14px 30px rgba(15,23,42,.22)' : '0 16px 30px rgba(15,23,42,.18)',
+    backfaceVisibility: 'hidden',
+    transformStyle: 'preserve-3d',
     touchAction: 'none',
   };
 
@@ -283,38 +305,41 @@ export default function BookFlipbook({ bookId, title }: Props) {
         onPointerCancel={finishPointerDrag}
       >
         <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center">
-          <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center rounded bg-white shadow-2xl" style={flipStyle}>
+          <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center" style={{ perspective: '1800px' }}>
+          <div className="absolute inset-0 flex items-center justify-center rounded bg-white shadow-[0_16px_30px_rgba(15,23,42,0.18)]" style={{ zIndex: 0, overflow: 'hidden' }}>
+            <canvas ref={nextCanvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
+          </div>
+          <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
             <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
+            {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
 
             <Button
               variant="ghost"
               size="icon"
               className="group absolute bottom-1 left-0 z-20 h-11 w-11 rounded-none bg-transparent p-0 text-slate-700 drop-shadow-[0_2px_3px_rgba(255,255,255,0.95)] hover:bg-transparent disabled:opacity-25"
-              disabled={page <= 1 || turning}
+              disabled={page <= 1 || turning || rendering}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page - 1)}
               aria-label="Previous page"
             >
-              <span className="relative block h-10 w-10 overflow-hidden">
-                <span className="absolute bottom-0 left-0 h-8 w-8 rounded-tr-[14px] border-t-2 border-r-2 border-slate-500/80 bg-white/55 shadow-[2px_-2px_5px_rgba(15,23,42,0.18)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[-3deg]" />
-                <span className="absolute bottom-0 left-0 h-5 w-5 border-t-2 border-r-2 border-slate-400/60 bg-white/85 transition-all duration-200 group-hover:h-6 group-hover:w-6" />
-                <span className="absolute left-1 top-1 text-[17px] font-bold leading-none text-slate-600">↖</span>
+              <span className="relative block h-10 w-10">
+                <span className="absolute bottom-0 left-1 h-7 w-7 rounded-tr-[18px] border-t border-r border-slate-400/70 bg-white/90 shadow-[2px_-2px_5px_rgba(15,23,42,.16)] transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-rotate-3" />
+                <ChevronLeft className="absolute left-0.5 top-1.5 h-6 w-6 stroke-[1.8] text-slate-700 transition-transform duration-200 group-hover:-translate-x-0.5" />
               </span>        </Button>
 
             <Button
               variant="ghost"
               size="icon"
               className="group absolute bottom-1 right-0 z-20 h-11 w-11 rounded-none bg-transparent p-0 text-slate-700 drop-shadow-[0_2px_3px_rgba(255,255,255,0.95)] hover:bg-transparent disabled:opacity-25"
-              disabled={page >= pageCount || turning}
+              disabled={page >= pageCount || turning || rendering}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page + 1)}
               aria-label="Next page"
             >
-              <span className="relative block h-10 w-10 overflow-hidden">
-                <span className="absolute bottom-0 right-0 h-8 w-8 rounded-tl-[14px] border-t-2 border-l-2 border-slate-500/80 bg-white/55 shadow-[-2px_-2px_5px_rgba(15,23,42,0.18)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[3deg]" />
-                <span className="absolute bottom-0 right-0 h-5 w-5 border-t-2 border-l-2 border-slate-400/60 bg-white/85 transition-all duration-200 group-hover:h-6 group-hover:w-6" />
-                <span className="absolute right-1 top-1 text-[17px] font-bold leading-none text-slate-600">↗</span>
+              <span className="relative block h-10 w-10">
+                <span className="absolute bottom-0 right-1 h-7 w-7 rounded-tl-[18px] border-t border-l border-slate-400/70 bg-white/90 shadow-[-2px_-2px_5px_rgba(15,23,42,.16)] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:rotate-3" />
+                <ChevronRight className="absolute right-0.5 top-1.5 h-6 w-6 stroke-[1.8] text-slate-700 transition-transform duration-200 group-hover:translate-x-0.5" />
               </span>        </Button>
 
             <div
