@@ -5,11 +5,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star } from 'lucide-react'
 
 // TestimonialSection Component
-const TestimonialSection: React.FC = () => {
+const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
     const [testimonials, setTestimonials] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [user, setUser] = useState<any>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const supabase = createClient();
 
@@ -17,20 +16,16 @@ const TestimonialSection: React.FC = () => {
         const fetchTestimonialsAndUser = async () => {
             setLoading(true);
             try {
-                const [testimonialsResult, userResult] = await Promise.all([
-                    supabase
-                        .from('testimonials')
-                        .select('description, users, rating, book_id')
-                        .is('book_id', null),
-                    supabase.auth.getUser(),
-                ]);
+                const testimonialsResult = await supabase
+                    .from('testimonials')
+                    .select('description, users, rating, book_id')
+                    .is('book_id', null);
 
                 if (testimonialsResult.error) {
                     throw testimonialsResult.error;
                 }
 
                 setTestimonials(testimonialsResult.data || []);
-                setUser(userResult.data.user);
             } catch (err) {
                 setError('Failed to fetch testimonials');
                 console.error(err);
