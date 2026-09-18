@@ -67,15 +67,12 @@ export default function BookFlipbook({ bookId, title }: Props) {
 
   const playPageTurnSound = useCallback(() => {
     try {
-      // Real recorded book-page turn, CC0/public domain — no synthesized whoosh.
       const audio = pageTurnAudioRef.current ?? new Audio('https://cdn.freesound.org/previews/484/484940_6150892-hq.mp3');
       pageTurnAudioRef.current = audio;
       audio.currentTime = 0;
       audio.volume = 0.82;
       void audio.play();
-    } catch {
-      // Never block page navigation if audio is unavailable.
-    }
+    } catch {}
   }, []);
 
   const downloadPdf = async () => {
@@ -170,67 +167,43 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const destination = next > page ? 'next' : 'prev';
     const nextCanvas = nextCanvasRef.current;
     if (!nextCanvas) return;
-    setDragOffset(0);
-    setTurnDirection(destination);
-    setTurning(true);
-    playPageTurnSound();
+    setDragOffset(0); setTurnDirection(destination); setTurning(true); playPageTurnSound();
     try {
       await renderCanvasPage(next, nextCanvas);
       if (turnTimerRef.current) window.clearTimeout(turnTimerRef.current);
       turnTimerRef.current = window.setTimeout(() => {
-        setPage(next);
-        setTurnDirection(null);
-        setTurning(false);
-        turnTimerRef.current = null;
+        setPage(next); setTurnDirection(null); setTurning(false); turnTimerRef.current = null;
       }, 620);
     } catch {
-      setTurnDirection(null);
-      setTurning(false);
+      setTurnDirection(null); setTurning(false);
     }
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (turning || pageCount <= 1 || event.pointerType === 'mouse' && event.button !== 0) return;
-    dragStartXRef.current = event.clientX;
-    dragOffsetRef.current = 0;
-    setIsDragging(true);
+    if (turning || pageCount <= 1 || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    dragStartXRef.current = event.clientX; dragOffsetRef.current = 0; setIsDragging(true);
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
-
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (dragStartXRef.current === null || turning) return;
     const raw = event.clientX - dragStartXRef.current;
     const maxDrag = Math.max(80, Math.min(280, event.currentTarget.clientWidth * 0.62));
     const limited = Math.max(-maxDrag, Math.min(maxDrag, raw));
-    dragOffsetRef.current = limited;
-    setDragOffset(limited);
+    dragOffsetRef.current = limited; setDragOffset(limited);
   };
-
   const finishPointerDrag = () => {
     if (dragStartXRef.current === null) return;
-    const offset = dragOffsetRef.current;
-    dragStartXRef.current = null;
-    dragOffsetRef.current = 0;
-    setIsDragging(false);
+    const offset = dragOffsetRef.current; dragStartXRef.current = null; dragOffsetRef.current = 0; setIsDragging(false);
     const threshold = Math.max(55, Math.min(140, (pageFrameRef.current?.clientWidth || 300) * 0.18));
-    if (Math.abs(offset) >= threshold) {
-      changePage(offset < 0 ? page + 1 : page - 1);
-    } else {
-      setDragOffset(0);
-    }
+    if (Math.abs(offset) >= threshold) changePage(offset < 0 ? page + 1 : page - 1);
+    else setDragOffset(0);
   };
-
-  const handleTouchStart = (event: React.TouchEvent) => {
-    touchStartXRef.current = event.changedTouches[0]?.clientX ?? null;
-  };
+  const handleTouchStart = (event: React.TouchEvent) => { touchStartXRef.current = event.changedTouches[0]?.clientX ?? null; };
   const handleTouchEnd = (event: React.TouchEvent) => {
-    const start = touchStartXRef.current;
-    const end = event.changedTouches[0]?.clientX ?? null;
-    touchStartXRef.current = null;
+    const start = touchStartXRef.current; const end = event.changedTouches[0]?.clientX ?? null; touchStartXRef.current = null;
     if (start === null || end === null || Math.abs(end - start) < 45) return;
     if (dragStartXRef.current === null) changePage(end < start ? page + 1 : page - 1);
   };
-
   const sliderPageFromPointer = (clientX: number) => {
     if (!sliderRef.current || pageCount <= 1) return;
     const rect = sliderRef.current.getBoundingClientRect();
@@ -238,27 +211,17 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const target = Math.round(ratio * (pageCount - 1)) + 1;
     if (target !== page) setPage(target);
   };
-
   const handleSliderPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    if (!sliderRef.current || !pageCount) return;
-    setIsSliderDragging(true);
-    sliderRef.current.setPointerCapture?.(event.pointerId);
-    sliderPageFromPointer(event.clientX);
+    event.stopPropagation(); if (!sliderRef.current || !pageCount) return;
+    setIsSliderDragging(true); sliderRef.current.setPointerCapture?.(event.pointerId); sliderPageFromPointer(event.clientX);
   };
-
   const handleSliderPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    if (!isSliderDragging || !sliderRef.current?.hasPointerCapture(event.pointerId)) return;
+    event.stopPropagation(); if (!isSliderDragging || !sliderRef.current?.hasPointerCapture(event.pointerId)) return;
     sliderPageFromPointer(event.clientX);
   };
-
   const handleSliderPointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    if (!isSliderDragging) return;
-    setIsSliderDragging(false);
-    playPageTurnSound();
-    sliderRef.current?.releasePointerCapture?.(event.pointerId);
+    event.stopPropagation(); if (!isSliderDragging) return;
+    setIsSliderDragging(false); playPageTurnSound(); sliderRef.current?.releasePointerCapture?.(event.pointerId);
   };
 
   if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Your purchase includes secure flipbook reading and PDF download.</p><div className="flex w-full max-w-xl flex-col gap-3 sm:flex-row"><Button className="h-12 flex-1" onClick={openReader} disabled={loading}>Read online as flipbook</Button><Button className="h-12 flex-1" variant="outline" onClick={downloadPdf} disabled={downloading}>{downloading ? <><Loader2 className="mr-2 animate-spin" />Preparing…</> : <><Download className="mr-2 h-4 w-4" />Download as PDF book</>}</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
@@ -269,110 +232,40 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const dragAngle = dragProgress * 52;
   const flipStyle: React.CSSProperties = {
     transformOrigin: dragOffset < 0 || turnDirection === 'next' ? 'right center' : 'left center',
-    transform: turning
-      ? `translateX(${turnDirection === 'next' ? '-1.5%' : '1.5%'}) rotateY(${turnDirection === 'next' ? -178 : 178}deg) scaleX(0.985)`
-      : dragOffset !== 0
-        ? `translateX(${dragOffset * 0.045}px) rotateY(${dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})`
-        : 'rotateY(0deg) scaleX(1)',
-    transition: isDragging
-      ? 'none'
-      : turning
-        ? 'transform 620ms cubic-bezier(.22,.72,.24,1), box-shadow 620ms ease'
-        : 'transform 280ms cubic-bezier(.22,.72,.24,1), box-shadow 280ms ease',
+    transform: turning ? `translateX(${turnDirection === 'next' ? '-1.5%' : '1.5%'}) rotateY(${turnDirection === 'next' ? -178 : 178}deg) scaleX(0.985)` : dragOffset !== 0 ? `translateX(${dragOffset * 0.045}px) rotateY(${dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})` : 'rotateY(0deg) scaleX(1)',
+    transition: isDragging ? 'none' : turning ? 'transform 620ms cubic-bezier(.22,.72,.24,1), box-shadow 620ms ease' : 'transform 280ms cubic-bezier(.22,.72,.24,1), box-shadow 280ms ease',
     boxShadow: turning || dragOffset !== 0 ? '0 18px 34px rgba(15,23,42,.26)' : '0 16px 30px rgba(15,23,42,.18)',
-    backfaceVisibility: 'hidden',
-    transformStyle: 'preserve-3d',
-    touchAction: 'none',
+    backfaceVisibility: 'hidden', transformStyle: 'preserve-3d', touchAction: 'none',
   };
-
   const sliderPercent = pageCount > 1 ? ((page - 1) / (pageCount - 1)) * 100 : 0;
 
   return <div ref={viewerRef} className="overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
-    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2">
-      <div className="min-w-0 truncate font-medium">{title}</div>
-      <div className="flex items-center gap-1">
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
-        <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.min(1.35, Number((zoom + 0.1).toFixed(2))))} aria-label="Zoom in"><Plus /></Button>
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setPage(1); setPageCount(0); }} aria-label="Close flipbook"><X /></Button>
-      </div>
-    </div>
-
+    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
+      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
+      <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
+      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.min(1.35, Number((zoom + 0.1).toFixed(2))))} aria-label="Zoom in"><Plus /></Button>
+      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setPage(1); setPageCount(0); }} aria-label="Close flipbook"><X /></Button>
+    </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-
-    <div
-      className="relative flex h-[min(72vh,680px)] min-h-[360px] flex-1 items-center justify-center overflow-hidden p-2 sm:p-4"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      <div
-        ref={pageFrameRef}
-        className="relative flex h-full w-full max-w-[900px] items-center justify-center"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={finishPointerDrag}
-        onPointerCancel={finishPointerDrag}
-      >
+    <div className="relative flex h-[min(72vh,680px)] min-h-[360px] flex-1 items-center justify-center overflow-hidden p-2 sm:p-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div ref={pageFrameRef} className="relative flex h-full w-full max-w-[900px] items-center justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center" style={{ perspective: '1800px' }}>
-          <div className="absolute inset-0 flex items-center justify-center rounded bg-white shadow-[0_16px_30px_rgba(15,23,42,0.18)]" style={{ zIndex: 0, overflow: 'hidden' }}>
-            <canvas ref={nextCanvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
-          </div>
+          <div className="absolute inset-0 flex items-center justify-center rounded bg-white shadow-[0_16px_30px_rgba(15,23,42,0.18)]" style={{ zIndex: 0, overflow: 'hidden' }}><canvas ref={nextCanvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} /></div>
           <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
             <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute bottom-1 left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25"
-              disabled={page <= 1 || turning || rendering}
-              onPointerDown={(event) => event.stopPropagation()}
-              onClick={() => changePage(page - 1)}
-              aria-label="Previous page"
-            >
-              <span className="relative block h-10 w-10">
-                <span className="absolute bottom-0 left-1 h-7 w-7 rounded-tr-[18px] border-t border-r border-slate-400/70 bg-white/90 shadow-[2px_-2px_5px_rgba(15,23,42,.16)] transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-rotate-3" />
-                <ChevronLeft className="absolute left-0.5 top-1.5 h-6 w-6 stroke-[1.8] text-slate-700 transition-transform duration-200 group-hover:-translate-x-0.5" />
-              </span>        </Button>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute bottom-1 right-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25"
-              disabled={page >= pageCount || turning || rendering}
-              onPointerDown={(event) => event.stopPropagation()}
-              onClick={() => changePage(page + 1)}
-              aria-label="Next page"
-            >
-              <span className="relative block h-10 w-10">
-                <span className="absolute bottom-0 right-1 h-7 w-7 rounded-tl-[18px] border-t border-l border-slate-400/70 bg-white/90 shadow-[-2px_-2px_5px_rgba(15,23,42,.16)] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:rotate-3" />
-                <ChevronRight className="absolute right-0.5 top-1.5 h-6 w-6 stroke-[1.8] text-slate-700 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </span>        </Button>
-
-            <div
-              ref={sliderRef}
-              className="absolute bottom-1.5 left-12 right-12 z-30 h-6 cursor-pointer touch-none select-none"
-              onPointerDown={handleSliderPointerDown}
-              onPointerMove={handleSliderPointerMove}
-              onPointerUp={handleSliderPointerUp}
-              onPointerCancel={handleSliderPointerUp}
-            >
+            <Button variant="ghost" size="icon" className="absolute bottom-1 left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 1)} aria-label="Previous page"><ArrowLeft className="h-8 w-8 stroke-[3.25]" /></Button>
+            <Button variant="ghost" size="icon" className="absolute bottom-1 right-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page >= pageCount || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page + 1)} aria-label="Next page"><ArrowRight className="h-8 w-8 stroke-[3.25]" /></Button>
+            <div ref={sliderRef} className="absolute bottom-1.5 left-12 right-12 z-30 h-6 cursor-pointer touch-none select-none" onPointerDown={handleSliderPointerDown} onPointerMove={handleSliderPointerMove} onPointerUp={handleSliderPointerUp} onPointerCancel={handleSliderPointerUp}>
               <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/30 shadow-inner" />
               <div className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/65" style={{ width: `${sliderPercent}%` }} />
-              <div
-                className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-slate-800 shadow-md transition-transform"
-                style={{ left: `${sliderPercent}%`, transform: `translate(-50%, -50%) scale(${isSliderDragging ? 1.18 : 1})` }}
-                aria-label={`Page ${page}`}
-              />
+              <div className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-slate-800 shadow-md transition-transform" style={{ left: `${sliderPercent}%`, transform: `translate(-50%, -50%) scale(${isSliderDragging ? 1.18 : 1})` }} aria-label={`Page ${page}`} />
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2">
-      <span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span>
-    </div>
+    <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
   </div>;
 }
