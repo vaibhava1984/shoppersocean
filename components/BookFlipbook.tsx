@@ -62,7 +62,18 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [isSliderDragging, setIsSliderDragging] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
-  const playPageTurnSound = useCallback(() => {\n    try {\n      // Real recorded book-page turn, CC0/public domain — no synthesized whoosh.\n      const audio = pageTurnAudioRef.current ?? new Audio('https://cdn.freesound.org/previews/484/484940_6150892-hq.mp3');\n      pageTurnAudioRef.current = audio;\n      audio.currentTime = 0;\n      audio.volume = 0.82;\n      void audio.play();\n    } catch {\n      // Never block page navigation if audio is unavailable.\n    }\n  }, []);
+  const playPageTurnSound = useCallback(() => {
+    try {
+      // Real recorded book-page turn, CC0/public domain — no synthesized whoosh.
+      const audio = pageTurnAudioRef.current ?? new Audio('https://cdn.freesound.org/previews/484/484940_6150892-hq.mp3');
+      pageTurnAudioRef.current = audio;
+      audio.currentTime = 0;
+      audio.volume = 0.82;
+      void audio.play();
+    } catch {
+      // Never block page navigation if audio is unavailable.
+    }
+  }, []);
 
   const downloadPdf = async () => {
     if (downloading) return;
@@ -285,7 +296,11 @@ export default function BookFlipbook({ bookId, title }: Props) {
               onClick={() => changePage(page - 1)}
               aria-label="Previous page"
             >
-              <span className="relative block h-10 w-10 overflow-hidden">\n                <span className="absolute bottom-0 left-0 h-8 w-8 rounded-tr-[14px] border-t-2 border-r-2 border-slate-500/80 bg-white/55 shadow-[2px_-2px_5px_rgba(15,23,42,0.18)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[-3deg]" />\n                <span className="absolute bottom-0 left-0 h-5 w-5 border-t-2 border-r-2 border-slate-400/60 bg-white/85 transition-all duration-200 group-hover:h-6 group-hover:w-6" />\n                <span className="absolute left-1 top-1 text-[17px] font-bold leading-none text-slate-600">↖</span>\n              </span>        </Button>
+              <span className="relative block h-10 w-10 overflow-hidden">
+                <span className="absolute bottom-0 left-0 h-8 w-8 rounded-tr-[14px] border-t-2 border-r-2 border-slate-500/80 bg-white/55 shadow-[2px_-2px_5px_rgba(15,23,42,0.18)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[-3deg]" />
+                <span className="absolute bottom-0 left-0 h-5 w-5 border-t-2 border-r-2 border-slate-400/60 bg-white/85 transition-all duration-200 group-hover:h-6 group-hover:w-6" />
+                <span className="absolute left-1 top-1 text-[17px] font-bold leading-none text-slate-600">↖</span>
+              </span>        </Button>
 
             <Button
               variant="ghost"
@@ -296,7 +311,11 @@ export default function BookFlipbook({ bookId, title }: Props) {
               onClick={() => changePage(page + 1)}
               aria-label="Next page"
             >
-              <span className="relative block h-10 w-10 overflow-hidden">\n                <span className="absolute bottom-0 right-0 h-8 w-8 rounded-tl-[14px] border-t-2 border-l-2 border-slate-500/80 bg-white/55 shadow-[-2px_-2px_5px_rgba(15,23,42,0.18)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[3deg]" />\n                <span className="absolute bottom-0 right-0 h-5 w-5 border-t-2 border-l-2 border-slate-400/60 bg-white/85 transition-all duration-200 group-hover:h-6 group-hover:w-6" />\n                <span className="absolute right-1 top-1 text-[17px] font-bold leading-none text-slate-600">↗</span>\n              </span>        </Button>
+              <span className="relative block h-10 w-10 overflow-hidden">
+                <span className="absolute bottom-0 right-0 h-8 w-8 rounded-tl-[14px] border-t-2 border-l-2 border-slate-500/80 bg-white/55 shadow-[-2px_-2px_5px_rgba(15,23,42,0.18)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[3deg]" />
+                <span className="absolute bottom-0 right-0 h-5 w-5 border-t-2 border-l-2 border-slate-400/60 bg-white/85 transition-all duration-200 group-hover:h-6 group-hover:w-6" />
+                <span className="absolute right-1 top-1 text-[17px] font-bold leading-none text-slate-600">↗</span>
+              </span>        </Button>
 
             <div
               ref={sliderRef}
