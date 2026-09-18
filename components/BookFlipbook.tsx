@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Download, Loader2, Minus, Plus, X, CornerUpLeft, CornerUpRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download, Loader2, Minus, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 declare global {
@@ -316,7 +316,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <Button
               variant="ghost"
               size="icon"
-              className="group absolute bottom-1 left-0 z-20 h-11 w-11 rounded-none bg-transparent p-0 text-slate-700 drop-shadow-[0_2px_3px_rgba(255,255,255,0.95)] hover:bg-transparent disabled:opacity-25"
+              className="absolute bottom-1 left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25"
               disabled={page <= 1 || turning || rendering}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page - 1)}
@@ -330,7 +330,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <Button
               variant="ghost"
               size="icon"
-              className="group absolute bottom-1 right-0 z-20 h-11 w-11 rounded-none bg-transparent p-0 text-slate-700 drop-shadow-[0_2px_3px_rgba(255,255,255,0.95)] hover:bg-transparent disabled:opacity-25"
+              className="absolute bottom-1 right-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25"
               disabled={page >= pageCount || turning || rendering}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page + 1)}
