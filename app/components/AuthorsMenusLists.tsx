@@ -1,95 +1,21 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { createClient } from "@/utils/supabase/client"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-type Author = {
-    author_id: string;
-    name: string;
-}
+type Author = { author_id: string; name: string }
 
-export default function AuthorsMenusLists({ initialAuthors = [] }: { initialAuthors?: Author[] }) {
-    const router = useRouter()
-    const searchParams = useSearchParams()
-    const supabase = createClient()
-    const [authorsMenuLists, setAuthorsMenuLists] = useState<Author[]>(initialAuthors)
-    const [isLoading, setIsLoading] = useState(initialAuthors.length === 0)
-    const [error, setError] = useState<string | null>(null)
-
-    async function fetchAllAuthorsForMenu() {
-        try {
-            setIsLoading(true)
-            setError(null)
-            
-            const { data, error: fetchError } = await supabase
-                .from('authors')
-                .select('author_id,name')
-                .eq('is_deleted', false)
-                .order('name', { ascending: true })
-            
-            if (fetchError) throw fetchError
-            
-            setAuthorsMenuLists(data || [])
-        } catch (err) {
-            console.error('Error fetching authors:', err)
-            setError('Failed to load authors')
-            setAuthorsMenuLists([])
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        fetchAllAuthorsForMenu()
-    }, [])
-
-    const handleAuthorSelect = (authorId: string): void => {
-        const params = new URLSearchParams(searchParams)
-        params.set('author', authorId)
-
-        const langParam = searchParams.get('lang')
-        if (langParam) {
-            params.set('lang', langParam)
-        }
-
-        router.push(`/bookShelf?${params.toString()}`)
-    }
-
-    const currentAuthorId = searchParams.get('author')
-
-    if (isLoading) {
-        return (
-            <div className="flex flex-col space-y-2">
-                {[...Array(3)].map((_, i) => (
-                    <div key={i} className="h-10 bg-slate-200 rounded animate-pulse" />
-                ))}
-            </div>
-        )
-    }
-
-    if (error) {
-        return (
-            <div className="text-red-500 text-sm">
-                {error}
-            </div>
-        )
-    }
-
+export default function AuthorsMenusLists({ initialAuthors = [], currentAuthor = "all", currentLanguage = "all" }: { initialAuthors?: Author[]; currentAuthor?: string; currentLanguage?: string }) {
     return (
         <div className="flex flex-col space-y-2">
-            {authorsMenuLists.map((author) => (
-                <Button
-                    key={author.author_id}
-                    variant={currentAuthorId === author.author_id ? "default" : "ghost"}
-                    className="h-10 justify-start w-full rounded-lg px-4 font-sans text-sm font-semibold tracking-normal text-emerald-800 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-950"
-                    onClick={() => handleAuthorSelect(author.author_id)}
-                    disabled={isLoading}
-                >
-                    {author.name}
-                </Button>
-            ))}
+            {initialAuthors.map((author) => {
+                const params = new URLSearchParams()
+                params.set('author', author.author_id)
+                if (currentLanguage !== 'all') params.set('lang', currentLanguage)
+                return (
+                    <Button key={author.author_id} asChild variant={currentAuthor === author.author_id ? "default" : "ghost"} className="h-10 justify-start w-full rounded-lg px-4 font-sans text-sm font-semibold tracking-normal text-emerald-800 transition-colors hover:bg-emerald-50 hover:text-emerald-950">
+                        <Link href={"/bookShelf?" + params.toString()} prefetch>{author.name}</Link>
+                    </Button>
+                )
+            })}
         </div>
     )
 }
