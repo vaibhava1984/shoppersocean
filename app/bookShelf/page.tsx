@@ -51,7 +51,7 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
         query = query.eq('author_id', searchFilters.author_id)
     }
 
-    const [userResult, booksResult] = await Promise.all([userPromise, query])
+    const authorsPromise = supabase.from('authors').select('author_id,name').eq('is_deleted', false).order('name', { ascending: true })\n\n    const [userResult, booksResult, authorsResult] = await Promise.all([userPromise, query, authorsPromise])
     const user = userResult.data.user
     const { data, error } = booksResult
 
@@ -62,7 +62,7 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
         })
     }
 
-    const books = data || []
+    const books = data || []\n    const authors = authorsResult.data || []
     const filteredBooks = books.map(d => ({
         ...d,
         coverImage: d?.cover_images?.[0],
@@ -130,7 +130,7 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
                                         All authors
                                     </Link>
                                 </h3>
-                                <AuthorsMenusLists />
+                                <AuthorsMenusLists initialAuthors={authors} />
                             </div>
                         </div>
 
