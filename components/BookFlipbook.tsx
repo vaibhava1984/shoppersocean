@@ -45,6 +45,9 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const renderTaskRef = useRef<any>(null);
   const touchStartXRef = useRef<number | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const dragStartXRef = useRef<number | null>(null);
+  const dragOffsetRef = useRef(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
   const [opened, setOpened] = useState(false);
   const [readerUrl, setReaderUrl] = useState('');
   const [page, setPage] = useState(1);
@@ -54,6 +57,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState('');
   const [turning, setTurning] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
@@ -65,13 +69,13 @@ export default function BookFlipbook({ bookId, title }: Props) {
       audioContextRef.current = ctx;
       if (ctx.state === 'suspended') void ctx.resume();
 
-      const duration = 0.22;
+      const duration = 0.28;
       const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * duration), ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < data.length; i += 1) {
         const t = i / data.length;
-        const envelope = Math.pow(1 - t, 2.2) * Math.sin(Math.PI * t);
-        data[i] = (Math.random() * 2 - 1) * envelope * 0.16;
+        const envelope = Math.pow(1 - t, 2.1) * Math.sin(Math.PI * t);
+        data[i] = (Math.random() * 2 - 1) * envelope * 0.18;
       }
 
       const source = ctx.createBufferSource();
@@ -79,13 +83,13 @@ export default function BookFlipbook({ bookId, title }: Props) {
       const gain = ctx.createGain();
       source.buffer = buffer;
       filter.type = 'bandpass';
-      filter.frequency.value = 1800;
-      filter.Q.value = 0.55;
-      gain.gain.value = 0.42;
+      filter.frequency.value = 1550;
+      filter.Q.value = 0.7;
+      gain.gain.value = 0.48;
       source.connect(filter).connect(gain).connect(ctx.destination);
       source.start();
     } catch {
-      // Sound is non-essential; never block page navigation if audio is unavailable.
+      // Sound is non-essential; never block navigation if audio is unavailable.
     }
   }, []);
 
@@ -173,6 +177,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const changePage = (next: number) => {
     if (next < 1 || next > pageCount || turning) return;
     playPageTurnSound();
+    setDragOffset(0);
     setTurning(true);
     window.setTimeout(() => {
       setPage(next);
@@ -186,24 +191,75 @@ export default function BookFlipbook({ bookId, title }: Props) {
     else { await document.exitFullscreen?.(); setFullscreen(false); }
   };
 
-  const handleTouchStart = (event: React.TouchEvent) => { touchStartXRef.current = event.changedTouches[0]?.clientX ?? null; };
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (turning || pageCount <= 1 || event.pointerType === 'mouse' && event.button !== 0) return;
+    dragStartXRef.current = event.clientX;
+    dragOffsetRef.current = 0;
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartXRef.current === null || turning) return;
+    const raw = event.clientX - dragStartXRef.current;
+    const maxDrag = Math.max(80, Math.min(280, event.currentTarget.clientWidth * 0.62));
+    const limited = Math.max(-maxDrag, Math.min(maxDrag, raw));
+    dragOffsetRef.current = limited;
+    setDragOffset(limited);
+  };
+
+  const finishPointerDrag = () => {
+    if (dragStartXRef.current === null) return;
+    const offset = dragOffsetRef.current;
+    dragStartXRef.current = null;
+    dragOffsetRef.current = 0;
+    const threshold = Math.max(55, Math.min(140, (pageFrameRef.current?.clientWidth || 300) * 0.18));
+    if (Math.abs(offset) >= threshold) {
+      changePage(offset < 0 ? page + 1 : page - 1);
+    } else {
+      setDragOffset(0);
+    }
+  };
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    touchStartXRef.current = event.changedTouches[0]?.clientX ?? null;
+  };
   const handleTouchEnd = (event: React.TouchEvent) => {
     const start = touchStartXRef.current;
     const end = event.changedTouches[0]?.clientX ?? null;
     touchStartXRef.current = null;
     if (start === null || end === null || Math.abs(end - start) < 45) return;
-    changePage(end < start ? page + 1 : page - 1);
+    if (dragStartXRef.current === null) changePage(end < start ? page + 1 : page - 1);
+  };
+
+  const handleSliderPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    if (!sliderRef.current || !pageCount) return;
+    sliderRef.current.setPointerCapture?.(event.pointerId);
+    const moveToPointer = (clientX: number) => {
+      const rect = sliderRef.current!.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      const target = Math.round(ratio * (pageCount - 1)) + 1;
+      if (target !== page) changePage(target);
+    };
+    moveToPointer(event.clientX);
   };
 
   if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Your purchase includes secure flipbook reading and PDF download.</p><div className="flex w-full max-w-xl flex-col gap-3 sm:flex-row"><Button className="h-12 flex-1" onClick={openReader} disabled={loading}>Read online as flipbook</Button><Button className="h-12 flex-1" variant="outline" onClick={downloadPdf} disabled={downloading}>{downloading ? <><Loader2 className="mr-2 animate-spin" />Preparing…</> : <><Download className="mr-2 h-4 w-4" />Download as PDF book</>}</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
   if (loading) return <div className="flex min-h-[320px] items-center justify-center rounded-xl bg-slate-100"><Loader2 className="mr-2 animate-spin" />Opening your book…</div>;
   if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
+  const dragProgress = pageFrameRef.current?.clientWidth ? Math.max(-1, Math.min(1, dragOffset / pageFrameRef.current.clientWidth)) : 0;
+  const dragAngle = dragProgress * 55;
   const flipStyle: React.CSSProperties = {
     perspective: '1400px',
-    transform: turning ? 'rotateY(-88deg)' : 'rotateY(0deg)',
+    transformOrigin: dragOffset < 0 ? 'right center' : 'left center',
+    transform: dragOffset !== 0 ? `translateX(${dragOffset * 0.08}px) rotateY(${dragAngle}deg)` : (turning ? 'rotateY(-88deg)' : 'rotateY(0deg)'),
     opacity: turning ? 0.72 : 1,
+    transition: dragStartXRef.current === null ? 'transform 280ms ease, opacity 280ms ease' : 'none',
+    touchAction: 'pan-y',
   };
+
+  const sliderPercent = pageCount > 1 ? ((page - 1) / (pageCount - 1)) * 100 : 0;
 
   return <div ref={viewerRef} className={`overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl ${fullscreen ? 'flex min-h-screen flex-col' : ''}`}>
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2">
@@ -223,32 +279,60 @@ export default function BookFlipbook({ bookId, title }: Props) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div ref={pageFrameRef} className="relative flex h-full w-full max-w-[900px] items-center justify-center">
-        <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center rounded bg-white shadow-2xl transition-all duration-300 ease-in-out" style={flipStyle}>
-          <canvas ref={canvasRef} className="block max-h-full max-w-full rounded" />
-          {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
+      <div
+        ref={pageFrameRef}
+        className="relative flex h-full w-full max-w-[900px] items-center justify-center"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={finishPointerDrag}
+        onPointerCancel={finishPointerDrag}
+      >
+        <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center">
+          <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center rounded bg-white shadow-2xl" style={flipStyle}>
+            <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
+            {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute bottom-2 left-2 z-10 h-10 w-10 rounded-full bg-slate-900/65 text-white shadow-md backdrop-blur-sm hover:bg-slate-900/85"
-            disabled={page <= 1 || turning}
-            onClick={() => changePage(page - 1)}
-            aria-label="Previous page"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute bottom-3 left-3 z-20 h-9 w-9 rounded-full bg-black/55 text-white shadow-lg backdrop-blur-sm hover:bg-black/75"
+              disabled={page <= 1 || turning}
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={() => changePage(page - 1)}
+              aria-label="Previous page"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute bottom-2 right-2 z-10 h-10 w-10 rounded-full bg-slate-900/65 text-white shadow-md backdrop-blur-sm hover:bg-slate-900/85"
-            disabled={page >= pageCount || turning}
-            onClick={() => changePage(page + 1)}
-            aria-label="Next page"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute bottom-3 right-3 z-20 h-9 w-9 rounded-full bg-black/55 text-white shadow-lg backdrop-blur-sm hover:bg-black/75"
+              disabled={page >= pageCount || turning}
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={() => changePage(page + 1)}
+              aria-label="Next page"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
+
+            <div
+              ref={sliderRef}
+              className="absolute bottom-1.5 left-14 right-14 z-20 h-5 cursor-pointer touch-none"
+              onPointerDown={handleSliderPointerDown}
+              onPointerMove={(event) => {
+                if (!sliderRef.current?.hasPointerCapture(event.pointerId)) return;
+                const rect = sliderRef.current.getBoundingClientRect();
+                const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+                const target = Math.round(ratio * (pageCount - 1)) + 1;
+                if (target !== page) changePage(target);
+              }}
+            >
+              <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/25 shadow-inner" />
+              <div className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/55" style={{ width: `${sliderPercent}%` }} />
+              <div className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/90 bg-black/70 shadow-md" style={{ left: `${sliderPercent}%` }} aria-label={`Page ${page}`} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
