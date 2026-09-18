@@ -58,6 +58,8 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [error, setError] = useState('');
   const [turning, setTurning] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isSliderDragging, setIsSliderDragging] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
@@ -195,6 +197,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     if (turning || pageCount <= 1 || event.pointerType === 'mouse' && event.button !== 0) return;
     dragStartXRef.current = event.clientX;
     dragOffsetRef.current = 0;
+    setIsDragging(true);
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
 
@@ -212,6 +215,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const offset = dragOffsetRef.current;
     dragStartXRef.current = null;
     dragOffsetRef.current = 0;
+    setIsDragging(false);
     const threshold = Math.max(55, Math.min(140, (pageFrameRef.current?.clientWidth || 300) * 0.18));
     if (Math.abs(offset) >= threshold) {
       changePage(offset < 0 ? page + 1 : page - 1);
@@ -231,17 +235,34 @@ export default function BookFlipbook({ bookId, title }: Props) {
     if (dragStartXRef.current === null) changePage(end < start ? page + 1 : page - 1);
   };
 
+  const sliderPageFromPointer = (clientX: number) => {
+    if (!sliderRef.current || pageCount <= 1) return;
+    const rect = sliderRef.current.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const target = Math.round(ratio * (pageCount - 1)) + 1;
+    if (target !== page) setPage(target);
+  };
+
   const handleSliderPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     event.stopPropagation();
     if (!sliderRef.current || !pageCount) return;
+    setIsSliderDragging(true);
     sliderRef.current.setPointerCapture?.(event.pointerId);
-    const moveToPointer = (clientX: number) => {
-      const rect = sliderRef.current!.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-      const target = Math.round(ratio * (pageCount - 1)) + 1;
-      if (target !== page) changePage(target);
-    };
-    moveToPointer(event.clientX);
+    sliderPageFromPointer(event.clientX);
+  };
+
+  const handleSliderPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    if (!isSliderDragging || !sliderRef.current?.hasPointerCapture(event.pointerId)) return;
+    sliderPageFromPointer(event.clientX);
+  };
+
+  const handleSliderPointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    if (!isSliderDragging) return;
+    setIsSliderDragging(false);
+    playPageTurnSound();
+    sliderRef.current?.releasePointerCapture?.(event.pointerId);
   };
 
   if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Your purchase includes secure flipbook reading and PDF download.</p><div className="flex w-full max-w-xl flex-col gap-3 sm:flex-row"><Button className="h-12 flex-1" onClick={openReader} disabled={loading}>Read online as flipbook</Button><Button className="h-12 flex-1" variant="outline" onClick={downloadPdf} disabled={downloading}>{downloading ? <><Loader2 className="mr-2 animate-spin" />Preparing…</> : <><Download className="mr-2 h-4 w-4" />Download as PDF book</>}</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
@@ -255,8 +276,8 @@ export default function BookFlipbook({ bookId, title }: Props) {
     transformOrigin: dragOffset < 0 ? 'right center' : 'left center',
     transform: dragOffset !== 0 ? `translateX(${dragOffset * 0.08}px) rotateY(${dragAngle}deg)` : (turning ? 'rotateY(-88deg)' : 'rotateY(0deg)'),
     opacity: turning ? 0.72 : 1,
-    transition: dragStartXRef.current === null ? 'transform 280ms ease, opacity 280ms ease' : 'none',
-    touchAction: 'pan-y',
+    transition: isDragging ? 'none' : 'transform 280ms ease, opacity 280ms ease',
+    touchAction: 'none',
   };
 
   const sliderPercent = pageCount > 1 ? ((page - 1) / (pageCount - 1)) * 100 : 0;
@@ -295,42 +316,42 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute bottom-3 left-3 z-20 h-9 w-9 rounded-full bg-black/55 text-white shadow-lg backdrop-blur-sm hover:bg-black/75"
+              className="absolute bottom-2 left-2 z-20 h-8 w-8 rounded-full bg-white/90 text-slate-800 shadow-md ring-1 ring-black/10 hover:bg-white"
               disabled={page <= 1 || turning}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page - 1)}
               aria-label="Previous page"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-5 w-5 stroke-[2.5]" />
             </Button>
 
             <Button
               variant="ghost"
               size="icon"
-              className="absolute bottom-3 right-3 z-20 h-9 w-9 rounded-full bg-black/55 text-white shadow-lg backdrop-blur-sm hover:bg-black/75"
+              className="absolute bottom-2 right-2 z-20 h-8 w-8 rounded-full bg-white/90 text-slate-800 shadow-md ring-1 ring-black/10 hover:bg-white"
               disabled={page >= pageCount || turning}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page + 1)}
               aria-label="Next page"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-5 w-5 stroke-[2.5]" />
             </Button>
 
             <div
               ref={sliderRef}
-              className="absolute bottom-1.5 left-14 right-14 z-20 h-5 cursor-pointer touch-none"
+              className="absolute bottom-1.5 left-12 right-12 z-30 h-6 cursor-pointer touch-none select-none"
               onPointerDown={handleSliderPointerDown}
-              onPointerMove={(event) => {
-                if (!sliderRef.current?.hasPointerCapture(event.pointerId)) return;
-                const rect = sliderRef.current.getBoundingClientRect();
-                const ratio = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-                const target = Math.round(ratio * (pageCount - 1)) + 1;
-                if (target !== page) changePage(target);
-              }}
+              onPointerMove={handleSliderPointerMove}
+              onPointerUp={handleSliderPointerUp}
+              onPointerCancel={handleSliderPointerUp}
             >
-              <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/25 shadow-inner" />
-              <div className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/55" style={{ width: `${sliderPercent}%` }} />
-              <div className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/90 bg-black/70 shadow-md" style={{ left: `${sliderPercent}%` }} aria-label={`Page ${page}`} />
+              <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/30 shadow-inner" />
+              <div className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/65" style={{ width: `${sliderPercent}%` }} />
+              <div
+                className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-slate-800 shadow-md transition-transform"
+                style={{ left: `${sliderPercent}%`, transform: `translate(-50%, -50%) scale(${isSliderDragging ? 1.18 : 1})` }}
+                aria-label={`Page ${page}`}
+              />
             </div>
           </div>
         </div>
