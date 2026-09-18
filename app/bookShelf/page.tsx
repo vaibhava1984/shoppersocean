@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Header from "@/components/Header"
+import { getUser } from "@/utils/supabase/server"
 import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/utils/supabase/server"
 import LanguageMenusLists from "@/app/components/LanguageMenusLists"
@@ -26,10 +27,7 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
 
     const supabase = createClient()
 
-    const userPromise = supabase.auth.getUser().catch((error) => {
-        console.error('Error fetching user:', error)
-        return { data: { user: null } }
-    })
+    const userPromise = getUser()
 
     let query = supabase
         .from('books')
@@ -103,7 +101,7 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
-            <Header />
+            <Header user={user} />
             <HeroSection
                 title=" Escape into Entertainment"
                 subtitle="Discover your next favorite book"
@@ -122,7 +120,7 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
                                         All languages
                                     </Link>
                                 </h3>
-                                <LanguageMenusLists />
+                                <LanguageMenusLists currentLang={searchFilters.language} currentAuthor={searchFilters.author_id} />
                             </div>
                             <div>
                                 <h3 className="mb-4 font-serif text-2xl font-black italic tracking-wide text-blue-700">
@@ -130,7 +128,7 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
                                         All authors
                                     </Link>
                                 </h3>
-                                <AuthorsMenusLists initialAuthors={authors} />
+                                <AuthorsMenusLists initialAuthors={authors} currentAuthor={searchFilters.author_id} currentLanguage={searchFilters.language} />
                             </div>
                         </div>
 
