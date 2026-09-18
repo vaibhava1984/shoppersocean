@@ -291,7 +291,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     transform: turning ? `translateX(${turnDirection === 'next' ? '-1.5%' : '1.5%'}) rotateY(${turnDirection === 'next' ? -178 : 178}deg) scaleX(0.985)` : dragOffset !== 0 ? `translateX(${dragOffset * 0.045}px) rotateY(${dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})` : 'rotateY(0deg) scaleX(1)',
     transition: isDragging ? 'none' : turning ? 'transform 620ms cubic-bezier(.22,.72,.24,1), box-shadow 620ms ease' : 'transform 280ms cubic-bezier(.22,.72,.24,1), box-shadow 280ms ease',
     boxShadow: turning || dragOffset !== 0 ? '0 18px 34px rgba(15,23,42,.26)' : '0 16px 30px rgba(15,23,42,.18)',
-    backfaceVisibility: 'hidden', transformStyle: 'preserve-3d', touchAction: 'none',
+    backfaceVisibility: 'hidden', transformStyle: 'preserve-3d', touchAction: 'pan-y',
   };
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
