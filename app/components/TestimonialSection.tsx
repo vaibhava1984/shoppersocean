@@ -20,7 +20,8 @@ const TestimonialSection: React.FC = () => {
                 const [testimonialsResult, userResult] = await Promise.all([
                     supabase
                         .from('testimonials')
-                        .select('description, users, rating'),
+                        .select('description, users, rating, book_id')
+                        .is('book_id', null),
                     supabase.auth.getUser(),
                 ]);
 
