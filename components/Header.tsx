@@ -18,8 +18,7 @@ const navigationItems = [
   ["/contact", "Have a question?"],
 ] as const;
 
-export default async function Header() {
-  const user = await getUser();
+export default async function Header({ user }: { user: Awaited<ReturnType<typeof getUser>> }) {
 
   return (
     <>
