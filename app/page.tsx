@@ -10,6 +10,7 @@ import Footer from "@/components/Footer"
 import TrendingBooks from "@/components/trending_books";
 import BooksCollections from "@/components/books_collections";
 import HeroSection from "@/components/HeroSection";
+import { getHomepageBooksServer } from "@/utils/homepageBooksServer";
 
 export const metadata = {
   title: 'Home',
@@ -17,7 +18,7 @@ export const metadata = {
 }
 
 export default async function LandingPage() {
-  const user = await getUser();
+  const [user, homepageBooks] = await Promise.all([getUser(), getHomepageBooksServer()]);
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header user={user} />
@@ -40,7 +41,7 @@ export default async function LandingPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold mb-12 text-center text-slate-800">Trending Books</h2>
           <div>
-            <TrendingBooks loggedinUserId={user?.id} />
+            <TrendingBooks loggedinUserId={user?.id} initialBooks={homepageBooks} />
           </div>
         </div>
       </section>
@@ -50,7 +51,7 @@ export default async function LandingPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold mb-6 text-center text-slate-800">Our Book Collection</h2>
           <p className="text-xl text-center mb-12 text-slate-600">Discover the captivating works of esteemed authors across the globe, known for their insightful and thought-provoking narratives.</p>
-          <BooksCollections loggedinUserId={user?.id} />
+          <BooksCollections loggedinUserId={user?.id} initialBooks={homepageBooks} />
         </div>
       </section>
 
