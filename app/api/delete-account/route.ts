@@ -42,10 +42,58 @@ export async function POST() {
     const name = String(user.user_metadata?.full_name ?? '').trim() || 'there';
     const safeName = escapeHtml(name);
 
-    // Delete the authenticated user first. Account deletion must not depend on
-    // Resend being available, otherwise an email configuration problem can
-    // incorrectly prevent a user from deleting their account.
+    // Supabase Auth cannot remove an auth user while application rows still
+    // reference that user's profile. Clean up those dependent rows first.
     const admin = createAdminClient();
+
+    const { error: testimonialDeleteError } = await admin
+      .from('testimonials')
+      .delete()
+      .eq('user_id', user.id);
+    if (testimonialDeleteError) {
+      console.error('Error deleting account testimonials:', testimonialDeleteError);
+      return NextResponse.json({ error: 'Unable to delete your account data. Please try again.' }, { status: 500 });
+    }
+
+    const { error: authorSubmissionDeleteError } = await admin
+      .from('authors_interest_submission')
+      .delete()
+      .eq('user_id', user.id);
+    if (authorSubmissionDeleteError) {
+      console.error('Error deleting author-interest submissions:', authorSubmissionDeleteError);
+      return NextResponse.json({ error: 'Unable to delete your account data. Please try again.' }, { status: 500 });
+    }
+
+    const { error: authorDeleteError } = await admin
+      .from('authors')
+      .delete()
+      .eq('user_id', user.id);
+    if (authorDeleteError) {
+      console.error('Error deleting author profile:', authorDeleteError);
+      return NextResponse.json({ error: 'Unable to delete your account data. Please try again.' }, { status: 500 });
+    }
+
+    // Payments cascade from orders, so remove the user's orders first.
+    const { error: orderDeleteError } = await admin
+      .from('orders')
+      .delete()
+      .eq('user_id', user.id);
+    if (orderDeleteError) {
+      console.error('Error deleting account orders:', orderDeleteError);
+      return NextResponse.json({ error: 'Unable to delete your account data. Please try again.' }, { status: 500 });
+    }
+
+    const { error: profileDeleteError } = await admin
+      .from('profiles')
+      .delete()
+      .eq('id', user.id);
+    if (profileDeleteError) {
+      console.error('Error deleting account profile:', profileDeleteError);
+      return NextResponse.json({ error: 'Unable to delete your account data. Please try again.' }, { status: 500 });
+    }
+
+    // The Auth user can now be deleted without the database foreign-key
+    // dependency that was causing "Database error deleting user".
     const { error: deleteError } = await admin.auth.admin.deleteUser(user.id);
 
     if (deleteError) {
