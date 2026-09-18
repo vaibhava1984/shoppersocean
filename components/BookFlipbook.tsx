@@ -63,6 +63,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [isSliderDragging, setIsSliderDragging] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [turnDirection, setTurnDirection] = useState<'next' | 'prev' | null>(null);
+  const turnTimerRef = useRef<number | null>(null);
 
   const playPageTurnSound = useCallback(() => {
     try {
@@ -175,10 +176,12 @@ export default function BookFlipbook({ bookId, title }: Props) {
     playPageTurnSound();
     try {
       await renderCanvasPage(next, nextCanvas);
-      window.setTimeout(() => {
+      if (turnTimerRef.current) window.clearTimeout(turnTimerRef.current);
+      turnTimerRef.current = window.setTimeout(() => {
         setPage(next);
         setTurnDirection(null);
         setTurning(false);
+        turnTimerRef.current = null;
       }, 620);
     } catch {
       setTurnDirection(null);
