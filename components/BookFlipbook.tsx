@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Download, Loader2, Minus, Plus, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, Loader2, Minus, Plus, X, CornerUpLeft, CornerUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 declare global {
@@ -70,41 +70,57 @@ export default function BookFlipbook({ bookId, title }: Props) {
       audioContextRef.current = ctx;
       if (ctx.state === 'suspended') void ctx.resume();
 
-      // Heyzine-style paper-rustle character: a longer layered
-      // broadband rustle with a soft low-frequency body and a quick
-      // high-frequency page-edge sweep.
-      const duration = 0.52;
+      // A short, natural paper-turn texture: a soft air rush followed by
+      // a dry paper-edge flutter. It is intentionally varied on each turn.
+      const duration = 0.62;
       const length = Math.floor(ctx.sampleRate * duration);
       const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
       const data = buffer.getChannelData(0);
-      let smooth = 0;
+      let low = 0;
+      let mid = 0;
+
       for (let i = 0; i < length; i += 1) {
         const t = i / length;
-        const attack = Math.min(1, t / 0.035);
-        const release = Math.min(1, (1 - t) / 0.22);
-        const body = attack * release;
-        smooth = smooth * 0.965 + (Math.random() * 2 - 1) * 0.035;
-        const crisp = Math.random() * 2 - 1;
-        const sweep = Math.sin(t * Math.PI * 18) * 0.12;
-        data[i] = ((crisp * 0.72) + (smooth * 2.4) + sweep) * body * 0.22;
+        const attack = Math.min(1, t / 0.018);
+        const release = Math.min(1, (1 - t) / 0.24);
+        const envelope = attack * release;
+        const n = Math.random() * 2 - 1;
+
+        // Smooth paper movement.
+        low = low * 0.985 + n * 0.015;
+        mid = mid * 0.82 + n * 0.18;
+
+        // Several tiny edge flicks make it less synthetic and more like
+        // a sheet flexing and releasing.
+        const flutter = Math.sin(t * Math.PI * (34 + Math.random() * 7)) * 0.06;
+        const edge = (n * 0.58 + mid * 0.9 + low * 2.2 + flutter) * envelope;
+        data[i] = edge * 0.32;
       }
 
       const source = ctx.createBufferSource();
-      const filter = ctx.createBiquadFilter();
-      const lowpass = ctx.createBiquadFilter();
+      const body = ctx.createBiquadFilter();
+      const air = ctx.createBiquadFilter();
       const gain = ctx.createGain();
+
       source.buffer = buffer;
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(900, ctx.currentTime);
-      filter.frequency.exponentialRampToValueAtTime(2400, ctx.currentTime + 0.22);
-      filter.Q.value = 0.55;
-      lowpass.type = 'lowpass';
-      lowpass.frequency.value = 5200;
-      gain.gain.value = 0.42;
-      source.connect(filter).connect(lowpass).connect(gain).connect(ctx.destination);
+      body.type = 'bandpass';
+      body.frequency.setValueAtTime(650, ctx.currentTime);
+      body.frequency.exponentialRampToValueAtTime(1800, ctx.currentTime + 0.28);
+      body.Q.value = 0.62;
+
+      air.type = 'lowpass';
+      air.frequency.setValueAtTime(4200, ctx.currentTime);
+      air.frequency.exponentialRampToValueAtTime(7000, ctx.currentTime + 0.35);
+
+      gain.gain.setValueAtTime(0.001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.42, ctx.currentTime + 0.025);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+      source.connect(body).connect(air).connect(gain).connect(ctx.destination);
       source.start();
+      source.stop(ctx.currentTime + duration);
     } catch {
-      // Sound is non-essential; never block navigation if audio is unavailable.
+      // Audio is enhancement-only; never block page navigation.
     }
   }, []);
 
@@ -323,25 +339,31 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute bottom-2 left-1 z-20 h-7 w-7 bg-transparent p-0 text-slate-700 drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)] hover:bg-white/20"
+              className="group absolute bottom-1 left-0 z-20 h-11 w-11 rounded-none bg-transparent p-0 text-slate-700 drop-shadow-[0_2px_3px_rgba(255,255,255,0.95)] hover:bg-transparent disabled:opacity-25"
               disabled={page <= 1 || turning}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page - 1)}
               aria-label="Previous page"
             >
-              <ChevronLeft className="h-5 w-5 stroke-[2.5]" />
+              <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-br-xl border-r-2 border-b-2 border-slate-400/70 bg-white/35 shadow-[1px_2px_5px_rgba(15,23,42,0.18)] backdrop-blur-[1px] transition-all duration-200 group-hover:h-10 group-hover:w-10 group-hover:bg-white/65">
+                <span className="absolute -bottom-1 -left-1 h-5 w-5 rotate-45 bg-slate-200/75 shadow-inner" />
+                <CornerUpLeft className="relative z-10 h-5 w-5 stroke-[2.2] transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
+              </span>
             </Button>
 
             <Button
               variant="ghost"
               size="icon"
-              className="absolute bottom-2 right-1 z-20 h-7 w-7 bg-transparent p-0 text-slate-700 drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)] hover:bg-white/20"
+              className="group absolute bottom-1 right-0 z-20 h-11 w-11 rounded-none bg-transparent p-0 text-slate-700 drop-shadow-[0_2px_3px_rgba(255,255,255,0.95)] hover:bg-transparent disabled:opacity-25"
               disabled={page >= pageCount || turning}
               onPointerDown={(event) => event.stopPropagation()}
               onClick={() => changePage(page + 1)}
               aria-label="Next page"
             >
-              <ChevronRight className="h-5 w-5 stroke-[2.5]" />
+              <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-bl-xl border-l-2 border-b-2 border-slate-400/70 bg-white/35 shadow-[1px_2px_5px_rgba(15,23,42,0.18)] backdrop-blur-[1px] transition-all duration-200 group-hover:h-10 group-hover:w-10 group-hover:bg-white/65">
+                <span className="absolute -bottom-1 -right-1 h-5 w-5 -rotate-45 bg-slate-200/75 shadow-inner" />
+                <CornerUpRight className="relative z-10 h-5 w-5 stroke-[2.2] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </span>
             </Button>
 
             <div
