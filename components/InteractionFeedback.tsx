@@ -2,8 +2,6 @@
 
 import { useEffect } from "react"
 
-// Keep the global feedback listener deliberately small. The feedback must never
-// compete with the actual control action for CPU time.
 const INTERACTIVE_SELECTOR = [
   "a",
   "button",
@@ -95,21 +93,21 @@ export default function InteractionFeedback() {
       if (now - lastFeedbackAt < 60) return
       lastFeedbackAt = now
 
-      // Keep the visual/haptic response immediate and very cheap.
-      createRipple(event)
+      // Never do visual/audio/haptic work inside the input event itself.
+      // The control must remain free to process its click/tap immediately.
+      window.requestAnimationFrame(() => createRipple(event))
 
-      if (event.pointerType !== "mouse" && typeof navigator.vibrate === "function") {
-        try {
-          navigator.vibrate(18)
-        } catch {
-          // Haptic feedback is optional.
-        }
-      }
-
-      // Avoid creating/resuming Web Audio for ordinary mouse clicks. On touch,
-      // the sound remains part of the requested multimodal feedback.
       if (event.pointerType !== "mouse") {
-        playClickSound()
+        window.setTimeout(() => {
+          if (typeof navigator.vibrate === "function") {
+            try {
+              navigator.vibrate(18)
+            } catch {
+              // Haptic feedback is optional.
+            }
+          }
+          playClickSound()
+        }, 0)
       }
     }
 
