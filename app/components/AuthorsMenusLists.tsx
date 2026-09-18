@@ -10,12 +10,12 @@ type Author = {
     name: string;
 }
 
-export default function AuthorsMenusLists() {
+export default function AuthorsMenusLists({ initialAuthors = [] }: { initialAuthors?: Author[] }) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const supabase = createClient()
-    const [authorsMenuLists, setAuthorsMenuLists] = useState<Author[]>([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [authorsMenuLists, setAuthorsMenuLists] = useState<Author[]>(initialAuthors)
+    const [isLoading, setIsLoading] = useState(initialAuthors.length === 0)
     const [error, setError] = useState<string | null>(null)
 
     async function fetchAllAuthorsForMenu() {
