@@ -44,7 +44,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const pdfRef = useRef<any>(null);
   const renderTaskRef = useRef<any>(null);
   const touchStartXRef = useRef<number | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
+  const pageTurnAudioRef = useRef<HTMLAudioElement | null>(null);
   const dragStartXRef = useRef<number | null>(null);
   const dragOffsetRef = useRef(0);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -62,67 +62,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [isSliderDragging, setIsSliderDragging] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
-  const playPageTurnSound = useCallback(() => {
-    try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      if (!AudioCtx) return;
-      const ctx = audioContextRef.current ?? new AudioCtx();
-      audioContextRef.current = ctx;
-      if (ctx.state === 'suspended') void ctx.resume();
-
-      // A short, natural paper-turn texture: a soft air rush followed by
-      // a dry paper-edge flutter. It is intentionally varied on each turn.
-      const duration = 0.62;
-      const length = Math.floor(ctx.sampleRate * duration);
-      const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      let low = 0;
-      let mid = 0;
-
-      for (let i = 0; i < length; i += 1) {
-        const t = i / length;
-        const attack = Math.min(1, t / 0.018);
-        const release = Math.min(1, (1 - t) / 0.24);
-        const envelope = attack * release;
-        const n = Math.random() * 2 - 1;
-
-        // Smooth paper movement.
-        low = low * 0.985 + n * 0.015;
-        mid = mid * 0.82 + n * 0.18;
-
-        // Several tiny edge flicks make it less synthetic and more like
-        // a sheet flexing and releasing.
-        const flutter = Math.sin(t * Math.PI * (34 + Math.random() * 7)) * 0.06;
-        const edge = (n * 0.58 + mid * 0.9 + low * 2.2 + flutter) * envelope;
-        data[i] = edge * 0.32;
-      }
-
-      const source = ctx.createBufferSource();
-      const body = ctx.createBiquadFilter();
-      const air = ctx.createBiquadFilter();
-      const gain = ctx.createGain();
-
-      source.buffer = buffer;
-      body.type = 'bandpass';
-      body.frequency.setValueAtTime(650, ctx.currentTime);
-      body.frequency.exponentialRampToValueAtTime(1800, ctx.currentTime + 0.28);
-      body.Q.value = 0.62;
-
-      air.type = 'lowpass';
-      air.frequency.setValueAtTime(4200, ctx.currentTime);
-      air.frequency.exponentialRampToValueAtTime(7000, ctx.currentTime + 0.35);
-
-      gain.gain.setValueAtTime(0.001, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.42, ctx.currentTime + 0.025);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-
-      source.connect(body).connect(air).connect(gain).connect(ctx.destination);
-      source.start();
-      source.stop(ctx.currentTime + duration);
-    } catch {
-      // Audio is enhancement-only; never block page navigation.
-    }
-  }, []);
+  const playPageTurnSound = useCallback(() => {\n    try {\n      // Real recorded book-page turn, CC0/public domain — no synthesized whoosh.\n      const audio = pageTurnAudioRef.current ?? new Audio('https://cdn.freesound.org/previews/484/484940_6150892-hq.mp3');\n      pageTurnAudioRef.current = audio;\n      audio.currentTime = 0;\n      audio.volume = 0.82;\n      void audio.play();\n    } catch {\n      // Never block page navigation if audio is unavailable.\n    }\n  }, []);
 
   const downloadPdf = async () => {
     if (downloading) return;
@@ -345,11 +285,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
               onClick={() => changePage(page - 1)}
               aria-label="Previous page"
             >
-              <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-br-xl border-r-2 border-b-2 border-slate-400/70 bg-white/35 shadow-[1px_2px_5px_rgba(15,23,42,0.18)] backdrop-blur-[1px] transition-all duration-200 group-hover:h-10 group-hover:w-10 group-hover:bg-white/65">
-                <span className="absolute -bottom-1 -left-1 h-5 w-5 rotate-45 bg-slate-200/75 shadow-inner" />
-                <CornerUpLeft className="relative z-10 h-5 w-5 stroke-[2.2] transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
-              </span>
-            </Button>
+              <span className="relative block h-10 w-10 overflow-hidden">\n                <span className="absolute bottom-0 left-0 h-8 w-8 rounded-tr-[14px] border-t-2 border-r-2 border-slate-500/80 bg-white/55 shadow-[2px_-2px_5px_rgba(15,23,42,0.18)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[-3deg]" />\n                <span className="absolute bottom-0 left-0 h-5 w-5 border-t-2 border-r-2 border-slate-400/60 bg-white/85 transition-all duration-200 group-hover:h-6 group-hover:w-6" />\n                <span className="absolute left-1 top-1 text-[17px] font-bold leading-none text-slate-600">↖</span>\n              </span>        </Button>
 
             <Button
               variant="ghost"
@@ -360,11 +296,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
               onClick={() => changePage(page + 1)}
               aria-label="Next page"
             >
-              <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-bl-xl border-l-2 border-b-2 border-slate-400/70 bg-white/35 shadow-[1px_2px_5px_rgba(15,23,42,0.18)] backdrop-blur-[1px] transition-all duration-200 group-hover:h-10 group-hover:w-10 group-hover:bg-white/65">
-                <span className="absolute -bottom-1 -right-1 h-5 w-5 -rotate-45 bg-slate-200/75 shadow-inner" />
-                <CornerUpRight className="relative z-10 h-5 w-5 stroke-[2.2] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </span>
-            </Button>
+              <span className="relative block h-10 w-10 overflow-hidden">\n                <span className="absolute bottom-0 right-0 h-8 w-8 rounded-tl-[14px] border-t-2 border-l-2 border-slate-500/80 bg-white/55 shadow-[-2px_-2px_5px_rgba(15,23,42,0.18)] transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[3deg]" />\n                <span className="absolute bottom-0 right-0 h-5 w-5 border-t-2 border-l-2 border-slate-400/60 bg-white/85 transition-all duration-200 group-hover:h-6 group-hover:w-6" />\n                <span className="absolute right-1 top-1 text-[17px] font-bold leading-none text-slate-600">↗</span>\n              </span>        </Button>
 
             <div
               ref={sliderRef}
