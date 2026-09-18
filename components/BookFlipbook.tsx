@@ -121,10 +121,20 @@ export default function BookFlipbook({ bookId, title }: Props) {
     return () => { cancelled = true; };
   }, [readerUrl]);
 
+  const cancelRender = useCallback(async () => {
+    const task = renderTaskRef.current;
+    if (!task) return;
+    try { task.cancel(); await task.promise; } catch {}
+    renderTaskRef.current = null;
+  }, []);
+
   const renderCanvasPage = useCallback(async (targetPage: number, canvas: HTMLCanvasElement, showLoading = false) => {
     const pdf = pdfRef.current; const frame = pageFrameRef.current;
     if (!pdf || !canvas || !frame) return;
-    if (showLoading) setRendering(true);
+    if (showLoading) {
+      await cancelRender();
+      setRendering(true);
+    }
     try {
       const pdfPage = await pdf.getPage(targetPage);
       const baseViewport = pdfPage.getViewport({ scale: 1 });
@@ -143,10 +153,11 @@ export default function BookFlipbook({ bookId, title }: Props) {
       const task = pdfPage.render({ canvasContext: context, viewport });
       if (showLoading) renderTaskRef.current = task;
       await task.promise;
+      if (showLoading && renderTaskRef.current === task) renderTaskRef.current = null;
     } catch (err: any) {
       if (err?.name !== 'RenderingCancelledException') setError(err?.message || 'Unable to render this page');
     } finally { if (showLoading) setRendering(false); }
-  }, [zoom]);
+  }, [zoom, cancelRender]);
 
   const renderPage = useCallback(async () => {
     const canvas = canvasRef.current;
@@ -209,8 +220,13 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const rect = sliderRef.current.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     const target = Math.round(ratio * (pageCount - 1)) + 1;
-    if (target !== page) setPage(target);
+    if (target !== page) {
+      void cancelRender();
+      setPage(target);
+    }
   };
+  useEffect(() => () => { void cancelRender(); }, [cancelRender]);
+
   const handleSliderPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     event.stopPropagation(); if (!sliderRef.current || !pageCount) return;
     setIsSliderDragging(true); sliderRef.current.setPointerCapture?.(event.pointerId); sliderPageFromPointer(event.clientX);
