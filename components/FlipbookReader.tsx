@@ -11,112 +11,81 @@ interface FlipbookReaderProps {
 type PdfPage = {
   getViewport: (options: { scale: number }) => { width: number; height: number };
   render: (options: { canvasContext: CanvasRenderingContext2D; viewport: unknown }) => { promise: Promise<void> };
+  cleanup?: () => void;
 };
 
 type PdfDocument = {
   numPages: number;
   getPage: (pageNumber: number) => Promise<PdfPage>;
+  destroy?: () => Promise<void>;
 };
 
-type PageFlipInstance = {
-  loadFromImages: (images: string[]) => void;
-  getCurrentPageIndex: () => number;
-  getPageCount: () => number;
-  flipNext: (corner: 'top' | 'bottom') => void;
-  flipPrev: (corner: 'top' | 'bottom') => void;
-  turnToPage: (pageNum: number) => void;
-  on: (event: string, callback: (event: { data: number | string }) => void) => void;
-  destroy: () => void;
+type PdfJs = {
+  GlobalWorkerOptions: { workerSrc: string };
+  getDocument: (src: { url: string; disableAutoFetch?: boolean; disableStream?: boolean }) => { promise: Promise<PdfDocument> };
 };
 
 declare global {
   interface Window {
-    pdfjsLib?: {
-      GlobalWorkerOptions: { workerSrc: string };
-      getDocument: (src: { url: string }) => { promise: Promise<PdfDocument> };
-    };
-    St?: {
-      PageFlip: new (element: HTMLElement, settings: Record<string, unknown>) => PageFlipInstance;
-    };
+    pdfjsLib?: PdfJs;
   }
 }
 
 const PDFJS_VERSION = '3.11.174';
-const PDFJS_SRC = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.min.js`;
-const PDFJS_WORKER = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
-const PAGE_FLIP_VERSION = '2.0.7';
-const PAGE_FLIP_SRC = `https://cdn.jsdelivr.net/npm/page-flip@${PAGE_FLIP_VERSION}/dist/js/page-flip.browser.js`;
+const PDFJS_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.min.js';
+const PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.worker.min.js';
 
-function loadScript(src: string, attribute: string): Promise<void> {
+function loadPdfJs(): Promise<PdfJs> {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
   return new Promise((resolve, reject) => {
-    const existing = document.querySelector<HTMLScriptElement>(`script[data-${attribute}]`);
+    const existing = document.querySelector<HTMLScriptElement>('script[data-shoppers-ocean-pdfjs]');
     if (existing) {
-      if (attribute === 'shoppers-ocean-pdfjs' && window.pdfjsLib) return resolve();
-      if (attribute === 'shoppers-ocean-pageflip' && window.St?.PageFlip) return resolve();
-      existing.addEventListener('load', () => resolve(), { once: true });
-      existing.addEventListener('error', () => reject(new Error(`Could not load ${src}`)), { once: true });
+      existing.addEventListener('load', () => window.pdfjsLib ? resolve(window.pdfjsLib) : reject(new Error('PDF viewer failed to initialize')), { once: true });
+      existing.addEventListener('error', () => reject(new Error('Could not load PDF viewer')), { once: true });
       return;
     }
-
     const script = document.createElement('script');
-    script.src = src;
+    script.src = PDFJS_SRC;
     script.async = true;
-    script.setAttribute(`data-${attribute}`, 'true');
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error(`Could not load ${src}`));
+    script.setAttribute('data-shoppers-ocean-pdfjs', 'true');
+    script.onload = () => window.pdfjsLib ? resolve(window.pdfjsLib) : reject(new Error('PDF viewer failed to initialize'));
+    script.onerror = () => reject(new Error('Could not load PDF viewer'));
     document.head.appendChild(script);
   });
-}
-
-async function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
-  if (!window.pdfjsLib) await loadScript(PDFJS_SRC, 'shoppers-ocean-pdfjs');
-  if (!window.pdfjsLib) throw new Error('PDF viewer failed to initialize');
-  return window.pdfjsLib;
-}
-
-async function loadPageFlip(): Promise<NonNullable<Window['St']>['PageFlip']> {
-  if (!window.St?.PageFlip) await loadScript(PAGE_FLIP_SRC, 'shoppers-ocean-pageflip');
-  if (!window.St?.PageFlip) throw new Error('Page-turn engine failed to initialize');
-  return window.St.PageFlip;
 }
 
 function createPaperSound() {
   try {
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-    if (!AudioContextClass) return null;
+    if (!AudioContextClass) return;
     const context = new AudioContextClass();
-    const buffer = context.createBuffer(1, context.sampleRate * 0.28, context.sampleRate);
+    const buffer = context.createBuffer(1, context.sampleRate * 0.2, context.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < data.length; i += 1) {
-      const envelope = Math.max(0, 1 - i / data.length) ** 1.8;
+      const envelope = Math.max(0, 1 - i / data.length) ** 2;
       data[i] = (Math.random() * 2 - 1) * envelope;
     }
     const source = context.createBufferSource();
-    const filter = context.createBiquadFilter();
     const gain = context.createGain();
-    filter.type = 'bandpass';
-    filter.frequency.value = 2400;
-    filter.Q.value = 0.65;
-    gain.gain.value = 0.0001;
     source.buffer = buffer;
-    source.connect(filter);
-    filter.connect(gain);
+    source.connect(gain);
     gain.connect(context.destination);
     const now = context.currentTime;
-    gain.gain.exponentialRampToValueAtTime(0.09, now + 0.025);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.055, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
     source.start(now);
-    source.stop(now + 0.28);
+    source.stop(now + 0.2);
     source.addEventListener('ended', () => context.close());
-  } catch {
-    // Audio is an enhancement only and must never block reading.
-  }
+  } catch {}
 }
 
 export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps) {
   const bookHostRef = useRef<HTMLDivElement>(null);
-  const pageFlipRef = useRef<PageFlipInstance | null>(null);
-  const pageImagesRef = useRef<string[]>([]);
+  const currentCanvasRef = useRef<HTMLCanvasElement>(null);
+  const nextCanvasRef = useRef<HTMLCanvasElement>(null);
+  const pdfRef = useRef<PdfDocument | null>(null);
+  const renderTokenRef = useRef(0);
   const [pdf, setPdf] = useState<PdfDocument | null>(null);
   const [page, setPage] = useState(1);
   const [pageInput, setPageInput] = useState('1');
@@ -124,7 +93,41 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fullscreen, setFullscreen] = useState(false);
-  const [ready, setReady] = useState(false);
+  const [turning, setTurning] = useState<'next' | 'prev' | null>(null);
+  const [nextReady, setNextReady] = useState(false);
+
+  const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
+    const pageProxy = await documentProxy.getPage(pageNumber);
+    const base = pageProxy.getViewport({ scale: 1 });
+    const hostWidth = Math.max(bookHostRef.current?.clientWidth || 320, 280);
+    const hostHeight = Math.max(bookHostRef.current?.clientHeight || 480, 360);
+    const maxWidth = Math.min(hostWidth - 16, fullscreen ? 1050 : 900);
+    const maxHeight = Math.min(hostHeight - 16, fullscreen ? 760 : 650);
+    const scale = Math.max(0.35, Math.min(maxWidth / base.width, maxHeight / base.height));
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const viewport = pageProxy.getViewport({ scale });
+    const width = Math.ceil(viewport.width);
+    const height = Math.ceil(viewport.height);
+
+    canvas.width = Math.ceil(width * dpr);
+    canvas.height = Math.ceil(height * dpr);
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+
+    const context = canvas.getContext('2d', { alpha: false });
+    if (!context) throw new Error('Could not create page canvas');
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    context.fillStyle = '#ffffff';
+    context.fillRect(0, 0, width, height);
+    await pageProxy.render({ canvasContext: context, viewport }).promise;
+    pageProxy.cleanup?.();
+  }, [fullscreen]);
+
+  const preparePage = useCallback(async (pageNumber: number, canvas: HTMLCanvasElement) => {
+    if (!pdf || pageNumber < 1 || pageNumber > pdf.numPages) return false;
+    await renderPage(pdf, pageNumber, canvas);
+    return true;
+  }, [pdf, renderPage]);
 
   useEffect(() => {
     let cancelled = false;
@@ -132,12 +135,22 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       try {
         setLoading(true);
         setError(null);
-        setReady(false);
-        pageImagesRef.current = [];
+        setPdf(null);
+        setPage(1);
+        setNextReady(false);
         const pdfjs = await loadPdfJs();
         pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
-        const documentProxy = await pdfjs.getDocument({ url: pdfUrl }).promise;
-        if (!cancelled) setPdf(documentProxy);
+        const documentProxy = await pdfjs.getDocument({
+          url: pdfUrl,
+          disableAutoFetch: true,
+          disableStream: false,
+        }).promise;
+        if (cancelled) {
+          await documentProxy.destroy?.();
+          return;
+        }
+        pdfRef.current = documentProxy;
+        setPdf(documentProxy);
       } catch (err) {
         console.error('Flipbook PDF load failed:', err);
         if (!cancelled) setError('This book could not be opened as a flipbook. Please try the PDF download.');
@@ -145,145 +158,118 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         if (!cancelled) setLoading(false);
       }
     }
-    load();
-    return () => { cancelled = true; };
-  }, [pdfUrl]);
-
-  const buildPageImages = useCallback(async () => {
-    if (!pdf) return;
-    setRendering(true);
-    try {
-      const firstPage = await pdf.getPage(1);
-      const base = firstPage.getViewport({ scale: 1 });
-      const targetWidth = Math.min(1100, Math.max(700, base.width * 1.35));
-      const scale = targetWidth / base.width;
-      const images: string[] = [];
-
-      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
-        const pdfPage = await pdf.getPage(pageNumber);
-        const viewport = pdfPage.getViewport({ scale });
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.ceil(viewport.width);
-        canvas.height = Math.ceil(viewport.height);
-        const context = canvas.getContext('2d', { alpha: false });
-        if (!context) throw new Error('Could not create page canvas');
-        context.fillStyle = '#ffffff';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        await pdfPage.render({ canvasContext: context, viewport }).promise;
-        images.push(canvas.toDataURL('image/jpeg', 0.9));
-      }
-
-      pageImagesRef.current = images;
-    } catch (err) {
-      console.error('Flipbook page preparation failed:', err);
-      setError('This book could not be prepared for the realistic page-turn reader.');
-    } finally {
-      setRendering(false);
-    }
-  }, [pdf]);
-
-  useEffect(() => {
-    if (!pdf) return;
-    buildPageImages();
-  }, [pdf, buildPageImages]);
-
-  useEffect(() => {
-    if (!pdf || !bookHostRef.current || pageImagesRef.current.length !== pdf.numPages) return;
-
-    let cancelled = false;
-    let pageFlip: PageFlipInstance | null = null;
-
-    async function initializeBook() {
-      try {
-        setReady(false);
-        const PageFlip = await loadPageFlip();
-        if (cancelled || !bookHostRef.current) return;
-
-        const first = await pdf.getPage(1);
-        const viewport = first.getViewport({ scale: 1 });
-        const hostWidth = Math.max(bookHostRef.current.clientWidth, 280);
-        const hostHeight = Math.max(bookHostRef.current.clientHeight, 360);
-        const maxBookWidth = Math.min(hostWidth - 12, fullscreen ? 1100 : 900);
-        const maxBookHeight = Math.min(hostHeight - 12, fullscreen ? 760 : 650);
-        const aspect = viewport.width / viewport.height;
-        let width = Math.min(maxBookWidth, maxBookHeight * aspect);
-        let height = width / aspect;
-        if (height > maxBookHeight) {
-          height = maxBookHeight;
-          width = height * aspect;
-        }
-
-        bookHostRef.current.innerHTML = '';
-        pageFlip = new PageFlip(bookHostRef.current, {
-          width: Math.max(240, Math.floor(width)),
-          height: Math.max(320, Math.floor(height)),
-          size: 'stretch',
-          minWidth: 240,
-          maxWidth: Math.max(240, Math.floor(width)),
-          minHeight: 320,
-          maxHeight: Math.max(320, Math.floor(height)),
-          drawShadow: true,
-          maxShadowOpacity: 0.55,
-          flippingTime: 650,
-          usePortrait: true,
-          showCover: false,
-          mobileScrollSupport: true,
-          swipeDistance: 10,
-          useMouseEvents: true,
-          disableFlipByClick: true,
-        });
-
-        pageFlip.on('flip', event => {
-          const nextPage = Number(event.data) + 1;
-          if (Number.isFinite(nextPage)) setPage(nextPage);
-          createPaperSound();
-        });
-        pageFlip.on('changeState', event => {
-          if (event.data === 'user_fold' || event.data === 'fold_corner') createPaperSound();
-        });
-
-        pageFlip.loadFromImages(pageImagesRef.current);
-        pageFlipRef.current = pageFlip;
-        if (!cancelled) {
-          setPage(1);
-          setReady(true);
-        }
-      } catch (err) {
-        console.error('Realistic flipbook initialization failed:', err);
-        if (!cancelled) setError('The realistic page-turn reader could not be initialized.');
-      }
-    }
-
-    initializeBook();
-
+    void load();
     return () => {
       cancelled = true;
-      if (pageFlip) pageFlip.destroy();
-      pageFlipRef.current = null;
+      void pdfRef.current?.destroy?.();
+      pdfRef.current = null;
     };
-  }, [pdf, fullscreen]);
+  }, [pdfUrl]);
+
+  useEffect(() => {
+    if (!pdf || !currentCanvasRef.current) return;
+    let cancelled = false;
+    const token = ++renderTokenRef.current;
+    async function showFirstPage() {
+      try {
+        setRendering(true);
+        setNextReady(false);
+        await preparePage(1, currentCanvasRef.current!);
+        if (cancelled || token !== renderTokenRef.current) return;
+        if (pdf.numPages > 1 && nextCanvasRef.current) {
+          await preparePage(2, nextCanvasRef.current);
+          if (!cancelled && token === renderTokenRef.current) setNextReady(true);
+        }
+      } catch (err) {
+        console.error('Initial flipbook page render failed:', err);
+        if (!cancelled) setError('This book could not render its first page.');
+      } finally {
+        if (!cancelled && token === renderTokenRef.current) setRendering(false);
+      }
+    }
+    void showFirstPage();
+    return () => { cancelled = true; };
+  }, [pdf, preparePage]);
+
+  const swapCanvas = useCallback(() => {
+    const current = currentCanvasRef.current;
+    const next = nextCanvasRef.current;
+    if (!current || !next) return;
+    const temp = document.createElement('canvas');
+    temp.width = current.width;
+    temp.height = current.height;
+    temp.getContext('2d')?.drawImage(current, 0, 0);
+    current.width = next.width;
+    current.height = next.height;
+    current.style.width = next.style.width;
+    current.style.height = next.style.height;
+    current.getContext('2d')?.drawImage(next, 0, 0);
+    next.width = temp.width;
+    next.height = temp.height;
+    next.style.width = temp.width / Math.min(window.devicePixelRatio || 1, 1.5) + 'px';
+    next.style.height = temp.height / Math.min(window.devicePixelRatio || 1, 1.5) + 'px';
+    next.getContext('2d')?.drawImage(temp, 0, 0);
+  }, []);
+
+  const goToPage = useCallback(async (target: number) => {
+    if (!pdf || rendering || turning) return;
+    const targetPage = Math.min(Math.max(Math.round(target), 1), pdf.numPages);
+    if (targetPage === page) return;
+    const canvas = nextCanvasRef.current;
+    if (!canvas) return;
+
+    const direction = targetPage > page ? 'next' : 'prev';
+    const token = ++renderTokenRef.current;
+    try {
+      setRendering(true);
+      setNextReady(false);
+      await preparePage(targetPage, canvas);
+      if (token !== renderTokenRef.current) return;
+      swapCanvas();
+      setPage(targetPage);
+      setPageInput(String(targetPage));
+      setTurning(direction);
+      window.setTimeout(() => setTurning(null), 520);
+      createPaperSound();
+
+      const preloadPage = direction === 'next' ? targetPage + 1 : targetPage - 1;
+      if (preloadPage >= 1 && preloadPage <= pdf.numPages && currentCanvasRef.current) {
+        await preparePage(preloadPage, currentCanvasRef.current);
+        if (token === renderTokenRef.current) setNextReady(true);
+      }
+    } catch (err) {
+      console.error('Flipbook page render failed:', err);
+      setError('The next page could not be rendered. Please try again.');
+    } finally {
+      if (token === renderTokenRef.current) setRendering(false);
+    }
+  }, [pdf, page, preparePage, rendering, turning, swapCanvas]);
 
   useEffect(() => setPageInput(String(page)), [page]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') pageFlipRef.current?.flipNext('bottom');
-      if (event.key === 'ArrowLeft') pageFlipRef.current?.flipPrev('bottom');
+      if (event.key === 'ArrowRight') void goToPage(page + 1);
+      if (event.key === 'ArrowLeft') void goToPage(page - 1);
       if (event.key === 'Escape') setFullscreen(false);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, []);
+  }, [goToPage, page]);
 
-  const goPrevious = () => pageFlipRef.current?.flipPrev('bottom');
-  const goNext = () => pageFlipRef.current?.flipNext('bottom');
-
-  const goToPage = (target: number) => {
-    if (!pageFlipRef.current || !pdf) return;
-    const nextPage = Math.min(Math.max(Math.round(target), 1), pdf.numPages);
-    pageFlipRef.current.turnToPage(nextPage - 1);
-    setPage(nextPage);
-  };
+  useEffect(() => {
+    const onResize = () => {
+      if (!pdf || !currentCanvasRef.current) return;
+      const token = ++renderTokenRef.current;
+      void preparePage(page, currentCanvasRef.current).then(() => {
+        if (token === renderTokenRef.current && page < pdf.numPages && nextCanvasRef.current) {
+          return preparePage(page + 1, nextCanvasRef.current);
+        }
+      });
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [pdf, page, preparePage]);
 
   const commitPageInput = () => {
     const requested = Number.parseInt(pageInput, 10);
@@ -291,7 +277,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       setPageInput(String(page));
       return;
     }
-    goToPage(requested);
+    void goToPage(requested);
   };
 
   return (
@@ -307,29 +293,25 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           </button>
         </div>
 
-        <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6">
-          <div ref={bookHostRef} className="relative flex max-h-full max-w-full items-center justify-center touch-none" aria-label={`Interactive book, page ${page} of ${pdf?.numPages || 0}`} />
+        <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6" style={{ perspective: '1400px' }}>
+          <div ref={bookHostRef} className="relative flex max-h-full max-w-full items-center justify-center" aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
+            <div className="relative overflow-hidden rounded-sm bg-white shadow-2xl">
+              <canvas ref={currentCanvasRef} className="block max-h-[70vh] max-w-[88vw]" />
+              {turning && (
+                <div
+                  className={'pointer-events-none absolute inset-0 origin-left bg-white/95 shadow-2xl transition-transform duration-500 ease-in-out ' + (turning === 'next' ? 'animate-[flip-next_520ms_ease-in-out]' : 'animate-[flip-prev_520ms_ease-in-out]')}
+                />
+              )}
+            </div>
+            <canvas ref={nextCanvasRef} className="pointer-events-none absolute opacity-0" aria-hidden="true" />
+          </div>
 
-          {ready && pdf && !error && (
+          {pdf && !error && !loading && (
             <>
-              <button
-                type="button"
-                onClick={goPrevious}
-                disabled={page <= 1}
-                className="absolute bottom-3 left-3 z-20 rounded-full bg-black/70 p-3 text-white shadow-lg transition hover:bg-black/85 disabled:opacity-20"
-                aria-label="Previous page"
-                title="Previous page"
-              >
+              <button type="button" onClick={() => void goToPage(page - 1)} disabled={page <= 1 || rendering || !!turning} className="absolute bottom-3 left-3 z-20 rounded-full bg-black/70 p-3 text-white shadow-lg transition hover:bg-black/85 disabled:opacity-20" aria-label="Previous page">
                 <ChevronLeft size={26} />
               </button>
-              <button
-                type="button"
-                onClick={goNext}
-                disabled={page >= pdf.numPages}
-                className="absolute bottom-3 right-3 z-20 rounded-full bg-black/70 p-3 text-white shadow-lg transition hover:bg-black/85 disabled:opacity-20"
-                aria-label="Next page"
-                title="Next page"
-              >
+              <button type="button" onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning || !nextReady} className="absolute bottom-3 right-3 z-20 rounded-full bg-black/70 p-3 text-white shadow-lg transition hover:bg-black/85 disabled:opacity-20" aria-label="Next page">
                 <ChevronRight size={26} />
               </button>
             </>
@@ -338,7 +320,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           {(loading || rendering) && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-800/90 text-white">
               <Loader2 className="animate-spin" size={32} />
-              <span>{loading ? 'Opening your book…' : 'Preparing realistic pages…'}</span>
+              <span>{loading ? 'Opening your book…' : 'Loading page…'}</span>
             </div>
           )}
 
@@ -353,28 +335,18 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           <div className="border-t border-white/10 px-4 pt-3 text-white">
             <div className="flex items-center gap-3">
               <span className="w-10 text-right text-xs text-white/60">1</span>
-              <input type="range" min={1} max={pdf.numPages} step={1} value={page} onChange={event => goToPage(Number(event.target.value))} className="h-2 w-full cursor-pointer accent-white" aria-label="Jump to page" />
+              <input type="range" min={1} max={pdf.numPages} step={1} value={page} onChange={event => void goToPage(Number(event.target.value))} className="h-2 w-full cursor-pointer accent-white" aria-label="Jump to page" />
               <span className="w-10 text-xs text-white/60">{pdf.numPages}</span>
             </div>
-
             <div className="flex flex-wrap items-center justify-center gap-3 py-3">
               <span className="text-sm text-white/80">Page</span>
-              <input
-                type="number"
-                min={1}
-                max={pdf.numPages}
-                value={pageInput}
-                onChange={event => setPageInput(event.target.value)}
-                onBlur={commitPageInput}
-                onKeyDown={event => { if (event.key === 'Enter') commitPageInput(); }}
-                className="w-16 rounded-md border border-white/20 bg-white/10 px-2 py-1.5 text-center text-sm text-white outline-none focus:border-white/50"
-                aria-label="Page number"
-              />
+              <input type="number" min={1} max={pdf.numPages} value={pageInput} onChange={event => setPageInput(event.target.value)} onBlur={commitPageInput} onKeyDown={event => { if (event.key === 'Enter') commitPageInput(); }} className="w-16 rounded-md border border-white/20 bg-white/10 px-2 py-1.5 text-center text-sm text-white outline-none focus:border-white/50" aria-label="Page number" />
               <span className="text-sm text-white/70">of {pdf.numPages}</span>
             </div>
           </div>
         )}
       </div>
+      <style jsx>{'@keyframes flip-next { 0% { transform: rotateY(0deg); opacity: 1; } 100% { transform: rotateY(-180deg); opacity: 0; } } @keyframes flip-prev { 0% { transform: rotateY(0deg); opacity: 1; } 100% { transform: rotateY(180deg); opacity: 0; } }'}</style>
     </div>
   );
 }
