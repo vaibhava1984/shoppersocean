@@ -2,7 +2,7 @@
 import BookCard from "@/components/BookCard"
 import { useEffect, useState } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getHomepageBooks, HomepageBook } from "@/utils/homepageBooksCache"
+import { getHomepageBooks, HomepageBook, HomepageBookPlacement } from "@/utils/homepageBooksCache"
 
 const BookCardSkeleton = () => (
     <div className="flex flex-col space-y-3">
@@ -15,11 +15,13 @@ const BookCardSkeleton = () => (
     </div>
 )
 
-export default function BooksCollections({ loggedinUserId }: { loggedinUserId?: string }) {
-    const [isLoading, setIsLoading] = useState(true)
-    const [authorBooks, setAuthorBooks] = useState<HomepageBook[]>([])
+export default function BooksCollections({ loggedinUserId, initialBooks = [] }: { loggedinUserId?: string, initialBooks?: HomepageBookPlacement[] }) {
+    const initial = initialBooks.filter(item => item.pageSection === "HOMEPAGE_COLLECTION").map(({ pageSection, ...book }) => book)
+    const [isLoading, setIsLoading] = useState(initialBooks.length === 0)
+    const [authorBooks, setAuthorBooks] = useState<HomepageBook[]>(initial)
 
     useEffect(() => {
+        if (initialBooks.length > 0) return
         let active = true
 
         getHomepageBooks()
@@ -39,7 +41,7 @@ export default function BooksCollections({ loggedinUserId }: { loggedinUserId?: 
         return () => {
             active = false
         }
-    }, [])
+    }, [initialBooks.length])
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
