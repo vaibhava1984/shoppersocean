@@ -63,6 +63,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isSliderDragging, setIsSliderDragging] = useState(false);
+  const [sliderPreviewPage, setSliderPreviewPage] = useState<number | null>(null);
   const [downloading, setDownloading] = useState(false);
   const [turnDirection, setTurnDirection] = useState<'next' | 'prev' | null>(null);
   const turnTimerRef = useRef<number | null>(null);
@@ -259,13 +260,13 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const rect = sliderRef.current.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     const target = Math.round(ratio * (pageCount - 1)) + 1;
-    if (target !== page) setPage(target);
+    setSliderPreviewPage(target);
   };
   useEffect(() => () => { void cancelRender(); }, [cancelRender]);
 
   const handleSliderPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     event.stopPropagation(); if (!sliderRef.current || !pageCount) return;
-    setIsSliderDragging(true); sliderRef.current.setPointerCapture?.(event.pointerId); sliderPageFromPointer(event.clientX);
+    setIsSliderDragging(true); setSliderPreviewPage(page); sliderRef.current.setPointerCapture?.(event.pointerId); sliderPageFromPointer(event.clientX);
   };
   const handleSliderPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     event.stopPropagation(); if (!isSliderDragging || !sliderRef.current?.hasPointerCapture(event.pointerId)) return;
@@ -273,7 +274,10 @@ export default function BookFlipbook({ bookId, title }: Props) {
   };
   const handleSliderPointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
     event.stopPropagation(); if (!isSliderDragging) return;
-    setIsSliderDragging(false); playPageTurnSound(); sliderRef.current?.releasePointerCapture?.(event.pointerId);
+    const target = sliderPreviewPage ?? page;
+    setIsSliderDragging(false); setSliderPreviewPage(null);
+    if (target !== page) setPage(target);
+    playPageTurnSound(); sliderRef.current?.releasePointerCapture?.(event.pointerId);
   };
 
   if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Your purchase includes secure flipbook reading and PDF download.</p><div className="flex w-full max-w-xl flex-col gap-3 sm:flex-row"><Button className="h-12 flex-1" onClick={openReader} disabled={loading}>Read online as flipbook</Button><Button className="h-12 flex-1" variant="outline" onClick={downloadPdf} disabled={downloading}>{downloading ? <><Loader2 className="mr-2 animate-spin" />Preparing…</> : <><Download className="mr-2 h-4 w-4" />Download as PDF book</>}</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
@@ -289,7 +293,8 @@ export default function BookFlipbook({ bookId, title }: Props) {
     boxShadow: turning || dragOffset !== 0 ? '0 18px 34px rgba(15,23,42,.26)' : '0 16px 30px rgba(15,23,42,.18)',
     backfaceVisibility: 'hidden', transformStyle: 'preserve-3d', touchAction: 'none',
   };
-  const sliderPercent = pageCount > 1 ? ((page - 1) / (pageCount - 1)) * 100 : 0;
+  const displayedSliderPage = sliderPreviewPage ?? page;
+  const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
   return <div ref={viewerRef} className="overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
