@@ -11,7 +11,11 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import Link from 'next/link';
 import { X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import BookFlipbook from '@/components/BookFlipbook';
+import dynamic from 'next/dynamic';
+const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
+    ssr: false,
+    loading: () => <div className="h-10 w-full" aria-hidden="true" />,
+});
 
 interface PaymentButtonProps { amount: number; notes?: object; userId?: string; productId: string; productTitle?: string; }
 export interface ExchangeRates { [key: string]: number; }
