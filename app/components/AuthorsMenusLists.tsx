@@ -91,7 +91,7 @@ export default function AuthorsMenusLists() {
                 <Button
                     key={author.author_id}
                     variant={currentAuthorId === author.author_id ? "default" : "ghost"}
-                    className="h-11 justify-start w-full rounded-lg px-4 text-base font-medium tracking-wide text-slate-700 transition-all duration-200 hover:bg-slate-100 hover:text-slate-950"
+                    className="h-11 justify-start w-full rounded-lg px-4 font-sans text-base font-extrabold tracking-wide text-rose-800 transition-all duration-200 hover:bg-rose-50 hover:text-rose-950"
                     onClick={() => handleAuthorSelect(author.author_id)}
                     disabled={isLoading}
                 >
