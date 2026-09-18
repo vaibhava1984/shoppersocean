@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Loader2, Maximize2, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, Maximize2, X, Volume2 } from 'lucide-react';
 
 interface FlipbookReaderProps {
   pdfUrl: string;
@@ -34,6 +34,7 @@ declare global {
 const PDFJS_VERSION = '3.11.174';
 const PDFJS_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.min.js';
 const PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/' + PDFJS_VERSION + '/pdf.worker.min.js';
+const PAGE_TURN_SOUND = 'data:audio/wav;base64,UklGRgQKAA...';
 
 function loadPdfJs(): Promise<PdfJs> {
   if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
@@ -95,15 +96,31 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const [fullscreen, setFullscreen] = useState(false);
   const [turning, setTurning] = useState<'next' | 'prev' | null>(null);
   const [nextReady, setNextReady] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const soundRef = useRef<HTMLAudioElement | null>(null);
+
+  const playPageTurn = useCallback(() => {
+    if (!soundEnabled) return;
+    try {
+      if (!soundRef.current) {
+        soundRef.current = new Audio(PAGE_TURN_SOUND);
+        soundRef.current.volume = 0.52;
+      }
+      soundRef.current.currentTime = 0;
+      void soundRef.current.play().catch(() => {});
+    } catch {}
+  }, [soundEnabled]);
+
+  useEffect(() => () => { soundRef.current?.pause(); soundRef.current = null; }, []);
 
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
-    const hostWidth = Math.max(bookHostRef.current?.clientWidth || 320, 280);
-    const hostHeight = Math.max(bookHostRef.current?.clientHeight || 480, 360);
-    const maxWidth = Math.min(hostWidth - 16, fullscreen ? 1050 : 900);
-    const maxHeight = Math.min(hostHeight - 16, fullscreen ? 760 : 650);
-    const scale = Math.max(0.35, Math.min(maxWidth / base.width, maxHeight / base.height));
+    const hostWidth = Math.max(bookHostRef.current?.clientWidth || 320, 240);
+    const hostHeight = Math.max(bookHostRef.current?.clientHeight || Math.min(window.innerHeight * 0.72, 720), 300);
+    const maxWidth = Math.min(hostWidth - 8, fullscreen ? 980 : 760);
+    const maxHeight = Math.min(hostHeight - 8, fullscreen ? 760 : Math.max(window.innerHeight * 0.70, 360));
+    const scale = Math.min(maxWidth / base.width, maxHeight / base.height);
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
     const width = Math.ceil(viewport.width);
@@ -230,7 +247,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       setPageInput(String(targetPage));
       setTurning(direction);
       window.setTimeout(() => setTurning(null), 520);
-      createPaperSound();
+      playPageTurn();
 
       const preloadPage = direction === 'next' ? targetPage + 1 : targetPage - 1;
       if (preloadPage >= 1 && preloadPage <= pdf.numPages && currentCanvasRef.current) {
@@ -243,7 +260,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     } finally {
       if (token === renderTokenRef.current) setRendering(false);
     }
-  }, [pdf, page, preparePage, rendering, turning, swapCanvas]);
+  }, [pdf, page, preparePage, playPageTurn, rendering, turning, swapCanvas]);
 
   useEffect(() => setPageInput(String(page)), [page]);
 
@@ -288,15 +305,20 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
             <p className="truncate text-sm font-semibold">{fileName || 'Book'}</p>
             <p className="text-xs text-white/60">Read online as flipbook</p>
           </div>
-          <button type="button" onClick={() => setFullscreen(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={fullscreen ? 'Close full screen' : 'Open full screen'}>
+          <div className="flex items-center gap-1">
+            <button type="button" onClick={() => setSoundEnabled(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={soundEnabled ? 'Mute page turn sound' : 'Enable page turn sound'}>
+              <Volume2 size={19} className={soundEnabled ? 'text-white' : 'text-white/35'} />
+            </button>
+            <button type="button" onClick={() => setFullscreen(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={fullscreen ? 'Close full screen' : 'Open full screen'}>
             {fullscreen ? <X size={20} /> : <Maximize2 size={20} />}
-          </button>
+            </button>
+          </div>
         </div>
 
         <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6" style={{ perspective: '1400px' }}>
-          <div ref={bookHostRef} className="relative flex max-h-full max-w-full items-center justify-center" aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
+          <div ref={bookHostRef} className="relative flex h-[72vh] max-h-[760px] w-[94vw] max-w-[900px] items-center justify-center" aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
             <div className="relative overflow-hidden rounded-sm bg-white shadow-2xl">
-              <canvas ref={currentCanvasRef} className="block max-h-[70vh] max-w-[88vw]" />
+              <canvas ref={currentCanvasRef} className="block max-h-[70vh] max-w-[94vw]" />
               {turning && (
                 <div
                   className={'pointer-events-none absolute inset-0 origin-left bg-white/95 shadow-2xl transition-transform duration-500 ease-in-out ' + (turning === 'next' ? 'animate-[flip-next_520ms_ease-in-out]' : 'animate-[flip-prev_520ms_ease-in-out]')}
@@ -308,11 +330,11 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
           {pdf && !error && !loading && (
             <>
-              <button type="button" onClick={() => void goToPage(page - 1)} disabled={page <= 1 || rendering || !!turning} className="absolute bottom-3 left-3 z-20 rounded-full bg-black/70 p-3 text-white shadow-lg transition hover:bg-black/85 disabled:opacity-20" aria-label="Previous page">
-                <ChevronLeft size={26} />
+              <button type="button" onClick={() => void goToPage(page - 1)} disabled={page <= 1 || rendering || !!turning} className="absolute bottom-2 left-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Previous page">
+                <ChevronLeft size={20} strokeWidth={2.2} />
               </button>
-              <button type="button" onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning || !nextReady} className="absolute bottom-3 right-3 z-20 rounded-full bg-black/70 p-3 text-white shadow-lg transition hover:bg-black/85 disabled:opacity-20" aria-label="Next page">
-                <ChevronRight size={26} />
+              <button type="button" onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning || !nextReady} className="absolute bottom-2 right-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Next page">
+                <ChevronRight size={20} strokeWidth={2.2} />
               </button>
             </>
           )}
