@@ -304,8 +304,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
         onPointerUp={finishPointerDrag}
         onPointerCancel={finishPointerDrag}
       >
-        <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center">
-          <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center" style={{ perspective: '1800px' }}>
+        <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center" style={{ perspective: '1800px' }}>
           <div className="absolute inset-0 flex items-center justify-center rounded bg-white shadow-[0_16px_30px_rgba(15,23,42,0.18)]" style={{ zIndex: 0, overflow: 'hidden' }}>
             <canvas ref={nextCanvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
           </div>
