@@ -223,16 +223,21 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       setNextReady(false);
       await preparePage(targetPage, canvas);
       if (token !== renderTokenRef.current) return;
+      setTurning(direction);
+      playPageTurn();
+
+      // Keep the destination page underneath while the visible page physically
+      // folds away. Only swap the canvases after the animation completes.
+      await new Promise<void>(resolve => window.setTimeout(resolve, 520));
+      if (token !== renderTokenRef.current) return;
       swapCanvas();
       setPage(targetPage);
       setPageInput(String(targetPage));
-      setTurning(direction);
-      window.setTimeout(() => setTurning(null), 520);
-      playPageTurn();
+      setTurning(null);
 
       const preloadPage = direction === 'next' ? targetPage + 1 : targetPage - 1;
-      if (preloadPage >= 1 && preloadPage <= pdf.numPages && currentCanvasRef.current) {
-        await preparePage(preloadPage, currentCanvasRef.current);
+      if (preloadPage >= 1 && preloadPage <= pdf.numPages && nextCanvasRef.current) {
+        await preparePage(preloadPage, nextCanvasRef.current);
         if (token === renderTokenRef.current) setNextReady(true);
       }
     } catch (err) {
@@ -298,15 +303,40 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
         <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6" style={{ perspective: '1600px', touchAction: 'pan-y' }} onPointerDown={event => { if (event.pointerType !== 'mouse' || event.button === 0) { event.currentTarget.setPointerCapture?.(event.pointerId); beginDrag(event.clientX); } }} onPointerMove={event => moveDrag(event.clientX)} onPointerUp={endDrag} onPointerCancel={endDrag}>
           <div ref={bookHostRef} className="relative flex max-h-full max-w-full items-center justify-center" aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
-            <div className="relative overflow-hidden rounded-[2px] bg-white shadow-2xl" style={{ transform: dragX === 0 ? 'rotateY(0deg)' : `rotateY(${Math.max(-72, Math.min(72, dragX * 0.16))}deg) translateX(${dragX * 0.10}px)`, transformOrigin: dragX < 0 ? 'left center' : 'right center', transition: draggingRef.current ? 'none' : 'transform 420ms cubic-bezier(.2,.8,.2,1)', willChange: 'transform' }}>
-              <canvas ref={currentCanvasRef} className="block max-h-[68dvh] max-w-[86vw] select-none" draggable={false} />
-              {turning && (
-                <div
-                  className={'pointer-events-none absolute inset-0 origin-left bg-white/95 shadow-2xl transition-transform duration-500 ease-in-out ' + (turning === 'next' ? 'animate-[flip-next_520ms_ease-in-out]' : 'animate-[flip-prev_520ms_ease-in-out]')}
-                />
-              )}
+            <div
+              className="relative overflow-visible rounded-[2px] bg-white shadow-2xl"
+              style={{
+                perspective: '1800px',
+                transform: dragX === 0 ? 'rotateY(0deg)' : `translateX(${dragX * 0.10}px) rotateY(${Math.max(-72, Math.min(72, dragX * 0.16))}deg)`,
+                transition: draggingRef.current ? 'none' : 'transform 420ms cubic-bezier(.2,.8,.2,1)',
+                willChange: 'transform',
+              }}
+            >
+              {/* Destination page sits underneath the sheet being turned. */}
+              <canvas
+                ref={nextCanvasRef}
+                className="pointer-events-none absolute inset-0 block max-h-[68dvh] max-w-[86vw] select-none"
+                draggable={false}
+                aria-hidden="true"
+              />
+              <div
+                className={
+                  'relative z-10 origin-left bg-white shadow-[0_8px_24px_rgba(0,0,0,0.22)] ' +
+                  (turning === 'next'
+                    ? 'animate-[real-page-next_520ms_cubic-bezier(.22,.61,.36,1)_forwards]'
+                    : turning === 'prev'
+                      ? 'origin-right animate-[real-page-prev_520ms_cubic-bezier(.22,.61,.36,1)_forwards]'
+                      : '')
+                }
+                style={{
+                  backfaceVisibility: 'hidden',
+                  transformStyle: 'preserve-3d',
+                  willChange: turning ? 'transform' : undefined,
+                }}
+              >
+                <canvas ref={currentCanvasRef} className="block max-h-[68dvh] max-w-[86vw] select-none" draggable={false} />
+              </div>
             </div>
-            <canvas ref={nextCanvasRef} className="pointer-events-none absolute opacity-0" aria-hidden="true" />
           </div>
 
           {pdf && !error && !loading && (
@@ -349,7 +379,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           </div>
         )}
       </div>
-      <style jsx>{'@keyframes flip-next { 0% { transform: rotateY(0deg); opacity: 1; } 100% { transform: rotateY(-180deg); opacity: 0; } } @keyframes flip-prev { 0% { transform: rotateY(0deg); opacity: 1; } 100% { transform: rotateY(180deg); opacity: 0; } }'}</style>
+      <style jsx>{'@keyframes real-page-next { 0% { transform: rotateY(0deg); box-shadow: 0 8px 24px rgba(0,0,0,.22); } 45% { box-shadow: -18px 8px 28px rgba(0,0,0,.28); } 100% { transform: rotateY(-180deg); box-shadow: 18px 8px 28px rgba(0,0,0,.12); } } @keyframes real-page-prev { 0% { transform: rotateY(0deg); box-shadow: 0 8px 24px rgba(0,0,0,.22); } 45% { box-shadow: 18px 8px 28px rgba(0,0,0,.28); } 100% { transform: rotateY(180deg); box-shadow: -18px 8px 28px rgba(0,0,0,.12); } }'}</style>
     </div>
   );
 }
