@@ -43,7 +43,6 @@ export async function POST(request: Request) {
     const admin = createAdminClient()
     const update: {
       email: string
-      phone?: string
       user_metadata: Record<string, string>
     } = {
       email,
@@ -52,7 +51,8 @@ export async function POST(request: Request) {
         country,
         full_name: fullName,
         address,
-        mobile: phone ?? user.user_metadata?.mobile ?? "",
+        // Keep the verified mobile number untouched until phone verification succeeds.
+        mobile: user.phone ?? user.user_metadata?.mobile ?? "",
       },
     }
 
@@ -76,6 +76,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
+      otpRequired: Boolean(phone),
       user: data.user,
       mobile: phone ?? "",
     })
