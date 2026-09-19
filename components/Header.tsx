@@ -34,11 +34,7 @@ export default async function Header({ user }: { user?: Awaited<ReturnType<typeo
 
             {currentUser ? (
               <DropdownMenu>
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1">
-                  <Link href="/settings" className="inline-flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors">
-                    <SettingsIcon className="h-4 w-4" />
-                    <span>Settings</span>
-                  </Link>
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                   <DropdownMenuTrigger className="flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors max-w-[45vw] sm:max-w-[300px]">
                     <span className="truncate">Hi {currentUser?.user_metadata?.full_name ?? currentUser.email}</span>
                     <ChevronDown className="h-4 w-4 flex-shrink-0" />
