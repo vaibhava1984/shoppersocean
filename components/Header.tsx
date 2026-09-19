@@ -40,7 +40,7 @@ export default async function Header({ user }: { user: Awaited<ReturnType<typeof
                 <DropdownMenuContent align="center" className="w-48">
                   {user?.app_metadata?.userrole === "ADMIN" && (
                     <DropdownMenuItem asChild>
-                      <Link href="/admin_panel" className="flex items-center gap-2">
+                      <a href="/admin_panel" className="flex w-full items-center gap-2">
                         <ShieldIcon width={18} />
                         Admin Panel
                       </Link>
@@ -48,20 +48,20 @@ export default async function Header({ user }: { user: Awaited<ReturnType<typeof
                   )}
                   {user?.app_metadata?.isAuthor === true && (
                     <DropdownMenuItem asChild>
-                      <Link href="/my-sales" className="flex items-center gap-2">
+                      <a href="/my-sales" className="flex w-full items-center gap-2">
                         <ChartBarIcon width={18} />
                         My Sales
                       </Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem asChild>
-                    <Link href="/my-purchases" className="flex items-center gap-2">
+                    <a href="/my-purchases" className="flex w-full items-center gap-2">
                       <HistoryIcon width={18} />
                       My Orders
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/settings" className="flex items-center gap-2">
+                    <a href="/settings" className="flex w-full items-center gap-2">
                       <SettingsIcon width={18} />
                       Settings
                     </Link>
