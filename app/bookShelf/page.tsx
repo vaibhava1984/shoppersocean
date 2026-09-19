@@ -26,7 +26,6 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
     }
 
     const supabase = createClient()
-
     const userPromise = getUser()
 
     let query = supabase
@@ -49,7 +48,9 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
         query = query.eq('author_id', searchFilters.author_id)
     }
 
-    const authorsPromise = supabase.from('authors').select('author_id,name').eq('is_deleted', false).order('name', { ascending: true })\n\n    const [userResult, booksResult, authorsResult] = await Promise.all([userPromise, query, authorsPromise])
+    const authorsPromise = supabase.from('authors').select('author_id,name').eq('is_deleted', false).order('name', { ascending: true })
+
+    const [userResult, booksResult, authorsResult] = await Promise.all([userPromise, query, authorsPromise])
     const user = userResult.data.user
     const { data, error } = booksResult
 
@@ -60,7 +61,8 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
         })
     }
 
-    const books = data || []\n    const authors = authorsResult.data || []
+    const books = data || []
+    const authors = authorsResult.data || []
     const filteredBooks = books.map(d => ({
         ...d,
         coverImage: d?.cover_images?.[0],
@@ -102,12 +104,7 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
             <Header user={user} />
-            <HeroSection
-                title=" Escape into Entertainment"
-                subtitle="Discover your next favorite book"
-                imageSrc="/bookshelf_hero_image.jpeg"
-                imageAlt=" Embark on Your Adventure"
-            />
+            <HeroSection title=" Escape into Entertainment" subtitle="Discover your next favorite book" imageSrc="/bookshelf_hero_image.jpeg" imageAlt=" Embark on Your Adventure" />
             <AuthorApplicationBanner />
             <section className="py-20 bg-white">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -116,41 +113,27 @@ export default async function BookShelfPage({ searchParams }: { params: any; sea
                             <h2 className="mb-5 text-3xl font-black text-black">Categories</h2>
                             <div className="mb-8">
                                 <h3 className="mb-4 font-serif text-2xl font-black italic tracking-wide text-blue-700">
-                                    <Link href={allLanguagesHref} className="hover:text-blue-800 transition-colors">
-                                        All languages
-                                    </Link>
+                                    <Link href={allLanguagesHref} className="hover:text-blue-800 transition-colors">All languages</Link>
                                 </h3>
                                 <LanguageMenusLists currentLang={searchFilters.language} currentAuthor={searchFilters.author_id} />
                             </div>
                             <div>
                                 <h3 className="mb-4 font-serif text-2xl font-black italic tracking-wide text-blue-700">
-                                    <Link href={allAuthorsHref} className="hover:text-blue-800 transition-colors">
-                                        All authors
-                                    </Link>
+                                    <Link href={allAuthorsHref} className="hover:text-blue-800 transition-colors">All authors</Link>
                                 </h3>
                                 <AuthorsMenusLists initialAuthors={authors} currentAuthor={searchFilters.author_id} currentLanguage={searchFilters.language} />
                             </div>
                         </div>
-
                         <div className="md:w-3/4">
                             <div className="flex justify-between items-center mb-8">
                                 <h2 className="text-3xl font-bold text-slate-800">{getPageHeader()}</h2>
                             </div>
-
                             {selectedAuthorInfo && filteredBooks.length > 0 && (
-                                <Card className="mb-8">
-                                    <CardContent className="p-6">
-                                        <h3 className="text-2xl font-bold mb-4 text-slate-800">{selectedAuthorName}</h3>
-                                        <p className="text-slate-600 whitespace-pre-line">{selectedAuthorInfo}</p>
-                                    </CardContent>
-                                </Card>
+                                <Card className="mb-8"><CardContent className="p-6"><h3 className="text-2xl font-bold mb-4 text-slate-800">{selectedAuthorName}</h3><p className="text-slate-600 whitespace-pre-line">{selectedAuthorInfo}</p></CardContent></Card>
                             )}
-
                             {filteredBooks.length > 0 ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                    {filteredBooks.map(book => (
-                                        <BookCard key={book.id} book={book} loggedinUserId={user?.id} />
-                                    ))}
+                                    {filteredBooks.map(book => <BookCard key={book.id} book={book} loggedinUserId={user?.id} />)}
                                 </div>
                             ) : (
                                 <div className="text-center py-12 border-2 border-dashed border-gray-300 rounded">
