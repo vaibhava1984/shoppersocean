@@ -18,7 +18,10 @@ const navigationItems = [
   ["/contact", "Have a question?"],
 ] as const;
 
-export default async function Header({ user }: { user: Awaited<ReturnType<typeof getUser>> }) {
+export default async function Header({ user }: { user?: Awaited<ReturnType<typeof getUser>> }) {
+  // Some pages render Header without passing the user. Resolve the current
+  // server session here so a signed-in user never sees the anonymous menu.
+  const currentUser = user ?? await getUser()
 
   return (
     <>
@@ -31,14 +34,14 @@ export default async function Header({ user }: { user: Awaited<ReturnType<typeof
               </Link>
             </div>
 
-            {user ? (
+            {currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors max-w-[58vw] sm:max-w-[360px]">
-                  <span className="truncate">Hi {user?.user_metadata?.full_name ?? user.email}</span>
+                  <span className="truncate">Hi {currentUser?.user_metadata?.full_name ?? currentUser.email}</span>
                   <ChevronDown className="h-4 w-4 flex-shrink-0" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="w-48">
-                  {user?.app_metadata?.userrole === "ADMIN" && (
+                  {currentUser?.app_metadata?.userrole === "ADMIN" && (
                     <DropdownMenuItem asChild>
                       <a href="/admin_panel" className="flex w-full items-center gap-2">
                         <ShieldIcon width={18} />
@@ -46,7 +49,7 @@ export default async function Header({ user }: { user: Awaited<ReturnType<typeof
                       </a>
                     </DropdownMenuItem>
                   )}
-                  {user?.app_metadata?.isAuthor === true && (
+                  {currentUser?.app_metadata?.isAuthor === true && (
                     <DropdownMenuItem asChild>
                       <a href="/my-sales" className="flex w-full items-center gap-2">
                         <ChartBarIcon width={18} />
