@@ -34,10 +34,16 @@ export default async function Header({ user }: { user?: Awaited<ReturnType<typeo
 
             {currentUser ? (
               <DropdownMenu>
-                <DropdownMenuTrigger className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors max-w-[58vw] sm:max-w-[360px]">
-                  <span className="truncate">Hi {currentUser?.user_metadata?.full_name ?? currentUser.email}</span>
-                  <ChevronDown className="h-4 w-4 flex-shrink-0" />
-                </DropdownMenuTrigger>
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1">
+                  <Link href="/settings" className="inline-flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors">
+                    <SettingsIcon className="h-4 w-4" />
+                    <span>Settings</span>
+                  </Link>
+                  <DropdownMenuTrigger className="flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors max-w-[45vw] sm:max-w-[300px]">
+                    <span className="truncate">Hi {currentUser?.user_metadata?.full_name ?? currentUser.email}</span>
+                    <ChevronDown className="h-4 w-4 flex-shrink-0" />
+                  </DropdownMenuTrigger>
+                </div>
                 <DropdownMenuContent align="center" className="w-48">
                   <DropdownMenuItem asChild>
                     <Link href="/settings" className="flex w-full items-center gap-2">
