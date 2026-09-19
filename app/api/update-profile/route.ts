@@ -52,13 +52,22 @@ export async function POST(request: Request) {
         country,
         full_name: fullName,
         address,
-        mobile: phone ?? "",
+        mobile: phone ?? user.user_metadata?.mobile ?? "",
       },
     }
 
-    if (phone) update.phone = phone
-
+    // Save non-phone profile fields directly with the admin client.
+    // Phone changes must go through the authenticated Auth API so Supabase can send
+    // the verification OTP and keep the number unconfirmed until it is verified.
     const { data, error } = await admin.auth.admin.updateUserById(user.id, update)
+
+    if (!error && phone) {
+      const { error: phoneError } = await supabase.auth.updateUser({ phone })
+      if (phoneError) {
+        console.error("Phone update/OTP request failed:", phoneError)
+        return NextResponse.json({ error: phoneError.message || "We could not send the verification code to this mobile number." }, { status: 422 })
+      }
+    }
 
     if (error) {
       console.error("Profile update failed:", error)
