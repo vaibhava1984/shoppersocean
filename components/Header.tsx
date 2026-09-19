@@ -58,13 +58,13 @@ export default async function Header({ user }: { user: Awaited<ReturnType<typeof
                     <a href="/my-purchases" className="flex w-full items-center gap-2">
                       <HistoryIcon width={18} />
                       My Orders
-                    </Link>
+                    </a>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <a href="/settings" className="flex w-full items-center gap-2">
                       <SettingsIcon width={18} />
                       Settings
-                    </Link>
+                    </a>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="flex items-center gap-2">
                     <LogOut />
