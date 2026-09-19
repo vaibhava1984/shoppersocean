@@ -13,6 +13,13 @@ const countryCodes = `AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ B
 const countryNames = new Intl.DisplayNames(["en"], { type: "region" })
 const countries = countryCodes.map(code => ({ code, name: countryNames.of(code) ?? code }))
 
+const normalizeIndianMobile = (value: string) => {
+  const digits = value.replace(/\D/g, "")
+  if (digits.length === 10 && /^[6-9]\d{9}$/.test(digits)) return `+91${digits}`
+  if (digits.length === 12 && digits.startsWith("91") && /^[6-9]\d{9}$/.test(digits.slice(2))) return `+${digits}`
+  return ""
+}
+
 const Settings = () => {
   const supabase = createClient()
   const [country, setCountry] = useState("")
@@ -55,6 +62,22 @@ const Settings = () => {
       return
     }
 
+    const enteredMobile = mobile.trim()
+    const mobileChanged = enteredMobile !== originalMobile
+
+    if (mobileChanged && enteredMobile) {
+      if (country !== "IN") {
+        setMessage("Mobile verification is currently available for Indian mobile numbers only.")
+        return
+      }
+      const normalizedMobile = normalizeIndianMobile(enteredMobile)
+      if (!normalizedMobile) {
+        setMessage("Please enter a valid 10-digit Indian mobile number starting with 6–9.")
+        return
+      }
+      setMobile(normalizedMobile)
+    }
+
     setIsSaving(true)
     const updatePayload: Parameters<typeof supabase.auth.updateUser>[0] = {
       data: {
@@ -65,8 +88,9 @@ const Settings = () => {
       email: email.trim(),
     }
 
-    const mobileChanged = mobile.trim() !== originalMobile
-    if (mobileChanged && mobile.trim()) updatePayload.phone = mobile.trim()
+    if (mobileChanged && enteredMobile) {
+      updatePayload.phone = normalizeIndianMobile(enteredMobile)
+    }
 
     const { data, error } = await supabase.auth.updateUser(updatePayload)
 
@@ -78,7 +102,9 @@ const Settings = () => {
 
     setIsSaving(false)
 
-    if (mobileChanged && mobile.trim()) {
+    if (mobileChanged && enteredMobile) {
+      const normalizedMobile = normalizeIndianMobile(enteredMobile)
+      setMobile(normalizedMobile)
       setPhoneVerificationRequired(true)
       setPhoneVerified(false)
       setOtp("")
@@ -87,7 +113,7 @@ const Settings = () => {
       setMessage("Your details have been successfully updated.")
     }
 
-    setOriginalMobile(data.user?.phone ?? mobile.trim())
+    setOriginalMobile(data.user?.phone ?? (mobileChanged && enteredMobile ? normalizeIndianMobile(enteredMobile) : enteredMobile))
   }
 
   const verifyPhone = async () => {
@@ -95,9 +121,15 @@ const Settings = () => {
       setMessage("Please enter the 6-digit verification code.")
       return
     }
+    const normalizedMobile = normalizeIndianMobile(mobile.trim())
+    if (!normalizedMobile) {
+      setMessage("Please enter a valid Indian mobile number.")
+      return
+    }
+
     setIsSaving(true)
     const { data, error } = await supabase.auth.verifyOtp({
-      phone: mobile.trim(),
+      phone: normalizedMobile,
       token: otp,
       type: "phone_change",
     })
@@ -110,7 +142,8 @@ const Settings = () => {
 
     setPhoneVerified(!!data.user?.phone_confirmed_at || true)
     setPhoneVerificationRequired(false)
-    setOriginalMobile(mobile.trim())
+    setOriginalMobile(normalizedMobile)
+    setMobile(normalizedMobile)
     setOtp("")
     setMessage("Mobile number verified successfully.")
   }
