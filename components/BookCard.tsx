@@ -1,12 +1,7 @@
-"use client"
-import dynamic from "next/dynamic"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import { OptimizedImage } from "@/components/OptimizedImage"
-
-const DynamicPaymentButton = dynamic(() => import('@/components/PaymentButton'), {
-    loading: () => <div className="h-10 w-full" aria-hidden="true" />,
-})
+import LazyPaymentButton from "@/components/LazyPaymentButton"
 
 export default function BookCard({ book, loggedinUserId }: {
     book: any,
@@ -56,16 +51,17 @@ export default function BookCard({ book, loggedinUserId }: {
                     </div>
                     <div className="mt-2">
                         {book?.id && (
-                            <DynamicPaymentButton
-                                amount={book?.price}
-                                notes={{ product_name: 'Test Product' }}
+                            <LazyPaymentButton
+                                amount={book.price}
+                                notes={{ product_name: "Test Product" }}
                                 userId={loggedinUserId}
-                                productId={book?.id}
+                                productId={book.id}
+                                productTitle={book.title}
                             />
                         )}
                     </div>
                 </div>
             </CardContent>
         </Card>
-    );
-};
+    )
+}
