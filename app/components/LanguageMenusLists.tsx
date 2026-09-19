@@ -15,7 +15,7 @@ export default function LanguageMenusLists({ currentLang = "all", currentAuthor 
                 params.set('lang', language.param)
                 if (currentAuthor !== 'all') params.set('author', currentAuthor)
                 return (
-                    <Button key={language.id} asChild variant={currentLang === language.id ? "default" : "ghost"} className="h-10 justify-start rounded-lg px-4 font-sans text-sm font-semibold tracking-normal text-emerald-800 transition-colors hover:bg-emerald-50 hover:text-emerald-950">
+                    <Button key={language.id} asChild variant={currentLang === language.id ? "default" : "ghost"} className="h-11 justify-start rounded-lg px-4 font-sans text-base font-bold tracking-normal text-green-700 transition-colors hover:bg-green-50 hover:text-green-800">
                         <Link href={"/bookShelf?" + params.toString()}>{language.name}</Link>
                     </Button>
                 )
