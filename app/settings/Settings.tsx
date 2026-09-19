@@ -31,6 +31,8 @@ const Settings = () => {
   const [loading, setLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState("")
+  const [otp, setOtp] = useState("")
+  const [otpRequired, setOtpRequired] = useState(false)
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -73,6 +75,9 @@ const Settings = () => {
 
     setIsSaving(true)
 
+    const normalizedMobile = enteredMobile ? normalizeIndianMobile(enteredMobile) : ""
+    const mobileChanged = normalizedMobile !== normalizeIndianMobile(originalMobile)
+
     try {
       const response = await fetch("/api/update-profile", {
         method: "POST",
@@ -93,10 +98,15 @@ const Settings = () => {
         return
       }
 
-      const normalizedMobile = enteredMobile ? normalizeIndianMobile(enteredMobile) : ""
       setMobile(normalizedMobile)
-      setOriginalMobile(normalizedMobile)
-      setMessage("Your details have been successfully updated.")
+      if (mobileChanged && normalizedMobile) {
+        setOtpRequired(true)
+        setOtp("")
+        setMessage("A 6-digit verification code has been sent to your mobile number. Please enter it below.")
+      } else {
+        setOriginalMobile(normalizedMobile)
+        setMessage("Your details have been successfully updated.")
+      }
       await supabase.auth.refreshSession()
     } catch {
       setMessage("Unable to update your details right now. Please try again.")
@@ -137,6 +147,26 @@ const Settings = () => {
                 <label htmlFor="mobile" className="block font-medium mb-1">Mobile <span className="text-slate-500 font-normal">(Optional: if you want to order any products)</span></label>
                 <Input id="mobile" type="tel" inputMode="tel" value={mobile} onChange={e => setMobile(e.target.value)} placeholder="+91XXXXXXXXXX" />
               </div>
+
+              {otpRequired && (
+                <div className="space-y-2">
+                  <label htmlFor="phoneOtp" className="block font-medium mb-1">Mobile verification code</label>
+                  <div className="flex gap-2">
+                    <Input id="phoneOtp" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))} inputMode="numeric" maxLength={6} placeholder="6-digit OTP" />
+                    <Button type="button" onClick={async () => {
+                      if (!/^\d{6}$/.test(otp)) { setMessage("Please enter the 6-digit verification code."); return }
+                      setIsSaving(true)
+                      const { error } = await supabase.auth.verifyOtp({ phone: normalizeIndianMobile(mobile), token: otp, type: "phone_change" })
+                      setIsSaving(false)
+                      if (error) { setMessage(error.message || "Incorrect or expired verification code."); return }
+                      setOtpRequired(false)
+                      setOtp("")
+                      setOriginalMobile(normalizeIndianMobile(mobile))
+                      setMessage("Mobile number verified successfully.")
+                    }} disabled={isSaving || otp.length !== 6} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold whitespace-nowrap">Verify</Button>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label htmlFor="address" className="block font-medium mb-1">Complete Address <span className="text-slate-500 font-normal">(Optional: if you want to order any products)</span></label>
