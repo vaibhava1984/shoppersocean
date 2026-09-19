@@ -1,27 +1,26 @@
-import { createServerClient } from "@supabase/ssr"
+import { createServerClient, type CookieOptions } from "@supabase/ssr"
 import { cookies } from "next/headers"
 import { cache } from "react"
 
-export async function createClient() {
-  const cookieStore = await cookies()
+export function createClient() {
+  const cookieStore = cookies()
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return cookieStore.getAll()
+        async getAll() {
+          return (await cookieStore).getAll()
         },
         setAll(cookiesToSet) {
           try {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options)
-            })
+            cookiesToSet.forEach(async ({ name, value, options }) =>
+              (await cookieStore).set(name, value, options)
+            )
           } catch {
-            // The setAll method can be called from a Server Component where
-            // cookies cannot be modified. Middleware/server actions handle
-            // refresh and auth-cookie writes in those contexts.
+            // The setAll method was called from a Server Component.
+            // This can be ignored if middleware refreshing user sessions.
           }
         },
       },
@@ -29,10 +28,8 @@ export async function createClient() {
   )
 }
 
-// Header and page components can share the same auth lookup during a
-// server render instead of making duplicate Supabase getUser() requests.
 export const getUser = cache(async () => {
-  const supabase = await createClient()
+  const supabase = createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
