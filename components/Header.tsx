@@ -19,8 +19,6 @@ const navigationItems = [
 ] as const;
 
 export default async function Header({ user }: { user?: Awaited<ReturnType<typeof getUser>> }) {
-  // Some pages render Header without passing the user. Resolve the current
-  // server session here so a signed-in user never sees the anonymous menu.
   const currentUser = user ?? await getUser()
 
   return (
