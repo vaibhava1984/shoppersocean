@@ -37,7 +37,6 @@ export default async function BookShelfPage({
     }
 
     const language = languageMap[languageParam]
-
     const supabase = createClient()
 
     let booksQuery = supabase
@@ -50,17 +49,17 @@ export default async function BookShelfPage({
     if (language) booksQuery = booksQuery.eq("language", language)
     if (authorParam !== "all") booksQuery = booksQuery.eq("author_id", authorParam)
 
-    const [booksResult, authorsResult] = await Promise.all([
+    // Start all independent requests at the same time. The page no longer waits
+    // for the catalogue and authors before even starting the auth lookup.
+    const [booksResult, authorsResult, userResult] = await Promise.all([
         booksQuery,
         supabase
             .from("authors")
             .select("author_id,name")
             .eq("is_deleted", false)
             .order("name", { ascending: true }),
+        supabase.auth.getUser(),
     ])
-
-    const books = booksResult.data ?? []
-    const authors = authorsResult.data ?? []
 
     if (booksResult.error) {
         console.error("[BookShelf] Error fetching books:", booksResult.error.message)
@@ -69,9 +68,9 @@ export default async function BookShelfPage({
         console.error("[BookShelf] Error fetching authors:", authorsResult.error.message)
     }
 
-    // Keep the authenticated user lookup independent so book browsing does not
-    // wait for a second Supabase client/auth request before rendering the catalogue.
-    const userPromise = supabase.auth.getUser()
+    const books = booksResult.data ?? []
+    const authors = authorsResult.data ?? []
+    const user = userResult.data.user
 
     const filteredBooks = books.map((book) => ({
         ...book,
@@ -103,9 +102,6 @@ export default async function BookShelfPage({
     const allAuthorsHref = allAuthorsParams.toString()
         ? `/bookShelf?${allAuthorsParams.toString()}`
         : "/bookShelf"
-
-    const userResult = await userPromise
-    const user = userResult.data.user
 
     function getPageHeader() {
         if (languageParam === "en") return "English Books"
