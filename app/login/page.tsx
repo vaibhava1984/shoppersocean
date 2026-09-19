@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
 import { SubmitButton } from "./submit-button"
@@ -11,9 +11,11 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
 import { createClient } from "@/utils/supabase/client"
+import { useRouter } from "next/navigation"
 
 export default function Login({ searchParams }: { searchParams: any }) {
   const supabase = createClient()
+  const router = useRouter()
   // @ts-ignore
   const { accountCreated, type, authError } = React.use(searchParams)
 
@@ -30,6 +32,12 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [phoneVerified, setPhoneVerified] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data?.user) router.push("/")
+    })
+  }, [])
 
   const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
   const validatePassword = (value: string) => value.length >= 6
@@ -164,7 +172,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600" />
-        <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">{isSignIn ? "Sign In" : "Create Account"}</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">{isSignIn ? "Welcome Back!" : "Create Account"}</h2>
 
         <div className="space-y-4">
           {accountCreated === "success" && <div className="bg-green-400 text-white p-2 rounded">Account created successfully. Please confirm your mail and login.</div>}
