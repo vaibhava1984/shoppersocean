@@ -10,26 +10,18 @@ export async function signIn(formData: {
 }) {
   const supabase = createClient()
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.email as string,
-    password: formData.password as string,
-    redirect: '/'
-  }
-
-  const { error } = await supabase.auth.signInWithPassword(data)
-
-  // console.log("signin error=>", error)
-  // console.log("signin error code=>", error?.code)
+  const { error } = await supabase.auth.signInWithPassword({
+    email: formData.email,
+    password: formData.password,
+    options: { redirectTo: "/" },
+  })
 
   if (error) {
     if (error.code === "email_not_confirmed") {
       redirect("/login?authError=email_not_confirmed")
     } else if (error.code === "invalid_credentials") {
       redirect("/login?authError=invalid_credentials")
-    }
-    else {
+    } else {
       redirect("/login?authError=internalError")
     }
   }
@@ -43,39 +35,61 @@ export async function signUp(formData: {
   email: string,
   password: string,
   country: string,
+  mobile?: string,
+  address?: string,
 }) {
   const supabase = createClient()
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.email as string,
-    password: formData.password as string,
+  const { data: authData, error } = await supabase.auth.signUp({
+    email: formData.email,
+    password: formData.password,
     options: {
       data: {
-        full_name: formData.fullName as string,
-        country: formData.country as string,
+        full_name: formData.fullName,
+        country: formData.country,
+        address: formData.address?.trim() || "",
       },
     },
-  }
-
-  const { data: authData, error } = await supabase.auth.signUp(data)
+  })
 
   if (error) {
-    redirect("/login?authError=internalError")
+    return { error: error.message }
   }
 
-  // Supabase intentionally returns an obfuscated user for an already-registered
-  // confirmed email when email confirmation is enabled. In that case the user
-  // object can be present even though no new account was created.
   if (authData.user && authData.user.identities?.length === 0) {
-    redirect("/login?authError=account_already_registered")
+    return { error: "account_already_registered" }
   }
 
-  if (authData.user) {
-    revalidatePath("/", "layout")
-    redirect("/login?accountCreated=success")
+  if (!authData.user) {
+    return { error: "internal_error" }
   }
 
-  redirect("/login?authError=internalError")
+  // Email/password signup can return a session when email confirmation is disabled.
+  // If a mobile number was supplied, attach it to Auth so Supabase sends its SMS OTP.
+  if (formData.mobile?.trim()) {
+    if (!authData.session) {
+      return {
+        error: "phone_verification_after_email",
+        userId: authData.user.id,
+        phone: formData.mobile.trim(),
+      }
+    }
+
+    const { error: phoneError } = await supabase.auth.updateUser({
+      phone: formData.mobile.trim(),
+    })
+
+    if (phoneError) {
+      return { error: phoneError.message }
+    }
+
+    return {
+      success: true,
+      phoneVerificationRequired: true,
+      phone: formData.mobile.trim(),
+    }
+  }
+
+  revalidatePath("/", "layout")
+  return { success: true }
 }
