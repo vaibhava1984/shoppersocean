@@ -43,7 +43,7 @@ export default async function Header({ user }: { user: Awaited<ReturnType<typeof
                       <a href="/admin_panel" className="flex w-full items-center gap-2">
                         <ShieldIcon width={18} />
                         Admin Panel
-                      </Link>
+                      </a>
                     </DropdownMenuItem>
                   )}
                   {user?.app_metadata?.isAuthor === true && (
@@ -51,7 +51,7 @@ export default async function Header({ user }: { user: Awaited<ReturnType<typeof
                       <a href="/my-sales" className="flex w-full items-center gap-2">
                         <ChartBarIcon width={18} />
                         My Sales
-                      </Link>
+                      </a>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem asChild>
