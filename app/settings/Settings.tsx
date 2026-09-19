@@ -152,7 +152,7 @@ const Settings = () => {
               </div>
 
               <div>
-                <label htmlFor="newPassword" className="block font-medium mb-1">Choose any password (minimum six letters/digits) <span className="text-red-500">*</span></label>
+                <label htmlFor="newPassword" className="block font-medium mb-1">Password <span className="text-slate-500 font-normal">(optional: enter a new password only if you want to change it; minimum 6 letters/digits)</span></label>
                 <Input id="newPassword" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Enter a new password" autoComplete="new-password" />
                 <p className="text-xs text-slate-500 mt-1">Enter a new password only when you want to change it. Your existing password is not displayed.</p>
               </div>
