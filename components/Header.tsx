@@ -39,6 +39,12 @@ export default async function Header({ user }: { user?: Awaited<ReturnType<typeo
                   <ChevronDown className="h-4 w-4 flex-shrink-0" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/settings" className="flex w-full items-center gap-2">
+                      <SettingsIcon width={18} />
+                      Settings
+                    </Link>
+                  </DropdownMenuItem>
                   {currentUser?.app_metadata?.userrole === "ADMIN" && (
                     <DropdownMenuItem asChild>
                       <a href="/admin_panel" className="flex w-full items-center gap-2">
@@ -59,12 +65,6 @@ export default async function Header({ user }: { user?: Awaited<ReturnType<typeo
                     <a href="/my-purchases" className="flex w-full items-center gap-2">
                       <HistoryIcon width={18} />
                       My Orders
-                    </a>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <a href="/settings" className="flex w-full items-center gap-2">
-                      <SettingsIcon width={18} />
-                      Settings
                     </a>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="flex items-center gap-2">
