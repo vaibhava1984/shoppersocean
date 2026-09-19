@@ -27,9 +27,6 @@ const Settings = () => {
   const [email, setEmail] = useState("")
   const [mobile, setMobile] = useState("")
   const [address, setAddress] = useState("")
-  const [otp, setOtp] = useState("")
-  const [phoneVerified, setPhoneVerified] = useState(false)
-  const [phoneVerificationRequired, setPhoneVerificationRequired] = useState(false)
   const [originalMobile, setOriginalMobile] = useState("")
   const [loading, setLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
@@ -46,10 +43,10 @@ const Settings = () => {
       setCountry(user.user_metadata?.country ?? "")
       setFullName(user.user_metadata?.full_name ?? "")
       setEmail(user.email ?? "")
-      setMobile(user.phone ?? "")
-      setOriginalMobile(user.phone ?? "")
+      const savedMobile = user.phone ?? user.user_metadata?.mobile ?? ""
+      setMobile(savedMobile)
+      setOriginalMobile(savedMobile)
       setAddress(user.user_metadata?.address ?? "")
-      setPhoneVerified(!!user.phone_confirmed_at)
       setLoading(false)
     }
     fetchUserData()
@@ -57,95 +54,55 @@ const Settings = () => {
 
   const handleSaveChanges = async () => {
     setMessage("")
+
     if (!fullName.trim() || !country || !email.trim()) {
       setMessage("Name, Country and Email are required.")
       return
     }
 
     const enteredMobile = mobile.trim()
-    const mobileChanged = enteredMobile !== originalMobile
-
-    if (mobileChanged && enteredMobile) {
-      if (country !== "IN") {
-        setMessage("Mobile verification is currently available for Indian mobile numbers only.")
-        return
-      }
-      const normalizedMobile = normalizeIndianMobile(enteredMobile)
-      if (!normalizedMobile) {
-        setMessage("Please enter a valid 10-digit Indian mobile number starting with 6–9.")
-        return
-      }
-      setMobile(normalizedMobile)
-    }
-
-    setIsSaving(true)
-    const updatePayload: Parameters<typeof supabase.auth.updateUser>[0] = {
-      data: {
-        country,
-        full_name: fullName.trim(),
-        address: address.trim(),
-      },
-      email: email.trim(),
-    }
-
-    if (mobileChanged && enteredMobile) {
-      updatePayload.phone = normalizeIndianMobile(enteredMobile)
-    }
-
-    const { data, error } = await supabase.auth.updateUser(updatePayload)
-
-    if (error) {
-      setIsSaving(false)
-      setMessage(error.message || "Unable to update your details.")
+    if (enteredMobile && country !== "IN") {
+      setMessage("Mobile numbers are currently supported for Indian mobile numbers only.")
       return
     }
 
-    setIsSaving(false)
+    if (enteredMobile && !normalizeIndianMobile(enteredMobile)) {
+      setMessage("Please enter a valid 10-digit Indian mobile number starting with 6–9.")
+      return
+    }
 
-    if (mobileChanged && enteredMobile) {
-      const normalizedMobile = normalizeIndianMobile(enteredMobile)
+    setIsSaving(true)
+
+    try {
+      const response = await fetch("/api/update-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName,
+          country,
+          email,
+          mobile: enteredMobile,
+          address,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        setMessage(result.error || "Unable to update your details.")
+        return
+      }
+
+      const normalizedMobile = enteredMobile ? normalizeIndianMobile(enteredMobile) : ""
       setMobile(normalizedMobile)
-      setPhoneVerificationRequired(true)
-      setPhoneVerified(false)
-      setOtp("")
-      setMessage("A 6-digit verification code has been sent to your mobile number. Please verify it below.")
-    } else {
+      setOriginalMobile(normalizedMobile)
       setMessage("Your details have been successfully updated.")
+      await supabase.auth.refreshSession()
+    } catch {
+      setMessage("Unable to update your details right now. Please try again.")
+    } finally {
+      setIsSaving(false)
     }
-
-    setOriginalMobile(data.user?.phone ?? (mobileChanged && enteredMobile ? normalizeIndianMobile(enteredMobile) : enteredMobile))
-  }
-
-  const verifyPhone = async () => {
-    if (!/^\d{6}$/.test(otp)) {
-      setMessage("Please enter the 6-digit verification code.")
-      return
-    }
-    const normalizedMobile = normalizeIndianMobile(mobile.trim())
-    if (!normalizedMobile) {
-      setMessage("Please enter a valid Indian mobile number.")
-      return
-    }
-
-    setIsSaving(true)
-    const { data, error } = await supabase.auth.verifyOtp({
-      phone: normalizedMobile,
-      token: otp,
-      type: "phone_change",
-    })
-    setIsSaving(false)
-
-    if (error) {
-      setMessage(error.message || "Incorrect or expired verification code.")
-      return
-    }
-
-    setPhoneVerified(!!data.user?.phone_confirmed_at || true)
-    setPhoneVerificationRequired(false)
-    setOriginalMobile(normalizedMobile)
-    setMobile(normalizedMobile)
-    setOtp("")
-    setMessage("Mobile number verified successfully.")
   }
 
   return (
@@ -178,16 +135,7 @@ const Settings = () => {
 
               <div>
                 <label htmlFor="mobile" className="block font-medium mb-1">Mobile <span className="text-slate-500 font-normal">(Optional: if you want to order any products)</span></label>
-                <div className="flex gap-2">
-                  <Input id="mobile" type="tel" inputMode="tel" value={mobile} onChange={e => { setMobile(e.target.value); setPhoneVerified(false); setPhoneVerificationRequired(false) }} placeholder="+91XXXXXXXXXX" />
-                  {phoneVerified && <span className="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white whitespace-nowrap">Verified ✓</span>}
-                </div>
-                {phoneVerificationRequired && !phoneVerified && (
-                  <div className="mt-2 flex gap-2">
-                    <Input value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))} inputMode="numeric" maxLength={6} placeholder="6-digit code" />
-                    <Button type="button" onClick={verifyPhone} disabled={isSaving} className="bg-blue-600 text-white">Verify</Button>
-                  </div>
-                )}
+                <Input id="mobile" type="tel" inputMode="tel" value={mobile} onChange={e => setMobile(e.target.value)} placeholder="+91XXXXXXXXXX" />
               </div>
 
               <div>
