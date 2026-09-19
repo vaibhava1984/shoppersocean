@@ -115,7 +115,9 @@ const UsersManagement = () => {
                             {allUsersLists.filter(d => d).map((allUser) => (
                                 <TableRow key={allUser.id} className='text-black'>
                                     <TableCell>{allUser.id}</TableCell>
-                                    <TableCell>{allUser.email}</TableCell>
+                                    <TableCell className="font-medium">
+                                        {allUser.email || allUser.user_metadata?.email || 'Email not available'}
+                                    </TableCell>
                                     <TableCell>{allUser.app_metadata.userrole || 'N/A'}</TableCell>
                                     <TableCell>{new Date(allUser.created_at).toLocaleString()}</TableCell>
                                     {/* <TableCell>
