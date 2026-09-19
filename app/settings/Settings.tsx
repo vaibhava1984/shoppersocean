@@ -45,7 +45,7 @@ const Settings = () => {
       setCountry(user.user_metadata?.country ?? "")
       setFullName(user.user_metadata?.full_name ?? "")
       setEmail(user.email ?? "")
-      const savedMobile = user.phone ?? user.user_metadata?.mobile ?? ""
+      // Only a verified Auth phone counts as the current mobile number.\n      // Do not treat profile metadata as a verified phone because it can contain a pending value.\n      const savedMobile = user.phone ?? ""
       setMobile(savedMobile)
       setOriginalMobile(savedMobile)
       setAddress(user.user_metadata?.address ?? "")
