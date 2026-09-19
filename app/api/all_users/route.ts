@@ -1,14 +1,20 @@
 import { createAdminClient } from "@/utils/supabase/server_admin";
+import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
     try {
-        const supabase = createAdminClient();
+        // Authenticate the actual signed-in admin using the request cookies.
+        // The service-role client must only be used after this check; it does not
+        // carry the browser user's session by itself.
+        const authClient = createClient();
         const {
             data: { user },
-        } = await supabase.auth.getUser();
+        } = await authClient.auth.getUser();
+
         if (user?.app_metadata?.userrole === "ADMIN") {
-            const { data: { users }, error: usersFetchError } = await supabase.auth.admin.listUsers({
+            const adminClient = createAdminClient();
+            const { data: { users }, error: usersFetchError } = await adminClient.auth.admin.listUsers({
                 page: 1,
                 perPage: 1000
             })
