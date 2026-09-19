@@ -40,10 +40,10 @@ export default async function Header({ user }: { user?: Awaited<ReturnType<typeo
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="w-48">
                   <DropdownMenuItem asChild>
-                    <Link href="/settings" className="flex w-full items-center gap-2">
+                    <a href="/settings" className="flex w-full items-center gap-2">
                       <SettingsIcon width={18} />
                       Settings
-                    </Link>
+                    </a>
                   </DropdownMenuItem>
                   {currentUser?.app_metadata?.userrole === "ADMIN" && (
                     <DropdownMenuItem asChild>
