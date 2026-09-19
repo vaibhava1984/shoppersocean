@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
 import { SubmitButton } from "./submit-button"
@@ -11,11 +11,9 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
 import { createClient } from "@/utils/supabase/client"
-import { useRouter } from "next/navigation"
 
 export default function Login({ searchParams }: { searchParams: any }) {
   const supabase = createClient()
-  const router = useRouter()
   // @ts-ignore
   const { accountCreated, type, authError } = React.use(searchParams)
 
@@ -32,12 +30,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [phoneVerified, setPhoneVerified] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data?.user) router.push("/")
-    })
-  }, [])
 
   const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
   const validatePassword = (value: string) => value.length >= 6
