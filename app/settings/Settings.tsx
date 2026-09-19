@@ -18,7 +18,6 @@ const Settings = () => {
   const [country, setCountry] = useState("")
   const [fullName, setFullName] = useState("")
   const [email, setEmail] = useState("")
-  const [newPassword, setNewPassword] = useState("")
   const [mobile, setMobile] = useState("")
   const [address, setAddress] = useState("")
   const [otp, setOtp] = useState("")
@@ -55,10 +54,6 @@ const Settings = () => {
       setMessage("Name, Country and Email are required.")
       return
     }
-    if (newPassword && newPassword.length < 6) {
-      setMessage("Your new password must be at least 6 letters/digits.")
-      return
-    }
 
     setIsSaving(true)
     const updatePayload: Parameters<typeof supabase.auth.updateUser>[0] = {
@@ -69,8 +64,6 @@ const Settings = () => {
       },
       email: email.trim(),
     }
-
-    if (newPassword) updatePayload.password = newPassword
 
     const mobileChanged = mobile.trim() !== originalMobile
     if (mobileChanged && mobile.trim()) updatePayload.phone = mobile.trim()
@@ -83,7 +76,6 @@ const Settings = () => {
       return
     }
 
-    setNewPassword("")
     setIsSaving(false)
 
     if (mobileChanged && mobile.trim()) {
@@ -149,12 +141,6 @@ const Settings = () => {
               <div>
                 <label htmlFor="email" className="block font-medium mb-1">Email <span className="text-red-500">*</span></label>
                 <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email address" autoComplete="email" />
-              </div>
-
-              <div>
-                <label htmlFor="newPassword" className="block font-medium mb-1">Password <span className="text-slate-500 font-normal">(optional: enter a new password only if you want to change it; minimum 6 letters/digits)</span></label>
-                <Input id="newPassword" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Enter a new password" autoComplete="new-password" />
-                <p className="text-xs text-slate-500 mt-1">Enter a new password only when you want to change it. Your existing password is not displayed.</p>
               </div>
 
               <div>
