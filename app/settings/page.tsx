@@ -1,5 +1,6 @@
-import Header from "@/components/Header";\nimport { getUser } from "@/utils/supabase/server";
-import Footer from "@/components/Footer"
+import Header from "@/components/Header";
+import { getUser } from "@/utils/supabase/server";
+import Footer from "@/components/Footer";
 import Settings from './Settings';
 
 export const metadata = {
@@ -8,6 +9,8 @@ export const metadata = {
 }
 
 export default async function SettingsPage() {
+    const user = await getUser();
+
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
             <Header user={user} />
