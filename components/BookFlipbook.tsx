@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Download, Loader2, Minus, Plus, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Loader2, Minus, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 declare global {
@@ -64,7 +64,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [isSliderDragging, setIsSliderDragging] = useState(false);
   const [sliderPreviewPage, setSliderPreviewPage] = useState<number | null>(null);
-  const [downloading, setDownloading] = useState(false);
   const [turnDirection, setTurnDirection] = useState<'next' | 'prev' | null>(null);
   const turnTimerRef = useRef<number | null>(null);
 
@@ -77,21 +76,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
       void audio.play();
     } catch {}
   }, []);
-
-  const downloadPdf = async () => {
-    if (downloading) return;
-    setDownloading(true); setError('');
-    try {
-      const response = await fetch('/api/get-book-download', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookId }) });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Download unavailable');
-      const pdfFile = data.urls?.find((file: any) => String(file.fileType).toLowerCase() === 'pdf' || String(file.fileName).toLowerCase().endsWith('.pdf'));
-      if (!pdfFile?.downloadUrl) throw new Error('PDF book not found');
-      const link = document.createElement('a'); link.href = pdfFile.downloadUrl; link.download = pdfFile.fileName || `${title}.pdf`;
-      document.body.appendChild(link); link.click(); link.remove();
-    } catch (err: any) { setError(err?.message || 'Download failed'); }
-    finally { setDownloading(false); }
-  };
 
   const openReader = async () => {
     if (loading) return;
@@ -280,7 +264,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     playPageTurnSound(); sliderRef.current?.releasePointerCapture?.(event.pointerId);
   };
 
-  if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Your purchase includes secure flipbook reading and PDF download.</p><div className="flex w-full max-w-xl flex-col gap-3 sm:flex-row"><Button className="h-12 flex-1" onClick={openReader} disabled={loading}>Read online as flipbook</Button><Button className="h-12 flex-1" variant="outline" onClick={downloadPdf} disabled={downloading}>{downloading ? <><Loader2 className="mr-2 animate-spin" />Preparing…</> : <><Download className="mr-2 h-4 w-4" />Download as PDF book</>}</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
+  if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Read this book online as a flipbook.</p><div className="flex w-full max-w-xl"><Button className="h-12 flex-1" onClick={openReader} disabled={loading}>Read online as flipbook</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
   if (loading) return <div className="flex min-h-[320px] items-center justify-center rounded-xl bg-slate-100"><Loader2 className="mr-2 animate-spin" />Opening your book…</div>;
   if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
