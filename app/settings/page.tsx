@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/Header";\nimport { getUser } from "@/utils/supabase/server";
 import Footer from "@/components/Footer"
 import Settings from './Settings';
 
@@ -10,9 +10,9 @@ export const metadata = {
 export default async function SettingsPage() {
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
-            <Header />
+            <Header user={user} />
             <section className="py-10 bg-white">
-                <Settings />
+                <Settings initialUser={user} />
             </section>
             <Footer />
         </div>
