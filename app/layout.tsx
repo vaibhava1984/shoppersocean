@@ -1,5 +1,4 @@
 import "./globals.css";
-import InteractionFeedback from "@/components/InteractionFeedback";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -22,7 +21,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-background text-foreground">
-        <InteractionFeedback />
         <main className="min-h-screen flex flex-col">
           {children}
         </main>
