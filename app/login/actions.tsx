@@ -38,58 +38,69 @@ export async function signUp(formData: {
   mobile?: string,
   address?: string,
 }) {
-  const supabase = createClient()
+  try {
+    const supabase = createClient()
+    const email = formData.email.trim()
+    const fullName = formData.fullName.trim()
+    const mobile = formData.mobile?.trim() || ""
 
-  const { data: authData, error } = await supabase.auth.signUp({
-    email: formData.email,
-    password: formData.password,
-    options: {
-      data: {
-        full_name: formData.fullName,
-        country: formData.country,
-        address: formData.address?.trim() || "",
+    const { data: authData, error } = await supabase.auth.signUp({
+      email,
+      password: formData.password,
+      options: {
+        data: {
+          full_name: fullName,
+          country: formData.country,
+          address: formData.address?.trim() || "",
+        },
       },
-    },
-  })
+    })
 
-  if (error) {
-    return { error: error.message }
-  }
+    if (error) {
+      return { error: error.message }
+    }
 
-  if (authData.user && authData.user.identities?.length === 0) {
-    return { error: "account_already_registered" }
-  }
+    if (authData.user && authData.user.identities?.length === 0) {
+      return { error: "account_already_registered" }
+    }
 
-  if (!authData.user) {
-    return { error: "internal_error" }
-  }
+    if (!authData.user) {
+      return { error: "internal_error" }
+    }
 
-  // Email/password signup can return a session when email confirmation is disabled.
-  // If a mobile number was supplied, attach it to Auth so Supabase sends its SMS OTP.
-  if (formData.mobile?.trim()) {
-    if (!authData.session) {
+    // If a mobile number was supplied, attach it to Auth so Supabase can send
+    // the SMS OTP. When email confirmation is enabled there is no session yet,
+    // so the user must confirm the email before adding the phone in Settings.
+    if (mobile) {
+      if (!authData.session) {
+        return {
+          error: "phone_verification_after_email",
+          userId: authData.user.id,
+          phone: mobile,
+        }
+      }
+
+      const { error: phoneError } = await supabase.auth.updateUser({
+        phone: mobile,
+      })
+
+      if (phoneError) {
+        return { error: phoneError.message }
+      }
+
       return {
-        error: "phone_verification_after_email",
-        userId: authData.user.id,
-        phone: formData.mobile.trim(),
+        success: true,
+        phoneVerificationRequired: true,
+        phone: mobile,
       }
     }
 
-    const { error: phoneError } = await supabase.auth.updateUser({
-      phone: formData.mobile.trim(),
-    })
-
-    if (phoneError) {
-      return { error: phoneError.message }
-    }
-
+    // Do not revalidate the entire layout during account creation. Signup should
+    // complete even if cache revalidation is unavailable in the current runtime.
+    return { success: true }
+  } catch (error: any) {
     return {
-      success: true,
-      phoneVerificationRequired: true,
-      phone: formData.mobile.trim(),
+      error: error?.message || "Unable to create the account. Please try again.",
     }
   }
-
-  revalidatePath("/", "layout")
-  return { success: true }
 }
