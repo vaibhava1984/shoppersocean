@@ -64,10 +64,10 @@ export default async function Header({ user }: { user?: Awaited<ReturnType<typeo
                     </a>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <a href="/settings" className="flex w-full items-center gap-2">
+                    <Link href="/settings" className="flex w-full items-center gap-2">
                       <SettingsIcon width={18} />
                       Settings
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="flex items-center gap-2">
                     <LogOut />
