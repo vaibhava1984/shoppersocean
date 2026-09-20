@@ -28,8 +28,12 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
   const [mobile, setMobile] = useState(initialMobile)
   const [address, setAddress] = useState(initialUser?.user_metadata?.address ?? "")
   const [originalMobile, setOriginalMobile] = useState(initialMobile)
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [isSaving, setIsSaving] = useState(false)
+  const [isChangingPassword, setIsChangingPassword] = useState(false)
   const [message, setMessage] = useState("")
+  const [passwordMessage, setPasswordMessage] = useState("")
   const [otp, setOtp] = useState("")
   const [otpRequired, setOtpRequired] = useState(false)
 
@@ -88,9 +92,49 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
     }
   }
 
+  const handleChangePassword = async () => {
+    setPasswordMessage("")
+
+    if (newPassword.length < 6) {
+      setPasswordMessage("Password must contain at least 6 letters/digits.")
+      return
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordMessage("The new password and confirmation password do not match.")
+      return
+    }
+
+    setIsChangingPassword(true)
+
+    try {
+      const response = await fetch("/api/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: newPassword }),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        setPasswordMessage(result.error || "Unable to change your password.")
+        return
+      }
+
+      setNewPassword("")
+      setConfirmPassword("")
+      setPasswordMessage(result.message || "Your password has been changed successfully.")
+    } catch {
+      setPasswordMessage("Unable to change your password right now. Please try again.")
+    } finally {
+      setIsChangingPassword(false)
+    }
+  }
+
   return (
     <div className="space-y-6 p-6 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold">Settings</h1>
+
       <Card>
         <CardHeader><CardTitle>Account Details</CardTitle></CardHeader>
         <CardContent>
@@ -148,6 +192,50 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
             <Button onClick={handleSaveChanges} disabled={isSaving} className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6">
               {isSaving && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
               {isSaving ? "Updating..." : "Update"}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader><CardTitle>Change Password</CardTitle></CardHeader>
+        <CardContent>
+          <div className="space-y-5">
+            <div>
+              <label htmlFor="newPassword" className="block font-medium mb-1">New Password</label>
+              <Input
+                id="newPassword"
+                type="password"
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
+                placeholder="Enter a new password"
+                autoComplete="new-password"
+              />
+              <p className="mt-1 text-sm text-slate-500">Minimum 6 letters/digits.</p>
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block font-medium mb-1">Confirm New Password</label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter the new password"
+                autoComplete="new-password"
+              />
+            </div>
+
+            {passwordMessage && <div className="rounded-md bg-slate-100 p-3 text-sm text-slate-700">{passwordMessage}</div>}
+
+            <Button
+              type="button"
+              onClick={handleChangePassword}
+              disabled={isChangingPassword || newPassword.length < 6 || confirmPassword.length < 6}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6"
+            >
+              {isChangingPassword && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
+              {isChangingPassword ? "Changing Password..." : "Change Password"}
             </Button>
           </div>
         </CardContent>
