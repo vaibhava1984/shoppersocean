@@ -147,7 +147,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         setPdf(documentProxy);
       } catch (err) {
         console.error('Flipbook PDF load failed:', err);
-        if (!cancelled) setError('This book could not be opened as a flipbook. Please try the PDF download.');
+        if (!cancelled) setError('This book could not be opened as a flipbook. Please try opening the book again.');
       } finally {
         if (!cancelled) setLoading(false);
       }
