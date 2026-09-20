@@ -20,7 +20,7 @@ const normalizeIndianMobile = (value: string) => {
   return ""
 }
 
-const Settings = () => {
+const Settings = ({ initialUser }: { initialUser: any }) => {
   const supabase = createClient()
   const [country, setCountry] = useState("")
   const [fullName, setFullName] = useState("")
@@ -28,7 +28,7 @@ const Settings = () => {
   const [mobile, setMobile] = useState("")
   const [address, setAddress] = useState("")
   const [originalMobile, setOriginalMobile] = useState("")
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState("")
   const [otp, setOtp] = useState("")
