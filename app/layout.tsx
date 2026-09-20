@@ -1,9 +1,8 @@
 import "./globals.css";
 import InteractionFeedback from "@/components/InteractionFeedback";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+// Use the site's permanent public origin for metadata during builds.
+const defaultUrl = "https://www.shoppersocean.com";
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
