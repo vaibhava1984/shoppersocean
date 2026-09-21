@@ -65,6 +65,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [isSliderDragging, setIsSliderDragging] = useState(false);
   const [sliderPreviewPage, setSliderPreviewPage] = useState<number | null>(null);
   const [turnDirection, setTurnDirection] = useState<'next' | 'prev' | null>(null);
+  const pageStorageKey = `shoppers-ocean-flipbook-page-${bookId}`;
   const turnTimerRef = useRef<number | null>(null);
 
   const playPageTurnSound = useCallback(() => {
@@ -99,14 +100,21 @@ export default function BookFlipbook({ bookId, title }: Props) {
         pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
         const pdf = await pdfjs.getDocument({ url: readerUrl }).promise;
         if (cancelled) return;
-        pdfRef.current = pdf; setPageCount(pdf.numPages); setPage(1);
+        pdfRef.current = pdf;
+        setPageCount(pdf.numPages);
+        let savedPage = 1;
+        try {
+          const stored = Number.parseInt(localStorage.getItem(pageStorageKey) || '1', 10);
+          if (Number.isFinite(stored)) savedPage = Math.min(pdf.numPages, Math.max(1, stored));
+        } catch {}
+        setPage(savedPage);
       } catch (err: any) {
         if (!cancelled) setError(err?.message || 'Unable to load the purchased book');
       }
     };
     void load();
     return () => { cancelled = true; };
-  }, [readerUrl]);
+  }, [readerUrl, pageStorageKey]);
 
   const cancelRender = useCallback(async () => {
     const task = renderTaskRef.current;
@@ -189,7 +197,35 @@ export default function BookFlipbook({ bookId, title }: Props) {
     await renderCanvasPage(page, canvas, true);
   }, [page, renderCanvasPage]);
 
-  useEffect(() => { if (opened && readerUrl && pdfRef.current) void renderPage(); }, [opened, readerUrl, renderPage, pageCount]);
+  useEffect(() => {
+    if (!opened || !readerUrl || !pdfRef.current) return;
+    void renderPage();
+  }, [opened, readerUrl, renderPage, pageCount]);
+
+  useEffect(() => {
+    if (!bookId || page < 1) return;
+    try { localStorage.setItem(pageStorageKey, String(page)); } catch {}
+  }, [bookId, page, pageStorageKey]);
+
+  useEffect(() => {
+    const closeReaderWhenAway = () => {
+      if (document.visibilityState !== 'hidden') return;
+      setOpened(false);
+      setReaderUrl('');
+      setError('');
+      setLoading(false);
+      setTurning(false);
+      setIsDragging(false);
+      setIsSliderDragging(false);
+      setSliderPreviewPage(null);
+    };
+    document.addEventListener('visibilitychange', closeReaderWhenAway);
+    window.addEventListener('pagehide', closeReaderWhenAway);
+    return () => {
+      document.removeEventListener('visibilitychange', closeReaderWhenAway);
+      window.removeEventListener('pagehide', closeReaderWhenAway);
+    };
+  }, []);
 
   useEffect(() => {
     const onResize = () => { if (opened && pdfRef.current) void renderPage(); };
@@ -285,7 +321,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.min(1.35, Number((zoom + 0.1).toFixed(2))))} aria-label="Zoom in"><Plus /></Button>
-      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setPage(1); setPageCount(0); }} aria-label="Close flipbook"><X /></Button>
+      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
     <div className="relative flex h-[min(72vh,680px)] min-h-[360px] flex-1 items-center justify-center overflow-hidden p-2 sm:p-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
