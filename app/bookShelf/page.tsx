@@ -1,4 +1,3 @@
-import Link from "next/link"
 import Header from "@/components/Header"
 import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/utils/supabase/server"
