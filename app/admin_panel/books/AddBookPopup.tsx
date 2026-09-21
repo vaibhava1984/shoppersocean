@@ -45,6 +45,7 @@ export default function AddBookPopup(props: propsType) {
         cover_images: book?.cover_images ?? [],
         binding: book?.binding ?? '',
         language: book?.language ?? 'English',
+        genre: book?.genre ?? 'Suspense and Thriller',
         publisher: book?.publisher ?? '',
         pages: book?.pages ?? 0,
         author_id: book?.author_id ?? '',
@@ -312,6 +313,7 @@ export default function AddBookPopup(props: propsType) {
             cover_images: [],
             binding: '',
             language: 'English',
+            genre: 'Suspense and Thriller',
             publisher: '',
             pages: 0,
             author_id: ''
@@ -452,6 +454,25 @@ export default function AddBookPopup(props: propsType) {
                             onChange={(e) => setFormData({ ...formData, binding: e.target.value })}
                         />
                     </div> */}
+                    <div className="space-y-2">
+                        <Label htmlFor="genre">Genre</Label>
+                        <Select name="genre" value={formData.genre} onValueChange={(value) => setFormData({ ...formData, genre: value })}>
+                            <SelectTrigger><SelectValue placeholder="Select Genre" /></SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="Suspense and Thriller">Suspense and Thriller</SelectItem>
+                                <SelectItem value="Science Fiction">Science Fiction</SelectItem>
+                                <SelectItem value="Historical Fiction">Historical Fiction</SelectItem>
+                                <SelectItem value="Historical Non fiction">Historical Non fiction</SelectItem>
+                                <SelectItem value="Novel/Stories">Novel/Stories</SelectItem>
+                                <SelectItem value="Short Stories">Short Stories</SelectItem>
+                                <SelectItem value="Philosophy and Literature">Philosophy and Literature</SelectItem>
+                                <SelectItem value="Learning and Education">Learning and Education</SelectItem>
+                                <SelectItem value="Guide/How to">Guide/How to</SelectItem>
+                                <SelectItem value="Memoir and Biographies">Memoir and Biographies</SelectItem>
+                                <SelectItem value="Books for Children">Books for Children</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <div className="space-y-2">
                         <Label htmlFor="language">Language</Label>
                         <Select name="language" value={formData.language} onValueChange={(value) => setFormData({ ...formData, language: value })}>
