@@ -1,5 +1,6 @@
 import "./globals.css";
 import InteractionFeedback from "@/components/InteractionFeedback";
+import SessionTimeout from "@/components/SessionTimeout";
 
 // Use the site's permanent public origin for metadata during builds.
 const defaultUrl = "https://www.shoppersocean.com";
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-background text-foreground">
         <InteractionFeedback />
+        <SessionTimeout />
         <main className="min-h-screen flex flex-col">
           {children}
         </main>
