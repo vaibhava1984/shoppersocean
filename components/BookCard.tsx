@@ -23,7 +23,8 @@ export default function BookCard({ book, loggedinUserId }: {
             ([entry]) => {
                 if (entry.isIntersecting) {
                     if (!hasAnimatedOnce) {
-                        setHasFullyAppeared(false)
+                        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                        setHasFullyAppeared(reducedMotion)
                         setHasAnimatedOnce(true)
                     }
                     setIsInView(true)
