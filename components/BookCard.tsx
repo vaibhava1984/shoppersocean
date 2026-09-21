@@ -65,7 +65,13 @@ export default function BookCard({ book, loggedinUserId }: {
                 }
             `}</style>
 
-            <div ref={cardRef} className={isInView ? "book-card-zoom-in" : "opacity-0 scale-[0.72]"}>
+            <div
+                ref={cardRef}
+                className={isInView ? "book-card-zoom-in" : "opacity-0 scale-[0.72]"}
+                onAnimationEnd={(event) => {
+                    if (event.animationName === "bookCardSlowZoomIn") setHasFullyAppeared(true)
+                }}
+            >
                 <Card className="overflow-hidden transition-shadow hover:shadow-lg">
                     <CardContent className="p-0 h-full flex flex-col">
                         <Link
@@ -126,14 +132,6 @@ export default function BookCard({ book, loggedinUserId }: {
                         </div>
                     </CardContent>
                 </Card>
-
-                {isInView && (
-                    <span
-                        className="sr-only"
-                        onAnimationEnd={() => setHasFullyAppeared(true)}
-                        aria-hidden="true"
-                    />
-                )}
             </div>
         </>
     )
