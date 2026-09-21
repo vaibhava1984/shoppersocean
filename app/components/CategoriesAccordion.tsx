@@ -28,7 +28,7 @@ const genres = [
     "Books for Children",
 ]
 
-function makeHref(type: "genre" | "author" | "language", value: string, props: Props) {
+function makeHref(type: "genre" | "author" | "language", value: string) {
     // Each category choice is a new filter. Do not carry the previous
     // genre/author/language into the next choice, otherwise a genre with
     // zero books can incorrectly block a valid author/language selection.
@@ -69,7 +69,7 @@ export default function CategoriesAccordion(props: Props) {
                     <span>Books by Genre</span><ChevronDown className={"h-5 w-5 transition-transform duration-300 " + (open === "genre" ? "rotate-180" : "")} />
                 </button>
                 <div className={menuClass(open === "genre")}><div className="overflow-hidden"><div className="mt-2 rounded-xl border border-blue-100 bg-white/95 p-2 shadow-md">
-                    {genres.map((genre) => <Link key={genre} href={makeHref("genre", genre, props)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{genre}</Link>)}
+                    {genres.map((genre) => <Link key={genre} href={makeHref("genre", genre)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{genre}</Link>)}
                 </div></div></div>
             </div>
 
@@ -78,7 +78,7 @@ export default function CategoriesAccordion(props: Props) {
                     <span>Books by Authors</span><ChevronDown className={"h-5 w-5 transition-transform duration-300 " + (open === "authors" ? "rotate-180" : "")} />
                 </button>
                 <div className={menuClass(open === "authors")}><div className="overflow-hidden"><div className="mt-2 rounded-xl border border-blue-100 bg-white/95 p-2 shadow-md">
-                    {props.authors.length > 0 ? props.authors.map((author) => <Link key={author.author_id} href={makeHref("author", author.author_id, props)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{author.name}</Link>) : <p className="px-4 py-3 text-sm font-semibold text-black">No authors available yet.</p>}
+                    {props.authors.length > 0 ? props.authors.map((author) => <Link key={author.author_id} href={makeHref("author", author.author_id)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{author.name}</Link>) : <p className="px-4 py-3 text-sm font-semibold text-black">No authors available yet.</p>}
                 </div></div></div>
             </div>
 
@@ -87,7 +87,7 @@ export default function CategoriesAccordion(props: Props) {
                     <span>Books by Language</span><ChevronDown className={"h-5 w-5 transition-transform duration-300 " + (open === "languages" ? "rotate-180" : "")} />
                 </button>
                 <div className={menuClass(open === "languages")}><div className="overflow-hidden"><div className="mt-2 rounded-xl border border-blue-100 bg-white/95 p-2 shadow-md">
-                    {props.languages.length > 0 ? props.languages.map((language) => <Link key={language} href={makeHref("language", language, props)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{language}</Link>) : <p className="px-4 py-3 text-sm font-semibold text-black">No languages available yet.</p>}
+                    {props.languages.length > 0 ? props.languages.map((language) => <Link key={language} href={makeHref("language", language)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{language}</Link>) : <p className="px-4 py-3 text-sm font-semibold text-black">No languages available yet.</p>}
                 </div></div></div>
             </div>
             </div>
