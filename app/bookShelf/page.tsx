@@ -2,8 +2,7 @@ import Link from "next/link"
 import Header from "@/components/Header"
 import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/utils/supabase/server"
-import LanguageMenusLists from "@/app/components/LanguageMenusLists"
-import AuthorsMenusLists from "@/app/components/AuthorsMenusLists"
+import CategoriesAccordion from "@/app/components/CategoriesAccordion"
 import Footer from "@/components/Footer"
 import BookCard from "@/components/BookCard"
 import HeroSection from "@/components/HeroSection"
@@ -20,6 +19,7 @@ export const dynamicParams = true
 type BookShelfSearchParams = {
     lang?: string
     author?: string
+    genre?: string
 }
 
 export default async function BookShelfPage({
@@ -30,6 +30,7 @@ export default async function BookShelfPage({
     const params = await searchParams
     const languageParam = params?.lang ?? "all"
     const authorParam = params?.author ?? "all"
+    const genreParam = params?.genre ?? "all"
 
     const languageMap: Record<string, string> = {
         en: "English",
@@ -41,13 +42,14 @@ export default async function BookShelfPage({
 
     let booksQuery = supabase
         .from("books")
-        .select("id,title,description,price,cover_images,author_name")
+        .select("id,title,description,price,cover_images,author_name,genre")
         .eq("is_deleted", false)
         .limit(100)
         .order("title", { ascending: true })
 
     if (language) booksQuery = booksQuery.eq("language", language)
     if (authorParam !== "all") booksQuery = booksQuery.eq("author_id", authorParam)
+    if (genreParam !== "all") booksQuery = booksQuery.eq("genre", genreParam)
 
     // Start all independent requests at the same time. The page no longer waits
     // for the catalogue and authors before even starting the auth lookup.
@@ -70,6 +72,8 @@ export default async function BookShelfPage({
 
     const books = booksResult.data ?? []
     const authors = authorsResult.data ?? []
+    const { data: languageRows } = await supabase.from("books").select("language").eq("is_deleted", false).not("language", "is", null)
+    const languages = Array.from(new Set((languageRows ?? []).map((row) => row.language).filter(Boolean))).sort((a, b) => a.localeCompare(b))
     const user = userResult.data.user
 
     const filteredBooks = books.map((book) => ({
@@ -91,21 +95,10 @@ export default async function BookShelfPage({
         ? authorInfo[selectedAuthorName as keyof typeof authorInfo]
         : null
 
-    const allLanguagesParams = new URLSearchParams()
-    if (authorParam !== "all") allLanguagesParams.set("author", authorParam)
-    const allLanguagesHref = allLanguagesParams.toString()
-        ? `/bookShelf?${allLanguagesParams.toString()}`
-        : "/bookShelf"
-
-    const allAuthorsParams = new URLSearchParams()
-    if (languageParam !== "all") allAuthorsParams.set("lang", languageParam)
-    const allAuthorsHref = allAuthorsParams.toString()
-        ? `/bookShelf?${allAuthorsParams.toString()}`
-        : "/bookShelf"
-
     function getPageHeader() {
         if (languageParam === "en") return "English Books"
         if (languageParam === "hindi") return "Hindi Books"
+        if (genreParam !== "all") return `${genreParam} Books`
         return "All Books"
     }
 
@@ -126,30 +119,13 @@ export default async function BookShelfPage({
                         <div className="md:w-1/4">
                             <h2 className="mb-5 text-3xl font-black text-black">Categories</h2>
 
-                            <div className="mb-8">
-                                <h3 className="mb-4 font-serif text-2xl font-black italic tracking-wide text-blue-700">
-                                    <Link href={allLanguagesHref} className="transition-colors hover:text-blue-800">
-                                        All languages
-                                    </Link>
-                                </h3>
-                                <LanguageMenusLists
-                                    currentLang={languageParam}
-                                    currentAuthor={authorParam}
-                                />
-                            </div>
-
-                            <div>
-                                <h3 className="mb-4 font-serif text-2xl font-black italic tracking-wide text-blue-700">
-                                    <Link href={allAuthorsHref} className="transition-colors hover:text-blue-800">
-                                        All authors
-                                    </Link>
-                                </h3>
-                                <AuthorsMenusLists
-                                    initialAuthors={authors}
-                                    currentAuthor={authorParam}
-                                    currentLanguage={languageParam}
-                                />
-                            </div>
+                            <CategoriesAccordion
+                                authors={authors}
+                                languages={languages}
+                                currentAuthor={authorParam}
+                                currentLanguage={languageParam}
+                                currentGenre={genreParam}
+                            />
                         </div>
 
                         <div className="md:w-3/4">
@@ -179,6 +155,8 @@ export default async function BookShelfPage({
                                         {languageParam !== "all" && `Language: ${languageParam}`}
                                         {languageParam !== "all" && authorParam !== "all" && " | "}
                                         {authorParam !== "all" && `Author: ${authorParam}`}
+                                        {genreParam !== "all" && " | "}
+                                        {genreParam !== "all" && `Genre: ${genreParam}`}
                                     </p>
                                 </div>
                             )}
