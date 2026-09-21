@@ -29,13 +29,13 @@ const genres = [
 ]
 
 function makeHref(type: "genre" | "author" | "language", value: string, props: Props) {
+    // Each category choice is a new filter. Do not carry the previous
+    // genre/author/language into the next choice, otherwise a genre with
+    // zero books can incorrectly block a valid author/language selection.
     const params = new URLSearchParams()
     if (type === "genre") params.set("genre", value)
     if (type === "author") params.set("author", value)
     if (type === "language") params.set("lang", value)
-    if (type !== "genre" && props.currentGenre && props.currentGenre !== "all") params.set("genre", props.currentGenre)
-    if (type !== "author" && props.currentAuthor && props.currentAuthor !== "all") params.set("author", props.currentAuthor)
-    if (type !== "language" && props.currentLanguage && props.currentLanguage !== "all") params.set("lang", props.currentLanguage === "en" ? "English" : props.currentLanguage === "hindi" ? "Hindi" : props.currentLanguage)
     return "/bookShelf" + (params.toString() ? "?" + params.toString() : "")
 }
 
@@ -44,8 +44,8 @@ export default function CategoriesAccordion(props: Props) {
     const toggle = (name: string) => setOpen((current) => current === name ? null : name)
 
     const buttonClass = (name: string) =>
-        "group flex min-h-14 w-full items-center justify-between rounded-xl bg-blue-600 px-4 py-3 text-left text-base font-extrabold text-white shadow-lg shadow-blue-300/40 ring-1 ring-blue-300/50 transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-400/50 active:scale-[0.98] " +
-        (open === name ? "animate-pulse" : "")
+        "group relative flex min-h-14 w-full items-center justify-between overflow-hidden rounded-xl bg-blue-600 px-4 py-3 text-left text-base font-extrabold text-white shadow-lg shadow-blue-300/40 ring-1 ring-blue-300/50 transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-400/50 active:scale-[0.98] before:pointer-events-none before:absolute before:inset-y-0 before:-left-1/2 before:w-1/3 before:skew-x-[-20deg] before:bg-gradient-to-r before:from-transparent before:via-white/35 before:to-transparent before:animate-[shimmer_3.2s_ease-in-out_infinite] " +
+        (open === name ? "ring-2 ring-blue-200/80" : "")
 
     const menuClass = (isOpen: boolean) =>
         "grid transition-[grid-template-rows,opacity] duration-500 ease-out " +
