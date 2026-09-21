@@ -22,11 +22,13 @@ export default function BookCard({ book, loggedinUserId }: {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
+                    if (!hasAnimatedOnce) {
+                        setHasFullyAppeared(false)
+                        setHasAnimatedOnce(true)
+                    }
                     setIsInView(true)
-                    if (!hasAnimatedOnce) setHasFullyAppeared(false)
                 } else {
                     setIsInView(false)
-                    if (!hasAnimatedOnce) setHasFullyAppeared(false)
                 }
             },
             {
@@ -68,7 +70,7 @@ export default function BookCard({ book, loggedinUserId }: {
 
             <div
                 ref={cardRef}
-                className={hasAnimatedOnce ? "opacity-100 scale-100" : isInView ? "book-card-zoom-in" : "opacity-0 scale-[0.72]"}
+                className={hasAnimatedOnce ? "book-card-zoom-in" : isInView ? "book-card-zoom-in" : "opacity-0 scale-[0.72]"}
                 onAnimationEnd={(event) => {
                     if (event.animationName === "bookCardSlowZoomIn") {
                         setHasFullyAppeared(true)
