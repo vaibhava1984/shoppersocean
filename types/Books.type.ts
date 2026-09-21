@@ -9,6 +9,7 @@ export interface BookType {
     cover_images: string[];
     binding: string;
     language: string;
+    genre: string;
     publisher: string;
     pages: number;
     author_id: string;
