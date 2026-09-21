@@ -35,7 +35,7 @@ function makeHref(type: "genre" | "author" | "language", value: string, props: P
     if (type === "language") params.set("lang", value)
     if (type !== "genre" && props.currentGenre && props.currentGenre !== "all") params.set("genre", props.currentGenre)
     if (type !== "author" && props.currentAuthor && props.currentAuthor !== "all") params.set("author", props.currentAuthor)
-    if (type !== "language" && props.currentLanguage && props.currentLanguage !== "all" && props.currentLanguage !== "en" && props.currentLanguage !== "hindi") params.set("lang", props.currentLanguage)
+    if (type !== "language" && props.currentLanguage && props.currentLanguage !== "all") params.set("lang", props.currentLanguage === "en" ? "English" : props.currentLanguage === "hindi" ? "Hindi" : props.currentLanguage)
     return "/bookShelf" + (params.toString() ? "?" + params.toString() : "")
 }
 
