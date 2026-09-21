@@ -13,6 +13,7 @@ export default function BookCard({ book, loggedinUserId }: {
     const cardRef = useRef<HTMLDivElement>(null)
     const [isInView, setIsInView] = useState(false)
     const [hasFullyAppeared, setHasFullyAppeared] = useState(false)
+    const [hasAnimatedOnce, setHasAnimatedOnce] = useState(false)
 
     useEffect(() => {
         const element = cardRef.current
@@ -21,11 +22,11 @@ export default function BookCard({ book, loggedinUserId }: {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
-                    setHasFullyAppeared(false)
                     setIsInView(true)
+                    if (!hasAnimatedOnce) setHasFullyAppeared(false)
                 } else {
                     setIsInView(false)
-                    setHasFullyAppeared(false)
+                    if (!hasAnimatedOnce) setHasFullyAppeared(false)
                 }
             },
             {
@@ -35,7 +36,7 @@ export default function BookCard({ book, loggedinUserId }: {
 
         observer.observe(element)
         return () => observer.disconnect()
-    }, [])
+    }, [hasAnimatedOnce])
 
     return (
         <>
@@ -67,9 +68,12 @@ export default function BookCard({ book, loggedinUserId }: {
 
             <div
                 ref={cardRef}
-                className={isInView ? "book-card-zoom-in" : "opacity-0 scale-[0.72]"}
+                className={hasAnimatedOnce ? "opacity-100 scale-100" : isInView ? "book-card-zoom-in" : "opacity-0 scale-[0.72]"}
                 onAnimationEnd={(event) => {
-                    if (event.animationName === "bookCardSlowZoomIn") setHasFullyAppeared(true)
+                    if (event.animationName === "bookCardSlowZoomIn") {
+                        setHasFullyAppeared(true)
+                        setHasAnimatedOnce(true)
+                    }
                 }}
             >
                 <Card className="overflow-hidden transition-shadow hover:shadow-lg">
