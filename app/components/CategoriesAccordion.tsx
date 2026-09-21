@@ -44,7 +44,7 @@ export default function CategoriesAccordion(props: Props) {
     const toggle = (name: string) => setOpen((current) => current === name ? null : name)
 
     const buttonClass = (name: string) =>
-        "group relative flex min-h-14 w-full items-center justify-between overflow-hidden rounded-xl bg-blue-600 px-4 py-3 text-left text-base font-extrabold text-white shadow-lg shadow-blue-300/40 ring-1 ring-blue-300/50 transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-400/50 active:scale-[0.98] before:pointer-events-none before:absolute before:inset-y-0 before:-left-1/2 before:w-1/3 before:skew-x-[-20deg] before:bg-gradient-to-r before:from-transparent before:via-white/35 before:to-transparent before:animate-[shimmer_3.2s_ease-in-out_infinite] " +
+        "group relative flex min-h-14 w-full items-center justify-between overflow-hidden rounded-xl bg-blue-600 px-4 py-3 text-left text-base font-extrabold text-white shadow-lg shadow-blue-300/40 ring-1 ring-blue-300/50 transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-400/50 active:scale-[0.98] before:pointer-events-none before:absolute before:inset-y-0 before:-left-1/2 before:w-1/3 before:skew-x-[-20deg] before:bg-gradient-to-r before:from-transparent before:via-white/35 before:to-transparent category-shimmer " +
         (open === name ? "ring-2 ring-blue-200/80" : "")
 
     const menuClass = (isOpen: boolean) =>
@@ -52,7 +52,18 @@ export default function CategoriesAccordion(props: Props) {
         (isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")
 
     return (
-        <div className="space-y-4">
+        <>
+            <style>{`
+                @keyframes categoryShimmer {
+                    0%, 55% { transform: translateX(-180%) skewX(-20deg); opacity: 0; }
+                    65% { opacity: 1; }
+                    90%, 100% { transform: translateX(520%) skewX(-20deg); opacity: 0; }
+                }
+                .category-shimmer::before {
+                    animation: categoryShimmer 3.8s ease-in-out infinite;
+                }
+            `}</style>
+            <div className="space-y-4">
             <div>
                 <button type="button" onClick={() => toggle("genre")} className={buttonClass("genre")} aria-expanded={open === "genre"}>
                     <span>Books by Genre</span><ChevronDown className={"h-5 w-5 transition-transform duration-300 " + (open === "genre" ? "rotate-180" : "")} />
@@ -79,6 +90,7 @@ export default function CategoriesAccordion(props: Props) {
                     {props.languages.length > 0 ? props.languages.map((language) => <Link key={language} href={makeHref("language", language, props)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{language}</Link>) : <p className="px-4 py-3 text-sm font-semibold text-black">No languages available yet.</p>}
                 </div></div></div>
             </div>
-        </div>
+            </div>
+        </>
     )
 }
