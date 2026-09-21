@@ -36,7 +36,7 @@ export default async function BookShelfPage({
         hindi: "Hindi",
     }
 
-    const language = languageMap[languageParam]
+    const language = languageMap[languageParam] ?? (languageParam !== "all" ? languageParam : undefined)
     const supabase = createClient()
 
     let booksQuery = supabase
