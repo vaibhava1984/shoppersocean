@@ -3,6 +3,7 @@ import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
 import SiteSearch from "@/components/SiteSearch"
+import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +19,12 @@ const navigationItems = [
   ["/contact", "Have a question?"],
 ] as const;
 
-export default async function Header({ user }: { user?: Awaited<ReturnType<typeof getUser>> }) {
+type HeaderProps = {
+  user?: Awaited<ReturnType<typeof getUser>>
+  categoryNavigation?: { authors: { author_id: string; name: string }[]; languages: string[] }
+}
+
+export default async function Header({ user, categoryNavigation }: HeaderProps) {
   // Some pages render Header without passing the user. Resolve the current
   // server session here so a signed-in user never sees the anonymous menu.
   const currentUser = user ?? await getUser()
@@ -106,17 +112,12 @@ export default async function Header({ user }: { user?: Awaited<ReturnType<typeo
               <HeaderAuthorButton />
             </div>
             <SiteSearch />
-            <div className="mx-auto mt-3 grid w-full max-w-3xl grid-cols-3 gap-2 sm:gap-3 px-1">
-              <a href="/bookShelf?category=genre" className="flex min-h-[42px] items-center justify-center rounded-lg bg-white px-2 py-2 text-center text-[11px] font-bold italic text-black shadow-md ring-1 ring-black/10 [text-shadow:0_1px_0_#fff,0_-1px_0_#fff,1px_0_#fff,-1px_0_#fff] transition-all hover:-translate-y-0.5 hover:shadow-lg active:scale-95 sm:text-sm">
-                Books by Genre
-              </a>
-              <a href="/bookShelf?category=author" className="flex min-h-[42px] items-center justify-center rounded-lg bg-white px-2 py-2 text-center text-[11px] font-bold italic text-black shadow-md ring-1 ring-black/10 [text-shadow:0_1px_0_#fff,0_-1px_0_#fff,1px_0_#fff,-1px_0_#fff] transition-all hover:-translate-y-0.5 hover:shadow-lg active:scale-95 sm:text-sm">
-                Books by Authors
-              </a>
-              <a href="/bookShelf?category=language" className="flex min-h-[42px] items-center justify-center rounded-lg bg-white px-2 py-2 text-center text-[11px] font-bold italic text-black shadow-md ring-1 ring-black/10 [text-shadow:0_1px_0_#fff,0_-1px_0_#fff,1px_0_#fff,-1px_0_#fff] transition-all hover:-translate-y-0.5 hover:shadow-lg active:scale-95 sm:text-sm">
-                Books by Language
-              </a>
-            </div>
+            {categoryNavigation && (
+              <HomepageCategoryNavigation
+                authors={categoryNavigation.authors}
+                languages={categoryNavigation.languages}
+              />
+            )}
           </div>
         </div>
       </nav>

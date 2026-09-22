@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { useSearchParams } from "next/navigation"
 import { ChevronDown } from "lucide-react"
 
 type Author = { author_id: string; name: string }
@@ -41,10 +40,7 @@ function makeHref(type: "genre" | "author" | "language", value: string) {
 }
 
 export default function CategoriesAccordion(props: Props) {
-    const searchParams = useSearchParams()
-    const categoryParam = searchParams.get("category")
-    const initialOpen = categoryParam === "genre" ? "genre" : categoryParam === "author" ? "authors" : categoryParam === "language" ? "languages" : null
-    const [open, setOpen] = useState<string | null>(initialOpen)
+    const [open, setOpen] = useState<string | null>(null)
     const toggle = (name: string) => setOpen((current) => current === name ? null : name)
 
     const buttonClass = (name: string) =>

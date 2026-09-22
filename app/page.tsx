@@ -11,6 +11,7 @@ import TrendingBooks from "@/components/trending_books";
 import BooksCollections from "@/components/books_collections";
 import HeroSection from "@/components/HeroSection";
 import { getHomepageBooksServer } from "@/utils/homepageBooksServer";
+import { createClient } from "@/utils/supabase/server";
 
 export const metadata = {
   title: 'Home',
@@ -18,10 +19,18 @@ export const metadata = {
 }
 
 export default async function LandingPage() {
-  const [user, homepageBooks] = await Promise.all([getUser(), getHomepageBooksServer()]);
+  const supabase = createClient();
+  const [user, homepageBooks, authorsResult, languageRowsResult] = await Promise.all([
+    getUser(),
+    getHomepageBooksServer(),
+    supabase.from("authors").select("author_id,name").eq("is_deleted", false).order("name", { ascending: true }),
+    supabase.from("books").select("language").eq("is_deleted", false).not("language", "is", null),
+  ]);
+  const authors = authorsResult.data ?? [];
+  const languages = Array.from(new Set((languageRowsResult.data ?? []).map((row) => row.language).filter(Boolean))).sort((a, b) => a.localeCompare(b));
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <Header user={user} />
+      <Header user={user} categoryNavigation={{ authors, languages }} />
       <div>
         <HeroSection
           title="Shoppers Ocean"
