@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"\nimport { useSearchParams } from "next/navigation"
+import { useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { ChevronDown } from "lucide-react"
 
 type Author = { author_id: string; name: string }
