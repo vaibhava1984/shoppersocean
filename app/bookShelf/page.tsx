@@ -19,6 +19,7 @@ type BookShelfSearchParams = {
     lang?: string
     author?: string
     genre?: string
+    source?: string
 }
 
 export default async function BookShelfPage({
@@ -30,6 +31,8 @@ export default async function BookShelfPage({
     const languageParam = params?.lang ?? "all"
     const authorParam = params?.author ?? "all"
     const genreParam = params?.genre ?? "all"
+    const sourceParam = params?.source ?? null
+    const showCategoryButtons = sourceParam !== "homepage"
 
     const languageMap: Record<string, string> = {
         en: "English",
@@ -118,13 +121,15 @@ export default async function BookShelfPage({
                         <div className="md:w-1/4">
                             <h2 className="mb-5 text-3xl font-black text-black">Categories</h2>
 
-                            <CategoriesAccordion
-                                authors={authors}
-                                languages={languages}
-                                currentAuthor={authorParam}
-                                currentLanguage={languageParam}
-                                currentGenre={genreParam}
-                            />
+                            {showCategoryButtons && (
+                                <CategoriesAccordion
+                                    authors={authors}
+                                    languages={languages}
+                                    currentAuthor={authorParam}
+                                    currentLanguage={languageParam}
+                                    currentGenre={genreParam}
+                                />
+                            )}
 
 }
                         </div>
