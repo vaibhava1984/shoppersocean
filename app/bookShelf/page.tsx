@@ -1,4 +1,5 @@
 import Header from "@/components/Header"
+import CategoriesAccordion from "@/app/components/CategoriesAccordion"
 import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/utils/supabase/server"
 import Footer from "@/components/Footer"
@@ -116,6 +117,14 @@ export default async function BookShelfPage({
                     <div className="flex flex-col gap-8 md:flex-row">
                         <div className="md:w-1/4">
                             <h2 className="mb-5 text-3xl font-black text-black">Categories</h2>
+
+                            <CategoriesAccordion
+                                authors={authors}
+                                languages={languages}
+                                currentAuthor={authorParam}
+                                currentLanguage={languageParam}
+                                currentGenre={genreParam}
+                            />
 
 }
                         </div>
