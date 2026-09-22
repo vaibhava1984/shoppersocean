@@ -106,7 +106,10 @@ export default async function BookShelfPage({
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
-            <Header user={user} />
+            <Header
+                user={user}
+                categoryNavigation={{ authors, languages }}
+            />
             <HeroSection
                 title=" Escape into Entertainment"
                 subtitle="Discover your next favorite book"
