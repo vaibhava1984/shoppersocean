@@ -1,7 +1,6 @@
 import Header from "@/components/Header"
 import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/utils/supabase/server"
-import CategoriesAccordion from "@/app/components/CategoriesAccordion"
 import Footer from "@/components/Footer"
 import BookCard from "@/components/BookCard"
 import HeroSection from "@/components/HeroSection"
@@ -19,7 +18,6 @@ type BookShelfSearchParams = {
     lang?: string
     author?: string
     genre?: string
-    category?: string
 }
 
 export default async function BookShelfPage({
@@ -31,8 +29,6 @@ export default async function BookShelfPage({
     const languageParam = params?.lang ?? "all"
     const authorParam = params?.author ?? "all"
     const genreParam = params?.genre ?? "all"
-    const categoryParam = params?.category ?? null
-    const showCategoryButtons = !categoryParam
 
     const languageMap: Record<string, string> = {
         en: "English",
@@ -121,13 +117,7 @@ export default async function BookShelfPage({
                         <div className="md:w-1/4">
                             <h2 className="mb-5 text-3xl font-black text-black">Categories</h2>
 
-                            {showCategoryButtons && <CategoriesAccordion
-                                authors={authors}
-                                languages={languages}
-                                currentAuthor={authorParam}
-                                currentLanguage={languageParam}
-                                currentGenre={genreParam}
-                            />}
+}
                         </div>
 
                         <div className="md:w-3/4">
