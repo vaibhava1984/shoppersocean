@@ -19,8 +19,6 @@ const navigationItems = [
 ] as const;
 
 export default async function Header({ user }: { user?: Awaited<ReturnType<typeof getUser>> }) {
-  // Some pages render Header without passing the user. Resolve the current
-  // server session here so a signed-in user never sees the anonymous menu.
   const currentUser = user ?? await getUser()
 
   return (
@@ -95,13 +93,23 @@ export default async function Header({ user }: { user?: Awaited<ReturnType<typeo
           <div className="relative z-50 max-w-5xl mx-auto">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
               {navigationItems.map(([href, label]) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="relative z-50 pointer-events-auto cursor-pointer flex items-center justify-center min-h-[46px] px-2 sm:px-4 py-2.5 rounded-lg bg-white/10 border border-white/30 text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-sm hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-center"
-                >
-                  {label}
-                </Link>
+                href === "/bookShelf" ? (
+                  <a
+                    key={href}
+                    href={href}
+                    className="relative z-50 pointer-events-auto cursor-pointer flex items-center justify-center min-h-[46px] px-2 sm:px-4 py-2.5 rounded-lg bg-white/10 border border-white/30 text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-sm hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-center"
+                  >
+                    {label}
+                  </a>
+                ) : (
+                  <Link
+                    key={href}
+                    href={href}
+                    className="relative z-50 pointer-events-auto cursor-pointer flex items-center justify-center min-h-[46px] px-2 sm:px-4 py-2.5 rounded-lg bg-white/10 border border-white/30 text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-sm hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-center"
+                  >
+                    {label}
+                  </Link>
+                )
               ))}
               <HeaderAuthorButton />
             </div>
