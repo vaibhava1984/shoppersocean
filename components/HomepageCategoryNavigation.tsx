@@ -29,6 +29,7 @@ function makeHref(type: "genre" | "author" | "language", value: string) {
   if (type === "genre") params.set("genre", value)
   if (type === "author") params.set("author", value)
   if (type === "language") params.set("lang", value)
+  params.set("source", "homepage")
   return "/bookShelf?" + params.toString()
 }
 
