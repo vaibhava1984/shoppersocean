@@ -121,10 +121,9 @@ export default async function BookShelfPage({
             <section className="bg-white py-20">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col gap-8 md:flex-row">
-                        <div className="md:w-1/4">
-                            <h2 className="mb-5 text-3xl font-black text-black">Categories</h2>
-
-                            {showCategoryButtons && (
+                        {showCategoryButtons && (
+                            <div className="md:w-1/4">
+                                <h2 className="mb-5 text-3xl font-black text-black">Categories</h2>
                                 <CategoriesAccordion
                                     authors={authors}
                                     languages={languages}
@@ -132,12 +131,10 @@ export default async function BookShelfPage({
                                     currentLanguage={languageParam}
                                     currentGenre={genreParam}
                                 />
-                            )}
+                            </div>
+                        )}
 
-}
-                        </div>
-
-                        <div className="md:w-3/4">
+                        <div className={showCategoryButtons ? "md:w-3/4" : "w-full"}>
                             <div className="mb-8 flex items-center justify-between">
                                 <h2 className="text-3xl font-bold text-slate-800">{getPageHeader()}</h2>
                             </div>
