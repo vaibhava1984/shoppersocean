@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/client";
 
 const IDLE_LIMIT_MS = 15 * 60 * 1000;
 const ACTIVITY_KEY = "shoppers-ocean-last-activity";
-const ACTIVITY_WRITE_INTERVAL_MS = 30 * 1000;
+const ACTIVITY_WRITE_INTERVAL_MS = 5 * 1000;
 
 type ActivityRecord = {
   userId: string;
@@ -14,6 +14,7 @@ type ActivityRecord = {
 
 export default function SessionTimeout() {
   const supabaseRef = useRef(createClient());
+  const lastActivityRef = useRef<number>(0);
   const lastWriteRef = useRef(0);
 
   useEffect(() => {
@@ -31,61 +32,81 @@ export default function SessionTimeout() {
       }
     };
 
-    const writeActivity = (userId: string, force = false) => {
-      const now = Date.now();
-      if (!force && now - lastWriteRef.current < ACTIVITY_WRITE_INTERVAL_MS) return;
-      lastWriteRef.current = now;
+    const setActivity = (userId: string, at = Date.now(), force = false) => {
+      lastActivityRef.current = at;
+      if (!force && at - lastWriteRef.current < ACTIVITY_WRITE_INTERVAL_MS) return;
+      lastWriteRef.current = at;
       try {
-        localStorage.setItem(ACTIVITY_KEY, JSON.stringify({ userId, at: now }));
+        localStorage.setItem(ACTIVITY_KEY, JSON.stringify({ userId, at }));
       } catch {}
+    };
+
+    const clearActivity = () => {
+      lastActivityRef.current = 0;
+      try {
+        localStorage.removeItem(ACTIVITY_KEY);
+      } catch {}
+    };
+
+    const signOutForInactivity = async () => {
+      clearActivity();
+      await supabase.auth.signOut();
+      window.location.replace("/login");
     };
 
     const checkTimeout = async () => {
       if (document.visibilityState !== "visible") return;
+
       const { data: { session } } = await supabase.auth.getSession();
       const userId = session?.user?.id;
-      if (!userId) return;
 
-      const activity = readActivity();
-
-      // A different signed-in user gets a fresh inactivity window.
-      if (!activity || activity.userId !== userId) {
-        writeActivity(userId, true);
+      if (!userId) {
+        clearActivity();
         return;
       }
 
-      if (Date.now() - activity.at >= IDLE_LIMIT_MS) {
-        try { localStorage.removeItem(ACTIVITY_KEY); } catch {}
-        await supabase.auth.signOut();
-        window.location.replace("/login");
+      const stored = readActivity();
+
+      if (stored?.userId === userId) {
+        lastActivityRef.current = Math.max(lastActivityRef.current, stored.at);
+      } else if (!lastActivityRef.current) {
+        setActivity(userId, Date.now(), true);
+      }
+
+      if (lastActivityRef.current && Date.now() - lastActivityRef.current >= IDLE_LIMIT_MS) {
+        await signOutForInactivity();
       }
     };
 
     const recordActivity = () => {
       if (document.visibilityState !== "visible") return;
       void supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user?.id) writeActivity(session.user.id);
+        if (session?.user?.id) setActivity(session.user.id);
       });
     };
 
     const handleAuthChange = (_event: string, session: any) => {
       const userId = session?.user?.id;
       if (userId) {
-        writeActivity(userId, true);
+        setActivity(userId, Date.now(), true);
       } else {
-        try { localStorage.removeItem(ACTIVITY_KEY); } catch {}
+        clearActivity();
       }
     };
 
     const activityEvents = ["pointerdown", "keydown", "scroll", "touchstart", "mousemove"];
-    activityEvents.forEach((event) => window.addEventListener(event, recordActivity, { passive: true }));
+    activityEvents.forEach((event) =>
+      window.addEventListener(event, recordActivity, { passive: true })
+    );
+
     document.addEventListener("visibilitychange", checkTimeout);
     window.addEventListener("focus", checkTimeout);
     window.addEventListener("storage", checkTimeout);
 
     const { data: authSubscription } = supabase.auth.onAuthStateChange(handleAuthChange);
     void checkTimeout();
-    const interval = window.setInterval(checkTimeout, 30 * 1000);
+
+    const interval = window.setInterval(checkTimeout, 5 * 1000);
 
     return () => {
       activityEvents.forEach((event) => window.removeEventListener(event, recordActivity));
