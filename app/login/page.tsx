@@ -10,10 +10,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
+import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
 
 export default function Login({ searchParams }: { searchParams: any }) {
   const supabase = createClient()
+  const router = useRouter()
   // @ts-ignore
   const { accountCreated, type, authError } = React.use(searchParams)
 
@@ -57,12 +59,29 @@ export default function Login({ searchParams }: { searchParams: any }) {
       return
     }
     try {
-      await signIn({ email: email.trim(), password })
+      // Authenticate directly in the browser so the Supabase session cookie is
+      // written immediately, without waiting for a server-action round trip.
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      })
+
+      if (error) {
+        setIsSubmitting(false)
+        if (error.code === "email_not_confirmed") {
+          setErrors({ general: "Please confirm your email address and try again." })
+        } else if (error.code === "invalid_credentials") {
+          setErrors({ general: "Invalid credentials" })
+        } else {
+          setErrors({ general: error.message || "An error occurred during sign in. Please try again." })
+        }
+        return
+      }
+
+      await router.replace("/")
     } catch (error: any) {
       setIsSubmitting(false)
-      if (error?.message !== "NEXT_REDIRECT") {
-        setErrors({ general: "An error occurred during sign in. Please try again." })
-      }
+      setErrors({ general: error?.message || "An error occurred during sign in. Please try again." })
     }
   }
 
