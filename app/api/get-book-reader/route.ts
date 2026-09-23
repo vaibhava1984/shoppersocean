@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function POST(request: Request) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
     const { bookId } = await request.json();
