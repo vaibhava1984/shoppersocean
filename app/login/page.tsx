@@ -78,7 +78,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
         return
       }
 
-      // Force a fresh server render after authentication so the new Supabase\n      // session cookie is immediately visible to the server-rendered header and protected pages.\n      window.location.replace("/")
+      // Force a fresh server render after authentication so the new Supabase session cookie is immediately visible to the server-rendered header and protected pages.\n      window.location.replace("/")
     } catch (error: any) {
       setIsSubmitting(false)
       setErrors({ general: error?.message || "An error occurred during sign in. Please try again." })
