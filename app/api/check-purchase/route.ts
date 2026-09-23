@@ -12,7 +12,7 @@ export async function POST(req: Request) {
         const authorization = req.headers.get('authorization');
         const bearerToken = authorization?.startsWith('Bearer ') ? authorization.slice(7).trim() : '';
         let user = null;
-        let supabase = createClient();
+        let supabase = await createClient();
 
         if (bearerToken) {
             supabase = createSupabaseClient(
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
         }
 
         if (!user) {
-            const serverClient = createClient();
+            const serverClient = await createClient();
             const { data } = await serverClient.auth.getUser();
             user = data.user;
             supabase = serverClient;

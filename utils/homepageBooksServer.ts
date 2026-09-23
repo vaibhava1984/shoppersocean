@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import type { HomepageBookPlacement } from './homepageBooksCache'
 
 export async function getHomepageBooksServer(): Promise<HomepageBookPlacement[]> {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: layoutData, error: layoutError } = await supabase.from('layout_settings').select('page_section, value').in('page_section', ['HOMEPAGE_TRENDING', 'HOMEPAGE_COLLECTION']).order('id', { ascending: true })
   if (layoutError || !layoutData?.length) return []
   const selectedIds = [...new Set(layoutData.map(item => String(item.value ?? '').trim()).filter(Boolean))]

@@ -4,7 +4,7 @@ import { createAdminClient } from '@/utils/supabase/server_admin'
 
 export async function POST(request: Request) {
     try {
-        const authClient = createClient();
+        const authClient = await createClient();
         const {
             data: { user },
         } = await authClient.auth.getUser();

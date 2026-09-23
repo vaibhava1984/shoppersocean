@@ -6,7 +6,7 @@ import AdminSidebar from "./adminSidebar"
 import { createClient } from "@/utils/supabase/server";
 
 export default async function AdminDashboard() {
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
         data: { user },
     } = await supabase.auth.getUser();

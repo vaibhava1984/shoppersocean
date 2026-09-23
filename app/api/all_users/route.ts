@@ -7,7 +7,7 @@ export async function POST(request: Request) {
         // Authenticate the actual signed-in admin using the request cookies.
         // The service-role client must only be used after this check; it does not
         // carry the browser user's session by itself.
-        const authClient = createClient();
+        const authClient = await createClient();
         const {
             data: { user },
         } = await authClient.auth.getUser();
