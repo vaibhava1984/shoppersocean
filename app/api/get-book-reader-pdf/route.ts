@@ -1,32 +1,24 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server';
+import { createAdminClient } from '@/utils/supabase/server_admin';
+import { getLegacyProfileForClerkUser } from '@/utils/auth/clerkProfile';
 
 export async function GET(request: Request) {
   try {
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return new NextResponse('Not authorized', { status: 403 });
+    const identity = await getLegacyProfileForClerkUser();
+    if (!identity) return new NextResponse('Not authorized', { status: 403 });
+    const supabase = createAdminClient();
 
     const { searchParams } = new URL(request.url);
     const bookId = searchParams.get('bookId');
     if (!bookId) return new NextResponse('Book ID is required', { status: 400 });
 
-    // Match the existing, working PDF download purchase check exactly.
     const { data: purchase, error: purchaseError } = await supabase
-      .from('orders')
-      .select()
-      .eq('user_id', user.id)
-      .eq('product_id', bookId)
-      .order('order_date', { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
+      .from('orders').select().eq('user_id', identity.profile.id).eq('product_id', bookId)
+      .order('order_date', { ascending: false }).limit(1).maybeSingle();
     if (purchaseError || !purchase) return new NextResponse('Purchase required', { status: 403 });
 
     const { data: files, error: filesError } = await supabase
-      .from('private_book_files')
-      .select('file_path, file_name, file_type')
-      .eq('book_id', bookId);
+      .from('private_book_files').select('file_path, file_name, file_type').eq('book_id', bookId);
     if (filesError) throw filesError;
 
     const pdf = files?.find((file) => {
@@ -36,20 +28,12 @@ export async function GET(request: Request) {
     });
     if (!pdf) return new NextResponse('No PDF book is available', { status: 404 });
 
-    const { data: signed, error: signedError } = await supabase.storage
-      .from('books-content')
-      .createSignedUrl(pdf.file_path, 300);
+    const { data: signed, error: signedError } = await supabase.storage.from('books-content').createSignedUrl(pdf.file_path, 300);
     if (signedError || !signed?.signedUrl) throw signedError || new Error('Unable to create reader URL');
 
     const range = request.headers.get('range');
-    const upstream = await fetch(signed.signedUrl, {
-      headers: range ? { Range: range } : undefined,
-      cache: 'no-store',
-    });
-
-    if (!upstream.ok && upstream.status !== 206) {
-      return new NextResponse('Unable to load book', { status: upstream.status });
-    }
+    const upstream = await fetch(signed.signedUrl, { headers: range ? { Range: range } : undefined, cache: 'no-store' });
+    if (!upstream.ok && upstream.status !== 206) return new NextResponse('Unable to load book', { status: upstream.status });
 
     const headers = new Headers();
     headers.set('Content-Type', 'application/pdf');
@@ -59,7 +43,6 @@ export async function GET(request: Request) {
     const contentRange = upstream.headers.get('content-range');
     if (contentLength) headers.set('Content-Length', contentLength);
     if (contentRange) headers.set('Content-Range', contentRange);
-
     return new NextResponse(upstream.body, { status: upstream.status, headers });
   } catch (error) {
     console.error('Error proxying purchased book PDF:', error);
