@@ -18,6 +18,7 @@ export async function getMigrationAuthUser(): Promise<NextAuthUser | null> {
 
   const email = clerkUser.emailAddresses[0]?.emailAddress ?? "";
   const fullName = clerkUser.fullName ?? clerkUser.firstName ?? "";
+  const metadata = clerkUser.publicMetadata as { role?: "admin" | "publisher" | "user"; country?: string; mobile?: string; address?: string };
 
   let d1User: D1User | null = null;
   try {
@@ -26,6 +27,10 @@ export async function getMigrationAuthUser(): Promise<NextAuthUser | null> {
       clerkUserId: userId,
       email,
       fullName,
+      role: metadata.role,
+      country: metadata.country,
+      mobile: metadata.mobile,
+      address: metadata.address,
     });
   } catch (error) {
     console.error("Clerk/D1 identity association is unavailable:", error);
