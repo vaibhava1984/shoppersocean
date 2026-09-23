@@ -7,7 +7,6 @@ import ClerkSessionTimeout from "@/components/ClerkSessionTimeout";
 const defaultUrl = "https://www.shoppersocean.com";
 
 const clerkEnabled =
-  process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
   Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
   Boolean(process.env.CLERK_SECRET_KEY);
 
