@@ -19,11 +19,9 @@ function LoginContent() {
   const type = searchParams.get("type")
   const authError = searchParams.get("authError")
 
-  // The Clerk UI is opt-in during migration. Until the public migration flag
-  // is enabled, this page remains exactly on the existing Supabase flow.
-  const clerkEnabled =
-    process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
-    Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
+  // Clerk is active when its public key is configured. The secret key is
+  // intentionally server-only and must never be exposed to this client page.
+  const clerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
 
   if (clerkEnabled) {
     return (
