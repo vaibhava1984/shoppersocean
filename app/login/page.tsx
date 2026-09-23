@@ -12,8 +12,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import React from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
+import ClerkMigrationAuth from "@/components/ClerkMigrationAuth"
 
 export default function Login({ searchParams }: { searchParams: any }) {
+  // The Clerk UI is opt-in during migration. Until the public migration flag
+  // is enabled, this page remains exactly on the existing Supabase flow.
+  if (process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true") {
+    // @ts-ignore
+    const { type } = React.use(searchParams)
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center p-4">
+        <ClerkMigrationAuth signUp={type === "signup"} />
+      </div>
+    )
+  }
+
   const supabase = createClient()
   const router = useRouter()
   // @ts-ignore
