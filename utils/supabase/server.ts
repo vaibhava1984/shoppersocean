@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { cache } from "react";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
@@ -7,14 +7,23 @@ import { getSupabaseConfig } from "./config";
 export function createClient() {
   const cookieStore = cookies();
   const { url, anonKey } = getSupabaseConfig();
+
   return createServerClient(url, anonKey, {
     cookies: {
-      async getAll() { return (await cookieStore).getAll() },
+      async getAll() {
+        return (await cookieStore).getAll();
+      },
       setAll(cookiesToSet) {
         try {
-          cookiesToSet.forEach(async ({ name, value, options }) => (await cookieStore).set(name, value, options));
+          cookiesToSet.forEach(async ({ name, value, options }) =>
+            (await cookieStore).set(name, value, options)
+          );
         } catch {}
       },
+    },
+    accessToken: async () => {
+      const { getToken } = await auth();
+      return (await getToken()) ?? null;
     },
   });
 }
