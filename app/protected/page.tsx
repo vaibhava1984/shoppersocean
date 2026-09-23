@@ -4,24 +4,30 @@ import { createClient } from "@/utils/supabase/server";
 import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
+import { getMigrationAuthUser } from "@/cloudflare/auth/nextjs-user";
 
 export default async function ProtectedPage() {
-  const supabase = await createClient();
+  const clerkEnabled =
+    process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
+    Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
+    Boolean(process.env.CLERK_SECRET_KEY);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return redirect("/login");
+  if (clerkEnabled) {
+    const { isAuthenticated } = await auth();
+    if (!isAuthenticated) return redirect("/login");
+    await getMigrationAuthUser();
+  } else {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return redirect("/login");
   }
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <div className="w-full">
         <div className="py-6 font-bold bg-purple-950 text-center">
-          This is a protected page that you can only see as an authenticated
-          user
+          This is a protected page that you can only see as an authenticated user
         </div>
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
           <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
