@@ -33,7 +33,6 @@ export async function POST(req: Request) {
       orders?.forEach(order => {
         if (order.product_id in result) {
           result[order.product_id].hasPurchased = true;
-          result[productId in result ? productId : order.product_id].hasPurchased = true;
           result[order.product_id].orderDetails.push({ order_id: order.id, purchase_date: order.order_date, status: order.status });
         }
       });
