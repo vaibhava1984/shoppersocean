@@ -1,0 +1,30 @@
+name: Validate Cloudflare migration
+
+on:
+  push:
+    branches:
+      - migration/cloudflare-clerk-d1-r2
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install exact migration dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Validate Next.js build
+        run: npm run build
+
+      - name: Build OpenNext Cloudflare output
+        run: npx opennextjs-cloudflare build
