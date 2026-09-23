@@ -16,15 +16,15 @@ export async function getUserByClerkId(env: CloudflareEnv, clerkUserId: string):
   return env.DB.prepare(`SELECT ${USER_COLUMNS} FROM users WHERE clerk_user_id = ?1 LIMIT 1`).bind(clerkUserId).first<D1User>();
 }
 
-export async function upsertUserFromClerk(env: CloudflareEnv, user: { clerkUserId: string; email: string; fullName?: string }): Promise<D1User> {
+export async function upsertUserFromClerk(env: CloudflareEnv, user: { clerkUserId: string; email: string; fullName?: string; country?: string; mobile?: string; address?: string; role?: "admin" | "publisher" | "user" }): Promise<D1User> {
   const existing = await getUserByClerkId(env, user.clerkUserId);
   const now = new Date().toISOString();
   if (existing) {
-    await env.DB.prepare("UPDATE users SET email = ?1, full_name = ?2, updated_at = ?3 WHERE clerk_user_id = ?4")
-      .bind(user.email, user.fullName || existing.full_name, now, user.clerkUserId).run();
+    await env.DB.prepare("UPDATE users SET email = ?1, full_name = ?2, country = ?3, mobile = ?4, address = ?5, role = ?6, updated_at = ?7 WHERE clerk_user_id = ?8")
+      .bind(user.email, user.fullName || existing.full_name, user.country ?? existing.country, user.mobile ?? existing.mobile, user.address ?? existing.address, user.role ?? existing.role, now, user.clerkUserId).run();
   } else {
     await env.DB.prepare("INSERT INTO users (id, clerk_user_id, email, full_name, country, mobile, address, role, created_at, updated_at) VALUES (?1, ?2, ?3, ?4, '', '', '', 'user', ?5, ?5)")
-      .bind(crypto.randomUUID(), user.clerkUserId, user.email, user.fullName || "", now).run();
+      .bind(crypto.randomUUID(), user.clerkUserId, user.email, user.fullName || "", user.country ?? "", user.mobile ?? "", user.address ?? "", user.role ?? "user", now).run();
   }
   const result = await getUserByClerkId(env, user.clerkUserId);
   if (!result) throw new Error("Unable to create or load D1 user");
