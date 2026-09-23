@@ -4,10 +4,23 @@ import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { SignIn } from "@clerk/nextjs"
 import { createClient } from "@/utils/supabase/client"
 import { useRouter } from "next/navigation"
 
 export default function ResetPassword() {
+    const clerkEnabled =
+        process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
+        Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
+
+    if (clerkEnabled) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center p-4">
+                <SignIn routing="hash" fallbackRedirectUrl="/" />
+            </div>
+        )
+    }
+
     const supabase = createClient()
     const router = useRouter()
     const [email, setEmail] = useState("")
