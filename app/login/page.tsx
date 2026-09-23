@@ -21,7 +21,11 @@ function LoginContent() {
 
   // The Clerk UI is opt-in during migration. Until the public migration flag
   // is enabled, this page remains exactly on the existing Supabase flow.
-  if (process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true") {
+  const clerkEnabled =
+    process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
+    Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
+
+  if (clerkEnabled) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center p-4">
         <ClerkMigrationAuth signUp={type === "signup"} />
