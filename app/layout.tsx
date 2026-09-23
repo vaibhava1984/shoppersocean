@@ -9,8 +9,9 @@ const defaultUrl = "https://www.shoppersocean.com";
 // Clerk is enabled only during the explicit migration cutover.
 // Until then the existing Supabase session remains untouched.
 const clerkEnabled =
-  process.env.CLERK_MIGRATION_ENABLED === "true" &&
-  Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+  process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
+  Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
+  Boolean(process.env.CLERK_SECRET_KEY);
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
