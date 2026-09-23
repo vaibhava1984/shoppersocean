@@ -9,6 +9,7 @@ export default function ClerkMigrationAuth({ signUp }: { signUp: boolean }) {
         routing="hash"
         fallbackRedirectUrl="/"
         signInUrl="/login"
+        signInFallbackRedirectUrl="/"
       />
     )
   }
@@ -17,7 +18,8 @@ export default function ClerkMigrationAuth({ signUp }: { signUp: boolean }) {
     <SignIn
       routing="hash"
       fallbackRedirectUrl="/"
-      signUpUrl="/login"
+      signUpUrl="/login?type=signup"
+      signUpFallbackRedirectUrl="/"
     />
   )
 }
