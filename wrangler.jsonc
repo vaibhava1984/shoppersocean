@@ -16,7 +16,8 @@
     {
       "binding": "DB",
       "database_name": "shoppersocean",
-      "database_id": "REPLACE_WITH_REAL_D1_DATABASE_ID"
+      "database_id": "REPLACE_WITH_REAL_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
     }
   ],
   "r2_buckets": [
