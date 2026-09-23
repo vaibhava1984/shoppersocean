@@ -2,7 +2,8 @@ import Header from "@/components/Header";
 import { getUser } from "@/utils/supabase/server";
 import { getMigrationAuthUser } from "@/cloudflare/auth/nextjs-user";
 import Footer from "@/components/Footer";
-import Settings from './Settings';
+import Settings from "./Settings";
+import ClerkSettings from "./ClerkSettings";
 
 export const metadata = {
     title: 'My Settings',
@@ -37,7 +38,7 @@ export default async function SettingsPage() {
         <div className="min-h-screen bg-slate-50 text-slate-900">
             <Header user={settingsUser as any} />
             <section className="py-10 bg-white">
-                <Settings initialUser={settingsUser} />
+                {clerkEnabled ? <ClerkSettings initialUser={settingsUser} /> : <Settings initialUser={settingsUser} />}
             </section>
             <Footer />
         </div>
