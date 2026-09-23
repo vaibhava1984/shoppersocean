@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
 import { SubmitButton } from "./submit-button"
@@ -13,7 +13,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
 import ClerkMigrationAuth from "@/components/ClerkMigrationAuth"
 
-export default function Login() {
+function LoginContent() {
   const searchParams = useSearchParams()
   const accountCreated = searchParams.get("accountCreated")
   const type = searchParams.get("type")
@@ -277,5 +277,14 @@ export default function Login() {
         <DialogContent className="sm:max-w-[425px]"><DialogHeader><DialogTitle>{dialogState.title}</DialogTitle><DialogDescription>{dialogState.description}</DialogDescription></DialogHeader><div className="mt-4 flex justify-end"><Button onClick={() => setDialogState(p => ({...p, isOpen: false}))}>Close</Button></div></DialogContent>
       </Dialog>
     </div>
+  )
+}
+
+
+export default function Login() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center p-4 text-white">Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   )
 }
