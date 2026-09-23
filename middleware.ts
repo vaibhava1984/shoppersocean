@@ -5,14 +5,20 @@ import { updateSession } from "@/utils/supabase/middleware"
  * Migration-safe authentication boundary.
  *
  * Supabase remains the active authentication system until the Clerk cutover
- * has been explicitly enabled. Setting CLERK_MIGRATION_ENABLED=true switches
+ * has been explicitly enabled. Setting NEXT_PUBLIC_CLERK_MIGRATION_ENABLED=true
+ * switches
  * this boundary to Clerk's middleware without changing the default behavior.
  *
  * This prevents an incomplete Clerk configuration from breaking the migration
  * build or the existing authentication path.
  */
 export async function middleware(request: NextRequest, event: NextFetchEvent) {
-  if (process.env.CLERK_MIGRATION_ENABLED === "true") {
+  const clerkEnabled =
+  process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
+  Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
+  Boolean(process.env.CLERK_SECRET_KEY)
+
+  if (clerkEnabled) {
     const { clerkMiddleware } = await import("@clerk/nextjs/server")
     const clerkHandler = clerkMiddleware()
     return clerkHandler(request, event)
