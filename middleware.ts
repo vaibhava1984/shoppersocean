@@ -14,9 +14,8 @@ import { updateSession } from "@/utils/supabase/middleware"
  */
 export async function middleware(request: NextRequest, event: NextFetchEvent) {
   const clerkEnabled =
-  process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
-  Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
-  Boolean(process.env.CLERK_SECRET_KEY)
+    Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
+    Boolean(process.env.CLERK_SECRET_KEY)
 
   if (clerkEnabled) {
     const { clerkMiddleware } = await import("@clerk/nextjs/server")
