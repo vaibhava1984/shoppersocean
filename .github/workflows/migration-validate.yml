@@ -42,7 +42,8 @@ jobs:
           assert db.execute("SELECT 1 FROM orders WHERE user_id='u1' AND product_id='b1' AND status='completed'").fetchone()
           db.execute("DELETE FROM users WHERE id='u1'")
           assert db.execute("SELECT COUNT(*) FROM orders WHERE user_id='u1'").fetchone()[0] == 0
-          assert db.execute("SELECT COUNT(*) FROM private_book_files WHERE book_id='b1'").fetchone()[0] == 0
+          assert db.execute("SELECT COUNT(*) FROM private_book_files WHERE book_id='b1'").fetchone()[0] == 1
+          assert db.execute("SELECT user_id FROM authors WHERE author_id='a1'").fetchone()[0] is None
           print('D1 schema, foreign keys, purchase linkage, and user deletion passed.')
           PY
 
