@@ -1,16 +1,17 @@
-"use client"
-import { createClient } from "@/utils/supabase/client";
+"use client";
+
+import { useClerk } from "@clerk/nextjs";
 
 export default function HeaderLogoutBtn() {
-    const supabase = createClient();
-    return (
-        <button className="" onClick={async () => {
-            const signoutStatus = await supabase.auth.signOut();
-            if (signoutStatus.error === null) {
-                window.location.href = "/";
-            }
-        }}>
-            Logout
-        </button>
-    )
+  const { signOut } = useClerk();
+
+  return (
+    <button
+      type="button"
+      onClick={() => signOut({ redirectUrl: "/" })}
+      className="w-full text-left"
+    >
+      Logout
+    </button>
+  );
 }

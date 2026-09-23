@@ -1,9 +1,9 @@
-import { getUser } from "@/utils/supabase/server";
+import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
-import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
-import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
-import SiteSearch from "@/components/SiteSearch"
-import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation"
+import HeaderLogoutBtn from "@/components/HeaderLogoutBtn";
+import HeaderAuthorButton from "@/app/components/HeaderAuthorButton";
+import SiteSearch from "@/components/SiteSearch";
+import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,14 +20,14 @@ const navigationItems = [
 ] as const;
 
 type HeaderProps = {
-  user?: Awaited<ReturnType<typeof getUser>>
   categoryNavigation?: { authors: { author_id: string; name: string }[]; languages: string[] }
-}
+};
 
-export default async function Header({ user, categoryNavigation }: HeaderProps) {
-  // Some pages render Header without passing the user. Resolve the current
-  // server session here so a signed-in user never sees the anonymous menu.
-  const currentUser = user ?? await getUser()
+export default async function Header({ categoryNavigation }: HeaderProps) {
+  const user = await currentUser();
+  const displayName = user?.firstName || user?.username || user?.emailAddresses?.[0]?.emailAddress || "User";
+  const userRole = user?.publicMetadata?.userrole;
+  const isAuthor = user?.publicMetadata?.isAuthor === true;
 
   return (
     <>
@@ -40,39 +40,35 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
               </Link>
             </div>
 
-            {currentUser ? (
+            {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors max-w-[58vw] sm:max-w-[360px]">
-                  <span className="truncate">Hi {currentUser?.user_metadata?.full_name ?? currentUser.email}</span>
+                  <span className="truncate">Hi {displayName}</span>
                   <ChevronDown className="h-4 w-4 flex-shrink-0" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="w-48">
-                  {currentUser?.app_metadata?.userrole === "ADMIN" && (
+                  {userRole === "ADMIN" && (
                     <DropdownMenuItem asChild>
-                      <a href="/admin_panel" className="flex w-full items-center gap-2">
-                        <ShieldIcon width={18} />
-                        Admin Panel
-                      </a>
+                      <Link href="/admin_panel" className="flex w-full items-center gap-2">
+                        <ShieldIcon width={18} /> Admin Panel
+                      </Link>
                     </DropdownMenuItem>
                   )}
-                  {currentUser?.app_metadata?.isAuthor === true && (
+                  {isAuthor && (
                     <DropdownMenuItem asChild>
-                      <a href="/my-sales" className="flex w-full items-center gap-2">
-                        <ChartBarIcon width={18} />
-                        My Sales
-                      </a>
+                      <Link href="/my-sales" className="flex w-full items-center gap-2">
+                        <ChartBarIcon width={18} /> My Sales
+                      </Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem asChild>
-                    <a href="/my-purchases" className="flex w-full items-center gap-2">
-                      <HistoryIcon width={18} />
-                      My Orders
-                    </a>
+                    <Link href="/my-purchases" className="flex w-full items-center gap-2">
+                      <HistoryIcon width={18} /> My Orders
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/settings" className="flex w-full items-center gap-2">
-                      <SettingsIcon width={18} />
-                      Settings
+                      <SettingsIcon width={18} /> Settings
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="flex items-center gap-2">
@@ -101,11 +97,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
           <div className="relative z-50 max-w-5xl mx-auto">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
               {navigationItems.map(([href, label]) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="relative z-50 pointer-events-auto cursor-pointer flex items-center justify-center min-h-[46px] px-2 sm:px-4 py-2.5 rounded-lg bg-white/10 border border-white/30 text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-sm hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-center"
-                >
+                <Link key={href} href={href} className="relative z-50 pointer-events-auto cursor-pointer flex items-center justify-center min-h-[46px] px-2 sm:px-4 py-2.5 rounded-lg bg-white/10 border border-white/30 text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-sm hover:bg-white/20 hover:border-white/50 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-center">
                   {label}
                 </Link>
               ))}
@@ -113,10 +105,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
             </div>
             <SiteSearch />
             {categoryNavigation && (
-              <HomepageCategoryNavigation
-                authors={categoryNavigation.authors}
-                languages={categoryNavigation.languages}
-              />
+              <HomepageCategoryNavigation authors={categoryNavigation.authors} languages={categoryNavigation.languages} />
             )}
           </div>
         </div>
