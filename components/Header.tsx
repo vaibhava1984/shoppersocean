@@ -2,6 +2,7 @@ import { getUser } from "@/utils/supabase/server";
 import { getMigrationAuthUser } from "@/cloudflare/auth/nextjs-user";
 import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
+import ClerkHeaderLogoutBtn from "@/components/ClerkHeaderLogoutBtn"
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
 import SiteSearch from "@/components/SiteSearch"
 import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation"
@@ -100,7 +101,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                   </DropdownMenuItem>
                   <DropdownMenuItem className="flex items-center gap-2">
                     <LogOut />
-                    <HeaderLogoutBtn />
+                    {clerkEnabled ? <ClerkHeaderLogoutBtn /> : <HeaderLogoutBtn /> }
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
