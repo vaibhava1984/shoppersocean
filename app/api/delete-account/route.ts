@@ -14,6 +14,45 @@ function escapeHtml(value: string) {
 
 export async function POST() {
   try {
+    const clerkEnabled =
+      process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
+      Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
+      Boolean(process.env.CLERK_SECRET_KEY);
+
+    if (clerkEnabled) {
+      const { auth, clerkClient, currentUser } = await import("@clerk/nextjs/server");
+      const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+      const { deleteUserData, getUserByClerkId } = await import("@/cloudflare/db/users");
+      const { userId } = await auth();
+      const clerkUser = await currentUser();
+      if (!userId || !clerkUser) {
+        return NextResponse.json({ error: "You must be signed in to delete your account." }, { status: 401 });
+      }
+
+      const email = clerkUser.emailAddresses[0]?.emailAddress ?? "";
+      const name = String(clerkUser.fullName ?? "").trim() || "there";
+      const { env } = getCloudflareContext();
+      const d1User = await getUserByClerkId(env, userId);
+      if (d1User) await deleteUserData(env, d1User.id);
+
+      const client = await clerkClient();
+      await client.users.deleteUser(userId);
+
+      let emailSent = false;
+      const resendApiKey = process.env.RESEND_API_KEY;
+      if (email && resendApiKey) {
+        const resend = new Resend(resendApiKey);
+        const { error: emailError } = await resend.emails.send({
+          from: "no-reply@shoppersocean.com",
+          to: email,
+          subject: "Your Shoppers Ocean account has been deleted",
+          html: `<div style="font-family: Arial, sans-serif; line-height: 1.7; color: #1e293b;"><p>Dear ${escapeHtml(name)},</p><p>Your account has been deleted successfully.</p><p>Regards,<br />Shoppers Ocean</p></div>`,
+        });
+        emailSent = !emailError;
+      }
+
+      return NextResponse.json({ success: true, emailSent });
+    }
     const supabase = createClient();
     const {
       data: { user },
