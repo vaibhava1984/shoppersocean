@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "shoppersocean",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+
+  // SAFETY: resource IDs are intentionally placeholders.
+  // This file is for migration preparation only and cannot deploy
+  // successfully until the real Cloudflare resources are provisioned.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "shoppersocean",
+      "database_id": "REPLACE_WITH_REAL_D1_DATABASE_ID"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "BOOKS_BUCKET",
+      "bucket_name": "shoppersocean-books"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
