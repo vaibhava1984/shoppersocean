@@ -42,11 +42,14 @@ export async function POST(request: Request) {
 
       const currentMobile = String(clerkUser.privateMetadata?.originalMobile ?? "")
       const normalizedMobile = mobile ? normalizeIndianMobile(mobile) : ""
+      const verifiedClerkMobile = clerkUser.phoneNumbers.find(
+        (phone) => phone.verification?.status === "verified",
+      )?.phoneNumber ?? ""
       if (mobile && (!normalizedMobile || country !== "IN")) {
         return NextResponse.json({ error: "Please enter a valid 10-digit Indian mobile number starting with 6–9." }, { status: 400 })
       }
-      if (normalizedMobile && normalizedMobile !== currentMobile) {
-        return NextResponse.json({ error: "Mobile verification will be enabled after the Clerk account migration is completed." }, { status: 400 })
+      if (normalizedMobile && normalizedMobile !== currentMobile && normalizedMobile !== verifiedClerkMobile) {
+        return NextResponse.json({ error: "Please verify this mobile number with the 6-digit code before saving it." }, { status: 400 })
       }
 
       const client = await clerkClient()
@@ -64,7 +67,7 @@ export async function POST(request: Request) {
         fullName,
         country,
         address,
-        mobile: currentMobile,
+        mobile: normalizedMobile || currentMobile,
       })
 
       return NextResponse.json({
