@@ -19,7 +19,7 @@ export const metadata = {
 }
 
 export default async function LandingPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const [user, homepageBooks, authorsResult, languageRowsResult] = await Promise.all([
     getUser(),
     getHomepageBooksServer(),
