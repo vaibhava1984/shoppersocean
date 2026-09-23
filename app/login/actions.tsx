@@ -39,7 +39,7 @@ export async function signUp(formData: {
   address?: string,
 }) {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
     const email = formData.email.trim()
     const fullName = formData.fullName.trim()
     const mobile = formData.mobile?.trim() || ""
