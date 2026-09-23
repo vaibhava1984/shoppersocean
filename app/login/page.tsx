@@ -9,17 +9,19 @@ import { COUNTRIES } from "@/utils/countries"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import React from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
 import ClerkMigrationAuth from "@/components/ClerkMigrationAuth"
 
-export default function Login({ searchParams }: { searchParams: any }) {
+export default function Login() {
+  const searchParams = useSearchParams()
+  const accountCreated = searchParams.get("accountCreated")
+  const type = searchParams.get("type")
+  const authError = searchParams.get("authError")
+
   // The Clerk UI is opt-in during migration. Until the public migration flag
   // is enabled, this page remains exactly on the existing Supabase flow.
   if (process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true") {
-    // @ts-ignore
-    const { type } = React.use(searchParams)
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center p-4">
         <ClerkMigrationAuth signUp={type === "signup"} />
@@ -29,9 +31,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
   const supabase = createClient()
   const router = useRouter()
-  // @ts-ignore
-  const { accountCreated, type, authError } = React.use(searchParams)
-
   const [isSignIn, setIsSignIn] = useState(type === "signup" ? false : true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [username, setUsername] = useState("")
