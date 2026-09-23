@@ -2,114 +2,57 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import { Resend } from "resend";
-import { createClient } from "@/utils/supabase/server";
+import { createAdminClient } from "@/utils/supabase/server_admin";
+import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
 function getRazorpay() {
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
-
-  if (!keyId || !keySecret) {
-    throw new Error("Razorpay server credentials are not configured");
-  }
-
-  return new Razorpay({
-    key_id: keyId,
-    key_secret: keySecret,
-  });
+  if (!keyId || !keySecret) throw new Error("Razorpay server credentials are not configured");
+  return new Razorpay({ key_id: keyId, key_secret: keySecret });
 }
 
 export async function POST(req: Request) {
   try {
+    const identity = await getLegacyProfileForClerkUser();
+    if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+
     const razorpay = getRazorpay();
-    const supabase = createClient();
+    const supabase = createAdminClient();
     const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-      original_currency,
-      original_amount,
-      user_id,
-      product_id,
-      quantity,
-      shipping_address,
-      contact_number,
-      email,
+      razorpay_order_id, razorpay_payment_id, razorpay_signature,
+      original_currency, original_amount, product_id, quantity,
+      shipping_address, contact_number, email,
     } = await req.json();
 
     const rates = await fetchExchangeRates();
-    const amountInINR = convertCurrency(
-      original_amount,
-      original_currency,
-      "INR",
-      rates
-    );
-
+    const amountInINR = convertCurrency(original_amount, original_currency, "INR", rates);
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
-    if (!keySecret) {
-      throw new Error("Razorpay server credentials are not configured");
-    }
+    if (!keySecret) throw new Error("Razorpay server credentials are not configured");
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
-    const expectedSignature = crypto
-      .createHmac("sha256", keySecret)
-      .update(body.toString())
-      .digest("hex");
-
-    if (expectedSignature !== razorpay_signature) {
-      return NextResponse.json(
-        { error: "Invalid payment signature" },
-        { status: 400 }
-      );
-    }
+    const expectedSignature = crypto.createHmac("sha256", keySecret).update(body.toString()).digest("hex");
+    if (expectedSignature !== razorpay_signature) return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
 
     const payment = await razorpay.payments.fetch(razorpay_payment_id);
-
-    let paymentStatus;
+    let paymentStatus: string;
     switch (payment.status) {
-      case "captured":
-        paymentStatus = "completed";
-        break;
-      case "authorized":
-        paymentStatus = "authorized";
-        break;
-      case "failed":
-        paymentStatus = "failed";
-        break;
-      case "refunded":
-        paymentStatus = "refunded";
-        break;
-      default:
-        paymentStatus = "pending";
+      case "captured": paymentStatus = "completed"; break;
+      case "authorized": paymentStatus = "authorized"; break;
+      case "failed": paymentStatus = "failed"; break;
+      case "refunded": paymentStatus = "refunded"; break;
+      default: paymentStatus = "pending";
     }
-
     if (paymentStatus === "failed") {
-      return NextResponse.json(
-        {
-          error: "Payment failed",
-          errorDetails: payment.error_description || "Unknown error",
-        },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Payment failed", errorDetails: payment.error_description || "Unknown error" }, { status: 400 });
     }
-
-    const {
-      data: { session },
-      error: sessionError,
-    } = await supabase.auth.getSession();
-    if (sessionError) throw sessionError;
 
     const { data, error } = await supabase.rpc("create_order_and_payment", {
       p_order_details: {
-        user_id,
-        product_id,
-        quantity,
-        shipping_address,
-        contact_number,
-        email,
+        user_id: identity.profile.id,
+        product_id, quantity, shipping_address, contact_number,
+        email: email || identity.profile.email,
         status: paymentStatus,
         order_date: new Date().toISOString(),
         total_amount: Number(amountInINR),
@@ -118,54 +61,27 @@ export async function POST(req: Request) {
         display_currency: original_currency,
       },
       p_payment_details: {
-        order_id: razorpay_order_id,
-        payment_id: razorpay_payment_id,
-        signature: razorpay_signature,
-        status: paymentStatus,
-        original_currency,
-        original_amount,
-        amount_in_inr: Number(amountInINR),
-        payment_method: payment.method,
-        bank: payment.bank,
-        card_network: payment.card?.network,
-        card_last4: payment.card?.last4,
-        error_code: payment.error_code,
-        error_description: payment.error_description,
+        order_id: razorpay_order_id, payment_id: razorpay_payment_id, signature: razorpay_signature,
+        status: paymentStatus, original_currency, original_amount,
+        amount_in_inr: Number(amountInINR), payment_method: payment.method,
+        bank: payment.bank, card_network: payment.card?.network, card_last4: payment.card?.last4,
+        error_code: payment.error_code, error_description: payment.error_description,
         created_at: new Date().toISOString(),
       },
     });
-
     if (error) throw error;
 
     const resendApiKey = process.env.RESEND_API_KEY;
-    if (!resendApiKey) {
-      throw new Error("RESEND_API_KEY is not configured");
-    }
-
+    if (!resendApiKey) throw new Error("RESEND_API_KEY is not configured");
     const resend = new Resend(resendApiKey);
-
     const yourEmail = "kochimonu@gmail.com";
-    const { data: currentBookDetails, error: currentBookDetailsError } =
-      await supabase
-        .from("books")
-        .select("*")
-        .eq("id", product_id)
-        .single();
-
-    if (currentBookDetailsError) {
-      console.error("Could not load book details for sale email:", currentBookDetailsError);
-    }
+    const { data: currentBookDetails } = await supabase.from("books").select("*").eq("id", product_id).single();
 
     await resend.emails.send({
       from: "no-reply@shoppersocean.com",
       to: yourEmail,
       subject: "New Sale | Shoppers Ocean",
-      html: `
-        <p><strong>New Sale details:</strong></p>
-        <p><strong>Email:</strong> ${user?.email ?? email ?? ""}</p>
-        <p><strong>Book ID:</strong>${product_id}</p>
-        <p><strong>Book Name:</strong>${currentBookDetails?.title ?? ""}</p>
-      `,
+      html: `<p><strong>New Sale details:</strong></p><p><strong>Email:</strong> ${identity.profile.email ?? email ?? ""}</p><p><strong>Book ID:</strong>${product_id}</p><p><strong>Book Name:</strong>${currentBookDetails?.title ?? ""}</p>`,
     });
 
     return NextResponse.json({
@@ -175,17 +91,11 @@ export async function POST(req: Request) {
       orderDetails: data.order,
       paymentDetails: {
         amount: Number(payment.amount) / 100,
-        currency: payment.currency,
-        method: payment.method,
-        status: paymentStatus,
-        created_at: payment.created_at,
+        currency: payment.currency, method: payment.method, status: paymentStatus, created_at: payment.created_at,
       },
     });
   } catch (error) {
     console.error("Error verifying payment:", error);
-    return NextResponse.json(
-      { error: "Error verifying payment" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Error verifying payment" }, { status: 500 });
   }
 }
