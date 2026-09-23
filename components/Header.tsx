@@ -1,4 +1,5 @@
 import { getUser } from "@/utils/supabase/server";
+import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
@@ -25,9 +26,26 @@ type HeaderProps = {
 }
 
 export default async function Header({ user, categoryNavigation }: HeaderProps) {
-  // Some pages render Header without passing the user. Resolve the current
-  // server session here so a signed-in user never sees the anonymous menu.
-  const currentUser = user ?? await getUser()
+  const clerkEnabled =
+    process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
+    Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
+    Boolean(process.env.CLERK_SECRET_KEY)
+
+  // During Clerk migration, use the Clerk session as the single auth source
+  // for the header. Supabase remains the untouched fallback until cutover.
+  const clerkUser = clerkEnabled ? await currentUser() : null
+  const currentUserData = clerkUser
+    ? {
+        email: clerkUser.emailAddresses[0]?.emailAddress ?? "",
+        user_metadata: {
+          full_name: clerkUser.fullName ?? clerkUser.firstName ?? "",
+        },
+        app_metadata: {
+          userrole: clerkUser.publicMetadata?.role ?? "user",
+          isAuthor: clerkUser.publicMetadata?.isAuthor === true,
+        },
+      }
+    : user ?? await getUser()
 
   return (
     <>
@@ -40,14 +58,14 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
               </Link>
             </div>
 
-            {currentUser ? (
+            {currentUserData ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors max-w-[58vw] sm:max-w-[360px]">
-                  <span className="truncate">Hi {currentUser?.user_metadata?.full_name ?? currentUser.email}</span>
+                  <span className="truncate">Hi {currentUserData?.user_metadata?.full_name ?? currentUserData.email}</span>
                   <ChevronDown className="h-4 w-4 flex-shrink-0" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="w-48">
-                  {currentUser?.app_metadata?.userrole === "ADMIN" && (
+                  {currentUserData?.app_metadata?.userrole === "ADMIN" && (
                     <DropdownMenuItem asChild>
                       <a href="/admin_panel" className="flex w-full items-center gap-2">
                         <ShieldIcon width={18} />
@@ -55,7 +73,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                       </a>
                     </DropdownMenuItem>
                   )}
-                  {currentUser?.app_metadata?.isAuthor === true && (
+                  {currentUserData?.app_metadata?.isAuthor === true && (
                     <DropdownMenuItem asChild>
                       <a href="/my-sales" className="flex w-full items-center gap-2">
                         <ChartBarIcon width={18} />
