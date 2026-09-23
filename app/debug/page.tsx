@@ -13,7 +13,7 @@ export const metadata = {
 export const revalidate = 0;
 
 export default async function DebugPage() {
-    const supabase = createClient();
+    const supabase = await createClient();
     
     const debugInfo: any = {
         environment: {
