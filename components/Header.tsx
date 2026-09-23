@@ -1,5 +1,5 @@
 import { getUser } from "@/utils/supabase/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { getMigrationAuthUser } from "@/cloudflare/auth/nextjs-user";
 import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
@@ -33,16 +33,21 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
 
   // During Clerk migration, use the Clerk session as the single auth source
   // for the header. Supabase remains the untouched fallback until cutover.
-  const clerkUser = clerkEnabled ? await currentUser() : null
-  const currentUserData = clerkUser
+  const migrationUser = clerkEnabled ? await getMigrationAuthUser() : null
+  const currentUserData = migrationUser
     ? {
-        email: clerkUser.emailAddresses[0]?.emailAddress ?? "",
+        email: migrationUser.email,
         user_metadata: {
-          full_name: clerkUser.fullName ?? clerkUser.firstName ?? "",
+          full_name: migrationUser.d1User?.full_name || migrationUser.fullName,
         },
         app_metadata: {
-          userrole: clerkUser.publicMetadata?.role ?? "user",
-          isAuthor: clerkUser.publicMetadata?.isAuthor === true,
+          userrole:
+            migrationUser.d1User?.role === "admin"
+              ? "ADMIN"
+              : migrationUser.d1User?.role === "publisher"
+                ? "PUBLISHER"
+                : "user",
+          isAuthor: migrationUser.d1User?.role === "publisher",
         },
       }
     : user ?? await getUser()
