@@ -28,7 +28,6 @@ type HeaderProps = {
 
 export default async function Header({ user, categoryNavigation }: HeaderProps) {
   const clerkEnabled =
-    process.env.NEXT_PUBLIC_CLERK_MIGRATION_ENABLED === "true" &&
     Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
     Boolean(process.env.CLERK_SECRET_KEY)
 
