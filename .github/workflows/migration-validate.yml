@@ -23,6 +23,29 @@ jobs:
       - name: Install exact migration dependencies
         run: npm ci --legacy-peer-deps
 
+      - name: Validate D1 schema and migration locally
+        run: |
+          python3 - <<'PY'
+          import sqlite3, pathlib
+          db=sqlite3.connect(':memory:')
+          db.execute('PRAGMA foreign_keys=ON')
+          schema=pathlib.Path('migrations/0001_initial_shoppersocean.sql').read_text()
+          db.executescript(schema)
+          tables={r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+          required={'users','authors','books','private_book_files','orders','payments','testimonials','authors_interest_submission','layout_settings'}
+          assert required <= tables, (required-tables)
+          db.execute("INSERT INTO users(id,email,full_name) VALUES('u1','u@example.com','Test User')")
+          db.execute("INSERT INTO authors(author_id,user_id,name) VALUES('a1','u1','Author')")
+          db.execute("INSERT INTO books(id,title,author_id) VALUES('b1','Book','a1')")
+          db.execute("INSERT INTO private_book_files(id,book_id,file_path,file_name) VALUES('f1','b1','source.pdf','source.pdf')")
+          db.execute("INSERT INTO orders(id,user_id,product_id,status) VALUES('o1','u1','b1','completed')")
+          assert db.execute("SELECT 1 FROM orders WHERE user_id='u1' AND product_id='b1' AND status='completed'").fetchone()
+          db.execute("DELETE FROM users WHERE id='u1'")
+          assert db.execute("SELECT COUNT(*) FROM orders WHERE user_id='u1'").fetchone()[0] == 0
+          assert db.execute("SELECT COUNT(*) FROM private_book_files WHERE book_id='b1'").fetchone()[0] == 0
+          print('D1 schema, foreign keys, purchase linkage, and user deletion passed.')
+          PY
+
       - name: Validate Next.js build
         run: npm run build
 
