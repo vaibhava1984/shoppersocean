@@ -59,7 +59,7 @@ CREATE INDEX IF NOT EXISTS idx_orders_user_product ON orders(user_id, product_id
 CREATE INDEX IF NOT EXISTS idx_orders_razorpay ON orders(razorpay_order_id);
 CREATE INDEX IF NOT EXISTS idx_payments_order ON payments(order_id);
 CREATE INDEX IF NOT EXISTS idx_payments_payment_id ON payments(payment_id);
-CREATE INDEX IF NOT EXISTS idx_files_book ON private_book_files(book_id);
+CREATE INDEX IF NOT EXISTS idx_files_book ON private_book_files(book_id);\nCREATE INDEX IF NOT EXISTS idx_files_r2_key ON private_book_files(r2_key);
 CREATE INDEX IF NOT EXISTS idx_reviews_book ON testimonials(book_id);
 CREATE INDEX IF NOT EXISTS idx_layout_section ON layout_settings(page_section);
 CREATE INDEX IF NOT EXISTS idx_authors_user ON authors(user_id);
