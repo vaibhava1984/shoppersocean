@@ -112,7 +112,7 @@ export default function ClerkSettings({ initialUser }: { initialUser: any }) {
 
   const handlePassword = async () => {
     setPasswordMessage("")
-    if (password.length < 6) {
+    if (password.length < 8) {
       setPasswordMessage("Password must contain at least 6 letters/digits.")
       return
     }
@@ -157,10 +157,11 @@ export default function ClerkSettings({ initialUser }: { initialUser: any }) {
     <Card>
       <CardHeader><CardTitle>Change Password</CardTitle></CardHeader>
       <CardContent><div className="space-y-5">
-        <div><label className="block font-medium mb-1">New Password</label><Input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter a new password" autoComplete="new-password" /><p className="mt-1 text-sm text-slate-500">Minimum 6 letters/digits.</p></div>
+        <div><label className="block font-medium mb-1">New Password</label><Input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Enter a new password" autoComplete="new-password" /><p className="mt-1 text-sm text-slate-500">Minimum 8 characters (required by Clerk).</p></div>
         <div><label className="block font-medium mb-1">Confirm New Password</label><Input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} autoComplete="new-password" /></div>
         {passwordMessage && <div className="rounded-md bg-slate-100 p-3 text-sm text-slate-700">{passwordMessage}</div>}
-        <Button type="button" onClick={handlePassword} disabled={changingPassword || password.length < 6 || confirmPassword.length < 6} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6">{changingPassword && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}{changingPassword ? "Changing Password..." : "Change Password"}</Button>
+        <Button type="button" onClick={handlePassword} disabled={changingPassword || password.length < 8 || confirmPassword.length < 8} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6">{changingPassword && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}{changingPassword ? "Changing Password..." : "Change Password"}</Button>
       </div></CardContent>
     </Card>
   </div>
+}
