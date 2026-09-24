@@ -1,98 +1,45 @@
-import { createAdminClient } from "@/utils/supabase/server_admin";
-import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from 'next/server'
+import { NextResponse } from "next/server";
+import { getD1 } from "@/utils/cloudflare/d1";
+import { requireAdmin } from "@/utils/auth/requireUser";
 
-const SECTION_TYPES = ['HOMEPAGE_TRENDING', 'HOMEPAGE_COLLECTION', 'HS'] as const
-type SectionType = (typeof SECTION_TYPES)[number]
+const SECTION_TYPES=["HOMEPAGE_TRENDING","HOMEPAGE_COLLECTION","HS"] as const;
+type SectionType=(typeof SECTION_TYPES)[number];
+const valid=(v:unknown):v is SectionType=>typeof v==="string"&&SECTION_TYPES.includes(v as SectionType);
 
-function isSectionType(value: unknown): value is SectionType {
-    return typeof value === 'string' && SECTION_TYPES.includes(value as SectionType)
+export async function GET(request:Request){
+ try{
+  if(!(await requireAdmin()))return NextResponse.json({error:"Not allowed"},{status:403});
+  const db=getD1();if(!db)return NextResponse.json({error:"Cloudflare database is unavailable"},{status:503});
+  const search=new URL(request.url).searchParams.get("search")?.trim()??"";
+  if(search.length>=2){
+   const like=`%${search.replace(/[\\%_]/g,c=>"\\\\"+c)}%`;
+   const {results=[]}=await db.prepare("SELECT id,title,author_name FROM books WHERE is_deleted=0 AND (title LIKE ? COLLATE NOCASE OR author_name LIKE ? COLLATE NOCASE) ORDER BY title ASC LIMIT 15").bind(like,like).all<any>();
+   return NextResponse.json({books:results.map(b=>({id:b.id,title:b.title,author:b.author_name}))});
+  }
+  const {results:layout=[]}=await db.prepare("SELECT id,page_section,value FROM layout_settings ORDER BY id ASC").all<any>();
+  const ids=layout.map(x=>x.value).filter(Boolean);
+  const books=ids.length?(await db.prepare(`SELECT id,title,author_name,is_deleted FROM books WHERE id IN (${ids.map(()=>"?").join(",")})`).bind(...ids).all<any>()).results:[];
+  const byId=new Map(books.map(b=>[String(b.id),b]));
+  return NextResponse.json({sections:layout.map(x=>{const b=byId.get(String(x.value));return {entryId:x.id,pageSection:x.page_section,id:x.value,title:b?.title??null,author:b?.author_name??null,missing:!b||b.is_deleted===1};})});
+ }catch(e){console.error(e);return NextResponse.json({error:"Internal server error"},{status:500});}
 }
-
-async function getAdminClient() {
-    const { data: { user } } = await createClient().auth.getUser();
-    return { supabase: createAdminClient(), isAdmin: user?.app_metadata?.userrole === "ADMIN" }
+export async function POST(request:Request){
+ try{
+  if(!(await requireAdmin()))return NextResponse.json({error:"Not allowed"},{status:403});
+  const db=getD1();if(!db)return NextResponse.json({error:"Cloudflare database is unavailable"},{status:503});
+  const {pageSection,bookId}=await request.json();
+  if(!valid(pageSection)||!bookId)return NextResponse.json({error:"Invalid section or book"},{status:400});
+  const book=await db.prepare("SELECT id,title,author_name,is_deleted FROM books WHERE id=? LIMIT 1").bind(bookId).first<any>();
+  if(!book)return NextResponse.json({error:"Book not found"},{status:404});
+  if(book.is_deleted)return NextResponse.json({error:"This book has been deleted"},{status:400});
+  const existing=await db.prepare("SELECT id FROM layout_settings WHERE page_section=? AND value=? LIMIT 1").bind(pageSection,bookId).first();
+  if(existing)return NextResponse.json({error:"Book is already in this section"},{status:409});
+  const max=pageSection==="HOMEPAGE_TRENDING"?3:pageSection==="HOMEPAGE_COLLECTION"?4:null;
+  if(max!==null){const count=await db.prepare("SELECT COUNT(*) AS count FROM layout_settings WHERE page_section=?").bind(pageSection).first<any>();if((count?.count??0)>=max)return NextResponse.json({error:`This section is full. Maximum ${max} books allowed.`},{status:409});}
+  const inserted=await db.prepare("INSERT INTO layout_settings(page_section,value) VALUES(?,?) RETURNING id").bind(pageSection,bookId).first<any>();
+  return NextResponse.json({entry:{entryId:inserted?.id,pageSection,id:book.id,title:book.title,author:book.author_name,missing:false}});
+ }catch(e){console.error(e);return NextResponse.json({error:"Internal server error"},{status:500});}
 }
-
-export async function GET(request: Request) {
-    try {
-        const { supabase, isAdmin } = await getAdminClient()
-        if (!isAdmin) return NextResponse.json({ error: 'Not allowed' }, { status: 403 })
-        const search = new URL(request.url).searchParams.get('search')?.trim() ?? ''
-        if (search.length >= 2) {
-            const escapedSearch = search.replace(/[%,]/g, (character) => `\\${character}`)
-            const { data, error } = await supabase.from('books').select('id, title, author_name').or(`title.ilike.%${escapedSearch}%,author_name.ilike.%${escapedSearch}%`).eq('is_deleted', false).order('title', { ascending: true }).limit(15)
-            if (error) {
-                console.error('Error searching books:', error)
-                return NextResponse.json({ error: `Failed to search books: ${error.message}` }, { status: 500 })
-            }
-            return NextResponse.json({ books: (data ?? []).map(book => ({ id: book.id, title: book.title, author: book.author_name })) })
-        }
-        const { data: layoutData, error: layoutError } = await supabase.from('layout_settings').select('id, page_section, value').order('id', { ascending: true })
-        if (layoutError) {
-            console.error('Error fetching layout settings:', layoutError)
-            return NextResponse.json({ error: `Failed to fetch layout settings: ${layoutError.message}` }, { status: 500 })
-        }
-        const bookIds = (layoutData ?? []).map(item => item.value)
-        const { data: booksData, error: booksError } = bookIds.length ? await supabase.from('books').select('id, title, author_name, is_deleted').in('id', bookIds) : { data: [], error: null }
-        if (booksError) return NextResponse.json({ error: `Failed to fetch books: ${booksError.message}` }, { status: 500 })
-        const booksById = new Map((booksData ?? []).map(book => [book.id, book]))
-        const sections = (layoutData ?? []).map(item => { const book = booksById.get(item.value); return { entryId: item.id, pageSection: item.page_section, id: item.value, title: book?.title ?? null, author: book?.author_name ?? null, missing: !book || book.is_deleted === true } })
-        return NextResponse.json({ sections })
-    } catch (error) {
-        console.error('Unexpected error:', error)
-        return NextResponse.json({ error: error instanceof Error ? error.message : 'Internal server error' }, { status: 500 })
-    }
-}
-
-export async function POST(request: Request) {
-    try {
-        const { supabase, isAdmin } = await getAdminClient()
-        if (!isAdmin) return NextResponse.json({ error: 'Not allowed' }, { status: 403 })
-        const { pageSection, bookId } = await request.json()
-        if (!isSectionType(pageSection) || !bookId) return NextResponse.json({ error: 'Invalid section or book' }, { status: 400 })
-        const { data: book, error: bookError } = await supabase.from('books').select('id, title, author_name, is_deleted').eq('id', bookId).maybeSingle()
-        if (bookError) {
-            console.error('Error looking up book:', bookError)
-            return NextResponse.json({ error: `Failed to look up book: ${bookError.message}` }, { status: 500 })
-        }
-        if (!book) return NextResponse.json({ error: 'Book not found' }, { status: 404 })
-        if (book.is_deleted) return NextResponse.json({ error: 'This book has been deleted' }, { status: 400 })
-        const { data: existing, error: existingError } = await supabase.from('layout_settings').select('id').match({ page_section: pageSection, value: bookId })
-        if (existingError) {
-            console.error('Error checking existing selection:', existingError)
-            return NextResponse.json({ error: `Failed to save selection: ${existingError.message}` }, { status: 500 })
-        }
-        if (existing && existing.length > 0) return NextResponse.json({ error: 'Book is already in this section' }, { status: 409 })
-        const maxBooks = pageSection === 'HOMEPAGE_TRENDING' ? 3 : pageSection === 'HOMEPAGE_COLLECTION' ? 4 : null
-        if (maxBooks !== null) {
-            const { data: sectionEntries, error: countError } = await supabase.from('layout_settings').select('id').eq('page_section', pageSection)
-            if (countError) return NextResponse.json({ error: `Failed to validate section size: ${countError.message}` }, { status: 500 })
-            if ((sectionEntries?.length ?? 0) >= maxBooks) return NextResponse.json({ error: `This section is full. Maximum ${maxBooks} books allowed.` }, { status: 409 })
-        }
-        const { data: inserted, error: insertError } = await supabase.from('layout_settings').insert({ page_section: pageSection, value: bookId }).select('id').single()
-        if (insertError) {
-            console.error('Error saving book selection:', insertError)
-            return NextResponse.json({ error: `Failed to save selection: ${insertError.message}` }, { status: 500 })
-        }
-        return NextResponse.json({ entry: { entryId: inserted.id, pageSection, id: book.id, title: book.title, author: book.author_name, missing: false } })
-    } catch (error) {
-        console.error('Unexpected error:', error)
-        return NextResponse.json({ error: error instanceof Error ? error.message : 'Internal server error' }, { status: 500 })
-    }
-}
-
-export async function DELETE(request: Request) {
-    try {
-        const { supabase, isAdmin } = await getAdminClient()
-        if (!isAdmin) return NextResponse.json({ error: 'Not allowed' }, { status: 403 })
-        const { entryId } = await request.json()
-        if (!entryId) return NextResponse.json({ error: 'Missing entry id' }, { status: 400 })
-        const { error: deleteError } = await supabase.from('layout_settings').delete().eq('id', entryId)
-        if (deleteError) return NextResponse.json({ error: `Failed to remove book: ${deleteError.message}` }, { status: 500 })
-        return NextResponse.json({ message: 'Book removed successfully' })
-    } catch (error) {
-        console.error('Unexpected error:', error)
-        return NextResponse.json({ error: error instanceof Error ? error.message : 'Internal server error' }, { status: 500 })
-    }
+export async function DELETE(request:Request){
+ try{if(!(await requireAdmin()))return NextResponse.json({error:"Not allowed"},{status:403});const db=getD1();if(!db)return NextResponse.json({error:"Cloudflare database is unavailable"},{status:503});const {entryId}=await request.json();if(!entryId)return NextResponse.json({error:"Missing entry id"},{status:400});await db.prepare("DELETE FROM layout_settings WHERE id=?").bind(entryId).run();return NextResponse.json({message:"Book removed successfully"});}catch(e){console.error(e);return NextResponse.json({error:"Internal server error"},{status:500});}
 }
