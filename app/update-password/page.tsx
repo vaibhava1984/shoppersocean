@@ -1,2 +1,9 @@
+import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-export default function UpdatePasswordPage() { redirect("/sign-in"); }
+import { UpdatePasswordForm } from "@/components/UpdatePasswordForm";
+
+export default async function UpdatePassword() {
+  const user = await currentUser();
+  if (!user) redirect("/sign-in");
+  return <UpdatePasswordForm />;
+}
