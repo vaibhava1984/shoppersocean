@@ -12,6 +12,17 @@ CREATE TABLE IF NOT EXISTS profiles (
   updated_at TEXT
 );
 
+CREATE TABLE IF NOT EXISTS authors (
+  author_id TEXT PRIMARY KEY,
+  user_id TEXT,
+  name TEXT,
+  bio TEXT,
+  is_deleted INTEGER DEFAULT 0,
+  created_at TEXT,
+  updated_at TEXT,
+  FOREIGN KEY(user_id) REFERENCES profiles(id)
+);
+
 CREATE TABLE IF NOT EXISTS books (
   id TEXT PRIMARY KEY,
   published_by TEXT,
@@ -36,17 +47,6 @@ CREATE TABLE IF NOT EXISTS books (
   updated_at TEXT,
   FOREIGN KEY(author_id) REFERENCES authors(author_id),
   FOREIGN KEY(published_by) REFERENCES profiles(id)
-);
-
-CREATE TABLE IF NOT EXISTS authors (
-  author_id TEXT PRIMARY KEY,
-  user_id TEXT,
-  name TEXT,
-  bio TEXT,
-  is_deleted INTEGER DEFAULT 0,
-  created_at TEXT,
-  updated_at TEXT,
-  FOREIGN KEY(user_id) REFERENCES profiles(id)
 );
 
 CREATE TABLE IF NOT EXISTS authors_interest_submission (
@@ -132,3 +132,9 @@ CREATE INDEX IF NOT EXISTS idx_orders_user_date ON orders(user_id, order_date);
 CREATE INDEX IF NOT EXISTS idx_private_book_files_book ON private_book_files(book_id);
 CREATE INDEX IF NOT EXISTS idx_authors_user ON authors(user_id);
 CREATE INDEX IF NOT EXISTS idx_testimonials_user_book ON testimonials(user_id, book_id);
+
+
+CREATE INDEX IF NOT EXISTS idx_books_author ON books(author_id);
+CREATE INDEX IF NOT EXISTS idx_books_publisher ON books(published_by);
+CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
+CREATE INDEX IF NOT EXISTS idx_profiles_clerk_user ON profiles(clerk_user_id);
