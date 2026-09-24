@@ -1,4 +1,5 @@
-import { getUser } from "@/utils/supabase/server";
+import { currentUser } from "@clerk/nextjs/server";
+import { getD1 } from "@/utils/cloudflare/d1";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card"
 import { Star } from 'lucide-react'
@@ -11,7 +12,6 @@ import TrendingBooks from "@/components/trending_books";
 import BooksCollections from "@/components/books_collections";
 import HeroSection from "@/components/HeroSection";
 import { getHomepageBooksServer } from "@/utils/homepageBooksServer";
-import { createClient } from "@/utils/supabase/server";
 
 export const metadata = {
   title: 'Home',
@@ -19,18 +19,19 @@ export const metadata = {
 }
 
 export default async function LandingPage() {
-  const supabase = createClient();
-  const [user, homepageBooks, authorsResult, languageRowsResult] = await Promise.all([
-    getUser(),
+  const db = getD1();
+  if (!db) throw new Error("Cloudflare D1 is not available");
+  const user = await currentUser();
+  const [homepageBooks, authorsResult, languageRowsResult] = await Promise.all([
     getHomepageBooksServer(),
-    supabase.from("authors").select("author_id,name").eq("is_deleted", false).order("name", { ascending: true }),
-    supabase.from("books").select("language").eq("is_deleted", false).not("language", "is", null),
+    db.prepare("SELECT author_id,name FROM authors WHERE COALESCE(is_deleted, 0) = 0 ORDER BY name ASC").all<Record<string, any>>(),
+    db.prepare("SELECT language FROM books WHERE COALESCE(is_deleted, 0) = 0 AND language IS NOT NULL").all<Record<string, any>>(),
   ]);
-  const authors = authorsResult.data ?? [];
-  const languages = Array.from(new Set((languageRowsResult.data ?? []).map((row) => row.language).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+  const authors = authorsResult.results ?? [];
+  const languages = Array.from(new Set(languageRowsResult.results.map((row) => row.language).filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b)));
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <Header user={user} categoryNavigation={{ authors, languages }} />
+      <Header categoryNavigation={{ authors, languages }} />
       <div>
         <HeroSection
           title="Shoppers Ocean"
