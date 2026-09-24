@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { createClient } from "@/utils/supabase/client"
+import { useUser } from "@clerk/nextjs"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -20,7 +20,7 @@ const normalizeIndianMobile = (value: string) => {
 }
 
 const Settings = ({ initialUser }: { initialUser: any }) => {
-  const supabase = createClient()
+  const { user, isLoaded } = useUser()
   const initialMobile = initialUser?.phone ?? ""
   const [country, setCountry] = useState(initialUser?.user_metadata?.country ?? "")
   const [fullName, setFullName] = useState(initialUser?.user_metadata?.full_name ?? "")
@@ -84,7 +84,7 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
         setOriginalMobile(normalizedMobile)
         setMessage("Your details have been successfully updated.")
       }
-      await supabase.auth.refreshSession()
+      await user?.reload()
     } catch {
       setMessage("Unable to update your details right now. Please try again.")
     } finally {
@@ -170,9 +170,7 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
                   <Button type="button" onClick={async () => {
                     if (!/^\d{6}$/.test(otp)) { setMessage("Please enter the 6-digit verification code."); return }
                     setIsSaving(true)
-                    const { error } = await supabase.auth.verifyOtp({ phone: normalizeIndianMobile(mobile), token: otp, type: "phone_change" })
-                    setIsSaving(false)
-                    if (error) { setMessage(error.message || "Incorrect or expired verification code."); return }
+                    try {\n                      const phoneResource = user?.phoneNumbers.find(p => p.phoneNumber === normalizeIndianMobile(mobile))\n                      if (!phoneResource) { setMessage("This mobile verification request is no longer available. Please update again."); setIsSaving(false); return }\n                      await phoneResource.attemptVerification({ code: otp })\n                      const response = await fetch("/api/update-profile", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fullName, country, email, mobile, address }) })\n                      const result = await response.json()\n                      if (!response.ok) { setMessage(result.error || "Unable to save the verified mobile number."); setIsSaving(false); return }\n                      await user?.reload()\n                      setIsSaving(false)\n                    } catch (error: any) { setIsSaving(false); setMessage(error?.message || "Incorrect or expired verification code."); return }
                     setOtpRequired(false)
                     setOtp("")
                     setOriginalMobile(normalizeIndianMobile(mobile))
