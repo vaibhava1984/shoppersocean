@@ -6,12 +6,12 @@ import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Footer from "@/components/Footer";
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 import type { Metadata, ResolvingMetadata } from "next";
 import AuthorApplicationBanner from "@/app/components/AuthorApplicationBanner";
 import BookReviewSection from "@/app/components/BookReviewSection";
 
-const DynamicPaymentButton = dynamic(() => import("@/components/PaymentButton"), { loading: () => <p>Loading...</p> });
+const DynamicPaymentButton = nextDynamic(() => import("@/components/PaymentButton"), { loading: () => <p>Loading...</p> });
 
 type Props = { params: { bookId: string }; searchParams: { [key: string]: string | string[] | undefined } };
 
