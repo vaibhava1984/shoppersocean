@@ -1,17 +1,16 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser, clerkClient } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { clerkClient } from "@clerk/nextjs/server";
 
 export default async function AuthButton() {
   const user = await currentUser();
 
   const signOut = async () => {
     "use server";
-    const current = await currentUser();
-    if (current) {
+    const { sessionId } = await auth();
+    if (sessionId) {
       const client = await clerkClient();
-      await client.users.updateUserMetadata(current.id, { publicMetadata: current.publicMetadata });
+      await client.sessions.revokeSession(sessionId);
     }
     redirect("/login");
   };
