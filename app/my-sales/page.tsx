@@ -1,4 +1,6 @@
 import Header from "@/components/Header";
+
+export const dynamic = "force-dynamic";
 import Footer from "@/components/Footer";
 import { currentUser } from "@clerk/nextjs/server";
 import { getD1 } from "@/utils/cloudflare/d1";
