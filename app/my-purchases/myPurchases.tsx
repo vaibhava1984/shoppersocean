@@ -18,51 +18,16 @@ const PurchaseHistory = () => {
     useEffect(() => {
         const fetchPurchases = async () => {
             try {
-                const { data: { user } } = await supabase.auth.getUser();
-
-                if (!user) throw new Error('User not authenticated');
-
-                // First fetch orders with product information
-                const { data: ordersData, error: ordersError } = await supabase
-                    .from('orders')
-                    .select(`
-                        *,
-                        books (
-                        id,
-                        title,
-                        price
-                        )
-                    `)
-                    .eq('user_id', user.id)
-                    .order('order_date', { ascending: false });
-                // console.log("ordersData-=====>", ordersData)
-
-                if (ordersError) throw ordersError;
-
-                // Then fetch corresponding payments
-                const orderIds = ordersData.map(order => order.id);
-                const { data: paymentsData, error: paymentsError } = await supabase
-                    .from('payments')
-                    .select('*')
-                    .in('order_id', orderIds);
-
-                if (paymentsError) throw paymentsError;
-
-                // Combine orders, products, and payments
-                const combinedData = ordersData.map(order => ({
-                    ...order,
-                    payment: paymentsData.find(payment => payment.order_id === order.id)
-                }));
-                // console.log("combinedData-=====>", combinedData)
-
-                setPurchases(combinedData);
-            } catch (err) {
-                setError(err.message);
+                const response = await fetch('/api/my-purchases', { cache: 'no-store' });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || 'Failed to load purchases');
+                setPurchases(data);
+            } catch (err: any) {
+                setError(err?.message || 'Failed to load purchases');
             } finally {
                 setLoading(false);
             }
         };
-
         fetchPurchases();
     }, []);
 
