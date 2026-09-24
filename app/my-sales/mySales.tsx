@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { createClient } from "@/utils/supabase/client";
 import {
     Select,
     SelectContent,
@@ -20,7 +19,6 @@ const AuthorOrdersDashboard = ({ authorId }: {
     const [timeFrame, setTimeFrame] = useState('month');
     const [orderedBooksData, setOrderedBooksData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const supabase = createClient();
 
 
     const getFilteredDate = (filterType) => {
@@ -47,74 +45,10 @@ const AuthorOrdersDashboard = ({ authorId }: {
     };
 
     const getSalesData = async (authorId, timeFilter = null) => {
-        try {
-            // Get all books by author
-            const { data: booksData, error: booksError } = await supabase
-                .from('books')
-                .select('id, title')
-                .eq('author_id', authorId);
-
-            if (booksError) throw booksError;
-
-            const bookIds = booksData.map(book => book.id);
-            const timeFilterDate = getFilteredDate(timeFilter);
-
-            // Get orders with time filter
-            let ordersQuery = supabase
-                .from('orders')
-                .select(`
-                    id,
-                    product_id,
-                    created_at,
-                    payments!payments_order_id_fkey (
-                        amount_in_inr,
-                        original_amount,
-                        original_currency,
-                        updated_at
-                    )
-                `)
-                .in('product_id', bookIds);
-
-            if (timeFilterDate) {
-                ordersQuery = ordersQuery.gte('created_at', timeFilterDate);
-            }
-
-            const { data: ordersData, error: ordersError } = await ordersQuery;
-            if (ordersError) throw ordersError;
-            // console.log("booksData=>", booksData)
-            // console.log("ordersData=>", ordersData)
-
-            // Process the data
-            const salesDetails = ordersData.map(order => {
-                const book = booksData.find(b => b.id === order.product_id);
-                // console.log("current order=>", order)
-                // console.log("book found=>", book)
-                const payment = order.payments; // Assuming one payment per order
-                // console.log("payment found=>", payment)
-
-                return {
-                    bookId: order.product_id,
-                    bookTitle: book.title,
-                    amount_in_inr: payment.amount_in_inr,
-                    transactedAmount: payment.original_amount,
-                    transactedAmountCurrency: payment.original_currency,
-                    saleDate: payment.updated_at
-                };
-            });
-
-            const result = {
-                totalOrders: ordersData.length,
-                totalRevenue: salesDetails.reduce((sum, sale) => sum + sale.amount_in_inr, 0),
-                totalActiveBooks: booksData.length,
-                salesDetails
-            };
-
-            return result;
-
-        } catch (error) {
-            console.error('Error fetching sales data:', error);
-            throw error;
-        }
+        const response = await fetch(`/api/my-sales?authorId=${encodeURIComponent(authorId)}&timeFrame=${encodeURIComponent(timeFilter || '')}`, { cache: 'no-store' });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to load sales data');
+        return data;
     };
 
     useEffect(() => {
