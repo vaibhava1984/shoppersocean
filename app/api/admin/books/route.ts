@@ -29,3 +29,4 @@ export async function DELETE(req:Request) {
   const {id}=await req.json(); await db.prepare("UPDATE books SET is_deleted=1, updated_at=datetime('now') WHERE id=?").bind(id).run();
   return NextResponse.json({success:true});
 }
+export async function PUT(req:Request) { return POST(req); }
