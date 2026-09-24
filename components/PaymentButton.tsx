@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useUser } from '@clerk/nextjs';
 import { Loader2Icon } from 'lucide-react';
 import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
-import { createClient } from "@/utils/supabase/client";
 import { getPurchaseStatus, setPurchaseStatus } from '@/utils/purchaseStatusCache';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
@@ -19,26 +19,25 @@ const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
 
 interface PaymentButtonProps { amount: number; notes?: object; userId?: string; productId: string; productTitle?: string; }
 export interface ExchangeRates { [key: string]: number; }
-const supabase = createClient();
 let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
-let currentUserPromise: ReturnType<typeof supabase.auth.getUser> | null = null;
 function getExchangeRatesOnce(): Promise<ExchangeRates> {
     const cachedRates = exchangeRatesCache.get(); if (cachedRates) return Promise.resolve(cachedRates);
     if (!exchangeRatesPromise) exchangeRatesPromise = fetchExchangeRates().then(rates => { exchangeRatesCache.set(rates); return rates; }).catch(error => { exchangeRatesPromise = null; throw error; });
     return exchangeRatesPromise;
 }
 export default function PaymentButton({ amount, notes, userId, productId, productTitle }: PaymentButtonProps) {
+    const { user } = useUser();
     const { toast } = useToast(); const [isLoading, setIsLoading] = useState(false); const [localAmount, setLocalAmount] = useState(amount);
     const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [hasPurchased, setHasPurchased] = useState(false);
     const [isInitialFetching, setIsInitialFetching] = useState(userId ? true : false); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false);
     useEffect(() => {
         let active = true;
-        const getUserOnce = async () => { if (!currentUserPromise) currentUserPromise = supabase.auth.getUser(); return currentUserPromise; };
         const getUserCurrency = (): string => { try { const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US'; return new Intl.NumberFormat(userLocale, { style: 'currency', currency: 'USD' }).resolvedOptions().currency || 'INR'; } catch { return 'INR'; } };
         async function setupLocalCurrency(passedCurrency?: string) { try { const detectedCurrency = passedCurrency ?? getUserCurrency(); if (active) setIsInitialFetching(true); const rates = await getExchangeRatesOnce(); if (!active) return; if (rates[detectedCurrency]) { setLocalCurrency(detectedCurrency); setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates)); } else { setLocalCurrency('INR'); setLocalAmount(amount); } setIsInitialFetching(false); } catch (error) { if (!active) return; console.error('Error setting up local currency:', error); setLocalCurrency('INR'); setLocalAmount(amount); setIsInitialFetching(false); } }
-        if (userId) getUserOnce().then(({ data }) => { if (!active) return; const country = data.user?.user_metadata?.country; return setupLocalCurrency(country ? getCurrencyCode(country) : undefined); }).catch(() => setupLocalCurrency()); else setupLocalCurrency();
+        const country = user?.publicMetadata?.country;
+        setupLocalCurrency(typeof country === 'string' ? getCurrencyCode(country) : undefined);
         return () => { active = false; };
-    }, [amount, userId]);
+    }, [amount, userId, user]);
     useEffect(() => { if (!productId || !userId) return; let active = true; setIsInitialFetching(true); getPurchaseStatus(userId, productId).then(purchased => { if (active) setHasPurchased(purchased); }).catch(error => console.error('Error checking purchase:', error)).finally(() => { if (active) setIsInitialFetching(false); }); return () => { active = false; }; }, [productId, userId]);
     const initializeRazorpay = () => new Promise((resolve) => { const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]'); if (existingScript && (window as any).Razorpay) return resolve(true); const script = document.createElement('script'); script.src = 'https://checkout.razorpay.com/v1/checkout.js'; script.onload = () => resolve(true); script.onerror = () => resolve(false); document.body.appendChild(script); });
     const handlePayment = async () => {
