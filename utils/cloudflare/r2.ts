@@ -11,13 +11,13 @@ export type R2ObjectLike = {
 
 type R2BucketLike = {
   get(key: string, options?: { range?: { offset: number; length?: number } }): Promise<R2ObjectLike | null>;
+  put(key: string, value: ArrayBuffer | ArrayBufferView | ReadableStream | string, options?: { httpMetadata?: Record<string, unknown> }): Promise<unknown>;
+  delete(key: string): Promise<void>;
 };
 
 export function getBooksBucket(): R2BucketLike | null {
   try {
     const { env } = getCloudflareContext();
     return (env as any).BOOKS_BUCKET ?? null;
-  } catch {
-    return null;
-  }
+  } catch { return null; }
 }
