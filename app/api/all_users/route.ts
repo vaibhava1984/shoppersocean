@@ -1,59 +1,7 @@
-import { createAdminClient } from "@/utils/supabase/server_admin";
-import { createClient } from "@/utils/supabase/server";
-import { NextResponse } from 'next/server'
-
-export async function POST(request: Request) {
-    try {
-        // Authenticate the actual signed-in admin using the request cookies.
-        // The service-role client must only be used after this check; it does not
-        // carry the browser user's session by itself.
-        const authClient = createClient();
-        const {
-            data: { user },
-        } = await authClient.auth.getUser();
-
-        if (user?.app_metadata?.userrole === "ADMIN") {
-            const adminClient = createAdminClient();
-            const { data: { users }, error: usersFetchError } = await adminClient.auth.admin.listUsers({
-                page: 1,
-                perPage: 1000
-            })
-
-
-            if (usersFetchError) {
-                console.error('Error fetching users records:', usersFetchError);
-                return;
-            }
-
-            // Return a clean, explicit user list so email addresses are always
-            // available to the admin UI even if the Auth user object changes shape.
-            const safeUsers = users.map((authUser) => ({
-                id: authUser.id,
-                email: authUser.email ?? authUser.user_metadata?.email ?? '',
-                phone: authUser.phone,
-                created_at: authUser.created_at,
-                updated_at: authUser.updated_at,
-                app_metadata: authUser.app_metadata,
-                user_metadata: authUser.user_metadata,
-                confirmed_at: authUser.confirmed_at,
-                last_sign_in_at: authUser.last_sign_in_at,
-            }))
-
-            return NextResponse.json(
-                { users: safeUsers },
-                { status: 200 }
-            )
-        } else {
-            return NextResponse.json(
-                { error: 'Not allowed' },
-                { status: 403 }
-            )
-        }
-    } catch (error) {
-        console.error('Unexpected error:', error)
-        return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
-        )
-    }
+import { NextResponse } from "next/server";
+import { getD1 } from "@/utils/cloudflare/d1";
+import { requireAdmin } from "@/utils/auth/requireUser";
+export async function POST(){
+ try{if(!(await requireAdmin()))return NextResponse.json({error:"Not allowed"},{status:403});const db=getD1();if(!db)return NextResponse.json({error:"Cloudflare database is unavailable"},{status:503});const {results=[]}=await db.prepare("SELECT id,clerk_user_id,email,mobile,full_name,country,address,created_at,updated_at FROM profiles ORDER BY created_at DESC").all<any>();return NextResponse.json({users:results.map(u=>({id:u.clerk_user_id||u.id,email:u.email||"",phone:u.mobile||null,created_at:u.created_at,updated_at:u.updated_at,app_metadata:{},user_metadata:{full_name:u.full_name,country:u.country,address:u.address,mobile:u.mobile}}))});}
+ catch(e){console.error(e);return NextResponse.json({error:"Internal server error"},{status:500});}
 }
