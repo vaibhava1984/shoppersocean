@@ -1,7 +1,8 @@
 import Header from "@/components/Header"
+import { currentUser } from "@clerk/nextjs/server"
+import { getD1 } from "@/utils/cloudflare/d1"
 import CategoriesAccordion from "@/app/components/CategoriesAccordion"
 import { Card, CardContent } from "@/components/ui/card"
-import { createClient } from "@/utils/supabase/server"
 import Footer from "@/components/Footer"
 import BookCard from "@/components/BookCard"
 import HeroSection from "@/components/HeroSection"
@@ -40,50 +41,33 @@ export default async function BookShelfPage({
     }
 
     const language = languageMap[languageParam] ?? (languageParam !== "all" ? languageParam : undefined)
-    const supabase = createClient()
+    const db = getD1()
+    if (!db) throw new Error("Cloudflare D1 is not available")
+    const user = await currentUser()
 
-    let booksQuery = supabase
-        .from("books")
-        .select("id,title,description,price,cover_images,author_name,genre")
-        .eq("is_deleted", false)
-        .limit(100)
-        .order("title", { ascending: true })
+    let bookSql = "SELECT id,title,description,price,cover_images,author_name,genre FROM books WHERE COALESCE(is_deleted, 0) = 0"
+    const bookParams: unknown[] = []
+    if (language) { bookSql += " AND language = ?"; bookParams.push(language) }
+    if (authorParam !== "all") { bookSql += " AND author_id = ?"; bookParams.push(authorParam) }
+    if (genreParam !== "all") { bookSql += " AND genre = ?"; bookParams.push(genreParam) }
+    bookSql += " ORDER BY title ASC LIMIT 100"
 
-    if (language) booksQuery = booksQuery.eq("language", language)
-    if (authorParam !== "all") booksQuery = booksQuery.eq("author_id", authorParam)
-    if (genreParam !== "all") booksQuery = booksQuery.eq("genre", genreParam)
-
-    // Start all independent requests at the same time. The page no longer waits
-    // for the catalogue and authors before even starting the auth lookup.
-    const [booksResult, authorsResult, userResult] = await Promise.all([
-        booksQuery,
-        supabase
-            .from("authors")
-            .select("author_id,name")
-            .eq("is_deleted", false)
-            .order("name", { ascending: true }),
-        supabase.auth.getUser(),
+    const [booksResult, authorsResult, languageRowsResult] = await Promise.all([
+        db.prepare(bookSql).bind(...bookParams).all<Record<string, any>>(),
+        db.prepare("SELECT author_id,name FROM authors WHERE COALESCE(is_deleted, 0) = 0 ORDER BY name ASC").all<Record<string, any>>(),
+        db.prepare("SELECT language FROM books WHERE COALESCE(is_deleted, 0) = 0 AND language IS NOT NULL").all<Record<string, any>>(),
     ])
 
-    if (booksResult.error) {
-        console.error("[BookShelf] Error fetching books:", booksResult.error.message)
-    }
-    if (authorsResult.error) {
-        console.error("[BookShelf] Error fetching authors:", authorsResult.error.message)
-    }
+    const books = booksResult.results ?? []
+    const authors = authorsResult.results ?? []
+    const languages = Array.from(new Set(languageRowsResult.results.map((row) => row.language).filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b)))
 
-    const books = booksResult.data ?? []
-    const authors = authorsResult.data ?? []
-    const { data: languageRows } = await supabase.from("books").select("language").eq("is_deleted", false).not("language", "is", null)
-    const languages = Array.from(new Set((languageRows ?? []).map((row) => row.language).filter(Boolean))).sort((a, b) => a.localeCompare(b))
-    const user = userResult.data.user
-
-    const filteredBooks = books.map((book) => ({
-        ...book,
-        coverImage: book.cover_images?.[0],
-        images: book.cover_images,
-        author: book.author_name,
-    }))
+    const filteredBooks = books.map((book) => {
+        let images: string[] = []
+        if (Array.isArray(book.cover_images)) images = book.cover_images
+        else if (typeof book.cover_images === "string") { try { const parsed = JSON.parse(book.cover_images); images = Array.isArray(parsed) ? parsed : [] } catch {} }
+        return { ...book, coverImage: images[0], images, author: book.author_name }
+    })
 
     const authorInfo = {
         "Chetan Bhagat": "Chetan Bhagat is the author of seven blockbuster books. These include six novels—Five Point Someone (2004), One Night @ the Call Center (2005), The 3 Mistakes of My Life (2008), 2 States (2009), Revolution 2020 (2011), Half Girlfriend (2014), and One Indian Girl (2016). His non-fiction works include What Young India Wants (2012) and India Positive (2019).",
@@ -106,10 +90,7 @@ export default async function BookShelfPage({
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
-            <Header
-                user={user}
-                categoryNavigation={{ authors, languages }}
-            />
+            <Header categoryNavigation={{ authors, languages }} />
             <HeroSection
                 title=" Escape into Entertainment"
                 subtitle="Discover your next favorite book"
