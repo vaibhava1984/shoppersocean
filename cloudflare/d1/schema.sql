@@ -102,6 +102,7 @@ CREATE TABLE IF NOT EXISTS testimonials (
   id TEXT PRIMARY KEY,
   book_id TEXT,
   user_id TEXT,
+  users TEXT,
   description TEXT,
   rating REAL,
   created_at TEXT,
