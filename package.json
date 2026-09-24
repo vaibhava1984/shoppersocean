@@ -2,9 +2,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && opennextjs-cloudflare build --skipNextBuild",
     "start": "next start",
-    "preview": "opennextjs-cloudflare build && wrangler dev"
+    "preview": "opennextjs-cloudflare build && wrangler dev",
+    "build:next": "next build",
+    "deploy": "opennextjs-cloudflare deploy"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
