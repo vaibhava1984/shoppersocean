@@ -1,4 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
+
+export const dynamic = "force-dynamic";
 import { getD1 } from "@/utils/cloudflare/d1";
 import Header from "@/components/Header";
 import { Card, CardContent } from "@/components/ui/card";
