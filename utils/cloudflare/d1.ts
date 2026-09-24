@@ -1,3 +1,5 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+
 type D1DatabaseLike = {
   prepare(query: string): {
     bind(...values: unknown[]): {
@@ -9,6 +11,10 @@ type D1DatabaseLike = {
 };
 
 export function getD1(): D1DatabaseLike | null {
-  const runtime = globalThis as typeof globalThis & { DB?: D1DatabaseLike };
-  return runtime.DB ?? null;
+  try {
+    const { env } = getCloudflareContext();
+    return (env as any).DB ?? null;
+  } catch {
+    return null;
+  }
 }
