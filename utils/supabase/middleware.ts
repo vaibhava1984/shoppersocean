@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 import { getSupabaseConfig } from "./config"
+import { getSupabaseConfig } from "./config"
 
 const isPublicPath = (pathname: string) => pathname === "/" || pathname.startsWith("/login") || pathname.startsWith("/reset-password") || pathname.startsWith("/update-password") || pathname.startsWith("/auth") || pathname.startsWith("/bookShelf") || pathname.startsWith("/about") || pathname.startsWith("/contact") || pathname.startsWith("/api/contact-me") || pathname.startsWith("/services") || pathname.startsWith("/book/") || pathname.startsWith("/privacy-policy")
 
