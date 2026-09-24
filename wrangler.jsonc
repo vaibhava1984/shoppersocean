@@ -7,5 +7,13 @@
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "observability": { "enabled": true },
   "d1_databases": [{ "binding": "DB", "database_name": "shoppersocean-db" }],
-  "r2_buckets": [{ "binding": "BOOKS_BUCKET", "bucket_name": "shoppersocean-books" }]
+  "r2_buckets": [{ "binding": "BOOKS_BUCKET", "bucket_name": "shoppersocean-books" }],
+  "previews": {
+    "vars": {
+      "ENVIRONMENT": "preview"
+    },
+    "d1_databases": [
+      { "binding": "DB", "database_name": "shoppersocean-preview-db" }
+    ]
+  }
 }
