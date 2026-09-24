@@ -62,6 +62,18 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
     const mobileChanged = normalizedMobile !== normalizeIndianMobile(originalMobile)
 
     try {
+      if (mobileChanged && normalizedMobile) {
+        if (!isLoaded || !user) {
+          setMessage("Please wait for your account to finish loading and try again.")
+          return
+        }
+        let phoneResource = user.phoneNumbers.find(p => p.phoneNumber === normalizedMobile)
+        if (!phoneResource) {
+          phoneResource = await user.createPhoneNumber({ phoneNumber: normalizedMobile })
+        }
+        await phoneResource.prepareVerification()
+      }
+
       const response = await fetch("/api/update-profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -170,7 +182,8 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
                   <Button type="button" onClick={async () => {
                     if (!/^\d{6}$/.test(otp)) { setMessage("Please enter the 6-digit verification code."); return }
                     setIsSaving(true)
-                    try {\n                      const phoneResource = user?.phoneNumbers.find(p => p.phoneNumber === normalizeIndianMobile(mobile))\n                      if (!phoneResource) { setMessage("This mobile verification request is no longer available. Please update again."); setIsSaving(false); return }\n                      await phoneResource.attemptVerification({ code: otp })\n                      const response = await fetch("/api/update-profile", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fullName, country, email, mobile, address }) })\n                      const result = await response.json()\n                      if (!response.ok) { setMessage(result.error || "Unable to save the verified mobile number."); setIsSaving(false); return }\n                      await user?.reload()\n                      setIsSaving(false)\n                    } catch (error: any) { setIsSaving(false); setMessage(error?.message || "Incorrect or expired verification code."); return }
+                    try {
+                      const phoneResource = user?.phoneNumbers.find(p => p.phoneNumber === normalizeIndianMobile(mobile))\n                      if (!phoneResource) { setMessage("This mobile verification request is no longer available. Please update again."); setIsSaving(false); return }\n                      await phoneResource.attemptVerification({ code: otp })\n                      const response = await fetch("/api/update-profile", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fullName, country, email, mobile, address }) })\n                      const result = await response.json()\n                      if (!response.ok) { setMessage(result.error || "Unable to save the verified mobile number."); setIsSaving(false); return }\n                      await user?.reload()\n                      setIsSaving(false)\n                    } catch (error: any) { setIsSaving(false); setMessage(error?.message || "Incorrect or expired verification code."); return }
                     setOtpRequired(false)
                     setOtp("")
                     setOriginalMobile(normalizeIndianMobile(mobile))
