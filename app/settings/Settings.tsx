@@ -67,7 +67,7 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
           setMessage("Please wait for your account to finish loading and try again.")
           return
         }
-        let phoneResource = user.phoneNumbers.find(p => p.phoneNumber === normalizedMobile)
+        let phoneResource = user.phoneNumbers.find((p: any) => p.phoneNumber === normalizedMobile)
         if (!phoneResource) {
           phoneResource = await user.createPhoneNumber({ phoneNumber: normalizedMobile })
         }
@@ -183,7 +183,7 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
                     if (!/^\d{6}$/.test(otp)) { setMessage("Please enter the 6-digit verification code."); return }
                     setIsSaving(true)
                     try {
-                      const phoneResource = user?.phoneNumbers.find(p => p.phoneNumber === normalizeIndianMobile(mobile))
+                      const phoneResource = user?.phoneNumbers.find((p: any) => p.phoneNumber === normalizeIndianMobile(mobile))
                       if (!phoneResource) { setMessage("This mobile verification request is no longer available. Please update again."); setIsSaving(false); return }
                       await phoneResource.attemptVerification({ code: otp })
                       const response = await fetch("/api/update-profile", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fullName, country, email, mobile, address }) })

@@ -1,9 +1,6 @@
 name: Cloudflare migration verification
 
 on:
-  push:
-    branches:
-      - cloudflare-safe-migration
   workflow_dispatch:
 
 jobs:

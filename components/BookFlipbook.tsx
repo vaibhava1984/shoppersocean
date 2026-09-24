@@ -8,7 +8,7 @@ declare global {
   interface Window {
     pdfjsLib?: {
       GlobalWorkerOptions: { workerSrc: string };
-      getDocument: (source: { url: string }) => { promise: any };
+      getDocument: (source: { url: string; disableAutoFetch?: boolean; disableStream?: boolean }) => { promise: any };
     };
   }
 }

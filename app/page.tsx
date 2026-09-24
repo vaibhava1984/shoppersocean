@@ -30,7 +30,7 @@ export default async function LandingPage() {
     db.prepare("SELECT language FROM books WHERE COALESCE(is_deleted, 0) = 0 AND language IS NOT NULL").all<Record<string, any>>(),
   ]);
   const authors = authorsResult.results ?? [];
-  const languages = Array.from(new Set(languageRowsResult.results.map((row) => row.language).filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b)));
+  const languages: string[] = Array.from(new Set(languageRowsResult.results.map((row) => String(row.language ?? "")).filter(Boolean))).sort((a, b) => a.localeCompare(b));
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header categoryNavigation={{ authors, languages }} />

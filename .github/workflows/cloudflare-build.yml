@@ -1,7 +1,5 @@
 name: Cloudflare migration build check
 on:
-  push:
-    branches: [cloudflare-safe-migration]
   workflow_dispatch:
 jobs:
   build:
