@@ -2,8 +2,6 @@ import { NextResponse } from "next/server"
 import { createClient } from "@/utils/supabase/server"
 import { firebaseAdminAuth, firestore } from "@/lib/firebase/admin"
 
-const normalizeIndianMobile=(value:string)=>{const digits=value.replace(/\D/g,"");if(digits.length===10&&/^[6-9]\d{9}$/.test(digits))return `+91${digits}`;if(digits.length===12&&digits.startsWith("91")&&/^[6-9]\d{9}$/.test(digits.slice(2)))return `+${digits}`;return ""}
-
 export async function POST(request:Request){
  try{
   const {data:{user}}=await createClient().auth.getUser();
@@ -16,7 +14,7 @@ export async function POST(request:Request){
   const update:any={displayName:fullName,email};
   if(phone)update.phoneNumber=phone;
   await firebaseAdminAuth.updateUser(user.id,update);
-  await firestore.collection("profiles").doc(user.id).set({id:user.id,email,full_name:fullName,country,address,mobile:phone||user.phone||"",updated_at:new Date().toISOString()},{merge:true});
-  return NextResponse.json({success:true,otpRequired:false,user:{id:user.id,email,displayName:fullName},mobile:phone});
+  await firestore.collection("profiles").doc(user.id).set({id:user.id,email,full_name:fullName,country,address,mobile,updated_at:new Date().toISOString()},{merge:true});
+  return NextResponse.json({success:true,otpRequired:false,user:{id:user.id,email,displayName:fullName},mobile});
  }catch(error:any){console.error("Profile update request failed:",error);return NextResponse.json({error:error?.message||"Unable to update your details right now."},{status:500})}
 }
