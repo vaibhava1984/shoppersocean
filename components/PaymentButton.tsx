@@ -2,7 +2,8 @@
 import { useState, useEffect } from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
-import { createClient } from "@/utils/supabase/client";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirebaseApp } from "@/lib/firebase/client";
 import { getPurchaseStatus, setPurchaseStatus } from '@/utils/purchaseStatusCache';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
@@ -19,9 +20,7 @@ const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
 
 interface PaymentButtonProps { amount: number; notes?: object; userId?: string; productId: string; productTitle?: string; }
 export interface ExchangeRates { [key: string]: number; }
-const supabase = createClient();
 let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
-let currentUserPromise: ReturnType<typeof supabase.auth.getUser> | null = null;
 function getExchangeRatesOnce(): Promise<ExchangeRates> {
     const cachedRates = exchangeRatesCache.get(); if (cachedRates) return Promise.resolve(cachedRates);
     if (!exchangeRatesPromise) exchangeRatesPromise = fetchExchangeRates().then(rates => { exchangeRatesCache.set(rates); return rates; }).catch(error => { exchangeRatesPromise = null; throw error; });
@@ -33,10 +32,9 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
     const [isInitialFetching, setIsInitialFetching] = useState(userId ? true : false); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false);
     useEffect(() => {
         let active = true;
-        const getUserOnce = async () => { if (!currentUserPromise) currentUserPromise = supabase.auth.getUser(); return currentUserPromise; };
         const getUserCurrency = (): string => { try { const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US'; return new Intl.NumberFormat(userLocale, { style: 'currency', currency: 'USD' }).resolvedOptions().currency || 'INR'; } catch { return 'INR'; } };
         async function setupLocalCurrency(passedCurrency?: string) { try { const detectedCurrency = passedCurrency ?? getUserCurrency(); if (active) setIsInitialFetching(true); const rates = await getExchangeRatesOnce(); if (!active) return; if (rates[detectedCurrency]) { setLocalCurrency(detectedCurrency); setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates)); } else { setLocalCurrency('INR'); setLocalAmount(amount); } setIsInitialFetching(false); } catch (error) { if (!active) return; console.error('Error setting up local currency:', error); setLocalCurrency('INR'); setLocalAmount(amount); setIsInitialFetching(false); } }
-        if (userId) getUserOnce().then(({ data }) => { if (!active) return; const country = data.user?.user_metadata?.country; return setupLocalCurrency(country ? getCurrencyCode(country) : undefined); }).catch(() => setupLocalCurrency()); else setupLocalCurrency();
+        if (userId) { const auth = getAuth(getFirebaseApp()); const unsubscribe = onAuthStateChanged(auth, (user) => { if (!active) return; const localeCurrency = getUserCurrency(); setupLocalCurrency(user ? localeCurrency : undefined); }); return () => { active = false; unsubscribe(); }; } else setupLocalCurrency();
         return () => { active = false; };
     }, [amount, userId]);
     useEffect(() => { if (!productId || !userId) return; let active = true; setIsInitialFetching(true); getPurchaseStatus(userId, productId).then(purchased => { if (active) setHasPurchased(purchased); }).catch(error => console.error('Error checking purchase:', error)).finally(() => { if (active) setIsInitialFetching(false); }); return () => { active = false; }; }, [productId, userId]);
