@@ -45,12 +45,12 @@ export default async function BookShelfPage({
     const authorsRef = firestore.collection("authors")
     const [allBooksSnap, authorsSnap, user] = await Promise.all([
         booksRef.where("is_deleted", "==", false).get(),
-        authorsRef.where("is_deleted", "==", false).orderBy("name").get(),
+        authorsRef.where("is_deleted", "==", false).get(),
         getFirebaseUser(),
     ])
 
     const allBooks = allBooksSnap.docs.map(d => ({ id: d.id, ...d.data() } as any))
-    const authors = authorsSnap.docs.map(d => ({ author_id: String(d.data()?.author_id ?? d.id), name: String(d.data()?.name ?? "") }))
+    const authors = authorsSnap.docs.map(d => ({ author_id: String(d.data()?.author_id ?? d.id), name: String(d.data()?.name ?? "") })).sort((a, b) => a.name.localeCompare(b.name))
     const languages = Array.from(new Set(allBooks.map((row: any) => row.language).filter(Boolean))).sort((a: string, b: string) => a.localeCompare(b))
 
     const filteredSource = allBooks
