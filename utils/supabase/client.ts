@@ -33,9 +33,10 @@ class ClientQuery{
  async execute(){
   try{
    const base=collection(db,this.name); let q:any=base;
-   for(const f of this.filters){if(f.values)q=query(q,where(f.field,"in",f.values));else q=query(q,where(f.field,f.not?"!=":"==",f.value))}
+   for(const f of this.filters){if(f.values)q=query(q,where(f.field,"in",f.values));else q=query(q,where(f.field,f.op|| (f.not?"!=":"=="),f.value))}
    if(this.orderSpec)q=query(q,orderBy(this.orderSpec.field,this.orderSpec.direction));
    if(this.lim)q=query(q,firestoreLimit(this.lim));
+   if((this as any)._range){const {from,to}=(this as any)._range;q=query(q,firestoreLimit(to-from+1));}
    if(this.action==="select"){
     const snap=await getDocs(q);let data=snap.docs.map(d=>({id:d.id,...d.data()}));
     if((this as any)._single||(this as any)._maybe){if(!data.length)return {data:null,error:(this as any)._single?new Error("No rows"):null};data=data[0]}
