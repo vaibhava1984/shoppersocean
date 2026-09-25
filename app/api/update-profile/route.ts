@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     const update: any = { displayName: fullName, email }
     if (mobile) update.phoneNumber = mobile
-    else update.phoneNumber = null
+    else if (user.phone_number) update.phoneNumber = null
     await firebaseAdminAuth.updateUser(user.uid, update)
     await firestore.collection("profiles").doc(user.uid).set({
       id: user.uid, email, full_name: fullName, country, address, mobile,
