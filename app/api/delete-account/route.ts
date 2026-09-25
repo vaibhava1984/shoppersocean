@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server';
 import { firebaseAdminAuth, firestore } from '@/lib/firebase/admin';
+import { getFirebaseUser } from '@/lib/firebase/session';
 
 function escapeHtml(value:string){return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
 
@@ -12,10 +12,10 @@ async function deleteByUser(collectionName:string,userId:string,field='user_id')
 
 export async function POST(){
  try{
-  const {data:{user}}=await createClient().auth.getUser();
+  const user:any = await getFirebaseUser();
   if(!user)return NextResponse.json({error:'You must be signed in to delete your account.'},{status:401});
   const email=user.email;if(!email)return NextResponse.json({error:'Your account does not have an email address.'},{status:400});
-  const profileSnap=await firestore.collection('profiles').doc(user.id).get();
+  const profileSnap=await firestore.collection('profiles').doc(user.uid).get();
   const profile:any=profileSnap.exists?profileSnap.data():null;
   const name=String(profile?.full_name||'there').trim()||'there';
   await deleteByUser('testimonials',user.id);
