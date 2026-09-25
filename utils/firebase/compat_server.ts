@@ -103,7 +103,6 @@ export function createServerDataClient(){
         const result:any = await authRequest("signInWithPassword", email, password)
         if (!result.error) {
           const store = await cookies()
-          const decoded:any = await firebaseAdminAuth.verifyIdToken(result.data.session.access_token)
           const session = await firebaseAdminAuth.createSessionCookie(result.data.session.access_token, { expiresIn: 7 * 24 * 60 * 60 * 1000 })
           store.set("session", session, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 7 * 24 * 60 * 60 })
         }
@@ -114,7 +113,10 @@ export function createServerDataClient(){
         if (!result.error) {
           try {
             const uid = result.data.user.uid
-            await firebaseAdminDb.collection("profiles").doc(uid).set({ id: uid, email, full_name: options?.data?.full_name || "", country: options?.data?.country || "", address: options?.data?.address || "", created_at: new Date().toISOString() }, { merge: true })
+            await firebaseAdminDb.collection("profiles").doc(uid).set({ id: uid, email, full_name: options?.data?.full_name || "", country: options?.data?.country || "", address: options?.data?.address || "", mobile: options?.data?.mobile || "", created_at: new Date().toISOString() }, { merge: true })
+            const session = await firebaseAdminAuth.createSessionCookie(result.data.session.access_token, { expiresIn: 7 * 24 * 60 * 60 * 1000 })
+            const store = await cookies()
+            store.set("session", session, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 7 * 24 * 60 * 60 })
           } catch {}
         }
         return result
