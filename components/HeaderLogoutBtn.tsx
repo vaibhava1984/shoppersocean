@@ -1,5 +1,5 @@
 "use client"
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/db/client";
 
 export default function HeaderLogoutBtn() {
     const supabase = createClient();
