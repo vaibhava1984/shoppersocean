@@ -58,8 +58,6 @@ export default async function LandingPage() {
       {/* Books Collection Section */}
       <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-6 text-center text-slate-800">Our Book Collection</h2>
-          <p className="text-xl text-center mb-12 text-slate-600">Discover the captivating works of esteemed authors across the globe, known for their insightful and thought-provoking narratives.</p>
           <BooksCollections loggedinUserId={user?.id} initialBooks={homepageBooks} />
         </div>
       </section>
