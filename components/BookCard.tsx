@@ -47,7 +47,7 @@ export default function BookCard({ book, loggedinUserId }: {
                 @keyframes bookCardSlowZoomIn {
                     0% {
                         opacity: 0.35;
-                        transform: scale(0.72);
+                        transform: scale(0.96);
                     }
                     100% {
                         opacity: 1;
@@ -56,7 +56,7 @@ export default function BookCard({ book, loggedinUserId }: {
                 }
 
                 .book-card-zoom-in {
-                    animation: bookCardSlowZoomIn 4s ease-out forwards;
+                    animation: bookCardSlowZoomIn 0.45s ease-out forwards;
                     transform-origin: center center;
                 }
 
@@ -71,7 +71,7 @@ export default function BookCard({ book, loggedinUserId }: {
 
             <div
                 ref={cardRef}
-                className={hasAnimatedOnce ? "book-card-zoom-in" : isInView ? "book-card-zoom-in" : "opacity-0 scale-[0.72]"}
+                className={hasAnimatedOnce || isInView ? "book-card-zoom-in" : "opacity-0"}
                 onAnimationEnd={(event) => {
                     if (event.animationName === "bookCardSlowZoomIn") {
                         setHasFullyAppeared(true)
@@ -121,10 +121,7 @@ export default function BookCard({ book, loggedinUserId }: {
                                 </div>
                             </div>
                             <div
-                                className={`mt-2 transition-opacity duration-300 ${
-                                    hasFullyAppeared ? "opacity-100" : "opacity-0 pointer-events-none"
-                                }`}
-                                aria-hidden={!hasFullyAppeared}
+                                className="mt-2"
                             >
                                 {book?.id && (
                                     <LazyPaymentButton
