@@ -62,11 +62,7 @@ export async function signUp(formData: {
     })
     await setSession(auth.idToken)
 
-    return {
-      success: true,
-      phoneVerificationRequired: Boolean(mobile),
-      phone: mobile,
-    }
+    return { success: true }
   } catch (error: any) {
     const code = String(error?.code || "")
     if (code.includes("EMAIL_EXISTS")) return { error: "account_already_registered" }
