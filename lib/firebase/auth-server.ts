@@ -38,6 +38,7 @@ export async function getFirebaseUser(uid: string) {
 }
 
 export async function createProfile(uid: string, data: Record<string, unknown>) {
+  await firebaseAdminAuth.setCustomUserClaims(uid, { userrole: data.userrole || "USER", isAuthor: Boolean(data.isAuthor) });
   await firestore.collection("profiles").doc(uid).set({
     id: uid, ...data, updated_at: new Date().toISOString(),
     created_at: new Date().toISOString(),
