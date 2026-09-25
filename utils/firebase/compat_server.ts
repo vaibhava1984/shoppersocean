@@ -12,6 +12,7 @@ function project(rows: Row[], fields?: string) {
 
 class ServerQuery {
   private filters: Array<[string,string,any]> = []
+  private search?: Array<{ field: string; value: string }>
   private sort?: {field:string; direction:"asc"|"desc"}
   private take?: number
   private offset=0
@@ -28,7 +29,11 @@ class ServerQuery {
   not(f:string,op:string,v:any){if(op==="is"&&v===null)this.filters.push([f,"!=",null]);return this}
   is(f:string,op:string,v:any){if(op==="null")this.filters.push([f,"==",null]);else if(op==="not_null")this.filters.push([f,"!=",null]);return this}
   match(v:Row){Object.entries(v).forEach(([k,x])=>this.eq(k,x));return this}
-  or(_e:string){return this}
+  or(expression:string){
+    const match=expression.match(/^(\w+)\.ilike\.%(.+)%?,(\w+)\.ilike\.%(.+)%?$/)
+    if(match)this.search=[{field:match[1],value:match[2].replace(/%$/,"")},{field:match[3],value:match[4].replace(/%$/,"")}]
+    return this
+  }
   order(f:string,o?:{ascending?:boolean}){this.sort={field:f,direction:o?.ascending===false?"desc":"asc"};return this}
   limit(n:number){this.take=n;return this}
   range(a:number,b:number){this.offset=a;this.take=Math.max(0,b-a+1);return this}
@@ -42,6 +47,7 @@ class ServerQuery {
       if(this.take!==undefined) q=q.limit(this.offset+this.take)
       const snap=await q.get()
       let rows=snap.docs.map((d:any)=>({id:d.id,...d.data()})) as Row[]
+      if(this.search?.length) rows=rows.filter(row=>this.search!.some(s=>String(row[s.field]??"").toLowerCase().includes(s.value.toLowerCase())))
       if(this.offset)rows=rows.slice(this.offset)
       if(this.take!==undefined)rows=rows.slice(0,this.take)
       return{data:project(rows,this.fields),error:null,count:rows.length}
