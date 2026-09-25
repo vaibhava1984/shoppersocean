@@ -1,0 +1,7 @@
+import { NextResponse } from "next/server";
+import { firestore } from "@/lib/firebase/admin";
+import { getFirebaseUser } from "@/lib/firebase/session";
+async function isAdmin(){const u:any=await getFirebaseUser();if(!u)return false;if(u.userrole==="ADMIN"||u.role==="ADMIN")return true;const p=await firestore.collection("profiles").doc(u.uid).get();return p.exists&&p.data()?.userrole==="ADMIN";}
+export async function GET(req:Request){if(!(await isAdmin()))return NextResponse.json({error:"Not authorized"},{status:403});const id=new URL(req.url).searchParams.get("bookId");if(!id)return NextResponse.json({files:[]});const s=await firestore.collection("private_book_files").where("book_id","==",id).get();return NextResponse.json({files:s.docs.map(d=>({id:d.id,...d.data()}))});}
+export async function POST(req:Request){if(!(await isAdmin()))return NextResponse.json({error:"Not authorized"},{status:403});const b:any=await req.json();if(!b.book_id||!b.file_path)return NextResponse.json({error:"Missing file data"},{status:400});const r=firestore.collection("private_book_files").doc();await r.set({...b,id:r.id,created_at:new Date().toISOString()});return NextResponse.json({id:r.id});}
+export async function DELETE(req:Request){if(!(await isAdmin()))return NextResponse.json({error:"Not authorized"},{status:403});const {id}=await req.json();if(!id)return NextResponse.json({error:"File id required"},{status:400});await firestore.collection("private_book_files").doc(String(id)).delete();return NextResponse.json({success:true});}
