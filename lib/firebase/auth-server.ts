@@ -30,7 +30,9 @@ export async function signInWithPassword(email: string, password: string) {
 }
 
 export async function signUpWithPassword(email: string, password: string) {
-  return identityRequest("accounts:signUp", { email, password, returnSecureToken: true });
+  const user = await firebaseAdminAuth.createUser({ email, password });
+  const customToken = await firebaseAdminAuth.createCustomToken(user.uid);
+  return { localId: user.uid, customToken };
 }
 
 export async function getFirebaseUser(uid: string) {
