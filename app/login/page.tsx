@@ -10,14 +10,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { getAuth, signInWithCustomToken } from "firebase/auth"
 import { getFirebaseApp } from "@/lib/firebase/client"
 
 export default function Login({ searchParams }: { searchParams: any }) {
   const router = useRouter()
-  // @ts-ignore
-  const { accountCreated, type, authError } = React.use(searchParams)
+  const searchParamsHook = useSearchParams()
+  const accountCreated = searchParamsHook.get("accountCreated")
+  const type = searchParamsHook.get("type")
+  const authError = searchParamsHook.get("authError")
 
   const [isSignIn, setIsSignIn] = useState(type === "signup" ? false : true)
   const [isSubmitting, setIsSubmitting] = useState(false)
