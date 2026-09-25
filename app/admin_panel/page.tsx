@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import Dashboard from '../components/adminPage/Dashboard';
 import Orders from '../components/adminPage/Orders';
 import AdminSidebar from "./adminSidebar"
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/db/server";
 
 export default async function AdminDashboard() {
     const supabase = createClient();
