@@ -1,59 +1,29 @@
-import { createAdminClient } from "@/utils/supabase/server_admin";
-import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from 'next/server'
+import { firebaseAdminAuth, firestore } from '@/lib/firebase/admin'
+import { getFirebaseUser } from '@/lib/firebase/session'
 
-export async function POST(request: Request) {
-    try {
-        // Authenticate the actual signed-in admin using the request cookies.
-        // The service-role client must only be used after this check; it does not
-        // carry the browser user's session by itself.
-        const authClient = createClient();
-        const {
-            data: { user },
-        } = await authClient.auth.getUser();
-
-        if (user?.app_metadata?.userrole === "ADMIN") {
-            const adminClient = createAdminClient();
-            const { data: { users }, error: usersFetchError } = await adminClient.auth.admin.listUsers({
-                page: 1,
-                perPage: 1000
-            })
-
-
-            if (usersFetchError) {
-                console.error('Error fetching users records:', usersFetchError);
-                return;
-            }
-
-            // Return a clean, explicit user list so email addresses are always
-            // available to the admin UI even if the Auth user object changes shape.
-            const safeUsers = users.map((authUser) => ({
-                id: authUser.id,
-                email: authUser.email ?? authUser.user_metadata?.email ?? '',
-                phone: authUser.phone,
-                created_at: authUser.created_at,
-                updated_at: authUser.updated_at,
-                app_metadata: authUser.app_metadata,
-                user_metadata: authUser.user_metadata,
-                confirmed_at: authUser.confirmed_at,
-                last_sign_in_at: authUser.last_sign_in_at,
-            }))
-
-            return NextResponse.json(
-                { users: safeUsers },
-                { status: 200 }
-            )
-        } else {
-            return NextResponse.json(
-                { error: 'Not allowed' },
-                { status: 403 }
-            )
-        }
-    } catch (error) {
-        console.error('Unexpected error:', error)
-        return NextResponse.json(
-            { error: 'Internal server error' },
-            { status: 500 }
-        )
+export async function POST() {
+  try {
+    const user = await getFirebaseUser()
+    if (!user) return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
+    let role = (user as any).userrole || (user as any).role
+    if (role !== 'ADMIN') {
+      const profile = await firestore.collection('profiles').doc(user.uid).get()
+      role = profile.exists ? profile.data()?.userrole : role
     }
+    if (role !== 'ADMIN') return NextResponse.json({ error: 'Not allowed' }, { status: 403 })
+    const result = await firebaseAdminAuth.listUsers(1000)
+    const users = result.users.map((u:any) => ({
+      id: u.uid, email: u.email ?? '', phone: u.phoneNumber ?? null,
+      created_at: u.metadata?.creationTime ?? null, updated_at: u.metadata?.lastRefreshTime ?? null,
+      app_metadata: { userrole: u.customClaims?.userrole ?? 'USER', isAuthor: Boolean(u.customClaims?.isAuthor) },
+      user_metadata: { full_name: u.displayName ?? '', email: u.email ?? '' },
+      confirmed_at: u.emailVerified ? u.metadata?.creationTime ?? null : null,
+      last_sign_in_at: u.metadata?.lastSignInTime ?? null,
+    }))
+    return NextResponse.json({ users })
+  } catch (error) {
+    console.error('Unexpected error:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
 }
