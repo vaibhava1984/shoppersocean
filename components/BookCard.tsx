@@ -10,36 +10,8 @@ export default function BookCard({ book, loggedinUserId }: {
     book: any,
     loggedinUserId?: string
 }) {
-    const cardRef = useRef<HTMLDivElement>(null)
-    const [isInView, setIsInView] = useState(false)
-    const [hasFullyAppeared, setHasFullyAppeared] = useState(false)
-    const [hasAnimatedOnce, setHasAnimatedOnce] = useState(false)
+    const [isInView, setIsInView] = useState(true)
 
-    useEffect(() => {
-        const element = cardRef.current
-        if (!element) return
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    if (!hasAnimatedOnce) {
-                        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-                        setHasFullyAppeared(reducedMotion)
-                        setHasAnimatedOnce(true)
-                    }
-                    setIsInView(true)
-                } else {
-                    setIsInView(false)
-                }
-            },
-            {
-                threshold: 0.6,
-            }
-        )
-
-        observer.observe(element)
-        return () => observer.disconnect()
-    }, [hasAnimatedOnce])
 
     return (
         <>
@@ -71,7 +43,7 @@ export default function BookCard({ book, loggedinUserId }: {
 
             <div
                 ref={cardRef}
-                className={hasAnimatedOnce || isInView ? "book-card-zoom-in" : "opacity-0"}
+                className="opacity-100"
                 onAnimationEnd={(event) => {
                     if (event.animationName === "bookCardSlowZoomIn") {
                         setHasFullyAppeared(true)
