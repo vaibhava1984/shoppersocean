@@ -13,7 +13,7 @@ export function createAdminClient() {
           const token = store.get("session")?.value
           if (!token) return { data: { user: null }, error: null }
           const decoded:any = await firebaseAdminAuth.verifySessionCookie(token, true)
-          return { data: { user: { id: decoded.uid, uid: decoded.uid, email: decoded.email ?? null, user_metadata: {}, app_metadata: {} } }, error: null }
+          return { data: { user: { id: decoded.uid, uid: decoded.uid, email: decoded.email ?? null, user_metadata: {}, app_metadata: decoded || {} } }, error: null }
         } catch { return { data: { user: null }, error: null } }
       },
       admin: {
@@ -39,6 +39,7 @@ export function createAdminClient() {
             if (properties.email) update.email = properties.email
             if (properties.phone) update.phoneNumber = properties.phone
             if (properties.user_metadata?.full_name) update.displayName = properties.user_metadata.full_name
+            if (properties.customClaims) update.customClaims = properties.customClaims
             const user = await firebaseAdminAuth.updateUser(uid, update)
             await firebaseAdminDb.collection("profiles").doc(uid).set({ id: uid, email: user.email || "", full_name: user.displayName || "", ...(properties.user_metadata || {}) }, { merge: true })
             return { data: { user }, error: null }
