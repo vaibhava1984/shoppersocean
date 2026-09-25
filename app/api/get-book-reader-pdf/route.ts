@@ -9,8 +9,8 @@ export async function GET(request: Request) {
     if (!user) return new NextResponse("Not authorized", { status: 403 });
     const bookId = new URL(request.url).searchParams.get("bookId");
     if (!bookId) return new NextResponse("Book ID is required", { status: 400 });
-    const orders = await firestore.collection("orders").where("user_id", "==", user.uid).where("product_id", "==", bookId).where("status", "==", "completed").limit(1).get();
-    if (orders.empty) return new NextResponse("Purchase required", { status: 403 });
+    const orders = await firestore.collection("orders").where("user_id", "==", user.uid).where("product_id", "==", bookId).limit(20).get();
+    if (!orders.docs.some((doc) => ["completed","captured"].includes(String((doc.data() as any).status || "").toLowerCase()))) return new NextResponse("Purchase required", { status: 403 });
     const files = await firestore.collection("private_book_files").where("book_id", "==", bookId).get();
     const pdf = files.docs.map((doc) => doc.data() as any).find((file) => String(file.file_type || "").toLowerCase() === "pdf" || String(file.file_name || "").toLowerCase().endsWith(".pdf"));
     if (!pdf?.file_path) return new NextResponse("No PDF book is available", { status: 404 });
