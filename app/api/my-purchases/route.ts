@@ -12,10 +12,9 @@ export async function GET() {
 
     const ordersSnap = await firestore.collection("orders")
       .where("user_id", "==", user.uid)
-      .orderBy("order_date", "desc")
       .get();
 
-    const orders = ordersSnap.docs.map(d => ({ id: d.id, ...d.data() } as any));
+    const orders = ordersSnap.docs.map(d => ({ id: d.id, ...d.data() } as any)).sort((a, b) => String(b.order_date ?? "").localeCompare(String(a.order_date ?? "")));
     const productIds = [...new Set(orders.map(o => String(o.product_id || "")).filter(Boolean))];
     const orderIds = orders.map(o => o.id);
 
