@@ -11,12 +11,10 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/utils/supabase/client"
 import { getAuth, signInWithCustomToken } from "firebase/auth"
 import { getFirebaseApp } from "@/lib/firebase/client"
 
 export default function Login({ searchParams }: { searchParams: any }) {
-  const supabase = createClient()
   const router = useRouter()
   // @ts-ignore
   const { accountCreated, type, authError } = React.use(searchParams)
@@ -59,10 +57,11 @@ export default function Login({ searchParams }: { searchParams: any }) {
       return
     }
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      })
+      const credential = await (await import("firebase/auth")).signInWithEmailAndPassword(getAuth(getFirebaseApp()), email.trim(), password)
+      const idToken = await credential.user.getIdToken(true)
+      const sessionResponse = await fetch("/api/auth/session", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ idToken }) })
+      if (!sessionResponse.ok) throw new Error("Unable to create secure session")
+      const error = null
       if (error) {
         setIsSubmitting(false)
         if (error.code === "email_not_confirmed") setErrors({ general: "Please confirm your email address and try again." })
