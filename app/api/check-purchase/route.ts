@@ -12,7 +12,7 @@ export async function POST(req:Request){
   let userId:string|undefined;
   if(bearer){try{userId=(await firebaseAdminAuth.verifyIdToken(bearer)).uid}catch{}}
   if(!userId){
-   const { getFirebaseUser } = await import('@/lib/firebase/session-user');
+   const { getFirebaseUser } = await import('@/lib/firebase/session');
    userId=(await getFirebaseUser())?.uid;
   }
   if(!userId)return NextResponse.json({error:'Authentication required'},{status:401,headers:{'Cache-Control':'no-store'}});
