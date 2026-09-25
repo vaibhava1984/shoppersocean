@@ -63,8 +63,8 @@ export async function signUp(formData: {
     return { success: true, token: auth.customToken }
   } catch (error: any) {
     const code = String(error?.code || "")
-    if (code.includes("EMAIL_EXISTS")) return { error: "account_already_registered" }
-    if (code.includes("WEAK_PASSWORD")) return { error: "Password must be at least 6 characters." }
+    if (code.includes("EMAIL_EXISTS") || code.includes("email-already-exists")) return { error: "account_already_registered" }
+    if (code.includes("WEAK_PASSWORD") || code.includes("password")) return { error: "Password must be at least 6 characters." }
     return { error: error?.message || "Unable to create the account. Please try again." }
   }
 }
