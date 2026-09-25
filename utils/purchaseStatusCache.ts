@@ -1,5 +1,3 @@
-import { createClient } from '@/utils/supabase/client'
-
 type PurchaseStatusMap = Record<string, { hasPurchased: boolean }>
 type PendingRequest = { resolve: (hasPurchased: boolean) => void; reject: (error: unknown) => void }
 const statusCache = new Map<string, { hasPurchased: boolean; expiresAt: number }>()
@@ -15,12 +13,13 @@ async function flush(userId: string) {
     queuedByUser.delete(userId)
     if (!productIds.length) return
     try {
-        const supabase = createClient()
-        const { data: { session } } = await supabase.auth.getSession()
-        const accessToken = session?.access_token
-        const headers: HeadersInit = { 'Content-Type': 'application/json' }
-        if (accessToken) headers.Authorization = `Bearer ${accessToken}`
-        const response = await fetch('/api/check-purchase', { method: 'POST', headers, body: JSON.stringify({ productIds }), cache: 'no-store' })
+        const response = await fetch('/api/check-purchase', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productIds }),
+            credentials: 'include',
+            cache: 'no-store',
+        })
         if (!response.ok) throw new Error(`Purchase status request failed (${response.status})`)
         const data = (await response.json()) as PurchaseStatusMap
         productIds.forEach(productId => {
