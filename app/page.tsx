@@ -1,4 +1,5 @@
-import { getUser } from "@/utils/supabase/server";
+import { getFirebaseUser } from "@/lib/firebase/session";
+import { firestore } from "@/lib/firebase/admin";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card"
 import { Star } from 'lucide-react'
@@ -11,7 +12,7 @@ import TrendingBooks from "@/components/trending_books";
 import BooksCollections from "@/components/books_collections";
 import HeroSection from "@/components/HeroSection";
 import { getHomepageBooksServer } from "@/utils/homepageBooksServer";
-import { createClient } from "@/utils/supabase/server";
+import type { User } from "firebase/auth";
 
 export const metadata = {
   title: 'Home',
@@ -19,15 +20,20 @@ export const metadata = {
 }
 
 export default async function LandingPage() {
-  const supabase = createClient();
-  const [user, homepageBooks, authorsResult, languageRowsResult] = await Promise.all([
-    getUser(),
+  const firebaseUser: any = await getFirebaseUser();
+  const [homepageBooks, authorsSnap, languageSnap] = await Promise.all([
     getHomepageBooksServer(),
-    supabase.from("authors").select("author_id,name").eq("is_deleted", false).order("name", { ascending: true }),
-    supabase.from("books").select("language").eq("is_deleted", false).not("language", "is", null),
+    firestore.collection("authors").where("is_deleted", "==", false).orderBy("name").get(),
+    firestore.collection("books").where("is_deleted", "==", false).get(),
   ]);
-  const authors = authorsResult.data ?? [];
-  const languages = Array.from(new Set((languageRowsResult.data ?? []).map((row) => row.language).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+  const authors = authorsSnap.docs.map(d => ({ author_id: String(d.data()?.author_id ?? d.id), name: String(d.data()?.name ?? "") }));
+  const languages = Array.from(new Set(languageSnap.docs.map(d => d.data()?.language).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b));
+  const user = firebaseUser ? ({
+    uid: firebaseUser.uid,
+    email: firebaseUser.email ?? null,
+    displayName: firebaseUser.name ?? null,
+    emailVerified: Boolean(firebaseUser.email_verified),
+  } as User) : null;
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header user={user} categoryNavigation={{ authors, languages }} />
@@ -44,32 +50,24 @@ export default async function LandingPage() {
       <div>
         <AuthorApplicationBanner />
       </div>
-
-      {/* Trending Books Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold mb-12 text-center text-slate-800">Trending Books</h2>
           <div>
-            <TrendingBooks loggedinUserId={user?.id} initialBooks={homepageBooks} />
+            <TrendingBooks loggedinUserId={user?.uid} initialBooks={homepageBooks} />
           </div>
         </div>
       </section>
-
-      {/* Books Collection Section */}
       <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <BooksCollections loggedinUserId={user?.id} initialBooks={homepageBooks} />
+          <BooksCollections loggedinUserId={user?.uid} initialBooks={homepageBooks} />
         </div>
       </section>
-
-      {/* Testimonials and account controls */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <TestimonialSection user={user} />
         </div>
       </section>
-
-      {/* Query Section */}
       <section className="py-20 bg-white">
         <ContactForm />
       </section>
