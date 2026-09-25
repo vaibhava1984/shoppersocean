@@ -20,8 +20,8 @@ export async function POST(req:Request){
   const ids=Array.isArray(productIds)?productIds:(productId?[productId]:[]);
   if(!ids.length)return NextResponse.json({error:'Product ID or Product IDs are required'},{status:400});
 
-  const snap=await firestore.collection('orders').where('user_id','==',userId).where('status','==','completed').get();
-  const rows=snap.docs.map((d:any)=>({id:d.id,...d.data()})).filter((o:any)=>ids.includes(o.product_id));
+  const snap=await firestore.collection('orders').where('user_id','==',userId).get();
+  const rows=snap.docs.map((d:any)=>({id:d.id,...d.data()})).filter((o:any)=>ids.includes(o.product_id) && ['completed','captured'].includes(String(o.status || '').toLowerCase()));
   const result:any={};
   ids.forEach((id:string)=>result[id]={hasPurchased:false,orderDetails:[]});
   rows.forEach((o:any)=>{
