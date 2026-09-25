@@ -1,4 +1,7 @@
-import { getUser } from "@/utils/supabase/server";
+"use client";
+import { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
+import { getFirebaseApp } from "@/lib/firebase/client";
 import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
@@ -20,14 +23,23 @@ const navigationItems = [
 ] as const;
 
 type HeaderProps = {
-  user?: Awaited<ReturnType<typeof getUser>>
+  user?: User | null
   categoryNavigation?: { authors: { author_id: string; name: string }[]; languages: string[] }
 }
 
-export default async function Header({ user, categoryNavigation }: HeaderProps) {
-  // Some pages render Header without passing the user. Resolve the current
-  // server session here so a signed-in user never sees the anonymous menu.
-  const currentUser = user ?? await getUser()
+export default function Header({ user, categoryNavigation }: HeaderProps) {
+  const [currentUser, setCurrentUser] = useState<User | null>(user ?? null)
+  const [claims, setClaims] = useState<Record<string, any>>({})
+
+  useEffect(() => {
+    const auth = getAuth(getFirebaseApp())
+    return onAuthStateChanged(auth, async (nextUser) => {
+      setCurrentUser(nextUser)
+      if (nextUser) {
+        try { setClaims((await nextUser.getIdTokenResult()).claims as Record<string, any>) } catch { setClaims({}) }
+      } else setClaims({})
+    })
+  }, [])
 
   return (
     <>
@@ -43,11 +55,11 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
             {currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1 px-3 py-2 text-sm sm:text-base font-semibold text-slate-700 hover:bg-gray-100 rounded-md transition-colors max-w-[58vw] sm:max-w-[360px]">
-                  <span className="truncate">Hi {currentUser?.user_metadata?.full_name ?? currentUser.email}</span>
+                  <span className="truncate">Hi {currentUser?.displayName ?? currentUser.email}</span>
                   <ChevronDown className="h-4 w-4 flex-shrink-0" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="w-48">
-                  {currentUser?.app_metadata?.userrole === "ADMIN" && (
+                  {claims?.userrole === "ADMIN" && (
                     <DropdownMenuItem asChild>
                       <a href="/admin_panel" className="flex w-full items-center gap-2">
                         <ShieldIcon width={18} />
@@ -55,7 +67,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                       </a>
                     </DropdownMenuItem>
                   )}
-                  {currentUser?.app_metadata?.isAuthor === true && (
+                  {claims?.isAuthor === true && (
                     <DropdownMenuItem asChild>
                       <a href="/my-sales" className="flex w-full items-center gap-2">
                         <ChartBarIcon width={18} />
