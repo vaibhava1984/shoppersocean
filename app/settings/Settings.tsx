@@ -12,13 +12,6 @@ const countryCodes = `AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ B
 const countryNames = new Intl.DisplayNames(["en"], { type: "region" })
 const countries = countryCodes.map(code => ({ code, name: countryNames.of(code) ?? code }))
 
-const normalizeIndianMobile = (value: string) => {
-  const digits = value.replace(/\D/g, "")
-  if (digits.length === 10 && /^[6-9]\d{9}$/.test(digits)) return `+91${digits}`
-  if (digits.length === 12 && digits.startsWith("91") && /^[6-9]\d{9}$/.test(digits.slice(2))) return `+${digits}`
-  return ""
-}
-
 const Settings = ({ initialUser }: { initialUser: any }) => {
   const supabase = createClient()
   const initialMobile = initialUser?.phone ?? ""
@@ -27,15 +20,12 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
   const [email, setEmail] = useState(initialUser?.email ?? "")
   const [mobile, setMobile] = useState(initialMobile)
   const [address, setAddress] = useState(initialUser?.user_metadata?.address ?? "")
-  const [originalMobile, setOriginalMobile] = useState(initialMobile)
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isSaving, setIsSaving] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
   const [message, setMessage] = useState("")
   const [passwordMessage, setPasswordMessage] = useState("")
-  const [otp, setOtp] = useState("")
-  const [otpRequired, setOtpRequired] = useState(false)
 
   const handleSaveChanges = async () => {
     setMessage("")
@@ -46,20 +36,6 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
     }
 
     const enteredMobile = mobile.trim()
-    if (enteredMobile && country !== "IN") {
-      setMessage("Mobile numbers are currently supported for Indian mobile numbers only.")
-      return
-    }
-
-    if (enteredMobile && !normalizeIndianMobile(enteredMobile)) {
-      setMessage("Please enter a valid 10-digit Indian mobile number starting with 6–9.")
-      return
-    }
-
-    setIsSaving(true)
-
-    const normalizedMobile = enteredMobile ? normalizeIndianMobile(enteredMobile) : ""
-    const mobileChanged = normalizedMobile !== normalizeIndianMobile(originalMobile)
 
     try {
       const response = await fetch("/api/update-profile", {
@@ -75,15 +51,8 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
         return
       }
 
-      setMobile(normalizedMobile)
-      if (mobileChanged && normalizedMobile) {
-        setOtpRequired(true)
-        setOtp("")
-        setMessage("A 6-digit verification code has been sent to your mobile number. Please enter it below.")
-      } else {
-        setOriginalMobile(normalizedMobile)
-        setMessage("Your details have been successfully updated.")
-      }
+      setMobile(enteredMobile)
+      setMessage("Your details have been successfully updated.")
       await supabase.auth.refreshSession()
     } catch {
       setMessage("Unable to update your details right now. Please try again.")
