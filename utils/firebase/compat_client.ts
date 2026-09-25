@@ -128,7 +128,9 @@ export function createClient() {
       async signInWithPassword({ email, password }: any) {
         try {
           const cred = await signInWithEmailAndPassword(firebaseAuth, email, password)
-          return { data: { user: cred.user, session: { access_token: await getIdToken(cred.user) } }, error: null }
+          const access_token = await getIdToken(cred.user)
+          await fetch("/api/auth/session", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ idToken: access_token }) })
+          return { data: { user: cred.user, session: { access_token } }, error: null }
         } catch (error: any) {
           const code = error?.code?.includes("invalid-credential") ? "invalid_credentials" : error?.code
           return { data: { user: null, session: null }, error: { message: error?.message || "Sign in failed", code } }
@@ -157,7 +159,7 @@ export function createClient() {
         const user = firebaseAuth.currentUser
         return { data: { session: user ? { access_token: await getIdToken(user, true) } : null }, error: null }
       },
-      async signOut() { await signOut(firebaseAuth); return { error: null } },
+      async signOut() { await signOut(firebaseAuth); await fetch("/api/auth/session", { method: "DELETE" }); return { error: null } },
       async updateUser({ password, data }: any) {
         const user = firebaseAuth.currentUser
         if (!user) return { data: { user: null }, error: { message: "Not authenticated" } }
