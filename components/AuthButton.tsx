@@ -1,20 +1,16 @@
-import { createClient } from "@/utils/supabase/server";
+import { getFirebaseUser } from "@/lib/firebase/session";
+import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function AuthButton() {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getFirebaseUser();
 
   const signOut = async () => {
     "use server";
-
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    return redirect("/login");
+    const cookieStore = await cookies();
+    cookieStore.delete("__session");
+    redirect("/login");
   };
 
   return user ? (
@@ -27,10 +23,7 @@ export default async function AuthButton() {
       </form>
     </div>
   ) : (
-    <Link
-      href="/login"
-      className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-    >
+    <Link href="/login" className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
       Login
     </Link>
   );
