@@ -35,6 +35,8 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
 
     const enteredMobile = mobile.trim()
 
+    setIsSaving(true)
+
     try {
       const response = await fetch("/api/update-profile", {
         method: "POST",
@@ -136,7 +138,7 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
 
             {message && <div className="rounded-md bg-slate-100 p-3 text-sm text-slate-700">{message}</div>}
 
-            <Button onClick={handleSaveChanges} disabled={isSaving} className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6">
+            <Button onClick={handleSaveChanges} disabled={isSaving} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6">
               {isSaving && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
               {isSaving ? "Updating..." : "Update"}
             </Button>
