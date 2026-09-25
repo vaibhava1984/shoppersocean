@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { createClient } from "@/utils/supabase/server"
+import { createClient } from "@/utils/db/server"
 
 export async function signIn(formData: {
   email: string,
