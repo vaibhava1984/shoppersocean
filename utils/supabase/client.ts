@@ -1,12 +1,14 @@
 "use client"
 
 import { getFirebaseApp } from "@/lib/firebase/client"
-import { getAuth, onAuthStateChanged, signOut as firebaseSignOut, confirmPasswordReset, signInWithEmailAndPassword } from "firebase/auth"
+import { getAuth, onAuthStateChanged, signOut as firebaseSignOut, confirmPasswordReset, signInWithEmailAndPassword, RecaptchaVerifier, PhoneAuthProvider, updatePhoneNumber } from "firebase/auth"
 import { getFirestore, collection, query, where, orderBy, limit as firestoreLimit, getDocs, addDoc, updateDoc, deleteDoc } from "firebase/firestore"
 
 const app=getFirebaseApp()
 const auth=getAuth(app)
 const db=getFirestore(app)
+let phoneVerificationId: string | null = null
+let phoneRecaptcha: RecaptchaVerifier | null = null
 
 async function currentUser(){
  try{
@@ -76,7 +78,26 @@ export function createClient(){
    resetPasswordForEmail:async(email:string,_options?:any)=>{try{const response=await fetch("/api/auth/password-reset",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email})});const data=await response.json();return {error:response.ok?null:new Error(data.error||"Unable to send reset email")}}catch(error){return {error}}},
    confirmPasswordReset:async(oobCode:string,password:string)=>{try{await confirmPasswordReset(auth,oobCode,password);return {error:null}}catch(error:any){return {error}}},
    verifyPasswordResetCode:async(oobCode:string)=>{try{const {verifyPasswordResetCode}=await import("firebase/auth");const email=await verifyPasswordResetCode(auth,oobCode);return {data:email,error:null}}catch(error){return {data:null,error}}},
-   verifyOtp:async()=>({error:new Error("Mobile OTP verification is being handled by the Firebase phone-auth migration.")}),
+   sendPhoneVerification:async(phone:string)=>{
+    try{
+      if(phoneRecaptcha) phoneRecaptcha.clear()
+      phoneRecaptcha=new RecaptchaVerifier(auth,"phone-recaptcha",{size:"invisible"})
+      const provider=new PhoneAuthProvider(auth)
+      phoneVerificationId=await provider.verifyPhoneNumber(phone,phoneRecaptcha)
+      return {error:null}
+    }catch(error){phoneVerificationId=null;return {error}}
+   },
+   verifyOtp:async(_args:any)=>{
+    try{
+      if(!phoneVerificationId) return {error:new Error("Please request a new verification code.")}
+      const credential=PhoneAuthProvider.credential(phoneVerificationId,String(_args?.token||""))
+      if(!auth.currentUser) return {error:new Error("Please sign in again.")}
+      await updatePhoneNumber(auth.currentUser,credential)
+      phoneVerificationId=null
+      if(phoneRecaptcha){phoneRecaptcha.clear();phoneRecaptcha=null}
+      return {error:null}
+    }catch(error){return {error}}
+   },
    onAuthStateChange:(callback:(event:string,session:any)=>void)=>{let active=true;currentUser().then(user=>{if(active)callback("INITIAL_SESSION",user?{user}:null)});const unsub=onAuthStateChanged(auth,()=>{});return {data:{subscription:{unsubscribe:()=>{active=false;unsub()}}}}}
   },
   storage:{
