@@ -23,10 +23,10 @@ export default async function LandingPage() {
   const firebaseUser: any = await getFirebaseUser();
   const [homepageBooks, authorsSnap, languageSnap] = await Promise.all([
     getHomepageBooksServer(),
-    firestore.collection("authors").where("is_deleted", "==", false).orderBy("name").get(),
-    firestore.collection("books").where("is_deleted", "==", false).get(),
+    firestore.collection("authors").where("is_deleted", "==", false).select("author_id", "name").get(),
+    firestore.collection("books").where("is_deleted", "==", false).select("language").get(),
   ]);
-  const authors = authorsSnap.docs.map(d => ({ author_id: String(d.data()?.author_id ?? d.id), name: String(d.data()?.name ?? "") }));
+  const authors = authorsSnap.docs.map(d => ({ author_id: String(d.data()?.author_id ?? d.id), name: String(d.data()?.name ?? "") })).sort((a, b) => a.name.localeCompare(b.name));
   const languages = Array.from(new Set(languageSnap.docs.map(d => d.data()?.language).filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b));
   const user = firebaseUser ? ({
     uid: firebaseUser.uid,
