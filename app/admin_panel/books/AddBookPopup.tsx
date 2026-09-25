@@ -18,6 +18,7 @@ interface BookFile {
     file_path: string;
     file_name: string;
     file_type: string;
+    storage_file_id?: string;
 }
 
 type propsType = {
@@ -116,7 +117,8 @@ export default function AddBookPopup(props: propsType) {
                         book_id: book.id,
                         file_path: uploadResult.path,
                         file_name: file.name,
-                        file_type: fileExt
+                        file_type: fileExt,
+                        storage_file_id: uploadResult.fileId
                     });
 
                 if (dbError) throw dbError;
@@ -152,7 +154,7 @@ export default function AddBookPopup(props: propsType) {
             const storageResponse = await fetch("/api/storage/books-content", {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ paths: [filePath] }),
+                body: JSON.stringify({ paths: [filePath], fileIds: [bookFiles.find((file) => file.id === fileId)?.storage_file_id] }),
             });
             const storageResult = await storageResponse.json();
             if (!storageResponse.ok) throw new Error(storageResult?.error || "Failed to remove file");
