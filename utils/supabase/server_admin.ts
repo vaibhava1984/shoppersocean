@@ -28,6 +28,7 @@ export function createAdminClient() {
             })) }, error: null }
           } catch (error:any) { return { data: { users: [] }, error: { message: error?.message || "Unable to list users" } } }
         },
+        async getUserById(uid: string) { try { const u:any = await firebaseAdminAuth.getUser(uid); return { data: { user: { id: u.uid, uid: u.uid, email: u.email ?? null, email_verified: u.emailVerified, app_metadata: u.customClaims || {}, user_metadata: { full_name: u.displayName || "" } } }, error: null } } catch (error:any) { return { data: { user: null }, error: { message: error?.message || "Unable to get user" } } } },
         async deleteUser(uid: string) {
           try { await firebaseAdminAuth.deleteUser(uid); return { data: { user: null }, error: null } }
           catch (error:any) { return { data: { user: null }, error: { message: error?.message || "Unable to delete user" } } }
