@@ -17,6 +17,8 @@ class FirebaseQuery {
   not(field:string,op:string,value:any){this.filters.push({type:"not",field,op,value});return this}
   order(field:string,opts:any={}){this.ops.push({type:"order",field,direction:opts.ascending===false?"desc":"asc"});return this}
   limit(n:number){this.ops.push({type:"limit",n});return this}
+  gte(field:string,value:any){this.filters.push({type:"gte",field,value});return this}
+  range(from:number,to:number){this.ops.push({type:"range",from,to});return this}
   or(_expr:string){return this}
   single(){this.ops.push({type:"single"});return this}
   maybeSingle(){this.ops.push({type:"maybeSingle"});return this}
@@ -38,16 +40,18 @@ class FirebaseQuery {
       for(const f of this.filters){
         if(f.type==="eq") q=q.where(f.field,"==",f.value);
         else if(f.type==="in") q=q.where(f.field,"in",f.values);
+        else if(f.type==="gte") q=q.where(f.field,">=",f.value);
       }
       for(const op of this.ops) if(op.type==="order") q=q.orderBy(op.field,op.direction);
       for(const op of this.ops) if(op.type==="limit") q=q.limit(op.n);
+      for(const op of this.ops) if(op.type==="range") q=q.offset(op.from).limit(op.to-op.from+1);
       const snap=await q.get(); let data=snap.docs.map((d:any)=>({id:d.id,...d.data()}));
       const single=this.ops.some(o=>o.type==="single"||o.type==="maybeSingle");
       if(single){if(!data.length)return {data:null,error:this.ops.some(o=>o.type==="single")?new Error("No rows"):null};data=data[0]}
       return {data,error:null,count:snap.size}
     }catch(error){return {data:null,error}}
   }
-  private async getSnapshot(){let q:any=this.ref;for(const f of this.filters)if(f.type==="eq")q=q.where(f.field,"==",f.value);else if(f.type==="in")q=q.where(f.field,"in",f.values);for(const op of this.ops)if(op.type==="order")q=q.orderBy(op.field,op.direction);for(const op of this.ops)if(op.type==="limit")q=q.limit(op.n);return q.get()}
+  private async getSnapshot(){let q:any=this.ref;for(const f of this.filters)if(f.type==="eq")q=q.where(f.field,"==",f.value);else if(f.type==="in")q=q.where(f.field,"in",f.values);else if(f.type==="gte")q=q.where(f.field,">=",f.value);for(const op of this.ops)if(op.type==="order")q=q.orderBy(op.field,op.direction);for(const op of this.ops)if(op.type==="limit")q=q.limit(op.n);for(const op of this.ops)if(op.type==="range")q=q.offset(op.from).limit(op.to-op.from+1);return q.get()}
   then(resolve:any,reject?:any){return this.execute().then(resolve,reject)}
 }
 
