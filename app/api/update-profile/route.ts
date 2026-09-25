@@ -10,7 +10,7 @@ export async function POST(request:Request){
   const fullName=String(body.fullName??"").trim(),country=String(body.country??"").trim(),email=String(body.email??"").trim(),address=String(body.address??"").trim(),mobile=String(body.mobile??"").trim();
   if(!fullName||!country||!email)return NextResponse.json({error:"Name, Country and Email are required."},{status:400});
   let phone="";
-  if(mobile){if(country!=="IN")return NextResponse.json({error:"Mobile verification is currently available for Indian mobile numbers only."},{status:400});phone=normalizeIndianMobile(mobile);if(!phone)return NextResponse.json({error:"Please enter a valid 10-digit Indian mobile number starting with 6–9."},{status:400})}
+  if(mobile){if(country!=="IN")return NextResponse.json({error:"Mobile verification is currently available for Indian mobile numbers only."},{status:400});phone=mobile;if(!phone)return NextResponse.json({error:"Please enter a valid 10-digit Indian mobile number starting with 6–9."},{status:400})}
   const update:any={displayName:fullName,email};
   if(phone)update.phoneNumber=phone;
   await firebaseAdminAuth.updateUser(user.id,update);
