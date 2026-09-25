@@ -2,7 +2,16 @@ import { NextResponse } from "next/server";
 import { getFirebaseUser } from "@/lib/firebase/session";
 import { uploadBookPdf, deleteBookAsset } from "@/lib/backblaze";
 
-async function authorize() { const user: any = await getFirebaseUser(); const role = user?.userrole || user?.role; return user && role === "ADMIN"; }
+async function authorize() {
+  const user: any = await getFirebaseUser();
+  if (!user) return false;
+  let role = user.userrole || user.role;
+  if (role !== "ADMIN") {
+    const profile = await (await import("@/lib/firebase/admin")).firestore.collection("profiles").doc(user.uid).get();
+    role = profile.exists ? profile.data()?.userrole : role;
+  }
+  return role === "ADMIN";
+}
 
 export async function POST(request: Request) {
   if (!(await authorize())) return NextResponse.json({ error: "Not authorized" }, { status: 403 });
