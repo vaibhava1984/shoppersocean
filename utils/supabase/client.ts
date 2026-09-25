@@ -27,6 +27,9 @@ class ClientQuery{
  limit(n:number){this.lim=n;return this}
  single(){(this as any)._single=true;return this}
  maybeSingle(){(this as any)._maybe=true;return this}
+ gte(field:string,value:any){this.filters.push({field,value,op:">="});return this}
+ range(from:number,to:number){(this as any)._range={from,to};return this}
+ or(expr:string){(this as any)._or=expr;return this}
  insert(rows:any[]|any){this.action="insert";this.payload=rows;return this}
  update(data:any){this.action="update";this.payload=data;return this}
  delete(){this.action="delete";return this}
@@ -36,9 +39,11 @@ class ClientQuery{
    for(const f of this.filters){if(f.values)q=query(q,where(f.field,"in",f.values));else q=query(q,where(f.field,f.op|| (f.not?"!=":"=="),f.value))}
    if(this.orderSpec)q=query(q,orderBy(this.orderSpec.field,this.orderSpec.direction));
    if(this.lim)q=query(q,firestoreLimit(this.lim));
+   const orExpr=(this as any)._or as string|undefined;
 
    if(this.action==="select"){
     const snap=await getDocs(q);let data=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(orExpr){const alternatives=orExpr.split(",").map((part:string)=>{const m=part.match(/^([^\.]+)\.(eq|is)\.(.*)$/);return m?{field:m[1],op:m[2],value:m[3]==="null"?null:m[3]}:null}).filter(Boolean) as any[];data=data.filter((row:any)=>alternatives.some((a:any)=>a.op==="eq"?String(row[a.field])===a.value:(a.value===null?(row[a.field]===null||row[a.field]===undefined):row[a.field]===a.value)))}
     if((this as any)._range){const {from,to}=(this as any)._range;data=data.slice(from,to+1);}
     if((this as any)._single||(this as any)._maybe){if(!data.length)return {data:null,error:(this as any)._single?new Error("No rows"):null};data=data[0]}
     return {data,error:null,count:snap.size}
