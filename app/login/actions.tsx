@@ -2,32 +2,35 @@
 
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { createClient } from "@/utils/supabase/server"
+import { createFirebaseSessionCookie, FIREBASE_SESSION_COOKIE, SESSION_MAX_AGE } from "@/lib/firebase/session"
+import { createProfile, signInWithPassword, signUpWithPassword } from "@/lib/firebase/auth-server"
+import { cookies } from "next/headers"
 
-export async function signIn(formData: {
-  email: string,
-  password: string
-}) {
-  const supabase = createClient()
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email: formData.email,
-    password: formData.password,
-    options: { redirectTo: "/" },
+async function setSession(idToken: string) {
+  const cookieStore = await cookies()
+  const session = await createFirebaseSessionCookie(idToken)
+  cookieStore.set(FIREBASE_SESSION_COOKIE, session, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: Math.floor(SESSION_MAX_AGE / 1000),
   })
+}
 
-  if (error) {
-    if (error.code === "email_not_confirmed") {
-      redirect("/login?authError=email_not_confirmed")
-    } else if (error.code === "invalid_credentials") {
+export async function signIn(formData: { email: string, password: string }) {
+  try {
+    const auth = await signInWithPassword(formData.email.trim(), formData.password)
+    await setSession(auth.idToken)
+    revalidatePath("/", "layout")
+    redirect("/")
+  } catch (error: any) {
+    const code = String(error?.code || "")
+    if (code.includes("EMAIL_NOT_FOUND") || code.includes("INVALID_PASSWORD") || code.includes("INVALID_LOGIN_CREDENTIALS")) {
       redirect("/login?authError=invalid_credentials")
-    } else {
-      redirect("/login?authError=internalError")
     }
+    redirect("/login?authError=internalError")
   }
-
-  revalidatePath("/", "layout")
-  redirect("/")
 }
 
 export async function signUp(formData: {
@@ -39,68 +42,35 @@ export async function signUp(formData: {
   address?: string,
 }) {
   try {
-    const supabase = createClient()
     const email = formData.email.trim()
     const fullName = formData.fullName.trim()
+    const country = formData.country.trim()
     const mobile = formData.mobile?.trim() || ""
+    if (!fullName || !country || !email || !formData.password || formData.password.length < 6) {
+      return { error: "Please complete all required fields. Password must be at least 6 characters." }
+    }
 
-    const { data: authData, error } = await supabase.auth.signUp({
+    const auth = await signUpWithPassword(email, formData.password)
+    await createProfile(auth.localId, {
+      full_name: fullName,
       email,
-      password: formData.password,
-      options: {
-        data: {
-          full_name: fullName,
-          country: formData.country,
-          address: formData.address?.trim() || "",
-        },
-      },
+      country,
+      mobile,
+      address: formData.address?.trim() || "",
+      userrole: "USER",
+      isAuthor: false,
     })
+    await setSession(auth.idToken)
 
-    if (error) {
-      return { error: error.message }
-    }
-
-    if (authData.user && authData.user.identities?.length === 0) {
-      return { error: "account_already_registered" }
-    }
-
-    if (!authData.user) {
-      return { error: "internal_error" }
-    }
-
-    // If a mobile number was supplied, attach it to Auth so Supabase can send
-    // the SMS OTP. When email confirmation is enabled there is no session yet,
-    // so the user must confirm the email before adding the phone in Settings.
-    if (mobile) {
-      if (!authData.session) {
-        return {
-          error: "phone_verification_after_email",
-          userId: authData.user.id,
-          phone: mobile,
-        }
-      }
-
-      const { error: phoneError } = await supabase.auth.updateUser({
-        phone: mobile,
-      })
-
-      if (phoneError) {
-        return { error: phoneError.message }
-      }
-
-      return {
-        success: true,
-        phoneVerificationRequired: true,
-        phone: mobile,
-      }
-    }
-
-    // Do not revalidate the entire layout during account creation. Signup should
-    // complete even if cache revalidation is unavailable in the current runtime.
-    return { success: true }
-  } catch (error: any) {
     return {
-      error: error?.message || "Unable to create the account. Please try again.",
+      success: true,
+      phoneVerificationRequired: Boolean(mobile),
+      phone: mobile,
     }
+  } catch (error: any) {
+    const code = String(error?.code || "")
+    if (code.includes("EMAIL_EXISTS")) return { error: "account_already_registered" }
+    if (code.includes("WEAK_PASSWORD")) return { error: "Password must be at least 6 characters." }
+    return { error: error?.message || "Unable to create the account. Please try again." }
   }
 }
