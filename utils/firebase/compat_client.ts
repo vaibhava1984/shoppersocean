@@ -6,7 +6,8 @@ import {
   sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updatePassword,
   updateProfile, onAuthStateChanged
 } from "firebase/auth"
-import { firebaseAuth, firebaseDb } from "./client"
+import { firebaseAuth, firebaseDb, firebaseStorage } from "./client"
+import { ref as storageRef, uploadBytes, deleteObject } from "firebase/storage"
 
 type Row = Record<string, any>
 
@@ -122,6 +123,29 @@ export function createClient() {
         update: (p: any) => new MutationBuilder(table).update(p),
         delete: () => new MutationBuilder(table).delete(),
         upsert: (p: any) => new MutationBuilder(table).upsert(p),
+      }
+    },
+    storage: {
+      from(bucket: string) {
+        return {
+          async upload(path: string, file: Blob, options?: { upsert?: boolean }) {
+            try {
+              const target = storageRef(firebaseStorage, bucket + "/" + path)
+              await uploadBytes(target, file, { contentType: (file as any)?.type || undefined })
+              return { data: { path }, error: null }
+            } catch (error: any) {
+              return { data: null, error: { message: error?.message || "Storage upload failed" } }
+            }
+          },
+          async remove(paths: string[]) {
+            try {
+              await Promise.all(paths.map(path => deleteObject(storageRef(firebaseStorage, bucket + "/" + path))))
+              return { data: null, error: null }
+            } catch (error: any) {
+              return { data: null, error: { message: error?.message || "Storage removal failed" } }
+            }
+          }
+        }
       }
     },
     auth: {
