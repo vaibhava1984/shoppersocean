@@ -9,14 +9,12 @@ export async function POST(request: Request) {
     const { bookId } = await request.json();
     if (!bookId) return NextResponse.json({ error: 'Book ID is required' }, { status: 400 });
 
-    // Use the same purchase verification as the existing PDF download flow.
-    // The existing flow checks for the user's latest order for this book;
-    // it does not require a particular order-status value.
     const { data: purchase, error: purchaseError } = await supabase
       .from('orders')
       .select()
       .eq('user_id', user.id)
       .eq('product_id', bookId)
+      .eq('status', 'completed')
       .order('order_date', { ascending: false })
       .limit(1)
       .maybeSingle();
