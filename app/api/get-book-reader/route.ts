@@ -12,10 +12,9 @@ export async function POST(request: Request) {
     const orders = await firestore.collection("orders")
       .where("user_id", "==", user.uid)
       .where("product_id", "==", bookId)
-      .where("status", "==", "completed")
-      .limit(1)
+      .limit(20)
       .get();
-    if (orders.empty) return NextResponse.json({ error: "Purchase required" }, { status: 403 });
+    if (!orders.docs.some((doc) => ["completed","captured"].includes(String((doc.data() as any).status || "").toLowerCase()))) return NextResponse.json({ error: "Purchase required" }, { status: 403 });
 
     const files = await firestore.collection("private_book_files").where("book_id", "==", bookId).get();
     const pdf = files.docs.map((doc) => doc.data() as any)
