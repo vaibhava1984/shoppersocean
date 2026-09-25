@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import FlipbookReader from '@/components/FlipbookReader';
 
 type BookFile = { downloadUrl: string; fileName: string; fileType: string };
 
 export default function FlipbookPageClient({ bookId }: { bookId: string }) {
+  const router = useRouter();
   const [file, setFile] = useState<BookFile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +42,7 @@ export default function FlipbookPageClient({ bookId }: { bookId: string }) {
       </div>
       {loading && <div className="flex min-h-[70vh] items-center justify-center gap-3 text-white"><Loader2 className="animate-spin" /><span>Preparing your flipbook…</span></div>}
       {!loading && error && <div className="mx-auto flex min-h-[70vh] max-w-lg items-center justify-center text-center text-white"><div className="rounded-2xl bg-white/10 p-7"><h1 className="mb-2 text-xl font-semibold">Unable to open flipbook</h1><p className="text-sm text-white/70">{error}</p></div></div>}
-      {!loading && !error && file && <FlipbookReader pdfUrl={file.downloadUrl} fileName={file.fileName} />}
+      {!loading && !error && file && <FlipbookReader pdfUrl={file.downloadUrl} fileName={file.fileName} onClose={() => router.push(`/book/${encodeURIComponent(bookId)}`)} />}
     </main>
   );
 }
