@@ -1,7 +1,8 @@
 import Header from "@/components/Header"
 import CategoriesAccordion from "@/app/components/CategoriesAccordion"
 import { Card, CardContent } from "@/components/ui/card"
-import { createClient } from "@/utils/supabase/server"
+import { firestore } from "@/lib/firebase/admin"
+import { getFirebaseUser } from "@/lib/firebase/session"
 import Footer from "@/components/Footer"
 import BookCard from "@/components/BookCard"
 import HeroSection from "@/components/HeroSection"
@@ -40,48 +41,29 @@ export default async function BookShelfPage({
     }
 
     const language = languageMap[languageParam] ?? (languageParam !== "all" ? languageParam : undefined)
-    const supabase = createClient()
-
-    let booksQuery = supabase
-        .from("books")
-        .select("id,title,description,price,cover_images,author_name,genre")
-        .eq("is_deleted", false)
-        .limit(100)
-        .order("title", { ascending: true })
-
-    if (language) booksQuery = booksQuery.eq("language", language)
-    if (authorParam !== "all") booksQuery = booksQuery.eq("author_id", authorParam)
-    if (genreParam !== "all") booksQuery = booksQuery.eq("genre", genreParam)
-
-    // Start all independent requests at the same time. The page no longer waits
-    // for the catalogue and authors before even starting the auth lookup.
-    const [booksResult, authorsResult, userResult] = await Promise.all([
-        booksQuery,
-        supabase
-            .from("authors")
-            .select("author_id,name")
-            .eq("is_deleted", false)
-            .order("name", { ascending: true }),
-        supabase.auth.getUser(),
+    const booksRef = firestore.collection("books")
+    const authorsRef = firestore.collection("authors")
+    const [allBooksSnap, authorsSnap, user] = await Promise.all([
+        booksRef.where("is_deleted", "==", false).get(),
+        authorsRef.where("is_deleted", "==", false).orderBy("name").get(),
+        getFirebaseUser(),
     ])
 
-    if (booksResult.error) {
-        console.error("[BookShelf] Error fetching books:", booksResult.error.message)
-    }
-    if (authorsResult.error) {
-        console.error("[BookShelf] Error fetching authors:", authorsResult.error.message)
-    }
+    const allBooks = allBooksSnap.docs.map(d => ({ id: d.id, ...d.data() } as any))
+    const authors = authorsSnap.docs.map(d => ({ author_id: String(d.data()?.author_id ?? d.id), name: String(d.data()?.name ?? "") }))
+    const languages = Array.from(new Set(allBooks.map((row: any) => row.language).filter(Boolean))).sort((a: string, b: string) => a.localeCompare(b))
 
-    const books = booksResult.data ?? []
-    const authors = authorsResult.data ?? []
-    const { data: languageRows } = await supabase.from("books").select("language").eq("is_deleted", false).not("language", "is", null)
-    const languages = Array.from(new Set((languageRows ?? []).map((row) => row.language).filter(Boolean))).sort((a, b) => a.localeCompare(b))
-    const user = userResult.data.user
+    const filteredSource = allBooks
+        .filter((book: any) => !language || book.language === language)
+        .filter((book: any) => authorParam === "all" || String(book.author_id) === String(authorParam))
+        .filter((book: any) => genreParam === "all" || book.genre === genreParam)
+        .sort((a: any, b: any) => String(a.title ?? "").localeCompare(String(b.title ?? "")))
+        .slice(0, 100)
 
-    const filteredBooks = books.map((book) => ({
+    const filteredBooks = filteredSource.map((book: any) => ({
         ...book,
-        coverImage: book.cover_images?.[0],
-        images: book.cover_images,
+        coverImage: Array.isArray(book.cover_images) ? book.cover_images[0] : undefined,
+        images: Array.isArray(book.cover_images) ? book.cover_images : undefined,
         author: book.author_name,
     }))
 
@@ -151,7 +133,7 @@ export default async function BookShelfPage({
                             {filteredBooks.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                                     {filteredBooks.map((book) => (
-                                        <BookCard key={book.id} book={book} loggedinUserId={user?.id} />
+                                        <BookCard key={book.id} book={book} loggedinUserId={user?.uid} />
                                     ))}
                                 </div>
                             ) : (
