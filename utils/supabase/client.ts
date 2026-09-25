@@ -1,7 +1,7 @@
 "use client"
 
 import { getFirebaseApp } from "@/lib/firebase/client"
-import { getAuth, onAuthStateChanged, signOut as firebaseSignOut, type User } from "firebase/auth"
+import { getAuth, onAuthStateChanged, signOut as firebaseSignOut, confirmPasswordReset } from "firebase/auth"
 import { getFirestore, collection, query, where, orderBy, limit as firestoreLimit, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore"
 
 const app=getFirebaseApp()
@@ -57,6 +57,9 @@ export function createClient(){
    getSession:async()=>{const user=await currentUser();return {data:{session:user?{user}:null},error:null}},
    signOut:async()=>{try{await fetch("/api/auth/session",{method:"DELETE"});await firebaseSignOut(auth)}catch{}return {error:null}},
    updateUser:async(data:any)=>{const response=await fetch("/api/update-profile",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(data)});return {error:response.ok?null:new Error("Unable to update profile")}},
+   resetPasswordForEmail:async(email:string,_options?:any)=>{try{const response=await fetch("/api/auth/password-reset",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email})});const data=await response.json();return {error:response.ok?null:new Error(data.error||"Unable to send reset email")}}catch(error){return {error}}},
+   confirmPasswordReset:async(oobCode:string,password:string)=>{try{await confirmPasswordReset(auth,oobCode,password);return {error:null}}catch(error:any){return {error}}},
+   verifyPasswordResetCode:async(oobCode:string)=>{try{const {verifyPasswordResetCode}=await import("firebase/auth");const email=await verifyPasswordResetCode(auth,oobCode);return {data:email,error:null}}catch(error){return {data:null,error}}},
    onAuthStateChange:(callback:(event:string,session:any)=>void)=>{let active=true;currentUser().then(user=>{if(active)callback("INITIAL_SESSION",user?{user}:null)});const unsub=onAuthStateChanged(auth,()=>{});return {data:{subscription:{unsubscribe:()=>{active=false;unsub()}}}}}
   },
   storage:{
