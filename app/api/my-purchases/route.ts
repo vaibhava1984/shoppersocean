@@ -18,11 +18,13 @@ export async function GET() {
     const productIds = [...new Set(orders.map(o => String(o.product_id || "")).filter(Boolean))];
     const orderIds = orders.map(o => o.id);
 
-    const [bookDocs, paymentSnap] = await Promise.all([
+    const [bookDocs, ...paymentSnaps] = await Promise.all([
       Promise.all(productIds.map(id => firestore.collection("books").doc(id).get())),
-      orderIds.length
-        ? firestore.collection("payments").where("order_id", "in", orderIds.slice(0, 30)).get()
-        : Promise.resolve({ docs: [] } as any),
+      ...Array.from({ length: Math.ceil(orderIds.length / 30) }, (_, i) =>
+        orderIds.length
+          ? firestore.collection("payments").where("order_id", "in", orderIds.slice(i * 30, i * 30 + 30)).get()
+          : Promise.resolve({ docs: [] } as any)
+      ),
     ]);
 
     const booksById = new Map(
@@ -31,7 +33,7 @@ export async function GET() {
         return [d.id, { id: d.id, title: b?.title || "", price: Number(b?.price || 0) }];
       })
     );
-    const payments = paymentSnap.docs.map((d: any) => ({ id: d.id, ...d.data() }));
+    const payments = paymentSnaps.flatMap((snap: any) => snap.docs).map((d: any) => ({ id: d.id, ...d.data() }));
     const purchases = orders.map(order => ({
       ...order,
       books: booksById.get(String(order.product_id)) || null,
