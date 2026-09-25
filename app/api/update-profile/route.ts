@@ -1,87 +1,22 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/utils/supabase/server"
-import { createAdminClient } from "@/utils/supabase/server_admin"
+import { firebaseAdminAuth, firestore } from "@/lib/firebase/admin"
 
-const normalizeIndianMobile = (value: string) => {
-  const digits = value.replace(/\D/g, "")
-  if (digits.length === 10 && /^[6-9]\d{9}$/.test(digits)) return `+91${digits}`
-  if (digits.length === 12 && digits.startsWith("91") && /^[6-9]\d{9}$/.test(digits.slice(2))) return `+${digits}`
-  return ""
-}
+const normalizeIndianMobile=(value:string)=>{const digits=value.replace(/\D/g,"");if(digits.length===10&&/^[6-9]\d{9}$/.test(digits))return `+91${digits}`;if(digits.length===12&&digits.startsWith("91")&&/^[6-9]\d{9}$/.test(digits.slice(2)))return `+${digits}`;return ""}
 
-export async function POST(request: Request) {
-  try {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: "You must be signed in." }, { status: 401 })
-    }
-
-    const body = await request.json()
-    const fullName = String(body.fullName ?? "").trim()
-    const country = String(body.country ?? "")
-    const email = String(body.email ?? "").trim()
-    const address = String(body.address ?? "").trim()
-    const mobile = String(body.mobile ?? "").trim()
-
-    if (!fullName || !country || !email) {
-      return NextResponse.json({ error: "Name, Country and Email are required." }, { status: 400 })
-    }
-
-    let phone: string | undefined
-    if (mobile) {
-      if (country !== "IN") {
-        return NextResponse.json({ error: "Mobile verification is currently available for Indian mobile numbers only." }, { status: 400 })
-      }
-      phone = normalizeIndianMobile(mobile)
-      if (!phone) {
-        return NextResponse.json({ error: "Please enter a valid 10-digit Indian mobile number starting with 6–9." }, { status: 400 })
-      }
-    }
-
-    const admin = createAdminClient()
-    const update: {
-      email: string
-      user_metadata: Record<string, string>
-    } = {
-      email,
-      user_metadata: {
-        ...(user.user_metadata ?? {}),
-        country,
-        full_name: fullName,
-        address,
-        // Keep the verified mobile number untouched until phone verification succeeds.
-        mobile: user.phone ?? user.user_metadata?.mobile ?? "",
-      },
-    }
-
-    // Save non-phone profile fields directly with the admin client.
-    // Phone changes must go through the authenticated Auth API so Supabase can send
-    // the verification OTP and keep the number unconfirmed until it is verified.
-    const { data, error } = await admin.auth.admin.updateUserById(user.id, update)
-
-    if (!error && phone) {
-      const { error: phoneError } = await supabase.auth.updateUser({ phone })
-      if (phoneError) {
-        console.error("Phone update/OTP request failed:", phoneError)
-        return NextResponse.json({ error: phoneError.message || "We could not send the verification code to this mobile number." }, { status: 422 })
-      }
-    }
-
-    if (error) {
-      console.error("Profile update failed:", error)
-      return NextResponse.json({ error: error.message || "Unable to update your details." }, { status: 422 })
-    }
-
-    return NextResponse.json({
-      success: true,
-      otpRequired: Boolean(phone),
-      user: data.user,
-      mobile: phone ?? "",
-    })
-  } catch (error) {
-    console.error("Profile update request failed:", error)
-    return NextResponse.json({ error: "Unable to update your details right now." }, { status: 500 })
-  }
+export async function POST(request:Request){
+ try{
+  const {data:{user}}=await createClient().auth.getUser();
+  if(!user)return NextResponse.json({error:"You must be signed in."},{status:401});
+  const body=await request.json();
+  const fullName=String(body.fullName??"").trim(),country=String(body.country??"").trim(),email=String(body.email??"").trim(),address=String(body.address??"").trim(),mobile=String(body.mobile??"").trim();
+  if(!fullName||!country||!email)return NextResponse.json({error:"Name, Country and Email are required."},{status:400});
+  let phone="";
+  if(mobile){if(country!=="IN")return NextResponse.json({error:"Mobile verification is currently available for Indian mobile numbers only."},{status:400});phone=normalizeIndianMobile(mobile);if(!phone)return NextResponse.json({error:"Please enter a valid 10-digit Indian mobile number starting with 6–9."},{status:400})}
+  const update:any={displayName:fullName,email};
+  if(phone)update.phoneNumber=phone;
+  await firebaseAdminAuth.updateUser(user.id,update);
+  await firestore.collection("profiles").doc(user.id).set({id:user.id,email,full_name:fullName,country,address,mobile:phone||user.phone||"",updated_at:new Date().toISOString()},{merge:true});
+  return NextResponse.json({success:true,otpRequired:false,user:{id:user.id,email,displayName:fullName},mobile:phone});
+ }catch(error:any){console.error("Profile update request failed:",error);return NextResponse.json({error:error?.message||"Unable to update your details right now."},{status:500})}
 }
