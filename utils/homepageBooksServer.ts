@@ -12,11 +12,10 @@ export async function getHomepageBooksServer(): Promise<HomepageBookPlacement[]>
     const selectedIds = [...new Set(layoutData.map(item => String(item.value ?? '').trim()).filter(Boolean))]
     if (!selectedIds.length) return []
 
-    const booksSnap = await firestore.collection('books').get()
-    const selected = new Set(selectedIds)
+    const bookDocs = await Promise.all(selectedIds.map(id => firestore.collection('books').doc(id).get()))
     const booksById = new Map(
-      booksSnap.docs
-        .filter(d => selected.has(d.id) && d.data().is_deleted !== true)
+      bookDocs
+        .filter(d => d.exists && d.data()?.is_deleted !== true)
         .map(d => {
           const book = d.data() as any
           return [d.id, {
