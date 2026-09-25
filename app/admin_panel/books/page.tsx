@@ -85,13 +85,16 @@ export default function Books() {
                 pages,
                 author_id,
                 author_name,
-                updated_at,
-                authors (
-                    name
-                )
+                updated_at
             `).or('is_deleted.eq.false,is_deleted.is.null');
             if (error) throw error;
-            setBooks(data ?? []);
+            const rows = data ?? [];
+            const authorIds = [...new Set(rows.map((book: any) => book.author_id).filter(Boolean))];
+            const { data: authorRows } = authorIds.length
+                ? await supabase.from('authors').select('author_id, name').in('author_id', authorIds)
+                : { data: [] };
+            const authorsById = new Map((authorRows ?? []).map((author: any) => [String(author.author_id), author]));
+            setBooks(rows.map((book: any) => ({ ...book, authors: authorsById.get(String(book.author_id)) ?? null })));
         } catch (error) {
             console.error('Error fetching books:', error);
         }
