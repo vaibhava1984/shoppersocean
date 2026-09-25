@@ -19,7 +19,7 @@ class FirebaseQuery {
   limit(n:number){this.ops.push({type:"limit",n});return this}
   gte(field:string,value:any){this.filters.push({type:"gte",field,value});return this}
   range(from:number,to:number){this.ops.push({type:"range",from,to});return this}
-  or(_expr:string){return this}
+  or(expr:string){this.filters.push({type:"or",expr});return this}
   single(){this.ops.push({type:"single"});return this}
   maybeSingle(){this.ops.push({type:"maybeSingle"});return this}
   insert(rows:any[]|any){this.action="insert";this.payload=rows;return this}
@@ -36,13 +36,33 @@ class FirebaseQuery {
         const snap=await this.getSnapshot();for(const d of snap.docs){await d.ref[this.action==="delete"?"delete":"set"](this.action==="delete"?undefined:this.payload,{merge:true})}
         return {data:null,error:null}
       }
+      const orFilter=this.filters.find((f:any)=>f.type==="or");
+      const normalFilters=this.filters.filter((f:any)=>f.type!=="or");
       let q:any=this.ref;
-      for(const f of this.filters){
+      for(const f of normalFilters){
         if(f.type==="eq") q=q.where(f.field,"==",f.value);
         else if(f.type==="in") q=q.where(f.field,"in",f.values);
         else if(f.type==="gte") q=q.where(f.field,">=",f.value);
+        else if(f.type==="not" && f.op==="is" && f.value===null) q=q.where(f.field,"!=",null);
       }
       for(const op of this.ops) if(op.type==="order") q=q.orderBy(op.field,op.direction);
+      if(orFilter){
+        const alternatives=String(orFilter.expr).split(",").map((part:string)=>{
+          const m=part.match(/^([^\.]+)\.(eq|is)\.(.*)$/); return m?{field:m[1],op:m[2],value:m[3]==="null"?null:m[3]}:null;
+        }).filter(Boolean) as any[];
+        if(alternatives.length){
+          const baseSnap=await this.ref.get();
+          let docs=baseSnap.docs.filter((d:any)=>alternatives.some((a:any)=>{
+            const v=d.data()?.[a.field]; return a.op==="eq"?String(v)===a.value:(a.value===null?(v===null||v===undefined):v===a.value);
+          }));
+          for(const f of normalFilters) if(f.type==="eq") docs=docs.filter((d:any)=>d.data()?.[f.field]===f.value);
+          if(normalFilters.some((f:any)=>f.type==="gte")) docs=docs.filter((d:any)=>normalFilters.filter((f:any)=>f.type==="gte").every((f:any)=>d.data()?.[f.field]>=f.value));
+          let data=docs.map((d:any)=>({id:d.id,...d.data()}));
+          if(this.ops.some((o:any)=>o.type==="order")){const o=this.ops.find((x:any)=>x.type==="order");data.sort((a:any,b:any)=>String(a[o.field]??"").localeCompare(String(b[o.field]??""))*(o.direction==="desc"?-1:1))}
+          const lim=this.ops.find((o:any)=>o.type==="limit"); if(lim)data=data.slice(0,lim.n);
+          return {data,error:null,count:data.length};
+        }
+      }
       for(const op of this.ops) if(op.type==="limit") q=q.limit(op.n);
       for(const op of this.ops) if(op.type==="range") q=q.offset(op.from).limit(op.to-op.from+1);
       const snap=await q.get(); let data=snap.docs.map((d:any)=>({id:d.id,...d.data()}));
