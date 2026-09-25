@@ -27,7 +27,7 @@ class FirebaseQuery {
     try{
       if(this.action==="insert"){
         const rows=Array.isArray(this.payload)?this.payload:[this.payload], out:any[]=[];
-        for(const row of rows){const ref=this.ref.doc(row.id || undefined);const data={...row,id:ref.id};await ref.set(data,{merge:true});out.push(data)}
+        for(const row of rows){const ref=row.id ? this.ref.doc(row.id) : this.ref.doc();const data={...row,id:ref.id};await ref.set(data,{merge:true});out.push(data)}
         return {data:out,error:null}
       }
       if(this.action==="update"||this.action==="delete"){
