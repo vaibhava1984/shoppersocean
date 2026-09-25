@@ -1,18 +1,19 @@
 import React from 'react'
 import { redirect } from "next/navigation"
 import Dashboard from '../components/adminPage/Dashboard';
-import Orders from '../components/adminPage/Orders';
 import AdminSidebar from "./adminSidebar"
-import { createClient } from "@/utils/supabase/server";
+import { getFirebaseUser } from "@/lib/firebase/session";
+import { firestore } from "@/lib/firebase/admin";
 
 export default async function AdminDashboard() {
-    const supabase = createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-    if (user?.app_metadata?.userrole !== "ADMIN") {
-        redirect("/")
+    const user: any = await getFirebaseUser();
+    if (!user) redirect("/");
+    let role = user.userrole || user.role;
+    if (role !== "ADMIN") {
+        const profile = await firestore.collection("profiles").doc(user.uid).get();
+        role = profile.exists ? profile.data()?.userrole : role;
     }
+    if (role !== "ADMIN") redirect("/");
     return (
         <div className="flex h-screen bg-gray-100">
             <AdminSidebar />
