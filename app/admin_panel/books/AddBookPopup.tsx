@@ -102,21 +102,19 @@ export default function AddBookPopup(props: propsType) {
                 const filePath = `protected-books/${fileName}`;
 
                 // Upload file to storage
-                const { error: uploadError } = await supabase.storage
-                    .from('books-content')
-                    .upload(filePath, file, {
-                        cacheControl: '0',
-                        upsert: false
-                    });
-
-                if (uploadError) throw uploadError;
+                const uploadBody = new FormData();
+                uploadBody.append("file", file);
+                uploadBody.append("path", filePath);
+                const uploadResponse = await fetch("/api/storage/books-content", { method: "POST", body: uploadBody });
+                const uploadResult = await uploadResponse.json();
+                if (!uploadResponse.ok) throw new Error(uploadResult?.error || "Failed to upload file");
 
                 // Add record to private_book_files table
                 const { error: dbError } = await supabase
                     .from('private_book_files')
                     .insert({
                         book_id: book.id,
-                        file_path: filePath,
+                        file_path: uploadResult.path,
                         file_name: file.name,
                         file_type: fileExt
                     });
@@ -151,11 +149,13 @@ export default function AddBookPopup(props: propsType) {
 
         try {
             // Remove from storage
-            const { error: storageError } = await supabase.storage
-                .from('books-content')
-                .remove([filePath]);
-
-            if (storageError) throw storageError;
+            const storageResponse = await fetch("/api/storage/books-content", {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ paths: [filePath] }),
+            });
+            const storageResult = await storageResponse.json();
+            if (!storageResponse.ok) throw new Error(storageResult?.error || "Failed to remove file");
 
             // Remove from private_book_files table
             const { error: dbError } = await supabase
@@ -512,12 +512,12 @@ export default function AddBookPopup(props: propsType) {
                     </div>
                     {book?.id && (
                         <div className="space-y-2">
-                            <Label htmlFor="book_files">Downloadable Book Files</Label>
+                            <Label htmlFor="book_files">Book PDF</Label>
                             <Input
                                 id="book_files"
                                 name="book_files"
                                 type="file"
-                                accept=".pdf,.epub,.mobi,.jpeg"
+                                accept=".pdf"
                                 multiple
                                 onChange={handleBookFileUpload}
                                 disabled={isUploading}
