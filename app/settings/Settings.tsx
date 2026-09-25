@@ -131,26 +131,6 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
               <Input id="mobile" type="tel" inputMode="tel" value={mobile} onChange={e => setMobile(e.target.value)} placeholder="+91XXXXXXXXXX" />
             </div>
 
-            {otpRequired && (
-              <div className="space-y-2">
-                <label htmlFor="phoneOtp" className="block font-medium mb-1">Mobile verification code</label>
-                <div className="flex gap-2">
-                  <Input id="phoneOtp" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))} inputMode="numeric" maxLength={6} placeholder="6-digit OTP" />
-                  <Button type="button" onClick={async () => {
-                    if (!/^\d{6}$/.test(otp)) { setMessage("Please enter the 6-digit verification code."); return }
-                    setIsSaving(true)
-                    const { error } = await supabase.auth.verifyOtp({ phone: normalizeIndianMobile(mobile), token: otp, type: "phone_change" })
-                    setIsSaving(false)
-                    if (error) { setMessage(error.message || "Incorrect or expired verification code."); return }
-                    setOtpRequired(false)
-                    setOtp("")
-                    setOriginalMobile(normalizeIndianMobile(mobile))
-                    setMessage("Mobile number verified successfully.")
-                  }} disabled={isSaving || otp.length !== 6} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold whitespace-nowrap">Verify</Button>
-                </div>
-              </div>
-            )}
-
             <div>
               <label htmlFor="address" className="block font-medium mb-1">Complete Address <span className="text-slate-500 font-normal">(Optional: if you want to order any products)</span></label>
               <textarea id="address" className="w-full rounded-md border border-gray-300 px-4 py-2 min-h-24" value={address} onChange={e => setAddress(e.target.value)} placeholder="Enter your complete address" />
