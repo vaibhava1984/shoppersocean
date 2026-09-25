@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer"
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/db/server";
 import { redirect } from "next/navigation"
 import MySales from './mySales';
 
