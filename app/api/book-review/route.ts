@@ -1,34 +1,14 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { createAdminClient } from '@/utils/supabase/server_admin'
-
-const REVIEW_SCHEMA_ERROR = 'The review database setup is incomplete. Please apply the latest Supabase migration before submitting reviews.'
+import { getFirebaseUser } from '@/lib/firebase/session'
+import { firestore } from '@/lib/firebase/admin'
 
 export async function GET(request: Request) {
   try {
     const bookId = new URL(request.url).searchParams.get('bookId')
     if (!bookId) return NextResponse.json({ error: 'Book ID is required.' }, { status: 400 })
-
-    const supabase = createAdminClient()
-    const { data, error } = await supabase
-      .from('testimonials')
-      .select('id, description, rating, users, user_id, book_id, created_at')
-      .eq('book_id', bookId)
-      .order('created_at', { ascending: false })
-
-    if (error) {
-      console.error('Error fetching book reviews:', error)
-      const isSchemaError = error.code === 'PGRST204' || error.code === '42703' || /book_id|user_id/i.test(error.message || '')
-      return NextResponse.json(
-        { error: isSchemaError ? REVIEW_SCHEMA_ERROR : 'Failed to fetch reviews.' },
-        { status: 500, headers: { 'Cache-Control': 'no-store' } }
-      )
-    }
-
-    return NextResponse.json(
-      { reviews: data || [] },
-      { headers: { 'Cache-Control': 'no-store, max-age=0' } }
-    )
+    const snap = await firestore.collection('testimonials').where('book_id', '==', bookId).get()
+    const reviews = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a:any,b:any) => String(b.created_at||'').localeCompare(String(a.created_at||'')))
+    return NextResponse.json({ reviews }, { headers: { 'Cache-Control': 'no-store, max-age=0' } })
   } catch (error) {
     console.error('Unexpected book review fetch error:', error)
     return NextResponse.json({ error: 'Unable to fetch reviews.' }, { status: 500 })
@@ -37,57 +17,22 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const authClient = createClient()
-    const { data: { user } } = await authClient.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json({ error: 'Please sign in to write a review.' }, { status: 401 })
-    }
-
+    const user = await getFirebaseUser()
+    if (!user) return NextResponse.json({ error: 'Please sign in to write a review.' }, { status: 401 })
     const { bookId, description, rating } = await request.json()
     const cleanDescription = String(description ?? '').trim()
     const numericRating = Number(rating)
-
-    if (!bookId || !cleanDescription || !Number.isInteger(numericRating) || numericRating < 1 || numericRating > 5) {
-      return NextResponse.json({ error: 'Please provide a review and a rating from 1 to 5.' }, { status: 400 })
-    }
-
-    const supabase = createAdminClient()
-    const { data: book, error: bookError } = await supabase
-      .from('books')
-      .select('id')
-      .eq('id', bookId)
-      .single()
-
-    if (bookError || !book) {
-      return NextResponse.json({ error: 'Book not found.' }, { status: 404 })
-    }
-
-    const { data: insertedReview, error: reviewError } = await supabase
-      .from('testimonials')
-      .insert({
-        description: cleanDescription,
-        rating: numericRating,
-        users: user.user_metadata?.full_name || user.email || 'Reader',
-        user_id: user.id,
-        book_id: String(book.id),
-      })
-      .select('id, description, rating, users, user_id, book_id, created_at')
-      .single()
-
-    if (reviewError) {
-      if (reviewError.code === '23505') {
-        return NextResponse.json({ error: 'You have already reviewed this book.' }, { status: 409 })
-      }
-      console.error('Error inserting book review:', reviewError)
-      const isSchemaError = reviewError.code === 'PGRST204' || reviewError.code === '42703' || /book_id|user_id/i.test(reviewError.message || '')
-      return NextResponse.json({ error: isSchemaError ? REVIEW_SCHEMA_ERROR : 'Failed to submit your review.' }, { status: 500 })
-    }
-
-    return NextResponse.json(
-      { message: 'Review submitted successfully.', review: insertedReview },
-      { status: 201, headers: { 'Cache-Control': 'no-store' } }
-    )
+    if (!bookId || !cleanDescription || !Number.isInteger(numericRating) || numericRating < 1 || numericRating > 5) return NextResponse.json({ error: 'Please provide a review and a rating from 1 to 5.' }, { status: 400 })
+    const book = await firestore.collection('books').doc(String(bookId)).get()
+    if (!book.exists) return NextResponse.json({ error: 'Book not found.' }, { status: 404 })
+    const existing = await firestore.collection('testimonials').where('book_id','==',String(bookId)).where('user_id','==',user.uid).limit(1).get()
+    if (!existing.empty) return NextResponse.json({ error: 'You have already reviewed this book.' }, { status: 409 })
+    const profile = await firestore.collection('profiles').doc(user.uid).get()
+    const profileData:any = profile.exists ? profile.data() : null
+    const ref = firestore.collection('testimonials').doc()
+    const review = { id: ref.id, description: cleanDescription, rating: numericRating, users: profileData?.full_name || user.name || user.email || 'Reader', user_id: user.uid, book_id: String(bookId), created_at: new Date().toISOString() }
+    await ref.set(review)
+    return NextResponse.json({ message: 'Review submitted successfully.', review }, { status: 201, headers: { 'Cache-Control': 'no-store' } })
   } catch (error) {
     console.error('Unexpected book review error:', error)
     return NextResponse.json({ error: 'Unable to submit your review.' }, { status: 500 })
