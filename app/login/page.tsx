@@ -30,6 +30,9 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
 
+  const showDialog = (title: string, description: string) =>
+    setDialogState({ isOpen: true, title, description })
+
   const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
   const validatePassword = (value: string) => value.length >= 6
 
@@ -37,10 +40,8 @@ export default function Login({ searchParams }: { searchParams: any }) {
     const next: Record<string, string> = {}
     if (!email.trim()) next.email = "Email is required"
     else if (!validateEmail(email.trim())) next.email = "Please enter a valid email address"
-
     if (!password) next.password = "Password is required"
     else if (!validatePassword(password)) next.password = "Password must be at least 6 letters/digits"
-
     if (!signingIn) {
       if (!username.trim()) next.username = "Name is required"
       if (!country) next.country = "Country is required"
@@ -56,25 +57,17 @@ export default function Login({ searchParams }: { searchParams: any }) {
       return
     }
     try {
-      // Authenticate directly in the browser so the Supabase session cookie is
-      // written immediately, without waiting for a server-action round trip.
       const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
       })
-
       if (error) {
         setIsSubmitting(false)
-        if (error.code === "email_not_confirmed") {
-          setErrors({ general: "Please confirm your email address and try again." })
-        } else if (error.code === "invalid_credentials") {
-          setErrors({ general: "Invalid credentials" })
-        } else {
-          setErrors({ general: error.message || "An error occurred during sign in. Please try again." })
-        }
+        if (error.code === "email_not_confirmed") setErrors({ general: "Please confirm your email address and try again." })
+        else if (error.code === "invalid_credentials") setErrors({ general: "Invalid credentials" })
+        else setErrors({ general: error.message || "An error occurred during sign in. Please try again." })
         return
       }
-
       await router.replace("/")
     } catch (error: any) {
       setIsSubmitting(false)
@@ -88,7 +81,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
       setIsSubmitting(false)
       return
     }
-
     try {
       const result = await signUp({
         email: email.trim(),
@@ -98,30 +90,19 @@ export default function Login({ searchParams }: { searchParams: any }) {
         mobile: mobile.trim() || undefined,
         address: address.trim() || undefined,
       })
-
       setIsSubmitting(false)
-
       if (result?.error) {
-        if (result.error === "account_already_registered") {
-          setErrors({ general: "An account with this email already exists. Please sign in or use a different email address." })
-        } else if (result.error === "phone_verification_after_email") {
-          setErrors({ general: "Please confirm your email first, then add and verify your mobile number from Settings." })
-        } else {
-          setErrors({ general: result.error })
-        }
+        if (result.error === "account_already_registered") setErrors({ general: "An account with this email already exists. Please sign in or use a different email address." })
+        else setErrors({ general: result.error })
         return
       }
-
       showDialog("Success", "Your account has been created successfully!")
       setIsSignIn(true)
     } catch (error: any) {
       setIsSubmitting(false)
-      if (error?.message !== "NEXT_REDIRECT") {
-        setErrors({ general: "An error occurred during sign up. Please try again." })
-      }
+      if (error?.message !== "NEXT_REDIRECT") setErrors({ general: "An error occurred during sign up. Please try again." })
     }
   }
-
 
   function getAuthErrorMessage(code: string) {
     if (code === "email_not_confirmed") return "Please confirm your email address and try again."
@@ -149,13 +130,46 @@ export default function Login({ searchParams }: { searchParams: any }) {
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600" />
         <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">{isSignIn ? "Sign In" : "Create Account"}</h2>
-
         <div className="space-y-4">
           {accountCreated === "success" && <div className="bg-green-400 text-white p-2 rounded">Account created successfully. Please confirm your mail and login.</div>}
           {(authError || errors.general) && <div className="bg-red-400 text-white p-2 rounded">{authError ? getAuthErrorMessage(authError) : errors.general}</div>}
 
           {!isSignIn && (
             <>
+              <div>
+                <label htmlFor="name">{field("Name", true)}</label>
+                <input id="name" className={`mt-1 w-full rounded-md border ${errors.username ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} placeholder="Your full name" autoComplete="name" value={username} onChange={e => { setUsername(e.target.value); setErrors(p => ({...p, username: ""})) }} />
+                {errors.username && <p className="mt-1 text-sm text-red-500">{errors.username}</p>}
+              </div>
+              <div>
+                <label htmlFor="country">{field("Country", true)}</label>
+                <Select value={country} onValueChange={v => { setCountry(v); setErrors(p => ({...p, country: ""})) }}>
+                  <SelectTrigger className={`w-full text-black mt-1 ${errors.country ? "border-red-500" : ""}`}><SelectValue placeholder="Select your country" /></SelectTrigger>
+                  <SelectContent>{COUNTRIES.map(c => <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>)}</SelectContent>
+                </Select>
+                {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
+              </div>
+            </>
+          )}
+
+          <div>
+            <label htmlFor="email">{field("Email", true)}</label>
+            <input id="email" type="email" className={`mt-1 w-full rounded-md border ${errors.email ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} placeholder="you@example.com" required value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ""})) }} />
+            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="password">{field("Choose any password (minimum six letters/digits)", true)}</label>
+            <input id="password" type="password" className={`mt-1 w-full rounded-md border ${errors.password ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} placeholder="Minimum 6 characters" required value={password} onChange={e => { setPassword(e.target.value); setErrors(p => ({...p, password: ""})) }} />
+            {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
+          </div>
+
+          {!isSignIn && (
+            <>
+              <div>
+                <label htmlFor="mobile">{field("Mobile", false)}</label>
+                <input id="mobile" type="tel" inputMode="tel" className="w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 mt-1" placeholder="+91XXXXXXXXXX" value={mobile} onChange={e => setMobile(e.target.value)} />
+              </div>
               <div>
                 <label htmlFor="address">{field("Complete Address", false)}</label>
                 <textarea id="address" className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 min-h-24" placeholder="Complete address (optional)" value={address} onChange={e => setAddress(e.target.value)} />
@@ -175,7 +189,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
         </div>
 
         <div className="relative my-4"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300" /></div><div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">Or</span></div></div>
-        <button type="button" onClick={() => { setIsSignIn(!isSignIn); setUsername(""); setEmail(""); setPassword(""); setCountry(""); setMobile(""); setAddress(""); setOtp(""); setPhoneVerificationRequired(false); setPhoneVerified(false); setErrors({}) }} className="w-full text-blue-600 text-sm font-medium text-center">{isSignIn ? "Need an account? Sign up" : "Already have an account? Sign in"}</button>
+        <button type="button" onClick={() => { setIsSignIn(!isSignIn); setUsername(""); setEmail(""); setPassword(""); setCountry(""); setMobile(""); setAddress(""); setErrors({}) }} className="w-full text-blue-600 text-sm font-medium text-center">{isSignIn ? "Need an account? Sign up" : "Already have an account? Sign in"}</button>
         <div className="text-sm text-center mt-3"><Link href="/reset-password" className="text-blue-600 font-medium">Forgot your password?</Link></div>
       </div>
 
