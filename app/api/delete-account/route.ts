@@ -21,7 +21,18 @@ export async function POST(){
   await deleteByUser('testimonials',user.id);
   await deleteByUser('authors_interest_submission',user.id);
   await deleteByUser('authors',user.id);
-  await deleteByUser('orders',user.id);
+  const userOrders=await firestore.collection('orders').where('user_id','==',user.id).get();
+  const orderIds=userOrders.docs.map((doc:any)=>doc.id);
+  for(let i=0;i<orderIds.length;i+=30){
+   const ids=orderIds.slice(i,i+30);
+   const payments=await firestore.collection('payments').where('order_id','in',ids).get();
+   const paymentBatch=firestore.batch();
+   payments.docs.forEach((doc:any)=>paymentBatch.delete(doc.ref));
+   if(payments.size)await paymentBatch.commit();
+  }
+  const orderBatch=firestore.batch();
+  userOrders.docs.forEach((doc:any)=>orderBatch.delete(doc.ref));
+  if(userOrders.size)await orderBatch.commit();
   await firestore.collection('profiles').doc(user.id).delete();
   await firebaseAdminAuth.deleteUser(user.id);
 
