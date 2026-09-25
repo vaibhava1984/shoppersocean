@@ -22,25 +22,24 @@ const PurchaseHistory = () => {
 
                 if (!user) throw new Error('User not authenticated');
 
-                // First fetch orders with product information
+                // Fetch orders first; Firebase does not support Supabase-style nested relations.
                 const { data: ordersData, error: ordersError } = await supabase
                     .from('orders')
-                    .select(`
-                        *,
-                        books (
-                        id,
-                        title,
-                        price
-                        )
-                    `)
+                    .select('*')
                     .eq('user_id', user.id)
                     .order('order_date', { ascending: false });
                 // console.log("ordersData-=====>", ordersData)
 
                 if (ordersError) throw ordersError;
 
-                // Then fetch corresponding payments
                 const orderIds = ordersData.map(order => order.id);
+                const productIds = [...new Set(ordersData.map(order => order.product_id).filter(Boolean))];
+                const { data: booksData, error: booksError } = productIds.length
+                    ? await supabase.from('books').select('id, title, price').in('id', productIds)
+                    : { data: [], error: null };
+                if (booksError) throw booksError;
+
+                // Then fetch corresponding payments
                 const { data: paymentsData, error: paymentsError } = await supabase
                     .from('payments')
                     .select('*')
@@ -49,9 +48,11 @@ const PurchaseHistory = () => {
                 if (paymentsError) throw paymentsError;
 
                 // Combine orders, products, and payments
+                const booksById = new Map((booksData ?? []).map(book => [String(book.id), book]));
                 const combinedData = ordersData.map(order => ({
                     ...order,
-                    payment: paymentsData.find(payment => payment.order_id === order.id)
+                    books: booksById.get(String(order.product_id)) ?? null,
+                    payment: paymentsData.find(payment => payment.order_id === order.id) ?? null
                 }));
                 // console.log("combinedData-=====>", combinedData)
 
@@ -134,7 +135,7 @@ const PurchaseHistory = () => {
                                             </Link>
                                         </TableCell>
                                         <TableCell>
-                                            {purchase.payment?.original_amount?.toFixed(2) || purchase.original_amount?.toFixed(2)} {purchase.payment.original_currency}
+                                            {purchase.payment?.original_amount?.toFixed(2) ?? purchase.original_amount?.toFixed(2) ?? '0.00'} {purchase.payment?.original_currency ?? purchase.display_currency ?? purchase.currency ?? ''}
                                         </TableCell>
                                         <TableCell>
                                             <Badge
