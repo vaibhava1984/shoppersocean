@@ -66,9 +66,9 @@ export default function BookCard({ book, loggedinUserId }: {
                                     <Link href={`/book/${book.id}`}>{book.title}</Link>
                                 </h3>
                                 <div className="mt-2">
-                                    {book.description.length > 100 ? (
+                                    {String(book.description ?? "").length > 100 ? (
                                         <>
-                                            {book.description.slice(0, 100)}...
+                                            {String(book.description ?? "").slice(0, 100)}...
                                             <Link
                                                 href={`/book/${book.id}`}
                                                 className="text-blue-500 hover:underline ml-1"
@@ -77,7 +77,7 @@ export default function BookCard({ book, loggedinUserId }: {
                                             </Link>
                                         </>
                                     ) : (
-                                        book.description
+                                        String(book.description ?? "")
                                     )}
                                 </div>
                             </div>
