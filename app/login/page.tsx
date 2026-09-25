@@ -12,6 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import React from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
+import { getAuth, signInWithCustomToken } from "firebase/auth"
+import { getFirebaseApp } from "@/lib/firebase/client"
 
 export default function Login({ searchParams }: { searchParams: any }) {
   const supabase = createClient()
@@ -95,6 +97,12 @@ export default function Login({ searchParams }: { searchParams: any }) {
         if (result.error === "account_already_registered") setErrors({ general: "An account with this email already exists. Please sign in or use a different email address." })
         else setErrors({ general: result.error })
         return
+      }
+      if (result?.token) {
+        const credential = await signInWithCustomToken(getAuth(getFirebaseApp()), result.token)
+        const idToken = await credential.user.getIdToken(true)
+        const sessionResponse = await fetch("/api/auth/session", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ idToken }) })
+        if (!sessionResponse.ok) throw new Error("Unable to create secure session")
       }
       showDialog("Success", "Your account has been created successfully!")
       setIsSignIn(true)
