@@ -23,6 +23,7 @@ class QueryBuilder {
   private offset = 0
   private fields?: string
   private filters: Array<[string, string, any]> = []
+  private search?: Array<{ field: string; value: string }>
   constructor(private table: string) {}
   select(fields = "*", _options?: any) { this.fields = fields; return this }
   eq(field: string, value: any) { this.filters.push([field, "==", value]); return this }
@@ -42,7 +43,11 @@ class QueryBuilder {
     return this
   }
   match(values: Row) { Object.entries(values).forEach(([k, v]) => this.eq(k, v)); return this }
-  or(_expression: string) { return this }
+  or(expression: string) {
+    const match = expression.match(/^(\w+)\.ilike\.%(.+)%?,(\w+)\.ilike\.%(.+)%?$/)
+    if (match) this.search = [{ field: match[1], value: match[2].replace(/%$/, "") }, { field: match[3], value: match[4].replace(/%$/, "") }]
+    return this
+  }
   order(field: string, options?: { ascending?: boolean }) {
     this.sort = { field, direction: options?.ascending === false ? "desc" : "asc" }; return this
   }
@@ -61,6 +66,9 @@ class QueryBuilder {
       if (this.take !== undefined) constraints.push(fsLimit(this.offset + this.take))
       const snap = await getDocs(query(collection(firebaseDb, this.table), ...constraints))
       let rows = snap.docs.map(d => ({ id: d.id, ...d.data() })) as Row[]
+      if (this.search?.length) {
+        rows = rows.filter(row => this.search!.some(s => String(row[s.field] ?? "").toLowerCase().includes(s.value.toLowerCase())))
+      }
       if (this.offset) rows = rows.slice(this.offset)
       if (this.take !== undefined) rows = rows.slice(0, this.take)
       return { data: project(rows, this.fields), error: null, count: rows.length }
@@ -130,7 +138,7 @@ export function createClient() {
         return {
           async upload(path: string, file: Blob, options?: { upsert?: boolean }) {
             try {
-              const target = storageRef(firebaseStorage, bucket + "/" + path)
+              const target = storageRef(firebaseStorage, path)
               await uploadBytes(target, file, { contentType: (file as any)?.type || undefined })
               return { data: { path }, error: null }
             } catch (error: any) {
@@ -139,7 +147,7 @@ export function createClient() {
           },
           async remove(paths: string[]) {
             try {
-              await Promise.all(paths.map(path => deleteObject(storageRef(firebaseStorage, bucket + "/" + path))))
+              await Promise.all(paths.map(path => deleteObject(storageRef(firebaseStorage, path))))
               return { data: null, error: null }
             } catch (error: any) {
               return { data: null, error: { message: error?.message || "Storage removal failed" } }
