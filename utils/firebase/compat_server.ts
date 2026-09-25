@@ -1,4 +1,5 @@
-import { collection, deleteDoc, getDocs, limit as fsLimit, orderBy, query, updateDoc, where, addDoc } from "firebase/firestore"
+import { cookies } from "next/headers"
+import { firebaseAdminAuth } from "./server_admin"
 import { firebaseAdminDb } from "./server_admin"
 
 type Row = Record<string, any>
@@ -74,8 +75,56 @@ class ServerMutations {
   delete(){return new ServerMutation(this.table,"delete",{})}
 }
 
+async function authRequest(action:string, email:string, password:string) {
+  const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY
+  if (!apiKey) return { error: { message: "Firebase API key is not configured" } }
+  const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${action}?key=${apiKey}`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password, returnSecureToken: true })
+  })
+  const json = await response.json()
+  if (!response.ok) return { error: { message: json?.error?.message || "Authentication failed", code: json?.error?.message } }
+  return { data: { user: { id: json.localId, uid: json.localId, email: json.email, email_verified: json.emailVerified }, session: { access_token: json.idToken } }, error: null }
+}
+
 export function createServerDataClient(){
   return {
+    auth: {
+      async getUser() {
+        try {
+          const store = await cookies()
+          const token = store.get("session")?.value
+          if (!token) return { data: { user: null }, error: null }
+          const decoded:any = await firebaseAdminAuth.verifySessionCookie(token, true)
+          return { data: { user: { id: decoded.uid, uid: decoded.uid, email: decoded.email ?? null, email_verified: decoded.email_verified ?? false, user_metadata: {}, app_metadata: {} } }, error: null }
+        } catch { return { data: { user: null }, error: null } }
+      },
+      async signInWithPassword({ email, password }: any) {
+        const result:any = await authRequest("signInWithPassword", email, password)
+        if (!result.error) {
+          const store = await cookies()
+          const decoded:any = await firebaseAdminAuth.verifyIdToken(result.data.session.access_token)
+          const session = await firebaseAdminAuth.createSessionCookie(result.data.session.access_token, { expiresIn: 7 * 24 * 60 * 60 * 1000 })
+          store.set("session", session, { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: 7 * 24 * 60 * 60 })
+        }
+        return result
+      },
+      async signUp({ email, password, options }: any) {
+        const result:any = await authRequest("signUp", email, password)
+        if (!result.error) {
+          try {
+            const uid = result.data.user.uid
+            await firebaseAdminDb.collection("profiles").doc(uid).set({ id: uid, email, full_name: options?.data?.full_name || "", country: options?.data?.country || "", address: options?.data?.address || "", created_at: new Date().toISOString() }, { merge: true })
+          } catch {}
+        }
+        return result
+      },
+      async signOut() {
+        const store = await cookies()
+        store.delete("session")
+        return { error: null }
+      }
+    },
     from(table:string){
       const q=new ServerQuery(table)
       return {
