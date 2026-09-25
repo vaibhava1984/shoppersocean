@@ -4,9 +4,13 @@ import { firestore } from '@/lib/firebase/admin'
 
 export async function GET(request: Request) {
   try {
-    const bookId = new URL(request.url).searchParams.get('bookId')
-    if (!bookId) return NextResponse.json({ error: 'Book ID is required.' }, { status: 400 })
-    const snap = await firestore.collection('testimonials').where('book_id', '==', bookId).get()
+    const params = new URL(request.url).searchParams
+    const bookId = params.get('bookId')
+    const homepage = params.get('homepage') === 'true'
+    if (!bookId && !homepage) return NextResponse.json({ error: 'Book ID is required.' }, { status: 400 })
+    const snap = bookId
+      ? await firestore.collection('testimonials').where('book_id', '==', bookId).get()
+      : await firestore.collection('testimonials').get()
     const reviews = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a:any,b:any) => String(b.created_at||'').localeCompare(String(a.created_at||'')))
     return NextResponse.json({ reviews }, { headers: { 'Cache-Control': 'no-store, max-age=0' } })
   } catch (error) {
