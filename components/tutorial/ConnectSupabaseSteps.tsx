@@ -1,2 +1,0 @@
-import Step from "./Step";
-export default function ConnectSupabaseSteps(){return <ol className="flex flex-col gap-6"><Step title="Firebase backend"><p>Shoppers Ocean now uses Firebase for authentication and database services.</p></Step><Step title="Private book files"><p>Book PDFs are stored privately in Backblaze B2 and are served only to eligible readers.</p></Step><Step title="No manual setup required"><p>The production configuration is managed by the application.</p></Step></ol>}
