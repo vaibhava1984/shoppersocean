@@ -62,17 +62,7 @@ const AuthorOrdersDashboard = ({ authorId }: {
             // Get orders with time filter
             let ordersQuery = supabase
                 .from('orders')
-                .select(`
-                    id,
-                    product_id,
-                    created_at,
-                    payments!payments_order_id_fkey (
-                        amount_in_inr,
-                        original_amount,
-                        original_currency,
-                        updated_at
-                    )
-                `)
+                .select('id, product_id, created_at')
                 .in('product_id', bookIds);
 
             if (timeFilterDate) {
@@ -81,6 +71,14 @@ const AuthorOrdersDashboard = ({ authorId }: {
 
             const { data: ordersData, error: ordersError } = await ordersQuery;
             if (ordersError) throw ordersError;
+
+            const orderIds = ordersData.map(order => order.id);
+            const { data: paymentsData, error: paymentsError } = orderIds.length
+                ? await supabase.from('payments').select('order_id, amount_in_inr, original_amount, original_currency, updated_at').in('order_id', orderIds)
+                : { data: [], error: null };
+            if (paymentsError) throw paymentsError;
+
+            const paymentsByOrder = new Map((paymentsData || []).map(payment => [payment.order_id, payment]));
             // console.log("booksData=>", booksData)
             // console.log("ordersData=>", ordersData)
 
@@ -89,7 +87,8 @@ const AuthorOrdersDashboard = ({ authorId }: {
                 const book = booksData.find(b => b.id === order.product_id);
                 // console.log("current order=>", order)
                 // console.log("book found=>", book)
-                const payment = order.payments; // Assuming one payment per order
+                const payment = paymentsByOrder.get(order.id); // One payment is recorded for each verified order
+                if (!payment) return null;
                 // console.log("payment found=>", payment)
 
                 return {
@@ -102,11 +101,12 @@ const AuthorOrdersDashboard = ({ authorId }: {
                 };
             });
 
+            const validSales = salesDetails.filter(Boolean);
             const result = {
-                totalOrders: ordersData.length,
-                totalRevenue: salesDetails.reduce((sum, sale) => sum + sale.amount_in_inr, 0),
+                totalOrders: validSales.length,
+                totalRevenue: validSales.reduce((sum, sale) => sum + sale.amount_in_inr, 0),
                 totalActiveBooks: booksData.length,
-                salesDetails
+                salesDetails: validSales
             };
 
             return result;
