@@ -18,10 +18,10 @@ export async function POST(){
   const profileSnap=await firestore.collection('profiles').doc(user.uid).get();
   const profile:any=profileSnap.exists?profileSnap.data():null;
   const name=String(profile?.full_name||'there').trim()||'there';
-  await deleteByUser('testimonials',user.id);
-  await deleteByUser('authors_interest_submission',user.id);
-  await deleteByUser('authors',user.id);
-  const userOrders=await firestore.collection('orders').where('user_id','==',user.id).get();
+  await deleteByUser('testimonials',user.uid);
+  await deleteByUser('authors_interest_submission',user.uid);
+  await deleteByUser('authors',user.uid);
+  const userOrders=await firestore.collection('orders').where('user_id','==',user.uid).get();
   const orderIds=userOrders.docs.map((doc:any)=>doc.id);
   for(let i=0;i<orderIds.length;i+=30){
    const ids=orderIds.slice(i,i+30);
@@ -33,8 +33,8 @@ export async function POST(){
   const orderBatch=firestore.batch();
   userOrders.docs.forEach((doc:any)=>orderBatch.delete(doc.ref));
   if(userOrders.size)await orderBatch.commit();
-  await firestore.collection('profiles').doc(user.id).delete();
-  await firebaseAdminAuth.deleteUser(user.id);
+  await firestore.collection('profiles').doc(user.uid).delete();
+  await firebaseAdminAuth.deleteUser(user.uid);
 
   let emailSent=false;
   try{
