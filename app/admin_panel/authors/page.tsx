@@ -1,332 +1,62 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { createClient } from "@/utils/supabase/client";
-import AdminSidebar from "../adminSidebar"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast"
-import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+import AdminSidebar from "../adminSidebar";
 
-type AuthorData = {
-    created_at: string;
-    name: string;
-    bio: string;
-    updated_at: string;
-    author_id: string;
-    user_id: string;
-    profiles: {
-        email: string;
-    };
-};
+type Author={author_id:string;user_id:string;name:string;bio:string;email:string;created_at:string;updated_at:string};
 
-type AuthorEditData = {
-    name: string;
-    bio: string;
-    user_id: string;
-    author_id?: string;
-};
+export default function AuthorsManagement(){
+  const {toast}=useToast();
+  const [authors,setAuthors]=useState<Author[]>([]);
+  const [users,setUsers]=useState<{id:string;name:string;email:string}[]>([]);
+  const [name,setName]=useState(""); const [userId,setUserId]=useState(""); const [bio,setBio]=useState("");
+  const [editing,setEditing]=useState<Author|null>(null);
 
-const AuthorsManagement = () => {
-    const { toast } = useToast()
-    const supabase = createClient();
-    const [authors, setAuthors] = useState<AuthorData[]>([]);
-    const [editingAuthorFullData, setEditingAuthorFullData] = useState<AuthorData | null>(null);
-    const [editingAuthor, setEditingAuthor] = useState<AuthorEditData | null>(null);
-    const [isAddAuthorOpen, setIsAddAuthorOpen] = useState(false);
-    const [isEditAuthorOpen, setIsEditAuthorOpen] = useState(false);
-    const [newAuthor, setNewAuthor] = useState<{ name: string, bio: string, author_id: string }>({ name: '', bio: '', author_id: '' });
-    const [allUsersLists, setAllUsersLists] = useState<{ id: string, full_name: string, email: string }[]>([]);
+  async function load(){
+    const r=await fetch("/api/admin/authors",{cache:"no-store"}); const d=await r.json();
+    if(!r.ok) return toast({variant:"destructive",title:"Error",description:d.error||"Unable to load authors"});
+    setAuthors(d.authors||[]);
+  }
+  async function loadUsers(){
+    const r=await fetch("/api/admin/users",{cache:"no-store"}); const d=await r.json();
+    if(r.ok) setUsers((d.users||[]).map((u:any)=>({id:String(u.id||u.uid),name:String(u.full_name||u.displayName||""),email:String(u.email||"")})));
+  }
+  useEffect(()=>{void load();void loadUsers()},[]);
 
-    useEffect(() => {
-        fetchAuthors();
-    }, []);
+  async function add(){
+    if(!name.trim()||!userId) return toast({variant:"destructive",title:"Error",description:"Name and user are required"});
+    const r=await fetch("/api/add_authors",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name.trim(),user_id:userId})});
+    const d=await r.json(); if(!r.ok) return toast({variant:"destructive",title:"Error",description:d.error||"Unable to add author"});
+    setName("");setUserId("");setBio("");await load();toast({title:"Success",description:"Author added successfully"});
+  }
+  async function save(){
+    if(!editing)return;
+    const r=await fetch("/api/admin/authors",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({author_id:editing.author_id,name:editing.name,bio:editing.bio})});
+    const d=await r.json();if(!r.ok)return toast({variant:"destructive",title:"Error",description:d.error||"Unable to update author"});
+    setEditing(null);await load();toast({title:"Success",description:"Author updated successfully"});
+  }
+  async function remove(a:Author){
+    const r=await fetch("/api/delete_author",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({author_id:a.author_id,user_id:a.user_id})});
+    const d=await r.json();if(!r.ok)return toast({variant:"destructive",title:"Error",description:d.error||"Unable to delete author"});
+    await load();toast({title:"Deleted",description:"Author deleted successfully"});
+  }
 
-    const fetchAuthors = async () => {
-        const { data, error } = await supabase.from('authors').select('*').eq('is_deleted', false);
-        if (error) {
-            console.error('Error fetching authors:', error);
-        } else {
-            const rows = Array.isArray(data) ? data : [];
-            const profileIds = [...new Set(rows.map((row: any) => row.user_id).filter(Boolean))];
-            const { data: profiles } = profileIds.length
-                ? await supabase.from('profiles').select('id, email').in('id', profileIds)
-                : { data: [] };
-            const byId = new Map((profiles ?? []).map((profile: any) => [String(profile.id), profile]));
-            setAuthors(rows.map((row: any) => ({ ...row, profiles: byId.get(String(row.user_id)) })));
-        }
-    };
-
-    useEffect(() => {
-        if (isAddAuthorOpen || isEditAuthorOpen) {
-            fetchAllUsers();
-        }
-    }, [isAddAuthorOpen, isEditAuthorOpen]);
-
-    const fetchAllUsers = async () => {
-        const { data, error } = await supabase.from('profiles').select('id, full_name, email');
-        if (error) {
-            console.error('Error fetching authors:', error);
-        } else {
-            console.log("fetchAllUsers data=>", data)
-            setAllUsersLists(data);
-        }
-    };
-
-    const handleEditAuthor = (author: AuthorData) => {
-        setEditingAuthor(author);
-        setEditingAuthorFullData(author);
-        setIsEditAuthorOpen(true)
-    };
-
-    const handleUpdateAuthor = async () => {
-        if (editingAuthor) {
-            const { data, error } = await supabase
-                .from('authors')
-                .update({
-                    ...editingAuthor,
-                    updated_at: new Date().toISOString() // Set updated_at to the current time
-                })
-                .eq('author_id', editingAuthor.author_id);
-
-            if (error) {
-                console.error('Error updating author:', error);
-            } else {
-                setEditingAuthor(null);
-                setEditingAuthorFullData(null);
-                setIsEditAuthorOpen(false);
-                fetchAuthors();
-            }
-        }
-    };
-
-    const handleDeleteAuthor = async (author_id: string, user_id: string) => {
-
-        const response = await fetch('/api/delete_author', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ author_id: author_id, user_id }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            toast({
-                variant: "destructive",
-                title: "Error",
-                description: data.error || "Something went wrong",
-            })
-            return;
-        }
-
-        toast({
-            title: "Delete!",
-            description: "Deleted Author Successfully",
-        })
-        fetchAuthors();
-    };
-
-
-    const handleAddAuthor = async () => {
-        if (newAuthor.name && newAuthor.author_id) {
-            const response = await fetch('/api/add_authors', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: newAuthor.name,
-                    // bio: newAuthor.bio, 
-                    user_id: newAuthor.author_id
-                }),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                toast({
-                    variant: "destructive",
-                    title: "Error",
-                    description: data.error || "Something went wrong",
-                })
-                return;
-            }
-
-            toast({
-                title: "Success!",
-                description: "Adding Author Success",
-            })
-            fetchAuthors();
-            setIsAddAuthorOpen(false);
-        } else {
-            alert("Please fill all the fields")
-        }
-    };
-
-    return (
-        <div>
-            <Toaster />
-            <div className="flex h-screen bg-gray-100">
-                <AdminSidebar />
-                {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-8">
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-2xl font-semibold">Authors Management</h3>
-                        <Dialog open={isAddAuthorOpen} onOpenChange={setIsAddAuthorOpen}>
-                            <DialogTrigger asChild>
-                                <Button>Add Author</Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Add New Author</DialogTitle>
-                                </DialogHeader>
-                                <div className="grid gap-4 py-4">
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="name" className="text-right">
-                                            Name
-                                        </Label>
-                                        <Input
-                                            id="name"
-                                            value={newAuthor.name}
-                                            onChange={(e) => setNewAuthor({ ...newAuthor, name: e.target.value })}
-                                            className="col-span-3"
-                                        />
-                                    </div>
-                                    {/* <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="bio" className="text-right">
-                                            Bio
-                                        </Label>
-                                        <Textarea
-                                            id="bio"
-                                            value={newAuthor.bio}
-                                            onChange={(e) => setNewAuthor({ ...newAuthor, bio: e.target.value })}
-                                            className="col-span-3"
-                                        />
-                                    </div> */}
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="author">Users <span className="text-red-500">*</span></Label>
-                                        <Select
-                                            name="author"
-                                            value={newAuthor.author_id}
-                                            onValueChange={(value: string) => {
-                                                setNewAuthor({ ...newAuthor, author_id: value });
-                                            }}
-                                        >
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select User" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {allUsersLists.map((user) => (
-                                                    <SelectItem key={user.id} value={user.id}>
-                                                        {user.full_name ?? user.email}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                </div>
-                                <Button onClick={handleAddAuthor}>Save and Add</Button>
-                            </DialogContent>
-                        </Dialog>
-                    </div>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>A_ID</TableHead>
-                                <TableHead>Email</TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Bio</TableHead>
-                                <TableHead>Created At</TableHead>
-                                <TableHead>Updated At</TableHead>
-                                <TableHead>Actions</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {authors.filter(d => d).map((author) => (
-                                <TableRow key={author.author_id} className='text-black'>
-                                    <TableCell>{author.author_id}</TableCell>
-                                    <TableCell>{author.profiles.email}</TableCell>
-                                    <TableCell>{author.name}</TableCell>
-                                    <TableCell>{author.bio}</TableCell>
-                                    <TableCell>{new Date(author.created_at).toLocaleString()}</TableCell>
-                                    <TableCell>{new Date(author.updated_at).toLocaleString()}</TableCell>
-                                    <TableCell>
-                                        <Dialog open={isEditAuthorOpen} onOpenChange={setIsEditAuthorOpen}>
-                                            <DialogTrigger asChild>
-                                                <Button variant="outline" className="mr-2 text-black" onClick={() => handleEditAuthor(author)}>
-                                                    Edit
-                                                </Button>
-                                            </DialogTrigger>
-                                            <DialogContent>
-                                                <DialogHeader>
-                                                    <DialogTitle>Edit Author</DialogTitle>
-                                                </DialogHeader>
-                                                <div className="grid gap-4 py-4">
-                                                    <div className="grid grid-cols-4 items-center gap-4">
-                                                        <Label htmlFor="edit-name" className="text-right">
-                                                            Name
-                                                        </Label>
-                                                        <Input
-                                                            id="edit-name"
-                                                            value={editingAuthor?.name || ''}
-                                                            onChange={(e) => setEditingAuthor(
-                                                                {
-                                                                    name: e.target.value,
-                                                                    bio: editingAuthor?.bio ?? '',
-                                                                    user_id: editingAuthor?.user_id ?? '',
-                                                                    author_id: editingAuthor?.author_id
-                                                                })}
-                                                            className="col-span-3"
-                                                        />
-                                                    </div>
-                                                    <div className="grid grid-cols-4 items-center gap-4">
-                                                        <Label htmlFor="edit-bio" className="text-right">
-                                                            Bio
-                                                        </Label>
-                                                        <Textarea
-                                                            id="edit-bio"
-                                                            value={editingAuthor?.bio || ''}
-                                                            onChange={(e) => setEditingAuthor(
-                                                                {
-                                                                    name: editingAuthor?.name ?? '',
-                                                                    bio: e.target.value,
-                                                                    user_id: editingAuthor?.user_id ?? '',
-                                                                    author_id: editingAuthor?.author_id
-                                                                })}
-                                                            className="col-span-3"
-                                                        />
-                                                    </div>
-                                                    <div className="flex items-center justify-center">
-                                                        <Label htmlFor="edit-author" className="text-right mr-2">
-                                                            Author
-                                                        </Label>
-                                                        <div className='bg-gray-100 p-2 grid-col-span-3'>
-                                                            {editingAuthorFullData?.profiles?.email}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <Button onClick={handleUpdateAuthor}>Save and Update</Button>
-                                            </DialogContent>
-                                        </Dialog>
-                                        <Button variant="destructive" onClick={() => handleDeleteAuthor(author.author_id, author.user_id)}>
-                                            Delete
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </main>
-            </div>
-        </div>
-    );
-};
-
-export default AuthorsManagement;
+  return <div><Toaster/><div className="flex min-h-screen bg-gray-100"><AdminSidebar/><main className="flex-1 overflow-y-auto p-4 md:p-8">
+    <h1 className="mb-6 text-2xl font-semibold">Authors Management</h1>
+    <section className="mb-8 rounded-lg bg-white p-4 shadow"><h2 className="mb-4 text-lg font-semibold">Add Author</h2>
+      <div className="grid gap-3 md:grid-cols-3"><Input placeholder="Author name" value={name} onChange={e=>setName(e.target.value)}/>
+      <select className="h-10 rounded-md border bg-white px-3" value={userId} onChange={e=>setUserId(e.target.value)}><option value="">Select user</option>{users.map(u=><option key={u.id} value={u.id}>{u.name||u.email}</option>)}</select>
+      <Input placeholder="Bio (optional)" value={bio} onChange={e=>setBio(e.target.value)}/></div>
+      <Button className="mt-4 bg-blue-600 text-white hover:bg-blue-700" onClick={add}>Add Author</Button>
+    </section>
+    <div className="overflow-x-auto rounded-lg bg-white shadow"><table className="w-full text-sm"><thead><tr className="border-b text-left"><th className="p-3">A_ID</th><th className="p-3">Email</th><th className="p-3">Name</th><th className="p-3">Bio</th><th className="p-3">Actions</th></tr></thead><tbody>
+      {authors.map(a=><tr key={a.author_id} className="border-b"><td className="p-3">{a.author_id}</td><td className="p-3">{a.email}</td><td className="p-3">{a.name}</td><td className="p-3">{a.bio}</td><td className="p-3 whitespace-nowrap"><Button className="mr-2 bg-blue-600 text-white hover:bg-blue-700" onClick={()=>setEditing(a)}>Edit</Button><Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={()=>remove(a)}>Delete</Button></td></tr>)}
+      {!authors.length&&<tr><td colSpan={5} className="p-6 text-center text-slate-500">No authors found.</td></tr>}
+    </tbody></table></div>
+    {editing&&<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"><div className="w-full max-w-lg rounded-lg bg-white p-5"><h2 className="mb-4 text-xl font-semibold">Edit Author</h2><Input value={editing.name} onChange={e=>setEditing({...editing,name:e.target.value})}/><Textarea className="mt-3" value={editing.bio} onChange={e=>setEditing({...editing,bio:e.target.value})}/><div className="mt-4 flex justify-end gap-2"><Button variant="outline" onClick={()=>setEditing(null)}>Cancel</Button><Button className="bg-blue-600 text-white hover:bg-blue-700" onClick={save}>Save</Button></div></div></div>}
+  </main></div></div>
