@@ -27,9 +27,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [country, setCountry] = useState("")
   const [mobile, setMobile] = useState("")
   const [address, setAddress] = useState("")
-  const [otp, setOtp] = useState("")
-  const [phoneVerificationRequired, setPhoneVerificationRequired] = useState(false)
-  const [phoneVerified, setPhoneVerified] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
 
@@ -115,14 +112,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
         return
       }
 
-      if (result?.phoneVerificationRequired) {
-        setPhoneVerificationRequired(true)
-        setPhoneVerified(false)
-        setErrors({})
-        showDialog("Verification code sent", "A 6-digit verification code has been sent to your mobile number.")
-        return
-      }
-
       showDialog("Success", "Your account has been created successfully!")
       setIsSignIn(true)
     } catch (error: any) {
@@ -133,30 +122,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
     }
   }
 
-  const verifyPhone = async () => {
-    if (!/^\d{6}$/.test(otp)) {
-      setErrors({ otp: "Please enter the 6-digit code." })
-      return
-    }
-    setIsSubmitting(true)
-    const { error } = await supabase.auth.verifyOtp({
-      phone: mobile.trim(),
-      token: otp,
-      type: "phone_change",
-    })
-    setIsSubmitting(false)
-
-    if (error) {
-      setErrors({ otp: error.message || "Incorrect or expired verification code." })
-      return
-    }
-
-    setPhoneVerified(true)
-    setPhoneVerificationRequired(false)
-    setOtp("")
-    setErrors({})
-    showDialog("Mobile verified", "Your mobile number has been verified successfully.")
-  }
 
   function getAuthErrorMessage(code: string) {
     if (code === "email_not_confirmed") return "Please confirm your email address and try again."
