@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
+import { getFirebaseUser } from '@/lib/firebase/session';
 import { fetchExchangeRates, convertCurrency } from '@/utils/currency';
 
 function getRazorpay() {
@@ -18,6 +19,8 @@ function getRazorpay() {
 
 export async function POST(req: Request) {
     try {
+        const user = await getFirebaseUser();
+        if (!user) return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
         const razorpay = getRazorpay();
         const { amount, currency = 'INR', notes } = await req.json();
 
