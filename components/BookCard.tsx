@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+
 import { OptimizedImage } from "@/components/OptimizedImage"
 import LazyPaymentButton from "@/components/LazyPaymentButton"
 
@@ -10,8 +10,6 @@ export default function BookCard({ book, loggedinUserId }: {
     book: any,
     loggedinUserId?: string
 }) {
-    const [isInView, setIsInView] = useState(true)
-
 
     return (
         <>
@@ -41,16 +39,7 @@ export default function BookCard({ book, loggedinUserId }: {
                 }
             `}</style>
 
-            <div
-                ref={cardRef}
-                className="opacity-100"
-                onAnimationEnd={(event) => {
-                    if (event.animationName === "bookCardSlowZoomIn") {
-                        setHasFullyAppeared(true)
-                        setHasAnimatedOnce(true)
-                    }
-                }}
-            >
+            <div className="opacity-100">
                 <Card className="overflow-hidden transition-shadow hover:shadow-lg">
                     <CardContent className="p-0 h-full flex flex-col">
                         <Link
