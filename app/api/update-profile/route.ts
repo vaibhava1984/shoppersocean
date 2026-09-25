@@ -15,6 +15,6 @@ export async function POST(request:Request){
   if(phone)update.phoneNumber=phone;
   await firebaseAdminAuth.updateUser(user.id,update);
   await firestore.collection("profiles").doc(user.id).set({id:user.id,email,full_name:fullName,country,address,mobile,updated_at:new Date().toISOString()},{merge:true});
-  return NextResponse.json({success:true,otpRequired:false,user:{id:user.id,email,displayName:fullName},mobile});
+  return NextResponse.json({success:true,user:{id:user.id,email,displayName:fullName},mobile});
  }catch(error:any){console.error("Profile update request failed:",error);return NextResponse.json({error:error?.message||"Unable to update your details right now."},{status:500})}
 }
