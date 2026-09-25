@@ -43,7 +43,7 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json({ orderId: order.id, amount: requestedAmount, currency });
+        return NextResponse.json({ orderId: order.id, amount: requestedAmount, currency, keyId: process.env.RAZORPAY_KEY_ID });
     } catch (error) {
         console.error('Error creating order:', error);
         return NextResponse.json({ error: 'Unable to create payment order. Please try again.' }, { status: 500 });
