@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import { Resend } from "resend";
-import { createClient } from "@/utils/supabase/server";
+import { getFirebaseUser } from "@/lib/firebase/session";
 import { firestore } from "@/lib/firebase/admin";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
@@ -11,7 +11,7 @@ function getRazorpay(){const keyId=process.env.RAZORPAY_KEY_ID,keySecret=process
 export async function POST(req:Request){
  try{
   const razorpay=getRazorpay();
-  const {data:{user}}=await createClient().auth.getUser();
+  const user=await getFirebaseUser();
   if(!user)return NextResponse.json({error:"Authentication required"},{status:401});
   const body=await req.json();
   const {razorpay_order_id,razorpay_payment_id,razorpay_signature,original_currency,original_amount,user_id,product_id,quantity,shipping_address,contact_number,email}=body;
