@@ -157,53 +157,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
           {!isSignIn && (
             <>
               <div>
-                <label htmlFor="name">{field("Name", true)}</label>
-                <input id="name" className={`mt-1 w-full rounded-md border ${errors.username ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} placeholder="Your full name" autoComplete="name" value={username} onChange={e => { setUsername(e.target.value); setErrors(p => ({...p, username: ""})) }} />
-                {errors.username && <p className="mt-1 text-sm text-red-500">{errors.username}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="country">{field("Country", true)}</label>
-                <Select value={country} onValueChange={v => { setCountry(v); setErrors(p => ({...p, country: ""})) }}>
-                  <SelectTrigger className={`w-full text-black mt-1 ${errors.country ? "border-red-500" : ""}`}><SelectValue placeholder="Select your country" /></SelectTrigger>
-                  <SelectContent>{COUNTRIES.map(c => <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>)}</SelectContent>
-                </Select>
-                {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
-              </div>
-            </>
-          )}
-
-          <div>
-            <label htmlFor="email">{field("Email", true)}</label>
-            <input id="email" type="email" className={`mt-1 w-full rounded-md border ${errors.email ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} placeholder="you@example.com" required value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ""})) }} />
-            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="password">{field("Choose any password (minimum six letters/digits)", true)}</label>
-            <input id="password" type="password" className={`mt-1 w-full rounded-md border ${errors.password ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} placeholder="Minimum 6 characters" required value={password} onChange={e => { setPassword(e.target.value); setErrors(p => ({...p, password: ""})) }} />
-            {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
-          </div>
-
-          {!isSignIn && (
-            <>
-              <div>
-                <label htmlFor="mobile">{field("Mobile", false)}</label>
-                <div className="flex gap-2 mt-1">
-                  <input id="mobile" type="tel" inputMode="tel" className="flex-1 rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900" placeholder="+91XXXXXXXXXX" value={mobile} onChange={e => { setMobile(e.target.value); setPhoneVerified(false) }} />
-                  {phoneVerified && <span className="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white whitespace-nowrap">Verified ✓</span>}
-                </div>
-                {phoneVerificationRequired && !phoneVerified && (
-                  <div className="mt-2 flex gap-2">
-                    <input value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))} inputMode="numeric" maxLength={6} className="flex-1 rounded-md border border-gray-300 px-4 py-2" placeholder="6-digit code" />
-                    <Button type="button" onClick={verifyPhone} disabled={isSubmitting} className="bg-blue-600 text-white">Verify</Button>
-                  </div>
-                )}
-                {phoneVerificationRequired && <p className="mt-1 text-xs text-slate-500">Enter the 6-digit code sent to your mobile.</p>}
-                {errors.otp && <p className="mt-1 text-sm text-red-500">{errors.otp}</p>}
-              </div>
-
-              <div>
                 <label htmlFor="address">{field("Complete Address", false)}</label>
                 <textarea id="address" className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 min-h-24" placeholder="Complete address (optional)" value={address} onChange={e => setAddress(e.target.value)} />
               </div>
