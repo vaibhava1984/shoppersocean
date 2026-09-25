@@ -28,7 +28,7 @@ service cloud.firestore {
     match /private_book_files/{fileId} {
       allow read, write: if admin();
     }
-    match /testimonials/{testimonialId} {
+    match /authors_interest_submission/{submissionId} {\n      allow read, delete: if admin() || (signedIn() && resource.data.user_id == request.auth.uid);\n      allow create: if signedIn();\n      allow update: if admin();\n    }\n    match /testimonials/{testimonialId} {
       allow read: if true;
       allow create: if signedIn();
       allow update, delete: if admin() || (signedIn() && resource.data.user_id == request.auth.uid);
