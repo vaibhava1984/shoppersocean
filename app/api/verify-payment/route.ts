@@ -16,6 +16,12 @@ export async function POST(req:Request){
   const body=await req.json();
   const {razorpay_order_id,razorpay_payment_id,razorpay_signature,original_currency,original_amount,user_id,product_id,quantity,shipping_address,contact_number,email}=body;
   if(user_id&&user_id!==user.uid)return NextResponse.json({error:"User mismatch"},{status:403});
+  const createdOrder=await razorpay.orders.fetch(razorpay_order_id);
+  const orderNotes:any=createdOrder.notes||{};
+  if(orderNotes.user_id && orderNotes.user_id!==user.uid)return NextResponse.json({error:"Order user mismatch"},{status:403});
+  if(orderNotes.product_id && String(orderNotes.product_id)!==String(product_id))return NextResponse.json({error:"Order product mismatch"},{status:400});
+  if(orderNotes.original_currency && orderNotes.original_currency!==original_currency)return NextResponse.json({error:"Order currency mismatch"},{status:400});
+  if(orderNotes.original_amount && Math.abs(Number(orderNotes.original_amount)-Number(original_amount))>0.01)return NextResponse.json({error:"Order amount mismatch"},{status:400});
   const rates=await fetchExchangeRates();
   const amountInINR=convertCurrency(original_amount,original_currency,"INR",rates);
   const secret=process.env.RAZORPAY_KEY_SECRET!;
