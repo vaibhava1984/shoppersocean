@@ -41,7 +41,9 @@
     "tailwindcss": "3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.3.3",
-    "@opennextjs/cloudflare": "latest"
+    "@opennextjs/cloudflare": "latest",
+    "@aws-sdk/client-s3": "latest",
+    "@aws-sdk/s3-request-presigner": "latest"
   },
   "devDependencies": {
     "@types/node": "20.11.5",
