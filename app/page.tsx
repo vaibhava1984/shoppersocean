@@ -1,4 +1,4 @@
-import { getUser } from "@/utils/supabase/server";
+import { getUser } from "@/utils/db/server";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card"
 import { Star } from 'lucide-react'
@@ -11,7 +11,7 @@ import TrendingBooks from "@/components/trending_books";
 import BooksCollections from "@/components/books_collections";
 import HeroSection from "@/components/HeroSection";
 import { getHomepageBooksServer } from "@/utils/homepageBooksServer";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/db/server";
 
 export const metadata = {
   title: 'Home',
