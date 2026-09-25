@@ -71,7 +71,18 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
         const { active, over } = event
         if (over && active.id !== over.id) { const oldIndex = books.findIndex((book) => book.id === active.id); const newIndex = books.findIndex((book) => book.id === over.id); onUpdateBooks(arrayMove(books, oldIndex, newIndex)) }
     }
-    async function handleRemoveBook(id: string) {\n        const target = books.find((book) => book.id === id)\n        if (!target?.entryId || isSaving) return\n        setIsSaving(true); setErrorMessage('')\n        try {\n            const response = await fetch('/api/homepage_sections', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, cache: 'no-store', body: JSON.stringify({ entryId: target.entryId }) })\n            const payload = await response.json()\n            if (!response.ok) throw new Error(payload.error || 'Unable to remove book')\n            onUpdateBooks(books.filter((book) => book.id !== id))\n        } catch (error) { setErrorMessage(error instanceof Error ? error.message : 'Unable to remove book. Please try again.') }\n        finally { setIsSaving(false) }\n    }
+    async function handleRemoveBook(id: string) {
+        const target = books.find((book) => book.id === id)
+        if (!target?.entryId || isSaving) return
+        setIsSaving(true); setErrorMessage('')
+        try {
+            const response = await fetch('/api/homepage_sections', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, cache: 'no-store', body: JSON.stringify({ entryId: target.entryId }) })
+            const payload = await response.json()
+            if (!response.ok) throw new Error(payload.error || 'Unable to remove book')
+            onUpdateBooks(books.filter((book) => book.id !== id))
+        } catch (error) { setErrorMessage(error instanceof Error ? error.message : 'Unable to remove book. Please try again.') }
+        finally { setIsSaving(false) }
+    }
 
     return (
         <Card className="mb-8">
