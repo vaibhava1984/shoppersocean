@@ -61,14 +61,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
       const idToken = await credential.user.getIdToken(true)
       const sessionResponse = await fetch("/api/auth/session", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ idToken }) })
       if (!sessionResponse.ok) throw new Error("Unable to create secure session")
-      const error = null
-      if (error) {
-        setIsSubmitting(false)
-        if (error.code === "email_not_confirmed") setErrors({ general: "Please confirm your email address and try again." })
-        else if (error.code === "invalid_credentials") setErrors({ general: "Invalid credentials" })
-        else setErrors({ general: error.message || "An error occurred during sign in. Please try again." })
-        return
-      }
       await router.replace("/")
     } catch (error: any) {
       setIsSubmitting(false)
@@ -138,7 +130,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600" />
         <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">{isSignIn ? "Sign In" : "Create Account"}</h2>
         <div className="space-y-4">
-          {accountCreated === "success" && <div className="bg-green-400 text-white p-2 rounded">Account created successfully. Please confirm your mail and login.</div>}
+          {accountCreated === "success" && <div className="bg-green-400 text-white p-2 rounded">Account created successfully. You can now sign in.</div>}
           {(authError || errors.general) && <div className="bg-red-400 text-white p-2 rounded">{authError ? getAuthErrorMessage(authError) : errors.general}</div>}
 
           {!isSignIn && (
