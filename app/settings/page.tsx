@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import { getUser } from "@/utils/supabase/server";
+import { getUser } from "@/utils/db/server";
 import Footer from "@/components/Footer";
 import Settings from './Settings';
 
