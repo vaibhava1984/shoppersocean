@@ -1,11 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Loader2, Maximize2, X, Volume2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, X, Volume2 } from 'lucide-react';
 
 interface FlipbookReaderProps {
   pdfUrl: string;
   fileName?: string;
+  onClose?: () => void;
 }
 
 type PdfPage = {
@@ -55,7 +56,7 @@ function loadPdfJs(): Promise<PdfJs> {
   });
 }
 
-export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps) {
+export default function FlipbookReader({ pdfUrl, fileName, onClose }: FlipbookReaderProps) {
   const bookHostRef = useRef<HTMLDivElement>(null);
   const currentCanvasRef = useRef<HTMLCanvasElement>(null);
   const nextCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -67,7 +68,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const [loading, setLoading] = useState(true);
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fullscreen, setFullscreen] = useState(false);
   const [turning, setTurning] = useState<'next' | 'prev' | null>(null);
   const [nextReady, setNextReady] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
@@ -95,8 +95,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
-    const maxWidth = Math.min(window.innerWidth * 0.86, fullscreen ? 980 : 760);
-    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.78 : 0.68), fullscreen ? 760 : 680);
+    const maxWidth = Math.min(window.innerWidth * 0.86, 760);
+    const maxHeight = Math.min(window.innerHeight * 0.68, 680);
     const scale = Math.min(maxWidth / base.width, maxHeight / base.height);
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
@@ -115,7 +115,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     context.fillRect(0, 0, width, height);
     await pageProxy.render({ canvasContext: context, viewport }).promise;
     pageProxy.cleanup?.();
-  }, [fullscreen]);
+  }, []);
 
   const preparePage = useCallback(async (pageNumber: number, canvas: HTMLCanvasElement) => {
     if (!pdf || pageNumber < 1 || pageNumber > pdf.numPages) return false;
@@ -254,7 +254,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowRight') void goToPage(page + 1);
       if (event.key === 'ArrowLeft') void goToPage(page - 1);
-      if (event.key === 'Escape') setFullscreen(false);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -284,7 +283,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   };
 
   return (
-    <div className={fullscreen ? 'fixed inset-0 z-[100] bg-slate-950 p-3 sm:p-6' : 'w-full'}>
+    <div className="w-full">
       <div className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-2xl">
         <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 text-white">
           <div className="min-w-0">
@@ -295,8 +294,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
             <button type="button" onClick={() => setSoundEnabled(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={soundEnabled ? 'Mute page turn sound' : 'Enable page turn sound'}>
               <Volume2 size={19} className={soundEnabled ? 'text-white' : 'text-white/35'} />
             </button>
-            <button type="button" onClick={() => setFullscreen(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={fullscreen ? 'Close full screen' : 'Open full screen'}>
-            {fullscreen ? <X size={20} /> : <Maximize2 size={20} />}
+            <button type="button" onClick={onClose} className="rounded-lg p-2 hover:bg-white/10" aria-label="Close flipbook">
+              <X size={20} />
             </button>
           </div>
         </div>
