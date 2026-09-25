@@ -35,15 +35,26 @@ const AdminPurchaseHistory = () => {
     const fetchStats = async () => {
         try {
             // console.log("fetchstats called=>", dateFilter, statusFilter)
-            const { data, error } = await supabase
-                .rpc('get_order_stats', {
-                    p_date_filter: dateFilter,
-                    p_status: statusFilter
-                });
+            const now = new Date();
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+            const startOfYear = new Date(now.getFullYear(), 0, 1).toISOString();
 
+            let statsQuery = supabase.from('orders').select('id, status, total_amount, order_date');
+            if (statusFilter !== 'all') statsQuery = statsQuery.eq('status', statusFilter);
+            if (dateFilter === 'today') statsQuery = statsQuery.gte('order_date', startOfDay);
+            if (dateFilter === 'month') statsQuery = statsQuery.gte('order_date', startOfMonth);
+            if (dateFilter === 'year') statsQuery = statsQuery.gte('order_date', startOfYear);
+
+            const { data: statsOrders, error } = await statsQuery;
             if (error) throw error;
-            // console.log("fetchStats data=>", data)
-            setStats(data);
+            const rows = statsOrders || [];
+            setStats({
+                totalOrders: rows.length,
+                totalRevenue: rows.reduce((sum, order) => sum + Number(order.total_amount || 0), 0),
+                successfulOrders: rows.filter(order => order.status === 'completed').length,
+                pendingOrders: rows.filter(order => order.status === 'pending').length
+            });
         } catch (err) {
             console.error('Error fetching stats:', err);
         }
@@ -56,7 +67,7 @@ const AdminPurchaseHistory = () => {
             // First get total count for pagination
             let countQuery = supabase
                 .from('orders')
-                .select('id', { count: 'exact' });
+                .select('id');
 
             // Apply filters to count query
             if (statusFilter !== 'all') {
@@ -81,14 +92,14 @@ const AdminPurchaseHistory = () => {
                     break;
             }
 
-            const { count, error: countError } = await countQuery;
+            const { data: countQueryData, error: countError } = await countQuery;
             if (countError) throw countError;
-            setTotalCount(count || 0);
+            setTotalCount(countQueryData?.length || 0);
 
             // Fetch orders with pagination
             let query = supabase
                 .from('orders')
-                .select('*, profiles(id,full_name,email)')
+                .select('*')
                 .order('order_date', { ascending: false })
                 .range(currentPage * ITEMS_PER_PAGE, (currentPage + 1) * ITEMS_PER_PAGE - 1);
 
@@ -111,6 +122,12 @@ const AdminPurchaseHistory = () => {
 
             const { data: ordersData, error: ordersError } = await query;
             if (ordersError) throw ordersError;
+
+            const profileIds = [...new Set(ordersData.map(order => order.user_id).filter(Boolean))];
+            const { data: profilesData, error: profilesError } = profileIds.length
+                ? await supabase.from('profiles').select('id, full_name, email').in('id', profileIds)
+                : { data: [], error: null };
+            if (profilesError) throw profilesError;
 
             // Get unique product IDs
             const productIds = [...new Set(ordersData.map(order => order.product_id))];
@@ -136,7 +153,8 @@ const AdminPurchaseHistory = () => {
             const combinedData = ordersData.map(order => ({
                 ...order,
                 product: productsData.find(p => p.id === order.product_id),
-                payment: paymentsData.find(p => p.order_id === order.id)
+                payment: paymentsData.find(p => p.order_id === order.id),
+                profiles: profilesData.find(p => p.id === order.user_id)
             }));
             // console.log("combinedData=>", combinedData)
 
