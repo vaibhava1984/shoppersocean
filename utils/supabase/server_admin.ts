@@ -1,17 +1,7 @@
-import { createClient } from "@supabase/supabase-js"
-
-// Server-only Supabase client for trusted admin database operations.
-// Do not attach browser/session cookies here: the service-role key must
-// remain the authenticated database role so RLS does not block admin writes.
-export function createAdminClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    }
-  )
-}
+import { firebaseAdminApp, firebaseAdminAuth, firestore, storage } from "@/lib/firebase/admin"
+export function createAdminClient(){return {
+ auth:{getUser:async()=>{const u=await (await import("@/lib/firebase/session")).getFirebaseUser();return {data:{user:u?{id:u.uid,email:u.email,app_metadata:{userrole:(u as any).userrole || (u as any).role || "USER",isAuthor:(u as any).isAuthor}:null}},error:null}}},
+ from:(name:string)=>{const {createClient}=require("./server");return createClient().from(name)},
+ storage:{from:()=>({})}
+}}
+export { firebaseAdminApp, firebaseAdminAuth, firestore, storage }
