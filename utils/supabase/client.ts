@@ -58,6 +58,12 @@ export function createClient(){
    signOut:async()=>{try{await fetch("/api/auth/session",{method:"DELETE"});await firebaseSignOut(auth)}catch{}return {error:null}},
    updateUser:async(data:any)=>{const response=await fetch("/api/update-profile",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(data)});return {error:response.ok?null:new Error("Unable to update profile")}},
    onAuthStateChange:(callback:(event:string,session:any)=>void)=>{let active=true;currentUser().then(user=>{if(active)callback("INITIAL_SESSION",user?{user}:null)});const unsub=onAuthStateChanged(auth,()=>{});return {data:{subscription:{unsubscribe:()=>{active=false;unsub()}}}}}
+  },
+  storage:{
+   from:(bucket:string)=>({
+    upload:async(path:string,file:File,_options?:any)=>{try{const form=new FormData();form.append("path",path);form.append("file",file);const r=await fetch("/api/storage/books-content",{method:"POST",body:form});const d=await r.json();return {data:r.ok?{path}:null,error:r.ok?null:new Error(d.error||"Upload failed")}}catch(error){return {data:null,error}}},
+    remove:async(paths:string[])=>{try{const r=await fetch("/api/storage/books-content",{method:"DELETE",headers:{"content-type":"application/json"},body:JSON.stringify({paths})});const d=await r.json();return {data:r.ok?paths:null,error:r.ok?null:new Error(d.error||"Delete failed")}}catch(error){return {data:null,error}}}
+   })
   }
  }
 }
