@@ -10,7 +10,10 @@ export async function updateSession(request:NextRequest){
  if(!token){const next=request.nextUrl.clone();next.pathname="/login";return NextResponse.redirect(next)}
  try{
    const user=await firebaseAdminAuth.verifySessionCookie(token,true)
-   const role=(user as any).userrole || (user as any).role
+   let role=(user as any).userrole || (user as any).role
+   if(pathname.startsWith("/admin_panel") && role!=="ADMIN") {
+     try { const snap=await (await import("@/lib/firebase/admin")).firestore.collection("profiles").doc(user.uid).get(); role=snap.exists?snap.data()?.userrole:role } catch {}
+   }
    if(pathname.startsWith("/admin_panel") && role!=="ADMIN"){const next=request.nextUrl.clone();next.pathname="/";return NextResponse.redirect(next)}
    return NextResponse.next()
  }catch{
