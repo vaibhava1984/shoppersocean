@@ -28,17 +28,6 @@ export async function POST() {
       return NextResponse.json({ error: 'Your account does not have an email address.' }, { status: 400 });
     }
 
-    // Supabase Auth user deletion requires the server-side service-role key.
-    // Fail clearly instead of returning a misleading generic deletion error
-    // when the production environment is missing this required secret.
-    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      console.error('SUPABASE_SERVICE_ROLE_KEY is not configured; account deletion is unavailable.');
-      return NextResponse.json(
-        { error: 'Account deletion is temporarily unavailable. Please try again shortly.' },
-        { status: 503 }
-      );
-    }
-
     const name = String(user.user_metadata?.full_name ?? '').trim() || 'there';
     const safeName = escapeHtml(name);
 
@@ -137,7 +126,9 @@ export async function POST() {
       console.error('Unexpected account deletion email error:', emailError);
     }
 
-    return NextResponse.json({ success: true, emailSent });
+    const response = NextResponse.json({ success: true, emailSent });
+    response.cookies.delete("session");
+    return response;
   } catch (error) {
     console.error('Unexpected account deletion error:', error);
     return NextResponse.json({ error: 'Unable to delete your account. Please try again.' }, { status: 500 });
