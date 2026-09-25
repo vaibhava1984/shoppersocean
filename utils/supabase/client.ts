@@ -1,7 +1,1 @@
-import { createBrowserClient } from "@supabase/ssr"
-import { getSupabaseConfig } from "./config"
-
-export function createClient() {
-  const { url, anonKey } = getSupabaseConfig()
-  return createBrowserClient(url, anonKey)
-}
+export { createClient } from "@/utils/firebase/compat_client"
