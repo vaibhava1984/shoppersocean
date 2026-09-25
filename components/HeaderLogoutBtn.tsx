@@ -1,16 +1,15 @@
 "use client"
-import { createClient } from "@/utils/supabase/client";
+import { getAuth, signOut } from "firebase/auth";
+import { getFirebaseApp } from "@/lib/firebase/client";
 
 export default function HeaderLogoutBtn() {
-    const supabase = createClient();
-    return (
-        <button className="" onClick={async () => {
-            const signoutStatus = await supabase.auth.signOut();
-            if (signoutStatus.error === null) {
-                window.location.href = "/";
-            }
-        }}>
-            Logout
-        </button>
-    )
+  return (
+    <button className="" onClick={async () => {
+      try { await signOut(getAuth(getFirebaseApp())); } catch {}
+      try { await fetch("/api/auth/session", { method: "DELETE" }); } catch {}
+      window.location.href = "/";
+    }}>
+      Logout
+    </button>
+  )
 }
