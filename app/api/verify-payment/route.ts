@@ -15,7 +15,7 @@ export async function POST(req:Request){
   if(!user)return NextResponse.json({error:"Authentication required"},{status:401});
   const body=await req.json();
   const {razorpay_order_id,razorpay_payment_id,razorpay_signature,original_currency,original_amount,user_id,product_id,quantity,shipping_address,contact_number,email}=body;
-  if(user_id&&user_id!==user.id)return NextResponse.json({error:"User mismatch"},{status:403});
+  if(user_id&&user_id!==user.uid)return NextResponse.json({error:"User mismatch"},{status:403});
   const rates=await fetchExchangeRates();
   const amountInINR=convertCurrency(original_amount,original_currency,"INR",rates);
   const secret=process.env.RAZORPAY_KEY_SECRET!;
@@ -35,7 +35,7 @@ export async function POST(req:Request){
     const [bookSnap,paymentSnap]=await Promise.all([tx.get(bookRef),tx.get(paymentRef)]);
     if(paymentSnap.exists) throw new Error("PAYMENT_ALREADY_RECORDED");
     book=bookSnap.exists?{id:bookSnap.id,...bookSnap.data()}:null;
-    orderDetails={id:orderRef.id,user_id:user.id,product_id,quantity:quantity||1,shipping_address:shipping_address||"",contact_number:contact_number||"",email:email||user.email||"",status:paymentStatus,order_date:now,total_amount:Number(amountInINR),display_amount:Number(original_amount),currency:"INR",display_currency:original_currency,razorpay_order_id};
+    orderDetails={id:orderRef.id,user_id:user.uid,product_id,quantity:quantity||1,shipping_address:shipping_address||"",contact_number:contact_number||"",email:email||user.email||"",status:paymentStatus,order_date:now,total_amount:Number(amountInINR),display_amount:Number(original_amount),currency:"INR",display_currency:original_currency,razorpay_order_id};
     const paymentDetails={id:razorpay_payment_id,order_id:orderRef.id,razorpay_order_id,payment_id:razorpay_payment_id,signature:razorpay_signature,status:paymentStatus,original_currency,original_amount,amount_in_inr:Number(amountInINR),payment_method:payment.method,bank:payment.bank,card_network:payment.card?.network,card_last4:payment.card?.last4,error_code:payment.error_code,error_description:payment.error_description,created_at:now};
     tx.set(orderRef,orderDetails);tx.set(paymentRef,paymentDetails);
   });
