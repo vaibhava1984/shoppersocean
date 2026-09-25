@@ -53,7 +53,7 @@ class FirebaseQuery {
 
 function makeAuth(){
   return {
-    async getUser(){const user=await getFirebaseUser();return {data:{user:user?{id:user.uid,email:user.email,app_metadata:{userrole:(user as any).userrole || (user as any).role || "USER",isAuthor:(user as any).isAuthor}:null},error:null}},
+    async getUser(){const user=await getFirebaseUser();let profile:any=null;if(user){try{const snap=await require("@/lib/firebase/admin").firestore.collection("profiles").doc(user.uid).get();profile=snap.exists?snap.data():null}catch{}}return {data:{user:user?{id:user.uid,email:user.email,phone:user.phone_number||profile?.mobile||null,app_metadata:{userrole:(user as any).userrole || (user as any).role || profile?.userrole || "USER",isAuthor:Boolean((user as any).isAuthor||profile?.isAuthor)},user_metadata:{full_name:profile?.full_name||user.name||"",country:profile?.country||"",address:profile?.address||"",mobile:profile?.mobile||user.phone_number||""}}:null},error:null}},
     async getSession(){const user=await getFirebaseUser();return {data:{session:user?{user:{id:user.uid,email:user.email}}:null},error:null}},
     async signOut(){return {error:null}},
     async updateUser(data:any){const user=await getFirebaseUser();if(!user)return {error:new Error("Not authorized")};const {firebaseAdminAuth}=require("@/lib/firebase/admin");await firebaseAdminAuth.updateUser(user.uid,{password:data.password,email:data.email,phoneNumber:data.phone});return {error:null}},
