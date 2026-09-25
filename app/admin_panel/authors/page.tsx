@@ -48,12 +48,17 @@ const AuthorsManagement = () => {
     }, []);
 
     const fetchAuthors = async () => {
-        const { data, error } = await supabase.from('authors').select('*, profiles(email)').eq('is_deleted', false);
+        const { data, error } = await supabase.from('authors').select('*').eq('is_deleted', false);
         if (error) {
             console.error('Error fetching authors:', error);
         } else {
-            console.log("data=>", data)
-            setAuthors(data);
+            const rows = Array.isArray(data) ? data : [];
+            const profileIds = [...new Set(rows.map((row: any) => row.user_id).filter(Boolean))];
+            const { data: profiles } = profileIds.length
+                ? await supabase.from('profiles').select('id, email').in('id', profileIds)
+                : { data: [] };
+            const byId = new Map((profiles ?? []).map((profile: any) => [String(profile.id), profile]));
+            setAuthors(rows.map((row: any) => ({ ...row, profiles: byId.get(String(row.user_id)) })));
         }
     };
 
