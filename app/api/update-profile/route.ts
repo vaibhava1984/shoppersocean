@@ -9,7 +9,7 @@ export async function POST(request:Request){
   const body=await request.json();
   const fullName=String(body.fullName??"").trim(),country=String(body.country??"").trim(),email=String(body.email??"").trim(),address=String(body.address??"").trim(),mobile=String(body.mobile??"").trim();
   if(!fullName||!country||!email)return NextResponse.json({error:"Name, Country and Email are required."},{status:400});
-  let phone="";
+  let phone=mobile;
   if(mobile){phone=mobile}
   const update:any={displayName:fullName,email};
   if(phone)update.phoneNumber=phone;
