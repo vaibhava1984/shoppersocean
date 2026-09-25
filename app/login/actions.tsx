@@ -60,9 +60,7 @@ export async function signUp(formData: {
       userrole: "USER",
       isAuthor: false,
     })
-    await setSession(auth.idToken)
-
-    return { success: true }
+    return { success: true, token: auth.customToken }
   } catch (error: any) {
     const code = String(error?.code || "")
     if (code.includes("EMAIL_EXISTS")) return { error: "account_already_registered" }
