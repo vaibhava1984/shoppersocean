@@ -4,11 +4,11 @@ import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
-import { createClient } from "@/utils/supabase/client"
+import { getAuth, sendPasswordResetEmail } from "firebase/auth"
+import { getFirebaseApp } from "@/lib/firebase/client"
 import { useRouter } from "next/navigation"
 
 export default function ResetPassword() {
-    const supabase = createClient()
     const router = useRouter()
     const [email, setEmail] = useState("")
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -23,9 +23,8 @@ export default function ResetPassword() {
         setIsSubmitting(true)
         setError(null)
         try {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/update-password`
-            })
+            await sendPasswordResetEmail(getAuth(getFirebaseApp()), email.trim(), { url: `${window.location.origin}/update-password`, handleCodeInApp: true })
+            const error = null
 
             if (error) {
                 setError(error.message)
