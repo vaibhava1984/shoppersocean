@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
-type Book = { id: string; title: string; author: string }
+type Book = { id: string; title: string; author: string; entryId?: string }
 type SectionType = 'HOMEPAGE_TRENDING' | 'HOMEPAGE_COLLECTION'
 
 type SortableBookItemProps = { book: Book; onRemove: (id: string) => void }
@@ -62,7 +62,7 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
             const response = await fetch('/api/homepage_sections', { method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store', body: JSON.stringify({ pageSection: sectionType, bookId: book.id }) })
             const payload = await response.json()
             if (!response.ok) throw new Error(payload.error || 'Unable to save book')
-            onUpdateBooks([...books, book]); setSearchResults([]); setSearchQuery(''); setIsDialogOpen(false)
+            onUpdateBooks([...books, { ...book, entryId: payload.entry?.entryId }]); setSearchResults([]); setSearchQuery(''); setIsDialogOpen(false)
         } catch (error) { console.error('Error saving book selection:', error); setErrorMessage(error instanceof Error ? error.message : 'Unable to save book. Please try again.') }
         finally { setIsSaving(false) }
     }
@@ -71,7 +71,7 @@ function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: Boo
         const { active, over } = event
         if (over && active.id !== over.id) { const oldIndex = books.findIndex((book) => book.id === active.id); const newIndex = books.findIndex((book) => book.id === over.id); onUpdateBooks(arrayMove(books, oldIndex, newIndex)) }
     }
-    function handleRemoveBook(id: string) { onUpdateBooks(books.filter((book) => book.id !== id)) }
+    async function handleRemoveBook(id: string) {\n        const target = books.find((book) => book.id === id)\n        if (!target?.entryId || isSaving) return\n        setIsSaving(true); setErrorMessage('')\n        try {\n            const response = await fetch('/api/homepage_sections', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, cache: 'no-store', body: JSON.stringify({ entryId: target.entryId }) })\n            const payload = await response.json()\n            if (!response.ok) throw new Error(payload.error || 'Unable to remove book')\n            onUpdateBooks(books.filter((book) => book.id !== id))\n        } catch (error) { setErrorMessage(error instanceof Error ? error.message : 'Unable to remove book. Please try again.') }\n        finally { setIsSaving(false) }\n    }
 
     return (
         <Card className="mb-8">
