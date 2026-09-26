@@ -1,0 +1,1 @@
+import {NextResponse} from "next/server"; import {updateCurrentUser} from "@/utils/auth/server"; export async function POST(request:Request){const result=await updateCurrentUser(await request.json());return NextResponse.json(result,{status:result.error?401:200});}
