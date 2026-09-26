@@ -113,4 +113,4 @@ export function createClient() {
 }
 
 export function createAdminClient() { return createClient(); }
-export const getUser = async () => null;
+export const getUser = async () => (await import("@/utils/auth/server")).getSessionUser();
