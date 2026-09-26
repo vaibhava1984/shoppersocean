@@ -68,34 +68,7 @@ export async function signUp(formData: {
       return { error: "internal_error" }
     }
 
-    // If a mobile number was supplied, attach it to Auth so Supabase can send
-    // the SMS OTP. When email confirmation is enabled there is no session yet,
-    // so the user must confirm the email before adding the phone in Settings.
-    if (mobile) {
-      if (!authData.session) {
-        return {
-          error: "phone_verification_after_email",
-          userId: authData.user.id,
-          phone: mobile,
-        }
-      }
-
-      const { error: phoneError } = await supabase.auth.updateUser({
-        phone: mobile,
-      })
-
-      if (phoneError) {
-        return { error: phoneError.message }
-      }
-
-      return {
-        success: true,
-        phoneVerificationRequired: true,
-        phone: mobile,
-      }
-    }
-
-    // Do not revalidate the entire layout during account creation. Signup should
+    // Mobile numbers are stored as profile data; no OTP/phone verification is required.\n    if (mobile) await supabase.auth.updateUser({ phone: mobile })\n\n    // Do not revalidate the entire layout during account creation. Signup should
     // complete even if cache revalidation is unavailable in the current runtime.
     return { success: true }
   } catch (error: any) {
