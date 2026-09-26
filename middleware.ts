@@ -1,4 +1,2 @@
-// Runtime-safe rebuild: no middleware is required for the current D1/OpenNext application.
-export const config = {
-  matcher: ["/__shoppers_ocean_middleware_disabled__"],
-};
+// No Next.js middleware is required for the current Cloudflare D1/OpenNext application.
+// Intentionally left without a middleware export so Next.js does not build a route matcher for this file.
