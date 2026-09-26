@@ -19,7 +19,8 @@ export default async function MySalesPage() {
         redirect("/")
     };
 
-    if (user?.app_metadata?.isAuthor !== true) {
+    const { data: authorRows } = await supabase.from("authors").select("author_id").eq("user_id", user.id).limit(1);
+    if (!authorRows?.[0]?.author_id) {
         redirect("/")
     }
 
