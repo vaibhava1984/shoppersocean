@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/utils/supabase/server'
-import { createAdminClient } from '@/utils/supabase/server_admin'
+import { createClient } from '@/utils/db/server'
+import { createAdminClient } from '@/utils/db/server'
 
 const REVIEW_SCHEMA_ERROR = 'The review database setup is incomplete. Please apply the latest Supabase migration before submitting reviews.'
 

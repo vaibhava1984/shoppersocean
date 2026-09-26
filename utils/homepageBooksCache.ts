@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/utils/db/client'
 
 export type HomepageBook = {
     id: string

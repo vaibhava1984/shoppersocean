@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import { Loader2Icon } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/utils/supabase/client"
+import { createClient } from "@/utils/db/client"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 

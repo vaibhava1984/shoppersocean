@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/db/client";
 
 const IDLE_LIMIT_MS = 15 * 60 * 1000;
 const ACTIVITY_KEY = "shoppers-ocean-last-activity";

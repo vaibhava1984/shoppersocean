@@ -1,0 +1,2 @@
+import {getCloudflareContext} from "@opennextjs/cloudflare";import crypto from "node:crypto";
+export async function POST(req:Request){const b=await req.json();if(!b.email||!b.message)return Response.json({error:"Email and message required"},{status:400});try{const {env}=await getCloudflareContext({async:true});await env.DB.prepare("INSERT INTO contact_messages(id,email,message) VALUES(?,?,?)").bind(crypto.randomUUID(),b.email,b.message).run();return Response.json({ok:true});}catch{return Response.json({error:"Message could not be saved"},{status:503});}}

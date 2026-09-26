@@ -1,0 +1,1 @@
+import {getCloudflareContext} from "@opennextjs/cloudflare";export async function GET(){try{const {env}=await getCloudflareContext({async:true});await env.DB.prepare("SELECT 1").first();return Response.json({ok:true,database:"connected",service:"shoppers-ocean"});}catch{return Response.json({ok:false,database:"unavailable",service:"shoppers-ocean"},{status:503});}}

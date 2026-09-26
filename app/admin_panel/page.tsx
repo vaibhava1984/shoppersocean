@@ -1,24 +1,2 @@
-import React from 'react'
-import { redirect } from "next/navigation"
-import Dashboard from '../components/adminPage/Dashboard';
-import Orders from '../components/adminPage/Orders';
-import AdminSidebar from "./adminSidebar"
-import { createClient } from "@/utils/supabase/server";
-
-export default async function AdminDashboard() {
-    const supabase = createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-    if (user?.app_metadata?.userrole !== "ADMIN") {
-        redirect("/")
-    }
-    return (
-        <div className="flex h-screen bg-gray-100">
-            <AdminSidebar />
-            <main className="flex-1 overflow-y-auto p-8">
-                <Dashboard />
-            </main>
-        </div>
-    )
-}
+"use client"; import Link from "next/link"; import {useState} from "react";
+export default function Admin(){const [title,setTitle]=useState(""),[author,setAuthor]=useState(""),[language,setLanguage]=useState(""),[category,setCategory]=useState(""),[price,setPrice]=useState(""),[msg,setMsg]=useState("");async function add(e:any){e.preventDefault();const r=await fetch("/api/admin/books",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({title,author,language,category,price})});const x=await r.json();setMsg(x.ok?"Book added to the fresh catalogue.":x.error||"Could not add book");if(x.ok){setTitle("");setAuthor("");}}return <><header className="site-header"><div className="wrap nav"><Link className="brand" href="/">Shoppers Ocean</Link><nav><Link href="/bookShelf">Bookshelf</Link></nav></div></header><main className="wrap section"><h1>Admin Panel</h1><form className="form" onSubmit={add}><h2>Add book</h2><input placeholder="Title" value={title} onChange={e=>setTitle(e.target.value)} required/><input placeholder="Author" value={author} onChange={e=>setAuthor(e.target.value)}/><input placeholder="Language" value={language} onChange={e=>setLanguage(e.target.value)}/><input placeholder="Category" value={category} onChange={e=>setCategory(e.target.value)}/><input placeholder="Price" type="number" value={price} onChange={e=>setPrice(e.target.value)}/><button className="button primary">Add book</button><p>{msg}</p></form></main></>}

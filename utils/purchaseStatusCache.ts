@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/utils/db/client'
 
 type PurchaseStatusMap = Record<string, { hasPurchased: boolean }>
 type PendingRequest = { resolve: (hasPurchased: boolean) => void; reject: (error: unknown) => void }

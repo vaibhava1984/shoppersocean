@@ -1,0 +1,2 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+export async function GET(){try{const {env}=await getCloudflareContext({async:true});const rows=await env.DB.prepare("SELECT id,title,author,language,category,description,cover_url,price FROM books ORDER BY created_at DESC").all();return Response.json({books:rows.results??[]});}catch{return Response.json({books:[]});}}

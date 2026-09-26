@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/utils/db/server'
 import type { HomepageBookPlacement } from './homepageBooksCache'
 
 export async function getHomepageBooksServer(): Promise<HomepageBookPlacement[]> {
