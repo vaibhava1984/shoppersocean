@@ -17,7 +17,7 @@ export default function SessionTimeout() {
   const lastWriteRef = useRef(0);
 
   useEffect(() => {
-    const supabase = supabaseRef.current;
+    const auth = supabaseRef.current.auth;
 
     const readActivity = (): ActivityRecord | null => {
       try {
@@ -40,15 +40,22 @@ export default function SessionTimeout() {
       } catch {}
     };
 
+    const getCurrentUserId = async () => {
+      try {
+        const result = await auth.getUser();
+        return result?.data?.user?.id ?? null;
+      } catch {
+        return null;
+      }
+    };
+
     const checkTimeout = async () => {
       if (document.visibilityState !== "visible") return;
-      const { data: { session } } = await supabase.auth.getSession();
-      const userId = session?.user?.id;
+      const userId = await getCurrentUserId();
       if (!userId) return;
 
       const activity = readActivity();
 
-      // A different signed-in user gets a fresh inactivity window.
       if (!activity || activity.userId !== userId) {
         writeActivity(userId, true);
         return;
@@ -56,25 +63,16 @@ export default function SessionTimeout() {
 
       if (Date.now() - activity.at >= IDLE_LIMIT_MS) {
         try { localStorage.removeItem(ACTIVITY_KEY); } catch {}
-        await supabase.auth.signOut();
+        await auth.signOut();
         window.location.replace("/login");
       }
     };
 
     const recordActivity = () => {
       if (document.visibilityState !== "visible") return;
-      void supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user?.id) writeActivity(session.user.id);
+      void getCurrentUserId().then((userId) => {
+        if (userId) writeActivity(userId);
       });
-    };
-
-    const handleAuthChange = (_event: string, session: any) => {
-      const userId = session?.user?.id;
-      if (userId) {
-        writeActivity(userId, true);
-      } else {
-        try { localStorage.removeItem(ACTIVITY_KEY); } catch {}
-      }
     };
 
     const activityEvents = ["pointerdown", "keydown", "scroll", "touchstart", "mousemove"];
@@ -83,7 +81,6 @@ export default function SessionTimeout() {
     window.addEventListener("focus", checkTimeout);
     window.addEventListener("storage", checkTimeout);
 
-    const { data: authSubscription } = supabase.auth.onAuthStateChange(handleAuthChange);
     void checkTimeout();
     const interval = window.setInterval(checkTimeout, 30 * 1000);
 
@@ -93,7 +90,6 @@ export default function SessionTimeout() {
       window.removeEventListener("focus", checkTimeout);
       window.removeEventListener("storage", checkTimeout);
       window.clearInterval(interval);
-      authSubscription.subscription.unsubscribe();
     };
   }, []);
 
