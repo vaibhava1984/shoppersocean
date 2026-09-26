@@ -1,24 +1,2 @@
-import React from 'react'
-import { redirect } from "next/navigation"
-import Dashboard from '../components/adminPage/Dashboard';
-import Orders from '../components/adminPage/Orders';
-import AdminSidebar from "./adminSidebar"
-import { createClient } from "@/utils/db/server";
-
-export default async function AdminDashboard() {
-    const supabase = createClient();
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-    if (user?.app_metadata?.userrole !== "ADMIN") {
-        redirect("/")
-    }
-    return (
-        <div className="flex h-screen bg-gray-100">
-            <AdminSidebar />
-            <main className="flex-1 overflow-y-auto p-8">
-                <Dashboard />
-            </main>
-        </div>
-    )
-}
+import Link from "next/link";
+export default function Admin(){return <><header className="site-header"><div className="wrap nav"><Link className="brand" href="/">Shoppers Ocean</Link><nav><Link href="/bookShelf">Bookshelf</Link></nav></div></header><main className="wrap section"><h1>Admin Panel</h1><div className="cards"><div><h3>Book catalogue</h3><p>Fresh catalogue ready for new uploads.</p></div><div><h3>Orders</h3><p>Purchase records will use D1.</p></div><div><h3>Accounts</h3><p>Accounts will use the new password/session system.</p></div></div></main></>}
