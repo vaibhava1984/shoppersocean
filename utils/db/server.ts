@@ -98,16 +98,13 @@ class QueryBuilder {
 }
 
 function authApi() {
-  const unsupported = async () => ({
-    data: { user: null, session: null },
-    error: new Error("Authentication migration is being completed on Cloudflare.")
-  });
   return {
-    getUser: async () => ({data: {user: null}, error: null}),
-    signInWithPassword: unsupported,
-    signUp: unsupported,
-    updateUser: unsupported,
-    signOut: async () => ({error: null}),
+    getUser: async () => ({ data: { user: await (await import("@/utils/auth/server")).getSessionUser() }, error: null }),
+    signInWithPassword: async (input: {email:string;password:string}) => (await import("@/utils/auth/server")).signInUser(input.email, input.password),
+    signUp: async (input: any) => (await import("@/utils/auth/server")).signUpUser({ email: input.email, password: input.password, fullName: input.options?.data?.full_name || "", country: input.options?.data?.country || "", address: input.options?.data?.address || "" }),
+    updateUser: async (input: any) => (await import("@/utils/auth/server")).updateCurrentUser({ password: input.password, phone: input.phone, email: input.email }),
+    signOut: async () => { await (await import("@/utils/auth/server")).clearSession(); return { error: null }; },
+    verifyOtp: async () => ({ error: new Error("Phone OTP is not used on Shoppers Ocean.") }),
   };
 }
 
