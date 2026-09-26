@@ -1,17 +1,23 @@
 name: Shoppers Ocean clean build
 on:
-  push:
-    branches: [shoppers-ocean-clean-rebuild]
   workflow_dispatch:
+  push:
+    branches:
+      - shoppers-ocean-clean-rebuild
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
           cache: npm
-      - run: npm install --no-audit --no-fund
-      - run: npm run build
+      - name: Install
+        run: npm install --no-audit --no-fund
+      - name: Build
+        run: npm run build
