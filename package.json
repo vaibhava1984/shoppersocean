@@ -43,7 +43,8 @@
     "typescript": "5.3.3",
     "@opennextjs/cloudflare": "latest",
     "@aws-sdk/client-s3": "latest",
-    "@aws-sdk/s3-request-presigner": "latest"
+    "@aws-sdk/s3-request-presigner": "latest",
+    "bcryptjs": "^3.0.2"
   },
   "devDependencies": {
     "@types/node": "20.11.5",
