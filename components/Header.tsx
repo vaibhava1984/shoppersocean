@@ -1,4 +1,4 @@
-import { getUser } from "@/utils/db/server";
+import { getUser, createClient } from "@/utils/db/server";
 import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
@@ -28,6 +28,11 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
   // Some pages render Header without passing the user. Resolve the current
   // server session here so a signed-in user never sees the anonymous menu.
   const currentUser = user ?? await getUser()
+  const db = createClient()
+  const { data: authorRows } = currentUser
+    ? await db.from("authors").select("author_id").eq("user_id", currentUser.id).limit(1)
+    : { data: [] as any[] }
+  const isAuthor = Array.isArray(authorRows) && authorRows.length > 0
 
   return (
     <>
@@ -55,7 +60,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                       </a>
                     </DropdownMenuItem>
                   )}
-                  {(currentUser?.role === "admin" || currentUser?.role === "ADMIN" || currentUser?.role === "author" || currentUser?.role === "AUTHOR") && (
+                  {isAuthor && (
                     <DropdownMenuItem asChild>
                       <a href="/my-sales" className="flex w-full items-center gap-2">
                         <ChartBarIcon width={18} />
