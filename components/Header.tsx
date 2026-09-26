@@ -47,7 +47,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                   <ChevronDown className="h-4 w-4 flex-shrink-0" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="center" className="w-48">
-                  {currentUser?.role === "admin" || currentUser?.role === "ADMIN" && (
+                  {(currentUser?.role === "admin" || currentUser?.role === "ADMIN") && (
                     <DropdownMenuItem asChild>
                       <a href="/admin_panel" className="flex w-full items-center gap-2">
                         <ShieldIcon width={18} />
@@ -55,7 +55,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                       </a>
                     </DropdownMenuItem>
                   )}
-                  {false && (
+                  {(currentUser?.role === "admin" || currentUser?.role === "ADMIN" || currentUser?.role === "author" || currentUser?.role === "AUTHOR") && (
                     <DropdownMenuItem asChild>
                       <a href="/my-sales" className="flex w-full items-center gap-2">
                         <ChartBarIcon width={18} />
