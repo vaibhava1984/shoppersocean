@@ -1,0 +1,1 @@
+import {NextResponse} from "next/server"; import {clearSession} from "@/utils/auth/server"; export async function POST(){await clearSession();return NextResponse.json({data:null,error:null});}
