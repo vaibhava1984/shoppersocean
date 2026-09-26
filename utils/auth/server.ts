@@ -3,6 +3,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 const COOKIE = "so_session";
 const SESSION_TTL = 60 * 60 * 24 * 30;
+const PBKDF2_ITERATIONS = 100000;
 type User = { id: string; email: string; full_name?: string|null; country?: string|null; phone?: string|null; address?: string|null; role?: string|null };
 
 function secret() { const env = getCloudflareContext().env as { AUTH_SECRET?: string }; return env.AUTH_SECRET || process.env.AUTH_SECRET || "shoppers-ocean-local-secret-change-me"; }
@@ -14,12 +15,15 @@ async function hmac(value: string) {
 }
 async function hashPassword(password: string, salt = crypto.randomUUID()) {
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
-  const bits = await crypto.subtle.deriveBits({name:"PBKDF2",salt:new TextEncoder().encode(salt),iterations:120000,hash:"SHA-256"}, key, 256);
-  return `pbkdf2$120000$${salt}$${bytesToBase64(new Uint8Array(bits))}`;
+  const bits = await crypto.subtle.deriveBits({name:"PBKDF2",salt:new TextEncoder().encode(salt),iterations:PBKDF2_ITERATIONS,hash:"SHA-256"}, key, 256);
+  return `pbkdf2$${PBKDF2_ITERATIONS}$${salt}$${bytesToBase64(new Uint8Array(bits))}`;
 }
 async function verifyPassword(password: string, stored: string) {
   const parts=stored.split("$"); if(parts.length!==4||parts[0]!=="pbkdf2") return false;
-  return (await hashPassword(password,parts[2]))===stored;
+  const iterations=Number(parts[1]); if(!Number.isFinite(iterations)||iterations<1||iterations>PBKDF2_ITERATIONS) return false;
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
+  const bits = await crypto.subtle.deriveBits({name:"PBKDF2",salt:new TextEncoder().encode(parts[2]),iterations,hash:"SHA-256"}, key, 256);
+  return `pbkdf2$${iterations}$${parts[2]}$${bytesToBase64(new Uint8Array(bits))}`===stored;
 }
 export async function createSession(userId:string) {
   const exp=Math.floor(Date.now()/1000)+SESSION_TTL, payload=`${userId}.${exp}`, token=`${payload}.${await hmac(payload)}`;
@@ -55,7 +59,6 @@ export async function updateCurrentUser(values:{password?:string;phone?:string;e
   return {data:{user:await getSessionUser()},error:null};
 }
 
-
 export async function requestPasswordReset(email:string){
   const env=getCloudflareContext().env as {DB:D1Database};
   const normalized=email.trim().toLowerCase();
@@ -65,7 +68,7 @@ export async function requestPasswordReset(email:string){
   const tokenHash=await hmac(rawToken);
   const expiresAt=new Date(Date.now()+60*60*1000).toISOString();
   await env.DB.prepare("DELETE FROM password_reset_tokens WHERE user_id=?").bind(row.id).run();
-  await env.DB.prepare("INSERT INTO password_reset_tokens (token_hash,user_id,expires_at) VALUES (?,?,?)").bind(tokenHash,row.id,expiresAt).run();
+  await env.DB.prepare("INSERT INTO password_reset_tokens (token_hash,user_id,expires_at) VALUES (?,?,?)").bind(tokenHash,expiresAt).run();
   const origin=(process.env.NEXT_PUBLIC_SITE_URL||"https://www.shoppersocean.com").replace(/\/$/,"");
   const resetUrl=origin+"/update-password?token="+encodeURIComponent(rawToken);
   const apiKey=process.env.RESEND_API_KEY;
