@@ -41,8 +41,32 @@ export async function getSessionUser():Promise<User|null>{
 }
 export async function signInUser(email:string,password:string){
   const env=getCloudflareContext().env as {DB:D1Database};
-  const row=await env.DB.prepare("SELECT id,email,full_name,country,phone,address,role,password_hash FROM users WHERE lower(email)=lower(?) LIMIT 1").bind(email.trim()).first<User & {password_hash:string}>();
-  if(!row||!(await verifyPassword(password,row.password_hash))) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
+  const normalized=email.trim().toLowerCase();
+  const row=await env.DB.prepare("SELECT id,email,full_name,country,phone,address,role,password_hash FROM users WHERE lower(email)=lower(?) LIMIT 1").bind(normalized).first<User & {password_hash:string}>();
+  if(!row){
+    // One-time migration bridge: validate legacy credentials against the still-active
+    // Supabase Auth project, then immediately create a native D1 account with a
+    // PBKDF2 hash. Future logins no longer depend on Supabase.
+    const legacyUrl="https://etqqiivljtybvynprlvf.supabase.co";
+    const legacyAnonKey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0cXFpaXZsanR5YnZ5bnBybHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkyNDY3MjcsImV4cCI6MjA0NDgyMjcyN30.CEDedHHh6pLUK06daEwG8XL3wRLA6_pmoKFzRC6sSVo";
+    const legacyResponse=await fetch(legacyUrl+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"apikey":legacyAnonKey,"Content-Type":"application/json"},body:JSON.stringify({email:normalized,password})});
+    if(!legacyResponse.ok) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
+    const legacy=await legacyResponse.json() as {user?:{id:string;email?:string;user_metadata?:Record<string,unknown>}};
+    if(!legacy.user?.id) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
+    const metadata=legacy.user.user_metadata||{};
+    const id=legacy.user.id;
+    const fullName=typeof metadata.full_name==="string"?metadata.full_name:"";
+    const country=typeof metadata.country==="string"?metadata.country:"";
+    const phone=typeof metadata.mobile==="string"?metadata.mobile:"";
+    const address=typeof metadata.address==="string"?metadata.address:"";
+    const passwordHash=await hashPassword(password);
+    await env.DB.prepare("INSERT OR IGNORE INTO users (id,email,password_hash,full_name,country,phone,address,role,email_confirmed) VALUES (?,?,?,?,?,?,?,?,1)").bind(id,normalized,passwordHash,fullName,country,phone,address,"user").run();
+    const migrated=await env.DB.prepare("SELECT id,email,full_name,country,phone,address,role FROM users WHERE lower(email)=lower(?) LIMIT 1").bind(normalized).first<User>();
+    if(!migrated) return {error:{code:"internal_error",message:"Unable to create the migrated account"}};
+    await createSession(migrated.id);
+    return {data:{user:migrated},error:null};
+  }
+  if(!(await verifyPassword(password,row.password_hash))) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
   if(row.password_hash.startsWith("$2a$") || row.password_hash.startsWith("$2b$") || row.password_hash.startsWith("$2y$")) {
     await env.DB.prepare("UPDATE users SET password_hash=?,updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(await hashPassword(password),row.id).run();
   }
