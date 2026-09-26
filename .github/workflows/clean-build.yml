@@ -1,9 +1,6 @@
 name: Shoppers Ocean clean build
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - shoppers-ocean-clean-rebuild
 
 jobs:
   build:
