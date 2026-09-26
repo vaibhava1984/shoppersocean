@@ -1,0 +1,2 @@
+"use client";import Link from "next/link";import{useState}from"react";
+export default function Forgot(){const[email,setEmail]=useState(""),[msg,setMsg]=useState("");return <main className="wrap"><form className="form" onSubmit={e=>{e.preventDefault();setMsg("Password reset flow will use the configured email service.");}}><h1>Reset password</h1><input type="email" placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} required/><button className="button primary">Request reset</button><p>{msg}</p><Link href="/login">Back to sign in</Link></form></main>}
