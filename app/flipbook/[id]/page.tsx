@@ -1,0 +1,3 @@
+"use client";
+import Link from "next/link"; import {useState} from "react";
+export default function Flipbook({params}:{params:{id:string}}){const [page,setPage]=useState(1);return <main className="flipbook"><Link className="close" href={`/book/${params.id}`}>✕</Link><div className="page"><h1>Shoppers Ocean</h1><p>Flipbook reader</p><p>Page {page}</p></div><div className="flip-controls"><button onClick={()=>setPage(Math.max(1,page-1))}>‹</button><input type="range" min="1" max="100" value={page} onChange={e=>setPage(+e.target.value)}/><button onClick={()=>setPage(Math.min(100,page+1))}>›</button></div></main>}
