@@ -1,0 +1,1 @@
+import {NextResponse} from "next/server"; import {getSessionUser} from "@/utils/auth/server"; export async function GET(){return NextResponse.json({data:{user:await getSessionUser()},error:null});}
