@@ -1,3 +1,5 @@
+import { createAuthClient } from "@/utils/auth/client";
+
 type Filter = { kind: "eq" | "neq" | "in"; column: string; value: unknown };
 
 class QueryBuilder {
@@ -40,16 +42,5 @@ class QueryBuilder {
 }
 
 export function createClient() {
-  return {
-    from(table: string) { return new QueryBuilder(table); },
-    auth: {
-      async getUser() {
-        const response = await fetch("/api/auth/me", { cache: "no-store" });
-        return response.json();
-      },
-      async signOut() {
-        return fetch("/api/auth/signout", { method: "POST" }).then((r) => r.json());
-      }
-    }
-  };
+  return { from(table: string) { return new QueryBuilder(table); }, auth: createAuthClient() };
 }
