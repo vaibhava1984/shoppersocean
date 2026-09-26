@@ -10,7 +10,7 @@ export default async function AdminDashboard() {
     const {
         data: { user },
     } = await supabase.auth.getUser();
-    if (user?.app_metadata?.userrole !== "ADMIN") {
+    if (user?.role !== "admin" && user?.role !== "ADMIN") {
         redirect("/")
     }
     return (
