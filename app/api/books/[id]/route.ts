@@ -1,0 +1,2 @@
+import {getCloudflareContext} from "@opennextjs/cloudflare";
+export async function GET(_:Request,{params}:{params:Promise<{id:string}>}){const {id}=await params;try{const {env}=await getCloudflareContext({async:true});const row=await env.DB.prepare("SELECT * FROM books WHERE id=?").bind(id).first();return row?Response.json({book:row}):Response.json({error:"Not found"},{status:404});}catch{return Response.json({error:"Database unavailable"},{status:503});}}
