@@ -1,9 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
-
-export async function middleware(_request: NextRequest) {
-  return NextResponse.next();
-}
-
+// Runtime-safe rebuild: no middleware is required for the current D1/OpenNext application.
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: ["/__shoppers_ocean_middleware_disabled__"],
 };
