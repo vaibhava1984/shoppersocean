@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import bcrypt from "bcryptjs";
 
 const COOKIE = "so_session";
 const SESSION_TTL = 60 * 60 * 24 * 30;
@@ -19,6 +20,7 @@ async function hashPassword(password: string, salt = crypto.randomUUID()) {
   return `pbkdf2$${PBKDF2_ITERATIONS}$${salt}$${bytesToBase64(new Uint8Array(bits))}`;
 }
 async function verifyPassword(password: string, stored: string) {
+  if (stored.startsWith("$2a$") || stored.startsWith("$2b$") || stored.startsWith("$2y$")) return await bcrypt.compare(password, stored);
   const parts=stored.split("$"); if(parts.length!==4||parts[0]!=="pbkdf2") return false;
   const iterations=Number(parts[1]); if(!Number.isFinite(iterations)||iterations<1||iterations>PBKDF2_ITERATIONS) return false;
   const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
@@ -41,6 +43,9 @@ export async function signInUser(email:string,password:string){
   const env=getCloudflareContext().env as {DB:D1Database};
   const row=await env.DB.prepare("SELECT id,email,full_name,country,phone,address,role,password_hash FROM users WHERE lower(email)=lower(?) LIMIT 1").bind(email.trim()).first<User & {password_hash:string}>();
   if(!row||!(await verifyPassword(password,row.password_hash))) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
+  if(row.password_hash.startsWith("$2a$") || row.password_hash.startsWith("$2b$") || row.password_hash.startsWith("$2y$")) {
+    await env.DB.prepare("UPDATE users SET password_hash=?,updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(await hashPassword(password),row.id).run();
+  }
   await createSession(row.id); const {password_hash:_ignored,...user}=row; return {data:{user},error:null};
 }
 export async function signUpUser(input:{email:string;password:string;fullName:string;country:string;mobile?:string;address?:string}){
