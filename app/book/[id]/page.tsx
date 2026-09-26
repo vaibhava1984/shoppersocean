@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default async function Book({params}:{params:Promise<{id:string}>}){const {id}=await params;return <main className="wrap section"><Link href="/bookShelf">← Back to Bookshelf</Link><div className="empty"><h1>Book</h1><p>Book ID: {id}</p><Link className="button primary" href={`/flipbook/${id}`}>Read as flipbook</Link></div></main>}
