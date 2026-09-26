@@ -23,12 +23,9 @@ export default function ResetPassword() {
         setIsSubmitting(true)
         setError(null)
         try {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/update-password`
-            })
-
-            if (error) {
-                setError(error.message)
+            const result = await (supabase.auth as any).resetPasswordForEmail(email)
+            if (result?.error) {
+                setError(typeof result.error === "string" ? result.error : result.error.message || "Unable to send password reset email.")
                 return
             }
 
