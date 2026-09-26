@@ -1,8 +1,8 @@
 "use client"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Loader2Icon } from "lucide-react"
 import Link from "next/link"
-import { useSearchParams, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/db/client"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
@@ -10,13 +10,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 export default function UpdatePassword() {
   const auth = createClient().auth
   const router = useRouter()
-  const params = useSearchParams()
-  const token = params.get("token") || ""
+  const [token, setToken] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
+
+  useEffect(() => {
+    setToken(new URLSearchParams(window.location.search).get("token") || "")
+  }, [])
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault()
