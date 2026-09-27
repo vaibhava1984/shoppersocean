@@ -58,7 +58,22 @@ export async function GET(request: Request) {
         .eq("is_deleted", false)
         .order("updated_at", { ascending: false });
       if (error) throw error;
-      return NextResponse.json({ data: data || [] });
+      const books = (data || []).map((book: any) => ({
+        ...book,
+        cover_images: (() => {
+          if (Array.isArray(book.cover_images)) return book.cover_images;
+          if (typeof book.cover_images === "string") {
+            try {
+              const parsed = JSON.parse(book.cover_images);
+              return Array.isArray(parsed) ? parsed : [];
+            } catch {
+              return [];
+            }
+          }
+          return [];
+        })(),
+      }));
+      return NextResponse.json({ data: books });
     }
 
     const { data, error } = await db.from("authors")
