@@ -14,7 +14,7 @@ export default async function BookDetailPage({ params }: { params: any }) {
     const { bookId } = await params; const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
     const { data: currentBookDetails } = await supabase.from('books').select(`*`).eq('id', bookId).single();
-    const { data: currentBookAuthorDetails } = await supabase.from('authors').select(`*`).eq('author_id', currentBookDetails.author_id);
+    const { data: currentBookAuthorDetails } = await supabase.from('authors').select(`*`).eq('id', currentBookDetails.author_id);
     const { data: bookFiles } = await supabase.from('private_book_files').select('id, file_name, mime_type').eq('book_id', bookId);
     const hasPdfBook = (bookFiles || []).some((file: any) =>
         String(file.mime_type || '').toLowerCase() === 'application/pdf' ||
