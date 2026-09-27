@@ -43,13 +43,23 @@ async function ensureRequiredAuthors(db: any) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const db = createClient();
     const { data: { user } } = await db.auth.getUser();
     if (!adminOnly(user)) return NextResponse.json({ error: "Not authorized" }, { status: 403 });
 
     await ensureRequiredAuthors(db);
+
+    const resource = new URL(request.url).searchParams.get("resource");
+    if (resource === "books") {
+      const { data, error } = await db.from("books")
+        .select("id,title,description,published_date,isbn,price,ratings,cover_images,binding,language,genre,publisher,pages,author_id,author_name,updated_at,is_deleted")
+        .or("is_deleted.eq.false,is_deleted.is.null")
+        .order("updated_at", { ascending: false });
+      if (error) throw error;
+      return NextResponse.json({ data: data || [] });
+    }
 
     const { data, error } = await db.from("authors")
       .select("id, name")
@@ -111,7 +121,13 @@ export async function PUT(request: Request) {
     if (!String(book.author_id || "").trim()) return NextResponse.json({ error: "Author is required" }, { status: 400 });
 
     const payload: Record<string, unknown> = {};
-    for (const field of BOOK_FIELDS) if (book[field] !== undefined) payload[field] = book[field];
+    for (const field of BOOK_FIELDS) {
+      if (book[field] !== undefined) {
+        payload[field] = field === "cover_images" && Array.isArray(book[field])
+          ? JSON.stringify(book[field])
+          : book[field];
+      }
+    }
     payload.isCompletelyFilled = Boolean(body.isCompletelyFilled);
     payload.updated_at = new Date().toISOString();
 
@@ -121,5 +137,27 @@ export async function PUT(request: Request) {
   } catch (error) {
     console.error("Error updating book:", error);
     return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to update book" }, { status: 500 });
+  }
+}
+
+
+export async function DELETE(request: Request) {
+  try {
+    const db = createClient();
+    const { data: { user } } = await db.auth.getUser();
+    if (!adminOnly(user)) return NextResponse.json({ error: "Not authorized" }, { status: 403 });
+
+    const body = await request.json();
+    const bookId = String(body?.bookId || "");
+    if (!bookId) return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
+
+    const { data, error } = await db.from("books")
+      .update({ is_deleted: true, updated_at: new Date().toISOString() })
+      .eq("id", bookId);
+    if (error) throw error;
+    return NextResponse.json({ data: data?.[0] || { id: bookId } });
+  } catch (error) {
+    console.error("Error deleting book:", error);
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to delete book" }, { status: 500 });
   }
 }
