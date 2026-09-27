@@ -8,7 +8,7 @@ import { BookType } from "@/types/Books.type"
 import { useToast } from "@/hooks/use-toast"
 
 interface Author {
-    author_id: string;
+    id: string;
     name: string;
 }
 
@@ -57,7 +57,7 @@ export default function AddBookPopup(props: propsType) {
 
     useEffect(() => {
         if (authors?.length && book && book?.author_id) {
-            const filteredAuthorName = authors.filter((author) => author.author_id === book?.author_id)
+            const filteredAuthorName = authors.filter((author) => author.id === book?.author_id)
             if (filteredAuthorName?.length) {
                 setAuthorName(filteredAuthorName[0].name)
             }
@@ -291,7 +291,7 @@ export default function AddBookPopup(props: propsType) {
                             value={formData.author_id}
                             onValueChange={(value) => {
                                 setFormData({ ...formData, author_id: value });
-                                const selectedAuthor = authors.find(author => author.author_id === value);
+                                const selectedAuthor = authors.find(author => author.id === value);
                                 setAuthorName(selectedAuthor ? selectedAuthor.name : ''); // Set author name
                             }}
                         >
@@ -300,7 +300,7 @@ export default function AddBookPopup(props: propsType) {
                             </SelectTrigger>
                             <SelectContent>
                                 {authors.map((author) => (
-                                    <SelectItem key={author.author_id} value={author.author_id}>
+                                    <SelectItem key={author.id} value={author.id}>
                                         {author.name}
                                     </SelectItem>
                                 ))}
