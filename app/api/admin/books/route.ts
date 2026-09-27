@@ -75,7 +75,13 @@ export async function POST(request: Request) {
     if (!String(book.author_id || "").trim()) return NextResponse.json({ error: "Author is required" }, { status: 400 });
 
     const payload: Record<string, unknown> = {};
-    for (const field of BOOK_FIELDS) if (book[field] !== undefined) payload[field] = book[field];
+    for (const field of BOOK_FIELDS) {
+      if (book[field] !== undefined) {
+        payload[field] = field === "cover_images" && Array.isArray(book[field])
+          ? JSON.stringify(book[field])
+          : book[field];
+      }
+    }
     payload.id = crypto.randomUUID();
     payload.is_deleted = false;
     payload.isCompletelyFilled = Boolean(body.isCompletelyFilled);
