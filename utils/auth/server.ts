@@ -42,7 +42,7 @@ export async function getSessionUser():Promise<User|null>{
   return await env.DB.prepare("SELECT id,email,full_name,country,phone,address,role FROM users WHERE id=? LIMIT 1").bind(userId).first<User>() || null;
 }
 export async function signInUser(email:string,password:string){
-  const env=getCloudflareContext().env as {DB:D1Database};
+  const env=getCloudflareContext().env as {DB:D1Database;RESEND_API_KEY?:string};
   const normalized=email.trim().toLowerCase();
   const row=await env.DB.prepare("SELECT id,email,full_name,country,phone,address,role,password_hash FROM users WHERE lower(email)=lower(?) LIMIT 1").bind(normalized).first<User & {password_hash:string}>();
   if(!row) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
@@ -93,7 +93,7 @@ export async function requestPasswordReset(email:string){
   await env.DB.prepare("INSERT INTO password_reset_tokens (token_hash,user_id,expires_at) VALUES (?,?,?)").bind(tokenHash,expiresAt).run();
   const origin=(process.env.NEXT_PUBLIC_SITE_URL||"https://www.shoppersocean.com").replace(/\/$/,"");
   const resetUrl=origin+"/update-password?token="+encodeURIComponent(rawToken);
-  const apiKey=process.env.RESEND_API_KEY;
+  const apiKey=env.RESEND_API_KEY || process.env.RESEND_API_KEY;
   if(!apiKey) throw new Error("Password reset email service is not configured");
   const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from:"no-reply@shoppersocean.com",to:[row.email],subject:"Reset your Shoppers Ocean password",html:"<p>Hello "+(row.full_name||"")+ ",</p><p>Click the button below to reset your Shoppers Ocean password.</p><p><a href=\""+resetUrl+"\" style=\"display:inline-block;padding:10px 16px;background:#2563eb;color:#fff;text-decoration:none;border-radius:6px\">Reset Password</a></p><p>This link expires in 1 hour.</p>"})});
   if(!response.ok) throw new Error("Unable to send password reset email");
