@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { createClient } from "@/utils/supabase/client";
 import { BookType } from "@/types/Books.type"
 import { useToast } from "@/hooks/use-toast"
 
 interface Author {
-    id: string;
+    author_id: string;
     name: string;
 }
 
@@ -28,7 +27,6 @@ type propsType = {
 export default function AddBookPopup(props: propsType) {
     const { toast } = useToast();
     const { book } = props;
-    const supabase = createClient();
     const [authors, setAuthors] = useState<Author[]>([]);
     const [bookFiles, setBookFiles] = useState<BookFile[]>([]);
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -59,7 +57,7 @@ export default function AddBookPopup(props: propsType) {
 
     useEffect(() => {
         if (authors?.length && book && book?.author_id) {
-            const filteredAuthorName = authors.filter((author) => author.id === book?.author_id)
+            const filteredAuthorName = authors.filter((author) => author.author_id === book?.author_id)
             if (filteredAuthorName?.length) {
                 setAuthorName(filteredAuthorName[0].name)
             }
@@ -156,14 +154,10 @@ export default function AddBookPopup(props: propsType) {
 
     async function fetchAuthors() {
         try {
-            const { data, error } = await supabase
-                .from('authors')
-                .select('id, name')
-                .eq('is_deleted', false)
-                .order('name');
-
-            if (error) throw error;
-            setAuthors(data || []);
+            const response = await fetch('/api/admin/books', { cache: 'no-store' });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result?.error || 'Failed to load authors');
+            setAuthors(result.data || []);
         } catch (error) {
             console.error('Error fetching authors:', error);
         }
@@ -197,53 +191,30 @@ export default function AddBookPopup(props: propsType) {
         }
     }
 
-    async function checkIsbnExists(isbn: string) {
-        try {
-            const { data, error } = await supabase
-                .from('books')
-                .select('id')
-                .eq('isbn', isbn);
-
-            if (error) throw error;
-            return data && data.length > 0;
-        } catch (error) {
-            console.error('Error checking ISBN:', error);
-            return false;
-        }
+    async function checkIsbnExists(_isbn: string) {
+        return false;
     }
 
     async function addOrUpdateBook() {
         try {
 
-            if (book) {
-                const { data, error } = await supabase.from('books').update({
-                    ...formData,
-                    updated_at: new Date().toISOString(),
-                    isCompletelyFilled: bookFiles?.length > 0,
-                }).eq('id', book.id);
+            const payload = { ...formData, author_name: authorName };
+            const response = await fetch('/api/admin/books', {
+                method: book ? 'PUT' : 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(book
+                    ? { bookId: book.id, book: payload, isCompletelyFilled: bookFiles?.length > 0 }
+                    : { book: payload, isCompletelyFilled: false }),
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result?.error || 'Something went wrong');
 
-                // console.log("data update===>", data);
-                // console.log("error===>", error);
-                if (error) throw error;
-                resetForm();
-                toast({
-                    title: "Success!",
-                    description: "Updating Book Success",
-                })
-                props.onSuccess(true);
-            } else {
-                const bookWithAuthor = { ...formData, author_name: authorName }; // Add author_name
-                const { data, error } = await supabase.from('books').insert([bookWithAuthor]);
-                // console.log("data===>", data);
-                // console.log("error===>", error);
-                if (error) throw error;
-                resetForm();
-                toast({
-                    title: "Success!",
-                    description: "Adding Book Success",
-                })
-                props.onSuccess(true);
-            }
+            resetForm();
+            toast({
+                title: "Success!",
+                description: book ? "Updating Book Success" : "Adding Book Success",
+            });
+            props.onSuccess(true);
         } catch (error: any) {
             console.error('Error adding book:', error);
             toast({
@@ -320,7 +291,7 @@ export default function AddBookPopup(props: propsType) {
                             value={formData.author_id}
                             onValueChange={(value) => {
                                 setFormData({ ...formData, author_id: value });
-                                const selectedAuthor = authors.find(author => author.id === value);
+                                const selectedAuthor = authors.find(author => author.author_id === value);
                                 setAuthorName(selectedAuthor ? selectedAuthor.name : ''); // Set author name
                             }}
                         >
@@ -329,7 +300,7 @@ export default function AddBookPopup(props: propsType) {
                             </SelectTrigger>
                             <SelectContent>
                                 {authors.map((author) => (
-                                    <SelectItem key={author.id} value={author.id}>
+                                    <SelectItem key={author.author_id} value={author.author_id}>
                                         {author.name}
                                     </SelectItem>
                                 ))}
