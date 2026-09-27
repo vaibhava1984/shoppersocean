@@ -13,7 +13,6 @@ import React from "react"
 import { useRouter } from "next/navigation"
 
 export default function Login({ searchParams }: { searchParams: any }) {
-  const supabase = createClient()
   const router = useRouter()
   // @ts-ignore
   const { accountCreated, type, authError } = React.use(searchParams)
