@@ -10,11 +10,46 @@ const BOOK_FIELDS = [
   "binding","language","genre","publisher","pages","author_id","author_name",
 ] as const;
 
+const REQUIRED_AUTHORS = ["Vaibhav Ahuja", "Sumit Laley"];
+
+async function ensureRequiredAuthors(db: any) {
+  const { data: existing, error } = await db.from("authors")
+    .select("id, name, is_deleted");
+  if (error) throw error;
+
+  const rows = existing || [];
+  for (const name of REQUIRED_AUTHORS) {
+    const match = rows.find((author: any) =>
+      String(author.name || "").trim().toLowerCase() === name.toLowerCase()
+    );
+    if (match) {
+      if (match.is_deleted) {
+        const { error: updateError } = await db.from("authors")
+          .update({ is_deleted: false, updated_at: new Date().toISOString() })
+          .eq("id", match.id);
+        if (updateError) throw updateError;
+      }
+      continue;
+    }
+
+    const { error: insertError } = await db.from("authors").insert({
+      id: crypto.randomUUID(),
+      name,
+      is_deleted: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+    if (insertError) throw insertError;
+  }
+}
+
 export async function GET() {
   try {
     const db = createClient();
     const { data: { user } } = await db.auth.getUser();
     if (!adminOnly(user)) return NextResponse.json({ error: "Not authorized" }, { status: 403 });
+
+    await ensureRequiredAuthors(db);
 
     const { data, error } = await db.from("authors")
       .select("id, name")
@@ -66,6 +101,7 @@ export async function PUT(request: Request) {
     const book = body?.book || {};
     if (!bookId) return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
     if (!String(book.title || "").trim()) return NextResponse.json({ error: "Book title is required" }, { status: 400 });
+
     if (!String(book.author_id || "").trim()) return NextResponse.json({ error: "Author is required" }, { status: 400 });
 
     const payload: Record<string, unknown> = {};
