@@ -23,3 +23,8 @@ Until a no-billing file-storage path is selected, the fresh application must not
 - Do not use the paused Vercel project.
 - Do not deploy blindly; validate the rebuilt application before production deployment.
 - Preserve the existing Shoppers Ocean UI and requested functionality as closely as the new architecture permits.
+
+## Deployment note
+
+- This note is intentionally documentation-only and does not change application behavior.
+- It records the current Cloudflare deployment checkpoint.
