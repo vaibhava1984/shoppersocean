@@ -15,9 +15,9 @@ interface Author {
 
 interface BookFile {
     id: string;
-    file_path: string;
+    storage_key: string;
     file_name: string;
-    file_type: string;
+    mime_type: string;
 }
 
 type propsType = {
@@ -74,19 +74,16 @@ export default function AddBookPopup(props: propsType) {
 
     async function fetchBookFiles(bookId: string) {
         try {
-            const { data, error } = await supabase
-                .from('private_book_files')
-                .select('*')
-                .eq('book_id', bookId);
-
-            if (error) throw error;
-            setBookFiles(data || []);
+            const response = await fetch(`/api/book-files?bookId=${encodeURIComponent(bookId)}`, { cache: 'no-store' });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result?.error || 'Failed to load book files');
+            setBookFiles(result.data || []);
         } catch (error) {
             console.error('Error fetching book files:', error);
         }
     }
 
-    // Handle book file uploads
+    // Handle PDF book uploads through the Cloudflare-compatible protected storage API.
     async function handleBookFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
         const files = event.target.files;
         if (!files || !book?.id) return;
@@ -97,77 +94,52 @@ export default function AddBookPopup(props: propsType) {
         try {
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                const fileExt = file.name.split('.').pop()?.toLowerCase() || '';
-                const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-                const filePath = `protected-books/${fileName}`;
+                const form = new FormData();
+                form.append('bookId', book.id);
+                form.append('file', file);
 
-                // Upload file to storage
-                const { error: uploadError } = await supabase.storage
-                    .from('books-content')
-                    .upload(filePath, file, {
-                        cacheControl: '0',
-                        upsert: false
-                    });
-
-                if (uploadError) throw uploadError;
-
-                // Add record to private_book_files table
-                const { error: dbError } = await supabase
-                    .from('private_book_files')
-                    .insert({
-                        book_id: book.id,
-                        file_path: filePath,
-                        file_name: file.name,
-                        file_type: fileExt
-                    });
-
-                if (dbError) throw dbError;
+                const response = await fetch('/api/book-files', {
+                    method: 'POST',
+                    body: form,
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result?.error || 'Failed to upload PDF');
 
                 setUploadProgress(((i + 1) / files.length) * 100);
             }
 
-            // Refresh book files list
             await fetchBookFiles(book.id);
-
             toast({
                 title: "Success!",
-                description: "Files uploaded successfully",
+                description: "PDF book uploaded successfully",
             });
         } catch (error: any) {
-            console.error('Error uploading files:', error);
+            console.error('Error uploading PDF:', error);
             toast({
                 variant: "destructive",
                 title: "Error",
-                description: error?.message || "Failed to upload files",
+                description: error?.message || "Failed to upload PDF",
             });
         } finally {
             setIsUploading(false);
+            event.target.value = '';
         }
     }
 
-    // Remove a book file
-    async function removeBookFile(fileId: string, filePath: string) {
+    // Remove a book PDF.
+    async function removeBookFile(fileId: string) {
         if (!book?.id) return;
 
         try {
-            // Remove from storage
-            const { error: storageError } = await supabase.storage
-                .from('books-content')
-                .remove([filePath]);
+            const response = await fetch('/api/book-files', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fileId }),
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result?.error || 'Failed to remove PDF');
 
-            if (storageError) throw storageError;
-
-            // Remove from private_book_files table
-            const { error: dbError } = await supabase
-                .from('private_book_files')
-                .delete()
-                .eq('id', fileId);
-
-            if (dbError) throw dbError;
-
-            // Refresh book files list
             await fetchBookFiles(book.id);
-
             toast({
                 title: "Success!",
                 description: "File removed successfully",
@@ -517,7 +489,7 @@ export default function AddBookPopup(props: propsType) {
                                 id="book_files"
                                 name="book_files"
                                 type="file"
-                                accept=".pdf,.epub,.mobi,.jpeg"
+                                accept=".pdf"
                                 multiple
                                 onChange={handleBookFileUpload}
                                 disabled={isUploading}
@@ -543,7 +515,7 @@ export default function AddBookPopup(props: propsType) {
                                                     type="button"
                                                     variant="destructive"
                                                     size="sm"
-                                                    onClick={() => removeBookFile(file.id, file.file_path)}
+                                                    onClick={() => removeBookFile(file.id)}
                                                 >
                                                     Remove
                                                 </Button>
