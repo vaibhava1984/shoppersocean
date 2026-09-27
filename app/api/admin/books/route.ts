@@ -55,7 +55,7 @@ export async function GET(request: Request) {
     if (resource === "books") {
       const { data, error } = await db.from("books")
         .select("id,title,description,published_date,isbn,price,ratings,cover_images,binding,language,genre,publisher,pages,author_id,author_name,updated_at,is_deleted")
-        .or("is_deleted.eq.false,is_deleted.is.null")
+        .eq("is_deleted", false)
         .order("updated_at", { ascending: false });
       if (error) throw error;
       return NextResponse.json({ data: data || [] });
