@@ -11,9 +11,11 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
 import { useRouter } from "next/navigation"
+import { createClient } from "@/utils/db/client"
 
 export default function Login({ searchParams }: { searchParams: any }) {
   const router = useRouter()
+  const authClient = createClient()
   // @ts-ignore
   const { accountCreated, type, authError } = React.use(searchParams)
 
@@ -57,9 +59,8 @@ export default function Login({ searchParams }: { searchParams: any }) {
       return
     }
     try {
-      // Authenticate directly in the browser so the Supabase session cookie is
-      // written immediately, without waiting for a server-action round trip.
-      const { error } = await supabase.auth.signInWithPassword({
+      // Authenticate through the Cloudflare/D1 auth API so the session cookie is written immediately.
+      const { error } = await authClient.auth.signInWithPassword({
         email: email.trim(),
         password,
       })
@@ -137,11 +138,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
       return
     }
     setIsSubmitting(true)
-    const { error } = await supabase.auth.verifyOtp({
-      phone: mobile.trim(),
-      token: otp,
-      type: "phone_change",
-    })
+    const { error } = await authClient.auth.verifyOtp()
     setIsSubmitting(false)
 
     if (error) {
