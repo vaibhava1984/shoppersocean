@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 const COOKIE = "so_session";
 const SESSION_TTL = 60 * 60 * 24 * 30;
 const PBKDF2_ITERATIONS = 100000;
+const RESET_REQUIRED_PREFIX = "!reset_required$";
 type User = { id: string; email: string; full_name?: string|null; country?: string|null; phone?: string|null; address?: string|null; role?: string|null };
 
 function secret() { const env = getCloudflareContext().env as { AUTH_SECRET?: string }; return env.AUTH_SECRET || process.env.AUTH_SECRET || "shoppers-ocean-local-secret-change-me"; }
@@ -20,6 +21,7 @@ async function hashPassword(password: string, salt = crypto.randomUUID()) {
   return `pbkdf2$${PBKDF2_ITERATIONS}$${salt}$${bytesToBase64(new Uint8Array(bits))}`;
 }
 async function verifyPassword(password: string, stored: string) {
+  if (stored.startsWith(RESET_REQUIRED_PREFIX)) return false;
   if (stored.startsWith("$2a$") || stored.startsWith("$2b$") || stored.startsWith("$2y$")) return await bcrypt.compare(password, stored);
   const parts=stored.split("$"); if(parts.length!==4||parts[0]!=="pbkdf2") return false;
   const iterations=Number(parts[1]); if(!Number.isFinite(iterations)||iterations<1||iterations>PBKDF2_ITERATIONS) return false;
@@ -43,38 +45,8 @@ export async function signInUser(email:string,password:string){
   const env=getCloudflareContext().env as {DB:D1Database};
   const normalized=email.trim().toLowerCase();
   const row=await env.DB.prepare("SELECT id,email,full_name,country,phone,address,role,password_hash FROM users WHERE lower(email)=lower(?) LIMIT 1").bind(normalized).first<User & {password_hash:string}>();
-  if(!row){
-    // One-time migration bridge: verify the old password inside the legacy database
-    // without exposing the legacy password hash. A successful check immediately
-    // creates a native D1 account, so future logins use D1 only.
-    const legacyUrl="https://etqqiivljtybvynprlvf.supabase.co";
-    const legacyAnonKey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0cXFpaXZsanR5YnZ5bnBybHZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkyNDY3MjcsImV4cCI6MjA0NDgyMjcyN30.CEDedHHh6pLUK06daEwG8XL3wRLA6_pmoKFzRC6sSVo";
-    const legacyResponse=await fetch(legacyUrl+"/functions/v1/legacy-password-verify",{
-      method:"POST",
-      headers:{
-        "apikey":legacyAnonKey,
-        "Authorization":"Bearer "+legacyAnonKey,
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({email:normalized,password})
-    });
-    if(legacyResponse.status===401) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
-    if(!legacyResponse.ok) return {error:{code:"internal_error",message:"Legacy account migration is temporarily unavailable"}};
-    const legacy=await legacyResponse.json() as {user?:{id:string;email?:string;user_metadata?:Record<string,unknown>}};
-    if(!legacy.user?.id) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
-    const metadata=legacy.user.user_metadata||{};
-    const id=legacy.user.id;
-    const fullName=typeof metadata.full_name==="string"?metadata.full_name:"";
-    const country=typeof metadata.country==="string"?metadata.country:"";
-    const phone=typeof metadata.mobile==="string"?metadata.mobile:"";
-    const address=typeof metadata.address==="string"?metadata.address:"";
-    const passwordHash=await hashPassword(password);
-    await env.DB.prepare("INSERT OR IGNORE INTO users (id,email,password_hash,full_name,country,phone,address,role,email_confirmed) VALUES (?,?,?,?,?,?,?,?,1)").bind(id,normalized, passwordHash, fullName,country,phone,address,"user").run();
-    const migrated=await env.DB.prepare("SELECT id,email,full_name,country,phone,address,role FROM users WHERE lower(email)=lower(?) LIMIT 1").bind(normalized).first<User>();
-    if(!migrated) return {error:{code:"internal_error",message:"Unable to create the migrated account"}};
-    await createSession(migrated.id);
-    return {data:{user:migrated},error:null};
-  }
+  if(!row) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
+  if(row.password_hash.startsWith(RESET_REQUIRED_PREFIX)) return {error:{code:"password_reset_required",message:"Please use Forgot Password to set a new password for this account."}};
   if(!(await verifyPassword(password,row.password_hash))) return {error:{code:"invalid_credentials",message:"Invalid credentials"}};
   if(row.password_hash.startsWith("$2a$") || row.password_hash.startsWith("$2b$") || row.password_hash.startsWith("$2y$")) {
     await env.DB.prepare("UPDATE users SET password_hash=?,updated_at=CURRENT_TIMESTAMP WHERE id=?").bind(await hashPassword(password),row.id).run();
@@ -100,7 +72,19 @@ export async function updateCurrentUser(values:{password?:string;phone?:string;e
 export async function requestPasswordReset(email:string){
   const env=getCloudflareContext().env as {DB:D1Database};
   const normalized=email.trim().toLowerCase();
-  const row=await env.DB.prepare("SELECT id,email,full_name FROM users WHERE lower(email)=lower(?) LIMIT 1").bind(normalized).first<{id:string;email:string;full_name:string|null}>();
+  let row=await env.DB.prepare("SELECT id,email,full_name,password_hash FROM users WHERE lower(email)=lower(?) LIMIT 1").bind(normalized).first<{id:string;email:string;full_name:string|null;password_hash:string}>();
+  if(!row){
+    // Migration path for legacy users that were not imported into D1:
+    // create a reset-required account using only the email address.
+    // The account becomes usable only after the owner proves access to that email
+    // through the reset link and chooses a new password.
+    const id=crypto.randomUUID();
+    const unusableHash=RESET_REQUIRED_PREFIX+crypto.randomUUID();
+    await env.DB.prepare("INSERT OR IGNORE INTO users (id,email,password_hash,full_name,country,phone,address,role,email_confirmed) VALUES (?,?,?,?,?,?,?,?,1)")
+      .bind(id,normalized,unusableHash,"","","","","user").run();
+    row=await env.DB.prepare("SELECT id,email,full_name,password_hash FROM users WHERE lower(email)=lower(?) LIMIT 1")
+      .bind(normalized).first<{id:string;email:string;full_name:string|null;password_hash:string}>();
+  }
   if(!row) return {ok:true};
   const rawToken=crypto.randomUUID()+"-"+crypto.randomUUID();
   const tokenHash=await hmac(rawToken);
@@ -111,7 +95,7 @@ export async function requestPasswordReset(email:string){
   const resetUrl=origin+"/update-password?token="+encodeURIComponent(rawToken);
   const apiKey=process.env.RESEND_API_KEY;
   if(!apiKey) throw new Error("Password reset email service is not configured");
-  const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from:"no-reply@shoppersocean.com",to:[row.email],subject:"Reset your Shoppers Ocean password",html:"<p>Hello "+(row.full_name||"")+",</p><p>Click the button below to reset your Shoppers Ocean password.</p><p><a href=\""+resetUrl+"\" style=\"display:inline-block;padding:10px 16px;background:#2563eb;color:#fff;text-decoration:none;border-radius:6px\">Reset Password</a></p><p>This link expires in 1 hour.</p>"})});
+  const response=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({from:"no-reply@shoppersocean.com",to:[row.email],subject:"Reset your Shoppers Ocean password",html:"<p>Hello "+(row.full_name||"")+ ",</p><p>Click the button below to reset your Shoppers Ocean password.</p><p><a href=\""+resetUrl+"\" style=\"display:inline-block;padding:10px 16px;background:#2563eb;color:#fff;text-decoration:none;border-radius:6px\">Reset Password</a></p><p>This link expires in 1 hour.</p>"})});
   if(!response.ok) throw new Error("Unable to send password reset email");
   return {ok:true};
 }
