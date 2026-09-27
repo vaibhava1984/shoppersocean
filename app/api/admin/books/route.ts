@@ -17,7 +17,7 @@ export async function GET() {
     if (!adminOnly(user)) return NextResponse.json({ error: "Not authorized" }, { status: 403 });
 
     const { data, error } = await db.from("authors")
-      .select("author_id, name")
+      .select("id, name")
       .eq("is_deleted", false)
       .order("name");
     if (error) throw error;
