@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/utils/db/client"
 
 export default function Login({ searchParams }: { searchParams: any }) {
   const supabase = createClient()
