@@ -1,16 +1,20 @@
-name: Shoppers Ocean purchase-fix deploy
+name: Shoppers Ocean purchase-fix build trigger
 
 on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  trigger:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6
-      - uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+      - name: Trigger Cloudflare Workers Build
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          curl --fail-with-body -sS -X POST \
+            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/builds/triggers/ec41069d-7b05-4e60-887a-88d567d3f5bd/builds" \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data '{"branch":"purchase-fix-no-deploy","commit_hash":"133cb02b268e937b5bf62a8d74b18bb9a7108707"}'
