@@ -34,9 +34,9 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
     useEffect(() => {
         let active = true;
         const getUserOnce = async () => { if (!currentUserPromise) currentUserPromise = supabase.auth.getUser(); return currentUserPromise; };
-        const getUserCurrency = (): string => { try { const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US'; return new Intl.NumberFormat(userLocale, { style: 'currency', currency: 'USD' }).resolvedOptions().currency || 'INR'; } catch { return 'INR'; } };
+        const getUserCurrency = (): string => 'INR';
         async function setupLocalCurrency(passedCurrency?: string) { try { const detectedCurrency = passedCurrency ?? getUserCurrency(); if (active) setIsInitialFetching(true); const rates = await getExchangeRatesOnce(); if (!active) return; if (rates[detectedCurrency]) { setLocalCurrency(detectedCurrency); setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates)); } else { setLocalCurrency('INR'); setLocalAmount(amount); } setIsInitialFetching(false); } catch (error) { if (!active) return; console.error('Error setting up local currency:', error); setLocalCurrency('INR'); setLocalAmount(amount); setIsInitialFetching(false); } }
-        if (userId) getUserOnce().then(({ data }) => { if (!active) return; const country = data.user?.user_metadata?.country; return setupLocalCurrency(country ? getCurrencyCode(country) : undefined); }).catch(() => setupLocalCurrency()); else setupLocalCurrency();
+        if (userId) getUserOnce().then(({ data }) => { if (!active) return; const country = data.user?.country ?? data.user?.user_metadata?.country; return setupLocalCurrency(country ? getCurrencyCode(country) : undefined); }).catch(() => setupLocalCurrency()); else setupLocalCurrency();
         return () => { active = false; };
     }, [amount, userId]);
     useEffect(() => { if (!productId || !userId) return; let active = true; setIsInitialFetching(true); getPurchaseStatus(userId, productId).then(purchased => { if (active) setHasPurchased(purchased); }).catch(error => console.error('Error checking purchase:', error)).finally(() => { if (active) setIsInitialFetching(false); }); return () => { active = false; }; }, [productId, userId]);
