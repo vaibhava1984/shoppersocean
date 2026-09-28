@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Loader2Icon } from 'lucide-react';
-import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
+import { fetchExchangeRates, convertCurrency } from '@/utils/currency';
 import { getPurchaseStatus, setPurchaseStatus } from '@/utils/purchaseStatusCache';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
