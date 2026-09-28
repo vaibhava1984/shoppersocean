@@ -55,7 +55,7 @@ export default async function BookShelfPage({
     const [booksResult, authorsResult, languageRowsResult] = await Promise.all([
         db.prepare(bookSql).bind(...bookParams).all<Record<string, any>>(),
         db.prepare("SELECT author_id,name FROM authors WHERE COALESCE(is_deleted, 0) = 0 ORDER BY name ASC").all<Record<string, any>>(),
-        db.prepare("SELECT language FROM books WHERE COALESCE(is_deleted, 0) = 0 AND language IS NOT NULL").all<Record<string, any>>(),
+        db.prepare("SELECT DISTINCT language FROM books WHERE COALESCE(is_deleted, 0) = 0 AND language IS NOT NULL ORDER BY language ASC LIMIT 100").all<Record<string, any>>(),
     ])
 
     const books = booksResult.results ?? []
@@ -90,7 +90,7 @@ export default async function BookShelfPage({
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900">
-            <Header categoryNavigation={{ authors, languages }} />
+            <Header categoryNavigation={{ authors, languages }} user={user} />
             <HeroSection
                 title=" Escape into Entertainment"
                 subtitle="Discover your next favorite book"
