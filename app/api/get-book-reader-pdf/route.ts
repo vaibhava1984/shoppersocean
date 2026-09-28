@@ -1,66 +1,96 @@
-import { NextResponse } from 'next/server';
-import { getLegacyProfileForClerkUser } from '@/utils/auth/clerkProfile';
-import { getD1 } from '@/utils/cloudflare/d1';
-import { getBooksBucket } from '@/utils/cloudflare/r2';
+import { NextResponse } from "next/server";
+import { getCurrentUser } from "@/utils/auth/session";
+import { getD1 } from "@/utils/cloudflare/d1";
+
+const CHUNK_SIZE = 512 * 1024;
+
+async function ensureChunkTable(db: any) {
+  await db.prepare(`CREATE TABLE IF NOT EXISTS private_book_file_chunks (
+    file_id TEXT NOT NULL,
+    chunk_index INTEGER NOT NULL,
+    data BLOB NOT NULL,
+    PRIMARY KEY (file_id, chunk_index)
+  `).run();
+}
 
 export async function GET(request: Request) {
   try {
-    const identity = await getLegacyProfileForClerkUser();
-    if (!identity) return new NextResponse('Not authorized', { status: 403 });
+    const user = await getCurrentUser();
+    if (!user) return new NextResponse("Not authorized", { status: 403 });
     const db = getD1();
-    const bucket = getBooksBucket();
-    if (!db || !bucket) throw new Error('Cloudflare storage is not available');
+    if (!db) throw new Error("Cloudflare D1 is not available");
+    await ensureChunkTable(db);
 
     const { searchParams } = new URL(request.url);
-    const bookId = searchParams.get('bookId');
-    if (!bookId) return new NextResponse('Book ID is required', { status: 400 });
+    const bookId = searchParams.get("bookId");
+    if (!bookId) return new NextResponse("Book ID is required", { status: 400 });
 
     const purchase = await db.prepare(
-      "SELECT id FROM orders WHERE user_id = ? AND product_id = ? AND status = 'completed' LIMIT 1"
-    ).bind(identity.profile.id, bookId).first();
-    if (!purchase) return new NextResponse('Purchase required', { status: 403 });
+      "SELECT id FROM orders WHERE user_id=? AND product_id=? AND status='completed' LIMIT 1"
+    ).bind(user.id, bookId).first();
+    if (!purchase) return new NextResponse("Purchase required", { status: 403 });
 
-    const files = await db.prepare(
-      "SELECT file_path, file_name, file_type FROM private_book_files WHERE book_id = ? ORDER BY created_at DESC LIMIT 20"
+    const file = await db.prepare(
+      "SELECT id,file_name,file_type FROM private_book_files WHERE book_id=? ORDER BY created_at DESC LIMIT 20"
     ).bind(bookId).all<Record<string, any>>();
-    const pdf = files.results.find((file) => {
-      const type = String(file.file_type || '').toLowerCase();
-      const name = String(file.file_name || '').toLowerCase();
-      return type === 'pdf' || name.endsWith('.pdf');
+    const pdf = file.results.find((item) => {
+      const type = String(item.file_type || "").toLowerCase();
+      const name = String(item.file_name || "").toLowerCase();
+      return type === "pdf" || name.endsWith(".pdf");
     });
-    if (!pdf?.file_path) return new NextResponse('No PDF book is available', { status: 404 });
+    if (!pdf) return new NextResponse("No PDF book is available", { status: 404 });
 
-    const rangeHeader = request.headers.get('range');
-    let range: { offset: number; length?: number } | undefined;
+    const chunks = await db.prepare(
+      "SELECT chunk_index,data FROM private_book_file_chunks WHERE file_id=? ORDER BY chunk_index ASC"
+    ).bind(pdf.id).all<Record<string, any>>();
+    if (!chunks.results.length) return new NextResponse("Book file not found", { status: 404 });
+
+    const totalSize = chunks.results.reduce((sum, row) => {
+      const data = row.data as ArrayBuffer | Uint8Array;
+      return sum + (data?.byteLength ?? 0);
+    }, 0);
+
+    const rangeHeader = request.headers.get("range");
+    let start = 0;
+    let end = totalSize - 1;
     if (rangeHeader) {
       const match = rangeHeader.match(/bytes=(\d+)-(\d*)/);
       if (match) {
-        const start = Number(match[1]);
-        const end = match[2] ? Number(match[2]) : undefined;
-        range = { offset: start, ...(end !== undefined ? { length: end - start + 1 } : {}) };
+        start = Number(match[1]);
+        end = match[2] ? Math.min(Number(match[2]), totalSize - 1) : totalSize - 1;
       }
     }
+    if (start < 0 || start >= totalSize || end < start) return new NextResponse("Invalid range", { status: 416 });
 
-    const object = await bucket.get(String(pdf.file_path), range ? { range } : undefined);
-    if (!object?.body) return new NextResponse('Book file not found', { status: 404 });
+    const firstChunk = Math.floor(start / CHUNK_SIZE);
+    const lastChunk = Math.floor(end / CHUNK_SIZE);
+    const output = new Uint8Array(end - start + 1);
+    let written = 0;
 
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/pdf');
-    headers.set('Cache-Control', 'private, no-store');
-    headers.set('Accept-Ranges', 'bytes');
-    if (object.size != null) headers.set('Content-Length', String(object.size));
-    if (object.etag || object.httpEtag) headers.set('ETag', String(object.etag || object.httpEtag));
-
-    let status = 200;
-    if (range && object.range) {
-      status = 206;
-      const start = object.range.offset;
-      const end = start + object.range.length - 1;
-      headers.set('Content-Range', `bytes ${start}-${end}/${object.size ?? '*'}`);
+    for (let i = firstChunk; i <= lastChunk; i++) {
+      const row = chunks.results.find((item) => Number(item.chunk_index) === i);
+      if (!row?.data) return new NextResponse("Book file is incomplete", { status: 500 });
+      const bytes = row.data instanceof Uint8Array ? row.data : new Uint8Array(row.data);
+      const chunkStart = i * CHUNK_SIZE;
+      const from = Math.max(start - chunkStart, 0);
+      const to = Math.min(end - chunkStart + 1, bytes.byteLength);
+      output.set(bytes.slice(from, to), written);
+      written += Math.max(0, to - from);
     }
-    return new NextResponse(object.body, { status, headers });
+
+    const headers = new Headers({
+      "Content-Type": "application/pdf",
+      "Cache-Control": "private, no-store",
+      "Accept-Ranges": "bytes",
+      "Content-Length": String(output.byteLength),
+    });
+    if (rangeHeader) {
+      headers.set("Content-Range", `bytes ${start}-${end}/${totalSize}`);
+      return new NextResponse(output, { status: 206, headers });
+    }
+    return new NextResponse(output, { status: 200, headers });
   } catch (error) {
-    console.error('Error serving purchased book PDF:', error);
-    return new NextResponse('Failed to load book', { status: 500 });
+    console.error("Error serving purchased book:", error);
+    return new NextResponse("Failed to load book", { status: 500 });
   }
 }
