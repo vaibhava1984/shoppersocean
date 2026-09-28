@@ -1,5 +1,5 @@
 import Header from "@/components/Header"
-import { currentUser } from "@clerk/nextjs/server"
+import { getCurrentUser } from "@/utils/auth/session"
 import { getD1 } from "@/utils/cloudflare/d1"
 import CategoriesAccordion from "@/app/components/CategoriesAccordion"
 import { Card, CardContent } from "@/components/ui/card"
@@ -43,7 +43,7 @@ export default async function BookShelfPage({
     const language = languageMap[languageParam] ?? (languageParam !== "all" ? languageParam : undefined)
     const db = getD1()
     if (!db) throw new Error("Cloudflare D1 is not available")
-    const user = await currentUser()
+    const user = await getCurrentUser()
 
     let bookSql = "SELECT id,title,description,price,cover_images,author_name,genre FROM books WHERE COALESCE(is_deleted, 0) = 0"
     const bookParams: unknown[] = []
