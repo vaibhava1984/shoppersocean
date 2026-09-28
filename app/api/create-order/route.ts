@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
-import { fetchExchangeRates, convertCurrency } from '@/utils/currency';
 
 function getRazorpay() {
     const keyId = process.env.RAZORPAY_KEY_ID;
