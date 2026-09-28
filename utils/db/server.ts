@@ -59,7 +59,18 @@ class QueryBuilder {
 
       if (this.operation === "select") {
         const result = await env.DB.prepare(`SELECT ${this.columns} FROM ${this.table}${whereSql}${orderSql}${limitSql}`).bind(...bindings).all();
-        return {data: result.results as Row[], error: null};
+        const data = (result.results as Row[]).map((row) => {
+          if (typeof row.cover_images === "string") {
+            try {
+              const parsed = JSON.parse(row.cover_images);
+              return { ...row, cover_images: Array.isArray(parsed) ? parsed : [] };
+            } catch {
+              return { ...row, cover_images: [] };
+            }
+          }
+          return row;
+        });
+        return {data, error: null};
       }
 
       if (this.operation === "delete") {
