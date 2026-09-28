@@ -20,22 +20,26 @@ export async function POST(req: Request) {
     try {
         const razorpay = getRazorpay();
         const { amount, currency = 'INR', notes } = await req.json();
+        const numericAmount = Number(amount);
+        if (!Number.isFinite(numericAmount) || numericAmount <= 0 || currency !== 'INR') {
+            return NextResponse.json({ error: 'Invalid purchase amount or currency.' }, { status: 400 });
+        }
 
         const order = await razorpay.orders.create({
-            amount: Math.round(amount * 100),
-            currency,
+            amount: Math.round(numericAmount * 100),
+            currency: 'INR',
             notes: {
                 ...notes,
                 original_currency: currency,
-                original_amount: amount,
+                original_amount: numericAmount,
                 base_currency: 'INR'
             },
         });
 
         return NextResponse.json({
             orderId: order.id,
-            amount,
-            currency
+            amount: numericAmount,
+            currency: 'INR'
         });
     } catch (error) {
         console.error('Error creating order:', error);
