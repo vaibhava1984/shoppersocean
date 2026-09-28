@@ -35,6 +35,7 @@ function makeHref(type: "genre" | "author" | "language", value: string) {
 
 export default function HomepageCategoryNavigation({ authors, languages }: Props) {
   const [open, setOpen] = useState<"genre" | "author" | "language" | null>(null)
+  const visibleLanguages = Array.from(new Set(["English", "Hindi", ...languages])).sort((a, b) => a.localeCompare(b))
 
   const toggle = (name: "genre" | "author" | "language") => {
     setOpen((current) => current === name ? null : name)
@@ -62,15 +63,15 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
             </Link>
           ))}
           {open === "author" && (authors.length > 0 ? authors.map((author) => (
-            <Link key={author.author_id} href={makeHref("author", author.author_id)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black hover:bg-blue-50">
+            <Link key={author.author_id ?? author.name} href={makeHref("author", author.author_id ?? author.name)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black hover:bg-blue-50">
               {author.name}
             </Link>
           )) : <p className="px-4 py-3 text-sm font-semibold text-black">No authors available yet.</p>)}
-          {open === "language" && (languages.length > 0 ? languages.map((language) => (
+          {open === "language" && visibleLanguages.map((language) => (
             <Link key={language} href={makeHref("language", language)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black hover:bg-blue-50">
               {language}
             </Link>
-          )) : <p className="px-4 py-3 text-sm font-semibold text-black">No languages available yet.</p>)}
+          ))}
         </div>
       )}
     </div>

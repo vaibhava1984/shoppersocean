@@ -4,6 +4,7 @@ import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
 import SiteSearch from "@/components/SiteSearch"
 import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation"
+import { Suspense } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +23,30 @@ const navigationItems = [
 type HeaderProps = {
   user?: Awaited<ReturnType<typeof getUser>>
   categoryNavigation?: { authors: { author_id: string; name: string }[]; languages: string[] }
+}
+
+async function HomepageCategoryNavigationLoader() {
+  const db = createClient()
+  const [{ data: authors }, { data: languageRows }] = await Promise.all([
+    db.from("authors").select("author_id,name").eq("is_deleted", false).order("name", { ascending: true }),
+    db.from("books").select("language").eq("is_deleted", false).not("language", "is", null),
+  ])
+  const languages = Array.from(new Set((languageRows ?? []).map((row) => row.language).filter(Boolean))).sort((a, b) => a.localeCompare(b))
+  return (
+    <HomepageCategoryNavigation
+      authors={authors ?? []}
+      languages={languages}
+    />
+  )
+}
+
+function HomepageCategoryNavigationFallback() {
+  return (
+    <HomepageCategoryNavigation
+      authors={[]}
+      languages={["English", "Hindi"]}
+    />
+  )
 }
 
 export default async function Header({ user, categoryNavigation }: HeaderProps) {
@@ -117,11 +142,15 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
               <HeaderAuthorButton />
             </div>
             <SiteSearch />
-            {categoryNavigation && (
+            {categoryNavigation ? (
               <HomepageCategoryNavigation
                 authors={categoryNavigation.authors}
                 languages={categoryNavigation.languages}
               />
+            ) : (
+              <Suspense fallback={<HomepageCategoryNavigationFallback />}>
+                <HomepageCategoryNavigationLoader />
+              </Suspense>
             )}
           </div>
         </div>

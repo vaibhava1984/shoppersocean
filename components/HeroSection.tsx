@@ -1,5 +1,4 @@
 import React from 'react';
-import { OptimizedImage } from '@/components/OptimizedImage';
 
 interface HeroSectionProps {
     title?: string;
@@ -34,15 +33,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                     </div>
 
                     <div className="md:w-1/2 relative">
-                        <OptimizedImage
+                        <img
                             src={imageSrc}
                             alt={imageAlt}
                             width={640}
                             height={420}
-                            priority
-                            className="w-full max-w-md mx-auto rounded-lg shadow-2xl opacity-0 scale-95 animate-[fadeInUp_0.6s_ease-out_forwards]"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                            quality={70}
+                            className="block w-full max-w-md mx-auto rounded-lg shadow-2xl opacity-0 scale-95 animate-[fadeInUp_0.6s_ease-out_forwards]"
                         />
                     </div>
                 </div>
