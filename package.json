@@ -9,8 +9,10 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
+    "@clerk/nextjs": "6.36.7",
     "@dnd-kit/core": "^6.1.0",
     "@dnd-kit/sortable": "^8.0.0",
+    "@opennextjs/cloudflare": "1.20.6",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -31,7 +33,7 @@
     "embla-carousel-react": "^8.3.0",
     "geist": "^1.2.1",
     "lucide-react": "^0.453.0",
-    "next": "15.2.8",
+    "next": "^15.5.24",
     "postcss": "8.4.33",
     "razorpay": "^2.9.5",
     "react": "18.2.0",
@@ -42,9 +44,7 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss": "3.4.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "5.3.3",
-    "@clerk/nextjs": "6.36.7",
-    "@opennextjs/cloudflare": "1.20.6"
+    "typescript": "5.3.3"
   },
   "devDependencies": {
     "@types/node": "20.11.5",
