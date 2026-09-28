@@ -1,15 +1,14 @@
 "use client";
 import { useState } from "react";
-import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
 export function UpdatePasswordForm() {
-  const { user } = useUser();
   const [password,setPassword]=useState("");
   const [confirm,setConfirm]=useState("");
   const [error,setError]=useState<string|null>(null);
   const [done,setDone]=useState(false);
   const [busy,setBusy]=useState(false);
+
   async function submit(e:React.FormEvent){
     e.preventDefault(); setError(null);
     if(password.length<6){setError("Password must be at least 6 characters long");return;}
@@ -24,7 +23,7 @@ export function UpdatePasswordForm() {
     }catch(e){setError(e instanceof Error?e.message:"Unable to update password");}
     finally{setBusy(false);}
   }
-  if(!user) return null;
+
   return <div className="min-h-screen bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center p-4">
     <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8">
       <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">Update Password</h2>
