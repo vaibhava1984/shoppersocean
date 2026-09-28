@@ -4,7 +4,7 @@ import { deleteBookFile, uploadBookFile } from "@/utils/storage";
 
 async function requireAdmin() {
   const db = createClient();
-  const { data: user } = await db.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) return { error: NextResponse.json({ error: "Not authorized" }, { status: 403 }) };
   if (String(user.role || "").toLowerCase() !== "admin") return { error: NextResponse.json({ error: "Admin access required" }, { status: 403 }) };
   return { db, user };
