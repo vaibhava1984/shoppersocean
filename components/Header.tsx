@@ -8,9 +8,9 @@ import { DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuTrigger }
 import { ChevronDown, LogOut, HistoryIcon, ShieldIcon, ChartBarIcon, SettingsIcon } from "lucide-react";
 
 const navigationItems=[["/","Home"],["/bookShelf","Bookshelf"],["/about","About"],["/contact","Have a question?"]] as const;
-type HeaderProps={categoryNavigation?:{authors:{author_id:string;name:string}[];languages:string[]}};
-export default async function Header({categoryNavigation}:HeaderProps){
- const user=await getCurrentUser();
+type HeaderProps={categoryNavigation?:{authors:{author_id:string;name:string}[];languages:string[]}; user?:Record<string,unknown>|null};
+export default async function Header({categoryNavigation,user:providedUser}:HeaderProps){
+ const user=providedUser===undefined?await getCurrentUser():providedUser;
  const displayName=String(user?.full_name||user?.email||"User");
  const userRole=String(user?.role||"USER").toUpperCase();
  const isAuthor=user?.is_author===1||user?.is_author===true;
