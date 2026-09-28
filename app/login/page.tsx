@@ -156,6 +156,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
   function getAuthErrorMessage(code: string) {
     if (code === "email_not_confirmed") return "Please confirm your email address and try again."
     if (code === "invalid_credentials") return "Invalid credentials"
+    if (code === "password_reset_required") return "Please create a new account with your name and details instead of resetting the old account."
     if (code === "account_already_registered") return "An account with this email already exists. Please sign in or use a different email address."
     return "Internal server error occurred"
   }
