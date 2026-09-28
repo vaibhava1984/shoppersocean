@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { createClient } from "@/utils/supabase/client";
 import AdminSidebar from "../adminSidebar"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
@@ -17,7 +16,6 @@ type AuthorApprovalsType = {
 
 const AuthorsApproval = () => {
     const { toast } = useToast()
-    const supabase = createClient();
     const [authors, setAuthors] = useState<AuthorApprovalsType[]>([]);
 
     useEffect(() => {
@@ -25,16 +23,14 @@ const AuthorsApproval = () => {
     }, []);
 
     const fetchAuthors = async () => {
-        const { data, error } = await supabase.from('authors_interest_submission').select(`
-            user_id,
-            created_at,
-            profiles(email)
-          `);
-        if (error) {
+        try {
+            const response = await fetch('/api/authors_approve', { cache: 'no-store' });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Failed to load authors');
+            setAuthors(data as AuthorApprovalsType[]);
+        } catch (error) {
             console.error('Error fetching authors:', error);
-        } else {
-            // console.log("data new=>", data)
-            setAuthors(data as unknown as AuthorApprovalsType[]);
+            toast({ variant: "destructive", title: "Error", description: "Failed to load author approvals" });
         }
     };
 
