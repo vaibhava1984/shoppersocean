@@ -55,7 +55,6 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
     setIsSaving(true)
 
     const normalizedMobile = enteredMobile ? normalizeIndianMobile(enteredMobile) : ""
-    const mobileChanged = normalizedMobile !== normalizeIndianMobile(originalMobile)
 
     try {
       const response = await fetch("/api/update-profile", {
