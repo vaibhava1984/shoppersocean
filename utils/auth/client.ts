@@ -6,7 +6,12 @@ const requestInit = {
 };
 
 export function createAuthClient(){return{
- async getUser():Promise<AuthResult>{return (await fetch("/api/auth/me",requestInit)).json();},
+ async getUser():Promise<AuthResult>{
+   const result = await (await fetch("/api/auth/me",requestInit)).json();
+   const user = result?.data?.user;
+   if (user) result.data.user = { ...user, user_metadata: { ...(user.user_metadata || {}), country: user.country, full_name: user.full_name } };
+   return result;
+ },
  async signInWithPassword(input:{email:string;password:string}):Promise<AuthResult>{return (await fetch("/api/auth/signin",{...requestInit,method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(input)})).json();},
  async signOut(){return (await fetch("/api/auth/signout",{...requestInit,method:"POST"})).json();},
  async updateUser(input:any):Promise<AuthResult>{return (await fetch("/api/auth/update",{...requestInit,method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(input)})).json();},
