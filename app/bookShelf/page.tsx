@@ -45,7 +45,7 @@ export default async function BookShelfPage({
     if (!db) throw new Error("Cloudflare D1 is not available")
     const user = await getCurrentUser()
 
-    let bookSql = "SELECT id,title,description,price,cover_images,author_name,genre FROM books WHERE COALESCE(is_deleted, 0) = 0"
+    let bookSql = "SELECT id,title,description,price,author_name,genre,CASE WHEN json_valid(cover_images) THEN json_extract(cover_images, '$[0]') ELSE NULL END AS coverImage FROM books WHERE COALESCE(is_deleted, 0) = 0"
     const bookParams: unknown[] = []
     if (language) { bookSql += " AND language = ?"; bookParams.push(language) }
     if (authorParam !== "all") { bookSql += " AND author_id = ?"; bookParams.push(authorParam) }
@@ -54,20 +54,19 @@ export default async function BookShelfPage({
 
     const [booksResult, authorsResult, languageRowsResult] = await Promise.all([
         db.prepare(bookSql).bind(...bookParams).all<Record<string, any>>(),
-        db.prepare("SELECT author_id,name FROM authors WHERE COALESCE(is_deleted, 0) = 0 ORDER BY name ASC").all<Record<string, any>>(),
-        db.prepare("SELECT DISTINCT language FROM books WHERE COALESCE(is_deleted, 0) = 0 AND language IS NOT NULL ORDER BY language ASC LIMIT 100").all<Record<string, any>>(),
+        db.prepare("SELECT author_id,name FROM authors WHERE COALESCE(is_deleted, 0) = 0 ORDER BY name ASC LIMIT 100").all<Record<string, any>>(),
+        db.prepare("SELECT language FROM books WHERE COALESCE(is_deleted, 0) = 0 AND language IS NOT NULL GROUP BY language ORDER BY language ASC LIMIT 100").all<Record<string, any>>(),
     ])
 
     const books = booksResult.results ?? []
     const authors = authorsResult.results ?? []
-    const languages = Array.from(new Set(languageRowsResult.results.map((row) => row.language).filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b)))
+    const languages = languageRowsResult.results.map((row) => row.language).filter(Boolean)
 
-    const filteredBooks = books.map((book) => {
-        let images: string[] = []
-        if (Array.isArray(book.cover_images)) images = book.cover_images
-        else if (typeof book.cover_images === "string") { try { const parsed = JSON.parse(book.cover_images); images = Array.isArray(parsed) ? parsed : [] } catch {} }
-        return { ...book, coverImage: images[0], images, author: book.author_name }
-    })
+    const filteredBooks = books.map((book) => ({
+        ...book,
+        images: book.coverImage ? [book.coverImage] : [],
+        author: book.author_name,
+    }))
 
     const authorInfo = {
         "Chetan Bhagat": "Chetan Bhagat is the author of seven blockbuster books. These include six novels—Five Point Someone (2004), One Night @ the Call Center (2005), The 3 Mistakes of My Life (2008), 2 States (2009), Revolution 2020 (2011), Half Girlfriend (2014), and One Indian Girl (2016). His non-fiction works include What Young India Wants (2012) and India Positive (2019).",
