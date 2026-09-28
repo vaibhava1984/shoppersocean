@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getLegacyProfileForClerkUser } from '@/utils/auth/clerkProfile';
+import { getCurrentUser } from '@/utils/auth/session';
 import { getD1 } from '@/utils/cloudflare/d1';
 
 export async function POST(request: Request) {
   try {
-    const identity = await getLegacyProfileForClerkUser();
-    if (!identity) return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
     const db = getD1();
     if (!db) throw new Error('Cloudflare D1 is not available');
     const { bookId } = await request.json();
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
     const purchase = await db.prepare(
       "SELECT id FROM orders WHERE user_id = ? AND product_id = ? AND status = 'completed' LIMIT 1"
-    ).bind(identity.profile.id, bookId).first();
+    ).bind(user.id, bookId).first();
     if (!purchase) return NextResponse.json({ error: 'Purchase required' }, { status: 403 });
 
     const files = await db.prepare(
