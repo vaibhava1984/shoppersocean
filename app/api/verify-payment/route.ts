@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import { Resend } from "resend";
-import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
+import { requireUser } from "@/utils/auth/clerkProfile";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
