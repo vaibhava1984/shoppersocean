@@ -8,7 +8,7 @@ export async function GET(request:Request){
 }
 export async function POST(request:Request){
  try{
-  const identity=await requireClerkUser();if(!identity)return NextResponse.json({error:"Please sign in to write a review."},{status:401});
+  const identity=await requireUser();if(!identity)return NextResponse.json({error:"Please sign in to write a review."},{status:401});
   const db=getD1();if(!db)return NextResponse.json({error:"Cloudflare database is unavailable"},{status:503});
   const {bookId,description,rating}=await request.json();const text=String(description??"").trim();const stars=Number(rating);
   if(!bookId||!text||!Number.isInteger(stars)||stars<1||stars>5)return NextResponse.json({error:"Please provide a review and a rating from 1 to 5."},{status:400});
