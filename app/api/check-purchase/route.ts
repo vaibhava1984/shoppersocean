@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
+import { getCurrentUser } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
 
 export const dynamic = "force-dynamic";
@@ -7,8 +7,8 @@ export const revalidate = 0;
 
 export async function POST(req: Request) {
   try {
-    const identity = await getLegacyProfileForClerkUser();
-    if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401, headers: { "Cache-Control": "no-store" } });
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401, headers: { "Cache-Control": "no-store" } });
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
 
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const placeholders = ids.map(() => "?").join(",");
     const rows = await db.prepare(
       `SELECT id, product_id, order_date, status FROM orders WHERE user_id = ? AND status = 'completed' AND product_id IN (${placeholders}) ORDER BY order_date DESC`
-    ).bind(identity.profile.id, ...ids).all<Record<string, any>>();
+    ).bind(user.id, ...ids).all<Record<string, any>>();
 
     if (productId) {
       const orders = rows.results.filter((o) => o.product_id === productId);
