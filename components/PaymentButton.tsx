@@ -39,14 +39,20 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
         return () => { active = false; };
     }, [amount, userId, user]);
     useEffect(() => { if (!productId || !userId) return; let active = true; setIsInitialFetching(true); getPurchaseStatus(userId, productId).then(purchased => { if (active) setHasPurchased(purchased); }).catch(error => console.error('Error checking purchase:', error)).finally(() => { if (active) setIsInitialFetching(false); }); return () => { active = false; }; }, [productId, userId]);
-    const initializeRazorpay = () => new Promise((resolve) => { const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]'); if (existingScript && (window as any).Razorpay) return resolve(true); const script = document.createElement('script'); script.src = 'https://checkout.razorpay.com/v1/checkout.js'; script.onload = () => resolve(true); script.onerror = () => resolve(false); document.body.appendChild(script); });
+    const initializeRazorpay = () => new Promise<boolean>((resolve) => { const existing = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]') as HTMLScriptElement | null; if ((window as any).Razorpay) return resolve(true); if (existing) { existing.addEventListener('load', () => resolve(!!(window as any).Razorpay), { once: true }); existing.addEventListener('error', () => resolve(false), { once: true }); return; } const script = document.createElement('script'); script.src = 'https://checkout.razorpay.com/v1/checkout.js'; script.async = true; script.onload = () => resolve(!!(window as any).Razorpay); script.onerror = () => resolve(false); document.body.appendChild(script); });
     const handlePayment = async () => {
         setIsLoading(true);
         try {
             if (!(await initializeRazorpay())) { alert('Razorpay SDK failed to load'); return; }
+            if (!localCurrency) throw new Error('Payment currency is not ready. Please try again.');
+            const keyResponse = await fetch('/api/razorpay-key', { cache: 'no-store' });
+            const keyData = await keyResponse.json();
+            if (!keyResponse.ok || !keyData.keyId) throw new Error(keyData.error || 'Razorpay key is not configured.');
             const response = await fetch('/api/create-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ amount: localAmount, currency: localCurrency, notes: { ...notes, original_currency: localCurrency } }) });
-            const { orderId } = await response.json();
-            const options = { key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, amount: Math.round(localAmount * 100), currency: localCurrency, name: 'Shoppers Ocean', description: `Payment of ${localAmount} ${localCurrency}`, order_id: orderId,
+            const orderData = await response.json();
+            if (!response.ok || !orderData.orderId) throw new Error(orderData.error || 'Unable to create the Razorpay order.');
+            const orderId = orderData.orderId;
+            const options = { key: keyData.keyId, amount: Math.round(localAmount * 100), currency: localCurrency, name: 'Shoppers Ocean', description: `Payment of ${localAmount} ${localCurrency}`, order_id: orderId,
                 handler: async (paymentResponse: any) => { try { const verificationResponse = await fetch('/api/verify-payment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ razorpay_order_id: paymentResponse.razorpay_order_id, razorpay_payment_id: paymentResponse.razorpay_payment_id, razorpay_signature: paymentResponse.razorpay_signature, original_currency: localCurrency, original_amount: localAmount, user_id: userId ?? '', product_id: productId, quantity: 1 }) }); const data = await verificationResponse.json(); if (data.error) alert(`Payment failed: ${data.errorDetails || data.error}`); else if (data.status === 'completed') { alert('Payment successful!'); setPurchaseStatus(userId ?? '', productId, true); setHasPurchased(true); } else if (data.status === 'authorized') alert('Payment authorized, awaiting capture'); else if (data.status === 'pending') alert('Payment is pending'); else alert(`Payment status: ${data.status}`); } catch (error) { console.error('Error:', error); alert('Payment verification failed'); } }, notes: { skip_contact_form: 1 }, theme: { color: '#F37254' } };
             new (window as any).Razorpay(options).open();
         } catch (error) { console.error('Error:', error); toast({ variant: "destructive", title: "Payment Error", description: "Unable to process payment. Please try again." }); } finally { setIsLoading(false); }
