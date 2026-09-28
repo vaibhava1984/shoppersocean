@@ -90,7 +90,7 @@ export async function requestPasswordReset(email:string){
   const tokenHash=await hmac(rawToken);
   const expiresAt=new Date(Date.now()+60*60*1000).toISOString();
   await env.DB.prepare("DELETE FROM password_reset_tokens WHERE user_id=?").bind(row.id).run();
-  await env.DB.prepare("INSERT INTO password_reset_tokens (token_hash,user_id,expires_at) VALUES (?,?,?)").bind(tokenHash,expiresAt).run();
+  await env.DB.prepare("INSERT INTO password_reset_tokens (token_hash,user_id,expires_at) VALUES (?,?,?)").bind(tokenHash,row.id,expiresAt).run();
   const origin=(process.env.NEXT_PUBLIC_SITE_URL||"https://www.shoppersocean.com").replace(/\/$/,"");
   const resetUrl=origin+"/update-password?token="+encodeURIComponent(rawToken);
   const apiKey=env.RESEND_API_KEY || process.env.RESEND_API_KEY;
