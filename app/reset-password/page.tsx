@@ -1,5 +1,2 @@
-import { RedirectToSignIn } from "@clerk/nextjs";
-
-export default function ResetPassword() {
-  return <RedirectToSignIn redirectUrl="/sign-in" />;
-}
+import { redirect } from "next/navigation";
+export default function ResetPassword(){ redirect("/sign-in"); }
