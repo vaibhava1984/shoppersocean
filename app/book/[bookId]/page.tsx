@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { getCurrentUser } from "@/utils/auth/session";
 
 export const dynamic = "force-dynamic";
 import { getD1 } from "@/utils/cloudflare/d1";
@@ -29,7 +29,7 @@ function parseImages(value: unknown): string[] {
 export default async function BookDetailPage({ params }: { params: any }) {
     const { bookId } = await params;
     const db = getD1();
-    const user = await currentUser();
+    const user = await getCurrentUser();
     if (!db) throw new Error("Cloudflare D1 is not available");
 
     const currentBookDetails = await db.prepare(
