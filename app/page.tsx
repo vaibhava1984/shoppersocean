@@ -18,6 +18,9 @@ export const metadata = {
   description: 'Homepage',
 }
 
+// The homepage contains session-specific UI such as the signed-in user's name.
+export const dynamic = "force-dynamic";
+
 export default async function LandingPage() {
   const supabase = createClient();
   const [user, homepageBooks, authorsResult, languageRowsResult] = await Promise.all([
