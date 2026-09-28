@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from "react"
-import { createClient } from "@/utils/supabase/client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -20,7 +19,6 @@ const normalizeIndianMobile = (value: string) => {
 }
 
 const Settings = ({ initialUser }: { initialUser: any }) => {
-  const supabase = createClient()
   const initialMobile = initialUser?.phone ?? ""
   const [country, setCountry] = useState(initialUser?.user_metadata?.country ?? "")
   const [fullName, setFullName] = useState(initialUser?.user_metadata?.full_name ?? "")
@@ -84,7 +82,6 @@ const Settings = ({ initialUser }: { initialUser: any }) => {
         setOriginalMobile(normalizedMobile)
         setMessage("Your details have been successfully updated.")
       }
-      await supabase.auth.refreshSession()
     } catch {
       setMessage("Unable to update your details right now. Please try again.")
     } finally {
