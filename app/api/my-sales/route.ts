@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
+import { getCurrentUser } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   try {
-    const identity = await getLegacyProfileForClerkUser();
-    if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
 
@@ -18,7 +18,7 @@ export async function GET(req: Request) {
 
     const owned = await db.prepare(
       "SELECT author_id FROM authors WHERE author_id = ? AND user_id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1"
-    ).bind(authorId, identity.profile.id).first();
+    ).bind(authorId, user.id).first();
     if (!owned) return NextResponse.json({ error: "Not authorized" }, { status: 403 });
 
     const books = await db.prepare(
