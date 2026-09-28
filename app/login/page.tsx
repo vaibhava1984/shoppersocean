@@ -69,6 +69,8 @@ export default function Login({ searchParams }: { searchParams: any }) {
         setIsSubmitting(false)
         if (error.code === "email_not_confirmed") {
           setErrors({ general: "Please confirm your email address and try again." })
+        } else if (error.code === "password_reset_required") {
+          setErrors({ general: "Please create a new account with your name and details instead of resetting the old account." })
         } else if (error.code === "invalid_credentials") {
           setErrors({ general: "Invalid credentials" })
         } else {
