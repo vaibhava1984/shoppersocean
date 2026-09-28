@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
+import { getCurrentUser } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const identity = await getLegacyProfileForClerkUser();
-    if (!identity) return NextResponse.json({ error: "User not authenticated" }, { status: 401 });
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: "User not authenticated" }, { status: 401 });
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
 
@@ -17,7 +17,7 @@ export async function GET() {
       "FROM orders o LEFT JOIN books b ON b.id = o.product_id " +
       "LEFT JOIN payments p ON p.order_id = o.id " +
       "WHERE o.user_id = ? ORDER BY o.order_date DESC"
-    ).bind(identity.profile.id).all<Record<string, any>>();
+    ).bind(user.id).all<Record<string, any>>();
 
     const purchases = rows.results.map((row) => ({
       ...row,
