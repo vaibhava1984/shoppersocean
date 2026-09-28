@@ -43,33 +43,7 @@ export default function BookCard({ book, loggedinUserId }: {
 
     return (
         <>
-            <style>{`
-                @keyframes bookCardSlowZoomIn {
-                    0% {
-                        opacity: 0.35;
-                        transform: scale(0.72);
-                    }
-                    100% {
-                        opacity: 1;
-                        transform: scale(1);
-                    }
-                }
-
-                .book-card-zoom-in {
-                    animation: bookCardSlowZoomIn 4s ease-out forwards;
-                    transform-origin: center center;
-                }
-
-                @media (prefers-reduced-motion: reduce) {
-                    .book-card-zoom-in {
-                        animation: none;
-                        opacity: 1;
-                        transform: scale(1);
-                    }
-                }
-            `}</style>
-
-            <div
+          <div
                 ref={cardRef}
                 className={hasAnimatedOnce ? "book-card-zoom-in" : isInView ? "book-card-zoom-in" : "opacity-0 scale-[0.72]"}
                 onAnimationEnd={(event) => {
