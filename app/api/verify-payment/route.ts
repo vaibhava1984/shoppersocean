@@ -125,7 +125,7 @@ export async function POST(req: Request) {
         from: "no-reply@shoppersocean.com",
         to: "kochimonu@gmail.com",
         subject: "New Sale | Shoppers Ocean",
-        html: `<p><strong>New Sale details:</strong></p><p><strong>Email:</strong> ${identity.profile.email ?? email ?? ""}</p><p><strong>Book ID:</strong>${product_id}</p><p><strong>Book Name:</strong>${book.title ?? ""}</p>`,
+        html: `<p><strong>New Sale details:</strong></p><p><strong>Email:</strong> ${user.email ?? email ?? ""}</p><p><strong>Book ID:</strong>${product_id}</p><p><strong>Book Name:</strong>${book.title ?? ""}</p>`,
       });
     }
 
@@ -133,7 +133,7 @@ export async function POST(req: Request) {
       success: true,
       message: "Order created and payment verified successfully",
       status: paymentStatus,
-      orderDetails: { id: orderId, user_id: identity.profile.id, product_id, quantity: Number(quantity || 1), total_amount: Number(amountInINR), currency: "INR", status: paymentStatus, order_date: now },
+      orderDetails: { id: orderId, user_id: user.id, product_id, quantity: Number(quantity || 1), total_amount: Number(amountInINR), currency: "INR", status: paymentStatus, order_date: now },
       paymentDetails: {
         amount: Number(payment.amount) / 100,
         currency: payment.currency,
