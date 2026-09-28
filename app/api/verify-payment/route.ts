@@ -4,7 +4,6 @@ import Razorpay from "razorpay";
 import { Resend } from "resend";
 import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
 import { getD1 } from "@/utils/cloudflare/d1";
-import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
 function getRazorpay() {
   const keyId = process.env.RAZORPAY_KEY_ID;
@@ -28,7 +27,7 @@ export async function POST(req: Request) {
       shipping_address, contact_number, email,
     } = await req.json();
 
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !product_id) {
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !product_id || original_currency !== "INR" || !Number.isFinite(Number(original_amount)) || Number(original_amount) <= 0) {
       return NextResponse.json({ error: "Required payment information is missing" }, { status: 400 });
     }
 
@@ -58,6 +57,10 @@ export async function POST(req: Request) {
       }, { status: 400 });
     }
 
+    if (payment.order_id !== razorpay_order_id || payment.currency !== "INR" || Number(payment.amount) !== Math.round(Number(original_amount) * 100)) {
+      return NextResponse.json({ error: "Payment amount or order does not match the purchase" }, { status: 400 });
+    }
+
     const existing = await db.prepare(
       "SELECT o.id, o.product_id, o.status, p.payment_id, p.original_amount, p.original_currency, p.amount_in_inr, p.payment_method, p.created_at " +
       "FROM orders o LEFT JOIN payments p ON p.order_id = o.id " +
@@ -80,8 +83,7 @@ export async function POST(req: Request) {
       });
     }
 
-    const rates = await fetchExchangeRates();
-    const amountInINR = convertCurrency(Number(original_amount), original_currency, "INR", rates);
+    const amountInINR = Number(original_amount);
     const now = new Date().toISOString();
     const orderId = crypto.randomUUID();
     const paymentRowId = crypto.randomUUID();
