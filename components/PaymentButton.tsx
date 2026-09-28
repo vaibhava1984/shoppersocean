@@ -1,6 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { useUser } from '@clerk/nextjs';
+
+import { useEffect, useState } from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
 import { getPurchaseStatus, setPurchaseStatus } from '@/utils/purchaseStatusCache';
@@ -26,7 +26,7 @@ function getExchangeRatesOnce(): Promise<ExchangeRates> {
     return exchangeRatesPromise;
 }
 export default function PaymentButton({ amount, notes, userId, productId, productTitle }: PaymentButtonProps) {
-    const { user } = useUser();
+    const [user, setUser] = useState<any>(null);\n    useEffect(() => { fetch('/api/auth/me', { cache: 'no-store' }).then(r => r.json()).then(d => setUser(d?.user ?? null)).catch(() => setUser(null)); }, []);
     const { toast } = useToast(); const [isLoading, setIsLoading] = useState(false); const [localAmount, setLocalAmount] = useState(amount);
     const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [hasPurchased, setHasPurchased] = useState(false);
     const [isInitialFetching, setIsInitialFetching] = useState(userId ? true : false); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false);

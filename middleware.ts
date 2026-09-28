@@ -1,33 +1,4 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-
-const isPublicRoute = createRouteMatcher([
-  "/",
-  "/login(.*)",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/reset-password(.*)",
-  "/update-password(.*)",
-  "/auth(.*)",
-  "/bookShelf(.*)",
-  "/about(.*)",
-  "/contact(.*)",
-  "/api/contact-me(.*)",
-  "/api/auth/token",
-  "/services(.*)",
-  "/book/(.*)",
-  "/privacy-policy(.*)",
-  "/_next/(.*)",
-]);
-
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
-  }
-});
-
-export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-    "/(api|trpc)(.*)",
-  ],
-};
+import {NextResponse} from "next/server"; import type {NextRequest} from "next/server";
+const publicPaths=["/","/login","/sign-in","/sign-up","/reset-password","/about","/contact","/bookShelf","/book/","/flipbook/","/services","/privacy-policy","/api/","/_next/"];
+export function middleware(req:NextRequest){const path=req.nextUrl.pathname;if(publicPaths.some(p=>path===p||path.startsWith(p)))return NextResponse.next();if(!req.cookies.get("shoppers_ocean_session")){const url=req.nextUrl.clone();url.pathname="/sign-in";return NextResponse.redirect(url)}return NextResponse.next()}
+export const config={matcher:["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"]};

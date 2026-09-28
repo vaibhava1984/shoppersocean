@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { getCurrentUser } from "@/utils/auth/session";
 
 export const dynamic = "force-dynamic";
 import { getD1 } from "@/utils/cloudflare/d1";
@@ -23,7 +23,7 @@ export const metadata = {
 export default async function LandingPage() {
   const db = getD1();
   if (!db) throw new Error("Cloudflare D1 is not available");
-  const user = await currentUser();
+  const user = await getCurrentUser();
   const [homepageBooks, authorsResult, languageRowsResult] = await Promise.all([
     getHomepageBooksServer(),
     db.prepare("SELECT author_id,name FROM authors WHERE COALESCE(is_deleted, 0) = 0 ORDER BY name ASC").all<Record<string, any>>(),

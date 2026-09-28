@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import { Resend } from "resend";
-import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
+import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
@@ -15,7 +15,7 @@ function getRazorpay() {
 
 export async function POST(req: Request) {
   try {
-    const identity = await getLegacyProfileForClerkUser();
+    const identity = await requireUser();
     if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
 
     const db = getD1();

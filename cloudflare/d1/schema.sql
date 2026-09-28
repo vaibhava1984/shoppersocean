@@ -2,7 +2,6 @@ PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS profiles (
   id TEXT PRIMARY KEY,
-  clerk_user_id TEXT UNIQUE,
   email TEXT NOT NULL,
   full_name TEXT,
   country TEXT,
@@ -138,4 +137,3 @@ CREATE INDEX IF NOT EXISTS idx_testimonials_user_book ON testimonials(user_id, b
 CREATE INDEX IF NOT EXISTS idx_books_author ON books(author_id);
 CREATE INDEX IF NOT EXISTS idx_books_publisher ON books(published_by);
 CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
-CREATE INDEX IF NOT EXISTS idx_profiles_clerk_user ON profiles(clerk_user_id);

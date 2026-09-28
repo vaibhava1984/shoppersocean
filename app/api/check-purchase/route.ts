@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
+import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 
 export const dynamic = "force-dynamic";
@@ -7,7 +7,7 @@ export const revalidate = 0;
 
 export async function POST(req: Request) {
   try {
-    const identity = await getLegacyProfileForClerkUser();
+    const identity = await requireUser();
     if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401, headers: { "Cache-Control": "no-store" } });
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
