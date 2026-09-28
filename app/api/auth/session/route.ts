@@ -1,0 +1,1 @@
+import {getCurrentUser} from "@/utils/auth/session";export async function GET(){const user=await getCurrentUser();return Response.json({user:user?{id:user.id,email:user.email,full_name:user.full_name,country:user.country,role:user.role}:null},{headers:{"Cache-Control":"no-store"}})}
