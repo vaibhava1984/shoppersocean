@@ -96,12 +96,6 @@ export async function POST(req: Request) {
       );
     }
 
-    const {
-      data: { session },
-      error: sessionError,
-    } = await supabase.auth.getSession();
-    if (sessionError) throw sessionError;
-
     const { data, error } = await supabase.rpc("create_order_and_payment", {
       p_order_details: {
         user_id,
