@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     const mobile = String(body.mobile ?? "").trim()
 
     if (!fullName || !country || !email) return NextResponse.json({ error: "Name, Country and Email are required." }, { status: 400 })
-    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 })
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 })
 
     let phone = ""
     if (mobile) {
