@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import { Resend } from "resend";
-import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
+import { getCurrentUser } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
 
 function getRazorpay() {
@@ -14,8 +14,8 @@ function getRazorpay() {
 
 export async function POST(req: Request) {
   try {
-    const identity = await getLegacyProfileForClerkUser();
-    if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
 
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
@@ -97,9 +97,9 @@ export async function POST(req: Request) {
       "INSERT INTO orders (id, user_id, product_id, quantity, total_amount, currency, status, contact_number, email, razorpay_order_id, order_date, created_at, updated_at, shipping_address, display_amount, display_currency) " +
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     ).bind(
-      orderId, identity.profile.id, product_id, Number(quantity || 1), Number(amountInINR), "INR",
-      paymentStatus, contact_number || identity.profile.mobile || null, email || identity.profile.email,
-      razorpay_order_id, now, now, now, shipping_address || identity.profile.address || null,
+      orderId, user.id, product_id, Number(quantity || 1), Number(amountInINR), "INR",
+      paymentStatus, contact_number || user.mobile || null, email || user.email,
+      razorpay_order_id, now, now, now, shipping_address || user.address || null,
       Number(original_amount), original_currency
     ).run();
 
