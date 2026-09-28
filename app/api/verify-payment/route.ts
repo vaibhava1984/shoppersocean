@@ -1,15 +1,30 @@
 import { NextResponse } from "next/server";
-import crypto from "crypto";
-import Razorpay from "razorpay";
 import { Resend } from "resend";
 import { getCurrentUser } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
 
-function getRazorpay() {
+function getRazorpayCredentials() {
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
   if (!keyId || !keySecret) throw new Error("Razorpay server credentials are not configured");
-  return new Razorpay({ key_id: keyId, key_secret: keySecret });
+  return { keyId, keySecret };
+}
+
+async function verifySignature(orderId: string, paymentId: string, signature: string, secret: string) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const digest = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(`${orderId}|${paymentId}`)
+  );
+  const expected = Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  return expected === signature;
 }
 
 export async function POST(req: Request) {
@@ -20,27 +35,34 @@ export async function POST(req: Request) {
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
 
-    const razorpay = getRazorpay();
+    const { keyId, keySecret } = getRazorpayCredentials();
     const {
       razorpay_order_id, razorpay_payment_id, razorpay_signature,
       original_currency, original_amount, product_id, quantity,
       shipping_address, contact_number, email,
     } = await req.json();
 
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !product_id || original_currency !== "INR" || !Number.isFinite(Number(original_amount)) || Number(original_amount) <= 0) {
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !product_id ||
+        original_currency !== "INR" || !Number.isFinite(Number(original_amount)) || Number(original_amount) <= 0) {
       return NextResponse.json({ error: "Required payment information is missing" }, { status: 400 });
     }
 
-    const keySecret = process.env.RAZORPAY_KEY_SECRET!;
-    const expectedSignature = crypto.createHmac("sha256", keySecret)
-      .update(razorpay_order_id + "|" + razorpay_payment_id)
-      .digest("hex");
-
-    if (expectedSignature !== razorpay_signature) {
+    if (!(await verifySignature(razorpay_order_id, razorpay_payment_id, razorpay_signature, keySecret))) {
       return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
     }
 
-    const payment = await razorpay.payments.fetch(razorpay_payment_id);
+    const auth = btoa(`${keyId}:${keySecret}`);
+    const paymentResponse = await fetch(
+      `https://api.razorpay.com/v1/payments/${encodeURIComponent(razorpay_payment_id)}`,
+      { headers: { Authorization: `Basic ${auth}` } }
+    );
+    const payment = await paymentResponse.json();
+
+    if (!paymentResponse.ok || !payment?.id) {
+      console.error("Razorpay payment fetch failed:", paymentResponse.status, payment);
+      return NextResponse.json({ error: "Unable to verify payment with Razorpay" }, { status: 502 });
+    }
+
     let paymentStatus: string;
     switch (payment.status) {
       case "captured": paymentStatus = "completed"; break;
@@ -57,7 +79,8 @@ export async function POST(req: Request) {
       }, { status: 400 });
     }
 
-    if (payment.order_id !== razorpay_order_id || payment.currency !== "INR" || Number(payment.amount) !== Math.round(Number(original_amount) * 100)) {
+    if (payment.order_id !== razorpay_order_id || payment.currency !== "INR" ||
+        Number(payment.amount) !== Math.round(Number(original_amount) * 100)) {
       return NextResponse.json({ error: "Payment amount or order does not match the purchase" }, { status: 400 });
     }
 
@@ -97,10 +120,10 @@ export async function POST(req: Request) {
       "INSERT INTO orders (id, user_id, product_id, quantity, total_amount, currency, status, contact_number, email, razorpay_order_id, order_date, created_at, updated_at, shipping_address, display_amount, display_currency) " +
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     ).bind(
-      orderId, user.id, product_id, Number(quantity || 1), Number(amountInINR), "INR",
+      orderId, user.id, product_id, Number(quantity || 1), amountInINR, "INR",
       paymentStatus, contact_number || user.mobile || null, email || user.email,
       razorpay_order_id, now, now, now, shipping_address || user.address || null,
-      Number(original_amount), original_currency
+      amountInINR, original_currency
     ).run();
 
     try {
@@ -109,7 +132,7 @@ export async function POST(req: Request) {
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
       ).bind(
         paymentRowId, orderId, razorpay_order_id, razorpay_payment_id, razorpay_signature, paymentStatus,
-        original_currency, Number(original_amount), Number(amountInINR), payment.method || null,
+        original_currency, amountInINR, amountInINR, payment.method || null,
         payment.bank || null, payment.card?.network || null, payment.card?.last4 || null,
         payment.error_code || null, payment.error_description || null, now, now
       ).run();
@@ -133,7 +156,7 @@ export async function POST(req: Request) {
       success: true,
       message: "Order created and payment verified successfully",
       status: paymentStatus,
-      orderDetails: { id: orderId, user_id: user.id, product_id, quantity: Number(quantity || 1), total_amount: Number(amountInINR), currency: "INR", status: paymentStatus, order_date: now },
+      orderDetails: { id: orderId, user_id: user.id, product_id, quantity: Number(quantity || 1), total_amount: amountInINR, currency: "INR", status: paymentStatus, order_date: now },
       paymentDetails: {
         amount: Number(payment.amount) / 100,
         currency: payment.currency,
