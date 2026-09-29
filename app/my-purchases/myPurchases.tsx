@@ -19,48 +19,32 @@ const PurchaseHistory = () => {
         const fetchPurchases = async () => {
             try {
                 const { data: { user } } = await db.auth.getUser();
-
                 if (!user) throw new Error('User not authenticated');
 
-                // First fetch orders with product information
                 const { data: ordersData, error: ordersError } = await db
-                    .from('orders')
-                    .select(`
-                        *,
-                        books (
-                        id,
-                        title,
-                        price
-                        )
-                    `)
-                    .eq('user_id', user.id)
-                    .order('order_date', { ascending: false });
-                // console.log("ordersData-=====>", ordersData)
-
+                    .from('orders').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
                 if (ordersError) throw ordersError;
 
-                // Then fetch corresponding payments
-                const orderIds = ordersData.map(order => order.id);
-                const { data: paymentsData, error: paymentsError } = await db
-                    .from('payments')
-                    .select('*')
-                    .in('order_id', orderIds);
-
+                const orders = ordersData || [];
+                const bookIds = [...new Set(orders.map((o: any) => o.book_id).filter(Boolean))];
+                const orderIds = orders.map((o: any) => o.id);
+                const { data: booksData, error: booksError } = bookIds.length
+                    ? await db.from('books').select('id, title, price').in('id', bookIds)
+                    : { data: [], error: null };
+                if (booksError) throw booksError;
+                const { data: paymentsData, error: paymentsError } = orderIds.length
+                    ? await db.from('payments').select('*').in('order_id', orderIds)
+                    : { data: [], error: null };
                 if (paymentsError) throw paymentsError;
 
-                // Combine orders, products, and payments
-                const combinedData = ordersData.map(order => ({
+                setPurchases(orders.map((order: any) => ({
                     ...order,
-                    payment: paymentsData.find(payment => payment.order_id === order.id)
-                }));
-                // console.log("combinedData-=====>", combinedData)
-
-                setPurchases(combinedData);
-            } catch (err) {
+                    books: (booksData || []).find((b: any) => b.id === order.book_id),
+                    payment: (paymentsData || []).find((p: any) => p.order_id === order.id)
+                })));
+            } catch (err: any) {
                 setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+            } finally { setLoading(false); }
         };
 
         fetchPurchases();
@@ -134,7 +118,7 @@ const PurchaseHistory = () => {
                                             </Link>
                                         </TableCell>
                                         <TableCell>
-                                            {purchase.payment?.original_amount?.toFixed(2) || purchase.original_amount?.toFixed(2)} {purchase.payment.original_currency}
+                                            {purchase.payment?.amount?.toFixed(2) || purchase.amount?.toFixed(2)} {purchase.payment?.currency || purchase.currency}}
                                         </TableCell>
                                         <TableCell>
                                             <Badge
