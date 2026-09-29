@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/db/client";
 import {
     Select,
     SelectContent,
@@ -20,7 +20,7 @@ const AuthorOrdersDashboard = ({ authorId }: {
     const [timeFrame, setTimeFrame] = useState('month');
     const [orderedBooksData, setOrderedBooksData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const supabase = createClient();
+    const db = createClient();
 
 
     const getFilteredDate = (filterType) => {
@@ -48,69 +48,39 @@ const AuthorOrdersDashboard = ({ authorId }: {
 
     const getSalesData = async (authorId, timeFilter = null) => {
         try {
-            // Get all books by author
-            const { data: booksData, error: booksError } = await supabase
-                .from('books')
-                .select('id, title')
-                .eq('author_id', authorId);
-
+            const { data: booksData, error: booksError } = await db.from('books').select('id, title').eq('author_id', authorId);
             if (booksError) throw booksError;
+            const books = booksData || [];
+            const bookIds = books.map((b: any) => b.id);
+            if (!bookIds.length) return { totalOrders: 0, totalRevenue: 0, totalActiveBooks: 0, salesDetails: [] };
 
-            const bookIds = booksData.map(book => book.id);
-            const timeFilterDate = getFilteredDate(timeFilter);
-
-            // Get orders with time filter
-            let ordersQuery = supabase
-                .from('orders')
-                .select(`
-                    id,
-                    product_id,
-                    created_at,
-                    payments!payments_order_id_fkey (
-                        amount_in_inr,
-                        original_amount,
-                        original_currency,
-                        updated_at
-                    )
-                `)
-                .in('product_id', bookIds);
-
-            if (timeFilterDate) {
-                ordersQuery = ordersQuery.gte('created_at', timeFilterDate);
-            }
-
-            const { data: ordersData, error: ordersError } = await ordersQuery;
+            const { data: ordersData, error: ordersError } = await db.from('orders').select('*').in('book_id', bookIds).eq('status', 'completed');
             if (ordersError) throw ordersError;
-            // console.log("booksData=>", booksData)
-            // console.log("ordersData=>", ordersData)
+            const orders = (ordersData || []).filter((o: any) => !timeFilter || new Date(o.created_at) >= new Date(getFilteredDate(timeFilter)!));
+            const orderIds = orders.map((o: any) => o.id);
+            const { data: paymentsData, error: paymentsError } = orderIds.length
+                ? await db.from('payments').select('*').in('order_id', orderIds)
+                : { data: [], error: null };
+            if (paymentsError) throw paymentsError;
 
-            // Process the data
-            const salesDetails = ordersData.map(order => {
-                const book = booksData.find(b => b.id === order.product_id);
-                // console.log("current order=>", order)
-                // console.log("book found=>", book)
-                const payment = order.payments; // Assuming one payment per order
-                // console.log("payment found=>", payment)
-
+            const salesDetails = orders.map((order: any) => {
+                const book = books.find((b: any) => b.id === order.book_id);
+                const payment = (paymentsData || []).find((p: any) => p.order_id === order.id);
                 return {
-                    bookId: order.product_id,
-                    bookTitle: book.title,
-                    amount_in_inr: payment.amount_in_inr,
-                    transactedAmount: payment.original_amount,
-                    transactedAmountCurrency: payment.original_currency,
-                    saleDate: payment.updated_at
+                    bookId: order.book_id,
+                    bookTitle: book?.title || 'Unknown Book',
+                    amount_in_inr: order.amount,
+                    transactedAmount: payment?.amount ?? order.amount,
+                    transactedAmountCurrency: payment?.currency ?? order.currency,
+                    saleDate: payment?.created_at ?? order.created_at
                 };
             });
-
-            const result = {
-                totalOrders: ordersData.length,
-                totalRevenue: salesDetails.reduce((sum, sale) => sum + sale.amount_in_inr, 0),
-                totalActiveBooks: booksData.length,
+            return {
+                totalOrders: orders.length,
+                totalRevenue: salesDetails.reduce((sum: number, sale: any) => sum + Number(sale.amount_in_inr || 0), 0),
+                totalActiveBooks: books.length,
                 salesDetails
             };
-
-            return result;
-
         } catch (error) {
             console.error('Error fetching sales data:', error);
             throw error;
