@@ -18,7 +18,6 @@ export default function BookCard({ book, loggedinUserId }: {
     useEffect(() => {
         const element = cardRef.current
         if (!element) return
-
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -28,15 +27,10 @@ export default function BookCard({ book, loggedinUserId }: {
                         setHasAnimatedOnce(true)
                     }
                     setIsInView(true)
-                } else {
-                    setIsInView(false)
-                }
+                } else setIsInView(false)
             },
-            {
-                threshold: 0.6,
-            }
+            { threshold: 0.6 }
         )
-
         observer.observe(element)
         return () => observer.disconnect()
     }, [hasAnimatedOnce])
@@ -45,27 +39,15 @@ export default function BookCard({ book, loggedinUserId }: {
         <>
             <style>{`
                 @keyframes bookCardSlowZoomIn {
-                    0% {
-                        opacity: 0.35;
-                        transform: scale(0.72);
-                    }
-                    100% {
-                        opacity: 1;
-                        transform: scale(1);
-                    }
+                    0% { opacity: 0.35; transform: scale(0.72); }
+                    100% { opacity: 1; transform: scale(1); }
                 }
-
                 .book-card-zoom-in {
                     animation: bookCardSlowZoomIn 4s ease-out forwards;
                     transform-origin: center center;
                 }
-
                 @media (prefers-reduced-motion: reduce) {
-                    .book-card-zoom-in {
-                        animation: none;
-                        opacity: 1;
-                        transform: scale(1);
-                    }
+                    .book-card-zoom-in { animation: none; opacity: 1; transform: scale(1); }
                 }
             `}</style>
 
@@ -108,28 +90,19 @@ export default function BookCard({ book, loggedinUserId }: {
                                     {book.description.length > 100 ? (
                                         <>
                                             {book.description.slice(0, 100)}...
-                                            <Link
-                                                href={`/book/${book.id}`}
-                                                className="text-blue-500 hover:underline ml-1"
-                                            >
-                                                Read More
-                                            </Link>
+                                            <Link href={`/book/${book.id}`} className="text-blue-500 hover:underline ml-1">Read More</Link>
                                         </>
-                                    ) : (
-                                        book.description
-                                    )}
+                                    ) : book.description}
                                 </div>
                             </div>
-                            <div
-                                className={`mt-2 transition-opacity duration-300 ${
-                                    hasFullyAppeared ? "opacity-100" : "opacity-0 pointer-events-none"
-                                }`}
-                                aria-hidden={!hasFullyAppeared}
-                            >
+                            <div className="mt-3">
+                                <div className="text-xl font-bold text-blue-600 mb-3">
+                                    ₹{Number(book.price ?? 0).toFixed(2)}
+                                </div>
                                 {book?.id && (
                                     <LazyPaymentButton
-                                        amount={book.price}
-                                        notes={{ product_name: "Test Product" }}
+                                        amount={Number(book.price ?? 0)}
+                                        notes={{ product_name: book.title }}
                                         userId={loggedinUserId}
                                         productId={book.id}
                                         productTitle={book.title}
