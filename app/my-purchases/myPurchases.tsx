@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/utils/db/client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -13,17 +13,17 @@ const PurchaseHistory = () => {
     const [purchases, setPurchases] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const supabase = createClient();
+    const db = createClient();
 
     useEffect(() => {
         const fetchPurchases = async () => {
             try {
-                const { data: { user } } = await supabase.auth.getUser();
+                const { data: { user } } = await db.auth.getUser();
 
                 if (!user) throw new Error('User not authenticated');
 
                 // First fetch orders with product information
-                const { data: ordersData, error: ordersError } = await supabase
+                const { data: ordersData, error: ordersError } = await db
                     .from('orders')
                     .select(`
                         *,
@@ -41,7 +41,7 @@ const PurchaseHistory = () => {
 
                 // Then fetch corresponding payments
                 const orderIds = ordersData.map(order => order.id);
-                const { data: paymentsData, error: paymentsError } = await supabase
+                const { data: paymentsData, error: paymentsError } = await db
                     .from('payments')
                     .select('*')
                     .in('order_id', orderIds);
