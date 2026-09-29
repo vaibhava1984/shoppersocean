@@ -1,17 +1,40 @@
 import { NextResponse } from "next/server";
-import crypto from "crypto";
-import Razorpay from "razorpay";
 import { Resend } from "resend";
 import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
-function getRazorpay() {
+function getCredentials() {
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
   if (!keyId || !keySecret) throw new Error("Razorpay server credentials are not configured");
-  return new Razorpay({ key_id: keyId, key_secret: keySecret });
+  return { keyId, keySecret };
 }
+
+function toHex(bytes: ArrayBuffer) {
+  return [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function createSignature(orderId: string, paymentId: string, secret: string) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(orderId + "|" + paymentId)
+  );
+  return toHex(signature);
+}
+
+function basicAuth(keyId: string, keySecret: string) {
+  return "Basic " + btoa(keyId + ":" + keySecret);
+}
+
 
 export async function POST(req: Request) {
   try {
@@ -21,7 +44,7 @@ export async function POST(req: Request) {
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
 
-    const razorpay = getRazorpay();
+    const { keyId, keySecret } = getCredentials();
     const {
       razorpay_order_id, razorpay_payment_id, razorpay_signature,
       original_currency, original_amount, product_id, quantity,
@@ -32,16 +55,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Required payment information is missing" }, { status: 400 });
     }
 
-    const keySecret = process.env.RAZORPAY_KEY_SECRET!;
-    const expectedSignature = crypto.createHmac("sha256", keySecret)
-      .update(razorpay_order_id + "|" + razorpay_payment_id)
-      .digest("hex");
+    const expectedSignature = await createSignature(razorpay_order_id, razorpay_payment_id, keySecret);
 
     if (expectedSignature !== razorpay_signature) {
       return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
     }
 
-    const payment = await razorpay.payments.fetch(razorpay_payment_id);
+    const paymentResponse = await fetch(`https://api.razorpay.com/v1/payments/${encodeURIComponent(razorpay_payment_id)}`, {\n      headers: { Authorization: basicAuth(keyId, keySecret) },\n    });\n    const payment = await paymentResponse.json();\n    if (!paymentResponse.ok || !payment?.id) {\n      return NextResponse.json({ error: "Unable to verify payment with Razorpay" }, { status: 502 });\n    }
     let paymentStatus: string;
     switch (payment.status) {
       case "captured": paymentStatus = "completed"; break;
