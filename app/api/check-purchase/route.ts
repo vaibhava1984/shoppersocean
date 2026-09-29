@@ -1,90 +1,30 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/utils/db/server';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
+import { getSessionUser } from '@/utils/auth/server';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export async function POST(req: Request) {
   try {
+    const user = await getSessionUser();
+    if (!user) return NextResponse.json({ error: 'Authentication required' }, { status: 401, headers: { 'Cache-Control': 'no-store' } });
     const body = await req.json();
     const { productId, productIds } = body;
-    const client = createClient();
-
-    const { data: userData, error: userError } = await client.auth.getUser();
-    const user = userData?.user;
-
-    if (userError || !user) {
-      return NextResponse.json(
-        { error: 'Authentication required' },
-        { status: 401, headers: { 'Cache-Control': 'no-store' } }
-      );
-    }
-
-    const userId = user.id;
-
-    if (productId) {
-      const { data: orders, error } = await client
-        .from('orders')
-        .select('id, order_date, status')
-        .eq('user_id', userId)
-        .eq('product_id', productId)
-        .eq('status', 'completed');
-
-      if (error) throw error;
-
-      return NextResponse.json(
-        {
-          hasPurchased: Boolean(orders?.length),
-          orderDetails: orders?.map((order: any) => ({
-            order_id: order.id,
-            purchase_date: order.order_date,
-            status: order.status,
-          })),
-        },
-        { headers: { 'Cache-Control': 'no-store' } }
-      );
-    }
-
-    if (Array.isArray(productIds)) {
-      const { data: orders, error } = await client
-        .from('orders')
-        .select('id, product_id, order_date, status')
-        .eq('user_id', userId)
-        .in('product_id', productIds)
-        .eq('status', 'completed');
-
-      if (error) throw error;
-
-      const result: Record<string, { hasPurchased: boolean; orderDetails: any[] }> = {};
-      productIds.forEach((id: string) => {
-        result[id] = { hasPurchased: false, orderDetails: [] };
-      });
-
-      orders?.forEach((order: any) => {
-        if (order.product_id in result) {
-          result[order.product_id].hasPurchased = true;
-          result[order.product_id].orderDetails.push({
-            order_id: order.id,
-            purchase_date: order.order_date,
-            status: order.status,
-          });
-        }
-      });
-
-      return NextResponse.json(result, {
-        headers: { 'Cache-Control': 'no-store' },
-      });
-    }
-
-    return NextResponse.json(
-      { error: 'Product ID or Product IDs are required' },
-      { status: 400, headers: { 'Cache-Control': 'no-store' } }
-    );
+    const ids = productId ? [String(productId)] : Array.isArray(productIds) ? productIds.map(String) : [];
+    if (!ids.length) return NextResponse.json({ error: 'Product ID or Product IDs are required' }, { status: 400 });
+    const { env } = await getCloudflareContext({ async: true });
+    const placeholders = ids.map(() => '?').join(',');
+    const rows = await env.DB.prepare(
+      `SELECT id, book_id, created_at, status FROM orders WHERE user_id = ? AND book_id IN (${placeholders}) AND status = 'completed' ORDER BY created_at DESC`
+    ).bind(user.id, ...ids).all<{ id: string; book_id: string; created_at: string; status: string }>();
+    if (productId) return NextResponse.json({ hasPurchased: rows.results.length > 0, orderDetails: rows.results.map(o => ({ order_id: o.id, purchase_date: o.created_at, status: o.status })) }, { headers: { 'Cache-Control': 'no-store' } });
+    const result: Record<string, { hasPurchased: boolean; orderDetails: any[] }> = {};
+    ids.forEach(id => { result[id] = { hasPurchased: false, orderDetails: [] }; });
+    rows.results.forEach(o => { if (result[o.book_id]) { result[o.book_id].hasPurchased = true; result[o.book_id].orderDetails.push({ order_id: o.id, purchase_date: o.created_at, status: o.status }); } });
+    return NextResponse.json(result, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     console.error('Error checking purchase:', error);
-    return NextResponse.json(
-      { error: 'Error checking purchase' },
-      { status: 500, headers: { 'Cache-Control': 'no-store' } }
-    );
+    return NextResponse.json({ error: 'Error checking purchase' }, { status: 500, headers: { 'Cache-Control': 'no-store' } });
   }
 }
