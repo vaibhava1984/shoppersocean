@@ -110,7 +110,7 @@ const PurchaseHistory = () => {
                                 {purchases.map((purchase) => (
                                     <TableRow key={purchase.id}>
                                         <TableCell>
-                                            {new Date(purchase.order_date).toLocaleDateString()}
+                                            {new Date(purchase.created_at).toLocaleDateString()}
                                         </TableCell>
                                         <TableCell className="font-medium">
                                             <Link href={`/book/${purchase?.books?.id}`}>
@@ -118,7 +118,7 @@ const PurchaseHistory = () => {
                                             </Link>
                                         </TableCell>
                                         <TableCell>
-                                            {purchase.payment?.amount?.toFixed(2) || purchase.amount?.toFixed(2)} {purchase.payment?.currency || purchase.currency}}
+                                            {(purchase.payment?.amount ?? purchase.amount)?.toFixed(2)} {purchase.payment?.currency || purchase.currency}
                                         </TableCell>
                                         <TableCell>
                                             <Badge
@@ -129,7 +129,7 @@ const PurchaseHistory = () => {
                                             </Badge>
                                         </TableCell>
                                         <TableCell>
-                                            {purchase.payment?.payment_method || 'N/A'}
+                                            {purchase.payment?.currency ? `Razorpay (${purchase.payment.currency})` : 'N/A'}
                                         </TableCell>
                                     </TableRow>
                                 ))}
