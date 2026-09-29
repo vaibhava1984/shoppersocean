@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getSessionUser } from "@/utils/auth/server";
 import { Resend } from "resend";
-import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
 function timingSafeEqual(a: string, b: string) {
   if (a.length !== b.length) return false;
@@ -28,6 +28,9 @@ async function fetchRazorpayPayment(paymentId: string, keyId: string, keySecret:
 
 export async function POST(req: Request) {
   try {
+    const user = await getSessionUser();
+    if (!user) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+
     const { env } = await getCloudflareContext({ async: true });
     const db = env.DB;
     const keyId = env.RAZORPAY_KEY_ID;
@@ -35,30 +38,25 @@ export async function POST(req: Request) {
     if (!keyId || !keySecret) throw new Error("Razorpay server credentials are not configured");
 
     const body = await req.json();
-    const {
-      razorpay_order_id, razorpay_payment_id, razorpay_signature,
-      original_currency = "INR", original_amount, user_id, product_id,
-      quantity = 1, email
-    } = body;
-
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !user_id || !product_id)
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, product_id } = body;
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !product_id)
       return NextResponse.json({ error: "Missing payment verification details" }, { status: 400 });
 
-    const user = await db.prepare("SELECT id, email FROM users WHERE id = ? LIMIT 1").bind(String(user_id)).first<{id:string;email:string}>();
-    if (!user) return NextResponse.json({ error: "Invalid user" }, { status: 401 });
-
-    if (!(await verifySignature(razorpay_order_id, razorpay_payment_id, razorpay_signature, keySecret)))
+    if (!(await verifySignature(String(razorpay_order_id), String(razorpay_payment_id), String(razorpay_signature), keySecret)))
       return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
 
-    const payment = await fetchRazorpayPayment(razorpay_payment_id, keyId, keySecret);
+    const payment = await fetchRazorpayPayment(String(razorpay_payment_id), keyId, keySecret);
     if (payment.order_id !== razorpay_order_id)
       return NextResponse.json({ error: "Payment/order mismatch" }, { status: 400 });
 
-    const amount = Number(original_amount);
-    if (!Number.isFinite(amount) || amount <= 0) return NextResponse.json({ error: "Invalid payment amount" }, { status: 400 });
+    const book = await db.prepare('SELECT id, price, is_deleted FROM books WHERE id = ? LIMIT 1')
+      .bind(String(product_id)).first<{ id: string; price: number; is_deleted: number }>();
+    if (!book || book.is_deleted) return NextResponse.json({ error: "Book is unavailable" }, { status: 404 });
 
-    const rates = await fetchExchangeRates();
-    const amountInINR = convertCurrency(amount, String(original_currency), "INR", rates);
+    const expectedPaise = Math.round(Number(book.price) * 100);
+    if (!Number.isFinite(expectedPaise) || expectedPaise <= 0 || Number(payment.amount) !== expectedPaise || payment.currency !== "INR")
+      return NextResponse.json({ error: "Payment amount does not match the book price" }, { status: 400 });
+
     const paymentStatus =
       payment.status === "captured" ? "completed" :
       payment.status === "authorized" ? "authorized" :
@@ -68,40 +66,43 @@ export async function POST(req: Request) {
     if (paymentStatus === "failed" || paymentStatus === "refunded")
       return NextResponse.json({ success: false, status: paymentStatus, error: paymentStatus === "failed" ? "Payment failed" : "Payment refunded", errorDetails: payment.error_description || undefined }, { status: paymentStatus === "failed" ? 400 : 409 });
 
-    const existing = await db.prepare("SELECT id, status FROM payments WHERE razorpay_payment_id = ? LIMIT 1").bind(razorpay_payment_id).first<{id:string;status:string}>();
+    const existing = await db.prepare("SELECT id, status FROM payments WHERE razorpay_payment_id = ? LIMIT 1")
+      .bind(String(razorpay_payment_id)).first<{ id: string; status: string }>();
     if (existing) return NextResponse.json({ success: true, status: existing.status, message: "Payment already verified" });
 
+    const now = new Date().toISOString();
     const orderId = crypto.randomUUID();
+
     await db.prepare(`INSERT INTO orders
       (id, user_id, book_id, amount, currency, status, razorpay_order_id, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(
-      orderId, user.id, String(product_id), amountInINR, "INR", paymentStatus,
-      razorpay_order_id, new Date().toISOString(), new Date().toISOString()
-    ).run();
+      VALUES (?, ?, ?, ?, 'INR', ?, ?, ?, ?)`)
+      .bind(orderId, user.id, String(product_id), Number(book.price), paymentStatus, String(razorpay_order_id), now, now).run();
 
     await db.prepare(`INSERT INTO payments
       (id, order_id, user_id, book_id, amount, currency, status, razorpay_payment_id, razorpay_order_id, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(
-      crypto.randomUUID(), orderId, user.id, String(product_id), Number(payment.amount) / 100,
-      payment.currency || String(original_currency), paymentStatus, razorpay_payment_id,
-      razorpay_order_id, new Date().toISOString(), new Date().toISOString()
-    ).run();
+      VALUES (?, ?, ?, ?, ?, 'INR', ?, ?, ?, ?, ?)`)
+      .bind(crypto.randomUUID(), orderId, user.id, String(product_id), Number(book.price), paymentStatus, String(razorpay_payment_id), String(razorpay_order_id), now, now).run();
 
     const resendApiKey = env.RESEND_API_KEY;
     if (resendApiKey) {
       try {
         const resend = new Resend(resendApiKey);
         await resend.emails.send({
-          from: "no-reply@shoppersocean.com", to: "kochimonu@gmail.com",
+          from: "no-reply@shoppersocean.com",
+          to: "kochimonu@gmail.com",
           subject: "New Sale | Shoppers Ocean",
-          html: `<p><strong>New Sale details:</strong></p><p><strong>Email:</strong> ${email ?? user.email}</p><p><strong>Book ID:</strong> ${product_id}</p><p><strong>Razorpay Payment ID:</strong> ${razorpay_payment_id}</p><p><strong>Status:</strong> ${paymentStatus}</p>`,
+          html: `<p><strong>New Sale</strong></p><p><strong>Email:</strong> ${user.email}</p><p><strong>Book ID:</strong> ${product_id}</p><p><strong>Razorpay Payment ID:</strong> ${razorpay_payment_id}</p><p><strong>Status:</strong> ${paymentStatus}</p>`,
         });
-      } catch (emailError) { console.error("Sale email failed after successful payment:", emailError); }
+      } catch (emailError) {
+        console.error("Sale email failed after payment:", emailError);
+      }
     }
 
     return NextResponse.json({
-      success: true, message: "Payment verified successfully", status: paymentStatus,
-      orderDetails: { id: orderId, user_id: user.id, book_id: String(product_id), amount: amountInINR, currency: "INR", status: paymentStatus, razorpay_order_id },
+      success: true,
+      message: "Payment verified successfully",
+      status: paymentStatus,
+      orderDetails: { id: orderId, user_id: user.id, book_id: String(product_id), amount: Number(book.price), currency: "INR", status: paymentStatus, razorpay_order_id },
       paymentDetails: { amount: Number(payment.amount) / 100, currency: payment.currency, method: payment.method, status: paymentStatus, created_at: payment.created_at },
     });
   } catch (error) {
