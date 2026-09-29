@@ -39,7 +39,7 @@ export async function POST(req: Request) {
         if (productId) {
             const { data: orders, error } = await supabase
                 .from('orders')
-                .select('id, order_date, status')
+                .select('id, created_at, status')
                 .eq('user_id', userId)
                 .eq('book_id', productId)
                 .eq('status', 'completed');
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
         if (Array.isArray(productIds)) {
             const { data: orders, error } = await supabase
                 .from('orders')
-                .select('id, book_id, order_date, status')
+                .select('id, book_id, created_at, status')
                 .eq('user_id', userId)
                 .in('book_id', productIds)
                 .eq('status', 'completed');
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
             orders?.forEach(order => {
                 if (order.book_id in result) {
                     result[order.book_id].hasPurchased = true;
-                    result[order.book_id].orderDetails.push({ order_id: order.id, purchase_date: order.order_date, status: order.status });
+                    result[order.book_id].orderDetails.push({ order_id: order.id, purchase_date: order.created_at, status: order.status });
                 }
             });
             return NextResponse.json(result, { headers: { 'Cache-Control': 'no-store' } });
