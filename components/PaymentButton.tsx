@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useUser } from '@clerk/nextjs';
 import { Loader2Icon } from 'lucide-react';
 import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
 import { getPurchaseStatus, setPurchaseStatus } from '@/utils/purchaseStatusCache';
@@ -17,7 +16,7 @@ const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
     loading: () => <div className="h-10 w-full" aria-hidden="true" />,
 });
 
-interface PaymentButtonProps { amount: number; notes?: object; userId?: string; productId: string; productTitle?: string; }
+interface PaymentButtonProps { amount: number; notes?: object; userId?: string; productId: string; productTitle?: string; country?: string; }
 export interface ExchangeRates { [key: string]: number; }
 let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
 function getExchangeRatesOnce(): Promise<ExchangeRates> {
@@ -25,16 +24,14 @@ function getExchangeRatesOnce(): Promise<ExchangeRates> {
     if (!exchangeRatesPromise) exchangeRatesPromise = fetchExchangeRates().then(rates => { exchangeRatesCache.set(rates); return rates; }).catch(error => { exchangeRatesPromise = null; throw error; });
     return exchangeRatesPromise;
 }
-export default function PaymentButton({ amount, notes, userId, productId, productTitle }: PaymentButtonProps) {
-    const { user } = useUser();
+export default function PaymentButton({ amount, notes, userId, productId, productTitle, country }: PaymentButtonProps) {
     const { toast } = useToast(); const [isLoading, setIsLoading] = useState(false); const [localAmount, setLocalAmount] = useState(amount);
     const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [hasPurchased, setHasPurchased] = useState(false);
     const [isInitialFetching, setIsInitialFetching] = useState(userId ? true : false); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false);
     useEffect(() => {
         let active = true;
-        const getUserCurrency = (): string => { try { const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US'; return new Intl.NumberFormat(userLocale, { style: 'currency', currency: 'USD' }).resolvedOptions().currency || 'INR'; } catch { return 'INR'; } };
+        const getUserCurrency = (): string => 'INR';
         async function setupLocalCurrency(passedCurrency?: string) { try { const detectedCurrency = passedCurrency ?? getUserCurrency(); if (active) setIsInitialFetching(true); const rates = await getExchangeRatesOnce(); if (!active) return; if (rates[detectedCurrency]) { setLocalCurrency(detectedCurrency); setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates)); } else { setLocalCurrency('INR'); setLocalAmount(amount); } setIsInitialFetching(false); } catch (error) { if (!active) return; console.error('Error setting up local currency:', error); setLocalCurrency('INR'); setLocalAmount(amount); setIsInitialFetching(false); } }
-        const country = user?.publicMetadata?.country;
         setupLocalCurrency(typeof country === 'string' ? getCurrencyCode(country) : undefined);
         return () => { active = false; };
     }, [amount, userId, user]);
