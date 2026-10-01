@@ -54,6 +54,55 @@ function mapPaymentStatus(status: string) {
   }
 }
 
+function statusRank(status: string) {
+  switch (status) {
+    case "refunded": return 4;
+    case "completed": return 3;
+    case "authorized": return 2;
+    case "pending": return 1;
+    case "failed": return 0;
+    default: return 0;
+  }
+}
+
+function preservePaymentState(existingStatus: string | null | undefined, latestStatus: string) {
+  if (!existingStatus) return latestStatus;
+  return statusRank(existingStatus) > statusRank(latestStatus) ? existingStatus : latestStatus;
+}
+
+async function getEffectivePaymentStatus(
+  paymentId: string,
+  payment: Record<string, any>,
+  keyId: string,
+  keySecret: string
+) {
+  const paymentStatus = mapPaymentStatus(String(payment.status || ""));
+
+  // Razorpay exposes refunds separately from the payment status. Treat the
+  // payment as refunded only when processed refunds cover the full payment.
+  if (paymentStatus === "completed" || paymentStatus === "refunded") {
+    const refundsResponse = await fetch(
+      `https://api.razorpay.com/v1/payments/${encodeURIComponent(paymentId)}/refunds`,
+      { headers: { Authorization: basicAuth(keyId, keySecret) } }
+    );
+
+    if (refundsResponse.ok) {
+      const refundsData = await refundsResponse.json();
+      const processedRefundAmount = Array.isArray(refundsData?.items)
+        ? refundsData.items.reduce(
+            (total: number, refund: any) =>
+              total + (String(refund?.status || "").toLowerCase() === "processed" ? Number(refund?.amount || 0) : 0),
+            0
+          )
+        : 0;
+
+      if (processedRefundAmount >= Number(payment.amount || 0)) return "refunded";
+    }
+  }
+
+  return paymentStatus;
+}
+
 export async function POST(req: Request) {
   try {
     const identity = await requireUser();
@@ -152,7 +201,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Razorpay payment does not match the order" }, { status: 400 });
     }
 
-    const paymentStatus = mapPaymentStatus(String(payment.status || ""));
+    const paymentStatus = await getEffectivePaymentStatus(razorpayPaymentId, payment, keyId, keySecret);
 
     const book = await db
       .prepare("SELECT id, title FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1")
@@ -239,16 +288,17 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Payment order ownership mismatch" }, { status: 409 });
       }
 
-      // A repeated verification is allowed to move the record to the latest
-      // Razorpay state (e.g. pending/authorized -> completed, completed -> refunded).
+      // Repeated verification is monotonic: pending -> authorized -> completed
+      // -> refunded is allowed, but a stale callback cannot downgrade a purchase.
+      const effectiveStatus = preservePaymentState(String(existing.status || ""), paymentStatus);
       await db.prepare(
         "UPDATE orders SET status = ?, updated_at = ? WHERE id = ?"
-      ).bind(paymentStatus, now, existing.id).run();
+      ).bind(effectiveStatus, now, existing.id).run();
 
       await db.prepare(
         "UPDATE payments SET status = ?, payment_method = ?, bank = ?, card_network = ?, card_last4 = ?, error_code = ?, error_description = ?, updated_at = ? WHERE order_id = ?"
       ).bind(
-        paymentStatus,
+        effectiveStatus,
         payment.method || null,
         payment.bank || null,
         payment.card?.network || null,
