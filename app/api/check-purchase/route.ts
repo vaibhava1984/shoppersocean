@@ -46,7 +46,7 @@ export async function POST(req: Request) {
             if (error) throw error;
             return NextResponse.json({
                 hasPurchased: Boolean(orders?.length),
-                orderDetails: orders?.map(order => ({ order_id: order.id, purchase_date: order.order_date, status: order.status }))
+                orderDetails: orders?.map(order => ({ order_id: order.id, purchase_date: order.create_at, status: order.status }))
             }, { headers: { 'Cache-Control': 'no-store' } });
         }
 
