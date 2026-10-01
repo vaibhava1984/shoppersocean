@@ -327,7 +327,7 @@ export async function POST(req: Request) {
     // Email is non-critical to payment completion; a mail outage must not turn
     // a captured Razorpay payment into a failed purchase.
     const resendApiKey = process.env.RESEND_API_KEY;
-    if (resendApiKey && paymentStatus === "completed" && !existing) {
+    if (resendApiKey && finalOrder.status === "completed" && !existing) {
       try {
         const resend = new Resend(resendApiKey);
         await resend.emails.send({
@@ -344,13 +344,13 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       message: existing ? "Payment verification is idempotent; existing payment record updated" : "Order created and payment verified successfully",
-      status: paymentStatus,
+      status: finalOrder.status,
       orderDetails: finalOrder,
       paymentDetails: {
         amount: Number(payment.amount) / 100,
         currency: payment.currency,
         method: payment.method,
-        status: paymentStatus,
+        status: finalPayment.status,
         created_at: payment.created_at,
       },
     }, {
