@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
-import { getBooksBucket } from "@/utils/cloudflare/r2";
 
 export async function GET() {
   if (!(await requireAdmin())) return NextResponse.json({error:"Not allowed"},{status:403});
