@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireUser } from "@/utils/auth/requireUser";
 
 function getCredentials() {
   const keyId = process.env.RAZORPAY_KEY_ID;
@@ -13,13 +14,15 @@ function basicAuth(keyId: string, keySecret: string) {
 
 export async function POST(req: Request) {
   try {
+    const identity = await requireUser();
+    if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
     const { keyId, keySecret } = getCredentials();
     const body = await req.json();
 
     const amount = Number(body?.amount);
     const currency = String(body?.currency || "INR").toUpperCase();
     const notesInput = body?.notes && typeof body.notes === "object" ? body.notes : {};
-    const userId = typeof body?.user_id === "string" ? body.user_id : "";
+    const userId = identity.profile.id;
     const productId = typeof body?.product_id === "string" ? body.product_id : "";
 
     if (!Number.isFinite(amount) || amount <= 0) {

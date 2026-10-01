@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireUser } from "@/utils/auth/requireUser";
 import { Resend } from "resend";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
@@ -55,6 +56,9 @@ function mapPaymentStatus(status: string) {
 
 export async function POST(req: Request) {
   try {
+    const identity = await requireUser();
+    if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
 
@@ -66,7 +70,7 @@ export async function POST(req: Request) {
     const razorpaySignature = String(body?.razorpay_signature || "");
     const originalCurrency = String(body?.original_currency || "").toUpperCase();
     const originalAmount = Number(body?.original_amount);
-    const userId = String(body?.user_id || "");
+    const userId = identity.profile.id;
     const productId = String(body?.product_id || "");
     const quantity = Math.max(1, Number(body?.quantity || 1));
 
@@ -74,7 +78,6 @@ export async function POST(req: Request) {
       !razorpayOrderId ||
       !razorpayPaymentId ||
       !razorpaySignature ||
-      !userId ||
       !productId ||
       !/^[A-Z]{3}$/.test(originalCurrency) ||
       !Number.isFinite(originalAmount) ||
