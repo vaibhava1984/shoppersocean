@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
 import { Resend } from "resend";
 import { getD1 } from "@/utils/cloudflare/d1";
-import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -78,8 +77,6 @@ async function getEffectivePaymentStatus(
 ) {
   const paymentStatus = mapPaymentStatus(String(payment.status || ""));
 
-  // Razorpay exposes refunds separately from the payment status. Treat the
-  // payment as refunded only when processed refunds cover the full payment.
   if (paymentStatus === "completed" || paymentStatus === "refunded") {
     const refundsResponse = await fetch(
       `https://api.razorpay.com/v1/payments/${encodeURIComponent(paymentId)}/refunds`,
@@ -118,7 +115,7 @@ export async function POST(req: Request) {
     const razorpayPaymentId = String(body?.razorpay_payment_id || "");
     const razorpaySignature = String(body?.razorpay_signature || "");
     const originalCurrency = String(body?.original_currency || "").toUpperCase();
-    const originalAmount = Number(body?.original_amount);
+    const clientOriginalAmount = Number(body?.original_amount);
     const userId = identity.profile.id;
     const productId = String(body?.product_id || "");
     const quantity = Math.max(1, Number(body?.quantity || 1));
@@ -129,14 +126,11 @@ export async function POST(req: Request) {
       !razorpaySignature ||
       !productId ||
       !/^[A-Z]{3}$/.test(originalCurrency) ||
-      !Number.isFinite(originalAmount) ||
-      originalAmount <= 0
+      (body?.original_amount !== undefined && (!Number.isFinite(clientOriginalAmount) || clientOriginalAmount <= 0))
     ) {
       return NextResponse.json({ error: "Required payment information is missing or invalid" }, { status: 400 });
     }
 
-    // The payment route no longer depends on Clerk/Supabase. The authenticated
-    // application identity is represented by the stable D1 profile id.
     const profile = await db
       .prepare("SELECT id, email, mobile, address FROM profiles WHERE id = ? LIMIT 1")
       .bind(userId)
@@ -157,8 +151,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
     }
 
-    // Fetch the Razorpay order and payment directly. This prevents the client
-    // from changing amount/currency/product/user after checkout was created.
     const orderResponse = await fetch(
       `https://api.razorpay.com/v1/orders/${encodeURIComponent(razorpayOrderId)}`,
       { headers: { Authorization: basicAuth(keyId, keySecret) } }
@@ -169,8 +161,40 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unable to verify Razorpay order" }, { status: 502 });
     }
 
+    // The canonical price is read again from D1. The browser-supplied amount is
+    // never used to establish the amount that belongs to the book.
+    const book = await db
+      .prepare("SELECT id, title, price FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1")
+      .bind(productId)
+      .first<Record<string, any>>();
+
+    if (!book) {
+      return NextResponse.json({ error: "Book not found" }, { status: 404 });
+    }
+
+    const baseAmountInINR = Number(book.price);
+    if (!Number.isFinite(baseAmountInINR) || baseAmountInINR <= 0) {
+      return NextResponse.json({ error: "Book price is unavailable" }, { status: 400 });
+    }
+
+    // create-order writes these values into the Razorpay order notes. They are
+    // compared with the current D1 price and the actual Razorpay order amount,
+    // rather than trusting the browser's original_amount.
+    const orderNotesBaseAmount = Number(razorpayOrder.notes?.base_amount_in_inr);
+    const orderNotesAmount = Number(razorpayOrder.notes?.original_amount);
+
     if (
-      Number(razorpayOrder.amount) !== Math.round(originalAmount * 100) ||
+      !Number.isFinite(orderNotesBaseAmount) ||
+      orderNotesBaseAmount <= 0 ||
+      Math.abs(orderNotesBaseAmount - baseAmountInINR) > 0.000001
+    ) {
+      return NextResponse.json({ error: "Razorpay order price does not match the current book price" }, { status: 409 });
+    }
+
+    if (
+      !Number.isFinite(orderNotesAmount) ||
+      orderNotesAmount <= 0 ||
+      Number(razorpayOrder.amount) !== Math.round(orderNotesAmount * 100) ||
       String(razorpayOrder.currency).toUpperCase() !== originalCurrency
     ) {
       return NextResponse.json({ error: "Payment amount or currency does not match the Razorpay order" }, { status: 400 });
@@ -203,15 +227,6 @@ export async function POST(req: Request) {
 
     const paymentStatus = await getEffectivePaymentStatus(razorpayPaymentId, payment, keyId, keySecret);
 
-    const book = await db
-      .prepare("SELECT id, title FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1")
-      .bind(productId)
-      .first<Record<string, any>>();
-
-    if (!book) {
-      return NextResponse.json({ error: "Book not found" }, { status: 404 });
-    }
-
     const existing = await db.prepare(
       "SELECT o.id, o.user_id, o.product_id, o.quantity, o.total_amount, o.currency, o.status, o.order_date, " +
       "p.payment_id, p.original_amount, p.original_currency, p.amount_in_inr, p.payment_method, p.created_at " +
@@ -219,16 +234,13 @@ export async function POST(req: Request) {
       "WHERE o.razorpay_order_id = ? OR p.payment_id = ? LIMIT 1"
     ).bind(razorpayOrderId, razorpayPaymentId).first<Record<string, any>>();
 
-    const rates = await fetchExchangeRates();
-    const amountInINR = convertCurrency(originalAmount, originalCurrency, "INR", rates);
+    const amountInINR = baseAmountInINR;
     const now = new Date().toISOString();
 
     if (!existing) {
       const orderId = crypto.randomUUID();
       const paymentRowId = crypto.randomUUID();
 
-      // INSERT OR IGNORE makes the verification idempotent under concurrent
-      // Razorpay callbacks/retries because the schema has unique payment/order ids.
       await db.prepare(
         "INSERT OR IGNORE INTO orders " +
         "(id, user_id, product_id, quantity, total_amount, currency, status, contact_number, email, razorpay_order_id, order_date, created_at, updated_at, shipping_address, display_amount, display_currency) " +
@@ -248,7 +260,7 @@ export async function POST(req: Request) {
         now,
         now,
         profile.address || null,
-        originalAmount,
+        orderNotesAmount,
         originalCurrency
       ).run();
 
@@ -272,7 +284,7 @@ export async function POST(req: Request) {
         razorpaySignature,
         paymentStatus,
         originalCurrency,
-        originalAmount,
+        orderNotesAmount,
         Number(amountInINR),
         payment.method || null,
         payment.bank || null,
@@ -288,8 +300,6 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Payment order ownership mismatch" }, { status: 409 });
       }
 
-      // Repeated verification is monotonic: pending -> authorized -> completed
-      // -> refunded is allowed, but a stale callback cannot downgrade a purchase.
       const effectiveStatus = preservePaymentState(String(existing.status || ""), paymentStatus);
       await db.prepare(
         "UPDATE orders SET status = ?, updated_at = ? WHERE id = ?"
@@ -324,8 +334,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Payment record could not be finalized" }, { status: 500 });
     }
 
-    // Email is non-critical to payment completion; a mail outage must not turn
-    // a captured Razorpay payment into a failed purchase.
     const resendApiKey = process.env.RESEND_API_KEY;
     if (resendApiKey && finalOrder.status === "completed" && !existing) {
       try {
