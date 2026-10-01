@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
+import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
 function getCredentials() {
   const keyId = process.env.RAZORPAY_KEY_ID;
@@ -17,24 +18,41 @@ export async function POST(req: Request) {
     const identity = await requireUser();
     if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
     const { keyId, keySecret } = getCredentials();
+    const db = (await import("@/utils/cloudflare/d1")).getD1();
+    if (!db) throw new Error("Cloudflare D1 is not available");
     const body = await req.json();
 
-    const amount = Number(body?.amount);
-    const currency = String(body?.currency || "INR").toUpperCase();
+    const requestedCurrency = String(body?.currency || "INR").toUpperCase();
     const notesInput = body?.notes && typeof body.notes === "object" ? body.notes : {};
     const userId = identity.profile.id;
     const productId = typeof body?.product_id === "string" ? body.product_id : "";
 
-    if (!Number.isFinite(amount) || amount <= 0) {
-      return NextResponse.json({ error: "Invalid payment amount" }, { status: 400 });
-    }
-    if (!/^[A-Z]{3}$/.test(currency)) {
+    if (!/^[A-Z]{3}$/.test(requestedCurrency)) {
       return NextResponse.json({ error: "Invalid payment currency" }, { status: 400 });
     }
     if (!userId || !productId) {
       return NextResponse.json({ error: "Authenticated user and product are required" }, { status: 400 });
     }
 
+    const book = await db.prepare(
+      "SELECT id, price FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1"
+    ).bind(productId).first<Record<string, any>>();
+
+    const baseAmount = Number(book?.price);
+    if (!book || !Number.isFinite(baseAmount) || baseAmount <= 0) {
+      return NextResponse.json({ error: "Book price is unavailable" }, { status: 404 });
+    }
+
+    const rates = requestedCurrency === "INR" ? { INR: 1 } : await fetchExchangeRates();
+    if (requestedCurrency !== "INR" && !rates[requestedCurrency]) {
+      return NextResponse.json({ error: "The selected currency is currently unavailable" }, { status: 400 });
+    }
+
+    const amount = Number(convertCurrency(baseAmount, "INR", requestedCurrency, rates));
+    if (!Number.isFinite(amount) || amount <= 0) {
+      return NextResponse.json({ error: "Unable to calculate the payment amount" }, { status: 400 });
+    }
+    const currency = requestedCurrency;
     const amountInSubunits = Math.round(amount * 100);
     if (amountInSubunits < 100) {
       return NextResponse.json(
@@ -58,6 +76,7 @@ export async function POST(req: Request) {
           product_id: productId,
           original_currency: currency,
           original_amount: amount,
+          base_amount_in_inr: baseAmount,
           base_currency: "INR",
         },
       }),
