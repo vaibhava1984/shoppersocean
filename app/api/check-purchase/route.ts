@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
+import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 
 export const dynamic = "force-dynamic";
@@ -7,7 +7,7 @@ export const revalidate = 0;
 
 export async function POST(req: Request) {
   try {
-    const identity = await getLegacyProfileForClerkUser();
+    const identity = await requireUser();
     if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401, headers: { "Cache-Control": "no-store" } });
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
@@ -18,23 +18,23 @@ export async function POST(req: Request) {
 
     const placeholders = ids.map(() => "?").join(",");
     const rows = await db.prepare(
-      `SELECT id, book_id, created_at, status FROM orders WHERE user_id = ? AND status = 'completed' AND book_id IN (${placeholders}) ORDER BY created_at DESC`
+      `SELECT id, product_id, order_date, status FROM orders WHERE user_id = ? AND status = 'completed' AND product_id IN (${placeholders}) ORDER BY order_date DESC`
     ).bind(identity.profile.id, ...ids).all<Record<string, any>>();
 
     if (productId) {
-      const orders = rows.results.filter((o) => o.book_id === productId);
+      const orders = rows.results.filter((o) => o.product_id === productId);
       return NextResponse.json({
         hasPurchased: orders.length > 0,
-        orderDetails: orders.map((o) => ({ order_id: o.id, purchase_date: o.created_at, status: o.status }))
+        orderDetails: orders.map((o) => ({ order_id: o.id, purchase_date: o.order_date, status: o.status }))
       }, { headers: { "Cache-Control": "no-store" } });
     }
 
     const result: Record<string, any> = {};
     ids.forEach((id) => { result[id] = { hasPurchased: false, orderDetails: [] }; });
     rows.results.forEach((order) => {
-      if (result[order.book_id]) {
-        result[order.book_id].hasPurchased = true;
-        result[order.book_id].orderDetails.push({ order_id: order.id, purchase_date: order.created_at, status: order.status });
+      if (result[order.product_id]) {
+        result[order.product_id].hasPurchased = true;
+        result[order.product_id].orderDetails.push({ order_id: order.id, purchase_date: order.order_date, status: order.status });
       }
     });
     return NextResponse.json(result, { headers: { "Cache-Control": "no-store" } });

@@ -1,17 +1,1 @@
-"use client";
-
-import { useClerk } from "@clerk/nextjs";
-
-export default function HeaderLogoutBtn() {
-  const { signOut } = useClerk();
-
-  return (
-    <button
-      type="button"
-      onClick={() => signOut({ redirectUrl: "/" })}
-      className="w-full text-left"
-    >
-      Logout
-    </button>
-  );
-}
+"use client"; export default function HeaderLogoutBtn(){return <button type="button" onClick={async()=>{await fetch("/api/auth/logout",{method:"POST"});window.location.href="/";}} className="w-full text-left">Logout</button>}

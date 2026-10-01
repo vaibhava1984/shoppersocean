@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
-import { requireClerkUser } from "@/utils/auth/requireUser";
+import { requireUser } from "@/utils/auth/requireUser";
 
 export async function GET(request:Request){
  try{const bookId=new URL(request.url).searchParams.get("bookId");if(!bookId)return NextResponse.json({error:"Book ID is required."},{status:400});const db=getD1();if(!db)return NextResponse.json({error:"Cloudflare database is unavailable"},{status:503});const {results=[]}=await db.prepare("SELECT id,description,rating,users,user_id,book_id,created_at FROM testimonials WHERE book_id=? ORDER BY created_at DESC").bind(bookId).all<any>();return NextResponse.json({reviews:results},{headers:{"Cache-Control":"no-store"}});}
@@ -8,7 +8,7 @@ export async function GET(request:Request){
 }
 export async function POST(request:Request){
  try{
-  const identity=await requireClerkUser();if(!identity)return NextResponse.json({error:"Please sign in to write a review."},{status:401});
+  const identity=await requireUser();if(!identity)return NextResponse.json({error:"Please sign in to write a review."},{status:401});
   const db=getD1();if(!db)return NextResponse.json({error:"Cloudflare database is unavailable"},{status:503});
   const {bookId,description,rating}=await request.json();const text=String(description??"").trim();const stars=Number(rating);
   if(!bookId||!text||!Number.isInteger(stars)||stars<1||stars>5)return NextResponse.json({error:"Please provide a review and a rating from 1 to 5."},{status:400});

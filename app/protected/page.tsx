@@ -1,10 +1,10 @@
 import AuthButton from "@/components/AuthButton";
 import Header from "@/components/Header";
-import { currentUser } from "@clerk/nextjs/server";
+import { getCurrentUser } from "@/utils/auth/session";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedPage() {
-  const user = await currentUser();
+  const user = await getCurrentUser();
   if (!user) redirect("/sign-in");
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">

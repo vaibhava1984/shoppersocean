@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { getCurrentUser } from "@/utils/auth/session";
 import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn";
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton";
@@ -24,7 +24,7 @@ type HeaderProps = {
 };
 
 export default async function Header({ categoryNavigation }: HeaderProps) {
-  const user = await currentUser();
+  const user = await getCurrentUser();
   const displayName = user?.firstName || user?.username || user?.emailAddresses?.[0]?.emailAddress || "User";
   const userRole = user?.publicMetadata?.userrole;
   const isAuthor = user?.publicMetadata?.isAuthor === true;

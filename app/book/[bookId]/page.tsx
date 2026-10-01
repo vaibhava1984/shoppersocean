@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { getCurrentUser } from "@/utils/auth/session";
 
 export const dynamic = "force-dynamic";
 import { getD1 } from "@/utils/cloudflare/d1";
@@ -29,7 +29,7 @@ function parseImages(value: unknown): string[] {
 export default async function BookDetailPage({ params }: { params: any }) {
     const { bookId } = await params;
     const db = getD1();
-    const user = await currentUser();
+    const user = await getCurrentUser();
     if (!db) throw new Error("Cloudflare D1 is not available");
 
     const currentBookDetails = await db.prepare(
@@ -60,7 +60,7 @@ export default async function BookDetailPage({ params }: { params: any }) {
                         <p className="text-xl text-slate-600 mb-4">by {authorRows.results.map((a, i) => <span key={`${i}_author_name`}>{a.name}</span>)}</p>
                         <div className="mb-6"><span className="text-3xl font-bold text-blue-600">₹{currentBookDetails.price}</span></div>
                         <div className="flex items-center space-x-4 mb-6">
-                            {user?.id && currentBookDetails.id && <DynamicPaymentButton amount={Number(currentBookDetails.price || 0)} notes={{ product_name: currentBookDetails.title }} userId={user.id} productId={String(currentBookDetails.id)} productTitle={currentBookDetails.title} country={typeof user?.publicMetadata?.country === "string" ? user.publicMetadata.country : undefined} />}
+                            {user?.id && currentBookDetails.id && <DynamicPaymentButton amount={Number(currentBookDetails.price || 0)} notes={{ product_name: currentBookDetails.title }} userId={user.id} productId={String(currentBookDetails.id)} productTitle={currentBookDetails.title} />}
                         </div>
                         <Card className="mb-6"><CardContent className="p-4"><h2 className="text-lg font-semibold mb-2">Book Details</h2><ul className="space-y-1 text-sm">
                             <li><span className="font-medium">Language:</span> {currentBookDetails.language}</li>
