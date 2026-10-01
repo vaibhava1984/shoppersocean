@@ -167,14 +167,8 @@ export default function PaymentButton({
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    amount: localAmount,
                     currency: localCurrency,
-                    user_id: userId,
-                    product_id: productId,
-                    notes: {
-                        ...notes,
-                        original_currency: localCurrency
-                    }
+                    product_id: productId
                 })
             });
 
@@ -185,13 +179,19 @@ export default function PaymentButton({
             }
 
             const orderId = orderData.orderId;
+            const orderAmount = Number(orderData.amount);
+            const orderCurrency = String(orderData.currency || '').toUpperCase();
+
+            if (!Number.isFinite(orderAmount) || orderAmount <= 0 || !/^[A-Z]{3}$/.test(orderCurrency)) {
+                throw new Error('Razorpay returned an invalid order amount or currency.');
+            }
 
             const options = {
                 key: keyData.keyId,
-                amount: Math.round(localAmount * 100),
-                currency: localCurrency,
+                amount: Math.round(orderAmount * 100),
+                currency: orderCurrency,
                 name: 'Shoppers Ocean',
-                description: `Payment of ${localAmount} ${localCurrency}`,
+                description: `Payment of ${orderAmount} ${orderCurrency}`,
                 order_id: orderId,
                 handler: async (paymentResponse: any) => {
                     try {
@@ -202,8 +202,8 @@ export default function PaymentButton({
                                 razorpay_order_id: paymentResponse.razorpay_order_id,
                                 razorpay_payment_id: paymentResponse.razorpay_payment_id,
                                 razorpay_signature: paymentResponse.razorpay_signature,
-                                original_currency: localCurrency,
-                                original_amount: localAmount,
+                                original_currency: orderCurrency,
+                                original_amount: orderAmount,
                                 user_id: userId,
                                 product_id: productId,
                                 quantity: 1
