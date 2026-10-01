@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { getLegacyProfileForClerkUser } from "@/utils/auth/clerkProfile";
+import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const identity = await getLegacyProfileForClerkUser();
+    const identity = await requireUser();
     if (!identity) return NextResponse.json({ error: "User not authenticated" }, { status: 401 });
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
