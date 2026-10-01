@@ -8,7 +8,7 @@ declare global {
   interface Window {
     pdfjsLib?: {
       GlobalWorkerOptions: { workerSrc: string };
-      getDocument: (source: { url: string; disableAutoFetch?: boolean; disableStream?: boolean }) => { promise: any };
+      getDocument: (source: { url: string; disableAutoFetch?: boolean; disableStream?: boolean; rangeChunkSize?: number }) => { promise: any };
     };
   }
 }
@@ -98,7 +98,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
         const pdfjs = await loadPdfJs();
         if (cancelled) return;
         pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
-        const pdf = await pdfjs.getDocument({ url: readerUrl }).promise;
+        const pdf = await pdfjs.getDocument({ url: readerUrl, disableAutoFetch: true, disableStream: true, rangeChunkSize: 65536 }).promise;
         if (cancelled) return;
         pdfRef.current = pdf;
         setPageCount(pdf.numPages);
