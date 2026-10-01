@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
+import { getD1 } from "@/utils/cloudflare/d1";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
 function getCredentials() {
@@ -18,7 +19,7 @@ export async function POST(req: Request) {
     const identity = await requireUser();
     if (!identity) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
     const { keyId, keySecret } = getCredentials();
-    const db = (await import("@/utils/cloudflare/d1")).getD1();
+    const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
     const body = await req.json();
 
