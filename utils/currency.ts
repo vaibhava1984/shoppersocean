@@ -27,10 +27,16 @@ export function convertCurrency(
 ): number {
     if (fromCurrency === toCurrency) return amount;
 
-    // If rates are empty or missing required currencies, return original amount
-    if (!rates[fromCurrency] || !rates[toCurrency]) {
-        console.warn('Missing exchange rates, using original amount');
-        return amount;
+    // Never silently fall back to the source amount: that could charge the wrong currency value.
+    if (
+        !Number.isFinite(amount) ||
+        amount <= 0 ||
+        !Number.isFinite(rates[fromCurrency]) ||
+        rates[fromCurrency] <= 0 ||
+        !Number.isFinite(rates[toCurrency]) ||
+        rates[toCurrency] <= 0
+    ) {
+        return Number.NaN;
     }
 
     // Convert to INR first if not already in INR
