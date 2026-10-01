@@ -28,7 +28,7 @@ export async function GET(req: Request) {
     const limit = Math.min(100, Math.max(1, Number(url.searchParams.get("limit") || 100)));
     const since = sinceFor(dateFilter);
 
-    const conditions = ["COALESCE(o.is_deleted, 0) = 0"];
+    const conditions: string[] = [];
     const binds: unknown[] = [];
     if (statusFilter !== "all") { conditions.push("o.status = ?"); binds.push(statusFilter); }
     if (since) { conditions.push("o.order_date >= ?"); binds.push(since); }
