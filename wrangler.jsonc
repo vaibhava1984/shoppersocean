@@ -1,0 +1,16 @@
+{
+  "name": "shoppersocean",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-09-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "NEXT_INC_CACHE",
+      "id": "20040b45c5084948bcca8961925cf5af"
+    }
+  ]
+}
