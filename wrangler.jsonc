@@ -7,10 +7,14 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
-  "kv_namespaces": [
+  "d1_databases": [
     {
-      "binding": "NEXT_INC_CACHE",
-      "id": "20040b45c5084948bcca8961925cf5af"
+      "binding": "DB",
+      "database_name": "shoppers-ocean-db",
+      "database_id": "735056e1-63e7-410b-94bb-853221ab50fc"
     }
-  ]
+  ],
+  "observability": {
+    "enabled": true
+  }
 }
