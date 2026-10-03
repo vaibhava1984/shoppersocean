@@ -43,7 +43,7 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
   return (
     <div className="mx-auto mt-3 w-full max-w-3xl px-1">
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
-        <button type="button" onClick={() => toggle("genre")} aria-expanded={open === "genre"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center text-[11px] font-bold italic text-black shadow-md ring-1 ring-black/10 transition-all active:scale-95 sm:text-sm">
+        <button type="button" onClick={() => toggle("genre")} aria-expanded={open === "genre"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center text-[11px] font-bold italic text-black shadow-md ring-1 ring-black/10 transition-all hover:-translate-y-0.5 hover:shadow-lg active:scale-95 sm:text-sm">
           Books by Genre
         </button>
         <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center text-[11px] font-bold italic text-black shadow-md ring-1 ring-black/10 transition-all active:scale-95 sm:text-sm">
@@ -57,7 +57,7 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
       {open && (
         <div className="mt-2 rounded-xl border border-blue-100 bg-white p-2 shadow-md">
           {open === "genre" && genres.map((genre) => (
-            <Link key={genre} href={makeHref("genre", genre)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black hover:bg-blue-50">
+            <Link key={genre} href={makeHref("genre", genre)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black transition-all hover:-translate-y-0.5 hover:bg-blue-50 hover:shadow-sm">
               {genre}
             </Link>
           ))}
