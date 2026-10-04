@@ -167,14 +167,9 @@ export default function PaymentButton({
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    amount: localAmount,
                     currency: localCurrency,
-                    user_id: userId,
                     product_id: productId,
-                    notes: {
-                        ...notes,
-                        original_currency: localCurrency
-                    }
+                    notes
                 })
             });
 
@@ -185,13 +180,19 @@ export default function PaymentButton({
             }
 
             const orderId = orderData.orderId;
+            const checkoutAmount = Number(orderData.amount);
+            const checkoutCurrency = String(orderData.currency || localCurrency).toUpperCase();
+
+            if (!Number.isFinite(checkoutAmount) || checkoutAmount <= 0 || !/^[A-Z]{3}$/.test(checkoutCurrency)) {
+                throw new Error('The payment amount returned by the server is invalid.');
+            }
 
             const options = {
                 key: keyData.keyId,
-                amount: Math.round(localAmount * 100),
-                currency: localCurrency,
+                amount: Math.round(checkoutAmount * 100),
+                currency: checkoutCurrency,
                 name: 'Shoppers Ocean',
-                description: `Payment of ${localAmount} ${localCurrency}`,
+                description: `Payment of ${checkoutAmount} ${checkoutCurrency}`,
                 order_id: orderId,
                 handler: async (paymentResponse: any) => {
                     try {
@@ -202,8 +203,8 @@ export default function PaymentButton({
                                 razorpay_order_id: paymentResponse.razorpay_order_id,
                                 razorpay_payment_id: paymentResponse.razorpay_payment_id,
                                 razorpay_signature: paymentResponse.razorpay_signature,
-                                original_currency: localCurrency,
-                                original_amount: localAmount,
+                                original_currency: checkoutCurrency,
+                                original_amount: checkoutAmount,
                                 user_id: userId,
                                 product_id: productId,
                                 quantity: 1
