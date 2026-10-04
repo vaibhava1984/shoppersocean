@@ -72,6 +72,10 @@ export function createClient() {
         return { data: { user: data.user } };
       },
 
+      async verifyOtp({ phone, token, type }: { phone: string; token: string; type: string }) {
+        return { error: new Error("Mobile verification is managed from Settings.") };
+      },
+
       async signOut() {
         await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
         cachedUser = undefined;
