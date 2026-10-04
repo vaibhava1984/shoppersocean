@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Password reset email service is temporarily unavailable." }, { status: 503 });
     }
 
-    const user = await db.prepare("SELECT id,full_name,email FROM profiles WHERE lower(email)=? LIMIT 1").bind(normalized).first<any>();
+    const user = await db.prepare("SELECT id,full_name,email FROM profiles WHERE lower(trim(email))=? LIMIT 1").bind(normalized).first<any>();
 
     if (user) {
       const token = crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
@@ -44,11 +44,19 @@ export async function POST(req: Request) {
         }),
       });
 
+      const responseBody = await response.text();
       if (!response.ok) {
-        const details = await response.text();
-        console.error("Resend password reset error:", response.status, details);
+        console.error("Resend password reset error:", response.status, responseBody);
         return NextResponse.json({ error: "Unable to send the password reset email right now." }, { status: 502 });
       }
+
+      let resendId = "unknown";
+      try {
+        const parsed = JSON.parse(responseBody);
+        resendId = String(parsed?.id || "unknown");
+      } catch {}
+
+      console.log("Password reset email accepted by Resend:", response.status, resendId);
     }
 
     return NextResponse.json({ success: true, message: "If an account exists for that email, a password reset link has been sent." });
