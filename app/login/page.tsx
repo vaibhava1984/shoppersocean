@@ -6,11 +6,12 @@ import Link from "next/link";
 import { SubmitButton } from "./submit-button";
 import { COUNTRIES } from "@/utils/countries";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Login({ searchParams }: { searchParams?: { type?: string } }) {
   const router = useRouter();
-  const [isSignIn, setIsSignIn] = useState(searchParams?.type === "signup" ? false : true);
+  const search = useSearchParams();
+  const [isSignIn, setIsSignIn] = useState(search.get("type") !== "signup");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
