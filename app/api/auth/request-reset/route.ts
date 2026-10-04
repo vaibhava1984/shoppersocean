@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database is unavailable" }, { status: 503 });
 
-    const { env } = getCloudflareContext();
+    const { env } = await getCloudflareContext();
     const resendApiKey = String((env as any).RESEND_API_KEY ?? "").trim();
     if (!resendApiKey) {
       console.error("RESEND_API_KEY is not configured in the Cloudflare Worker environment.");
