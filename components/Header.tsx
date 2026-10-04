@@ -1,4 +1,4 @@
-import { getUser } from "@/utils/supabase/server";
+import { getCurrentUser } from "@/utils/auth/session";
 import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn"
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
@@ -20,14 +20,19 @@ const navigationItems = [
 ] as const;
 
 type HeaderProps = {
-  user?: Awaited<ReturnType<typeof getUser>>
+  user?: Awaited<ReturnType<typeof getCurrentUser>>
   categoryNavigation?: { authors: { author_id: string; name: string }[]; languages: string[] }
 }
 
 export default async function Header({ user, categoryNavigation }: HeaderProps) {
   // Some pages render Header without passing the user. Resolve the current
   // server session here so a signed-in user never sees the anonymous menu.
-  const currentUser = user ?? await getUser()
+  const sessionUser = user ?? await getCurrentUser()
+  const currentUser = sessionUser ? {
+    email: sessionUser.emailAddresses?.[0]?.emailAddress,
+    user_metadata: { full_name: sessionUser.firstName || sessionUser.emailAddresses?.[0]?.emailAddress },
+    app_metadata: { userrole: sessionUser.publicMetadata?.userrole, isAuthor: sessionUser.publicMetadata?.isAuthor === true },
+  } : null
 
   return (
     <>
