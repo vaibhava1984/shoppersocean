@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
 import { Resend } from "resend";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
@@ -8,8 +9,9 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 function getCredentials() {
-  const keyId = process.env.RAZORPAY_KEY_ID;
-  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  const { env } = getCloudflareContext();
+  const keyId = String((env as any).RAZORPAY_KEY_ID ?? "").trim();
+  const keySecret = String((env as any).RAZORPAY_KEY_SECRET ?? "").trim();
   if (!keyId || !keySecret) throw new Error("Razorpay server credentials are not configured");
   return { keyId, keySecret };
 }
@@ -276,7 +278,8 @@ export async function POST(req: Request) {
 
     // Email is non-critical to payment completion; a mail outage must not turn
     // a captured Razorpay payment into a failed purchase.
-    const resendApiKey = process.env.RESEND_API_KEY;
+    const { env } = getCloudflareContext();
+    const resendApiKey = String((env as any).RESEND_API_KEY ?? "").trim();
     if (resendApiKey && paymentStatus === "completed" && !existing) {
       try {
         const resend = new Resend(resendApiKey);
