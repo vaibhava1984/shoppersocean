@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { requireUser } from "@/utils/auth/requireUser";
+import { getD1 } from "@/utils/cloudflare/d1";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 
 function basicAuth(keyId: string, keySecret: string) {
@@ -31,7 +32,7 @@ export async function POST(req: Request) {
     }
 
     // D1 is the authority for the book price. Never trust a browser-supplied amount.
-    const db = require("@/utils/cloudflare/d1").getD1();
+    const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
     const book = await db.prepare(
       "SELECT id, price FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1"
