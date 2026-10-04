@@ -1,13 +1,24 @@
 import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getD1 } from "@/utils/cloudflare/d1";
+import { ensureAuthSchema } from "@/utils/auth/session";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function POST(req: Request) {
   try {
     const { email } = await req.json();
     const normalized = String(email ?? "").trim().toLowerCase();
+    if (!normalized) {
+      return NextResponse.json({ error: "Email is required." }, { status: 400 });
+    }
+
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database is unavailable" }, { status: 503 });
+
+    // Ensure the reset-token table exists before trying to write a token.
+    await ensureAuthSchema(db);
 
     const { env } = getCloudflareContext();
     const resendApiKey = String((env as any).RESEND_API_KEY ?? "").trim();
@@ -16,7 +27,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Password reset email service is temporarily unavailable." }, { status: 503 });
     }
 
-    const user = await db.prepare("SELECT id,full_name,email FROM profiles WHERE lower(trim(email))=? LIMIT 1").bind(normalized).first<any>();
+    const user = await db.prepare(
+      "SELECT id,full_name,email FROM profiles WHERE lower(trim(email))=? LIMIT 1"
+    ).bind(normalized).first<any>();
 
     if (user) {
       const token = crypto.randomUUID().replace(/-/g, "") + crypto.randomUUID().replace(/-/g, "");
@@ -26,8 +39,9 @@ export async function POST(req: Request) {
       const expires = new Date(now.getTime() + 30 * 60 * 1000).toISOString();
 
       await db.prepare("DELETE FROM password_reset_tokens WHERE user_id=? AND used_at IS NULL").bind(user.id).run();
-      await db.prepare("INSERT INTO password_reset_tokens(id,user_id,token_hash,expires_at,created_at) VALUES(?,?,?,?,?)")
-        .bind(crypto.randomUUID(), user.id, tokenHash, expires, now.toISOString()).run();
+      await db.prepare(
+        "INSERT INTO password_reset_tokens(id,user_id,token_hash,expires_at,created_at) VALUES(?,?,?,?,?)"
+      ).bind(crypto.randomUUID(), user.id, tokenHash, expires, now.toISOString()).run();
 
       const url = `https://www.shoppersocean.com/reset-password?token=${encodeURIComponent(token)}`;
       const response = await fetch("https://api.resend.com/emails", {
@@ -59,9 +73,12 @@ export async function POST(req: Request) {
       console.log("Password reset email accepted by Resend:", response.status, resendId);
     }
 
-    return NextResponse.json({ success: true, message: "If an account exists for that email, a password reset link has been sent." });
-  } catch (e) {
-    console.error("Password reset request error:", e);
+    return NextResponse.json({
+      success: true,
+      message: "If an account exists for that email, a password reset link has been sent."
+    });
+  } catch (error) {
+    console.error("Password reset request error:", error);
     return NextResponse.json({ error: "Unable to process the password reset request." }, { status: 500 });
   }
 }
