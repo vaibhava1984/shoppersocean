@@ -34,7 +34,7 @@ export async function verifyPassword(password: string, salt: string, expected: s
   return (await derivePassword(password, salt)) === expected;
 }
 
-async function ensureAuthSchema(db: NonNullable<ReturnType<typeof getD1>>) {
+export async function ensureAuthSchema(db: NonNullable<ReturnType<typeof getD1>>) {
   const columns = await db.prepare("PRAGMA table_info(profiles)").all<any>();
   const names = new Set((columns.results ?? []).map((row: any) => String(row.name)));
 
