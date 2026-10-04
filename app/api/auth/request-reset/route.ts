@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getD1 } from "@/utils/cloudflare/d1";
-import { Resend } from "resend";
 
 export async function POST(req: Request) {
   try {
@@ -31,16 +30,23 @@ export async function POST(req: Request) {
         .bind(crypto.randomUUID(), user.id, tokenHash, expires, now.toISOString()).run();
 
       const url = `https://www.shoppersocean.com/reset-password?token=${encodeURIComponent(token)}`;
-      const resend = new Resend(resendApiKey);
-      const { error } = await resend.emails.send({
-        from: "no-reply@shoppersocean.com",
-        to: normalized,
-        subject: "Reset your Shoppers Ocean password",
-        html: `<p>Dear ${String(user.full_name || "Customer").replace(/[<>]/g, "")},</p><p>Use the link below to reset your Shoppers Ocean password. It expires in 30 minutes.</p><p><a href="${url}">Reset your password</a></p><p>If you did not request this, you can ignore this email.</p><p>Regards,<br/>Shoppers Ocean</p>`,
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${resendApiKey}`,
+        },
+        body: JSON.stringify({
+          from: "no-reply@shoppersocean.com",
+          to: [normalized],
+          subject: "Reset your Shoppers Ocean password",
+          html: `<p>Dear ${String(user.full_name || "Customer").replace(/[<>]/g, "")},</p><p>Use the link below to reset your Shoppers Ocean password. It expires in 30 minutes.</p><p><a href="${url}">Reset your password</a></p><p>If you did not request this, you can ignore this email.</p><p>Regards,<br/>Shoppers Ocean</p>`,
+        }),
       });
 
-      if (error) {
-        console.error("Resend password reset error:", error);
+      if (!response.ok) {
+        const details = await response.text();
+        console.error("Resend password reset error:", response.status, details);
         return NextResponse.json({ error: "Unable to send the password reset email right now." }, { status: 502 });
       }
     }
