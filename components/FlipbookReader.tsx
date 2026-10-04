@@ -23,7 +23,7 @@ type PdfDocument = {
 
 type PdfJs = {
   GlobalWorkerOptions: { workerSrc: string };
-  getDocument: (src: { url: string; disableAutoFetch?: boolean; disableStream?: boolean }) => { promise: Promise<PdfDocument> };
+  getDocument: (src: { url: string; disableAutoFetch?: boolean; disableStream?: boolean; rangeChunkSize?: number }) => { promise: Promise<PdfDocument> };
 };
 
 declare global {
@@ -137,8 +137,11 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
         const documentProxy = await pdfjs.getDocument({
           url: pdfUrl,
+          // Keep PDF.js on HTTP byte ranges and prevent background streaming/prefetching.
+          // This makes the reader fetch only the data needed for the current/adjacent page.
           disableAutoFetch: true,
-          disableStream: false,
+          disableStream: true,
+          rangeChunkSize: 65536,
         }).promise;
         if (cancelled) {
           await documentProxy.destroy?.();
