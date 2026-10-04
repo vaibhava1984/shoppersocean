@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
 import { useRouter } from "next/navigation"
-import { createClient } from "@/utils/supabase/client"
+import { createClient } from "@/lib/client-auth"
 
 export default function Login({ searchParams }: { searchParams: any }) {
   const supabase = createClient()
@@ -31,6 +31,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [phoneVerified, setPhoneVerified] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
+  const showDialog = (title: string, description: string) => setDialogState({ isOpen: true, title, description })
 
   const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
   const validatePassword = (value: string) => value.length >= 6
@@ -58,8 +59,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
       return
     }
     try {
-      // Authenticate directly in the browser so the Supabase session cookie is
-      // written immediately, without waiting for a server-action round trip.
+      // Authenticate through the Cloudflare D1 API; it writes the JWT session cookie.
       const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
