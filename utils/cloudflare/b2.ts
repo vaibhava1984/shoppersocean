@@ -112,7 +112,10 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
 }
 
 export async function getB2SignedRequest(method: "GET" | "HEAD", key: string) {
-  return signRequest(method, key, "UNSIGNED-PAYLOAD");
+  // B2 S3 GET/HEAD requests use the SHA-256 of the empty request body.
+  // This avoids rejected private-object reads caused by UNSIGNED-PAYLOAD.
+  const emptyPayloadHash = await sha256(new Uint8Array());
+  return signRequest(method, key, emptyPayloadHash);
 }
 
 export async function putB2Object(key: string, bytes: Uint8Array, contentType: string) {
