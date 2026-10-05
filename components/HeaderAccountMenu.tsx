@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link";
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn";
 import {
   DropdownMenu,
@@ -31,32 +30,44 @@ export default function HeaderAccountMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center" className="w-48">
         {isAdmin && (
-          <DropdownMenuItem onSelect={() => { window.location.href = "/admin_panel" }}>
-            <Link href="/admin_panel" className="flex w-full items-center gap-2">
-              <ShieldIcon width={18} />
-              Admin Panel
-            </Link>
+          <DropdownMenuItem
+            onSelect={(event) => {
+              event.preventDefault();
+              window.location.href = "/admin_panel";
+            }}
+          >
+            <ShieldIcon width={18} />
+            Admin Panel
           </DropdownMenuItem>
         )}
         {isAuthor && (
-          <DropdownMenuItem onSelect={() => { window.location.href = "/my-sales" }}>
-            <Link href="/my-sales" className="flex w-full items-center gap-2">
-              <ChartBarIcon width={18} />
-              My Sales
-            </Link>
+          <DropdownMenuItem
+            onSelect={(event) => {
+              event.preventDefault();
+              window.location.href = "/my-sales";
+            }}
+          >
+            <ChartBarIcon width={18} />
+            My Sales
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onSelect={() => { window.location.href = "/my-purchases" }}>
-          <Link href="/my-purchases" className="flex w-full items-center gap-2">
-            <HistoryIcon width={18} />
-            My Orders
-          </Link>
+        <DropdownMenuItem
+          onSelect={(event) => {
+            event.preventDefault();
+            window.location.href = "/my-purchases";
+          }}
+        >
+          <HistoryIcon width={18} />
+          My Orders
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => { window.location.href = "/settings" }}>
-          <Link href="/settings" className="flex w-full items-center gap-2">
-            <SettingsIcon width={18} />
-            Settings
-          </Link>
+        <DropdownMenuItem
+          onSelect={(event) => {
+            event.preventDefault();
+            window.location.href = "/settings";
+          }}
+        >
+          <SettingsIcon width={18} />
+          Settings
         </DropdownMenuItem>
         <DropdownMenuItem className="flex items-center gap-2">
           <LogOut />
