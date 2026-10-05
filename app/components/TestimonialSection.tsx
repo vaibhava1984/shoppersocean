@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from 'lucide-react'
 
-// TestimonialSection Component
 const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
     const [testimonials, setTestimonials] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -40,9 +39,7 @@ const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
         setIsDeleting(true);
 
         try {
-            const response = await fetch('/api/delete-account', {
-                method: 'POST',
-            });
+            const response = await fetch('/api/delete-account', { method: 'POST' });
             const result = await response.json().catch(() => ({}));
 
             if (!response.ok) {
@@ -59,31 +56,33 @@ const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
-
     return (
         <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {testimonials.map((testimonial, index) => (
-                    <Card key={index} className="bg-white border-blue-100">
-                        <CardContent className="p-6">
-                            <div className="flex items-center mb-4">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star
-                                        key={i}
-                                        className={`h-5 w-5 ${i < testimonial.rating ? "text-yellow-400" : "text-gray-400"}`}
-                                        fill="currentColor"
-                                    />
-                                ))}
-                            </div>
-
-                            <p className="italic mb-4 text-slate-600">"{testimonial.description}"</p>
-                            <p className="font-semibold text-slate-800">- {testimonial.users}</p>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+            {loading ? (
+                <div>Loading...</div>
+            ) : error ? (
+                <div>{error}</div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {testimonials.map((testimonial, index) => (
+                        <Card key={index} className="bg-white border-blue-100">
+                            <CardContent className="p-6">
+                                <div className="flex items-center mb-4">
+                                    {[...Array(5)].map((_, i) => (
+                                        <Star
+                                            key={i}
+                                            className={`h-5 w-5 ${i < testimonial.rating ? "text-yellow-400" : "text-gray-400"}`}
+                                            fill="currentColor"
+                                        />
+                                    ))}
+                                </div>
+                                <p className="italic mb-4 text-slate-600">"{testimonial.description}"</p>
+                                <p className="font-semibold text-slate-800">- {testimonial.users}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            )}
 
             {user && (
                 <div className="mt-12 flex justify-center">
