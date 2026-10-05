@@ -20,7 +20,7 @@ export async function requireUser(): Promise<AuthIdentity | null> {
     const db = getD1();
     if (!db) return null;
     const profile = await db.prepare(
-      "SELECT id, email, full_name, country, mobile, address FROM users WHERE id = ? LIMIT 1"
+      "SELECT id, email, full_name, country, phone AS mobile, address FROM users WHERE id = ? LIMIT 1"
     ).bind(user.id).first<AuthIdentity["profile"]>();
     if (!profile) return null;
     return { user, profile };
