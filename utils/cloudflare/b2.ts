@@ -79,9 +79,16 @@ export async function getB2NativeRequest(method: "GET" | "HEAD", key: string) {
   }
 
   const filePath = key.split("/").map(encodeURIComponent).join("/");
+  const download = new URL(
+    downloadUrl.replace(/\/$/, "") + "/file/" + encodeURIComponent(cfg.bucket) + "/" + filePath
+  );
+  // Pass the Native API authorization token as a query parameter. Backblaze explicitly
+  // supports this form for private downloads and it avoids intermediary handling of
+  // Authorization headers while preserving the token inside the Worker.
+  download.searchParams.set("Authorization", auth.authorizationToken);
   return {
-    url: downloadUrl.replace(/\/$/, "") + "/file/" + encodeURIComponent(cfg.bucket) + "/" + filePath,
-    headers: { Authorization: auth.authorizationToken },
+    url: download.toString(),
+    headers: {},
   };
 }
 
