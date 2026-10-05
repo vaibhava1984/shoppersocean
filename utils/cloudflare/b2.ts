@@ -50,15 +50,51 @@ function getConfig() {
   };
 }
 
+async function signRequest(method: string, key: string, payloadHash: string, contentType?: string) {
+  const cfg = getConfig();
+  const { amzDate, shortDate } = amzDateParts();
+  const host = cfg.endpoint;
+  const uri = canonicalPath(cfg.bucket, key);
+  const headers: Record<string, string> = {
+    host,
+    "x-amz-content-sha256": payloadHash,
+  };
+  if (contentType) headers["content-type"] = contentType;
+
+  const signedHeaderNames = Object.keys(headers).sort();
+  const canonicalHeaders = signedHeaderNames.map((name) => name + ":" + headers[name].trim() + "\n").join("");
+  const signedHeaders = signedHeaderNames.join(";");
+  const canonicalRequest = [
+    method,
+    uri,
+    "",
+    canonicalHeaders,
+    signedHeaders,
+    payloadHash,
+  ].join("\n");
+  const scope = shortDate + "/" + cfg.region + "/s3/aws4_request";
+  const stringToSign = ["AWS4-HMAC-SHA256", amzDate, scope, await sha256(canonicalRequest)].join("\n");
+  const signature = hex(await hmac(await signingKey(cfg.secretKey, shortDate, cfg.region), stringToSign));
+
+  return {
+    url: "https://" + host + uri,
+    headers: {
+      "X-Amz-Date": amzDate,
+      "X-Amz-Content-Sha256": payloadHash,
+      "Authorization": "AWS4-HMAC-SHA256 Credential=" + cfg.accessKeyId + "/" + scope + ", SignedHeaders=" + signedHeaders + ", Signature=" + signature,
+      ...(contentType ? { "Content-Type": contentType } : {}),
+    },
+  };
+}
+
 export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
   const cfg = getConfig();
   const { amzDate, shortDate } = amzDateParts();
   const host = cfg.endpoint;
   const uri = canonicalPath(cfg.bucket, key);
-  const scope = shortDate + "/" + cfg.region + "/s3/aws4_request";
   const params = new URLSearchParams({
     "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
-    "X-Amz-Credential": cfg.accessKeyId + "/" + scope,
+    "X-Amz-Credential": cfg.accessKeyId + "/" + shortDate + "/" + cfg.region + "/s3/aws4_request",
     "X-Amz-Date": amzDate,
     "X-Amz-Expires": String(expiresInSeconds),
     "X-Amz-SignedHeaders": "host",
@@ -69,7 +105,31 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
     .join("&");
   const canonicalHeaders = "host:" + host + "\n";
   const canonicalRequest = ["GET", uri, canonicalQuery, canonicalHeaders, "host", "UNSIGNED-PAYLOAD"].join("\n");
+  const scope = shortDate + "/" + cfg.region + "/s3/aws4_request";
   const stringToSign = ["AWS4-HMAC-SHA256", amzDate, scope, await sha256(canonicalRequest)].join("\n");
   const signature = hex(await hmac(await signingKey(cfg.secretKey, shortDate, cfg.region), stringToSign));
   return "https://" + host + uri + "?" + canonicalQuery + "&X-Amz-Signature=" + signature;
+}
+
+export async function putB2Object(key: string, bytes: Uint8Array, contentType: string) {
+  const signed = await signRequest("PUT", key, "UNSIGNED-PAYLOAD", contentType);
+  const response = await fetch(signed.url, {
+    method: "PUT",
+    headers: signed.headers,
+    body: bytes,
+  });
+  if (!response.ok) {
+    throw new Error("Backblaze B2 upload failed with status " + response.status);
+  }
+}
+
+export async function deleteB2Object(key: string) {
+  const signed = await signRequest("DELETE", key, "UNSIGNED-PAYLOAD");
+  const response = await fetch(signed.url, {
+    method: "DELETE",
+    headers: signed.headers,
+  });
+  if (!response.ok && response.status !== 404) {
+    throw new Error("Backblaze B2 delete failed with status " + response.status);
+  }
 }

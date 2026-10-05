@@ -1,1 +1,29 @@
-import {NextResponse} from "next/server"; import {getD1} from "@/utils/cloudflare/d1"; import {requireAdmin} from "@/utils/auth/requireUser"; export async function POST(request:Request){try{if(!(await requireAdmin()))return NextResponse.json({error:"Not allowed"},{status:403});const db=getD1();if(!db)return NextResponse.json({error:"Cloudflare database is unavailable"},{status:503});const {author_id}=await request.json();if(!author_id)return NextResponse.json({error:"Author ID is required"},{status:400});const book=await db.prepare("SELECT id FROM books WHERE author_id=? AND is_deleted=0 LIMIT 1").bind(author_id).first();if(book)return NextResponse.json({error:"Please delete the books associated with this author."},{status:500});await db.prepare("UPDATE authors SET is_deleted=1,updated_at=? WHERE author_id=?").bind(new Date().toISOString(),author_id).run();return NextResponse.json({message:"Author deleted successfully"});}catch(e){console.error(e);return NextResponse.json({error:"Internal server error"},{status:500})}}
+import { NextResponse } from "next/server";
+import { getD1 } from "@/utils/cloudflare/d1";
+import { requireAdmin } from "@/utils/auth/requireUser";
+
+export async function POST(request: Request) {
+  try {
+    if (!(await requireAdmin())) return NextResponse.json({ error: "Not allowed" }, { status: 403 });
+    const db = getD1();
+    if (!db) return NextResponse.json({ error: "Cloudflare database unavailable" }, { status: 503 });
+
+    const { author_id } = await request.json();
+    const id = String(author_id ?? "").trim();
+    if (!id) return NextResponse.json({ error: "Author ID is required" }, { status: 400 });
+
+    const book = await db.prepare(
+      "SELECT id FROM books WHERE author_id=? AND COALESCE(is_deleted,0)=0 LIMIT 1"
+    ).bind(id).first();
+    if (book) return NextResponse.json({ error: "Please delete the books associated with this author." }, { status: 409 });
+
+    await db.prepare(
+      "UPDATE authors SET is_deleted=1,updated_at=? WHERE id=?"
+    ).bind(new Date().toISOString(),id).run();
+
+    return NextResponse.json({ message: "Author deleted successfully" });
+  } catch (e) {
+    console.error("Delete author:", e);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
