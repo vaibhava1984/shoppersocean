@@ -73,9 +73,8 @@ async function signRequest(method: string, key: string, payloadHash: string, con
     signedHeaders,
     payloadHash,
   ].join("\n");
-  // Backblaze S3-compatible SigV4 uses us-east-1 for the signing scope,
-  // even when the actual bucket endpoint is regional.
-  const signingRegion = "us-east-1";
+  // The SigV4 signing region must match the Backblaze B2 bucket region.
+  const signingRegion = cfg.region;
   const scope = shortDate + "/" + signingRegion + "/s3/aws4_request";
   const stringToSign = ["AWS4-HMAC-SHA256", amzDate, scope, await sha256(canonicalRequest)].join("\n");
   const signature = hex(await hmac(await signingKey(cfg.secretKey, shortDate, signingRegion), stringToSign));
@@ -97,10 +96,8 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
   const host = cfg.endpoint;
   const uri = canonicalPath(cfg.bucket, key);
 
-  // Backblaze's S3-compatible presigned URLs use us-east-1 in the
-  // SigV4 credential scope even when the bucket endpoint is regional
-  // (for example s3.us-west-004.backblazeb2.com).
-  const signingRegion = "us-east-1";
+  // The SigV4 signing region must match the Backblaze B2 bucket region.
+  const signingRegion = cfg.region;
 
   const params = new URLSearchParams({
     "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
