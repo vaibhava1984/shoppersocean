@@ -98,7 +98,7 @@ async function saveBook(request: Request, id?: string) {
       `INSERT INTO books
        (id,title,description,published_date,isbn,price,ratings,cover_images,binding,language,genre,publisher,pages,author_id,author_name,is_deleted,created_at,updated_at)
        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,?,?)`
-    ).bind(newId, ...values.slice(0, 15), 0, now, now).run();
+    ).bind(newId, ...values.slice(0, 14), 0, now, now).run();
   }
 
   return NextResponse.json({ message: id ? "Book updated successfully" : "Book added successfully" });
