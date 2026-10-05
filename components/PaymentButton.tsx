@@ -43,33 +43,27 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
     useEffect(() => {
         if (!productId) return;
         let active = true;
+        setHasPurchased(false);
         setIsInitialFetching(true);
-        auth.auth.getSession().then(({ data: { session } }) => {
-            if (!active) return;
-            if (!session?.user) {
-                setIsInitialFetching(false);
-                return;
-            }
-            fetch('/api/check-purchase', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'same-origin',
-                body: JSON.stringify({ productId }),
+
+        fetch('/api/check-purchase', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            cache: 'no-store',
+            body: JSON.stringify({ productId }),
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (active) setHasPurchased(Boolean(data.hasPurchased));
             })
-                .then(res => res.json())
-                .then(data => {
-                    if (active) setHasPurchased(Boolean(data.hasPurchased));
-                })
-                .catch(error => {
-                    console.error('Error checking purchase:', error);
-                })
-                .finally(() => {
-                    if (active) setIsInitialFetching(false);
-                });
-        }).catch(error => {
-            console.error('Error getting session:', error);
-            if (active) setIsInitialFetching(false);
-        });
+            .catch(error => {
+                console.error('Error checking purchase:', error);
+            })
+            .finally(() => {
+                if (active) setIsInitialFetching(false);
+            });
+
         return () => { active = false; };
     }, [productId]);
 
