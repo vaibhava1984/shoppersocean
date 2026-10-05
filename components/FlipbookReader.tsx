@@ -76,6 +76,10 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const dragXRef = useRef(0);
   const draggingRef = useRef(false);
   const [dragX, setDragX] = useState(0);
+  const [dragAngle, setDragAngle] = useState(0);
+  const [dragDirection, setDragDirection] = useState<'next' | 'prev' | null>(null);
+  const [settling, setSettling] = useState(false);
+  const [zoom, setZoom] = useState(1);
 
   const playPageTurn = useCallback(() => {
     if (!soundEnabled) return;
@@ -97,7 +101,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const base = pageProxy.getViewport({ scale: 1 });
     const maxWidth = Math.min(window.innerWidth * 0.86, fullscreen ? 980 : 760);
     const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.78 : 0.68), fullscreen ? 760 : 680);
-    const scale = Math.min(maxWidth / base.width, maxHeight / base.height);
+    const scale = Math.min(maxWidth / base.width, maxHeight / base.height) * zoom;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
     const width = Math.ceil(viewport.width);
@@ -115,7 +119,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     context.fillRect(0, 0, width, height);
     await pageProxy.render({ canvasContext: context, viewport }).promise;
     pageProxy.cleanup?.();
-  }, [fullscreen]);
+  }, [fullscreen, zoom]);
 
   const preparePage = useCallback(async (pageNumber: number, canvas: HTMLCanvasElement) => {
     if (!pdf || pageNumber < 1 || pageNumber > pdf.numPages) return false;
@@ -205,9 +209,85 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     next.getContext('2d')?.drawImage(temp, 0, 0);
   }, []);
 
-  const beginDrag = (clientX: number) => { if (!pdf || rendering || turning) return; dragStartXRef.current = clientX; dragXRef.current = 0; draggingRef.current = true; setDragX(0); };
-  const moveDrag = (clientX: number) => { if (!draggingRef.current || dragStartXRef.current === null) return; const raw = clientX - dragStartXRef.current; const bounded = Math.max(-Math.min(window.innerWidth * 0.70, 500), Math.min(window.innerWidth * 0.70, raw)); dragXRef.current = bounded; setDragX(bounded); };
-  const endDrag = () => { if (!draggingRef.current) return; const distance = dragXRef.current; draggingRef.current = false; dragStartXRef.current = null; dragXRef.current = 0; setDragX(0); if (Math.abs(distance) > 55) void goToPage(page + (distance < 0 ? 1 : -1)); };
+  const beginDrag = (clientX: number) => {
+    if (!pdf || rendering || turning || settling) return;
+    dragStartXRef.current = clientX;
+    dragXRef.current = 0;
+    draggingRef.current = true;
+    setDragX(0);
+    setDragAngle(0);
+    setDragDirection(null);
+  };
+
+  const moveDrag = (clientX: number) => {
+    if (!draggingRef.current || dragStartXRef.current === null) return;
+    const raw = clientX - dragStartXRef.current;
+    const limit = Math.min(window.innerWidth * 0.78, 560);
+    const bounded = Math.max(-limit, Math.min(limit, raw));
+    const direction = bounded < 0 ? 'next' : bounded > 0 ? 'prev' : null;
+    const progress = Math.min(Math.abs(bounded) / Math.max(1, limit), 1);
+    dragXRef.current = bounded;
+    setDragX(bounded);
+    setDragDirection(direction);
+    setDragAngle(direction === 'next' ? -168 * progress : direction === 'prev' ? 168 * progress : 0);
+  };
+
+  const endDrag = async () => {
+    if (!draggingRef.current) return;
+    const distance = dragXRef.current;
+    const direction = distance < 0 ? 'next' : distance > 0 ? 'prev' : null;
+    draggingRef.current = false;
+    dragStartXRef.current = null;
+    dragXRef.current = 0;
+
+    const target = direction === 'next' ? page + 1 : direction === 'prev' ? page - 1 : page;
+    const shouldComplete = !!direction && Math.abs(distance) > Math.min(120, window.innerWidth * 0.24) && target >= 1 && target <= (pdf?.numPages || 0);
+
+    if (!shouldComplete || !pdf) {
+      setSettling(true);
+      setDragAngle(0);
+      await new Promise<void>(resolve => window.setTimeout(resolve, 260));
+      setSettling(false);
+      setDragX(0);
+      setDragDirection(null);
+      return;
+    }
+
+    const token = ++renderTokenRef.current;
+    try {
+      setRendering(true);
+      setSettling(true);
+      setDragDirection(direction);
+      await preparePage(target, nextCanvasRef.current!);
+      if (token !== renderTokenRef.current) return;
+      setDragAngle(direction === 'next' ? -180 : 180);
+      playPageTurn();
+      await new Promise<void>(resolve => window.setTimeout(resolve, 360));
+      if (token !== renderTokenRef.current) return;
+      swapCanvas();
+      setPage(target);
+      setPageInput(String(target));
+      setDragAngle(0);
+      setDragX(0);
+      setDragDirection(null);
+      setSettling(false);
+
+      const preloadPage = direction === 'next' ? target + 1 : target - 1;
+      if (preloadPage >= 1 && preloadPage <= pdf.numPages && nextCanvasRef.current) {
+        await preparePage(preloadPage, nextCanvasRef.current);
+        if (token === renderTokenRef.current) setNextReady(true);
+      }
+    } catch (err) {
+      console.error('Flipbook drag page turn failed:', err);
+      setError('The page could not be turned. Please try again.');
+      setDragAngle(0);
+      setDragX(0);
+      setDragDirection(null);
+      setSettling(false);
+    } finally {
+      if (token === renderTokenRef.current) setRendering(false);
+    }
+  };
 
   const goToPage = useCallback(async (target: number) => {
     if (!pdf || rendering || turning) return;
@@ -272,7 +352,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     };
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, [pdf, page, preparePage]);
+  }, [pdf, page, preparePage, zoom]);
 
   const commitPageInput = () => {
     const requested = Number.parseInt(pageInput, 10);
@@ -295,6 +375,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
             <button type="button" onClick={() => setSoundEnabled(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={soundEnabled ? 'Mute page turn sound' : 'Enable page turn sound'}>
               <Volume2 size={19} className={soundEnabled ? 'text-white' : 'text-white/35'} />
             </button>
+            <button type="button" onClick={() => setZoom(value => Math.max(0.82, Number((value - 0.08).toFixed(2))))} className="rounded-lg px-2 py-1 text-sm font-semibold hover:bg-white/10" aria-label="Decrease text size">A−</button>
+            <button type="button" onClick={() => setZoom(value => Math.min(1.18, Number((value + 0.08).toFixed(2))))} className="rounded-lg px-2 py-1 text-sm font-semibold hover:bg-white/10" aria-label="Increase text size">A+</button>
             <button type="button" onClick={() => setFullscreen(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={fullscreen ? 'Close full screen' : 'Open full screen'}>
             {fullscreen ? <X size={20} /> : <Maximize2 size={20} />}
             </button>
@@ -302,36 +384,33 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         </div>
 
         <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6" style={{ perspective: '1600px', touchAction: 'pan-y' }} onPointerDown={event => { if (event.pointerType !== 'mouse' || event.button === 0) { event.currentTarget.setPointerCapture?.(event.pointerId); beginDrag(event.clientX); } }} onPointerMove={event => moveDrag(event.clientX)} onPointerUp={endDrag} onPointerCancel={endDrag}>
-          <div ref={bookHostRef} className="relative flex max-h-full max-w-full items-center justify-center" aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
+          <div ref={bookHostRef} className="relative flex h-[min(62vh,680px)] w-[min(92vw,860px)] items-center justify-center"
+ aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
             <div
-              className="relative overflow-visible rounded-[2px] bg-white shadow-2xl"
+              className="relative flex max-h-full max-w-full items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
               style={{
                 perspective: '1800px',
-                transform: dragX === 0 ? 'rotateY(0deg)' : `translateX(${dragX * 0.10}px) rotateY(${Math.max(-72, Math.min(72, dragX * 0.16))}deg)`,
-                transition: draggingRef.current ? 'none' : 'transform 420ms cubic-bezier(.2,.8,.2,1)',
-                willChange: 'transform',
+                transformStyle: 'preserve-3d',
               }}
             >
               {/* Destination page sits underneath the sheet being turned. */}
               <canvas
                 ref={nextCanvasRef}
-                className="pointer-events-none absolute inset-0 block max-h-[68dvh] max-w-[86vw] select-none"
+                className="pointer-events-none absolute inset-0 block max-h-[60dvh] max-w-[88vw] select-none"
                 draggable={false}
                 aria-hidden="true"
               />
               <div
                 className={
-                  'relative z-10 origin-left bg-white shadow-[0_8px_24px_rgba(0,0,0,0.22)] ' +
-                  (turning === 'next'
-                    ? 'animate-[real-page-next_520ms_cubic-bezier(.22,.61,.36,1)_forwards]'
-                    : turning === 'prev'
-                      ? 'origin-right animate-[real-page-prev_520ms_cubic-bezier(.22,.61,.36,1)_forwards]'
-                      : '')
+                  'relative z-10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] ' +
+                  (dragDirection === 'prev' ? 'origin-right' : 'origin-left')
                 }
                 style={{
                   backfaceVisibility: 'hidden',
                   transformStyle: 'preserve-3d',
-                  willChange: turning ? 'transform' : undefined,
+                  transform: `translateX(${dragX * 0.10}px) rotateY(${dragAngle}deg)`,
+                  transition: settling ? 'transform 360ms cubic-bezier(.22,.61,.36,1)' : 'none',
+                  willChange: 'transform',
                 }}
               >
                 <canvas ref={currentCanvasRef} className="block max-h-[68dvh] max-w-[86vw] select-none" draggable={false} />
@@ -379,7 +458,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           </div>
         )}
       </div>
-      <style jsx>{'@keyframes real-page-next { 0% { transform: rotateY(0deg); box-shadow: 0 8px 24px rgba(0,0,0,.22); } 45% { box-shadow: -18px 8px 28px rgba(0,0,0,.28); } 100% { transform: rotateY(-180deg); box-shadow: 18px 8px 28px rgba(0,0,0,.12); } } @keyframes real-page-prev { 0% { transform: rotateY(0deg); box-shadow: 0 8px 24px rgba(0,0,0,.22); } 45% { box-shadow: 18px 8px 28px rgba(0,0,0,.28); } 100% { transform: rotateY(180deg); box-shadow: -18px 8px 28px rgba(0,0,0,.12); } }'}</style>
     </div>
   );
 }
