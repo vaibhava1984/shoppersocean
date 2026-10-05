@@ -5,10 +5,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import AdminSidebar from "../adminSidebar";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { createClient } from '@/utils/supabase/client';
-
-const supabase = createClient();
-
 type Review = {
     id: string;
     description: string;
@@ -27,20 +23,14 @@ const ReviewSection = () => {
     }, []);
 
     async function fetchReviews() {
-        const { data, error } = await supabase
-            .from('testimonials')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error) {
-            console.error('Error fetching reviews:', error);
-            toast({
-                title: "Error",
-                description: "Failed to fetch reviews. Please try again.",
-                variant: "destructive",
-            });
-        } else {
-            setReviews(data || []);
+        try {
+            const response=await fetch('/api/admin/reviews',{cache:'no-store'});
+            const data=await response.json();
+            if(!response.ok) throw new Error(data.error || 'Failed to fetch reviews');
+            setReviews(data.reviews || []);
+        } catch(error) {
+            console.error('Error fetching reviews:',error);
+            toast({title:"Error",description:"Failed to fetch reviews. Please try again.",variant:"destructive"});
         }
     }
 
