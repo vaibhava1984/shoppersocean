@@ -80,6 +80,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const [dragDirection, setDragDirection] = useState<'next' | 'prev' | null>(null);
   const [settling, setSettling] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const [spreadMode, setSpreadMode] = useState(false);
 
   const playPageTurn = useCallback(() => {
     if (!soundEnabled) return;
@@ -99,8 +100,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
-    const maxWidth = Math.min(window.innerWidth * 0.90, fullscreen ? 1180 : 900);
-    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.68 : 0.58), fullscreen ? 700 : 560);
+    const maxWidth = spreadMode ? Math.min(window.innerWidth * 0.43, fullscreen ? 560 : 520) : Math.min(window.innerWidth * 0.90, fullscreen ? 1180 : 900);
+    const maxHeight = Math.min(window.innerHeight * (fullscreen ? (spreadMode ? 0.70 : 0.68) : (spreadMode ? 0.62 : 0.58)), fullscreen ? 700 : 560);
     const scale = Math.min(maxWidth / base.width, maxHeight / base.height) * zoom;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
@@ -119,7 +120,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     context.fillRect(0, 0, width, height);
     await pageProxy.render({ canvasContext: context, viewport }).promise;
     pageProxy.cleanup?.();
-  }, [fullscreen, zoom]);
+  }, [fullscreen, spreadMode, zoom]);
 
   const preparePage = useCallback(async (pageNumber: number, canvas: HTMLCanvasElement) => {
     if (!pdf || pageNumber < 1 || pageNumber > pdf.numPages) return false;
@@ -304,6 +305,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       await preparePage(targetPage, canvas);
       if (token !== renderTokenRef.current) return;
       setTurning(direction);
+      setDragDirection(direction);
       playPageTurn();
 
       // Keep the destination page underneath while the visible page physically
@@ -314,6 +316,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       setPage(targetPage);
       setPageInput(String(targetPage));
       setTurning(null);
+      setDragDirection(null);
 
       const preloadPage = direction === 'next' ? targetPage + 1 : targetPage - 1;
       if (preloadPage >= 1 && preloadPage <= pdf.numPages && nextCanvasRef.current) {
@@ -329,6 +332,15 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   }, [pdf, page, preparePage, playPageTurn, rendering, turning, swapCanvas]);
 
   useEffect(() => setPageInput(String(page)), [page]);
+
+  useEffect(() => {
+    const updateSpreadMode = () => {
+      setSpreadMode(window.innerWidth >= 900 && window.innerWidth > window.innerHeight * 1.05);
+    };
+    updateSpreadMode();
+    window.addEventListener('resize', updateSpreadMode);
+    return () => window.removeEventListener('resize', updateSpreadMode);
+  }, []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -384,7 +396,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         </div>
 
         <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6" style={{ perspective: '1600px', touchAction: 'pan-y' }} onPointerDown={event => { if (event.pointerType !== 'mouse' || event.button === 0) { event.currentTarget.setPointerCapture?.(event.pointerId); beginDrag(event.clientX); } }} onPointerMove={event => moveDrag(event.clientX)} onPointerUp={endDrag} onPointerCancel={endDrag}>
-          <div ref={bookHostRef} className="relative flex h-[min(56vh,600px)] w-[min(96vw,980px)] items-center justify-center"
+          <div ref={bookHostRef} className={`relative flex ${spreadMode ? 'h-[min(62vh,620px)] w-[min(98vw,1180px)]' : 'h-[min(56vh,600px)] w-[min(96vw,980px)]'} items-center justify-center`}
  aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
             <div
               className="relative flex max-h-full max-w-full items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
@@ -396,7 +408,14 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
               {/* Destination page sits underneath the sheet being turned. */}
               <canvas
                 ref={nextCanvasRef}
-                className="pointer-events-none absolute inset-0 block max-h-[56dvh] max-w-[90vw] select-none"
+                className={`pointer-events-none absolute block select-none ${spreadMode ? 'max-h-[70dvh] max-w-[43vw]' : 'inset-0 max-h-[56dvh] max-w-[90vw]'}`}
+                style={spreadMode ? {
+                  left: dragDirection === 'prev' ? '0%' : '100%',
+                  top: '50%',
+                  transform: dragDirection === 'prev' ? 'translate(-100%, -50%)' : 'translate(0, -50%)',
+                  zIndex: 5,
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.20)',
+                } : undefined}
                 draggable={false}
                 aria-hidden="true"
               />
@@ -413,7 +432,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
                   willChange: 'transform',
                 }}
               >
-                <canvas ref={currentCanvasRef} className="block max-h-[68dvh] max-w-[86vw] select-none" draggable={false} />
+                <canvas ref={currentCanvasRef} className={`block select-none ${spreadMode ? 'max-h-[70dvh] max-w-[43vw]' : 'max-h-[68dvh] max-w-[86vw]'}`} draggable={false} />
               </div>
             </div>
           </div>
