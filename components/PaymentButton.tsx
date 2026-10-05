@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
-import { createClient } from "@/lib/client-auth";
 import { setPurchaseStatus } from '@/utils/purchaseStatusCache';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
@@ -19,9 +18,7 @@ const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
 
 interface PaymentButtonProps { amount: number; notes?: object; userId?: string; productId: string; productTitle?: string; }
 export interface ExchangeRates { [key: string]: number; }
-const auth = createClient();
 let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
-let currentUserPromise: ReturnType<typeof auth.auth.getUser> | null = null;
 function getExchangeRatesOnce(): Promise<ExchangeRates> {
     const cachedRates = exchangeRatesCache.get(); if (cachedRates) return Promise.resolve(cachedRates);
     if (!exchangeRatesPromise) exchangeRatesPromise = fetchExchangeRates().then(rates => { exchangeRatesCache.set(rates); return rates; }).catch(error => { exchangeRatesPromise = null; throw error; });
@@ -30,13 +27,54 @@ function getExchangeRatesOnce(): Promise<ExchangeRates> {
 export default function PaymentButton({ amount, notes, userId, productId, productTitle }: PaymentButtonProps) {
     const { toast } = useToast(); const [isLoading, setIsLoading] = useState(false); const [localAmount, setLocalAmount] = useState(amount);
     const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [hasPurchased, setHasPurchased] = useState(false);
-    const [isInitialFetching, setIsInitialFetching] = useState(true); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false);
+    const [isCurrencyFetching, setIsCurrencyFetching] = useState(true); const [isPurchaseChecking, setIsPurchaseChecking] = useState(true); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false);
     useEffect(() => {
         let active = true;
-        const getUserOnce = async () => { if (!currentUserPromise) currentUserPromise = auth.auth.getUser(); return currentUserPromise; };
-        const getUserCurrency = (): string => { try { const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US'; return new Intl.NumberFormat(userLocale, { style: 'currency', currency: 'USD' }).resolvedOptions().currency || 'INR'; } catch { return 'INR'; } };
-        async function setupLocalCurrency(passedCurrency?: string) { try { const detectedCurrency = passedCurrency ?? getUserCurrency(); if (active) setIsInitialFetching(true); const rates = await getExchangeRatesOnce(); if (!active) return; if (rates[detectedCurrency]) { setLocalCurrency(detectedCurrency); setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates)); } else { setLocalCurrency('INR'); setLocalAmount(amount); } setIsInitialFetching(false); } catch (error) { if (!active) return; console.error('Error setting up local currency:', error); setLocalCurrency('INR'); setLocalAmount(amount); setIsInitialFetching(false); } }
-        if (userId) getUserOnce().then(({ data }) => { if (!active) return; const country = data.user?.country; return setupLocalCurrency(country ? getCurrencyCode(country) : undefined); }).catch(() => setupLocalCurrency()); else setupLocalCurrency();
+        setIsCurrencyFetching(true);
+
+        async function setupLocalCurrency() {
+            try {
+                let detectedCurrency = 'INR';
+
+                if (userId) {
+                    const response = await fetch('/api/auth/me', {
+                        credentials: 'same-origin',
+                        cache: 'no-store',
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        const country = data?.user?.country;
+                        if (country) {
+                            const mapped = getCurrencyCode(String(country).toUpperCase());
+                            if (mapped && mapped !== 'Unknown') detectedCurrency = mapped;
+                        }
+                    }
+                }
+
+                const rates = await getExchangeRatesOnce();
+                if (!active) return;
+
+                if (detectedCurrency === 'INR') {
+                    setLocalCurrency('INR');
+                    setLocalAmount(amount);
+                } else if (rates[detectedCurrency]) {
+                    setLocalCurrency(detectedCurrency);
+                    setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates));
+                } else {
+                    setLocalCurrency('INR');
+                    setLocalAmount(amount);
+                }
+            } catch (error) {
+                if (!active) return;
+                console.error('Error setting up local currency:', error);
+                setLocalCurrency('INR');
+                setLocalAmount(amount);
+            } finally {
+                if (active) setIsCurrencyFetching(false);
+            }
+        }
+
+        setupLocalCurrency();
         return () => { active = false; };
     }, [amount, userId]);
 
@@ -44,7 +82,7 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
         if (!productId) return;
         let active = true;
         setHasPurchased(false);
-        setIsInitialFetching(true);
+        setIsPurchaseChecking(true);
 
         fetch('/api/check-purchase', {
             method: 'POST',
@@ -53,15 +91,24 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
             cache: 'no-store',
             body: JSON.stringify({ productId }),
         })
-            .then(res => res.json())
-            .then(data => {
-                if (active) setHasPurchased(Boolean(data.hasPurchased));
+            .then(async res => {
+                const data = await res.json().catch(() => ({}));
+                if (!active) return;
+                if (res.ok) {
+                    setHasPurchased(Boolean(data.hasPurchased));
+                } else {
+                    setHasPurchased(false);
+                    if (res.status !== 401) console.error('Purchase check failed:', data?.error || res.statusText);
+                }
             })
             .catch(error => {
-                console.error('Error checking purchase:', error);
+                if (active) {
+                    console.error('Error checking purchase:', error);
+                    setHasPurchased(false);
+                }
             })
             .finally(() => {
-                if (active) setIsInitialFetching(false);
+                if (active) setIsPurchaseChecking(false);
             });
 
         return () => { active = false; };
@@ -85,8 +132,9 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
             new (window as any).Razorpay(options).open();
         } catch (error) { console.error('Error:', error); toast({ variant: "destructive", title: "Payment Error", description: "Unable to process payment. Please try again." }); } finally { setIsLoading(false); }
     };
-    const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
+    const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-IN';
     const formattedAmount = localCurrency ? new Intl.NumberFormat(userLocale, { style: 'currency', currency: localCurrency }).format(localAmount) : null;
+    const isInitialFetching = isCurrencyFetching || isPurchaseChecking;
     if (hasPurchased) return <div className="w-full mt-6"><BookFlipbook bookId={productId} title={productTitle || 'Book'} /></div>;
     return <><button onClick={userId ? handlePayment : () => setIsLoginNeededDialogOpen(true)} disabled={isLoading} className="px-4 py-2 bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200 disabled:bg-gray-400">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex'><Loader2Icon width={16} className='animate-spin mr-1' /><span>Fetching</span></span> : `Buy ebook ${formattedAmount ?? '-'}`}</button><AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}><AlertDialogContent className='bg-white'><AlertDialogTitle className='hidden'></AlertDialogTitle><Card className="w-full max-w-md border-0"><CardHeader className="relative"><CardTitle className="text-rxl font-bold text-center">Login Required</CardTitle><Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsLoginNeededDialogOpen(false)} aria-label="Close popup"><X className="h-4 w-4" /></Button></CardHeader><CardContent><p className="text-center text-muted-foreground">You need to be logged in to make a purchase. Please sign up or sign in to continue.</p></CardContent><CardFooter className="flex justify-center space-x-4"><Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link><Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link></CardFooter></Card></AlertDialogContent></AlertDialog></>;
 }
