@@ -112,7 +112,7 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
 }
 
 export async function putB2Object(key: string, bytes: Uint8Array, contentType: string) {
-  const signed = await signRequest("PUT", key, "UNSIGNED-PAYLOAD", contentType);
+  const signed = await signRequest("PUT", key, await sha256(bytes), contentType);
   const response = await fetch(signed.url, {
     method: "PUT",
     headers: signed.headers,
@@ -124,7 +124,7 @@ export async function putB2Object(key: string, bytes: Uint8Array, contentType: s
 }
 
 export async function deleteB2Object(key: string) {
-  const signed = await signRequest("DELETE", key, "UNSIGNED-PAYLOAD");
+  const signed = await signRequest("DELETE", key, await sha256(new Uint8Array()));
   const response = await fetch(signed.url, {
     method: "DELETE",
     headers: signed.headers,
