@@ -9,24 +9,30 @@ export const revalidate = 0;
 async function resolveBookFile(bookId: string) {
   const db = getD1();
   if (!db) throw new Error("Cloudflare D1 is not available");
+
   const identity = await requireUser();
   if (!identity) return { error: NextResponse.json({ error: "Authentication required" }, { status: 401 }) };
 
   const purchase = await db
-    .prepare("SELECT id FROM orders WHERE user_id=? AND product_id=? AND status='completed' LIMIT 1")
+    .prepare("SELECT id FROM orders WHERE user_id=? AND book_id=? AND status='completed' LIMIT 1")
     .bind(identity.profile.id, bookId)
     .first();
+
   if (!purchase) return { error: NextResponse.json({ error: "Purchase required" }, { status: 403 }) };
 
   const file = await db
     .prepare("SELECT file_path,file_name,file_type FROM private_book_files WHERE book_id=? ORDER BY created_at DESC LIMIT 20")
     .bind(bookId)
     .all<Record<string, any>>();
+
   const pdf = file.results.find((row) =>
     String(row.file_type || "").toLowerCase() === "pdf" ||
     String(row.file_name || "").toLowerCase().endsWith(".pdf")
   );
-  if (!pdf?.file_path) return { error: NextResponse.json({ error: "No book file is available" }, { status: 404 }) };
+
+  if (!pdf?.file_path) {
+    return { error: NextResponse.json({ error: "No book file is available" }, { status: 404 }) };
+  }
 
   return { file: pdf };
 }
@@ -54,6 +60,7 @@ export async function GET(request: Request) {
     responseHeaders.set("Accept-Ranges", "bytes");
     responseHeaders.set("Cache-Control", "private, no-store");
     responseHeaders.set("Content-Disposition", "inline");
+
     for (const name of ["Content-Length", "Content-Range", "ETag", "Last-Modified"]) {
       const value = upstream.headers.get(name);
       if (value) responseHeaders.set(name, value);
@@ -84,10 +91,12 @@ export async function HEAD(request: Request) {
       "Accept-Ranges": "bytes",
       "Cache-Control": "private, no-store",
     });
+
     for (const name of ["Content-Length", "ETag", "Last-Modified"]) {
       const value = upstream.headers.get(name);
       if (value) headers.set(name, value);
     }
+
     return new Response(null, { status: 200, headers });
   } catch {
     return new Response(null, { status: 500 });
