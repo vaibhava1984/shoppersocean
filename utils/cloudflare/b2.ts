@@ -58,6 +58,7 @@ async function signRequest(method: string, key: string, payloadHash: string, con
   const headers: Record<string, string> = {
     host,
     "x-amz-content-sha256": payloadHash,
+    "x-amz-date": amzDate,
   };
   if (contentType) headers["content-type"] = contentType;
 
