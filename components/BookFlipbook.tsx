@@ -223,8 +223,15 @@ export default function BookFlipbook({ bookId, title }: Props) {
 
   useEffect(() => {
     if (!opened || !readerUrl || !pdfRef.current) return;
-    void renderPage();
-  }, [opened, readerUrl, renderPage, pageCount]);
+    let cancelled = false;
+    const run = async () => {
+      await renderPage();
+      if (cancelled || !wideMode || page <= 1 || page >= pageCount || !nextCanvasRef.current) return;
+      await renderCanvasPage(page + 1, nextCanvasRef.current);
+    };
+    void run();
+    return () => { cancelled = true; };
+  }, [opened, readerUrl, renderPage, renderCanvasPage, pageCount, page, wideMode]);
 
   useEffect(() => {
     if (!bookId || page < 1) return;
