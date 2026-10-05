@@ -27,10 +27,12 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { productId, productIds } = body;
 
+    // The production D1 schema stores the book reference as book_id.
+    // productId is retained at the API boundary because that is what the UI calls it.
     if (productId) {
       const order = await db.prepare(
-        'SELECT id, created_at, status FROM orders WHERE user_id = ? AND product_id = ? AND status = ? ORDER BY created_at DESC LIMIT 1'
-      ).bind(userId, productId, 'completed').first<{ id: string; created_at: string; status: string }>();
+        'SELECT id, created_at, status FROM orders WHERE user_id = ? AND book_id = ? AND status = ? ORDER BY created_at DESC LIMIT 1'
+      ).bind(userId, String(productId), 'completed').first<{ id: string; created_at: string; status: string }>();
 
       return NextResponse.json({
         hasPurchased: Boolean(order),
@@ -39,20 +41,26 @@ export async function POST(req: Request) {
     }
 
     if (Array.isArray(productIds) && productIds.length > 0) {
-      const placeholders = productIds.map(() => '?').join(',');
+      const ids = productIds.map((id: unknown) => String(id));
+      const placeholders = ids.map(() => '?').join(',');
       const orders = await db.prepare(
-        `SELECT id, product_id, created_at, status FROM orders WHERE user_id = ? AND product_id IN (${placeholders}) AND status = ? ORDER BY created_at DESC`
-      ).bind(userId, ...productIds, 'completed').all<{ id: string; product_id: string; created_at: string; status: string }>();
+        `SELECT id, book_id, created_at, status
+         FROM orders
+         WHERE user_id = ? AND book_id IN (${placeholders}) AND status = ?
+         ORDER BY created_at DESC`
+      ).bind(userId, ...ids, 'completed').all<{ id: string; book_id: string; created_at: string; status: string }>();
 
       const result: Record<string, any> = {};
-      productIds.forEach((id: string) => { result[id] = { hasPurchased: false, orderDetails: [] }; });
-      (orders.results || []).forEach(order => {
-        if (order.product_id in result && !result[order.product_id].hasPurchased) {
-          result[order.product_id].hasPurchased = true;
-          result[order.product_id].orderDetails.push({
+      ids.forEach((id) => { result[id] = { hasPurchased: false, orderDetails: [] }; });
+
+      (orders.results || []).forEach((order) => {
+        const bookId = String(order.book_id);
+        if (bookId in result && !result[bookId].hasPurchased) {
+          result[bookId].hasPurchased = true;
+          result[bookId].orderDetails.push({
             order_id: order.id,
             purchase_date: order.created_at,
-            status: order.status
+            status: order.status,
           });
         }
       });
