@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     }>();
 
     if (!user) {
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+      return NextResponse.json({ error: 'There isn\'t a user with that email, dear. To join us, please register or make an account!' }, { status: 404, headers: { 'Cache-Control': 'no-store' } });
     }
 
     // Check if this is a migrated user who needs to reset their password
