@@ -25,8 +25,6 @@ type HeaderProps = {
 }
 
 export default async function Header({ user, categoryNavigation }: HeaderProps) {
-  // Some pages render Header without passing the user. Resolve the current
-  // server session here so a signed-in user never sees the anonymous menu.
   const sessionUser = user ?? await getCurrentUser()
   const currentUser = sessionUser ? {
     email: sessionUser.emailAddresses?.[0]?.emailAddress,
@@ -72,7 +70,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                     <Link href="/my-purchases" className="flex w-full items-center gap-2">
                       <HistoryIcon width={18} />
                       My Orders
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/settings" className="flex w-full items-center gap-2">
