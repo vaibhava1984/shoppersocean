@@ -1,7 +1,17 @@
+import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 import { hashPassword, createJwt, setSessionCookie } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 export async function POST(req: Request) {
   try {
@@ -14,32 +24,64 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
     }
 
-    // Access D1 binding via getCloudflareContext (OpenNext adapter)
     const { getCloudflareContext } = await import('@opennextjs/cloudflare');
     const { env } = await getCloudflareContext();
     const db = (env as any).DB as D1Database;
     const jwtSecret = (env as any).JWT_SECRET as string;
+    const resendApiKey = (env as any).RESEND_API_KEY as string | undefined;
 
-    // Check if user already exists
-    const existing = await db.prepare('SELECT id FROM users WHERE email = ?').bind(email.toLowerCase()).first();
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const existing = await db.prepare('SELECT id FROM users WHERE email = ?').bind(normalizedEmail).first();
     if (existing) {
       return NextResponse.json({ error: 'An account with this email already exists' }, { status: 409 });
     }
 
-    // Create user
     const userId = crypto.randomUUID();
     const hashedPassword = await hashPassword(password);
     const now = new Date().toISOString();
 
     await db.prepare(
       'INSERT INTO users (id, email, password_hash, full_name, country, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
-    ).bind(userId, email.toLowerCase(), hashedPassword, full_name || null, country || null, now, now).run();
+    ).bind(userId, normalizedEmail, hashedPassword, full_name || null, country || null, now, now).run();
 
-    // Create session JWT
-    const token = await createJwt({ sub: userId, email: email.toLowerCase() }, jwtSecret);
+    let emailSent = false;
+    if (resendApiKey) {
+      try {
+        const resend = new Resend(resendApiKey);
+        const safeName = escapeHtml(String(full_name || '').trim() || 'there');
+        const { error: emailError } = await resend.emails.send({
+          from: 'no-reply@shoppersocean.com',
+          to: normalizedEmail,
+          subject: 'Welcome to Shoppers Ocean',
+          html: `
+            <div style="font-family: Arial, sans-serif; line-height: 1.7; color: #1e293b;">
+              <p>Hi ${safeName} 😊😊😊</p>
+              <p>Your account on 𝙎𝙝𝙤𝙥𝙥𝙚𝙧𝙨 𝙊𝙘𝙚𝙖𝙣 has been created successfully!! 🤗🤗🤗</p>
+              <p>We cordially welcome you to our family, where reading, writing, and shopping are really fun!!</p>
+              <p>Wishing to have a long-lasting journey with you</p>
+              <p>Regards,</p>
+              <p>𝙎𝙝𝙤𝙥𝙥𝙚𝙧𝙨 𝙊𝙘𝙚𝙖𝙣</p>
+            </div>
+          `,
+        });
+        if (emailError) {
+          console.error('Error sending signup welcome email:', emailError);
+        } else {
+          emailSent = true;
+        }
+      } catch (emailError) {
+        console.error('Unexpected signup welcome email error:', emailError);
+      }
+    } else {
+      console.error('RESEND_API_KEY is not configured; account was created without welcome email.');
+    }
 
-    const user = { id: userId, email: email.toLowerCase(), full_name: full_name || null, country: country || null };
-    const res = NextResponse.json({ user }, { headers: { 'Cache-Control': 'no-store' } });
+    const token = await createJwt({ sub: userId, email: normalizedEmail }, jwtSecret);
+    const user = { id: userId, email: normalizedEmail, full_name: full_name || null, country: country || null };
+    const res = NextResponse.json(
+      { user, emailSent },
+      { headers: { 'Cache-Control': 'no-store' } }
+    );
     setSessionCookie(res, token);
     return res;
   } catch (error) {
