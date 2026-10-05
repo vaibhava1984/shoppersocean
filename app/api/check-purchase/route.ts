@@ -31,8 +31,8 @@ export async function POST(req: Request) {
     // productId is retained at the API boundary because that is what the UI calls it.
     if (productId) {
       const order = await db.prepare(
-        'SELECT id, created_at, status FROM orders WHERE user_id = ? AND book_id = ? AND status = ? ORDER BY created_at DESC LIMIT 1'
-      ).bind(userId, String(productId), 'completed').first<{ id: string; created_at: string; status: string }>();
+        "SELECT o.id, o.created_at, CASE WHEN o.status = 'completed' OR p.status = 'completed' THEN 'completed' ELSE o.status END AS status FROM orders o LEFT JOIN payments p ON p.order_id = o.id WHERE o.user_id = ? AND o.book_id = ? AND (o.status = 'completed' OR p.status = 'completed') ORDER BY o.created_at DESC LIMIT 1"
+      ).bind(userId, String(productId)).first<{ id: string; created_at: string; status: string }>();
 
       return NextResponse.json({
         hasPurchased: Boolean(order),
@@ -44,11 +44,14 @@ export async function POST(req: Request) {
       const ids = productIds.map((id: unknown) => String(id));
       const placeholders = ids.map(() => '?').join(',');
       const orders = await db.prepare(
-        `SELECT id, book_id, created_at, status
-         FROM orders
-         WHERE user_id = ? AND book_id IN (${placeholders}) AND status = ?
-         ORDER BY created_at DESC`
-      ).bind(userId, ...ids, 'completed').all<{ id: string; book_id: string; created_at: string; status: string }>();
+        `SELECT o.id, o.book_id, o.created_at,
+                CASE WHEN o.status = 'completed' OR p.status = 'completed' THEN 'completed' ELSE o.status END AS status
+         FROM orders o
+         LEFT JOIN payments p ON p.order_id = o.id
+         WHERE o.user_id = ? AND o.book_id IN (${placeholders})
+           AND (o.status = 'completed' OR p.status = 'completed')
+         ORDER BY o.created_at DESC`
+      ).bind(userId, ...ids).all<{ id: string; book_id: string; created_at: string; status: string }>();
 
       const result: Record<string, any> = {};
       ids.forEach((id) => { result[id] = { hasPurchased: false, orderDetails: [] }; });
