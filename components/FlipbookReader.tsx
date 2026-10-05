@@ -99,8 +99,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
-    const maxWidth = Math.min(window.innerWidth * 0.86, fullscreen ? 980 : 760);
-    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.78 : 0.68), fullscreen ? 760 : 680);
+    const maxWidth = Math.min(window.innerWidth * 0.90, fullscreen ? 1180 : 900);
+    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.68 : 0.58), fullscreen ? 700 : 560);
     const scale = Math.min(maxWidth / base.width, maxHeight / base.height) * zoom;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
@@ -364,7 +364,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   };
 
   return (
-    <div className={fullscreen ? 'fixed inset-0 z-[100] bg-slate-950 p-3 sm:p-6' : 'w-full'}>
+    <div className={fullscreen ? 'fixed inset-0 z-[100] bg-slate-950 p-2 sm:p-5' : 'w-full'}>
       <div className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-2xl">
         <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 text-white">
           <div className="min-w-0">
@@ -384,7 +384,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         </div>
 
         <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6" style={{ perspective: '1600px', touchAction: 'pan-y' }} onPointerDown={event => { if (event.pointerType !== 'mouse' || event.button === 0) { event.currentTarget.setPointerCapture?.(event.pointerId); beginDrag(event.clientX); } }} onPointerMove={event => moveDrag(event.clientX)} onPointerUp={endDrag} onPointerCancel={endDrag}>
-          <div ref={bookHostRef} className="relative flex h-[min(62vh,680px)] w-[min(92vw,860px)] items-center justify-center"
+          <div ref={bookHostRef} className="relative flex h-[min(56vh,600px)] w-[min(96vw,980px)] items-center justify-center"
  aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
             <div
               className="relative flex max-h-full max-w-full items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
@@ -396,7 +396,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
               {/* Destination page sits underneath the sheet being turned. */}
               <canvas
                 ref={nextCanvasRef}
-                className="pointer-events-none absolute inset-0 block max-h-[60dvh] max-w-[88vw] select-none"
+                className="pointer-events-none absolute inset-0 block max-h-[56dvh] max-w-[90vw] select-none"
                 draggable={false}
                 aria-hidden="true"
               />
