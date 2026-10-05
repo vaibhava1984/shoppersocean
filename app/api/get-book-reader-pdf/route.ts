@@ -14,7 +14,11 @@ async function resolveBookFile(bookId: string) {
   if (!identity) return { error: NextResponse.json({ error: "Authentication required" }, { status: 401 }) };
 
   const purchase = await db
-    .prepare("SELECT id FROM orders WHERE user_id=? AND book_id=? AND status='completed' LIMIT 1")
+    .prepare(
+      "SELECT o.id FROM orders o LEFT JOIN payments p ON p.order_id = o.id " +
+      "WHERE o.user_id = ? AND o.book_id = ? " +
+      "AND (o.status = 'completed' OR p.status = 'completed') LIMIT 1"
+    )
     .bind(identity.profile.id, bookId)
     .first();
 
