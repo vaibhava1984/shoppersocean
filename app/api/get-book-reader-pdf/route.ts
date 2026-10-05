@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
-import { getB2SignedRequest } from "@/utils/cloudflare/b2";
+import { getB2ObjectUrl } from "@/utils/cloudflare/b2";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -49,12 +49,15 @@ export async function GET(request: Request) {
     const resolved = await resolveBookFile(bookId);
     if ("error" in resolved) return resolved.error;
 
-    const signed = await getB2SignedRequest("GET", String(resolved.file.storage_key));
+    // Use a short-lived B2 S3 presigned URL for the reader proxy. This avoids
+    // Worker-to-B2 Authorization-header signing edge cases while keeping the
+    // object private and the browser unable to access B2 directly.
+    const signedUrl = await getB2ObjectUrl(String(resolved.file.storage_key), 900);
     const range = request.headers.get("range");
-    const upstreamHeaders = new Headers(signed.headers);
+    const upstreamHeaders = new Headers();
     if (range) upstreamHeaders.set("Range", range);
 
-    const upstream = await fetch(signed.url, { headers: upstreamHeaders });
+    const upstream = await fetch(signedUrl, { headers: upstreamHeaders });
     if (!upstream.ok && upstream.status !== 206) {
       console.error("B2 reader upstream failed:", upstream.status);
       return NextResponse.json({ error: "Unable to read book file" }, { status: upstream.status || 502 });
@@ -87,8 +90,8 @@ export async function HEAD(request: Request) {
     const resolved = await resolveBookFile(bookId);
     if ("error" in resolved) return resolved.error;
 
-    const signed = await getB2SignedRequest("HEAD", String(resolved.file.storage_key));
-    const upstream = await fetch(signed.url, { method: "HEAD", headers: signed.headers });
+    const signedUrl = await getB2ObjectUrl(String(resolved.file.storage_key), 900);
+    const upstream = await fetch(signedUrl, { method: "HEAD" });
     if (!upstream.ok) return new Response(null, { status: upstream.status });
 
     const headers = new Headers({
