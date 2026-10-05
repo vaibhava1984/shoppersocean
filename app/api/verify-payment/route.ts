@@ -71,14 +71,14 @@ export async function POST(req: Request) {
     const originalCurrency = String(body?.original_currency || "").toUpperCase();
     const originalAmount = Number(body?.original_amount);
     const userId = identity.profile.id;
-    const productId = String(body?.product_id || "");
+    const bookId = String(body?.product_id || "");
     const quantity = Math.max(1, Number(body?.quantity || 1));
 
     if (
       !razorpayOrderId ||
       !razorpayPaymentId ||
       !razorpaySignature ||
-      !productId ||
+      !bookId ||
       !/^[A-Z]{3}$/.test(originalCurrency) ||
       !Number.isFinite(originalAmount) ||
       originalAmount <= 0
@@ -86,10 +86,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Required payment information is missing or invalid" }, { status: 400 });
     }
 
-    // The payment route uses the same D1/JWT identity as the rest of the application.
-    // The authenticated application identity is represented by the stable D1 user id.
+    // The live D1 schema uses the users table for the authenticated profile.
     const profile = await db
-      .prepare("SELECT id, email, mobile, address FROM profiles WHERE id = ? LIMIT 1")
+      .prepare("SELECT id, email, phone, address FROM users WHERE id = ? LIMIT 1")
       .bind(userId)
       .first<Record<string, any>>();
 
@@ -108,8 +107,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid payment signature" }, { status: 400 });
     }
 
-    // Fetch the Razorpay order and payment directly. This prevents the client
-    // from changing amount/currency/product/user after checkout was created.
     const orderResponse = await fetch(
       `https://api.razorpay.com/v1/orders/${encodeURIComponent(razorpayOrderId)}`,
       { headers: { Authorization: basicAuth(keyId, keySecret) } }
@@ -129,7 +126,7 @@ export async function POST(req: Request) {
 
     if (
       String(razorpayOrder.notes?.user_id || "") !== userId ||
-      String(razorpayOrder.notes?.product_id || "") !== productId
+      String(razorpayOrder.notes?.product_id || "") !== bookId
     ) {
       return NextResponse.json({ error: "Payment order does not match the authenticated purchase" }, { status: 403 });
     }
@@ -156,18 +153,19 @@ export async function POST(req: Request) {
 
     const book = await db
       .prepare("SELECT id, title FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1")
-      .bind(productId)
+      .bind(bookId)
       .first<Record<string, any>>();
 
     if (!book) {
       return NextResponse.json({ error: "Book not found" }, { status: 404 });
     }
 
+    // Match the production D1 schema: orders.book_id and payments.book_id.
     const existing = await db.prepare(
-      "SELECT o.id, o.user_id, o.product_id, o.quantity, o.total_amount, o.currency, o.status, o.order_date, " +
-      "p.payment_id, p.original_amount, p.original_currency, p.amount_in_inr, p.payment_method, p.created_at " +
+      "SELECT o.id, o.user_id, o.book_id, o.amount, o.currency, o.status, o.created_at, " +
+      "p.razorpay_payment_id, p.amount AS payment_amount, p.currency AS payment_currency, p.status AS payment_status " +
       "FROM orders o LEFT JOIN payments p ON p.order_id = o.id " +
-      "WHERE o.razorpay_order_id = ? OR p.payment_id = ? LIMIT 1"
+      "WHERE o.razorpay_order_id = ? OR p.razorpay_payment_id = ? LIMIT 1"
     ).bind(razorpayOrderId, razorpayPaymentId).first<Record<string, any>>();
 
     const rates = await fetchExchangeRates();
@@ -178,104 +176,67 @@ export async function POST(req: Request) {
       const orderId = crypto.randomUUID();
       const paymentRowId = crypto.randomUUID();
 
-      // INSERT OR IGNORE makes the verification idempotent under concurrent
-      // Razorpay callbacks/retries because the schema has unique payment/order ids.
       await db.prepare(
-        "INSERT OR IGNORE INTO orders " +
-        "(id, user_id, product_id, quantity, total_amount, currency, status, contact_number, email, razorpay_order_id, order_date, created_at, updated_at, shipping_address, display_amount, display_currency) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO orders " +
+        "(id, user_id, book_id, amount, currency, status, razorpay_order_id, created_at, updated_at) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
       ).bind(
         orderId,
         userId,
-        productId,
-        quantity,
+        bookId,
         Number(amountInINR),
         "INR",
         paymentStatus,
-        profile.mobile || null,
-        profile.email || null,
         razorpayOrderId,
         now,
-        now,
-        now,
-        profile.address || null,
-        originalAmount,
-        originalCurrency
+        now
       ).run();
 
-      const storedOrder = await db.prepare(
-        "SELECT id, user_id, product_id, status FROM orders WHERE razorpay_order_id = ? LIMIT 1"
-      ).bind(razorpayOrderId).first<Record<string, any>>();
-
-      if (!storedOrder || storedOrder.user_id !== userId || storedOrder.product_id !== productId) {
-        return NextResponse.json({ error: "Payment order ownership mismatch" }, { status: 409 });
-      }
-
       await db.prepare(
-        "INSERT OR IGNORE INTO payments " +
-        "(id, order_id, razorpay_order_id, payment_id, signature, status, original_currency, original_amount, amount_in_inr, payment_method, bank, card_network, card_last4, error_code, error_description, created_at, updated_at) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO payments " +
+        "(id, order_id, user_id, book_id, amount, currency, status, razorpay_payment_id, razorpay_order_id, created_at, updated_at) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
       ).bind(
         paymentRowId,
-        storedOrder.id,
-        razorpayOrderId,
-        razorpayPaymentId,
-        razorpaySignature,
-        paymentStatus,
-        originalCurrency,
-        originalAmount,
+        orderId,
+        userId,
+        bookId,
         Number(amountInINR),
-        payment.method || null,
-        payment.bank || null,
-        payment.card?.network || null,
-        payment.card?.last4 || null,
-        payment.error_code || null,
-        payment.error_description || null,
+        "INR",
+        paymentStatus,
+        razorpayPaymentId,
+        razorpayOrderId,
         now,
         now
       ).run();
     } else {
-      if (existing.user_id !== userId || existing.product_id !== productId) {
+      if (String(existing.user_id) !== userId || String(existing.book_id) !== bookId) {
         return NextResponse.json({ error: "Payment order ownership mismatch" }, { status: 409 });
       }
 
-      // A repeated verification is allowed to move the record to the latest
-      // Razorpay state (e.g. pending/authorized -> completed, completed -> refunded).
       await db.prepare(
         "UPDATE orders SET status = ?, updated_at = ? WHERE id = ?"
       ).bind(paymentStatus, now, existing.id).run();
 
       await db.prepare(
-        "UPDATE payments SET status = ?, payment_method = ?, bank = ?, card_network = ?, card_last4 = ?, error_code = ?, error_description = ?, updated_at = ? WHERE order_id = ?"
-      ).bind(
-        paymentStatus,
-        payment.method || null,
-        payment.bank || null,
-        payment.card?.network || null,
-        payment.card?.last4 || null,
-        payment.error_code || null,
-        payment.error_description || null,
-        now,
-        existing.id
-      ).run();
+        "UPDATE payments SET status = ?, updated_at = ? WHERE order_id = ?"
+      ).bind(paymentStatus, now, existing.id).run();
     }
 
     const finalOrder = await db.prepare(
-      "SELECT o.id, o.user_id, o.product_id, o.quantity, o.total_amount, o.currency, o.status, o.order_date " +
-      "FROM orders o WHERE o.razorpay_order_id = ? LIMIT 1"
+      "SELECT id, user_id, book_id, amount, currency, status, razorpay_order_id, created_at, updated_at " +
+      "FROM orders WHERE razorpay_order_id = ? LIMIT 1"
     ).bind(razorpayOrderId).first<Record<string, any>>();
 
     const finalPayment = await db.prepare(
-      "SELECT payment_id, original_amount, original_currency, amount_in_inr, payment_method, status, created_at " +
-      "FROM payments WHERE razorpay_order_id = ? OR payment_id = ? LIMIT 1"
+      "SELECT razorpay_payment_id, amount, currency, status, created_at, updated_at " +
+      "FROM payments WHERE razorpay_order_id = ? OR razorpay_payment_id = ? LIMIT 1"
     ).bind(razorpayOrderId, razorpayPaymentId).first<Record<string, any>>();
 
     if (!finalOrder || !finalPayment) {
       return NextResponse.json({ error: "Payment record could not be finalized" }, { status: 500 });
     }
 
-    // Email is non-critical to payment completion; a mail outage must not turn
-    // a captured Razorpay payment into a failed purchase.
     const resendApiKey = process.env.RESEND_API_KEY;
     if (resendApiKey && paymentStatus === "completed" && !existing) {
       try {
@@ -284,7 +245,7 @@ export async function POST(req: Request) {
           from: "no-reply@shoppersocean.com",
           to: "kochimonu@gmail.com",
           subject: "New Sale | Shoppers Ocean",
-          html: `<p><strong>New Sale details:</strong></p><p><strong>Email:</strong> ${profile.email ?? ""}</p><p><strong>Book ID:</strong>${productId}</p><p><strong>Book Name:</strong>${book.title ?? ""}</p>`,
+          html: `<p><strong>New Sale details:</strong></p><p><strong>Email:</strong> ${profile.email ?? ""}</p><p><strong>Book ID:</strong>${bookId}</p><p><strong>Book Name:</strong>${book.title ?? ""}</p>`,
         });
       } catch (emailError) {
         console.error("Sale notification email failed:", emailError);
@@ -293,7 +254,9 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: existing ? "Payment verification is idempotent; existing payment record updated" : "Order created and payment verified successfully",
+      message: existing
+        ? "Payment verification is idempotent; existing payment record updated"
+        : "Order created and payment verified successfully",
       status: paymentStatus,
       orderDetails: finalOrder,
       paymentDetails: {
