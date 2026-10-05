@@ -62,10 +62,6 @@ export async function POST(req: Request) {
 
     // Create a new session JWT (auto-login after reset)
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
     const sessionToken = await createJwt({ sub: user.id, email: user.email }, jwtSecret);
     const res = NextResponse.json({ user }, { headers: { 'Cache-Control': 'no-store' } });
     setSessionCookie(res, sessionToken);
