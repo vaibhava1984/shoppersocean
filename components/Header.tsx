@@ -3,8 +3,6 @@ import Link from "next/link";
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
 import SiteSearch from "@/components/SiteSearch"
 import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation"
-import {
-} from "@/components/ui/dropdown-menu";
 import HeaderAccountMenu from "@/components/HeaderAccountMenu";
 
 const navigationItems = [
