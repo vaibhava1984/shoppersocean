@@ -94,7 +94,7 @@ export default async function BookShelfPage({
             <HeroSection
                 title=" Escape into Entertainment"
                 subtitle="Discover your next favorite book"
-                imageSrc="/bookshelf_hero_image.jpeg"
+                imageSrc="/bookshelf_hero.jpg"
                 imageAlt=" Embark on Your Adventure"
             />
             <AuthorApplicationBanner />
