@@ -8,7 +8,7 @@ declare global {
   interface Window {
     pdfjsLib?: {
       GlobalWorkerOptions: { workerSrc: string };
-      getDocument: (source: { url: string }) => { promise: any };
+      getDocument: (source: { url: string; disableAutoFetch?: boolean; disableStream?: boolean }) => { promise: any };
     };
   }
 }
@@ -17,6 +17,8 @@ type Props = { bookId: string; title: string };
 const PDFJS_VERSION = '3.11.174';
 const PDFJS_URL = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.min.js`;
 const PDFJS_WORKER_URL = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
+const BOOK_OPEN_SOUND = '/book-open.mp3';
+const PAGE_TURN_SOUND = '/page-turn.mp3';
 
 function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
   if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
@@ -48,6 +50,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const renderRequestRef = useRef(0);
   const touchStartXRef = useRef<number | null>(null);
   const pageTurnAudioRef = useRef<HTMLAudioElement | null>(null);
+  const bookOpenAudioRef = useRef<HTMLAudioElement | null>(null);
   const dragStartXRef = useRef<number | null>(null);
   const dragOffsetRef = useRef(0);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -65,12 +68,24 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [isSliderDragging, setIsSliderDragging] = useState(false);
   const [sliderPreviewPage, setSliderPreviewPage] = useState<number | null>(null);
   const [turnDirection, setTurnDirection] = useState<'next' | 'prev' | null>(null);
+  const [wideMode, setWideMode] = useState(false);
   const pageStorageKey = `shoppers-ocean-flipbook-page-${bookId}`;
   const turnTimerRef = useRef<number | null>(null);
 
+  const playBookOpenSound = useCallback(() => {
+    try {
+      const audio = bookOpenAudioRef.current ?? new Audio(BOOK_OPEN_SOUND);
+      bookOpenAudioRef.current = audio;
+      audio.preload = 'auto';
+      audio.currentTime = 0;
+      audio.volume = 0.82;
+      void audio.play().catch(() => {});
+    } catch {}
+  }, []);
+
   const playPageTurnSound = useCallback(() => {
     try {
-      const audio = pageTurnAudioRef.current ?? new Audio('https://cdn.freesound.org/previews/484/484940_6150892-hq.mp3');
+      const audio = pageTurnAudioRef.current ?? new Audio(PAGE_TURN_SOUND);
       pageTurnAudioRef.current = audio;
       audio.currentTime = 0;
       audio.volume = 0.82;
@@ -80,6 +95,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
 
   const openReader = async () => {
     if (loading) return;
+    playBookOpenSound();
     setOpened(true); setLoading(true); setError(''); setReaderUrl('');
     try {
       const response = await fetch('/api/get-book-reader', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookId }) });
@@ -91,6 +107,13 @@ export default function BookFlipbook({ bookId, title }: Props) {
   };
 
   useEffect(() => {
+    const updateWideMode = () => setWideMode(window.innerWidth >= 700 && window.innerWidth > window.innerHeight * 1.05);
+    updateWideMode();
+    window.addEventListener('resize', updateWideMode);
+    return () => window.removeEventListener('resize', updateWideMode);
+  }, []);
+
+  useEffect(() => {
     let cancelled = false;
     if (!readerUrl) return;
     const load = async () => {
@@ -98,7 +121,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
         const pdfjs = await loadPdfJs();
         if (cancelled) return;
         pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_URL;
-        const pdf = await pdfjs.getDocument({ url: readerUrl }).promise;
+        const pdf = await pdfjs.getDocument({ url: readerUrl, disableAutoFetch: true, disableStream: true }).promise;
         if (cancelled) return;
         pdfRef.current = pdf;
         setPageCount(pdf.numPages);
@@ -131,8 +154,9 @@ export default function BookFlipbook({ bookId, title }: Props) {
       try {
         const pdfPage = await pdf.getPage(targetPage);
         const baseViewport = pdfPage.getViewport({ scale: 1 });
-        const availableWidth = Math.max(180, frame.clientWidth - 4);
-        const availableHeight = Math.max(260, frame.clientHeight - 4);
+        const spread = wideMode && page > 1;
+        const availableWidth = Math.max(180, spread ? frame.clientWidth * 0.44 : frame.clientWidth - 4);
+        const availableHeight = Math.max(260, spread ? frame.clientHeight * 0.90 : frame.clientHeight - 4);
         const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
         const scale = Math.max(0.1, fitScale * zoom);
         const viewport = pdfPage.getViewport({ scale });
@@ -189,7 +213,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const queued = run();
     renderQueueRef.current = queued.catch(() => {});
     await queued;
-  }, [zoom, cancelRender]);
+  }, [zoom, cancelRender, wideMode, page]);
 
   const renderPage = useCallback(async () => {
     const canvas = canvasRef.current;
@@ -282,7 +306,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const target = Math.round(ratio * (pageCount - 1)) + 1;
     setSliderPreviewPage(target);
   };
-  useEffect(() => () => { void cancelRender(); }, [cancelRender]);
+  useEffect(() => () => { void cancelRender(); pageTurnAudioRef.current?.pause(); bookOpenAudioRef.current?.pause(); }, [cancelRender]);
 
   const handleSliderPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     event.stopPropagation(); if (!sliderRef.current || !pageCount) return;
@@ -313,6 +337,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     boxShadow: turning || dragOffset !== 0 ? '0 18px 34px rgba(15,23,42,.26)' : '0 16px 30px rgba(15,23,42,.18)',
     backfaceVisibility: 'hidden', transformStyle: 'preserve-3d', touchAction: 'pan-y',
   };
+  const wideSpread = wideMode && page > 1;
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
@@ -324,11 +349,13 @@ export default function BookFlipbook({ bookId, title }: Props) {
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div className="relative flex h-[min(72vh,680px)] min-h-[360px] flex-1 items-center justify-center overflow-hidden p-2 sm:p-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-      <div ref={pageFrameRef} className="relative flex h-full w-full max-w-[900px] items-center justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
-        <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center" style={{ perspective: '1800px' }}>
-          <div className="absolute inset-0 flex items-center justify-center rounded bg-white shadow-[0_16px_30px_rgba(15,23,42,0.18)]" style={{ zIndex: 0, overflow: 'hidden' }}><canvas ref={nextCanvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} /></div>
-          <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
+    <div className={`relative flex ${wideMode ? 'h-[min(64vh,620px)]' : 'h-[min(72vh,680px)]'} min-h-[360px] flex-1 items-center justify-center overflow-hidden p-2 sm:p-4`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div ref={pageFrameRef} className={`relative flex h-full w-full ${wideMode ? 'max-w-[1180px]' : 'max-w-[900px]'} items-center justify-center`} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
+        <div className={`relative flex h-full max-h-full w-full max-w-full items-center ${wideSpread ? 'justify-between px-[2%]' : 'justify-center'}`} style={{ perspective: '1800px' }}>
+          <div className="absolute inset-0 flex items-center justify-center rounded bg-white shadow-[0_16px_30px_rgba(15,23,42,0.18)]" style={{ zIndex: 0, overflow: 'hidden' }}>
+            <canvas ref={nextCanvasRef} className="block max-h-[90%] rounded select-none" style={wideSpread ? { position: 'absolute', width: '44%', right: turnDirection === 'prev' ? 'auto' : '2%', left: turnDirection === 'prev' ? '2%' : 'auto' } : { maxWidth: '100%' }} draggable={false} />
+          </div>
+          <div className={`relative flex h-full max-h-full ${wideSpread ? 'w-[44%]' : 'w-full'} items-center justify-center rounded bg-white shadow-2xl`} style={{ ...flipStyle, zIndex: 2 }}>
             <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
