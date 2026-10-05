@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { createClient } from '@/lib/client-auth';
 
 export default function ResetPasswordPage() {
   const router = useRouter();
