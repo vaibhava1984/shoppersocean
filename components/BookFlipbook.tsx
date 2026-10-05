@@ -107,7 +107,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   };
 
   useEffect(() => {
-    const updateWideMode = () => setWideMode(window.innerWidth >= 700 && window.innerWidth > window.innerHeight * 1.05);
+    const updateWideMode = () => setWideMode(true);
     updateWideMode();
     window.addEventListener('resize', updateWideMode);
     return () => window.removeEventListener('resize', updateWideMode);
@@ -154,7 +154,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
       try {
         const pdfPage = await pdf.getPage(targetPage);
         const baseViewport = pdfPage.getViewport({ scale: 1 });
-        const spread = wideMode && page > 1;
+        const spread = wideMode && pageCount > 1;
         const availableWidth = Math.max(180, spread ? frame.clientWidth * 0.44 : frame.clientWidth - 4);
         const availableHeight = Math.max(260, spread ? frame.clientHeight * 0.90 : frame.clientHeight - 4);
         const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
@@ -213,7 +213,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const queued = run();
     renderQueueRef.current = queued.catch(() => {});
     await queued;
-  }, [zoom, cancelRender, wideMode, page]);
+  }, [zoom, cancelRender, wideMode, pageCount]);
 
   const renderPage = useCallback(async () => {
     const canvas = canvasRef.current;
@@ -297,20 +297,21 @@ export default function BookFlipbook({ bookId, title }: Props) {
     if (dragStartXRef.current === null) return;
     const offset = dragOffsetRef.current; dragStartXRef.current = null; dragOffsetRef.current = 0; setIsDragging(false);
     const threshold = Math.max(55, Math.min(140, (pageFrameRef.current?.clientWidth || 300) * 0.18));
-    if (Math.abs(offset) >= threshold) changePage(offset < 0 ? page + 1 : page - 1);
+    if (Math.abs(offset) >= threshold) changePage(offset < 0 ? page + 2 : page - 2);
     else setDragOffset(0);
   };
   const handleTouchStart = (event: React.TouchEvent) => { touchStartXRef.current = event.changedTouches[0]?.clientX ?? null; };
   const handleTouchEnd = (event: React.TouchEvent) => {
     const start = touchStartXRef.current; const end = event.changedTouches[0]?.clientX ?? null; touchStartXRef.current = null;
     if (start === null || end === null || Math.abs(end - start) < 45) return;
-    if (dragStartXRef.current === null) changePage(end < start ? page + 1 : page - 1);
+    if (dragStartXRef.current === null) changePage(end < start ? page + 2 : page - 2);
   };
   const sliderPageFromPointer = (clientX: number) => {
     if (!sliderRef.current || pageCount <= 1) return;
     const rect = sliderRef.current.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-    const target = Math.round(ratio * (pageCount - 1)) + 1;
+    const rawTarget = Math.round(ratio * (pageCount - 1)) + 1;
+    const target = Math.min(1 + Math.floor((rawTarget - 1) / 2) * 2, pageCount);
     setSliderPreviewPage(target);
   };
   useEffect(() => () => { void cancelRender(); pageTurnAudioRef.current?.pause(); bookOpenAudioRef.current?.pause(); }, [cancelRender]);
@@ -344,7 +345,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     boxShadow: turning || dragOffset !== 0 ? '0 18px 34px rgba(15,23,42,.26)' : '0 16px 30px rgba(15,23,42,.18)',
     backfaceVisibility: 'hidden', transformStyle: 'preserve-3d', touchAction: 'pan-y',
   };
-  const wideSpread = wideMode && page > 1;
+  const wideSpread = wideMode && page < pageCount;
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
@@ -366,8 +367,8 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
-            <Button variant="ghost" size="icon" className="absolute bottom-1 left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 1)} aria-label="Previous page"><ArrowLeft className="h-8 w-8 stroke-[3.25]" /></Button>
-            <Button variant="ghost" size="icon" className="absolute bottom-1 right-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page >= pageCount || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page + 1)} aria-label="Next page"><ArrowRight className="h-8 w-8 stroke-[3.25]" /></Button>
+            <Button variant="ghost" size="icon" className="absolute bottom-1 left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 2)} aria-label="Previous page"><ArrowLeft className="h-8 w-8 stroke-[3.25]" /></Button>
+            <Button variant="ghost" size="icon" className="absolute bottom-1 right-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page >= pageCount || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page + 2)} aria-label="Next page"><ArrowRight className="h-8 w-8 stroke-[3.25]" /></Button>
             <div ref={sliderRef} className="absolute bottom-1.5 left-12 right-12 z-30 h-6 cursor-pointer touch-none select-none" onPointerDown={handleSliderPointerDown} onPointerMove={handleSliderPointerMove} onPointerUp={handleSliderPointerUp} onPointerCancel={handleSliderPointerUp}>
               <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/30 shadow-inner" />
               <div className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/65" style={{ width: `${sliderPercent}%` }} />
@@ -377,6 +378,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
         </div>
       </div>
     </div>
-    <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
+    <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Pages {page}{pageCount > page ? `–${page + 1}` : ''} / {pageCount || '—'}</span></div>
   </div>;
 }
