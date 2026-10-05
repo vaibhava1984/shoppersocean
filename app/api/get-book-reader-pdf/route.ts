@@ -21,16 +21,16 @@ async function resolveBookFile(bookId: string) {
   if (!purchase) return { error: NextResponse.json({ error: "Purchase required" }, { status: 403 }) };
 
   const file = await db
-    .prepare("SELECT file_path,file_name,file_type FROM private_book_files WHERE book_id=? ORDER BY created_at DESC LIMIT 20")
+    .prepare("SELECT storage_key,file_name,mime_type FROM private_book_files WHERE book_id=? ORDER BY created_at DESC LIMIT 20")
     .bind(bookId)
     .all<Record<string, any>>();
 
   const pdf = file.results.find((row) =>
-    String(row.file_type || "").toLowerCase() === "pdf" ||
+    String(row.mime_type || "").toLowerCase() === "application/pdf" ||
     String(row.file_name || "").toLowerCase().endsWith(".pdf")
   );
 
-  if (!pdf?.file_path) {
+  if (!pdf?.storage_key) {
     return { error: NextResponse.json({ error: "No book file is available" }, { status: 404 }) };
   }
 
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
     const resolved = await resolveBookFile(bookId);
     if ("error" in resolved) return resolved.error;
 
-    const signedUrl = await getB2ObjectUrl(String(resolved.file.file_path));
+    const signedUrl = await getB2ObjectUrl(String(resolved.file.storage_key));
     const headers = new Headers();
     const range = request.headers.get("range");
     if (range) headers.set("Range", range);
@@ -82,7 +82,7 @@ export async function HEAD(request: Request) {
     const resolved = await resolveBookFile(bookId);
     if ("error" in resolved) return resolved.error;
 
-    const signedUrl = await getB2ObjectUrl(String(resolved.file.file_path));
+    const signedUrl = await getB2ObjectUrl(String(resolved.file.storage_key));
     const upstream = await fetch(signedUrl, { method: "HEAD" });
     if (!upstream.ok) return new Response(null, { status: upstream.status });
 
