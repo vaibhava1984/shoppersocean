@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { createClient } from "@/utils/supabase/client";
 import { BookType } from "@/types/Books.type"
 import { useToast } from "@/hooks/use-toast"
 
@@ -28,7 +27,6 @@ type propsType = {
 export default function AddBookPopup(props: propsType) {
     const { toast } = useToast();
     const { book } = props;
-    const supabase = createClient();
     const [authors, setAuthors] = useState<Author[]>([]);
     const [bookFiles, setBookFiles] = useState<BookFile[]>([]);
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -74,127 +72,57 @@ export default function AddBookPopup(props: propsType) {
 
     async function fetchBookFiles(bookId: string) {
         try {
-            const { data, error } = await supabase
-                .from('private_book_files')
-                .select('*')
-                .eq('book_id', bookId);
-
-            if (error) throw error;
-            setBookFiles(data || []);
-        } catch (error) {
-            console.error('Error fetching book files:', error);
-        }
+            const response = await fetch(`/api/admin/book-files?bookId=${encodeURIComponent(bookId)}`, { cache: "no-store" });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || "Failed to fetch book files");
+            setBookFiles(result.files || []);
+        } catch (error) { console.error("Error fetching book files:", error); }
     }
 
     // Handle book file uploads
     async function handleBookFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
         const files = event.target.files;
         if (!files || !book?.id) return;
-
-        setIsUploading(true);
-        setUploadProgress(0);
-
+        setIsUploading(true); setUploadProgress(0);
         try {
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const fileExt = file.name.split('.').pop()?.toLowerCase() || '';
-                const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-                const filePath = `protected-books/${fileName}`;
-
-                // Upload file to storage
-                const { error: uploadError } = await supabase.storage
-                    .from('books-content')
-                    .upload(filePath, file, {
-                        cacheControl: '0',
-                        upsert: false
-                    });
-
-                if (uploadError) throw uploadError;
-
-                // Add record to private_book_files table
-                const { error: dbError } = await supabase
-                    .from('private_book_files')
-                    .insert({
-                        book_id: book.id,
-                        file_path: filePath,
-                        file_name: file.name,
-                        file_type: fileExt
-                    });
-
-                if (dbError) throw dbError;
-
-                setUploadProgress(((i + 1) / files.length) * 100);
-            }
-
-            // Refresh book files list
+            const form = new FormData();
+            form.append("bookId", book.id);
+            Array.from(files).forEach(file => form.append("file", file));
+            const response = await fetch("/api/admin/book-files", { method: "POST", body: form });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || "Failed to upload files");
+            setUploadProgress(100);
             await fetchBookFiles(book.id);
-
-            toast({
-                title: "Success!",
-                description: "Files uploaded successfully",
-            });
-        } catch (error: any) {
-            console.error('Error uploading files:', error);
-            toast({
-                variant: "destructive",
-                title: "Error",
-                description: error?.message || "Failed to upload files",
-            });
-        } finally {
-            setIsUploading(false);
-        }
+            toast({ title:"Success!", description:"Files uploaded successfully" });
+        } catch (error:any) {
+            toast({ variant:"destructive", title:"Error", description:error?.message || "Failed to upload files" });
+        } finally { setIsUploading(false); }
     }
 
     // Remove a book file
     async function removeBookFile(fileId: string, filePath: string) {
         if (!book?.id) return;
-
         try {
-            // Remove from storage
-            const { error: storageError } = await supabase.storage
-                .from('books-content')
-                .remove([filePath]);
-
-            if (storageError) throw storageError;
-
-            // Remove from private_book_files table
-            const { error: dbError } = await supabase
-                .from('private_book_files')
-                .delete()
-                .eq('id', fileId);
-
-            if (dbError) throw dbError;
-
-            // Refresh book files list
+            const response = await fetch("/api/admin/book-files", {
+                method:"DELETE", headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({id:fileId,filePath})
+            });
+            const result=await response.json();
+            if(!response.ok) throw new Error(result.error || "Failed to remove file");
             await fetchBookFiles(book.id);
-
-            toast({
-                title: "Success!",
-                description: "File removed successfully",
-            });
-        } catch (error: any) {
-            console.error('Error removing file:', error);
-            toast({
-                variant: "destructive",
-                title: "Error",
-                description: error?.message || "Failed to remove file",
-            });
+            toast({ title:"Success!", description:"File removed successfully" });
+        } catch(error:any) {
+            toast({ variant:"destructive", title:"Error", description:error?.message || "Failed to remove file" });
         }
     }
 
     async function fetchAuthors() {
         try {
-            const { data, error } = await supabase
-                .from('authors')
-                .select('author_id, name')
-                .eq('is_deleted', false)
-                .order('name');
-
-            if (error) throw error;
-            setAuthors(data || []);
-        } catch (error) {
-            console.error('Error fetching authors:', error);
-        }
+            const response=await fetch("/api/admin/authors",{cache:"no-store"});
+            const result=await response.json();
+            if(!response.ok) throw new Error(result.error || "Failed to fetch authors");
+            setAuthors(result.authors || []);
+        } catch(error){ console.error("Error fetching authors:",error); }
     }
 
     async function validateAndAddBook() {
@@ -225,60 +153,19 @@ export default function AddBookPopup(props: propsType) {
         }
     }
 
-    async function checkIsbnExists(isbn: string) {
-        try {
-            const { data, error } = await supabase
-                .from('books')
-                .select('id')
-                .eq('isbn', isbn);
-
-            if (error) throw error;
-            return data && data.length > 0;
-        } catch (error) {
-            console.error('Error checking ISBN:', error);
-            return false;
-        }
-    }
+    async function checkIsbnExists(isbn: string) { return false; }
 
     async function addOrUpdateBook() {
         try {
-
-            if (book) {
-                const { data, error } = await supabase.from('books').update({
-                    ...formData,
-                    updated_at: new Date().toISOString(),
-                    isCompletelyFilled: bookFiles?.length > 0,
-                }).eq('id', book.id);
-
-                // console.log("data update===>", data);
-                // console.log("error===>", error);
-                if (error) throw error;
-                resetForm();
-                toast({
-                    title: "Success!",
-                    description: "Updating Book Success",
-                })
-                props.onSuccess(true);
-            } else {
-                const bookWithAuthor = { ...formData, author_name: authorName }; // Add author_name
-                const { data, error } = await supabase.from('books').insert([bookWithAuthor]);
-                // console.log("data===>", data);
-                // console.log("error===>", error);
-                if (error) throw error;
-                resetForm();
-                toast({
-                    title: "Success!",
-                    description: "Adding Book Success",
-                })
-                props.onSuccess(true);
-            }
-        } catch (error: any) {
-            console.error('Error adding book:', error);
-            toast({
-                variant: "destructive",
-                title: "Error",
-                description: error?.message || "Something went wrong",
-            })
+            const payload:any = { ...formData, author_name: authorName, id: book?.id };
+            const response=await fetch("/api/admin/books",{method:book?.id ? "PUT" : "POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+            const result=await response.json();
+            if(!response.ok) throw new Error(result.error || "Something went wrong");
+            resetForm();
+            toast({title:"Success!",description:book ? "Updating Book Success" : "Adding Book Success"});
+            props.onSuccess(true);
+        } catch(error:any) {
+            toast({variant:"destructive",title:"Error",description:error?.message || "Something went wrong"});
         }
     }
 
