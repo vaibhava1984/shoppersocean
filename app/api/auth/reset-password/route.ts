@@ -29,21 +29,39 @@ export async function POST(req: Request) {
 
     // Verify the reset token (it's a JWT with sub = user id, exp = 1 hour)
     const payload = await verifyJwt(token, jwtSecret);
-    if (!payload) {
+    if (!payload || payload.purpose !== 'password_reset') {
       return NextResponse.json({ error: 'Invalid or expired reset token' }, { status: 401 });
     }
 
     // Hash the new password
+    const user = await db.prepare('SELECT id, email, full_name, country, updated_at FROM users WHERE id = ?').bind(payload.sub).first<{ id: string; email: string; full_name: string | null; country: string | null; updated_at: string | null }>();
+    if (!user) {
+      return NextResponse.json({ error: 'Invalid or expired reset token' }, { status: 401 });
+    }
+
+    // The reset token is invalidated as soon as the password is changed. A
+    // token issued before the user's last password update cannot be reused.
+    if (user.updated_at) {
+      const updatedAtMs = Date.parse(user.updated_at);
+      if (Number.isFinite(updatedAtMs) && payload.iat * 1000 <= updatedAtMs) {
+        return NextResponse.json({ error: 'Invalid or expired reset token' }, { status: 401 });
+      }
+    }
+
     const hashedPassword = await hashPassword(new_password);
     const now = new Date().toISOString();
 
-    // Update the user's password
-    await db.prepare(
-      'UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?'
-    ).bind(hashedPassword, now, payload.sub).run();
+    // Update the password only if the user record has not changed since the
+    // token was issued. This also makes a reset token effectively single-use.
+    const updateResult = await db.prepare(
+      'UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ? AND (updated_at IS NULL OR updated_at = ?)'
+    ).bind(hashedPassword, now, payload.sub, user.updated_at || null).run();
+    if (!updateResult.success || (updateResult.meta?.changes ?? 0) !== 1) {
+      return NextResponse.json({ error: 'Invalid or expired reset token' }, { status: 401 });
+    }
 
     // Create a new session JWT (auto-login after reset)
-    const user = await db.prepare('SELECT id, email, full_name, country FROM users WHERE id = ?').bind(payload.sub).first<{ id: string; email: string; full_name: string | null; country: string | null }>();
+
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
