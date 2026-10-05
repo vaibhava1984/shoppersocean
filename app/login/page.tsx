@@ -67,7 +67,9 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
       if (error) {
         setIsSubmitting(false)
-        if (error.code === "email_not_confirmed") {
+        if (error.code === "account_not_found") {
+          setErrors({ general: "There isn't a user with that email, dear. To join us, please register or make an account!" })
+        } else if (error.code === "email_not_confirmed") {
           setErrors({ general: "Please confirm your email address and try again." })
         } else if (error.code === "invalid_credentials") {
           setErrors({ general: "Invalid credentials" })
@@ -149,6 +151,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
   }
 
   function getAuthErrorMessage(code: string) {
+    if (code === "account_not_found") return "There isn't a user with that email, dear. To join us, please register or make an account!"
     if (code === "email_not_confirmed") return "Please confirm your email address and try again."
     if (code === "invalid_credentials") return "Invalid credentials"
     if (code === "account_already_registered") return "An account with this email already exists. Please sign in or use a different email address."
@@ -177,7 +180,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
         <div className="space-y-4">
           {accountCreated === "success" && <div className="bg-green-400 text-white p-2 rounded">Account created successfully. Please confirm your mail and login.</div>}
-          {(authError || errors.general) && <div className="bg-red-400 text-white p-2 rounded">{authError ? getAuthErrorMessage(authError) : errors.general}</div>}
+          {(authError || errors.general) && (authError === "account_not_found" || errors.general === "There isn't a user with that email, dear. To join us, please register or make an account!" ? <div className="p-0 text-sm font-medium text-green-800">{authError ? getAuthErrorMessage(authError) : errors.general}</div> : <div className="bg-red-400 text-white p-2 rounded">{authError ? getAuthErrorMessage(authError) : errors.general}</div>)}
 
           {!isSignIn && (
             <>
