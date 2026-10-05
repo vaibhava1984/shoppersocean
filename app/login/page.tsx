@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/client-auth"
 
 export default function Login({ searchParams }: { searchParams: any }) {
-  const supabase = createClient()
+  const auth = createClient()
   const router = useRouter()
   // @ts-ignore
   const { accountCreated, type, authError } = React.use(searchParams)
@@ -60,7 +60,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
     }
     try {
       // Authenticate through the Cloudflare D1 API; it writes the JWT session cookie.
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await auth.auth.signInWithPassword({
         email: email.trim(),
         password,
       })
@@ -92,7 +92,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error } = await auth.auth.signUp({
         email: email.trim(),
         password,
         full_name: username.trim(),
@@ -129,7 +129,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
       return
     }
     setIsSubmitting(true)
-    const { error } = await supabase.auth.verifyOtp({
+    const { error } = await auth.auth.verifyOtp({
       phone: mobile.trim(),
       token: otp,
       type: "phone_change",
