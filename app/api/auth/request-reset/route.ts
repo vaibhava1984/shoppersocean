@@ -34,9 +34,10 @@ export async function POST(req: Request) {
     // Create a reset token (valid for 1 hour)
     const resetToken = await createJwt({ sub: user.id, email: user.email }, jwtSecret, 3600);
 
-    // Build reset URL
-    const url = new URL(req.url);
-    const resetUrl = `${url.protocol}//${url.host}/reset-password?token=${resetToken}`;
+    // Always send users to the real public site, not a preview/worker hostname.
+    // This prevents reset links from becoming invalid when the request is handled
+    // through a Cloudflare/preview hostname.
+    const resetUrl = `https://www.shoppersocean.com/reset-password?token=${resetToken}`;
 
     // Send email via Resend
     if (resendApiKey) {
@@ -67,7 +68,12 @@ export async function POST(req: Request) {
       });
 
       if (!emailResponse.ok) {
-        console.error('Failed to send reset email:', await emailResponse.text());
+        const resendError = await emailResponse.text();
+        console.error('Failed to send reset email:', resendError);
+        return NextResponse.json(
+          { error: 'Failed to send reset email' },
+          { status: 502, headers: { 'Cache-Control': 'no-store' } }
+        );
       }
     }
 
