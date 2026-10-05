@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     }
 
     // Create a reset token (valid for 1 hour)
-    const resetToken = await createJwt({ sub: user.id, email: user.email }, jwtSecret, 3600);
+    const resetToken = await createJwt({ sub: user.id, email: user.email, purpose: 'password_reset' }, jwtSecret, 3600);
 
     // Always send users to the real public site, not a preview/worker hostname.
     // This prevents reset links from becoming invalid when the request is handled
