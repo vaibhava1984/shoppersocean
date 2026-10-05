@@ -2,7 +2,7 @@
  * Server-side authentication utilities — Cloudflare D1 + JWT (Web Crypto API).
  */
 export interface AuthUser { id:string; email:string; full_name:string|null; country:string|null; }
-interface JWTPayload { sub:string; email:string; exp:number; iat:number; }
+interface JWTPayload { sub:string; email:string; purpose?:string; exp:number; iat:number; }
 const enc=new TextEncoder(); const dec=new TextDecoder();
 function b64e(bytes:Uint8Array){return btoa(String.fromCharCode(...bytes)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
 function b64d(value:string){let s=value.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return new Uint8Array([...atob(s)].map(c=>c.charCodeAt(0)))}
