@@ -16,9 +16,7 @@ export default async function MySalesPage({searchParams}:{searchParams?:Promise<
   const db = getD1();
   if (!db) throw new Error("Cloudflare D1 is not available");
 
-  const email = user.emailAddresses?.find(e => e.id === user.primaryEmailAddressId)?.emailAddress
-    ?? user.emailAddresses?.[0]?.emailAddress ?? "";
-  const profile = await db.prepare("SELECT id FROM profiles WHERE id = ? OR lower(email) = lower(?) LIMIT 1").bind(user.id, email).first<{id:string}>();
+  const profile = await db.prepare("SELECT id FROM users WHERE id = ? LIMIT 1").bind(user.id).first<{id:string}>();
   if (!profile) redirect("/");
 
   const author = await db.prepare("SELECT author_id FROM authors WHERE user_id = ? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(profile.id).first<{author_id:string}>();
