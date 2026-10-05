@@ -15,22 +15,38 @@ export type AppUser = {
   unsafeMetadata: { country?: string; address?: string };
 };
 
+function normalizedRoles(value: unknown): string[] {
+  return String(value ?? "")
+    .split(",")
+    .map((role) => role.trim().toUpperCase())
+    .filter(Boolean);
+}
+
 function rowToUser(r: any): AppUser {
   const email = String(r.email ?? "");
+  const roles = normalizedRoles(r.userrole);
+
   return {
     id: String(r.id),
     emailAddresses: [{ id: "primary", emailAddress: email }],
     primaryEmailAddressId: "primary",
     firstName: String(r.full_name ?? ""),
     username: null,
-    phoneNumbers: r.phone ? [{ phoneNumber: String(r.phone), verification: { status: "verified" } }] : [],
+    phoneNumbers: r.phone
+      ? [{ phoneNumber: String(r.phone), verification: { status: "verified" } }]
+      : [],
     publicMetadata: {
-      userrole: String(r.userrole ?? "").toUpperCase() || undefined,
+      // The live D1 data may contain composite roles such as "admin,author,user".
+      // Keep the app's existing single-role contract while giving ADMIN precedence.
+      userrole: roles.includes("ADMIN") ? "ADMIN" : roles[0] || undefined,
       isAuthor: Boolean(r.isAuthor),
       country: r.country ?? undefined,
       address: r.address ?? undefined,
     },
-    unsafeMetadata: { country: r.country ?? undefined, address: r.address ?? undefined },
+    unsafeMetadata: {
+      country: r.country ?? undefined,
+      address: r.address ?? undefined,
+    },
   };
 }
 
@@ -47,22 +63,25 @@ export async function getCurrentUser(): Promise<AppUser | null> {
     const payload = await verifyJwt(token, jwtSecret);
     if (!payload) return null;
 
-    const row = await db.prepare(
-      `SELECT
-        u.id,
-        u.email,
-        u.full_name,
-        u.country,
-        u.phone,
-        u.role AS userrole,
-        CASE WHEN EXISTS(
-          SELECT 1 FROM authors a
-          WHERE a.user_id = u.id AND COALESCE(a.is_deleted, 0) = 0
-        ) THEN 1 ELSE 0 END AS isAuthor
-       FROM users u
-       WHERE u.id = ?
-       LIMIT 1`
-    ).bind(payload.sub).first<any>();
+    const row = await db
+      .prepare(
+        `SELECT
+          u.id,
+          u.email,
+          u.full_name,
+          u.country,
+          u.phone,
+          u.role AS userrole,
+          CASE WHEN EXISTS(
+            SELECT 1 FROM authors a
+            WHERE a.user_id = u.id AND COALESCE(a.is_deleted, 0) = 0
+          ) THEN 1 ELSE 0 END AS isAuthor
+         FROM users u
+         WHERE u.id = ?
+         LIMIT 1`
+      )
+      .bind(payload.sub)
+      .first<any>();
 
     return row ? rowToUser(row) : null;
   } catch {
@@ -78,9 +97,12 @@ export async function getSessionProfile() {
     const { env } = await getCloudflareContext();
     const db = (env as any).DB as D1Database | undefined;
     return db
-      ? db.prepare(
-          "SELECT id,email,full_name,country,phone AS mobile,address FROM users WHERE id=? LIMIT 1"
-        ).bind(u.id).first<any>()
+      ? db
+          .prepare(
+            "SELECT id,email,full_name,country,phone AS mobile,address FROM users WHERE id=? LIMIT 1"
+          )
+          .bind(u.id)
+          .first<any>()
       : null;
   } catch {
     return null;
