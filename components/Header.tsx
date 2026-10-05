@@ -54,22 +54,22 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                 <DropdownMenuContent align="center" className="w-48">
                   {currentUser?.app_metadata?.userrole === "ADMIN" && (
                     <DropdownMenuItem asChild>
-                      <a href="/admin_panel" className="flex w-full items-center gap-2">
+                      <Link href="/admin_panel" className="flex w-full items-center gap-2">
                         <ShieldIcon width={18} />
                         Admin Panel
-                      </a>
+                      </Link>
                     </DropdownMenuItem>
                   )}
                   {currentUser?.app_metadata?.isAuthor === true && (
                     <DropdownMenuItem asChild>
-                      <a href="/my-sales" className="flex w-full items-center gap-2">
+                      <Link href="/my-sales" className="flex w-full items-center gap-2">
                         <ChartBarIcon width={18} />
                         My Sales
-                      </a>
+                      </Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem asChild>
-                    <a href="/my-purchases" className="flex w-full items-center gap-2">
+                    <Link href="/my-purchases" className="flex w-full items-center gap-2">
                       <HistoryIcon width={18} />
                       My Orders
                     </a>
