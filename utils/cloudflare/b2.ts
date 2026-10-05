@@ -111,6 +111,10 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
   return "https://" + host + uri + "?" + canonicalQuery + "&X-Amz-Signature=" + signature;
 }
 
+export async function getB2SignedRequest(method: "GET" | "HEAD", key: string) {
+  return signRequest(method, key, "UNSIGNED-PAYLOAD");
+}
+
 export async function putB2Object(key: string, bytes: Uint8Array, contentType: string) {
   const signed = await signRequest("PUT", key, await sha256(bytes), contentType);
   const response = await fetch(signed.url, {
