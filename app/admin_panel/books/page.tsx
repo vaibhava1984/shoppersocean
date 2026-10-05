@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import AddBookPopup from "./AddBookPopup";
-import { createClient } from "@/utils/supabase/client";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BookType } from "@/types/Books.type"
 import AdminSidebar from "../adminSidebar"
@@ -20,7 +19,6 @@ interface Column {
 }
 
 export default function Books() {
-    const supabase = createClient();
     const [books, setBooks] = useState<BookType[]>([]);
     const [filteredBooks, setFilteredBooks] = useState<BookType[]>([]);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -69,49 +67,20 @@ export default function Books() {
 
     async function fetchBooks() {
         try {
-            const { data, error } = await supabase.from('books').select(`
-                id,
-                title,
-                description,
-                published_date,
-                isbn,
-                price,
-                ratings,
-                cover_images,
-                binding,
-                language,
-                genre,
-                publisher,
-                pages,
-                author_id,
-                author_name,
-                updated_at,
-                authors (
-                    name
-                )
-            `).or('is_deleted.eq.false,is_deleted.is.null');
-            if (error) throw error;
-            setBooks(data ?? []);
-        } catch (error) {
-            console.error('Error fetching books:', error);
-        }
+            const response=await fetch("/api/admin/books",{cache:"no-store"});
+            const result=await response.json();
+            if(!response.ok) throw new Error(result.error || "Failed to fetch books");
+            setBooks(result.books || []);
+        } catch(error){ console.error("Error fetching books:",error); }
     }
 
     async function handleDeleteBook(book: BookType) {
         try {
-            const { error } = await supabase
-                .from('books')
-                .update({ is_deleted: true })
-                .eq('id', book.id);
-
-            if (error) throw error;
-
-            fetchBooks();
-            setShowDeleteAlert(false);
-            setBookToDelete(null);
-        } catch (error) {
-            console.error('Error deleting book:', error);
-        }
+            const response=await fetch("/api/admin/books",{method:"DELETE",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:book.id})});
+            const result=await response.json();
+            if(!response.ok) throw new Error(result.error || "Unable to delete book");
+            await fetchBooks(); setShowDeleteAlert(false); setBookToDelete(null);
+        } catch(error){ console.error("Error deleting book:",error); }
     }
 
     const displayedBooks = filteredBooks.length > 0 ? filteredBooks : (showViewAll ? books : []);
