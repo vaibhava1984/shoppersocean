@@ -73,9 +73,12 @@ async function signRequest(method: string, key: string, payloadHash: string, con
     signedHeaders,
     payloadHash,
   ].join("\n");
-  const scope = shortDate + "/" + cfg.region + "/s3/aws4_request";
+  // Backblaze S3-compatible SigV4 uses us-east-1 for the signing scope,
+  // even when the actual bucket endpoint is regional.
+  const signingRegion = "us-east-1";
+  const scope = shortDate + "/" + signingRegion + "/s3/aws4_request";
   const stringToSign = ["AWS4-HMAC-SHA256", amzDate, scope, await sha256(canonicalRequest)].join("\n");
-  const signature = hex(await hmac(await signingKey(cfg.secretKey, shortDate, cfg.region), stringToSign));
+  const signature = hex(await hmac(await signingKey(cfg.secretKey, shortDate, signingRegion), stringToSign));
 
   return {
     url: "https://" + host + uri,
