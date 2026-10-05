@@ -26,20 +26,19 @@ export async function GET() {
     const result = await db.prepare(
       `SELECT
         o.id,
-        o.order_date,
-        o.total_amount AS original_amount,
+        o.created_at AS order_date,
+        o.amount AS original_amount,
         o.currency AS original_currency,
         o.status,
         b.id AS book_id,
         b.title AS book_title,
-        p.original_amount AS payment_original_amount,
-        p.original_currency AS payment_original_currency,
-        p.payment_method
+        p.amount AS payment_amount,
+        p.currency AS payment_currency
       FROM orders o
-      LEFT JOIN books b ON b.id = o.product_id
+      LEFT JOIN books b ON b.id = o.book_id
       LEFT JOIN payments p ON p.order_id = o.id
       WHERE o.user_id = ?
-      ORDER BY o.order_date DESC`
+      ORDER BY o.created_at DESC`
     ).bind(user.id).all<any>();
 
     const purchases = (result.results || []).map((row: any) => ({
@@ -51,9 +50,9 @@ export async function GET() {
         ? { id: String(row.book_id), title: row.book_title || null }
         : null,
       payment: {
-        original_amount: row.payment_original_amount ?? row.original_amount ?? 0,
-        original_currency: row.payment_original_currency ?? row.original_currency ?? "",
-        payment_method: row.payment_method ?? "N/A",
+        original_amount: row.payment_amount ?? row.original_amount ?? 0,
+        original_currency: row.payment_currency ?? row.original_currency ?? "",
+        payment_method: "N/A",
       },
     }));
 
