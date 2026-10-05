@@ -40,7 +40,7 @@ export default async function LandingPage() {
           subtitle="Where every wave brings a new deal"
           buttonText=" Embark on Your Adventure"
           buttonLink="/bookShelf"
-          imageSrc="/homepage_hero.jpeg"
+          imageSrc="/homepage_hero (1).jpeg"
           imageAlt=" Embark on Your Adventure"
         />
       </div>
