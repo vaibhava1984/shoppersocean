@@ -128,7 +128,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
         let savedPage = 1;
         try {
           const stored = Number.parseInt(localStorage.getItem(pageStorageKey) || '1', 10);
-          if (Number.isFinite(stored)) savedPage = Math.min(pdf.numPages, Math.max(1, stored));
+          if (Number.isFinite(stored)) savedPage = Math.min(pdf.numPages, Math.max(1, stored % 2 === 0 ? stored - 1 : stored));
         } catch {}
         setPage(savedPage);
       } catch (err: any) {
