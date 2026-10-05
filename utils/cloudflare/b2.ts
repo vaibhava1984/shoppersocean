@@ -73,8 +73,10 @@ async function signRequest(method: string, key: string, payloadHash: string, con
     signedHeaders,
     payloadHash,
   ].join("\n");
-  // The SigV4 signing region must match the Backblaze B2 bucket region.
-  const signingRegion = cfg.region;
+
+  // Backblaze's S3-compatible SigV4 presigning examples use us-east-1
+  // in the credential scope even when the endpoint is regional.
+  const signingRegion = "us-east-1";
   const scope = shortDate + "/" + signingRegion + "/s3/aws4_request";
   const stringToSign = ["AWS4-HMAC-SHA256", amzDate, scope, await sha256(canonicalRequest)].join("\n");
   const signature = hex(await hmac(await signingKey(cfg.secretKey, shortDate, signingRegion), stringToSign));
@@ -95,9 +97,7 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
   const { amzDate, shortDate } = amzDateParts();
   const host = cfg.endpoint;
   const uri = canonicalPath(cfg.bucket, key);
-
-  // The SigV4 signing region must match the Backblaze B2 bucket region.
-  const signingRegion = cfg.region;
+  const signingRegion = "us-east-1";
 
   const params = new URLSearchParams({
     "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
@@ -119,8 +119,6 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
 }
 
 export async function getB2SignedRequest(method: "GET" | "HEAD", key: string) {
-  // B2 S3 GET/HEAD requests use the SHA-256 of the empty request body.
-  // This avoids rejected private-object reads caused by UNSIGNED-PAYLOAD.
   const emptyPayloadHash = await sha256(new Uint8Array());
   return signRequest(method, key, emptyPayloadHash);
 }
