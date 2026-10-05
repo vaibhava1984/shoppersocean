@@ -93,9 +93,15 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
   const { amzDate, shortDate } = amzDateParts();
   const host = cfg.endpoint;
   const uri = canonicalPath(cfg.bucket, key);
+
+  // Backblaze's S3-compatible presigned URLs use us-east-1 in the
+  // SigV4 credential scope even when the bucket endpoint is regional
+  // (for example s3.us-west-004.backblazeb2.com).
+  const signingRegion = "us-east-1";
+
   const params = new URLSearchParams({
     "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
-    "X-Amz-Credential": cfg.accessKeyId + "/" + shortDate + "/" + cfg.region + "/s3/aws4_request",
+    "X-Amz-Credential": cfg.accessKeyId + "/" + shortDate + "/" + signingRegion + "/s3/aws4_request",
     "X-Amz-Date": amzDate,
     "X-Amz-Expires": String(expiresInSeconds),
     "X-Amz-SignedHeaders": "host",
@@ -106,9 +112,9 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
     .join("&");
   const canonicalHeaders = "host:" + host + "\n";
   const canonicalRequest = ["GET", uri, canonicalQuery, canonicalHeaders, "host", "UNSIGNED-PAYLOAD"].join("\n");
-  const scope = shortDate + "/" + cfg.region + "/s3/aws4_request";
+  const scope = shortDate + "/" + signingRegion + "/s3/aws4_request";
   const stringToSign = ["AWS4-HMAC-SHA256", amzDate, scope, await sha256(canonicalRequest)].join("\n");
-  const signature = hex(await hmac(await signingKey(cfg.secretKey, shortDate, cfg.region), stringToSign));
+  const signature = hex(await hmac(await signingKey(cfg.secretKey, shortDate, signingRegion), stringToSign));
   return "https://" + host + uri + "?" + canonicalQuery + "&X-Amz-Signature=" + signature;
 }
 
