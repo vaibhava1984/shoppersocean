@@ -86,8 +86,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Required payment information is missing or invalid" }, { status: 400 });
     }
 
-    // The payment route no longer depends on Clerk/Supabase. The authenticated
-    // application identity is represented by the stable D1 profile id.
+    // The payment route uses the same D1/JWT identity as the rest of the application.
+    // The authenticated application identity is represented by the stable D1 user id.
     const profile = await db
       .prepare("SELECT id, email, mobile, address FROM profiles WHERE id = ? LIMIT 1")
       .bind(userId)
