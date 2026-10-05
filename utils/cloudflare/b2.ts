@@ -50,6 +50,37 @@ function getConfig() {
   };
 }
 
+/**
+ * Protected reader download through Backblaze's Native API.
+ * This deliberately avoids custom SigV4 signing for the reader path.
+ * B2's native API returns a downloadUrl and short-lived authorization token.
+ */
+export async function getB2NativeRequest(method: "GET" | "HEAD", key: string) {
+  const cfg = getConfig();
+  const basic = btoa(cfg.accessKeyId + ":" + cfg.secretKey);
+
+  const authResponse = await fetch("https://api.backblazeb2.com/b2api/v4/b2_authorize_account", {
+    method: "GET",
+    headers: { Authorization: "Basic " + basic },
+  });
+
+  if (!authResponse.ok) {
+    const detail = await authResponse.text().catch(() => "");
+    throw new Error("B2 authorization failed: " + authResponse.status + (detail ? " " + detail.slice(0, 300) : ""));
+  }
+
+  const auth = await authResponse.json() as { downloadUrl?: string; authorizationToken?: string };
+  if (!auth.downloadUrl || !auth.authorizationToken) {
+    throw new Error("B2 authorization response is missing download credentials");
+  }
+
+  const filePath = key.split("/").map(encodeURIComponent).join("/");
+  return {
+    url: auth.downloadUrl.replace(/\/$/, "") + "/file/" + encodeURIComponent(cfg.bucket) + "/" + filePath,
+    headers: { Authorization: auth.authorizationToken },
+  };
+}
+
 async function signRequest(method: string, key: string, payloadHash: string, contentType?: string) {
   const cfg = getConfig();
   const { amzDate, shortDate } = amzDateParts();
@@ -65,17 +96,7 @@ async function signRequest(method: string, key: string, payloadHash: string, con
   const signedHeaderNames = Object.keys(headers).sort();
   const canonicalHeaders = signedHeaderNames.map((name) => name + ":" + headers[name].trim() + "\n").join("");
   const signedHeaders = signedHeaderNames.join(";");
-  const canonicalRequest = [
-    method,
-    uri,
-    "",
-    canonicalHeaders,
-    signedHeaders,
-    payloadHash,
-  ].join("\n");
-
-  // Backblaze's S3-compatible SigV4 presigning examples use us-east-1
-  // in the credential scope even when the endpoint is regional.
+  const canonicalRequest = [method, uri, "", canonicalHeaders, signedHeaders, payloadHash].join("\n");
   const signingRegion = "us-east-1";
   const scope = shortDate + "/" + signingRegion + "/s3/aws4_request";
   const stringToSign = ["AWS4-HMAC-SHA256", amzDate, scope, await sha256(canonicalRequest)].join("\n");
@@ -86,7 +107,7 @@ async function signRequest(method: string, key: string, payloadHash: string, con
     headers: {
       "X-Amz-Date": amzDate,
       "X-Amz-Content-Sha256": payloadHash,
-      "Authorization": "AWS4-HMAC-SHA256 Credential=" + cfg.accessKeyId + "/" + scope + ", SignedHeaders=" + signedHeaders + ", Signature=" + signature,
+      Authorization: "AWS4-HMAC-SHA256 Credential=" + cfg.accessKeyId + "/" + scope + ", SignedHeaders=" + signedHeaders + ", Signature=" + signature,
       ...(contentType ? { "Content-Type": contentType } : {}),
     },
   };
@@ -106,10 +127,7 @@ export async function getB2ObjectUrl(key: string, expiresInSeconds = 900) {
     "X-Amz-Expires": String(expiresInSeconds),
     "X-Amz-SignedHeaders": "host",
   });
-  const canonicalQuery = Array.from(params.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => awsEncode(k) + "=" + awsEncode(v))
-    .join("&");
+  const canonicalQuery = Array.from(params.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => awsEncode(k) + "=" + awsEncode(v)).join("&");
   const canonicalHeaders = "host:" + host + "\n";
   const canonicalRequest = ["GET", uri, canonicalQuery, canonicalHeaders, "host", "UNSIGNED-PAYLOAD"].join("\n");
   const scope = shortDate + "/" + signingRegion + "/s3/aws4_request";
@@ -125,23 +143,12 @@ export async function getB2SignedRequest(method: "GET" | "HEAD", key: string) {
 
 export async function putB2Object(key: string, bytes: Uint8Array, contentType: string) {
   const signed = await signRequest("PUT", key, await sha256(bytes), contentType);
-  const response = await fetch(signed.url, {
-    method: "PUT",
-    headers: signed.headers,
-    body: bytes,
-  });
-  if (!response.ok) {
-    throw new Error("Backblaze B2 upload failed with status " + response.status);
-  }
+  const response = await fetch(signed.url, { method: "PUT", headers: signed.headers, body: bytes });
+  if (!response.ok) throw new Error("Backblaze B2 upload failed with status " + response.status);
 }
 
 export async function deleteB2Object(key: string) {
   const signed = await signRequest("DELETE", key, await sha256(new Uint8Array()));
-  const response = await fetch(signed.url, {
-    method: "DELETE",
-    headers: signed.headers,
-  });
-  if (!response.ok && response.status !== 404) {
-    throw new Error("Backblaze B2 delete failed with status " + response.status);
-  }
+  const response = await fetch(signed.url, { method: "DELETE", headers: signed.headers });
+  if (!response.ok && response.status !== 404) throw new Error("Backblaze B2 delete failed with status " + response.status);
 }
