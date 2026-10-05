@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
-import { getB2ObjectUrl } from "@/utils/cloudflare/b2";
+import { getB2SignedRequest } from "@/utils/cloudflare/b2";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -45,12 +45,12 @@ export async function GET(request: Request) {
     const resolved = await resolveBookFile(bookId);
     if ("error" in resolved) return resolved.error;
 
-    const signedUrl = await getB2ObjectUrl(String(resolved.file.storage_key));
-    const headers = new Headers();
+    const signed = await getB2SignedRequest("GET", String(resolved.file.storage_key));
+    const headers = new Headers(signed.headers);
     const range = request.headers.get("range");
     if (range) headers.set("Range", range);
 
-    const upstream = await fetch(signedUrl, { headers });
+    const upstream = await fetch(signed.url, { headers });
     if (!upstream.ok && upstream.status !== 206) {
       return NextResponse.json({ error: "Unable to read book file" }, { status: upstream.status || 502 });
     }
@@ -68,7 +68,7 @@ export async function GET(request: Request) {
 
     return new Response(upstream.body, { status: upstream.status, headers: responseHeaders });
   } catch (error) {
-    console.error("Book reader proxy failed:", error);
+    console.error("Book reader proxy failed:", error instanceof Error ? error.message : String(error));
     return NextResponse.json({ error: "Unable to open book" }, { status: 500 });
   }
 }
@@ -82,8 +82,8 @@ export async function HEAD(request: Request) {
     const resolved = await resolveBookFile(bookId);
     if ("error" in resolved) return resolved.error;
 
-    const signedUrl = await getB2ObjectUrl(String(resolved.file.storage_key));
-    const upstream = await fetch(signedUrl, { method: "HEAD" });
+    const signed = await getB2SignedRequest("HEAD", String(resolved.file.storage_key));
+    const upstream = await fetch(signed.url, { method: "HEAD", headers: signed.headers });
     if (!upstream.ok) return new Response(null, { status: upstream.status });
 
     const headers = new Headers({
