@@ -1,5 +1,4 @@
 "use client"
-import { createClient } from "@/utils/supabase/client";
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from 'lucide-react'
@@ -10,22 +9,15 @@ const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
-    const supabase = createClient();
 
     useEffect(() => {
         const fetchTestimonialsAndUser = async () => {
             setLoading(true);
             try {
-                const testimonialsResult = await supabase
-                    .from('testimonials')
-                    .select('description, users, rating, book_id')
-                    .is('book_id', null);
-
-                if (testimonialsResult.error) {
-                    throw testimonialsResult.error;
-                }
-
-                setTestimonials(testimonialsResult.data || []);
+                const response = await fetch('/api/testimonials', { cache: 'no-store' });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data?.error || 'Failed to fetch testimonials');
+                setTestimonials(data?.testimonials || []);
             } catch (err) {
                 setError('Failed to fetch testimonials');
                 console.error(err);
@@ -35,8 +27,6 @@ const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
         };
 
         fetchTestimonialsAndUser();
-        // The Supabase browser client is intentionally created once for this component.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleDeleteAccount = async () => {
@@ -59,7 +49,7 @@ const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
                 throw new Error(result.error || 'Unable to delete your account. Please try again.');
             }
 
-            await supabase.auth.signOut();
+            await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin', cache: 'no-store' });
             window.alert('Your account has been deleted successfully !');
             window.location.href = '/';
         } catch (err) {
