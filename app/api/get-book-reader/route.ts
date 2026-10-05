@@ -24,12 +24,12 @@ export async function POST(request: Request) {
     if (!purchase) return NextResponse.json({ error: "Purchase required" }, { status: 403 });
 
     const files = await db
-      .prepare("SELECT file_path,file_name,file_type FROM private_book_files WHERE book_id=? ORDER BY created_at DESC LIMIT 20")
+      .prepare("SELECT storage_key,file_name,mime_type FROM private_book_files WHERE book_id=? ORDER BY created_at DESC LIMIT 20")
       .bind(String(bookId))
       .all<Record<string, any>>();
 
     const pdf = files.results.find(file =>
-      String(file.file_type || "").toLowerCase() === "pdf" ||
+      String(file.mime_type || "").toLowerCase() === "application/pdf" ||
       String(file.file_name || "").toLowerCase().endsWith(".pdf")
     );
 
