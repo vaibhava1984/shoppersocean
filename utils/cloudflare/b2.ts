@@ -52,8 +52,7 @@ function getConfig() {
 
 /**
  * Protected reader download through Backblaze's Native API.
- * This deliberately avoids custom SigV4 signing for the reader path.
- * B2's native API returns a downloadUrl and short-lived authorization token.
+ * Backblaze v4 returns the download URL under apiInfo.storageApi.downloadUrl.
  */
 export async function getB2NativeRequest(method: "GET" | "HEAD", key: string) {
   const cfg = getConfig();
@@ -69,14 +68,19 @@ export async function getB2NativeRequest(method: "GET" | "HEAD", key: string) {
     throw new Error("B2 authorization failed: " + authResponse.status + (detail ? " " + detail.slice(0, 300) : ""));
   }
 
-  const auth = await authResponse.json() as { downloadUrl?: string; authorizationToken?: string };
-  if (!auth.downloadUrl || !auth.authorizationToken) {
+  const auth = await authResponse.json() as {
+    authorizationToken?: string;
+    apiInfo?: { storageApi?: { downloadUrl?: string } };
+  };
+
+  const downloadUrl = auth.apiInfo?.storageApi?.downloadUrl;
+  if (!downloadUrl || !auth.authorizationToken) {
     throw new Error("B2 authorization response is missing download credentials");
   }
 
   const filePath = key.split("/").map(encodeURIComponent).join("/");
   return {
-    url: auth.downloadUrl.replace(/\/$/, "") + "/file/" + encodeURIComponent(cfg.bucket) + "/" + filePath,
+    url: downloadUrl.replace(/\/$/, "") + "/file/" + encodeURIComponent(cfg.bucket) + "/" + filePath,
     headers: { Authorization: auth.authorizationToken },
   };
 }
