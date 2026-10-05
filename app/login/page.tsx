@@ -248,7 +248,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
         <div className="relative my-4"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300" /></div><div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">Or</span></div></div>
         <button type="button" onClick={() => { setIsSignIn(!isSignIn); setUsername(""); setEmail(""); setPassword(""); setCountry(""); setMobile(""); setAddress(""); setOtp(""); setPhoneVerificationRequired(false); setPhoneVerified(false); setErrors({}) }} className="w-full text-blue-600 text-sm font-medium text-center">{isSignIn ? "Need an account? Sign up" : "Already have an account? Sign in"}</button>
-        <div className="text-sm text-center mt-3"><Link href="/reset-password" className="text-blue-600 font-medium">Forgot your password?</Link></div>
+        <div className="text-sm text-center mt-3"><Link href="/forgot-password" className="text-blue-600 font-medium">Forgot your password?</Link></div>
       </div>
 
       <Dialog open={dialogState.isOpen} onOpenChange={open => setDialogState(p => ({...p, isOpen: open}))}>
