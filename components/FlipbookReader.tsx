@@ -74,6 +74,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const [turning, setTurning] = useState<'next' | 'prev' | null>(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [zoom, setZoom] = useState(1);
+  const [pageSize, setPageSize] = useState({ width: 0, height: 0 });
   const [dragStartX, setDragStartX] = useState<number | null>(null);
   const [dragX, setDragX] = useState(0);
   const soundRef = useRef<HTMLAudioElement | null>(null);
@@ -169,6 +170,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const viewport = pageProxy.getViewport({ scale });
     const width = Math.ceil(viewport.width);
     const height = Math.ceil(viewport.height);
+    setPageSize({ width, height });
 
     canvas.width = Math.ceil(width * dpr);
     canvas.height = Math.ceil(height * dpr);
@@ -340,7 +342,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         </div>
 
         <div
-          className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6"
+          className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-auto bg-slate-800 p-3 sm:p-6"
           style={{ perspective: '1600px', touchAction: 'pan-y' }}
           onPointerDown={event => {
             if (event.pointerType !== 'mouse' || event.button === 0) {
@@ -352,9 +354,9 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           onPointerUp={pointerUp}
           onPointerCancel={() => { setDragStartX(null); setDragX(0); }}
         >
-          <div className="relative flex h-[min(56vh,600px)] w-[min(96vw,980px)] items-center justify-center" aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
+          <div className="relative flex shrink-0 items-center justify-center" style={{ width: pageSize.width || 'auto', height: pageSize.height || 'auto' }} aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
             <div
-              className="relative flex max-h-full max-w-full items-center justify-center overflow-hidden rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
+              className="relative flex shrink-0 items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
               style={{ perspective: '1800px' }}
             >
               <div
@@ -366,7 +368,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
                   backfaceVisibility: 'hidden',
                 }}
               >
-                <canvas ref={canvasRef} className="block max-h-[68dvh] max-w-[86vw] select-none" draggable={false} />
+                <canvas ref={canvasRef} className="block shrink-0 select-none" draggable={false} />
               </div>
             </div>
           </div>
