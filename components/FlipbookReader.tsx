@@ -83,6 +83,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const [settling, setSettling] = useState(false);
   const [zoom, setZoom] = useState(1);
   const lastActivityRef = useRef(Date.now());
+  const pageRef = useRef(page);
   const inactivityTimerRef = useRef<number | null>(null);
   const inactivityLimit = 10 * 60 * 1000;
 
@@ -100,6 +101,10 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   }, [soundEnabled]);
 
   useEffect(() => () => { soundRef.current?.pause(); soundRef.current = null; }, []);
+
+  useEffect(() => {
+    pageRef.current = page;
+  }, [page]);
 
   useEffect(() => {
     const storageKey = 'shoppers-ocean-reader-state:' + pdfUrl;
@@ -128,7 +133,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const markActive = () => {
       lastActivityRef.current = Date.now();
       try {
-        sessionStorage.setItem(storageKey, JSON.stringify({ page, lastActivity: lastActivityRef.current }));
+        sessionStorage.setItem(storageKey, JSON.stringify({ page: pageRef.current, lastActivity: lastActivityRef.current }));
       } catch {}
       if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
       inactivityTimerRef.current = window.setTimeout(closeIfInactive, inactivityLimit);
@@ -161,7 +166,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       document.removeEventListener('visibilitychange', onVisibilityChange);
       if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
     };
-  }, [pdfUrl, router, page]);
+  }, [pdfUrl, router]);
 
 
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
@@ -461,7 +466,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           <div ref={bookHostRef} className="relative flex h-[min(56vh,600px)] w-[min(96vw,980px)] items-center justify-center"
  aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
             <div
-              className="relative flex max-h-full max-w-full items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
+              className="relative flex max-h-full max-w-full items-center justify-center overflow-hidden rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
               style={{
                 perspective: '1800px',
                 transformStyle: 'preserve-3d',
@@ -471,7 +476,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
               <canvas
                 ref={nextCanvasRef}
                 className="pointer-events-none absolute left-1/2 top-1/2 block max-h-[56dvh] max-w-[90vw] -translate-x-1/2 -translate-y-1/2 select-none"
-                style={{ zIndex: 0 }}
+                style={{ zIndex: 0, visibility: turning || dragDirection ? 'visible' : 'hidden' }}
                 draggable={false}
                 aria-hidden="true"
               />
