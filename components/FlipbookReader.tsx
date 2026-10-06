@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight, Loader2, Maximize2, X, Volume2 } from 'lucide-react';
 
 interface FlipbookReaderProps {
@@ -56,6 +57,7 @@ function loadPdfJs(): Promise<PdfJs> {
 }
 
 export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps) {
+  const router = useRouter();
   const bookHostRef = useRef<HTMLDivElement>(null);
   const currentCanvasRef = useRef<HTMLCanvasElement>(null);
   const nextCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -80,6 +82,9 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const [dragDirection, setDragDirection] = useState<'next' | 'prev' | null>(null);
   const [settling, setSettling] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const lastActivityRef = useRef(Date.now());
+  const inactivityTimerRef = useRef<number | null>(null);
+  const inactivityLimit = 10 * 60 * 1000;
 
   const playPageTurn = useCallback(() => {
     if (!soundEnabled) return;
@@ -95,6 +100,69 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   }, [soundEnabled]);
 
   useEffect(() => () => { soundRef.current?.pause(); soundRef.current = null; }, []);
+
+  useEffect(() => {
+    const storageKey = 'shoppers-ocean-reader-state:' + pdfUrl;
+    const now = Date.now();
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(storageKey) || 'null') as { page?: number; lastActivity?: number } | null;
+      if (saved?.lastActivity && now - saved.lastActivity < inactivityLimit && Number.isFinite(saved.page) && (saved.page as number) >= 1) {
+        setPage(saved.page as number);
+        setPageInput(String(saved.page));
+        lastActivityRef.current = saved.lastActivity;
+      } else {
+        sessionStorage.removeItem(storageKey);
+      }
+    } catch {}
+
+    const closeIfInactive = () => {
+      const elapsed = Date.now() - lastActivityRef.current;
+      if (elapsed >= inactivityLimit) {
+        try { sessionStorage.removeItem(storageKey); } catch {}
+        router.replace('/');
+        return;
+      }
+      inactivityTimerRef.current = window.setTimeout(closeIfInactive, inactivityLimit - elapsed);
+    };
+
+    const markActive = () => {
+      lastActivityRef.current = Date.now();
+      try {
+        sessionStorage.setItem(storageKey, JSON.stringify({ page, lastActivity: lastActivityRef.current }));
+      } catch {}
+      if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
+      inactivityTimerRef.current = window.setTimeout(closeIfInactive, inactivityLimit);
+    };
+
+    const onVisibilityChange = () => {
+      if (!document.hidden) {
+        const elapsed = Date.now() - lastActivityRef.current;
+        if (elapsed >= inactivityLimit) {
+          try { sessionStorage.removeItem(storageKey); } catch {}
+          router.replace('/');
+          return;
+        }
+        if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
+        inactivityTimerRef.current = window.setTimeout(closeIfInactive, inactivityLimit - elapsed);
+      }
+    };
+
+    const events: Array<keyof WindowEventMap> = ['pointerdown', 'keydown', 'touchstart', 'wheel'];
+    events.forEach(event => window.addEventListener(event, markActive, { passive: true }));
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    try {
+      sessionStorage.setItem(storageKey, JSON.stringify({ page, lastActivity: lastActivityRef.current }));
+    } catch {}
+    inactivityTimerRef.current = window.setTimeout(closeIfInactive, inactivityLimit);
+
+    return () => {
+      events.forEach(event => window.removeEventListener(event, markActive));
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
+    };
+  }, [pdfUrl, router, page]);
+
 
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
     const pageProxy = await documentProxy.getPage(pageNumber);
@@ -401,7 +469,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
               {/* Destination page sits underneath the sheet being turned. */}
               <canvas
                 ref={nextCanvasRef}
-                className="pointer-events-none absolute inset-0 block max-h-[56dvh] max-w-[90vw] select-none"
+                className="pointer-events-none absolute left-1/2 top-1/2 block max-h-[56dvh] max-w-[90vw] -translate-x-1/2 -translate-y-1/2 select-none"
+                style={{ zIndex: 0 }}
                 draggable={false}
                 aria-hidden="true"
               />
