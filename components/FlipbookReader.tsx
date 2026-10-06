@@ -202,9 +202,17 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
+
+    // On phones, fit the page to the available width first. The previous
+    // height-first constraint could reduce a portrait page to roughly half
+    // the reader width, making the actual book content look tiny.
     const maxWidth = Math.min(window.innerWidth * 0.94, fullscreen ? 1180 : 960);
     const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.76 : 0.68), fullscreen ? 820 : 680);
-    const scale = Math.min(maxWidth / base.width, maxHeight / base.height) * zoom;
+    const widthScale = maxWidth / base.width;
+    const heightScale = maxHeight / base.height;
+    const isMobile = window.innerWidth < 768;
+    const fitScale = isMobile ? widthScale : Math.min(widthScale, heightScale);
+    const scale = fitScale * zoom;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
     const width = Math.ceil(viewport.width);
