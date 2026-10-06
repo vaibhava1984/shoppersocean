@@ -105,13 +105,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
   };
 
   useEffect(() => {
-    const updateWideMode = () => setWideMode(true);
-    updateWideMode();
-    window.addEventListener('resize', updateWideMode);
-    return () => window.removeEventListener('resize', updateWideMode);
-  }, []);
-
-  useEffect(() => {
     let cancelled = false;
     if (!readerUrl) return;
     const load = async () => {
@@ -126,7 +119,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
         let savedPage = 1;
         try {
           const stored = Number.parseInt(localStorage.getItem(pageStorageKey) || '1', 10);
-          if (Number.isFinite(stored)) savedPage = Math.min(pdf.numPages, Math.max(1, stored % 2 === 0 ? stored - 1 : stored));
+          if (Number.isFinite(stored)) savedPage = Math.min(pdf.numPages, Math.max(1, stored));
         } catch {}
         setPage(savedPage);
       } catch (err: any) {
@@ -353,8 +346,8 @@ export default function BookFlipbook({ bookId, title }: Props) {
             <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
-            <Button variant="ghost" size="icon" className="absolute bottom-1 left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 2)} aria-label="Previous page"><ArrowLeft className="h-8 w-8 stroke-[3.25]" /></Button>
-            <Button variant="ghost" size="icon" className="absolute bottom-1 right-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page >= pageCount || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page + 2)} aria-label="Next page"><ArrowRight className="h-8 w-8 stroke-[3.25]" /></Button>
+            <Button variant="ghost" size="icon" className="absolute bottom-1 left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 1)} aria-label="Previous page"><ArrowLeft className="h-8 w-8 stroke-[3.25]" /></Button>
+            <Button variant="ghost" size="icon" className="absolute bottom-1 right-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page >= pageCount || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page + 1)} aria-label="Next page"><ArrowRight className="h-8 w-8 stroke-[3.25]" /></Button>
             <div ref={sliderRef} className="absolute bottom-1.5 left-12 right-12 z-30 h-6 cursor-pointer touch-none select-none" onPointerDown={handleSliderPointerDown} onPointerMove={handleSliderPointerMove} onPointerUp={handleSliderPointerUp} onPointerCancel={handleSliderPointerUp}>
               <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/30 shadow-inner" />
               <div className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/65" style={{ width: `${sliderPercent}%` }} />
