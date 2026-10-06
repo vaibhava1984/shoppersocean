@@ -134,13 +134,12 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         return;
       }
 
-      const elapsed = Date.now() - lastActivityRef.current;
+      // Backgrounding the browser must pause the inactivity countdown.
+      // Do not count time spent outside the reader as reading inactivity.
+      lastActivityRef.current = Date.now();
+      persistState();
       if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
-      if (elapsed >= INACTIVITY_LIMIT) {
-        inactivityTimerRef.current = window.setTimeout(closeIfInactive, 1000);
-      } else {
-        inactivityTimerRef.current = window.setTimeout(closeIfInactive, INACTIVITY_LIMIT - elapsed);
-      }
+      inactivityTimerRef.current = window.setTimeout(closeIfInactive, INACTIVITY_LIMIT);
     };
 
     const onPageHide = () => {
