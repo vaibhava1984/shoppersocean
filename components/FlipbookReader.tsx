@@ -129,22 +129,14 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
     const onVisibilityChange = () => {
       if (document.hidden) {
-        // Going to another app/tab is NOT a close event. Preserve the exact
-        // last-activity time so the 10-minute inactivity window continues
-        // while the browser is in the background.
         persistState();
         if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
         return;
       }
 
-      // Returning to the browser must never immediately close the book.
-      // The inactivity deadline is checked by the timer only; if Android/browser
-      // suspended the page, restart the remaining timer when the page becomes visible.
       const elapsed = Date.now() - lastActivityRef.current;
       if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
       if (elapsed >= INACTIVITY_LIMIT) {
-        // Give the restored tab a chance to become interactive instead of
-        // navigating away as soon as the browser is reopened.
         inactivityTimerRef.current = window.setTimeout(closeIfInactive, 1000);
       } else {
         inactivityTimerRef.current = window.setTimeout(closeIfInactive, INACTIVITY_LIMIT - elapsed);
@@ -152,8 +144,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     };
 
     const onPageHide = () => {
-      // Android browsers can suspend timers while the app is backgrounded.
-      // Persist the timestamp so a restored tab can enforce the same 10-minute rule.
       persistState();
     };
 
@@ -176,8 +166,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     document.addEventListener('visibilitychange', onVisibilityChange);
     window.addEventListener('pagehide', onPageHide);
 
-    // Do not reset a restored timestamp just because the component mounted
-    // after the browser restored the tab.
     if (restored) {
       const elapsed = Date.now() - lastActivityRef.current;
       if (elapsed >= INACTIVITY_LIMIT) {
@@ -203,16 +191,16 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
 
-    // On phones, fit the page to the available width first. The previous
-    // height-first constraint could reduce a portrait page to roughly half
-    // the reader width, making the actual book content look tiny.
-    const maxWidth = Math.min(window.innerWidth * 0.94, fullscreen ? 1180 : 960);
-    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.76 : 0.68), fullscreen ? 820 : 680);
+    // Fill the available reader width. The previous 68% height / 960px
+    // ceiling made the rendered book unnecessarily small on mobile.
+    const maxWidth = Math.max(320, window.innerWidth - 32);
+    const maxHeight = Math.max(500, Math.min(window.innerHeight * (fullscreen ? 0.92 : 0.85), fullscreen ? 1200 : 1000));
     const widthScale = maxWidth / base.width;
     const heightScale = maxHeight / base.height;
-    const isMobile = window.innerWidth < 768;
-    const fitScale = isMobile ? widthScale : Math.min(widthScale, heightScale);
+    const isMobileOrTablet = window.innerWidth < 1024;
+    const fitScale = isMobileOrTablet ? widthScale : Math.min(widthScale, heightScale);
     const scale = fitScale * zoom;
+
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
     const width = Math.ceil(viewport.width);
@@ -302,8 +290,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       setTurning(direction);
       playPageTurn();
 
-      // Only one canvas ever exists. The sheet rotates briefly, then the
-      // target PDF page is rendered into that same canvas.
       await new Promise<void>(resolve => window.setTimeout(resolve, 140));
       if (token !== renderTokenRef.current) return;
       await renderPage(pdf, targetPage, canvasRef.current);
@@ -402,9 +388,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           onPointerCancel={() => { setDragStartX(null); setDragX(0); }}
         >
           <div className="relative flex shrink-0 items-center justify-center" style={{ width: pageSize.width || 'auto', height: pageSize.height || 'auto' }} aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
-            <div
-              className="relative flex shrink-0 items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
-            >
+            <div className="relative flex shrink-0 items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]">
               <div
                 className="relative z-10 origin-center bg-white shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
                 style={{
