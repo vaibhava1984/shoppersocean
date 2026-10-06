@@ -87,7 +87,10 @@ export default function InteractionFeedback() {
 
       const target = event.target as Element | null
       const control = target?.closest(INTERACTIVE_SELECTOR) as HTMLElement | null
-      if (!control || control.hasAttribute("disabled") || control.getAttribute("aria-disabled") === "true") return\n\n      // Flipbook controls use their own page-turn audio; never add the global click tone there.\n      const insideFlipbook = control.closest("[data-flipbook-reader=\"true\"]") !== null
+      if (!control || control.hasAttribute("disabled") || control.getAttribute("aria-disabled") === "true") return
+
+      // Flipbook controls use their own page-turn audio; never add the global click tone there.
+      const insideFlipbook = control.closest("[data-flipbook-reader=\"true\"]") !== null
 
       const now = performance.now()
       if (now - lastFeedbackAt < 60) return
