@@ -366,7 +366,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
                   backfaceVisibility: 'hidden',
                 }}
               >
-                <canvas ref={canvasRef} className="block max-h-[68dvh] max-w-[86vw] select-none" draggable={false} />
+                <canvas ref={canvasRef} className="block select-none" draggable={false} />
               </div>
             </div>
           </div>
