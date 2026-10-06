@@ -38,6 +38,7 @@ export default async function LandingPage() {
         <HeroSection
           title="Shoppers Ocean"
           subtitle="Where every wave brings a new deal"
+          welcomeName={user?.firstName || undefined}
           buttonText=" Embark on Your Adventure"
           buttonLink="/bookShelf"
           imageSrc="/homepage_hero (1).jpeg"
