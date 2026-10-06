@@ -239,14 +239,15 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     if (!pdf || !currentCanvasRef.current) return;
     let cancelled = false;
     const token = ++renderTokenRef.current;
-    async function showFirstPage() {
+    async function showInitialPage() {
       try {
         setRendering(true);
         setNextReady(false);
-        await preparePage(1, currentCanvasRef.current!);
+        const initialPage = Math.min(Math.max(page, 1), pdf.numPages);
+        await preparePage(initialPage, currentCanvasRef.current!);
         if (cancelled || token !== renderTokenRef.current) return;
-        if (pdf.numPages > 1 && nextCanvasRef.current) {
-          await preparePage(2, nextCanvasRef.current);
+        if (initialPage < pdf.numPages && nextCanvasRef.current) {
+          await preparePage(initialPage + 1, nextCanvasRef.current);
           if (!cancelled && token === renderTokenRef.current) setNextReady(true);
         }
       } catch (err) {
@@ -256,9 +257,9 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         if (!cancelled && token === renderTokenRef.current) setRendering(false);
       }
     }
-    void showFirstPage();
+    void showInitialPage();
     return () => { cancelled = true; };
-  }, [pdf, preparePage]);
+  }, [pdf, page, preparePage]);
 
   const swapCanvas = useCallback(() => {
     const current = currentCanvasRef.current;
