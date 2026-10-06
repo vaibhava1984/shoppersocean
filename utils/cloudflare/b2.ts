@@ -96,7 +96,7 @@ export async function getB2NativeRequest(method: "GET" | "HEAD", key: string) {
   // Pass the Native API authorization token as a query parameter. Backblaze explicitly
   // supports this form for private downloads and it avoids intermediary handling of
   // Authorization headers while preserving the token inside the Worker.
-  download.searchParams.set("Authorization", authorizationToken);
+  download.searchParams.set("Authorization", authorizationToken); // use the cached B2 token
   return {
     url: download.toString(),
     headers: {},
