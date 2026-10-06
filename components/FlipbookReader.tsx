@@ -389,7 +389,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         </div>
 
         <div className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-hidden bg-slate-800 p-3 sm:p-6" style={{ perspective: '1600px', touchAction: 'pan-y' }} onPointerDown={event => { if (event.pointerType !== 'mouse' || event.button === 0) { event.currentTarget.setPointerCapture?.(event.pointerId); beginDrag(event.clientX); } }} onPointerMove={event => moveDrag(event.clientX)} onPointerUp={endDrag} onPointerCancel={endDrag}>
-          <div ref={bookHostRef} className={`relative flex ${spreadMode ? 'h-[min(62vh,620px)] w-[min(98vw,1180px)]' : 'h-[min(56vh,600px)] w-[min(96vw,980px)]'} items-center justify-center`}
+          <div ref={bookHostRef} className="relative flex h-[min(56vh,600px)] w-[min(96vw,980px)] items-center justify-center"
  aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
             <div
               className="relative flex max-h-full max-w-full items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
@@ -401,14 +401,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
               {/* Destination page sits underneath the sheet being turned. */}
               <canvas
                 ref={nextCanvasRef}
-                className={`pointer-events-none absolute block select-none ${spreadMode ? 'max-h-[70dvh] max-w-[43vw]' : 'inset-0 max-h-[56dvh] max-w-[90vw]'}`}
-                style={spreadMode ? {
-                  left: dragDirection === 'prev' ? '0%' : '100%',
-                  top: '50%',
-                  transform: dragDirection === 'prev' ? 'translate(-100%, -50%)' : 'translate(0, -50%)',
-                  zIndex: 5,
-                  boxShadow: '0 10px 30px rgba(0,0,0,0.20)',
-                } : undefined}
+                className="pointer-events-none absolute inset-0 block max-h-[56dvh] max-w-[90vw] select-none"
                 draggable={false}
                 aria-hidden="true"
               />
@@ -425,7 +418,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
                   willChange: 'transform',
                 }}
               >
-                <canvas ref={currentCanvasRef} className={`block select-none ${spreadMode ? 'max-h-[70dvh] max-w-[43vw]' : 'max-h-[68dvh] max-w-[86vw]'}`} draggable={false} />
+                <canvas ref={currentCanvasRef} className="block max-h-[68dvh] max-w-[86vw] select-none" draggable={false} />
               </div>
             </div>
           </div>
