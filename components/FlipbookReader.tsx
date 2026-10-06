@@ -101,6 +101,15 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   useEffect(() => {
     const storageKey = 'shoppers-ocean-reader-state:' + pdfUrl;
 
+    const persistState = () => {
+      try {
+        sessionStorage.setItem(storageKey, JSON.stringify({
+          page: pageRef.current,
+          lastActivity: lastActivityRef.current,
+        }));
+      } catch {}
+    };
+
     const closeIfInactive = () => {
       const elapsed = Date.now() - lastActivityRef.current;
       if (elapsed >= INACTIVITY_LIMIT) {
@@ -113,29 +122,39 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
     const markActive = () => {
       lastActivityRef.current = Date.now();
-      try {
-        sessionStorage.setItem(storageKey, JSON.stringify({
-          page: pageRef.current,
-          lastActivity: lastActivityRef.current,
-        }));
-      } catch {}
+      persistState();
       if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
       inactivityTimerRef.current = window.setTimeout(closeIfInactive, INACTIVITY_LIMIT);
     };
 
     const onVisibilityChange = () => {
-      if (!document.hidden) {
-        const elapsed = Date.now() - lastActivityRef.current;
-        if (elapsed >= INACTIVITY_LIMIT) {
-          try { sessionStorage.removeItem(storageKey); } catch {}
-          router.replace('/');
-        } else {
-          if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
-          inactivityTimerRef.current = window.setTimeout(closeIfInactive, INACTIVITY_LIMIT - elapsed);
-        }
+      if (document.hidden) {
+        // Going to another app/tab is NOT a close event. Preserve the exact
+        // last-activity time so the 10-minute inactivity window continues
+        // while the browser is in the background.
+        persistState();
+        if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
+        return;
       }
+
+      const elapsed = Date.now() - lastActivityRef.current;
+      if (elapsed >= INACTIVITY_LIMIT) {
+        try { sessionStorage.removeItem(storageKey); } catch {}
+        router.replace('/');
+        return;
+      }
+
+      if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
+      inactivityTimerRef.current = window.setTimeout(closeIfInactive, INACTIVITY_LIMIT - elapsed);
     };
 
+    const onPageHide = () => {
+      // Android browsers can suspend timers while the app is backgrounded.
+      // Persist the timestamp so a restored tab can enforce the same 10-minute rule.
+      persistState();
+    };
+
+    let restored = false;
     try {
       const saved = JSON.parse(sessionStorage.getItem(storageKey) || 'null') as { page?: number; lastActivity?: number } | null;
       if (saved?.lastActivity && Date.now() - saved.lastActivity < INACTIVITY_LIMIT && Number.isFinite(saved.page) && saved.page >= 1) {
@@ -143,7 +162,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         setPage(saved.page);
         setPageInput(String(saved.page));
         lastActivityRef.current = saved.lastActivity;
-      } else {
+        restored = true;
+      } else if (saved) {
         sessionStorage.removeItem(storageKey);
       }
     } catch {}
@@ -151,11 +171,27 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const events: Array<keyof WindowEventMap> = ['pointerdown', 'keydown', 'touchstart', 'wheel'];
     events.forEach(event => window.addEventListener(event, markActive, { passive: true }));
     document.addEventListener('visibilitychange', onVisibilityChange);
-    markActive();
+    window.addEventListener('pagehide', onPageHide);
+
+    // Do not reset a restored timestamp just because the component mounted
+    // after the browser restored the tab.
+    if (restored) {
+      const elapsed = Date.now() - lastActivityRef.current;
+      if (elapsed >= INACTIVITY_LIMIT) {
+        try { sessionStorage.removeItem(storageKey); } catch {}
+        router.replace('/');
+      } else {
+        inactivityTimerRef.current = window.setTimeout(closeIfInactive, INACTIVITY_LIMIT - elapsed);
+      }
+    } else {
+      markActive();
+    }
 
     return () => {
+      persistState();
       events.forEach(event => window.removeEventListener(event, markActive));
       document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('pagehide', onPageHide);
       if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
     };
   }, [pdfUrl, router]);
@@ -163,8 +199,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
-    const maxWidth = Math.min(window.innerWidth * 0.90, fullscreen ? 1180 : 900);
-    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.68 : 0.58), fullscreen ? 700 : 560);
+    const maxWidth = Math.min(window.innerWidth * 0.94, fullscreen ? 1180 : 960);
+    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.76 : 0.68), fullscreen ? 820 : 680);
     const scale = Math.min(maxWidth / base.width, maxHeight / base.height) * zoom;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
