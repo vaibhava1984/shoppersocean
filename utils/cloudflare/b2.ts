@@ -1,5 +1,7 @@
 const encoder = new TextEncoder();
 
+let nativeAuthCache: { expires: number; authorizationToken: string; downloadUrl: string } | null = null;
+
 function env(name: string) {
   const value = process.env[name];
   if (!value) throw new Error("Missing Backblaze B2 configuration: " + name);
@@ -58,24 +60,33 @@ export async function getB2NativeRequest(method: "GET" | "HEAD", key: string) {
   const cfg = getConfig();
   const basic = btoa(cfg.accessKeyId + ":" + cfg.secretKey);
 
-  const authResponse = await fetch("https://api.backblazeb2.com/b2api/v4/b2_authorize_account", {
-    method: "GET",
-    headers: { Authorization: "Basic " + basic },
-  });
+  let authorizationToken: string;
+  let downloadUrl: string;
+  if (nativeAuthCache && nativeAuthCache.expires > Date.now()) {
+    authorizationToken = nativeAuthCache.authorizationToken;
+    downloadUrl = nativeAuthCache.downloadUrl;
+  } else {
+    const authResponse = await fetch("https://api.backblazeb2.com/b2api/v4/b2_authorize_account", {
+      method: "GET",
+      headers: { Authorization: "Basic " + basic },
+    });
 
-  if (!authResponse.ok) {
-    const detail = await authResponse.text().catch(() => "");
-    throw new Error("B2 authorization failed: " + authResponse.status + (detail ? " " + detail.slice(0, 300) : ""));
-  }
+    if (!authResponse.ok) {
+      const detail = await authResponse.text().catch(() => "");
+      throw new Error("B2 authorization failed: " + authResponse.status + (detail ? " " + detail.slice(0, 300) : ""));
+    }
 
-  const auth = await authResponse.json() as {
-    authorizationToken?: string;
-    apiInfo?: { storageApi?: { downloadUrl?: string } };
-  };
+    const auth = await authResponse.json() as {
+      authorizationToken?: string;
+      apiInfo?: { storageApi?: { downloadUrl?: string } };
+    };
 
-  const downloadUrl = auth.apiInfo?.storageApi?.downloadUrl;
-  if (!downloadUrl || !auth.authorizationToken) {
-    throw new Error("B2 authorization response is missing download credentials");
+    downloadUrl = auth.apiInfo?.storageApi?.downloadUrl || "";
+    authorizationToken = auth.authorizationToken || "";
+    if (!downloadUrl || !authorizationToken) {
+      throw new Error("B2 authorization response is missing download credentials");
+    }
+    nativeAuthCache = { expires: Date.now() + 20 * 60 * 1000, authorizationToken, downloadUrl };
   }
 
   const filePath = key.split("/").map(encodeURIComponent).join("/");

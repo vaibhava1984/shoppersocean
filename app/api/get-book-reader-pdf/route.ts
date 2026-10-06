@@ -6,7 +6,19 @@ import { getB2NativeRequest } from "@/utils/cloudflare/b2";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-async function resolveBookFile(bookId: string) {
+const readerCache = new Map<string, { expires: number; file: Record<string, any> }>();
+
+function cacheKey(request: Request, bookId: string) {
+  const cookie = request.headers.get("cookie") || "";
+  return bookId + "::" + cookie;
+}
+
+async function resolveBookFile(request: Request, bookId: string) {
+  const key = cacheKey(request, bookId);
+  const cached = readerCache.get(key);
+  if (cached && cached.expires > Date.now()) return { file: cached.file };
+  if (cached) readerCache.delete(key);
+
   const db = getD1();
   if (!db) throw new Error("Cloudflare D1 is not available");
 
@@ -38,6 +50,7 @@ async function resolveBookFile(bookId: string) {
     return { error: NextResponse.json({ error: "No book file is available" }, { status: 404 }) };
   }
 
+  readerCache.set(key, { expires: Date.now() + 5 * 60 * 1000, file: pdf });
   return { file: pdf };
 }
 
@@ -46,7 +59,7 @@ export async function GET(request: Request) {
     const bookId = new URL(request.url).searchParams.get("bookId") || "";
     if (!bookId) return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
 
-    const resolved = await resolveBookFile(bookId);
+    const resolved = await resolveBookFile(request, bookId);
     if ("error" in resolved) return resolved.error;
 
     const native = await getB2NativeRequest("GET", String(resolved.file.storage_key));
@@ -85,7 +98,7 @@ export async function HEAD(request: Request) {
   if (!bookId) return new Response(null, { status: 400 });
 
   try {
-    const resolved = await resolveBookFile(bookId);
+    const resolved = await resolveBookFile(request, bookId);
     if ("error" in resolved) return resolved.error;
 
     const native = await getB2NativeRequest("HEAD", String(resolved.file.storage_key));

@@ -164,7 +164,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
     const maxWidth = Math.min(window.innerWidth * 0.90, fullscreen ? 1180 : 900);
-    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.68 : 0.58), fullscreen ? 700 : 560);
+    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.68 : 0.50), fullscreen ? 700 : 500);
     const scale = Math.min(maxWidth / base.width, maxHeight / base.height) * zoom;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
