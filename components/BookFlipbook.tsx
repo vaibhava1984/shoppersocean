@@ -41,7 +41,6 @@ function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
 
 export default function BookFlipbook({ bookId, title }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const nextCanvasRef = useRef<HTMLCanvasElement>(null);
   const pageFrameRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<any>(null);
@@ -68,7 +67,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [isSliderDragging, setIsSliderDragging] = useState(false);
   const [sliderPreviewPage, setSliderPreviewPage] = useState<number | null>(null);
   const [turnDirection, setTurnDirection] = useState<'next' | 'prev' | null>(null);
-  const [wideMode, setWideMode] = useState(false);
   const pageStorageKey = `shoppers-ocean-flipbook-page-${bookId}`;
   const turnTimerRef = useRef<number | null>(null);
 
@@ -154,9 +152,8 @@ export default function BookFlipbook({ bookId, title }: Props) {
       try {
         const pdfPage = await pdf.getPage(targetPage);
         const baseViewport = pdfPage.getViewport({ scale: 1 });
-        const spread = wideMode && pageCount > 1;
-        const availableWidth = Math.max(180, spread ? frame.clientWidth * 0.44 : frame.clientWidth - 4);
-        const availableHeight = Math.max(260, spread ? frame.clientHeight * 0.90 : frame.clientHeight - 4);
+        const availableWidth = Math.max(180, frame.clientWidth - 4);
+        const availableHeight = Math.max(260, frame.clientHeight - 4);
         const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
         const scale = Math.max(0.1, fitScale * zoom);
         const viewport = pdfPage.getViewport({ scale });
@@ -213,7 +210,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const queued = run();
     renderQueueRef.current = queued.catch(() => {});
     await queued;
-  }, [zoom, cancelRender, wideMode, pageCount]);
+  }, [zoom, cancelRender]);
 
   const renderPage = useCallback(async () => {
     const canvas = canvasRef.current;
@@ -223,15 +220,8 @@ export default function BookFlipbook({ bookId, title }: Props) {
 
   useEffect(() => {
     if (!opened || !readerUrl || !pdfRef.current) return;
-    let cancelled = false;
-    const run = async () => {
-      await renderPage();
-      if (cancelled || !wideMode || page <= 1 || page >= pageCount || !nextCanvasRef.current) return;
-      await renderCanvasPage(page + 1, nextCanvasRef.current);
-    };
-    void run();
-    return () => { cancelled = true; };
-  }, [opened, readerUrl, renderPage, renderCanvasPage, pageCount, page, wideMode]);
+    void renderPage();
+  }, [opened, readerUrl, renderPage]);
 
   useEffect(() => {
     if (!bookId || page < 1) return;
@@ -267,7 +257,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const changePage = async (next: number) => {
     if (next < 1 || next > pageCount || turning || rendering) return;
     const destination = next > page ? 'next' : 'prev';
-    const nextCanvas = nextCanvasRef.current;
+    const nextCanvas = canvasRef.current;
     if (!nextCanvas) return;
     setDragOffset(0); setTurnDirection(destination); setTurning(true); playPageTurnSound();
     try {
@@ -297,21 +287,21 @@ export default function BookFlipbook({ bookId, title }: Props) {
     if (dragStartXRef.current === null) return;
     const offset = dragOffsetRef.current; dragStartXRef.current = null; dragOffsetRef.current = 0; setIsDragging(false);
     const threshold = Math.max(55, Math.min(140, (pageFrameRef.current?.clientWidth || 300) * 0.18));
-    if (Math.abs(offset) >= threshold) changePage(offset < 0 ? page + 2 : page - 2);
+    if (Math.abs(offset) >= threshold) changePage(offset < 0 ? page + 1 : page - 1);
     else setDragOffset(0);
   };
   const handleTouchStart = (event: React.TouchEvent) => { touchStartXRef.current = event.changedTouches[0]?.clientX ?? null; };
   const handleTouchEnd = (event: React.TouchEvent) => {
     const start = touchStartXRef.current; const end = event.changedTouches[0]?.clientX ?? null; touchStartXRef.current = null;
     if (start === null || end === null || Math.abs(end - start) < 45) return;
-    if (dragStartXRef.current === null) changePage(end < start ? page + 2 : page - 2);
+    if (dragStartXRef.current === null) changePage(end < start ? page + 1 : page - 1);
   };
   const sliderPageFromPointer = (clientX: number) => {
     if (!sliderRef.current || pageCount <= 1) return;
     const rect = sliderRef.current.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     const rawTarget = Math.round(ratio * (pageCount - 1)) + 1;
-    const target = Math.min(1 + Math.floor((rawTarget - 1) / 2) * 2, pageCount);
+    const target = Math.min(Math.max(1, rawTarget), pageCount);
     setSliderPreviewPage(target);
   };
   useEffect(() => () => { void cancelRender(); pageTurnAudioRef.current?.pause(); bookOpenAudioRef.current?.pause(); }, [cancelRender]);
@@ -345,11 +335,10 @@ export default function BookFlipbook({ bookId, title }: Props) {
     boxShadow: turning || dragOffset !== 0 ? '0 18px 34px rgba(15,23,42,.26)' : '0 16px 30px rgba(15,23,42,.18)',
     backfaceVisibility: 'hidden', transformStyle: 'preserve-3d', touchAction: 'pan-y',
   };
-  const wideSpread = wideMode && page < pageCount;
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return <div ref={viewerRef} className="overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
+  return <div ref={viewerRef} data-flipbook-reader="true" className="overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
@@ -357,13 +346,10 @@ export default function BookFlipbook({ bookId, title }: Props) {
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div className={`relative flex ${wideMode ? 'h-[min(64vh,620px)]' : 'h-[min(72vh,680px)]'} min-h-[360px] flex-1 items-center justify-center overflow-hidden p-2 sm:p-4`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-      <div ref={pageFrameRef} className={`relative flex h-full w-full ${wideMode ? 'max-w-[1180px]' : 'max-w-[900px]'} items-center justify-center`} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
-        <div className={`relative flex h-full max-h-full w-full max-w-full items-center ${wideSpread ? 'justify-between px-[2%]' : 'justify-center'}`} style={{ perspective: '1800px' }}>
-          <div className="absolute inset-0 flex items-center justify-center rounded bg-white shadow-[0_16px_30px_rgba(15,23,42,0.18)]" style={{ zIndex: 0, overflow: 'hidden' }}>
-            <canvas ref={nextCanvasRef} className="block max-h-[90%] rounded select-none" style={wideSpread ? { position: 'absolute', width: '44%', right: turnDirection === 'prev' ? 'auto' : '2%', left: turnDirection === 'prev' ? '2%' : 'auto' } : { maxWidth: '100%' }} draggable={false} />
-          </div>
-          <div className={`relative flex h-full max-h-full ${wideSpread ? 'w-[44%]' : 'w-full'} items-center justify-center rounded bg-white shadow-2xl`} style={{ ...flipStyle, zIndex: 2 }}>
+    <div className="relative flex h-[min(72vh,680px)] min-h-[360px] flex-1 items-center justify-center overflow-hidden p-2 sm:p-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div ref={pageFrameRef} className="relative flex h-full w-full max-w-[900px] items-center justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
+        <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center" style={{ perspective: '1800px' }}>
+          <div className="relative flex h-full max-h-full w-full items-center justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
             <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
@@ -378,6 +364,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
         </div>
       </div>
     </div>
-    <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Pages {page}{pageCount > page ? `–${page + 1}` : ''} / {pageCount || '—'}</span></div>
+    <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
   </div>;
 }
