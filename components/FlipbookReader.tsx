@@ -397,7 +397,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const zoomIn = () => setZoom(value => Math.min(1.45, Number((value + 0.10).toFixed(2))));
 
   return (
-    <div className={fullscreen ? 'fixed inset-0 z-[100] bg-[#151515]' : 'w-full'}>
+    <div data-flipbook-reader="true" className={fullscreen ? 'fixed inset-0 z-[100] bg-[#151515]' : 'w-full'}>
       <div className={fullscreen ? 'flex h-full w-full flex-col bg-[#151515]' : 'mx-auto flex w-full max-w-7xl flex-col overflow-hidden rounded-xl bg-[#151515] shadow-2xl'}>
         <div className="flex h-12 shrink-0 items-center justify-between border-b border-white/10 bg-[#202020] px-3 text-white sm:h-14 sm:px-5">
           <div className="min-w-0 pr-3">
