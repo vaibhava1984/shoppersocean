@@ -343,7 +343,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
         <div
           className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-auto bg-slate-800 p-3 sm:p-6"
-          style={{ perspective: '1600px', touchAction: 'pan-y' }}
+          style={{ touchAction: 'pan-y' }}
           onPointerDown={event => {
             if (event.pointerType !== 'mouse' || event.button === 0) {
               event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -357,15 +357,13 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           <div className="relative flex shrink-0 items-center justify-center" style={{ width: pageSize.width || 'auto', height: pageSize.height || 'auto' }} aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
             <div
               className="relative flex shrink-0 items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]"
-              style={{ perspective: '1800px' }}
             >
               <div
                 className="relative z-10 origin-center bg-white shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
                 style={{
-                  transform: 'translateX(' + (dragX * 0.10) + 'px) rotateY(' + (turning === 'next' ? -8 : turning === 'prev' ? 8 : 0) + 'deg)',
+                  transform: 'translateX(' + (dragX * 0.10) + 'px)',
                   transition: turning ? 'transform 180ms cubic-bezier(.22,.61,.36,1)' : 'none',
                   willChange: 'transform',
-                  backfaceVisibility: 'hidden',
                 }}
               >
                 <canvas ref={canvasRef} className="block shrink-0 select-none" draggable={false} />
