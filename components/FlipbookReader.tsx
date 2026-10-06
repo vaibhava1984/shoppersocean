@@ -289,10 +289,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     draggingRef.current = false;
     dragStartXRef.current = null;
     dragXRef.current = 0;
-
     const target = direction === 'next' ? page + 1 : direction === 'prev' ? page - 1 : page;
     const shouldComplete = !!direction && Math.abs(distance) > Math.min(120, window.innerWidth * 0.24) && target >= 1 && target <= (pdf?.numPages || 0);
-
     if (!shouldComplete || !pdf) {
       setSettling(true);
       setDragAngle(0);
@@ -302,7 +300,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       setDragDirection(null);
       return;
     }
-
     await goToPage(target);
     setDragAngle(0);
     setDragX(0);
@@ -313,30 +310,23 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     if (!pdf || rendering || turning || !currentCanvasRef.current) return;
     const targetPage = Math.min(Math.max(Math.round(target), 1), pdf.numPages);
     if (targetPage === page) return;
-
     const direction = targetPage > page ? 'next' : 'prev';
     const token = ++renderTokenRef.current;
-    const canvas = currentCanvasRef.current;
-
     try {
       setRendering(true);
       setTurning(direction);
       setDragDirection(direction);
       playPageTurn();
-
       setDragAngle(direction === 'next' ? -12 : 12);
       await new Promise<void>(resolve => window.setTimeout(resolve, 140));
       if (token !== renderTokenRef.current) return;
-
-      await preparePage(targetPage, canvas);
+      await preparePage(targetPage, currentCanvasRef.current);
       if (token !== renderTokenRef.current) return;
-
       setPage(targetPage);
       setPageInput(String(targetPage));
       setDragAngle(direction === 'next' ? 12 : -12);
       await new Promise<void>(resolve => window.setTimeout(resolve, 140));
       if (token !== renderTokenRef.current) return;
-
       setDragAngle(0);
       setTurning(null);
       setDragDirection(null);
@@ -350,6 +340,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       if (token === renderTokenRef.current) setRendering(false);
     }
   }, [pdf, page, preparePage, playPageTurn, rendering, turning]);
+
 
   useEffect(() => setPageInput(String(page)), [page]);
 
