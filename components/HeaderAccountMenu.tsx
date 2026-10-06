@@ -1,6 +1,7 @@
 "use client"
 
 import HeaderLogoutBtn from "@/components/HeaderLogoutBtn";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,44 +31,32 @@ export default function HeaderAccountMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center" className="w-48">
         {isAdmin && (
-          <DropdownMenuItem
-            onSelect={(event) => {
-              event.preventDefault();
-              window.location.href = "/admin_panel";
-            }}
-          >
-            <ShieldIcon width={18} />
-            Admin Panel
+          <DropdownMenuItem asChild>
+            <Link href="/admin_panel" className="flex w-full items-center gap-2">
+              <ShieldIcon width={18} />
+              Admin Panel
+            </Link>
           </DropdownMenuItem>
         )}
         {isAuthor && (
-          <DropdownMenuItem
-            onSelect={(event) => {
-              event.preventDefault();
-              window.location.href = "/my-sales";
-            }}
-          >
-            <ChartBarIcon width={18} />
-            My Sales
+          <DropdownMenuItem asChild>
+            <Link href="/my-sales" className="flex w-full items-center gap-2">
+              <ChartBarIcon width={18} />
+              My Sales
+            </Link>
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem
-          onSelect={(event) => {
-            event.preventDefault();
-            window.location.href = "/my-purchases";
-          }}
-        >
-          <HistoryIcon width={18} />
-          My Orders
+        <DropdownMenuItem asChild>
+          <Link href="/my-purchases" className="flex w-full items-center gap-2">
+            <HistoryIcon width={18} />
+            My Orders
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onSelect={(event) => {
-            event.preventDefault();
-            window.location.href = "/settings";
-          }}
-        >
-          <SettingsIcon width={18} />
-          Settings
+        <DropdownMenuItem asChild>
+          <Link href="/settings" className="flex w-full items-center gap-2">
+            <SettingsIcon width={18} />
+            Settings
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="flex items-center gap-2">
           <LogOut />
