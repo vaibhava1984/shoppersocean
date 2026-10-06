@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight, Loader2, Maximize2, X, Volume2 } from 'lucide-react';
 
@@ -304,7 +304,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     void goToPage(requested);
   };
 
-  const pointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+  const pointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (dragStartX === null || turning || rendering) return;
     setDragX(Math.max(-160, Math.min(160, event.clientX - dragStartX)));
   };
