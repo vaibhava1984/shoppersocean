@@ -80,7 +80,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const [dragDirection, setDragDirection] = useState<'next' | 'prev' | null>(null);
   const [settling, setSettling] = useState(false);
   const [zoom, setZoom] = useState(1);
-  const [spreadMode, setSpreadMode] = useState(false);
 
   const playPageTurn = useCallback(() => {
     if (!soundEnabled) return;
@@ -100,8 +99,11 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const renderPage = useCallback(async (documentProxy: PdfDocument, pageNumber: number, canvas: HTMLCanvasElement) => {
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
-    const maxWidth = spreadMode ? Math.min(window.innerWidth * 0.43, fullscreen ? 560 : 520) : Math.min(window.innerWidth * 0.90, fullscreen ? 1180 : 900);
-    const maxHeight = Math.min(window.innerHeight * (fullscreen ? (spreadMode ? 0.70 : 0.68) : (spreadMode ? 0.62 : 0.58)), fullscreen ? 700 : 560);
+    // The reader is intentionally single-page. The second canvas is only a
+    // hidden/preloaded destination for the page-turn animation; it must never
+    // be laid out as a visible second page.
+    const maxWidth = Math.min(window.innerWidth * 0.90, fullscreen ? 1180 : 900);
+    const maxHeight = Math.min(window.innerHeight * (fullscreen ? 0.68 : 0.58), fullscreen ? 700 : 560);
     const scale = Math.min(maxWidth / base.width, maxHeight / base.height) * zoom;
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const viewport = pageProxy.getViewport({ scale });
@@ -120,7 +122,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     context.fillRect(0, 0, width, height);
     await pageProxy.render({ canvasContext: context, viewport }).promise;
     pageProxy.cleanup?.();
-  }, [fullscreen, spreadMode, zoom]);
+  }, [fullscreen, zoom]);
 
   const preparePage = useCallback(async (pageNumber: number, canvas: HTMLCanvasElement) => {
     if (!pdf || pageNumber < 1 || pageNumber > pdf.numPages) return false;
@@ -332,15 +334,6 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   }, [pdf, page, preparePage, playPageTurn, rendering, turning, swapCanvas]);
 
   useEffect(() => setPageInput(String(page)), [page]);
-
-  useEffect(() => {
-    const updateSpreadMode = () => {
-      setSpreadMode(window.innerWidth >= 900 && window.innerWidth > window.innerHeight * 1.05);
-    };
-    updateSpreadMode();
-    window.addEventListener('resize', updateSpreadMode);
-    return () => window.removeEventListener('resize', updateSpreadMode);
-  }, []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
