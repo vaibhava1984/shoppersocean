@@ -137,15 +137,18 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         return;
       }
 
+      // Returning to the browser must never immediately close the book.
+      // The inactivity deadline is checked by the timer only; if Android/browser
+      // suspended the page, restart the remaining timer when the page becomes visible.
       const elapsed = Date.now() - lastActivityRef.current;
-      if (elapsed >= INACTIVITY_LIMIT) {
-        try { sessionStorage.removeItem(storageKey); } catch {}
-        router.replace('/');
-        return;
-      }
-
       if (inactivityTimerRef.current !== null) window.clearTimeout(inactivityTimerRef.current);
-      inactivityTimerRef.current = window.setTimeout(closeIfInactive, INACTIVITY_LIMIT - elapsed);
+      if (elapsed >= INACTIVITY_LIMIT) {
+        // Give the restored tab a chance to become interactive instead of
+        // navigating away as soon as the browser is reopened.
+        inactivityTimerRef.current = window.setTimeout(closeIfInactive, 1000);
+      } else {
+        inactivityTimerRef.current = window.setTimeout(closeIfInactive, INACTIVITY_LIMIT - elapsed);
+      }
     };
 
     const onPageHide = () => {
