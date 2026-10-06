@@ -35,7 +35,7 @@ export default function FlipbookPageClient({ bookId }: { bookId: string }) {
 
   return (
     <main className="min-h-screen bg-slate-950 p-3 sm:p-6">
-      <div className="mx-auto mb-3 max-w-6xl">
+      <div className="mx-auto mb-3 w-full max-w-7xl">
         <Link href="/" className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-white hover:bg-white/10"><ArrowLeft size={18} /> Back to Shoppers Ocean</Link>
       </div>
       {loading && <div className="flex min-h-[70vh] items-center justify-center gap-3 text-white"><Loader2 className="animate-spin" /><span>Preparing your flipbook…</span></div>}
