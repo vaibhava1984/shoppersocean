@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronRight, Loader2, Maximize2, X, Volume2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, Maximize2, Minus, Plus, RotateCcw, X, Volume2 } from 'lucide-react';
 
 interface FlipbookReaderProps {
   pdfUrl: string;
@@ -354,28 +354,25 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   };
 
   return (
-    <div className={fullscreen ? 'fixed inset-0 z-[100] bg-slate-950 p-2 sm:p-5' : 'w-full'}>
-      <div className="mx-auto flex h-full max-w-6xl flex-col overflow-hidden rounded-2xl bg-slate-900 shadow-2xl">
-        <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 text-white">
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold">{fileName || 'Book'}</p>
-            <p className="text-xs text-white/60">Read online as flipbook</p>
+    <div className={fullscreen ? 'fixed inset-0 z-[100] bg-[#0b1020] p-0 sm:p-3' : 'w-full'}>
+      <div className="mx-auto flex h-full min-h-[72vh] max-w-7xl flex-col overflow-hidden rounded-none bg-[#111827] shadow-2xl sm:min-h-[680px] sm:rounded-2xl">
+        <header className="relative z-40 flex shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-[#111827]/95 px-3 py-2.5 text-white backdrop-blur sm:px-5 sm:py-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold tracking-wide sm:text-base">{fileName || 'Book'}</p>
+            <p className="mt-0.5 truncate text-[11px] text-white/50 sm:text-xs">Page {page}{pdf ? ' of ' + pdf.numPages : ''} · Read online</p>
           </div>
-          <div className="flex items-center gap-1">
-            <button type="button" onClick={() => setSoundEnabled(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={soundEnabled ? 'Mute page turn sound' : 'Enable page turn sound'}>
-              <Volume2 size={19} className={soundEnabled ? 'text-white' : 'text-white/35'} />
-            </button>
-            <button type="button" onClick={() => setZoom(value => Math.max(0.82, Number((value - 0.08).toFixed(2))))} className="rounded-lg px-2 py-1 text-sm font-semibold hover:bg-white/10" aria-label="Decrease text size">A−</button>
-            <button type="button" onClick={() => setZoom(value => Math.min(1.18, Number((value + 0.08).toFixed(2))))} className="rounded-lg px-2 py-1 text-sm font-semibold hover:bg-white/10" aria-label="Increase text size">A+</button>
-            <button type="button" onClick={() => setFullscreen(value => !value)} className="rounded-lg p-2 hover:bg-white/10" aria-label={fullscreen ? 'Close full screen' : 'Open full screen'}>
-              {fullscreen ? <X size={20} /> : <Maximize2 size={20} />}
-            </button>
+          <div className="flex shrink-0 items-center gap-1 rounded-xl border border-white/10 bg-white/5 p-1">
+            <button type="button" onClick={() => setZoom(value => Math.max(0.75, Number((value - 0.08).toFixed(2))))} disabled={!pdf} className="rounded-lg p-2 text-white/80 transition hover:bg-white/10 hover:text-white disabled:opacity-30" aria-label="Zoom out"><Minus size={17} /></button>
+            <button type="button" onClick={() => setZoom(1)} disabled={!pdf || zoom === 1} className="hidden min-w-12 rounded-lg px-2 py-1.5 text-[11px] font-semibold text-white/65 transition hover:bg-white/10 hover:text-white disabled:opacity-30 sm:block" aria-label="Reset zoom">{Math.round(zoom * 100)}%</button>
+            <button type="button" onClick={() => setZoom(value => Math.min(1.55, Number((value + 0.08).toFixed(2))))} disabled={!pdf} className="rounded-lg p-2 text-white/80 transition hover:bg-white/10 hover:text-white disabled:opacity-30" aria-label="Zoom in"><Plus size={17} /></button>
+            <button type="button" onClick={() => setSoundEnabled(value => !value)} className="rounded-lg p-2 text-white/80 transition hover:bg-white/10 hover:text-white" aria-label={soundEnabled ? 'Mute page turn sound' : 'Enable page turn sound'}><Volume2 size={17} className={soundEnabled ? '' : 'opacity-30'} /></button>
+            <button type="button" onClick={() => setFullscreen(value => !value)} className="rounded-lg p-2 text-white/80 transition hover:bg-white/10 hover:text-white" aria-label={fullscreen ? 'Close full screen' : 'Open full screen'}>{fullscreen ? <X size={18} /> : <Maximize2 size={18} />}</button>
           </div>
-        </div>
+        </header>
 
-        <div
-          className="relative flex min-h-[55vh] flex-1 items-center justify-center overflow-auto bg-slate-800 p-3 sm:p-6"
-          style={{ touchAction: 'pan-y' }}
+        <main
+          className="relative flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#243247_0,#111827_68%)] px-2 py-4 sm:px-6 sm:py-7"
+          style={{ touchAction: zoom > 1 ? 'pan-x pan-y' : 'pan-y' }}
           onPointerDown={event => {
             if (event.pointerType !== 'mouse' || event.button === 0) {
               event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -386,59 +383,54 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
           onPointerUp={pointerUp}
           onPointerCancel={() => { setDragStartX(null); setDragX(0); }}
         >
+          <div className="pointer-events-none absolute inset-x-0 top-3 z-20 flex justify-center sm:top-5">
+            <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-medium tracking-wide text-white/55 backdrop-blur">SWIPE OR USE THE ARROWS TO TURN PAGES</div>
+          </div>
+
           <div className="relative flex shrink-0 items-center justify-center" style={{ width: pageSize.width || 'auto', height: pageSize.height || 'auto' }} aria-label={'Interactive book, page ' + page + ' of ' + (pdf?.numPages || 0)}>
-            <div className="relative flex shrink-0 items-center justify-center overflow-visible rounded-[3px] bg-white shadow-[0_18px_55px_rgba(0,0,0,0.34)]">
-              <div
-                className="relative z-10 origin-center bg-white shadow-[0_10px_30px_rgba(0,0,0,0.25)]"
-                style={{
-                  transform: 'translateX(' + (dragX * 0.10) + 'px)',
-                  transition: turning ? 'transform 180ms cubic-bezier(.22,.61,.36,1)' : 'none',
-                  willChange: 'transform',
-                }}
-              >
-                <canvas ref={canvasRef} className="block shrink-0 select-none" draggable={false} />
-              </div>
+            <div
+              className="relative overflow-visible rounded-sm bg-white shadow-[0_22px_70px_rgba(0,0,0,0.48)]"
+              style={{ transform: 'translateX(' + (dragX * 0.12) + 'px) rotateY(' + (dragX * -0.035) + 'deg)', transition: turning ? 'transform 180ms cubic-bezier(.22,.61,.36,1)' : 'none', willChange: 'transform' }}
+            >
+              <canvas ref={canvasRef} className="block shrink-0 select-none" draggable={false} />
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-black/10 to-transparent" />
             </div>
           </div>
 
           {pdf && !error && !loading && (
             <>
-              <button type="button" onPointerDown={event => event.stopPropagation()} onClick={() => void goToPage(page - 1)} disabled={page <= 1 || rendering || !!turning} className="absolute bottom-2 left-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Previous page">
-                <ChevronLeft size={20} strokeWidth={2.2} />
-              </button>
-              <button type="button" onPointerDown={event => event.stopPropagation()} onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning} className="absolute bottom-2 right-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Next page">
-                <ChevronRight size={20} strokeWidth={2.2} />
-              </button>
+              <button type="button" onPointerDown={event => event.stopPropagation()} onClick={() => void goToPage(page - 1)} disabled={page <= 1 || rendering || !!turning} className="absolute left-2 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/45 text-white shadow-lg backdrop-blur-md transition hover:scale-105 hover:bg-black/65 disabled:pointer-events-none disabled:opacity-15 sm:left-5 sm:h-12 sm:w-12" aria-label="Previous page"><ChevronLeft size={25} /></button>
+              <button type="button" onPointerDown={event => event.stopPropagation()} onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning} className="absolute right-2 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/45 text-white shadow-lg backdrop-blur-md transition hover:scale-105 hover:bg-black/65 disabled:pointer-events-none disabled:opacity-15 sm:right-5 sm:h-12 sm:w-12" aria-label="Next page"><ChevronRight size={25} /></button>
             </>
           )}
 
           {(loading || rendering) && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-800/90 text-white">
-              <Loader2 className="animate-spin" size={32} />
-              <span>{loading ? 'Opening your book…' : 'Loading page…'}</span>
+            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-[#111827]/90 text-white backdrop-blur-sm">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4"><Loader2 className="animate-spin" size={30} /></div>
+              <span className="text-sm text-white/75">{loading ? 'Opening your book…' : 'Turning page…'}</span>
             </div>
           )}
 
           {error && (
-            <div className="absolute inset-0 flex items-center justify-center p-6 text-center text-white">
-              <div className="max-w-md rounded-xl bg-white/10 p-6 backdrop-blur"><p>{error}</p></div>
+            <div className="absolute inset-0 z-50 flex items-center justify-center p-6 text-center text-white">
+              <div className="max-w-md rounded-2xl border border-white/10 bg-white/10 p-7 shadow-xl backdrop-blur-md"><p className="text-sm leading-6 text-white/80">{error}</p><button type="button" onClick={() => window.location.reload()} className="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900"><RotateCcw size={15} /> Try again</button></div>
             </div>
           )}
-        </div>
+        </main>
 
         {pdf && !error && (
-          <div className="border-t border-white/10 px-4 pt-3 text-white">
-            <div className="flex items-center gap-3">
-              <span className="w-10 text-right text-xs text-white/60">1</span>
-              <input type="range" min={1} max={pdf.numPages} step={1} value={page} onChange={event => void goToPage(Number(event.target.value))} className="h-2 w-full cursor-pointer accent-white" aria-label="Jump to page" />
-              <span className="w-10 text-xs text-white/60">{pdf.numPages}</span>
+          <footer className="relative z-40 shrink-0 border-t border-white/10 bg-[#111827]/95 px-3 py-2.5 text-white backdrop-blur sm:px-5 sm:py-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button type="button" onClick={() => void goToPage(page - 1)} disabled={page <= 1 || rendering || !!turning} className="hidden shrink-0 rounded-lg border border-white/10 bg-white/5 p-2 text-white/75 transition hover:bg-white/10 disabled:opacity-25 sm:block" aria-label="Previous page"><ChevronLeft size={18} /></button>
+              <input type="range" min={1} max={pdf.numPages} step={1} value={page} onChange={event => void goToPage(Number(event.target.value))} className="h-1.5 min-w-0 flex-1 cursor-pointer accent-white" aria-label="Jump to page" />
+              <button type="button" onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning} className="hidden shrink-0 rounded-lg border border-white/10 bg-white/5 p-2 text-white/75 transition hover:bg-white/10 disabled:opacity-25 sm:block" aria-label="Next page"><ChevronRight size={18} /></button>
+              <div className="flex shrink-0 items-center gap-1.5 text-xs text-white/60">
+                <input type="number" min={1} max={pdf.numPages} value={pageInput} onChange={event => setPageInput(event.target.value)} onBlur={commitPageInput} onKeyDown={event => { if (event.key === 'Enter') commitPageInput(); }} className="w-12 rounded-md border border-white/15 bg-white/5 px-1.5 py-1.5 text-center text-xs text-white outline-none focus:border-white/40" aria-label="Page number" />
+                <span>/ {pdf.numPages}</span>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-3 py-3">
-              <span className="text-sm text-white/80">Page</span>
-              <input type="number" min={1} max={pdf.numPages} value={pageInput} onChange={event => setPageInput(event.target.value)} onBlur={commitPageInput} onKeyDown={event => { if (event.key === 'Enter') commitPageInput(); }} className="w-16 rounded-md border border-white/20 bg-white/10 px-2 py-1.5 text-center text-sm text-white outline-none focus:border-white/50" aria-label="Page number" />
-              <span className="text-sm text-white/70">of {pdf.numPages}</span>
-            </div>
-          </div>
+            <p className="mt-2 text-center text-[10px] tracking-wide text-white/35 sm:hidden">Swipe left/right to turn pages</p>
+          </footer>
         )}
       </div>
     </div>
