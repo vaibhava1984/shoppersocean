@@ -309,11 +309,10 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     setDragDirection(null);
   };
 
-
   const goToPage = useCallback(async (target: number) => {
-    if (!pdf || rendering || turning) return;
+    if (!pdf || rendering || turning || !currentCanvasRef.current) return;
     const targetPage = Math.min(Math.max(Math.round(target), 1), pdf.numPages);
-    if (targetPage === page || !currentCanvasRef.current) return;
+    if (targetPage === page) return;
 
     const direction = targetPage > page ? 'next' : 'prev';
     const token = ++renderTokenRef.current;
@@ -325,10 +324,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       setDragDirection(direction);
       playPageTurn();
 
-      // Animate the single visible sheet. The next PDF page is rendered only
-      // after the sheet has turned, so there can never be two visible pages.
-      setDragAngle(direction === 'next' ? -14 : 14);
-      await new Promise<void>(resolve => window.setTimeout(resolve, 160));
+      setDragAngle(direction === 'next' ? -12 : 12);
+      await new Promise<void>(resolve => window.setTimeout(resolve, 140));
       if (token !== renderTokenRef.current) return;
 
       await preparePage(targetPage, canvas);
@@ -336,8 +333,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
       setPage(targetPage);
       setPageInput(String(targetPage));
-      setDragAngle(direction === 'next' ? 14 : -14);
-      await new Promise<void>(resolve => window.setTimeout(resolve, 160));
+      setDragAngle(direction === 'next' ? 12 : -12);
+      await new Promise<void>(resolve => window.setTimeout(resolve, 140));
       if (token !== renderTokenRef.current) return;
 
       setDragAngle(0);
@@ -370,12 +367,14 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const onResize = () => {
       if (!pdf || !currentCanvasRef.current) return;
       const token = ++renderTokenRef.current;
-      void preparePage(page, currentCanvasRef.current).then(() => {
-        });
+      void preparePage(page, currentCanvasRef.current).finally(() => {
+        if (token === renderTokenRef.current) setRendering(false);
+      });
     };
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, [pdf, page, preparePage, zoom]);
+
 
   const commitPageInput = () => {
     const requested = Number.parseInt(pageInput, 10);
@@ -659,24 +658,13 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
                 transformStyle: 'preserve-3d',
               }}
             >
-              {/* Destination page sits underneath the sheet being turned. */}
-              <canvas
-                ref={nextCanvasRef}
-                className="pointer-events-none absolute left-1/2 top-1/2 block max-h-[56dvh] max-w-[90vw] -translate-x-1/2 -translate-y-1/2 select-none"
-                style={{ zIndex: 0, visibility: turning || dragDirection ? 'visible' : 'hidden' }}
-                draggable={false}
-                aria-hidden="true"
-              />
-              <div
-                className={
-                  'relative z-10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] ' +
-                  (dragDirection === 'prev' ? 'origin-right' : 'origin-left')
-                }
+                      <div
+                className="relative z-10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] origin-center"
                 style={{
                   backfaceVisibility: 'hidden',
                   transformStyle: 'preserve-3d',
                   transform: `translateX(${dragX * 0.10}px) rotateY(${dragAngle}deg)`,
-                  transition: settling ? 'transform 360ms cubic-bezier(.22,.61,.36,1)' : 'none',
+                  transition: settling || turning ? 'transform 180ms cubic-bezier(.22,.61,.36,1)' : 'none',
                   willChange: 'transform',
                 }}
               >
@@ -690,7 +678,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
               <button type="button" onPointerDown={event => event.stopPropagation()} onClick={() => void goToPage(page - 1)} disabled={page <= 1 || rendering || !!turning} className="absolute bottom-2 left-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Previous page">
                 <ChevronLeft size={20} strokeWidth={2.2} />
               </button>
-              <button type="button" onPointerDown={event => event.stopPropagation()} onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning || !nextReady} className="absolute bottom-2 right-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Next page">
+              <button type="button" onPointerDown={event => event.stopPropagation()} onClick={() => void goToPage(page + 1)} disabled={page >= pdf.numPages || rendering || !!turning} className="absolute bottom-2 right-2 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-black/45 text-white shadow-md backdrop-blur-sm transition hover:bg-black/70 disabled:opacity-15" aria-label="Next page">
                 <ChevronRight size={20} strokeWidth={2.2} />
               </button>
             </>
