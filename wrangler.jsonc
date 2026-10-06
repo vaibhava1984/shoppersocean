@@ -19,6 +19,11 @@
   "observability": {
     "enabled": true
   },
+  "vars": {
+    "B2_BUCKET": "Shoppers-ocean-books",
+    "B2_ENDPOINT": "s3.us-west-004.backblazeb2.com",
+    "B2_REGION": "us-west-004"
+  },
   "d1_databases": [
     {
       "binding": "DB",
