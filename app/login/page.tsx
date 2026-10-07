@@ -207,7 +207,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
                         {c.name}
                       </button>
                     ))}
-                  </div>
+                  </div>}
                 </div>
                 {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
               </div>
