@@ -114,6 +114,25 @@ export async function POST() {
           `,
         });
 
+        const safeCountry = escapeHtml(String((user.publicMetadata as any)?.country ?? (user.unsafeMetadata as any)?.country ?? "").trim() || "Not provided");
+        const { error: adminEmailError } = await resend.emails.send({
+          from: "no-reply@shoppersocean.com",
+          to: "kochimonu@gmail.com",
+          subject: "User account deleted | Shoppers Ocean",
+          html: `
+            <div style="font-family: Arial, sans-serif; line-height: 1.7; color: #1e293b;">
+              <p>Dear admin !</p>
+              <p>A new user has deleted his/her account on Shopper ocean on ${new Date().toLocaleDateString("en-IN")} at ${new Date().toLocaleTimeString("en-IN")}</p>
+              <p><strong>Name</strong><br />${safeName}</p>
+              <p><strong>Email</strong><br />${escapeHtml(email)}</p>
+              <p><strong>Country</strong><br />${safeCountry}</p>
+            </div>
+          `,
+        });
+        if (adminEmailError) {
+          console.error("Error sending account deletion admin notification:", adminEmailError);
+        }
+
         if (emailError) {
           console.error("Error sending account deletion email:", emailError);
         } else {

@@ -53,7 +53,22 @@ export async function POST(req: Request) {
         });
         if (emailError) console.error('Error sending signup welcome email:', emailError);
         else emailSent = true;
-      } catch (emailError) { console.error('Unexpected signup welcome email error:', emailError); }
+
+        const safeCountry = escapeHtml(String(country || '').trim() || 'Not provided');
+        const { error: adminEmailError } = await resend.emails.send({
+          from: 'no-reply@shoppersocean.com',
+          to: 'kochimonu@gmail.com',
+          subject: 'New user account created | Shoppers Ocean',
+          html: '<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">' +
+            '<p>Dear admin !</p>' +
+            '<p>A new user has created an account on Shopper ocean on ' + new Date(now).toLocaleDateString('en-IN') + ' at ' + new Date(now).toLocaleTimeString('en-IN') + '</p>' +
+            '<p><strong>Name</strong><br>' + safeName + '</p>' +
+            '<p><strong>Email</strong><br>' + escapeHtml(normalizedEmail) + '</p>' +
+            '<p><strong>Country</strong><br>' + safeCountry + '</p>' +
+            '</div>'
+        });
+        if (adminEmailError) console.error('Error sending signup admin notification:', adminEmailError);
+      } catch (emailError) { console.error('Unexpected signup email error:', emailError); }
     } else console.error('RESEND_API_KEY is not configured; account was created without welcome email.');
 
     const user = { id: userId, email: normalizedEmail, full_name: full_name || null, country: country || null };
