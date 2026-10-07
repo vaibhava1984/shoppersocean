@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import { NextResponse } from "next/server";
 import { getCurrentUser, clearSession } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
+import { COUNTRIES } from "@/utils/countries";
 
 function escapeHtml(value: string) {
   return value
@@ -114,7 +115,9 @@ export async function POST() {
           `,
         });
 
-        const safeCountry = escapeHtml(String((user.publicMetadata as any)?.country ?? (user.unsafeMetadata as any)?.country ?? "").trim() || "Not provided");
+        const countryValue = String((user.publicMetadata as any)?.country ?? (user.unsafeMetadata as any)?.country ?? "").trim();
+        const countryName = COUNTRIES.find(c => c.code === countryValue.toUpperCase())?.name || countryValue || "Not provided";
+        const safeCountry = escapeHtml(countryName);
         const { error: adminEmailError } = await resend.emails.send({
           from: "no-reply@shoppersocean.com",
           to: "kochimonu@gmail.com",
@@ -122,7 +125,7 @@ export async function POST() {
           html: `
             <div style="font-family: Arial, sans-serif; line-height: 1.7; color: #1e293b;">
               <p>Dear admin !</p>
-              <p>A new user has deleted his/her account on Shopper ocean on ${new Date().toLocaleDateString("en-IN")} at ${new Date().toLocaleTimeString("en-IN")}</p>
+              <p style="font-size:16px;"><strong>A new user has deleted his/her account on Shopper ocean on ${new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })} at ${new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", second: "2-digit" })} IST (GMT+5:30)</strong></p>
               <p><strong>Name</strong><br />${safeName}</p>
               <p><strong>Email</strong><br />${escapeHtml(email)}</p>
               <p><strong>Country</strong><br />${safeCountry}</p>
