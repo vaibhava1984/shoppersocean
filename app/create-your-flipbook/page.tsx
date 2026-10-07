@@ -28,11 +28,11 @@ const policies = [
   },
   {
     title: "5. Royalty Payment",
-    content: "Your applicable royalty will be paid to the bank account details provided by you during the author registration or subsequently updated through the permitted process. Royalty for a completed monthly cycle will be processed on or before the 10th day of the following month, subject to successful verification of the registered payment details.",
+    content: "Your applicable royalty will be paid to the PayPal/UPI details provided by you during the author registration or subsequently updated through the permitted process. Royalty for a completed monthly cycle will be processed on or before the 10th day of the following month, subject to successful verification of the registered payment details.",
   },
   {
-    title: "6. Changes to Bank Account Details",
-    content: "Any changes to your registered bank account details must be submitted on or before the 25th day of the current month to facilitate timely royalty processing. Changes submitted after the 25th may not be considered for royalty payments relating to the current monthly payment cycle.",
+    title: "6. Changes to PayPal/UPI Details",
+    content: "Any changes to your registered PayPal/UPI details must be submitted on or before the 25th day of the current month to facilitate timely royalty processing. Changes submitted after the 25th may not be considered for royalty payments relating to the current monthly payment cycle.",
   },
   {
     title: "7. Taxes and Statutory Obligations",
