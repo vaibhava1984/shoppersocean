@@ -63,6 +63,17 @@ async function saveBook(request: Request, id?: string) {
   if (!author) return NextResponse.json({ error: "Author not found" }, { status: 404 });
 
   const coverImages = Array.isArray(body.cover_images) ? body.cover_images : [];
+  const pages = Number(body.pages ?? 0);
+  const genre = body.genre == null ? "" : String(body.genre);
+  if (!Number.isFinite(pages) || pages <= 0) {
+    return NextResponse.json({ error: "A valid number of pages is required" }, { status: 400 });
+  }
+  if (pages < 100 && genre !== "Short Books") {
+    return NextResponse.json(
+      { error: "Not fit for full book. Submit in 'Short Books' genre." },
+      { status: 400 }
+    );
+  }
   const now = new Date().toISOString();
 
   const values = [
@@ -77,7 +88,7 @@ async function saveBook(request: Request, id?: string) {
     body.language == null ? null : String(body.language),
     body.genre == null ? null : String(body.genre),
     body.publisher == null ? null : String(body.publisher),
-    Number(body.pages ?? 0) || 0,
+    pages,
     authorId,
     String(author.name ?? ""),
     now,
