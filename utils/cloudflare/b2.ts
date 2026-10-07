@@ -93,10 +93,7 @@ export async function getB2NativeRequest(method: "GET" | "HEAD", key: string) {
   const download = new URL(
     downloadUrl.replace(/\/$/, "") + "/file/" + encodeURIComponent(cfg.bucket) + "/" + filePath
   );
-  // Pass the Native API authorization token as a query parameter. Backblaze explicitly
-  // supports this form for private downloads and it avoids intermediary handling of
-  // Authorization headers while preserving the token inside the Worker.
-  download.searchParams.set("Authorization", authorizationToken); // use the cached B2 token
+  download.searchParams.set("Authorization", authorizationToken);
   return {
     url: download.toString(),
     headers: {},
@@ -164,13 +161,33 @@ export async function getB2SignedRequest(method: "GET" | "HEAD", key: string) {
 }
 
 export async function putB2Object(key: string, bytes: Uint8Array, contentType: string) {
-  const signed = await signRequest("PUT", key, await sha256(bytes), contentType);
-  const response = await fetch(signed.url, { method: "PUT", headers: signed.headers, body: bytes });
-  if (!response.ok) throw new Error("Backblaze B2 upload failed with status " + response.status);
+  // Keep the request payload unsigned so large PDFs do not require a second full
+  // SHA-256 pass through the Worker before the upload begins.
+  const signed = await signRequest("PUT", key, "UNSIGNED-PAYLOAD", contentType);
+  const response = await fetch(signed.url, {
+    method: "PUT",
+    headers: signed.headers,
+    body: bytes,
+  });
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    throw new Error(
+      "Backblaze B2 upload failed with status " +
+      response.status +
+      (detail ? ": " + detail.slice(0, 300) : "")
+    );
+  }
 }
 
 export async function deleteB2Object(key: string) {
   const signed = await signRequest("DELETE", key, await sha256(new Uint8Array()));
   const response = await fetch(signed.url, { method: "DELETE", headers: signed.headers });
-  if (!response.ok && response.status !== 404) throw new Error("Backblaze B2 delete failed with status " + response.status);
+  if (!response.ok && response.status !== 404) {
+    const detail = await response.text().catch(() => "");
+    throw new Error(
+      "Backblaze B2 delete failed with status " +
+      response.status +
+      (detail ? ": " + detail.slice(0, 300) : "")
+    );
+  }
 }
