@@ -25,7 +25,8 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [showPassword, setShowPassword] = useState(false)
   const [country, setCountry] = useState("")
   const [countryQuery, setCountryQuery] = useState("")
-  const [countryOpen, setCountryOpen] = useState(false)\n  const [showAllCountries, setShowAllCountries] = useState(false)
+  const [countryOpen, setCountryOpen] = useState(false)
+  const [showAllCountries, setShowAllCountries] = useState(false)
   const [address, setAddress] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
@@ -147,7 +148,8 @@ export default function Login({ searchParams }: { searchParams: any }) {
         </div>
       </nav>
 
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8 relative overflow-hidden">\n        <button type="button" onClick={() => router.back()} className="absolute left-4 top-4 z-10 inline-flex items-center gap-1 text-sm font-normal not-italic text-gray-500 hover:text-gray-700 focus:outline-none" aria-label="Go back"><ArrowLeft className="h-4 w-4" />Back</button>
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8 relative overflow-hidden">
+        <button type="button" onClick={() => router.back()} className="absolute left-4 top-4 z-10 inline-flex items-center gap-1 text-sm font-normal not-italic text-gray-500 hover:text-gray-700 focus:outline-none" aria-label="Go back"><ArrowLeft className="h-4 w-4" />Back</button>
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600" />
         <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">{isSignIn ? "Sign In" : "Create Account"}</h2>
 
