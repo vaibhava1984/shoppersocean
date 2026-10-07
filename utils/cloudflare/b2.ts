@@ -163,7 +163,7 @@ export async function getB2SignedRequest(method: "GET" | "HEAD", key: string) {
 export async function putB2Object(key: string, bytes: Uint8Array, contentType: string) {
   // Keep the request payload unsigned so large PDFs do not require a second full
   // SHA-256 pass through the Worker before the upload begins.
-  const signed = await signRequest("PUT", key, "UNSIGNED-PAYLOAD", contentType);
+  const signed = await signRequest("PUT", key, await sha256(bytes), contentType);
   const response = await fetch(signed.url, {
     method: "PUT",
     headers: signed.headers,
