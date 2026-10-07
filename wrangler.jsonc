@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "shoppersocean",
-  "main": ".open-next/worker.js",
+  "main": "custom-worker.ts",
   "compatibility_date": "2026-09-24",
   "compatibility_flags": [
     "nodejs_compat"
@@ -15,6 +15,9 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
+  },
+  "triggers": {
+    "crons": ["0 * * * *"]
   },
   "observability": {
     "enabled": true
