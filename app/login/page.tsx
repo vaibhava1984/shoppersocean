@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Eye, EyeOff, Loader2Icon } from "lucide-react"
+import { Eye, EyeOff, Loader2Icon, ChevronDown, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { SubmitButton } from "./submit-button"
 import { COUNTRIES } from "@/utils/countries"
@@ -146,7 +146,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
         </div>
       </nav>
 
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8 relative overflow-hidden">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8 relative overflow-hidden">\n        <button type="button" onClick={() => router.back()} className="absolute left-4 top-4 z-10 inline-flex items-center gap-1 text-sm font-normal not-italic text-gray-500 hover:text-gray-700 focus:outline-none" aria-label="Go back"><ArrowLeft className="h-4 w-4" />Back</button>
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600" />
         <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">{isSignIn ? "Sign In" : "Create Account"}</h2>
 
@@ -158,31 +158,54 @@ export default function Login({ searchParams }: { searchParams: any }) {
             <>
               <div>
                 <label htmlFor="name">{field("Name", true)}</label>
-                <input id="name" className={`mt-1 w-full rounded-md border ${errors.username ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} placeholder="Your full name" autoComplete="name" value={username} onChange={e => { setUsername(e.target.value); setErrors(p => ({...p, username: ""})) }} />
+                <input id="name" className={`mt-1 w-full rounded-md border ${errors.username ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900 focus:outline-none focus:ring-0 ${errors.username ? "focus:border-red-500" : "focus:border-gray-300"}`} placeholder="Your full name" autoComplete="name" value={username} onChange={e => { setUsername(e.target.value); setErrors(p => ({...p, username: ""})) }} />
                 {errors.username && <p className="mt-1 text-sm text-red-500">{errors.username}</p>}
               </div>
 
-              <div>
+              <div className="relative">
                 <label htmlFor="country">{field("Country", true)}</label>
-                <input
-                  id="country"
-                  name="country"
-                  list="country-suggestions"
-                  autoComplete="country-name"
-                  className={`mt-1 w-full rounded-md border ${errors.country ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`}
-                  placeholder="Start typing your country"
-                  value={countryQuery}
-                  onChange={e => {
-                    const value = e.target.value;
-                    setCountryQuery(value);
-                    const selected = COUNTRIES.find(c => c.name.toLowerCase() === value.trim().toLowerCase());
-                    setCountry(selected?.code || "");
-                    setErrors(p => ({...p, country: ""}));
-                  }}
-                />
-                <datalist id="country-suggestions">
-                  {COUNTRIES.map(c => <option key={c.code} value={c.name} />)}
-                </datalist>
+                <div className="relative mt-1">
+                  <input
+                    id="country"
+                    name="country"
+                    autoComplete="off"
+                    className={`w-full rounded-md border ${errors.country ? "border-red-500" : "border-gray-300"} px-4 py-2 pr-12 bg-white text-gray-900 focus:outline-none focus:ring-0 ${errors.country ? "focus:border-red-500" : "focus:border-gray-300"}`}
+                    placeholder="Start typing your country"
+                    value={countryQuery}
+                    onChange={e => {
+                      const value = e.target.value;
+                      setCountryQuery(value);
+                      const selected = COUNTRIES.find(c => c.name.toLowerCase() === value.trim().toLowerCase());
+                      setCountry(selected?.code || "");
+                      setErrors(p => ({...p, country: ""}));
+                    }}
+                    onFocus={() => setCountryQuery(v => v)}
+                  />
+                  <button
+                    type="button"
+                    aria-label="Show all countries"
+                    onClick={() => setCountryQuery(v => v)}
+                    className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
+                  >
+                    <ChevronDown className="h-5 w-5" />
+                  </button>
+                  <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-56 overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg">
+                    {COUNTRIES.filter(c => !countryQuery.trim() || c.name.toLowerCase().startsWith(countryQuery.trim().toLowerCase())).map(c => (
+                      <button
+                        key={c.code}
+                        type="button"
+                        onClick={() => {
+                          setCountry(c.code);
+                          setCountryQuery(c.name);
+                          setErrors(prev => ({...prev, country: ""}));
+                        }}
+                        className="block w-full px-4 py-2 text-left text-sm font-normal italic text-gray-500 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                      >
+                        {c.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
               </div>
             </>
@@ -190,14 +213,14 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
           <div>
             <label htmlFor="email">{field("Email", true)}</label>
-            <input id="email" type="email" className={`mt-1 w-full rounded-md border ${errors.email ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} placeholder="you@example.com" required value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ""})) }} />
+            <input id="email" type="email" className={`mt-1 w-full rounded-md border ${errors.email ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900 focus:outline-none focus:ring-0 ${errors.email ? "focus:border-red-500" : "focus:border-gray-300"}`} placeholder="you@example.com" required value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ""})) }} />
             {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
           </div>
 
           <div>
             <label htmlFor="password">{field("Choose any password (minimum six letters/digits)", true)}</label>
             <div className="relative mt-1">
-              <input id="password" type={showPassword ? "text" : "password"} className={`w-full rounded-md border ${errors.password ? "border-red-500" : "border-gray-300"} px-4 py-2 pr-12 bg-white text-gray-900`} placeholder="Minimum 6 characters" required value={password} onChange={e => { setPassword(e.target.value); setErrors(p => ({...p, password: ""})) }} />
+              <input id="password" type={showPassword ? "text" : "password"} className={`w-full rounded-md border ${errors.password ? "border-red-500" : "border-gray-300"} px-4 py-2 pr-12 bg-white text-gray-900 focus:outline-none focus:ring-0 ${errors.password ? "focus:border-red-500" : "focus:border-gray-300"}`} placeholder="Minimum 6 characters" required value={password} onChange={e => { setPassword(e.target.value); setErrors(p => ({...p, password: ""})) }} />
               <button type="button" aria-label={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword(v => !v)} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800">
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -209,7 +232,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
             <>
               <div>
                 <label htmlFor="address">{field("Complete Address", false)}</label>
-                <textarea id="address" className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 min-h-24" placeholder="Complete address (optional)" value={address} onChange={e => setAddress(e.target.value)} />
+                <textarea id="address" className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 min-h-24 focus:outline-none focus:ring-0 focus:border-gray-300" placeholder="Complete address (optional)" value={address} onChange={e => setAddress(e.target.value)} />
               </div>
             </>
           )}
