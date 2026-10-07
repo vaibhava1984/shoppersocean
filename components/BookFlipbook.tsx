@@ -241,9 +241,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
     };
 
     const onVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        lastActivityRef.current = Date.now();
-      }
       scheduleIdleClose();
     };
 
