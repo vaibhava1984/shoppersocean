@@ -8,9 +8,17 @@ async function ensureTable(db: D1Database) {
     id TEXT PRIMARY KEY, user_id TEXT NOT NULL, title TEXT NOT NULL, full_name TEXT NOT NULL,
     email TEXT NOT NULL, city TEXT NOT NULL, country TEXT NOT NULL, age INTEGER NOT NULL,
     gender TEXT NOT NULL, paypal_id TEXT, upi_number TEXT,
-    status TEXT NOT NULL DEFAULT 'pending', created_at TEXT NOT NULL, reviewed_at TEXT
+    status TEXT NOT NULL DEFAULT 'pending', created_at TEXT NOT NULL, reviewed_at TEXT, approved_at TEXT, payment_deadline TEXT, payment_order_id TEXT, payment_id TEXT, payment_currency TEXT, payment_amount REAL
   )`).run();
   await db.prepare("CREATE INDEX IF NOT EXISTS idx_author_applications_status_created ON author_applications(status, created_at)").run();
+  for (const statement of [
+    "ALTER TABLE author_applications ADD COLUMN approved_at TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_deadline TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_order_id TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_id TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_currency TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_amount REAL"
+  ]) { try { await db.prepare(statement).run(); } catch {} }
 }
 
 function escapeHtml(value: string) {
@@ -23,7 +31,7 @@ async function sendApprovalEmail(env: any, application: any) {
     from: "no-reply@shoppersocean.com",
     to: application.email,
     subject: "Shoppers Ocean Author Application Approved",
-    html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;"><p>Dear ${escapeHtml(application.full_name)},</p><p>Congratulations 🎉</p><p>Your application to register yourself as an author at Shoppers ocean has been approved. Looking forward to having a long lasting journey together.</p><p>Regards,<br/>Shoppers Ocean</p></div>`,
+    html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;"><p>Dear ${escapeHtml(application.full_name)},</p><p>Congratulations 🎉</p><p>Your application to register yourself as an author at Shoppers ocean has been approved. Please login and continue your registration process within 24 hours. Looking forward to having a long lasting journey together.</p><p>Regards,<br/>Shoppers Ocean</p></div>`,
   });
 }
 
@@ -58,20 +66,15 @@ export async function POST(request: Request) {
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
     const { env } = await getCloudflareContext();
     const now = new Date().toISOString();
-    const existingAuthor = await db.prepare("SELECT id FROM authors WHERE user_id=? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(application.user_id).first();
+    const paymentDeadline = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
 
-    if (!existingAuthor) {
-      await db.prepare("INSERT INTO authors(id,name,bio,user_id,is_deleted,created_at,updated_at) VALUES(?,?,?,?,?,?,?)")
-        .bind(crypto.randomUUID(), application.full_name, "-", application.user_id, 0, now, now).run();
-    }
-
-    await db.prepare("UPDATE author_applications SET status='approved',reviewed_at=? WHERE id=? AND status='pending'")
-      .bind(now, application.id).run();
+    await db.prepare("UPDATE author_applications SET status='approved_payment_pending',reviewed_at=?,approved_at=?,payment_deadline=? WHERE id=? AND status='pending'")
+      .bind(now, now, paymentDeadline, application.id).run();
 
     const { error } = await sendApprovalEmail(env, application);
     if (error) console.error("Manual author approval email error:", error);
 
-    return NextResponse.json({ message: "Author approved successfully" });
+    return NextResponse.json({ message: "Application approved. Payment is now required within 24 hours." });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
