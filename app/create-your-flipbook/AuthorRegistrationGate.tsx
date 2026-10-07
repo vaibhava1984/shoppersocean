@@ -217,18 +217,18 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
               </select>
             </div>
 
-            {country === "India" ? (
+            {country === "India" && (
               <div>
                 <label className="block text-base font-semibold text-slate-800 mb-2">UPI-connected mobile number — for authors in India</label>
                 <input className={inputClass} value={upiNumber} onChange={(e) => setUpiNumber(e.target.value)} placeholder="UPI-connected mobile number" />
                 <p className="mt-1 text-sm text-slate-500">The UPI account name must match the registered author.</p>
               </div>
-            ) : (
-              <div>
-                <label className="block text-base font-semibold text-slate-800 mb-2">PayPal ID — for authors outside India</label>
-                <input className={inputClass} value={paypalId} onChange={(e) => setPaypalId(e.target.value)} placeholder="PayPal ID" />
-              </div>
             )}
+
+            <div>
+              <label className="block text-base font-semibold text-slate-800 mb-2">PayPal ID for authors outside India</label>
+              <input className={inputClass} value={paypalId} onChange={(e) => setPaypalId(e.target.value)} placeholder="PayPal ID" />
+            </div>
           </div>
 
           <p className="text-lg text-slate-600 leading-relaxed mt-8 mb-4 text-center">Please complete the one-time registration payment within 24 hours to finalize your author registration.</p>
