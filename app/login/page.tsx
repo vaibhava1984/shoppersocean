@@ -122,31 +122,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
     }
   }
 
-  const verifyPhone = async () => {
-    if (!/^\d{6}$/.test(otp)) {
-      setErrors({ otp: "Please enter the 6-digit code." })
-      return
-    }
-    setIsSubmitting(true)
-    const { error } = await auth.auth.verifyOtp({
-      phone: mobile.trim(),
-      token: otp,
-      type: "phone_change",
-    })
-    setIsSubmitting(false)
-
-    if (error) {
-      setErrors({ otp: error.message || "Incorrect or expired verification code." })
-      return
-    }
-
-    setPhoneVerified(true)
-    setPhoneVerificationRequired(false)
-    setOtp("")
-    setErrors({})
-    showDialog("Mobile verified", "Your mobile number has been verified successfully.")
-  }
-
   function getAuthErrorMessage(code: string) {
     if (code === "account_not_found") return "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑"
     if (code === "email_not_confirmed") return "Please confirm your email address and try again."
