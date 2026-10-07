@@ -34,7 +34,8 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
 
         async function setupLocalCurrency() {
             try {
-                let detectedCurrency = 'INR';
+                // Logged-out visitors always see USD. Signed-in users use their D1 profile country.
+                let detectedCurrency = 'USD';
 
                 if (userId) {
                     const response = await fetch('/api/auth/me', {
@@ -61,8 +62,8 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
                     setLocalCurrency(detectedCurrency);
                     setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates));
                 } else {
-                    setLocalCurrency('INR');
-                    setLocalAmount(amount);
+                    setLocalCurrency('USD');
+                    setLocalAmount(convertCurrency(amount, 'INR', 'USD', rates));
                 }
             } catch (error) {
                 if (!active) return;
