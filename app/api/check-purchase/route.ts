@@ -24,6 +24,7 @@ export async function POST(req: Request) {
     }
 
     const userId = identity.profile.id;
+    const isAdmin = identity.user.publicMetadata.userrole === "ADMIN";
     const body = await req.json();
     const { productId, productIds } = body;
 
@@ -35,7 +36,7 @@ export async function POST(req: Request) {
       ).bind(userId, String(productId)).first<{ id: string; created_at: string; status: string }>();
 
       return NextResponse.json({
-        hasPurchased: Boolean(order),
+        hasPurchased: isAdmin || Boolean(order),
         orderDetails: order ? [{ order_id: order.id, purchase_date: order.created_at, status: order.status }] : [],
       }, { headers: { 'Cache-Control': 'no-store' } });
     }
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
       ).bind(userId, ...ids).all<{ id: string; book_id: string; created_at: string; status: string }>();
 
       const result: Record<string, any> = {};
-      ids.forEach((id) => { result[id] = { hasPurchased: false, orderDetails: [] }; });
+      ids.forEach((id) => { result[id] = { hasPurchased: isAdmin, orderDetails: [] }; });
 
       (orders.results || []).forEach((order) => {
         const bookId = String(order.book_id);
