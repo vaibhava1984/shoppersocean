@@ -1,13 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Loader2Icon } from "lucide-react"
+import { Eye, EyeOff, Loader2Icon } from "lucide-react"
 import Link from "next/link"
 import { SubmitButton } from "./submit-button"
 import { COUNTRIES } from "@/utils/countries"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import React from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/client-auth"
@@ -23,12 +22,10 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [country, setCountry] = useState("")
-  const [mobile, setMobile] = useState("")
+  const [countryQuery, setCountryQuery] = useState("")
   const [address, setAddress] = useState("")
-  const [otp, setOtp] = useState("")
-  const [phoneVerificationRequired, setPhoneVerificationRequired] = useState(false)
-  const [phoneVerified, setPhoneVerified] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
   const showDialog = (title: string, description: string) => setDialogState({ isOpen: true, title, description })
@@ -68,11 +65,11 @@ export default function Login({ searchParams }: { searchParams: any }) {
       if (error) {
         setIsSubmitting(false)
         if (error.code === "account_not_found") {
-          setErrors({ general: "There isn't a user with that email, dear. To join us, please register or make an account!" })
+          setErrors({ general: "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑" })
         } else if (error.code === "email_not_confirmed") {
           setErrors({ general: "Please confirm your email address and try again." })
         } else if (error.code === "invalid_credentials") {
-          setErrors({ general: "Invalid credentials" })
+          setErrors({ general: "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑" })
         } else {
           setErrors({ general: error.message || "An error occurred during sign in. Please try again." })
         }
@@ -151,9 +148,9 @@ export default function Login({ searchParams }: { searchParams: any }) {
   }
 
   function getAuthErrorMessage(code: string) {
-    if (code === "account_not_found") return "There isn't a user with that email, dear. To join us, please register or make an account!"
+    if (code === "account_not_found") return "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑"
     if (code === "email_not_confirmed") return "Please confirm your email address and try again."
-    if (code === "invalid_credentials") return "Invalid credentials"
+    if (code === "invalid_credentials") return "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑"
     if (code === "account_already_registered") return "An account with this email already exists. Please sign in or use a different email address."
     return "Internal server error occurred"
   }
@@ -180,7 +177,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
         <div className="space-y-4">
           {accountCreated === "success" && <div className="bg-green-400 text-white p-2 rounded">Account created successfully. Please confirm your mail and login.</div>}
-          {(authError || errors.general) && (authError === "account_not_found" || errors.general === "There isn't a user with that email, dear. To join us, please register or make an account!" ? <div className="p-0 text-sm font-medium text-green-800">{authError ? getAuthErrorMessage(authError) : errors.general}</div> : <div className="bg-red-400 text-white p-2 rounded">{authError ? getAuthErrorMessage(authError) : errors.general}</div>)}
+          {(authError || errors.general) && (isSignIn ? <div className="p-0 text-sm font-medium text-green-700 shadow-none">{authError ? getAuthErrorMessage(authError) : errors.general}</div> : <div className="bg-red-400 text-white p-2 rounded">{authError ? getAuthErrorMessage(authError) : errors.general}</div>)}
 
           {!isSignIn && (
             <>
@@ -192,10 +189,25 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
               <div>
                 <label htmlFor="country">{field("Country", true)}</label>
-                <Select value={country} onValueChange={v => { setCountry(v); setErrors(p => ({...p, country: ""})) }}>
-                  <SelectTrigger className={`w-full text-black mt-1 ${errors.country ? "border-red-500" : ""}`}><SelectValue placeholder="Select your country" /></SelectTrigger>
-                  <SelectContent>{COUNTRIES.map(c => <SelectItem key={c.code} value={c.code}>{c.name}</SelectItem>)}</SelectContent>
-                </Select>
+                <input
+                  id="country"
+                  name="country"
+                  list="country-suggestions"
+                  autoComplete="country-name"
+                  className={`mt-1 w-full rounded-md border ${errors.country ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`}
+                  placeholder="Start typing your country"
+                  value={countryQuery}
+                  onChange={e => {
+                    const value = e.target.value;
+                    setCountryQuery(value);
+                    const selected = COUNTRIES.find(c => c.name.toLowerCase() === value.trim().toLowerCase());
+                    setCountry(selected?.code || "");
+                    setErrors(p => ({...p, country: ""}));
+                  }}
+                />
+                <datalist id="country-suggestions">
+                  {COUNTRIES.map(c => <option key={c.code} value={c.name} />)}
+                </datalist>
                 {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
               </div>
             </>
@@ -209,28 +221,17 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
           <div>
             <label htmlFor="password">{field("Choose any password (minimum six letters/digits)", true)}</label>
-            <input id="password" type="password" className={`mt-1 w-full rounded-md border ${errors.password ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} placeholder="Minimum 6 characters" required value={password} onChange={e => { setPassword(e.target.value); setErrors(p => ({...p, password: ""})) }} />
+            <div className="relative mt-1">
+              <input id="password" type={showPassword ? "text" : "password"} className={`w-full rounded-md border ${errors.password ? "border-red-500" : "border-gray-300"} px-4 py-2 pr-12 bg-white text-gray-900`} placeholder="Minimum 6 characters" required value={password} onChange={e => { setPassword(e.target.value); setErrors(p => ({...p, password: ""})) }} />
+              <button type="button" aria-label={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword(v => !v)} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800">
+                {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+              </button>
+            </div>
             {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
           </div>
 
           {!isSignIn && (
             <>
-              <div>
-                <label htmlFor="mobile">{field("Mobile", false)}</label>
-                <div className="flex gap-2 mt-1">
-                  <input id="mobile" type="tel" inputMode="tel" className="flex-1 rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900" placeholder="+91XXXXXXXXXX" value={mobile} onChange={e => { setMobile(e.target.value); setPhoneVerified(false) }} />
-                  {phoneVerified && <span className="inline-flex items-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white whitespace-nowrap">Verified ✓</span>}
-                </div>
-                {phoneVerificationRequired && !phoneVerified && (
-                  <div className="mt-2 flex gap-2">
-                    <input value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))} inputMode="numeric" maxLength={6} className="flex-1 rounded-md border border-gray-300 px-4 py-2" placeholder="6-digit code" />
-                    <Button type="button" onClick={verifyPhone} disabled={isSubmitting} className="bg-blue-600 text-white">Verify</Button>
-                  </div>
-                )}
-                {phoneVerificationRequired && <p className="mt-1 text-xs text-slate-500">Enter the 6-digit code sent to your mobile.</p>}
-                {errors.otp && <p className="mt-1 text-sm text-red-500">{errors.otp}</p>}
-              </div>
-
               <div>
                 <label htmlFor="address">{field("Complete Address", false)}</label>
                 <textarea id="address" className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 min-h-24" placeholder="Complete address (optional)" value={address} onChange={e => setAddress(e.target.value)} />
@@ -250,7 +251,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
         </div>
 
         <div className="relative my-4"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300" /></div><div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">Or</span></div></div>
-        <button type="button" onClick={() => { setIsSignIn(!isSignIn); setUsername(""); setEmail(""); setPassword(""); setCountry(""); setMobile(""); setAddress(""); setOtp(""); setPhoneVerificationRequired(false); setPhoneVerified(false); setErrors({}) }} className="w-full text-blue-600 text-sm font-medium text-center">{isSignIn ? "Need an account? Sign up" : "Already have an account? Sign in"}</button>
+        <button type="button" onClick={() => { setIsSignIn(!isSignIn); setUsername(""); setEmail(""); setPassword(""); setCountry(""); setCountryQuery(""); setAddress(""); setShowPassword(false); setErrors({}) }} className="w-full text-blue-600 text-sm font-medium text-center">{isSignIn ? "Need an account? Sign up" : "Already have an account? Sign in"}</button>
         <div className="text-sm text-center mt-3"><Link href="/forgot-password" className="text-blue-600 font-medium">Forgot your password?</Link></div>
       </div>
 
