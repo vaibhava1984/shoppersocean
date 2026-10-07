@@ -20,14 +20,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     return (
         <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-18 overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="relative flex flex-col md:flex-row items-center justify-between">
+                    {welcomeName?.trim() && (
+                        <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex items-center justify-center">
+                            <p className="welcome-greeting text-2xl md:text-3xl font-semibold text-white">
+                                Welcome {welcomeName.trim().split(/\s+/)[0]} 😊
+                            </p>
+                        </div>
+                    )}
                     <div className="md:w-1/2 mb-8 md:mb-0">
                         {welcomeName?.trim() && (
-                            <div className="mb-5 min-h-[2.5rem] flex items-center justify-start">
-                                <p className="welcome-greeting text-2xl md:text-3xl font-semibold text-white">
-                                    Welcome {welcomeName.trim().split(/\s+/)[0]} 😊
-                                </p>
-                            </div>
+                            <div className="mb-5 min-h-[2.5rem]" aria-hidden="true" />
                         )}
                         <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight italic opacity-0 translate-y-4 animate-[fadeInUp_0.6s_ease-out_forwards]">{title}</h1>
                         <p className="text-xl md:text-2xl mb-10 opacity-0 translate-y-4 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] italic">{subtitle}</p>
