@@ -1,35 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import ContactForm from './ContactForm'
 
 export default function HeaderAuthorButton() {
-  const [open, setOpen] = useState(false)
-
   return (
-    <>
+    <Link href="/create-your-flipbook" className="inline-flex">
       <Button
         type="button"
-        onClick={() => setOpen(true)}
         className="relative z-50 pointer-events-auto cursor-pointer px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-white/10 border border-white/30 text-white font-bold text-sm sm:text-base tracking-wide shadow-sm hover:bg-white/20 hover:border-white/50 hover:scale-105 active:scale-95 transition-all duration-200 whitespace-nowrap"
       >
-        Want to work with us?
+        Create Your Flipbook
       </Button>
-
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="bg-white overflow-y-auto max-h-[85%]">
-          <DialogHeader>
-            <DialogTitle className="hidden">Want to work with us?</DialogTitle>
-          </DialogHeader>
-          <ContactForm
-            title="Want to work with us?"
-            hideDescription
-            successMessage="Thank you for your interest"
-          />
-        </DialogContent>
-      </Dialog>
-    </>
+    </Link>
   )
 }
