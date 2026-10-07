@@ -17,8 +17,8 @@ type Props = { bookId: string; title: string };
 const PDFJS_VERSION = '3.11.174';
 const PDFJS_URL = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.min.js`;
 const PDFJS_WORKER_URL = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
-const BOOK_OPEN_SOUND = '/book-open.mp3';
 const PAGE_TURN_SOUND = '/page-turn.mp3';
+const READER_IDLE_LIMIT_MS = 10 * 60 * 1000;
 
 function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
   if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
@@ -49,7 +49,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const renderRequestRef = useRef(0);
   const touchStartXRef = useRef<number | null>(null);
   const pageTurnAudioRef = useRef<HTMLAudioElement | null>(null);
-  const bookOpenAudioRef = useRef<HTMLAudioElement | null>(null);
   const dragStartXRef = useRef<number | null>(null);
   const dragOffsetRef = useRef(0);
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -70,17 +69,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const pageStorageKey = `shoppers-ocean-flipbook-page-${bookId}`;
   const turnTimerRef = useRef<number | null>(null);
 
-  const playBookOpenSound = useCallback(() => {
-    try {
-      const audio = bookOpenAudioRef.current ?? new Audio(BOOK_OPEN_SOUND);
-      bookOpenAudioRef.current = audio;
-      audio.preload = 'auto';
-      audio.currentTime = 0;
-      audio.volume = 0.82;
-      void audio.play().catch(() => {});
-    } catch {}
-  }, []);
-
   const playPageTurnSound = useCallback(() => {
     try {
       const audio = pageTurnAudioRef.current ?? new Audio(PAGE_TURN_SOUND);
@@ -93,7 +81,6 @@ export default function BookFlipbook({ bookId, title }: Props) {
 
   const openReader = async () => {
     if (loading) return;
-    playBookOpenSound();
     setOpened(true); setLoading(true); setError(''); setReaderUrl('');
     try {
       const response = await fetch('/api/get-book-reader', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookId }) });
@@ -222,8 +209,12 @@ export default function BookFlipbook({ bookId, title }: Props) {
   }, [bookId, page, pageStorageKey]);
 
   useEffect(() => {
-    const closeReaderWhenAway = () => {
-      if (document.visibilityState !== 'hidden') return;
+    if (!opened) return;
+
+    const lastActivityRef = { current: Date.now() };
+    let idleTimer: number | null = null;
+
+    const closeForInactivity = () => {
       setOpened(false);
       setReaderUrl('');
       setError('');
@@ -233,13 +224,40 @@ export default function BookFlipbook({ bookId, title }: Props) {
       setIsSliderDragging(false);
       setSliderPreviewPage(null);
     };
-    document.addEventListener('visibilitychange', closeReaderWhenAway);
-    window.addEventListener('pagehide', closeReaderWhenAway);
-    return () => {
-      document.removeEventListener('visibilitychange', closeReaderWhenAway);
-      window.removeEventListener('pagehide', closeReaderWhenAway);
+
+    const scheduleIdleClose = () => {
+      if (idleTimer !== null) window.clearTimeout(idleTimer);
+      const remaining = Math.max(0, READER_IDLE_LIMIT_MS - (Date.now() - lastActivityRef.current));
+      idleTimer = window.setTimeout(() => {
+        if (Date.now() - lastActivityRef.current >= READER_IDLE_LIMIT_MS) closeForInactivity();
+        else scheduleIdleClose();
+      }, Math.max(1000, remaining));
     };
-  }, []);
+
+    const recordReaderActivity = () => {
+      if (document.visibilityState !== 'visible') return;
+      lastActivityRef.current = Date.now();
+      scheduleIdleClose();
+    };
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        lastActivityRef.current = Date.now();
+      }
+      scheduleIdleClose();
+    };
+
+    const activityEvents = ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart'];
+    activityEvents.forEach(event => window.addEventListener(event, recordReaderActivity, { passive: true }));
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    scheduleIdleClose();
+
+    return () => {
+      activityEvents.forEach(event => window.removeEventListener(event, recordReaderActivity));
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      if (idleTimer !== null) window.clearTimeout(idleTimer);
+    };
+  }, [opened]);
 
   useEffect(() => {
     const onResize = () => { if (opened && pdfRef.current) void renderPage(); };
@@ -297,7 +315,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     const target = Math.min(Math.max(1, rawTarget), pageCount);
     setSliderPreviewPage(target);
   };
-  useEffect(() => () => { void cancelRender(); pageTurnAudioRef.current?.pause(); bookOpenAudioRef.current?.pause(); }, [cancelRender]);
+  useEffect(() => () => { void cancelRender(); pageTurnAudioRef.current?.pause(); }, [cancelRender]);
 
   const handleSliderPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     event.stopPropagation(); if (!sliderRef.current || !pageCount) return;
