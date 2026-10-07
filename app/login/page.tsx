@@ -25,6 +25,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [showPassword, setShowPassword] = useState(false)
   const [country, setCountry] = useState("")
   const [countryQuery, setCountryQuery] = useState("")
+  const [countryOpen, setCountryOpen] = useState(false)
   const [address, setAddress] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
@@ -179,17 +180,17 @@ export default function Login({ searchParams }: { searchParams: any }) {
                       setCountry(selected?.code || "");
                       setErrors(p => ({...p, country: ""}));
                     }}
-                    onFocus={() => setCountryQuery(v => v)}
+                    onFocus={() => setCountryOpen(true)}
                   />
                   <button
                     type="button"
                     aria-label="Show all countries"
-                    onClick={() => setCountryQuery(v => v)}
+                    onClick={() => setCountryOpen(v => !v)}
                     className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
                   >
                     <ChevronDown className="h-5 w-5" />
                   </button>
-                  <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-56 overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg">
+                  {countryOpen && <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-56 overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg">
                     {COUNTRIES.filter(c => !countryQuery.trim() || c.name.toLowerCase().startsWith(countryQuery.trim().toLowerCase())).map(c => (
                       <button
                         key={c.code}
@@ -249,7 +250,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
         </div>
 
         <div className="relative my-4"><div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-300" /></div><div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">Or</span></div></div>
-        <button type="button" onClick={() => { setIsSignIn(!isSignIn); setUsername(""); setEmail(""); setPassword(""); setCountry(""); setCountryQuery(""); setAddress(""); setShowPassword(false); setErrors({}) }} className="w-full text-blue-600 text-sm font-medium text-center">{isSignIn ? "Need an account? Sign up" : "Already have an account? Sign in"}</button>
+        <button type="button" onClick={() => { setIsSignIn(!isSignIn); setUsername(""); setEmail(""); setPassword(""); setCountry(""); setCountryQuery(""); setCountryOpen(false); setAddress(""); setShowPassword(false); setErrors({}) }} className="w-full text-blue-600 text-sm font-medium text-center">{isSignIn ? "Need an account? Sign up" : "Already have an account? Sign in"}</button>
         <div className="text-sm text-center mt-3"><Link href="/forgot-password" className="text-blue-600 font-medium">Forgot your password?</Link></div>
       </div>
 
