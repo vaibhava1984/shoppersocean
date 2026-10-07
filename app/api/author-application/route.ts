@@ -103,7 +103,7 @@ export async function POST(request: Request) {
     const approveToken = await createJwt(
       { sub: id, email: identity.profile.email, purpose: "author_application_approve" },
       jwtSecret,
-      30 * 24 * 3600
+      24 * 3600
     );
     const rejectToken = await createJwt(
       { sub: id, email: identity.profile.email, purpose: "author_application_reject" },
@@ -111,7 +111,7 @@ export async function POST(request: Request) {
       30 * 24 * 3600
     );
 
-    const approveUrl = BASE_URL + "/api/author-application/review?token=" + encodeURIComponent(approveToken);
+    const approveUrl = BASE_URL + "/api/author-application?token=" + encodeURIComponent(approveToken);
     const rejectUrl = BASE_URL + "/api/author-application/review?token=" + encodeURIComponent(rejectToken);
 
     const resend = new Resend(resendApiKey);
