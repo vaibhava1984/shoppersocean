@@ -32,6 +32,18 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
   const showDialog = (title: string, description: string) => setDialogState({ isOpen: true, title, description })
 
+  React.useEffect(() => {
+    if (!countryOpen) return
+    const handleOutsideClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (!target.closest("#country") && !target.closest("[data-country-dropdown]") && !target.closest("[data-country-toggle]")) {
+        setCountryOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick)
+    return () => document.removeEventListener("mousedown", handleOutsideClick)
+  }, [countryOpen])
+
   const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
   const validatePassword = (value: string) => value.length >= 6
 
@@ -187,12 +199,13 @@ export default function Login({ searchParams }: { searchParams: any }) {
                   <button
                     type="button"
                     aria-label="Show all countries"
+                    data-country-toggle
                     onClick={() => { setCountryOpen(true); setShowAllCountries(true) }}
                     className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
                   >
                     <ChevronDown className="h-5 w-5" />
                   </button>
-                  {countryOpen && <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-56 overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg">
+                  {countryOpen && <div data-country-dropdown className="absolute left-0 right-0 top-full z-30 mt-1 max-h-56 overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg">
                     {COUNTRIES.filter(c => showAllCountries || !countryQuery.trim() || c.name.toLowerCase().startsWith(countryQuery.trim().toLowerCase())).map(c => (
                       <button
                         key={c.code}
