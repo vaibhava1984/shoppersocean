@@ -56,7 +56,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
     else if (!validatePassword(password)) next.password = "Password must be at least 6 letters/digits"
 
     if (!signingIn) {
-      if (!username.trim()) next.username = "Name is required"
+      if (!username.trim()) next.username = "Full name is required"
       if (!country) next.country = "Country is required"
     }
     setErrors(next)
@@ -172,7 +172,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
           {!isSignIn && (
             <>
               <div>
-                <label htmlFor="name">{field("Name", true)}</label>
+                <label htmlFor="name">{field("Full name", true)}</label>
                 <input id="name" className={`mt-1 w-full rounded-md border ${errors.username ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900 focus:outline-none focus:ring-0 ${errors.username ? "focus:border-red-500" : "focus:border-gray-300"}`} placeholder="Your full name" autoComplete="name" value={username} onChange={e => { setUsername(e.target.value); setErrors(p => ({...p, username: ""})) }} />
                 {errors.username && <p className="mt-1 text-sm text-red-500">{errors.username}</p>}
               </div>
