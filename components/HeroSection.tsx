@@ -23,9 +23,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="flex flex-col md:flex-row items-center justify-between">
                     <div className="md:w-1/2 mb-8 md:mb-0">
                         {welcomeName?.trim() && (
-                            <div className="mb-5 min-h-[2.5rem] flex items-center">
-                                <p className="welcome-greeting text-lg md:text-xl font-bold italic text-white">
-                                    welcome {welcomeName.trim().split(/\s+/)[0]} 😊
+                            <div className="mb-5 min-h-[2.5rem] flex items-center justify-start">
+                                <p className="welcome-greeting text-2xl md:text-3xl font-semibold text-white">
+                                    Welcome {welcomeName.trim().split(/\s+/)[0]} 😊
                                 </p>
                             </div>
                         )}
