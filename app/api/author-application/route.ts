@@ -48,16 +48,12 @@ export async function POST(request: Request) {
     const age = Number(body.age);
     const gender = String(body.gender ?? "").trim();
     const paypalId = String(body.paypalId ?? "").trim();
-    const upiNumber = String(body.upiNumber ?? "").trim();
 
     const country = COUNTRIES.find((c) => c.code === String(identity.profile.country ?? "").toUpperCase())?.name
       || String(identity.profile.country ?? "").trim();
 
     if (!title || !fullName || !city || !country || !gender || !Number.isInteger(age) || age < 1 || age > 120) {
       return NextResponse.json({ error: "Please complete all required fields." }, { status: 400 });
-    }
-    if (country === "India" && !upiNumber) {
-      return NextResponse.json({ error: "Please provide the number connected with UPI." }, { status: 400 });
     }
     if (country !== "India" && !paypalId) {
       return NextResponse.json({ error: "Please provide your PayPal ID." }, { status: 400 });
@@ -91,7 +87,7 @@ export async function POST(request: Request) {
         age,
         gender,
         country === "India" ? null : paypalId,
-        country === "India" ? upiNumber : null,
+        null,
         "pending",
         now
       )
@@ -133,7 +129,6 @@ export async function POST(request: Request) {
         <p><strong>Age:</strong> ${age}</p>
         <p><strong>Gender:</strong> ${escapeHtml(gender)}</p>
         <p><strong>PayPal ID:</strong> ${escapeHtml(paypalId || "Not applicable")}</p>
-        <p><strong>Number connected with UPI:</strong> ${escapeHtml(upiNumber || "Not applicable")}</p>
         <div style="margin:30px 0;text-align:center;">
           <a href="${approveUrl}" style="display:inline-block;background:#16a34a;color:#fff;padding:13px 25px;border-radius:6px;text-decoration:none;font-weight:700;margin-right:12px;">Approve</a>
           <a href="${rejectUrl}" style="display:inline-block;background:#dc2626;color:#fff;padding:13px 25px;border-radius:6px;text-decoration:none;font-weight:700;">Reject</a>
