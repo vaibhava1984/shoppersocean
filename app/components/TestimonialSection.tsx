@@ -61,7 +61,7 @@ const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
             {loading ? (
                 <div>Loading...</div>
             ) : error ? (
-                <div>{error}</div>
+                <div />
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {testimonials.map((testimonial, index) => (

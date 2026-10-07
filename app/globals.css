@@ -165,13 +165,9 @@
 .welcome-greeting {
   display: inline-block;
   color: #fff;
-  text-shadow: 0 0 5px rgba(255,255,255,.65), 0 0 12px rgba(255,255,255,.45);
-  animation: welcomeGreetingZoom 4s ease-out both;
-}
-
-@keyframes welcomeGreetingZoom {
-  0% { opacity: 0; transform: scale(.72); text-shadow: 0 0 2px rgba(255,255,255,.25); }
-  35% { opacity: 1; transform: scale(.88); text-shadow: 0 0 6px rgba(255,255,255,.85), 0 0 16px rgba(255,255,255,.6); }
-  70% { transform: scale(.96); text-shadow: 0 0 3px rgba(255,255,255,.55), 0 0 11px rgba(255,255,255,.8); }
-  100% { opacity: 1; transform: scale(1); text-shadow: 0 0 5px rgba(255,255,255,.7), 0 0 13px rgba(255,255,255,.5); }
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  text-shadow: none;
+  animation: none;
 }
