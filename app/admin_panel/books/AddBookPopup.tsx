@@ -139,6 +139,9 @@ export default function AddBookPopup(props: propsType) {
         // if (!formData.isbn) validationErrors.isbn = 'ISBN is required';
         if (!formData.price || isNaN(Number(formData.price))) validationErrors.price = 'Valid price is required';
         if (!formData.pages || isNaN(Number(formData.pages))) validationErrors.pages = 'Valid pages number is required';
+        if (Number(formData.pages) < 100 && formData.genre !== 'Short Books') {
+            validationErrors.pages = "Not fit for full book. Submit in 'Short Books' genre.";
+        }
         if (!formData.published_date) validationErrors.published_date = 'Published date is required';
 
         if (Object.keys(validationErrors).length === 0) {
@@ -352,6 +355,7 @@ export default function AddBookPopup(props: propsType) {
                                 <SelectItem value="Historical Non fiction">Historical Non fiction</SelectItem>
                                 <SelectItem value="Novel/Stories">Novel/Stories</SelectItem>
                                 <SelectItem value="Short Stories">Short Stories</SelectItem>
+                                <SelectItem value="Short Books">Short Books</SelectItem>
                                 <SelectItem value="Philosophy and Literature">Philosophy and Literature</SelectItem>
                                 <SelectItem value="Learning and Education">Learning and Education</SelectItem>
                                 <SelectItem value="Guide/How to">Guide/How to</SelectItem>
