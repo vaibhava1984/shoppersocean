@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 type Status = {
@@ -20,6 +21,7 @@ function formatRemaining(deadline: string | null) {
 }
 
 export default function AuthorRegistrationGate({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const [status, setStatus] = useState<Status | null>(null);
   const [loading, setLoading] = useState(true);
   const [remaining, setRemaining] = useState("");
@@ -107,6 +109,27 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   }
 
   if (loading) return <div className="py-12 text-center text-slate-600">Checking your author registration status...</div>;
+
+  if (status?.status === "rejected") {
+    return (
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl py-10">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          aria-label="Go back"
+          className="mb-8 inline-flex items-center gap-2 text-slate-700 hover:text-slate-900 text-base"
+        >
+          <span aria-hidden="true" className="text-2xl leading-none">←</span>
+          <span>Back</span>
+        </button>
+        <div className="max-w-3xl mx-auto text-lg text-slate-600 leading-relaxed">
+          <p className="mb-5">We sincerely regret to inform you that, after carefully reviewing your application, we are unable to approve your registration as an author with Shoppers Ocean at this time.</p>
+          <p className="mb-5">However, we would be delighted to have you continue as one of our esteemed users, and we truly appreciate your interest in being a part of Shoppers Ocean.</p>
+          <p>Thank you for your understanding and for considering Shoppers Ocean.</p>
+        </div>
+      </div>
+    );
+  }
 
   if (status?.status === "approved_payment_pending") {
     return (
