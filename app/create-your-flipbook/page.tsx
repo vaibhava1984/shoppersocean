@@ -2,6 +2,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import AuthorRegistrationGate from "./AuthorRegistrationGate";
 
 export const metadata = {
   title: "Create Your Flipbook",
@@ -83,6 +84,7 @@ export default function CreateYourFlipbookPage() {
       </section>
 
       <section className="py-16 bg-white">
+        <AuthorRegistrationGate>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
           <h2 className="text-3xl font-bold text-slate-800 mb-6">Welcome, Future Authors!</h2>
           <div className="space-y-5 text-lg text-slate-600 leading-relaxed">
@@ -124,6 +126,7 @@ export default function CreateYourFlipbookPage() {
             </Link>
           </div>
         </div>
+        </AuthorRegistrationGate>
       </section>
       <Footer />
     </div>
