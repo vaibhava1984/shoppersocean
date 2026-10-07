@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireUser } from "@/utils/auth/requireUser";
+import { requireUser, requireAdmin } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { getB2NativeRequest } from "@/utils/cloudflare/b2";
 
@@ -25,16 +25,20 @@ async function resolveBookFile(request: Request, bookId: string) {
   const identity = await requireUser();
   if (!identity) return { error: NextResponse.json({ error: "Authentication required" }, { status: 401 }) };
 
-  const purchase = await db
-    .prepare(
-      "SELECT o.id FROM orders o LEFT JOIN payments p ON p.order_id = o.id " +
-      "WHERE o.user_id = ? AND o.book_id = ? " +
-      "AND (o.status = 'completed' OR p.status = 'completed') LIMIT 1"
-    )
-    .bind(identity.profile.id, bookId)
-    .first();
+  const admin = await requireAdmin();
 
-  if (!purchase) return { error: NextResponse.json({ error: "Purchase required" }, { status: 403 }) };
+  if (!admin) {
+    const purchase = await db
+      .prepare(
+        "SELECT o.id FROM orders o LEFT JOIN payments p ON p.order_id = o.id " +
+        "WHERE o.user_id = ? AND o.book_id = ? " +
+        "AND (o.status = 'completed' OR p.status = 'completed') LIMIT 1"
+      )
+      .bind(identity.profile.id, bookId)
+      .first();
+
+    if (!purchase) return { error: NextResponse.json({ error: "Purchase required" }, { status: 403 }) };
+  }
 
   const file = await db
     .prepare("SELECT storage_key,file_name,mime_type FROM private_book_files WHERE book_id=? ORDER BY created_at DESC LIMIT 20")
