@@ -79,7 +79,8 @@ export default function SessionTimeout() {
 
     const recordActivity = () => {
       if (document.visibilityState !== "visible") return;
-      void checkTimeout();
+      const activity = readActivity();
+      if (activity?.userId) writeActivity(activity.userId);
     };
 
     const activityEvents = ["click", "keydown", "mousemove", "scroll", "touchstart", "pointerdown"];
