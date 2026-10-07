@@ -31,6 +31,16 @@ async function ensureTable(db: D1Database) {
     reviewed_at TEXT
   )`).run();
   await db.prepare("CREATE INDEX IF NOT EXISTS idx_author_applications_status_created ON author_applications(status, created_at)").run();
+  for (const statement of [
+    "ALTER TABLE author_applications ADD COLUMN approved_at TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_deadline TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_order_id TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_id TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_currency TEXT",
+    "ALTER TABLE author_applications ADD COLUMN payment_amount REAL"
+  ]) {
+    try { await db.prepare(statement).run(); } catch {}
+  }
 }
 
 export async function POST(request: Request) {
@@ -108,11 +118,11 @@ export async function POST(request: Request) {
     const rejectToken = await createJwt(
       { sub: id, email: identity.profile.email, purpose: "author_application_reject" },
       jwtSecret,
-      30 * 24 * 3600
+      24 * 3600
     );
 
     const approveUrl = BASE_URL + "/api/author-application?token=" + encodeURIComponent(approveToken);
-    const rejectUrl = BASE_URL + "/api/author-application/review?token=" + encodeURIComponent(rejectToken);
+    const rejectUrl = BASE_URL + "/api/author-application?token=" + encodeURIComponent(rejectToken);
 
     const resend = new Resend(resendApiKey);
     const { error } = await resend.emails.send({
@@ -143,6 +153,127 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Author application error:", error);
+    return NextResponse.json({ error: "Unable to submit author application." }, { status: 500 });
+  }
+}
+
+export async function GET(request: Request) {
+  const token = new URL(request.url).searchParams.get("token") || "";
+
+  try {
+    const { env } = await getCloudflareContext();
+    const db = env.DB as D1Database;
+    const jwtSecret = String(env.JWT_SECRET || "");
+    const resendApiKey = String(env.RESEND_API_KEY || "");
+    const payload = await verifyJwt(token, jwtSecret);
+
+    if (!payload || !payload.purpose || !["author_application_approve", "author_application_reject"].includes(payload.purpose)) {
+      return new Response("This approval link is invalid or has expired.", { status: 400 });
+    }
+    if (!db) return new Response("Cloudflare database unavailable.", { status: 503 });
+    if (!resendApiKey) return new Response("Email service is not configured.", { status: 503 });
+
+    await ensureTable(db);
+
+    const application = await db.prepare("SELECT * FROM author_applications WHERE id=? LIMIT 1").bind(payload.sub).first<any>();
+    if (!application) return new Response("Application not found.", { status: 404 });
+    if (application.status !== "pending") return new Response("This application has already been reviewed.", { status: 409 });
+
+    const now = new Date().toISOString();
+    const resend = new Resend(resendApiKey);
+
+    if (payload.purpose === "author_application_reject") {
+      await db.prepare("UPDATE author_applications SET status='rejected',reviewed_at=? WHERE id=? AND status='pending'")
+        .bind(now, application.id).run();
+
+      await resend.emails.send({
+        from: "no-reply@shoppersocean.com",
+        to: application.email,
+        subject: "Shoppers Ocean Author Application",
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
+          <p>Dear ${escapeHtml(application.full_name)},</p>
+          <p>I am sorry. Unfortunately your application to register yourself as an author with Shoppers Ocean hasn't been approved. However you can continue with us being our esteemed user. Let's continue this journey of entertainment together.</p>
+          <p>Regards,<br/>Shoppers Ocean</p>
+        </div>`,
+      });
+
+      return new Response("<h2>Application rejected</h2><p>The applicant has been notified.</p>", {
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      });
+    }
+
+    const existingAuthor = await db.prepare("SELECT id FROM authors WHERE user_id=? AND COALESCE(is_deleted,0)=0 LIMIT 1")
+      .bind(application.user_id).first();
+
+    if (!existingAuthor) {
+      await db.prepare("INSERT INTO authors(id,name,bio,user_id,is_deleted,created_at,updated_at) VALUES(?,?,?,?,?,?,?)")
+        .bind(crypto.randomUUID(), application.full_name, "-", application.user_id, 0, now, now).run();
+    }
+
+    await db.prepare("UPDATE author_applications SET status='approved',reviewed_at=? WHERE id=? AND status='pending'")
+      .bind(now, application.id).run();
+
+    await resend.emails.send({
+      from: "no-reply@shoppersocean.com",
+      to: application.email,
+      subject: "Shoppers Ocean Author Application Approved",
+      html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
+        <p>Dear ${escapeHtml(application.full_name)},</p>
+        <p>Congratulations 🎉</p>
+        <p>Your application to register yourself as an author at Shoppers ocean has been approved. Looking forward to having a long lasting journey together.</p>
+        <p>Regards,<br/>Shoppers Ocean</p>
+      </div>`,
+    });
+
+    return new Response("<h2>Application approved</h2><p>The applicant has been notified and has been added to the Authors list.</p>", {
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+    });
+  } catch (error) {
+    console.error("Author application review error:", error);
+    return new Response("Unable to process this application.", { status: 500 });
+  }
+}    const now = new Date().toISOString();
+
+    if (payload.purpose === "author_application_reject") {
+      await db.prepare("UPDATE author_applications SET status='rejected',reviewed_at=? WHERE id=? AND status='pending'")
+        .bind(now, application.id).run();
+
+      await resend.emails.send({
+        from: "no-reply@shoppersocean.com",
+        to: application.email,
+        subject: "Shoppers Ocean Author Application",
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
+          <p>Dear ${escapeHtml(application.full_name)},</p>
+          <p>I am sorry. Unfortunately your application to register yourself as an author with Shoppers Ocean hasn't been approved. However, you can continue with us as our esteemed user. Let's continue this journey of entertainment together.</p>
+          <p>Regards,<br/>Shoppers Ocean</p>
+        </div>`,
+      });
+
+      return new Response("<h2>Application rejected</h2><p>The applicant has been notified.</p>", {
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      });
+    }
+
+    const paymentDeadline = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
+    await db.prepare("UPDATE author_applications SET status='approved_payment_pending',reviewed_at=?,approved_at=?,payment_deadline=? WHERE id=? AND status='pending'")
+      .bind(now, now, paymentDeadline, application.id).run();
+
+    await resend.emails.send({
+      from: "no-reply@shoppersocean.com",
+      to: application.email,
+      subject: "Shoppers Ocean Author Application Approved",
+      html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
+        <p>Dear ${escapeHtml(application.full_name)},</p>
+        <p>Congratulations 🎉</p>
+        <p>Your application to register yourself as an author at Shoppers ocean has been approved. Please login and continue your registration process within 24 hours. Looking forward to having a long lasting journey together.</p>
+        <p>Regards,<br/>Shoppers Ocean</p>
+      </div>`,
+    });
+
+    return new Response("<h2>Application approved</h2><p>The applicant has been notified and may now log in to complete the registration payment within 24 hours.</p>", {
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+    });  } catch (error) {
     console.error("Author application error:", error);
     return NextResponse.json({ error: "Unable to submit author application." }, { status: 500 });
   }
