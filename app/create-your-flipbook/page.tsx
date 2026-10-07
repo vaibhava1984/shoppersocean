@@ -70,6 +70,10 @@ const policies = [
     title: "15. Trending Books",
     content: "Books displayed in the Trending Books section are selected based on their sales performance during the current monthly cycle. Placement in the Trending Books section is determined by sales performance and is not available through special requests or personal arrangements.",
   },
+  {
+    title: "16. Maximum Book Price",
+    content: "To help keep books affordable for our national and global customers, Shoppers Ocean has established maximum book-price limits. Authors from India may set a maximum selling price of ₹150 per book. Authors from outside India may set a maximum selling price of US$3 per book.",
+  },
 ];
 
 export default function CreateYourFlipbookPage() {
