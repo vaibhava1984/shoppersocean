@@ -79,6 +79,14 @@ export async function GET() {
       status: application.status,
       paymentDeadline: application.payment_deadline || null,
       country: application.country,
+      title: application.title || "",
+      fullName: application.full_name || "",
+      email: application.email || "",
+      city: application.city || "",
+      age: application.age || null,
+      gender: application.gender || "",
+      paypalId: application.paypal_id || "",
+      upiNumber: application.upi_number || "",
       amount: application.country === "India" ? INDIA_AMOUNT : FOREIGN_AMOUNT,
       currency: application.country === "India" ? "INR" : "USD",
     }, { headers: { "Cache-Control": "no-store" } });
@@ -113,6 +121,29 @@ export async function POST(request: Request) {
     const amount = country === "India" ? INDIA_AMOUNT : FOREIGN_AMOUNT;
     const body = await request.json().catch(() => ({}));
     const action = String(body?.action || "create");
+
+    if (action === "create") {
+      const title = String(body?.title ?? application.title ?? "").trim();
+      const fullName = String(body?.fullName ?? application.full_name ?? "").trim();
+      const city = String(body?.city ?? application.city ?? "").trim();
+      const age = Number(body?.age ?? application.age);
+      const gender = String(body?.gender ?? application.gender ?? "").trim();
+      const paypalId = String(body?.paypalId ?? application.paypal_id ?? "").trim();
+      const upiNumber = String(body?.upiNumber ?? application.upi_number ?? "").trim();
+
+      if (!title || !fullName || !city || !gender || !Number.isInteger(age) || age < 1 || age > 120) {
+        return NextResponse.json({ error: "Please complete all required fields." }, { status: 400 });
+      }
+      if (country === "India" && !upiNumber) {
+        return NextResponse.json({ error: "Please provide your UPI-connected mobile number." }, { status: 400 });
+      }
+      if (country !== "India" && !paypalId) {
+        return NextResponse.json({ error: "Please provide your PayPal ID." }, { status: 400 });
+      }
+
+      await db.prepare("UPDATE author_applications SET title=?,full_name=?,city=?,age=?,gender=?,paypal_id=?,upi_number=? WHERE id=? AND status='approved_payment_pending'")
+        .bind(title, fullName, city, age, gender, country === "India" ? null : paypalId, country === "India" ? upiNumber : null, application.id).run();
+    }
 
     if (action === "verify") {
       const orderId = String(body?.razorpay_order_id || "");
