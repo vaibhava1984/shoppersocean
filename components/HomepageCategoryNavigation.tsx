@@ -17,6 +17,7 @@ const genres = [
   "Historical Non fiction",
   "Novel/Stories",
   "Short Stories",
+  "Short Books",
   "Philosophy and Literature",
   "Learning and Education",
   "Guide/How to",
