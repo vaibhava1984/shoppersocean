@@ -85,19 +85,13 @@ export default function AddBookPopup(props: propsType) {
         if (!files || !book?.id) return;
         setIsUploading(true); setUploadProgress(0);
         try {
-            const selectedFiles = Array.from(files);
-            for (let index = 0; index < selectedFiles.length; index++) {
-                const file = selectedFiles[index];
-                const form = new FormData();
-                form.append("bookId", book.id);
-                form.append("file", file);
-                const response = await fetch("/api/admin/book-files", { method: "POST", body: form });
-                const result = await response.json().catch(() => ({}));
-                if (!response.ok) {
-                    throw new Error(result.error || "Failed to upload " + (file.name || "book file"));
-                }
-                setUploadProgress(Math.round(((index + 1) / selectedFiles.length) * 100));
-            }
+            const form = new FormData();
+            form.append("bookId", book.id);
+            Array.from(files).forEach(file => form.append("file", file));
+            const response = await fetch("/api/admin/book-files", { method: "POST", body: form });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || "Failed to upload files");
+            setUploadProgress(100);
             await fetchBookFiles(book.id);
             toast({ title:"Success!", description:"Files uploaded successfully" });
         } catch (error:any) {
