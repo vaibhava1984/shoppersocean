@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 import { hashPassword, createJwt } from '@/lib/auth';
+import { COUNTRIES } from '@/utils/countries';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,14 +55,15 @@ export async function POST(req: Request) {
         if (emailError) console.error('Error sending signup welcome email:', emailError);
         else emailSent = true;
 
-        const safeCountry = escapeHtml(String(country || '').trim() || 'Not provided');
+        const countryName = COUNTRIES.find(c => c.code === String(country || '').trim().toUpperCase())?.name || String(country || '').trim() || 'Not provided';
+        const safeCountry = escapeHtml(countryName);
         const { error: adminEmailError } = await resend.emails.send({
           from: 'no-reply@shoppersocean.com',
           to: 'kochimonu@gmail.com',
           subject: 'New user account created | Shoppers Ocean',
           html: '<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">' +
             '<p>Dear admin !</p>' +
-            '<p>A new user has created an account on Shopper ocean on ' + new Date(now).toLocaleDateString('en-IN') + ' at ' + new Date(now).toLocaleTimeString('en-IN') + '</p>' +
+            '<p style="font-size:16px;"><strong>A new user has created an account on Shopper ocean on ' + new Date(now).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' at ' + new Date(now).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST (GMT+5:30)</strong></p>' +
             '<p><strong>Name</strong><br>' + safeName + '</p>' +
             '<p><strong>Email</strong><br>' + escapeHtml(normalizedEmail) + '</p>' +
             '<p><strong>Country</strong><br>' + safeCountry + '</p>' +
