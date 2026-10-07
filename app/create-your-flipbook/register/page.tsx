@@ -15,7 +15,7 @@ const genders = ["Male", "Female", "Other", "Prefer not to say"];
 export default function AuthorRegisterPage() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [form, setForm] = useState({ title: "", fullName: "", email: "", city: "", country: "", age: "", gender: "", paypalId: "", upiNumber: "" });
+  const [form, setForm] = useState({ title: "", fullName: "", email: "", city: "", country: "", age: "", gender: "", paypalId: "" });
   const [accepted, setAccepted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -89,7 +89,6 @@ export default function AuthorRegisterPage() {
             <div><Label>Age*</Label><Input className="mt-1" type="number" min="1" max="120" value={form.age} onChange={(e) => set("age", e.target.value)} /></div>
             <div><Label>Gender*</Label><select className="w-full h-10 border rounded-md px-3 mt-1" value={form.gender} onChange={(e) => set("gender", e.target.value)}><option value="">Select</option>{genders.map((v) => <option key={v}>{v}</option>)}</select></div>
             {!isIndia && <div className="sm:col-span-2"><Label>PayPal ID (For outside India)</Label><Input className="mt-1" value={form.paypalId} onChange={(e) => set("paypalId", e.target.value)} /></div>}
-            {isIndia && <div className="sm:col-span-2"><Label>Number connected with UPI</Label><Input className="mt-1" value={form.upiNumber} onChange={(e) => set("upiNumber", e.target.value)} /><p className="text-sm text-slate-500 mt-1">For Indian authors, the name should match the name used for creating your Shoppers Ocean account.</p></div>}
           </div>
 
           <label className="flex items-start gap-3 text-slate-700 leading-relaxed cursor-pointer">
