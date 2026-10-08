@@ -52,7 +52,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
     if (!email.trim()) next.email = "Email is required"
     else if (!validateEmail(email.trim())) next.email = "Please enter a valid email address"
 
-    if (!password) next.password = "Password is required"
+    if (!password) next.password = signingIn ? "Write your password" : "Password is required"
     else if (!validatePassword(password)) next.password = "Password must be at least 6 letters/digits"
 
     if (!signingIn) {
@@ -237,9 +237,9 @@ export default function Login({ searchParams }: { searchParams: any }) {
           </div>
 
           <div>
-            <label htmlFor="password">{field("Choose any password (minimum six letters/digits)", true)}</label>
+            <label htmlFor="password">{field(isSignIn ? "Password" : "Choose any password (minimum six letters/digits)", true)}</label>
             <div className="relative mt-1">
-              <input id="password" type={showPassword ? "text" : "password"} className={`w-full rounded-md border ${errors.password ? "border-red-500" : "border-gray-300"} px-4 py-2 pr-12 bg-white text-gray-900 focus:outline-none focus:ring-0 ${errors.password ? "focus:border-red-500" : "focus:border-gray-300"}`} placeholder="Minimum 6 characters" required value={password} onChange={e => { setPassword(e.target.value); setErrors(p => ({...p, password: ""})) }} />
+              <input id="password" type={showPassword ? "text" : "password"} className={`w-full rounded-md border ${errors.password ? "border-red-500" : "border-gray-300"} px-4 py-2 pr-12 bg-white text-gray-900 focus:outline-none focus:ring-0 ${errors.password ? "focus:border-red-500" : "focus:border-gray-300"}`} placeholder={isSignIn ? "Write your password" : "Minimum 6 characters"} required value={password} onChange={e => { setPassword(e.target.value); setErrors(p => ({...p, password: ""})) }} />
               <button type="button" aria-label={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword(v => !v)} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-800">
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
