@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -12,22 +13,39 @@ type Purchase = {
   books?: { id: string; title?: string } | null;
   payment?: { original_amount?: number; original_currency?: string; payment_method?: string } | null;
 };
+
 const PurchaseHistory = () => {
+  const router = useRouter();
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchPurchases = async () => {
       try {
         const response = await fetch('/api/my-purchases', { cache: 'no-store' });
+
+        // A logged-out browser must never display the API's 401 message.
+        // If an old/cached My Orders screen is revisited after logout, return
+        // the visitor to the homepage instead of showing an authentication error.
+        if (response.status === 401) {
+          router.replace('/');
+          return;
+        }
+
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to load purchases');
         setPurchases(Array.isArray(data) ? data : []);
-      } catch (err: any) { setError(err?.message || 'Failed to load purchases'); }
-      finally { setLoading(false); }
+      } catch (err: any) {
+        setError(err?.message || 'Failed to load purchases');
+      } finally {
+        setLoading(false);
+      }
     };
+
     void fetchPurchases();
-  }, []);
+  }, [router]);
+
   const getStatusColor = (status?: string) => {
     switch (status?.toLowerCase()) {
       case 'completed': return 'bg-green-100 text-green-800';
@@ -36,8 +54,10 @@ const PurchaseHistory = () => {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
   if (loading) return <div className="flex justify-center items-center min-h-[400px]"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   if (error) return <Card className="w-full"><CardContent className="p-6"><div className="text-red-600">Error loading purchases: {error}</div></CardContent></Card>;
+
   return <Card className="max-w-[80%] mx-auto"><CardHeader><CardTitle>Purchase History</CardTitle></CardHeader><CardContent>
     <AuthorApplicationBanner />
     {purchases.length === 0 ? <div className="text-center py-8 text-gray-500">No purchases found</div> :
@@ -51,4 +71,5 @@ const PurchaseHistory = () => {
       </TableRow>)}</TableBody></Table></div>}
   </CardContent></Card>;
 };
+
 export default PurchaseHistory;
