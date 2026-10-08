@@ -56,6 +56,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
   const [readerUrl, setReaderUrl] = useState('');
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
+  const [pdfReady, setPdfReady] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [loading, setLoading] = useState(false);
   const [rendering, setRendering] = useState(false);
@@ -81,7 +82,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
 
   const openReader = async () => {
     if (loading) return;
-    setOpened(true); setLoading(true); setError(''); setReaderUrl('');
+    setOpened(true); setLoading(true); setError(''); setReaderUrl(''); setPdfReady(false);
     try {
       const response = await fetch('/api/get-book-reader', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookId }) });
       const data = await response.json();
@@ -109,6 +110,10 @@ export default function BookFlipbook({ bookId, title }: Props) {
           if (Number.isFinite(stored)) savedPage = Math.min(pdf.numPages, Math.max(1, stored));
         } catch {}
         setPage(savedPage);
+        // Mark the PDF ready only after its document and initial page are known.
+        // The render effect below then runs immediately for page 1 instead of
+        // waiting for the user to turn the page.
+        setPdfReady(true);
       } catch (err: any) {
         if (!cancelled) setError(err?.message || 'Unable to load the purchased book');
       }
@@ -199,9 +204,9 @@ export default function BookFlipbook({ bookId, title }: Props) {
   }, [page, renderCanvasPage]);
 
   useEffect(() => {
-    if (!opened || !readerUrl || !pdfRef.current) return;
+    if (!opened || !readerUrl || !pdfReady || !pdfRef.current) return;
     void renderPage();
-  }, [opened, readerUrl, renderPage]);
+  }, [opened, readerUrl, pdfReady, renderPage]);
 
   useEffect(() => {
     if (!bookId || page < 1) return;
