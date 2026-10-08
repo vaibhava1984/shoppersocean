@@ -64,16 +64,17 @@ export default function SessionTimeout() {
 
         const activity = readActivity();
         if (!activity || activity.userId !== userId) {
+          // Start the inactivity window when this authenticated browser session
+          // is first observed. Do not refresh it from the timeout checker.
           writeActivity(userId, true);
           return;
         }
 
         if (Date.now() - activity.at >= IDLE_LIMIT_MS) {
           await logoutForInactivity();
-          return;
         }
-
-        writeActivity(userId);
+        // IMPORTANT: do not write activity here. The 15-second checker itself
+        // must never count as user activity.
       } catch {}
     };
 
