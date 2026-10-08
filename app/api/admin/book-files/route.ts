@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
       const id = crypto.randomUUID();
       await db.prepare(
-        "INSERT INTO private_book_files(id,book_id,storage_key,file_name,mime_type,size_bytes,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)"
+        "INSERT INTO private_book_files(id,book_id,storage_key,file_name,mime_type,size_bytes,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)"
       ).bind(id,bookId,storageKey,originalName,file.type || "application/octet-stream",bytes.byteLength,new Date().toISOString(),new Date().toISOString()).run();
 
       uploaded.push({ id, file_path: storageKey, file_name: originalName, file_type: file.type || "application/octet-stream" });
