@@ -19,7 +19,7 @@ export default async function MySalesPage({searchParams}:{searchParams?:Promise<
   const profile = await db.prepare("SELECT id FROM users WHERE id = ? LIMIT 1").bind(user.id).first<{id:string}>();
   if (!profile) redirect("/");
 
-  const author = await db.prepare("SELECT author_id FROM authors WHERE user_id = ? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(profile.id).first<{author_id:string}>();
+  const author = await db.prepare("SELECT id AS author_id FROM authors WHERE user_id = ? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(profile.id).first<{author_id:string}>();
   if (!author?.author_id) redirect("/");
 
   const params=searchParams?await searchParams:{};
