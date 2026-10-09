@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Loader2, Minus, Plus, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Loader2, Minus, Plus, Share2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 declare global {
@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-type Props = { bookId: string; title: string };
+type Props = { bookId: string; title: string; onShareBook?: () => void };
 const PDFJS_VERSION = '3.11.174';
 const PDFJS_URL = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.min.js`;
 const PDFJS_WORKER_URL = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
@@ -39,7 +39,7 @@ function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
   });
 }
 
-export default function BookFlipbook({ bookId, title }: Props) {
+export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pageFrameRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
@@ -335,7 +335,7 @@ export default function BookFlipbook({ bookId, title }: Props) {
     playPageTurnSound(); sliderRef.current?.releasePointerCapture?.(event.pointerId);
   };
 
-  if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Read this book online as a flipbook.</p><div className="flex w-full max-w-xl"><Button className="h-12 flex-1" onClick={openReader} disabled={loading}>Read online as flipbook</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
+  if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Read this book online as a flipbook.</p><div className="flex w-full max-w-xl items-stretch gap-2"><Button className="min-h-[42px] min-w-0 flex-1 whitespace-normal rounded-lg bg-blue-600 px-2 py-2 text-center text-[11px] font-bold leading-tight text-white hover:bg-blue-700 sm:text-sm" onClick={openReader} disabled={loading}>Read online as flipbook</Button>{onShareBook && <Button type="button" variant="outline" className="min-h-[42px] min-w-0 flex-1 gap-1 whitespace-normal rounded-lg border-black/10 bg-white px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-black shadow-md hover:bg-slate-50 sm:text-sm" onClick={onShareBook}><Share2 className="h-4 w-4 shrink-0" aria-hidden="true" />Share Book</Button>}</div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
   if (loading) return <div className="flex min-h-[320px] items-center justify-center rounded-xl bg-slate-100"><Loader2 className="mr-2 animate-spin" />Opening your book…</div>;
   if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
