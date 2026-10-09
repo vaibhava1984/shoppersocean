@@ -75,6 +75,7 @@ async function saveBook(request: Request, id?: string) {
     );
   }
   const now = new Date().toISOString();
+  const savedId = id || crypto.randomUUID();
 
   const values = [
     title,
@@ -104,15 +105,13 @@ async function saveBook(request: Request, id?: string) {
        WHERE id=?`
     ).bind(...values, id).run();
   } else {
-    const newId = crypto.randomUUID();
     await db.prepare(
       `INSERT INTO books
        (id,title,description,published_date,isbn,price,ratings,cover_images,binding,language,genre,publisher,pages,author_id,author_name,is_deleted,created_at,updated_at)
        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,?,?)`
-    ).bind(newId, ...values.slice(0, 14), 0, now, now).run();
+    ).bind(savedId, ...values.slice(0, 14), 0, now, now).run();
   }
 
-  const savedId = id || String((await db.prepare("SELECT id FROM books WHERE title=? AND author_id=? ORDER BY created_at DESC LIMIT 1").bind(title, authorId).first<any>())?.id || "");
   return NextResponse.json({ id: savedId, message: id ? "Book updated successfully" : "Book added successfully" });
 }
 
