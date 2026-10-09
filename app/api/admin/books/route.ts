@@ -112,7 +112,8 @@ async function saveBook(request: Request, id?: string) {
     ).bind(newId, ...values.slice(0, 14), 0, now, now).run();
   }
 
-  return NextResponse.json({ message: id ? "Book updated successfully" : "Book added successfully" });
+  const savedId = id || String((await db.prepare("SELECT id FROM books WHERE title=? AND author_id=? ORDER BY created_at DESC LIMIT 1").bind(title, authorId).first<any>())?.id || "");
+  return NextResponse.json({ id: savedId, message: id ? "Book updated successfully" : "Book added successfully" });
 }
 
 export async function POST(request: Request) {
