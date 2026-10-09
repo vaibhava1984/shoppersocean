@@ -32,6 +32,7 @@ export default function AddBookPopup(props: propsType) {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [isUploading, setIsUploading] = useState(false);
+    const [pendingBookFiles, setPendingBookFiles] = useState<File[]>([]);
 
     const [formData, setFormData] = useState<Omit<BookType, 'id' | 'author_name' | 'updated_at'>>({
         title: book?.title ?? '',
@@ -82,17 +83,27 @@ export default function AddBookPopup(props: propsType) {
     // Handle book file uploads
     async function handleBookFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
         const files = event.target.files;
-        if (!files || !book?.id) return;
+        if (!files || files.length === 0) return;
+        if (!book?.id) {
+            setPendingBookFiles(Array.from(files));
+            toast({ title: "Files selected", description: "The book files will upload after you save the book details." });
+            return;
+        }
+        await uploadBookFiles(book.id, Array.from(files));
+    }
+
+    async function uploadBookFiles(bookId: string, files: File[]) {
+        if (!files.length) return;
         setIsUploading(true); setUploadProgress(0);
         try {
             const form = new FormData();
-            form.append("bookId", book.id);
+            form.append("bookId", bookId);
             Array.from(files).forEach(file => form.append("file", file));
             const response = await fetch("/api/admin/book-files", { method: "POST", body: form });
             const result = await response.json();
             if (!response.ok) throw new Error(result.error || "Failed to upload files");
             setUploadProgress(100);
-            await fetchBookFiles(book.id);
+            await fetchBookFiles(bookId);
             toast({ title:"Success!", description:"Files uploaded successfully" });
         } catch (error:any) {
             toast({ variant:"destructive", title:"Error", description:error?.message || "Failed to upload files" });
@@ -164,6 +175,11 @@ export default function AddBookPopup(props: propsType) {
             const response=await fetch("/api/admin/books",{method:book?.id ? "PUT" : "POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
             const result=await response.json();
             if(!response.ok) throw new Error(result.error || "Something went wrong");
+            const savedBookId = String(result.id || book?.id || "");
+            if (pendingBookFiles.length && savedBookId) {
+                await uploadBookFiles(savedBookId, pendingBookFiles);
+                setPendingBookFiles([]);
+            }
             resetForm();
             toast({title:"Success!",description:book ? "Updating Book Success" : "Adding Book Success"});
             props.onSuccess(true);
@@ -209,6 +225,7 @@ export default function AddBookPopup(props: propsType) {
             author_id: ''
         });
         setAuthorName(''); // Reset author name
+        setPendingBookFiles([]);
         setErrors({});
     }
 
@@ -401,50 +418,49 @@ export default function AddBookPopup(props: propsType) {
                         />
                         {errors.pages && <span className="text-red-500">{errors.pages}</span>}
                     </div>
-                    {book?.id && (
-                        <div className="space-y-2">
-                            <Label htmlFor="book_files">Downloadable Book Files</Label>
-                            <Input
-                                id="book_files"
-                                name="book_files"
-                                type="file"
-                                accept=".pdf,.epub,.mobi,.jpeg"
-                                multiple
-                                onChange={handleBookFileUpload}
-                                disabled={isUploading}
-                            />
-                            {isUploading && (
-                                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                    <div
-                                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                        style={{ width: `${uploadProgress}%` }}
-                                    ></div>
-                                </div>
-                            )}
-
-                            {/* Display uploaded files */}
-                            {bookFiles.length > 0 && (
-                                <div className="mt-4">
-                                    <h4 className="font-medium">Uploaded Files:</h4>
-                                    <ul className="list-disc">
-                                        {bookFiles.map((file) => (
-                                            <li key={file.id} className="flex items-center justify-between">
-                                                <span>{file.file_name}</span>
-                                                <Button
-                                                    type="button"
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    onClick={() => removeBookFile(file.id, file.file_path)}
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                    <div className="space-y-2">
+                        <Label htmlFor="book_files">Add Book File (PDF, EPUB, MOBI, or JPEG)</Label>
+                        <Input
+                            id="book_files"
+                            name="book_files"
+                            type="file"
+                            accept=".pdf,.epub,.mobi,.jpeg,.jpg"
+                            multiple
+                            onChange={handleBookFileUpload}
+                            disabled={isUploading}
+                        />
+                        {!book?.id && pendingBookFiles.length > 0 && (
+                            <p className="text-sm text-green-700">{pendingBookFiles.length} file(s) selected. They will upload after you save the book.</p>
+                        )}
+                        {isUploading && (
+                            <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                <div
+                                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                    style={{ width: `${uploadProgress}%` }}
+                                ></div>
+                            </div>
+                        )}
+                        {bookFiles.length > 0 && (
+                            <div className="mt-4">
+                                <h4 className="font-medium">Uploaded Files:</h4>
+                                <ul className="list-disc">
+                                    {bookFiles.map((file) => (
+                                        <li key={file.id} className="flex items-center justify-between">
+                                            <span>{file.file_name}</span>
+                                            <Button
+                                                type="button"
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => removeBookFile(file.id, file.file_path)}
+                                            >
+                                                Remove
+                                            </Button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div className="flex space-x-4 mt-4">
                     <Button type="submit">Save</Button>
