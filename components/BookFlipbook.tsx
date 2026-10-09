@@ -335,7 +335,22 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     playPageTurnSound(); sliderRef.current?.releasePointerCapture?.(event.pointerId);
   };
 
-  if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Read this book online as a flipbook.</p><div className="flex w-full max-w-xl items-stretch gap-2"><Button className="min-h-[42px] min-w-0 flex-1 whitespace-normal rounded-lg bg-blue-600 px-2 py-2 text-center text-[11px] font-bold leading-tight text-white hover:bg-blue-700 sm:text-sm" onClick={openReader} disabled={loading}>Read online as flipbook</Button>{onShareBook && <Button type="button" variant="outline" className="min-h-[42px] min-w-0 flex-1 gap-1 whitespace-normal rounded-lg border-black/10 bg-white px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-black shadow-md hover:bg-slate-50 sm:text-sm" onClick={onShareBook}><Share2 className="h-4 w-4 shrink-0" aria-hidden="true" />Share Book</Button>}</div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
+  const handleShareBook = () => {
+    if (onShareBook) {
+      onShareBook();
+      return;
+    }
+    const url = window.location.href;
+    const titleText = title || 'Shoppers Ocean';
+    const text = `Check out "${titleText}" on Shoppers Ocean. ${url}`;
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      void navigator.share({ title: titleText, text, url }).catch(() => {});
+    } else {
+      window.prompt('Copy this book link to share:', url);
+    }
+  };
+
+  if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Read this book online as a flipbook.</p><div className="flex w-full max-w-xl items-stretch gap-2"><Button type="button" variant="outline" className="min-h-[44px] min-w-0 flex-1 whitespace-normal rounded-lg border-black/10 bg-white px-2 py-2 text-center text-xs font-extrabold leading-tight text-black shadow-md hover:bg-slate-50 sm:text-sm" onClick={openReader} disabled={loading}>Read as Flipbook</Button><Button type="button" variant="outline" className="min-h-[44px] min-w-0 flex-1 gap-1 whitespace-normal rounded-lg border-black/10 bg-white px-2 py-2 text-center text-xs font-extrabold leading-tight text-black shadow-md hover:bg-slate-50 sm:text-sm" onClick={handleShareBook}><Share2 className="h-4 w-4 shrink-0" aria-hidden="true" />Share Book</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
   if (loading) return <div className="flex min-h-[320px] items-center justify-center rounded-xl bg-slate-100"><Loader2 className="mr-2 animate-spin" />Opening your book…</div>;
   if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
