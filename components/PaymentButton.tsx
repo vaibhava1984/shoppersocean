@@ -116,7 +116,7 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
     }, [productId]);
 
     const getShareDetails = () => {
-        const url = window.location.href;
+        const url = `${window.location.origin}/book/${encodeURIComponent(productId)}`;
         const title = productTitle || 'Shoppers Ocean';
         const message = productTitle ? `Check out "${productTitle}" on Shoppers Ocean.` : 'Check out this book on Shoppers Ocean.';
         return { url, title, message, text: `${message} ${url}` };
