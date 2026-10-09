@@ -117,26 +117,25 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
 
     const handleShareBook = async () => {
         const shareUrl = window.location.href;
+        if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+            try {
+                await navigator.share({
+                    title: productTitle || 'Shoppers Ocean',
+                    text: productTitle ? `Check out "${productTitle}" on Shoppers Ocean.` : 'Check out this book on Shoppers Ocean.',
+                    url: shareUrl,
+                });
+                return;
+            } catch (error: any) {
+                // Closing the native share sheet is not an error and should not copy the link.
+                if (error?.name === 'AbortError') return;
+            }
+        }
         try {
             await navigator.clipboard.writeText(shareUrl);
             setShareCopied(true);
             window.setTimeout(() => setShareCopied(false), 2200);
         } catch {
-            const input = document.createElement('textarea');
-            input.value = shareUrl;
-            input.setAttribute('readonly', '');
-            input.style.position = 'fixed';
-            input.style.opacity = '0';
-            document.body.appendChild(input);
-            input.select();
-            const copied = document.execCommand('copy');
-            document.body.removeChild(input);
-            if (copied) {
-                setShareCopied(true);
-                window.setTimeout(() => setShareCopied(false), 2200);
-            } else {
-                window.prompt('Copy this book link to share:', shareUrl);
-            }
+            window.prompt('Copy this book link to share:', shareUrl);
         }
     };
     const initializeRazorpay = () => new Promise((resolve) => { const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]'); if (existingScript && (window as any).Razorpay) return resolve(true); const script = document.createElement('script'); script.src = 'https://checkout.razorpay.com/v1/checkout.js'; script.onload = () => resolve(true); script.onerror = () => resolve(false); document.body.appendChild(script); });
@@ -160,9 +159,9 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
     const userLocale = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-IN';
     const formattedAmount = localCurrency ? new Intl.NumberFormat(userLocale, { style: 'currency', currency: localCurrency }).format(localAmount) : null;
     const isInitialFetching = isCurrencyFetching || isPurchaseChecking;
-    if (hasPurchased) return <div className="w-full mt-6"><BookFlipbook bookId={productId} title={productTitle || 'Book'} /></div>;
-    return <><div className="inline-flex items-center gap-2">
-        <button onClick={userId ? handlePayment : () => setIsLoginNeededDialogOpen(true)} disabled={isLoading} className="px-4 py-2 bg-blue-500 text-white rounded h-[40px] hover:scale-105 hover:shadow-lg active:scale-95 transition-all duration-200 disabled:bg-gray-400">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex'><Loader2Icon width={16} className='animate-spin mr-1' /><span>Fetching</span></span> : `Buy ebook ${formattedAmount ?? '-'}`}</button>
-        <button type="button" onClick={handleShareBook} aria-label="Share book link" className="inline-flex h-[40px] items-center justify-center gap-1.5 rounded bg-blue-500 px-2.5 text-sm font-medium text-white transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95 sm:px-3"><Share2 size={15} aria-hidden="true" /><span>{shareCopied ? 'Link copied!' : 'Share Book'}</span></button>
+    if (hasPurchased) return <div className="w-full mt-6"><BookFlipbook bookId={productId} title={productTitle || 'Book'} onShareBook={handleShareBook} /></div>;
+    return <><div className="flex w-full items-stretch gap-2">
+        <button onClick={userId ? handlePayment : () => setIsLoginNeededDialogOpen(true)} disabled={isLoading} className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center rounded-lg bg-white px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-black shadow-md ring-1 ring-black/10 transition-all hover:bg-slate-50 active:scale-95 disabled:opacity-60 sm:text-sm">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex items-center justify-center'><Loader2Icon width={16} className='mr-1 animate-spin shrink-0' /><span>Fetching</span></span> : `Buy eBook ${formattedAmount ?? '-'}`}</button>
+        <button type="button" onClick={handleShareBook} aria-label="Share book link" className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center gap-1 rounded-lg bg-white px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-black shadow-md ring-1 ring-black/10 transition-all hover:bg-slate-50 active:scale-95 sm:text-sm"><Share2 size={15} aria-hidden="true" className="shrink-0" /><span>{shareCopied ? 'Link copied!' : 'Share Book'}</span></button>
     </div><AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}><AlertDialogContent className='bg-white'><AlertDialogTitle className='hidden'></AlertDialogTitle><Card className="w-full max-w-md border-0"><CardHeader className="relative"><CardTitle className="text-rxl font-bold text-center">Login Required</CardTitle><Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsLoginNeededDialogOpen(false)} aria-label="Close popup"><X className="h-4 w-4" /></Button></CardHeader><CardContent><p className="text-center text-muted-foreground">You need to be logged in to make a purchase. Please sign up or sign in to continue.</p></CardContent><CardFooter className="flex justify-center space-x-4"><Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link><Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link></CardFooter></Card></AlertDialogContent></AlertDialog></>;
 }
