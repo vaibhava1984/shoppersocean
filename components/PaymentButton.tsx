@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Loader2Icon, Share2 } from 'lucide-react';
+import { Loader2Icon, Share2, Mail, MessageCircle, Copy, MoreHorizontal } from 'lucide-react';
 import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
 import { setPurchaseStatus } from '@/utils/purchaseStatusCache';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
@@ -27,7 +27,7 @@ function getExchangeRatesOnce(): Promise<ExchangeRates> {
 export default function PaymentButton({ amount, notes, userId, productId, productTitle }: PaymentButtonProps) {
     const { toast } = useToast(); const [isLoading, setIsLoading] = useState(false); const [localAmount, setLocalAmount] = useState(amount);
     const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [hasPurchased, setHasPurchased] = useState(false);
-    const [isCurrencyFetching, setIsCurrencyFetching] = useState(true); const [isPurchaseChecking, setIsPurchaseChecking] = useState(true); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false); const [shareCopied, setShareCopied] = useState(false);
+    const [isCurrencyFetching, setIsCurrencyFetching] = useState(true); const [isPurchaseChecking, setIsPurchaseChecking] = useState(true); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false); const [shareCopied, setShareCopied] = useState(false); const [shareMenuOpen, setShareMenuOpen] = useState(false); const [showMoreShareOptions, setShowMoreShareOptions] = useState(false);
     useEffect(() => {
         let active = true;
         setIsCurrencyFetching(true);
@@ -115,27 +115,61 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
         return () => { active = false; };
     }, [productId]);
 
-    const handleShareBook = async () => {
-        const shareUrl = window.location.href;
-        if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-            try {
-                await navigator.share({
-                    title: productTitle || 'Shoppers Ocean',
-                    text: productTitle ? `Check out "${productTitle}" on Shoppers Ocean.` : 'Check out this book on Shoppers Ocean.',
-                    url: shareUrl,
-                });
-                return;
-            } catch (error: any) {
-                // Closing the native share sheet is not an error and should not copy the link.
-                if (error?.name === 'AbortError') return;
-            }
-        }
+    const getShareDetails = () => {
+        const url = window.location.href;
+        const title = productTitle || 'Shoppers Ocean';
+        const message = productTitle ? `Check out "${productTitle}" on Shoppers Ocean.` : 'Check out this book on Shoppers Ocean.';
+        return { url, title, message, text: `${message} ${url}` };
+    };
+    const handleShareBook = () => {
+        setShowMoreShareOptions(false);
+        setShareMenuOpen(true);
+    };
+    const shareViaWhatsApp = () => {
+        const { text } = getShareDetails();
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+        setShareMenuOpen(false);
+    };
+    const shareViaEmail = () => {
+        const { title, text } = getShareDetails();
+        window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text)}`;
+        setShareMenuOpen(false);
+    };
+    const copyBookLink = async () => {
+        const { url } = getShareDetails();
         try {
-            await navigator.clipboard.writeText(shareUrl);
+            await navigator.clipboard.writeText(url);
             setShareCopied(true);
             window.setTimeout(() => setShareCopied(false), 2200);
+            setShareMenuOpen(false);
         } catch {
-            window.prompt('Copy this book link to share:', shareUrl);
+            window.prompt('Copy this book link to share:', url);
+        }
+    };
+    const shareToOtherChatApps = async () => {
+        const { title, text, url } = getShareDetails();
+        if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+            try {
+                await navigator.share({ title, text, url });
+                setShareMenuOpen(false);
+            } catch (error: any) {
+                if (error?.name !== 'AbortError') window.location.href = `sms:?body=${encodeURIComponent(text)}`;
+            }
+        } else {
+            window.location.href = `sms:?body=${encodeURIComponent(text)}`;
+        }
+    };
+    const showMoreOptions = async () => {
+        setShowMoreShareOptions(true);
+        const { title, text, url } = getShareDetails();
+        if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+            try {
+                await navigator.share({ title, text, url });
+                setShareMenuOpen(false);
+                setShowMoreShareOptions(false);
+            } catch (error: any) {
+                if (error?.name === 'AbortError') return;
+            }
         }
     };
     const initializeRazorpay = () => new Promise((resolve) => { const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]'); if (existingScript && (window as any).Razorpay) return resolve(true); const script = document.createElement('script'); script.src = 'https://checkout.razorpay.com/v1/checkout.js'; script.onload = () => resolve(true); script.onerror = () => resolve(false); document.body.appendChild(script); });
@@ -162,6 +196,6 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
     if (hasPurchased) return <div className="w-full mt-6"><BookFlipbook bookId={productId} title={productTitle || 'Book'} onShareBook={handleShareBook} /></div>;
     return <><div className="flex w-full items-stretch gap-2">
         <button onClick={userId ? handlePayment : () => setIsLoginNeededDialogOpen(true)} disabled={isLoading} className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center rounded-lg bg-white px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-black shadow-md ring-1 ring-black/10 transition-all hover:bg-slate-50 active:scale-95 disabled:opacity-60 sm:text-sm">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex items-center justify-center'><Loader2Icon width={16} className='mr-1 animate-spin shrink-0' /><span>Fetching</span></span> : `Buy eBook ${formattedAmount ?? '-'}`}</button>
-        <button type="button" onClick={handleShareBook} aria-label="Share book link" className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center gap-1 rounded-lg bg-white px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-black shadow-md ring-1 ring-black/10 transition-all hover:bg-slate-50 active:scale-95 sm:text-sm"><Share2 size={15} aria-hidden="true" className="shrink-0" /><span>{shareCopied ? 'Link copied!' : 'Share Book'}</span></button>
-    </div><AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}><AlertDialogContent className='bg-white'><AlertDialogTitle className='hidden'></AlertDialogTitle><Card className="w-full max-w-md border-0"><CardHeader className="relative"><CardTitle className="text-rxl font-bold text-center">Login Required</CardTitle><Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsLoginNeededDialogOpen(false)} aria-label="Close popup"><X className="h-4 w-4" /></Button></CardHeader><CardContent><p className="text-center text-muted-foreground">You need to be logged in to make a purchase. Please sign up or sign in to continue.</p></CardContent><CardFooter className="flex justify-center space-x-4"><Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link><Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link></CardFooter></Card></AlertDialogContent></AlertDialog></>;
+        <button type="button" onClick={handleShareBook} aria-label="Share book link" className="inline-flex min-h-[44px] min-w-0 flex-1 items-center justify-center gap-1 rounded-lg bg-white px-2 py-2 text-center text-xs font-extrabold leading-tight text-black shadow-md ring-1 ring-black/10 transition-all hover:bg-slate-50 active:scale-95 sm:text-sm"><Share2 size={16} aria-hidden="true" className="shrink-0" /><span>{shareCopied ? 'Link copied!' : 'Share Book'}</span></button>
+    </div>{shareMenuOpen && <div className="fixed inset-0 z-[120] flex items-end justify-center bg-black/45 p-3 sm:items-center" role="dialog" aria-modal="true" aria-label="Share this book"><div className="w-full max-w-md rounded-2xl bg-white p-4 text-slate-900 shadow-2xl sm:p-5"><div className="mb-4 flex items-center justify-between"><h2 className="text-lg font-extrabold">Share this book</h2><button type="button" onClick={() => { setShareMenuOpen(false); setShowMoreShareOptions(false); }} aria-label="Close sharing options" className="rounded-full p-2 hover:bg-slate-100"><X size={20} /></button></div><div className="grid grid-cols-2 gap-3"><button type="button" onClick={shareViaWhatsApp} className="flex min-h-[76px] flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white p-3 text-sm font-bold hover:bg-slate-50"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-700"><MessageCircle size={22} /></span>WhatsApp</button><button type="button" onClick={shareViaEmail} className="flex min-h-[76px] flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white p-3 text-sm font-bold hover:bg-slate-50"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-blue-700"><Mail size={22} /></span>Email</button><button type="button" onClick={copyBookLink} className="flex min-h-[76px] flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white p-3 text-sm font-bold hover:bg-slate-50"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-800"><Copy size={22} /></span>{shareCopied ? 'Link copied!' : 'Copy Link'}</button><button type="button" onClick={shareToOtherChatApps} className="flex min-h-[76px] flex-col items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white p-3 text-sm font-bold hover:bg-slate-50"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-violet-100 text-violet-700"><MessageCircle size={22} /></span>Chat apps</button></div><button type="button" onClick={showMoreOptions} className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-50"><MoreHorizontal size={20} />More sharing options</button>{showMoreShareOptions && <p className="mt-2 text-center text-xs text-slate-500">Choose an app from your phone's sharing menu. Available apps depend on your device.</p>}</div></div>}<AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}><AlertDialogContent className='bg-white'><AlertDialogTitle className='hidden'></AlertDialogTitle><Card className="w-full max-w-md border-0"><CardHeader className="relative"><CardTitle className="text-rxl font-bold text-center">Login Required</CardTitle><Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsLoginNeededDialogOpen(false)} aria-label="Close popup"><X className="h-4 w-4" /></Button></CardHeader><CardContent><p className="text-center text-muted-foreground">You need to be logged in to make a purchase. Please sign up or sign in to continue.</p></CardContent><CardFooter className="flex justify-center space-x-4"><Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link><Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link></CardFooter></Card></AlertDialogContent></AlertDialog></>;
 }
