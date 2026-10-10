@@ -39,15 +39,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         <div
                             role="note"
                             aria-label="A message for visitors"
-                            className="absolute left-1 top-1/2 z-10 w-[54%] -translate-y-1/2 rounded-[48%] border-[3px] border-slate-800 bg-white px-3 py-4 text-center text-slate-900 shadow-lg opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:left-2 sm:w-[52%] sm:px-4 sm:py-5"
+                            className="absolute left-1 top-1/2 z-10 w-[54%] -translate-y-1/2 rounded-[48%] border-[3px] border-black bg-white px-3 py-4 text-center text-black shadow-[0_0_10px_rgba(0,0,0,0.35)] opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:left-2 sm:w-[52%] sm:px-4 sm:py-5"
                         >
                             <p className="text-sm font-extrabold leading-snug sm:text-base md:text-lg">
                                 Heyy! 🙋<br />
                                 Where are you from?<br />
                                 We&apos;ve got something<br />
-                                special for you, too! <span aria-label="red heart" role="img">❤️</span>
+                                special for you, too! ❤️
                             </p>
-                            <span aria-hidden="true" className="absolute -right-[9px] top-[48%] h-4 w-4 rotate-45 border-r-[3px] border-t-[3px] border-slate-800 bg-white" />
+                            <span aria-hidden="true" className="absolute -right-[9px] top-[48%] h-4 w-4 rotate-45 border-r-[3px] border-t-[3px] border-black bg-white" />
                         </div>
                         <img
                             src={imageSrc}
