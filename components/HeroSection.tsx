@@ -39,11 +39,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         <div
                             role="note"
                             aria-label="A message for visitors"
-                            className="absolute right-0 top-0 z-10 w-[min(19rem,88%)] rounded-2xl bg-white px-4 py-3 text-center text-slate-800 shadow-xl opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:right-2 sm:top-1 sm:px-5 sm:py-4"
+                            className="absolute left-1 top-1/2 z-10 w-[54%] -translate-y-1/2 rounded-[48%] border-[3px] border-slate-800 bg-white px-3 py-4 text-center text-slate-900 shadow-lg opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:left-2 sm:w-[52%] sm:px-4 sm:py-5"
                         >
-                            <p className="text-base font-bold leading-snug sm:text-lg">Heyy! 🙋 Where are you from?</p>
-                            <p className="mt-1 text-sm font-medium leading-snug sm:text-base">We&apos;ve got something special for you, too! <span aria-label="red heart" role="img">❤️</span></p>
-                            <span aria-hidden="true" className="absolute -bottom-2 left-7 h-4 w-4 rotate-45 rounded-[2px] bg-white" />
+                            <p className="text-sm font-extrabold leading-snug sm:text-base md:text-lg">
+                                Heyy! 🙋<br />
+                                Where are you from?<br />
+                                We&apos;ve got something<br />
+                                special for you, too! <span aria-label="red heart" role="img">❤️</span>
+                            </p>
+                            <span aria-hidden="true" className="absolute -right-[9px] top-[48%] h-4 w-4 rotate-45 border-r-[3px] border-t-[3px] border-slate-800 bg-white" />
                         </div>
                         <img
                             src={imageSrc}
