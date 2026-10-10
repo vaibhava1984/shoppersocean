@@ -40,7 +40,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                             <div
                                 role="note"
                                 aria-label="A message for visitors"
-                                className="absolute right-[2%] top-1/2 z-10 w-[47%] -translate-y-1/2 rounded-[48%] border-[3px] border-black bg-white px-3 py-4 text-center text-black shadow-[0_0_10px_rgba(0,0,0,0.35)] opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:w-[47%] sm:px-4 sm:py-5"
+                                className="absolute right-[3%] top-[38%] z-10 w-[40%] -translate-y-1/2 rounded-[48%] border-[3px] border-black bg-white px-2 py-3 text-center text-black shadow-[0_0_10px_rgba(0,0,0,0.35)] opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:w-[40%] sm:px-3 sm:py-3"
                             >
                                 <p className="text-sm font-extrabold leading-snug [text-shadow:0_0_1px_rgba(0,0,0,0.85)]">
                                     Heyy! 🙋<br />
