@@ -41,7 +41,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                             aria-label="A message for visitors"
                             className="absolute left-1 top-1/2 z-10 w-[54%] -translate-y-1/2 rounded-[48%] border-[3px] border-black bg-white px-3 py-4 text-center text-black shadow-[0_0_10px_rgba(0,0,0,0.35)] opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:left-2 sm:w-[52%] sm:px-4 sm:py-5"
                         >
-                            <p className="text-sm font-extrabold leading-snug sm:text-base md:text-lg">
+                            <p className="text-sm font-extrabold leading-snug [text-shadow:0_0_1px_rgba(0,0,0,0.85)]">
                                 Heyy! 🙋<br />
                                 Where are you from?<br />
                                 We&apos;ve got something<br />
