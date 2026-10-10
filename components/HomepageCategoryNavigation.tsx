@@ -56,11 +56,10 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
               {author.name}
             </Link>
           )) : <p className="px-4 py-3 text-sm font-semibold text-black">No authors available yet.</p>)}
-          {open === "language" && (sortedLanguages.map((language) => (
+          {open === "language" && sortedLanguages.map((language) => (
             <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black hover:bg-blue-50">
               {language}
             </Link>
-          )
           ))}
         </div>
       )}

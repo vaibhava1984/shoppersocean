@@ -29,14 +29,15 @@ type propsType = {
 export default function AddBookPopup(props: propsType) {
     const { toast } = useToast();
     const { book } = props;
-    const sortedAuthors = [...authors].sort((a, b) => a.name.localeCompare(b.name));
-    const languageOptions = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...(book?.language ? [book.language] : [])])).sort((a, b) => a.localeCompare(b));
     const [authors, setAuthors] = useState<Author[]>([]);
     const [bookFiles, setBookFiles] = useState<BookFile[]>([]);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [isUploading, setIsUploading] = useState(false);
     const [pendingBookFiles, setPendingBookFiles] = useState<File[]>([]);
+
+    const sortedAuthors = [...authors].sort((a, b) => a.name.localeCompare(b.name));
+    const languageOptions = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...(book?.language ? [book.language] : [])])).sort((a, b) => a.localeCompare(b));
 
     const [formData, setFormData] = useState<Omit<BookType, 'id' | 'author_name' | 'updated_at'>>({
         title: book?.title ?? '',
