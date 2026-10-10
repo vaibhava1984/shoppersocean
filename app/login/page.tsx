@@ -16,6 +16,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const router = useRouter()
   // @ts-ignore
   const { accountCreated, type, authError } = React.use(searchParams)
+  const visibleAuthError = authError === "session_expired" ? null : authError
 
   const [isSignIn, setIsSignIn] = useState(type === "signup" ? false : true)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -167,7 +168,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
 
         <div className="space-y-4">
           {accountCreated === "success" && <div className="bg-green-400 text-white p-2 rounded">Account created successfully. Please confirm your mail and login.</div>}
-          {(authError || errors.general) && (isSignIn ? <div className="p-0 text-sm font-bold text-green-800 shadow-none">{authError ? getAuthErrorMessage(authError) : errors.general}</div> : <div className="bg-red-400 text-white p-2 rounded">{authError ? getAuthErrorMessage(authError) : errors.general}</div>)}
+          {(visibleAuthError || errors.general) && (isSignIn ? <div className="p-0 text-sm font-bold text-green-800 shadow-none">{visibleAuthError ? getAuthErrorMessage(visibleAuthError) : errors.general}</div> : <div className="bg-red-400 text-white p-2 rounded">{visibleAuthError ? getAuthErrorMessage(visibleAuthError) : errors.general}</div>)}
 
           {!isSignIn && (
             <>

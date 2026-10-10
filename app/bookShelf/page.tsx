@@ -7,6 +7,7 @@ import Footer from "@/components/Footer"
 import BookCard from "@/components/BookCard"
 import HeroSection from "@/components/HeroSection"
 import AuthorApplicationBanner from "@/app/components/AuthorApplicationBanner"
+import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages"
 
 export const metadata = {
     title: "BookShelf",
@@ -35,12 +36,9 @@ export default async function BookShelfPage({
     const sourceParam = params?.source ?? null
     const showCategoryButtons = sourceParam !== "homepage"
 
-    const languageMap: Record<string, string> = {
-        en: "English",
-        hindi: "Hindi",
-    }
-
-    const language = languageMap[languageParam] ?? (languageParam !== "all" ? languageParam : undefined)
+    const languageMap: Record<string, string> = Object.fromEntries(SUPPORTED_BOOK_LANGUAGES.map((name) => [name.toLowerCase(), name]));
+    languageMap.en = "English";
+    const language = languageParam !== "all" ? (languageMap[languageParam.toLowerCase()] ?? languageParam) : undefined
     const db = getD1()
     if (!db) throw new Error("Cloudflare D1 is not available")
     const user = await getCurrentUser()
@@ -60,7 +58,7 @@ export default async function BookShelfPage({
 
     const books = booksResult.results ?? []
     const authors = authorsResult.results ?? []
-    const languages = Array.from(new Set(languageRowsResult.results.map((row) => row.language).filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b)))
+    const languages = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...languageRowsResult.results.map((row) => row.language).filter(Boolean)])).sort((a, b) => String(a).localeCompare(String(b)))
 
     const filteredBooks = books.map((book) => {
         let images: string[] = []
@@ -82,8 +80,7 @@ export default async function BookShelfPage({
         : null
 
     function getPageHeader() {
-        if (languageParam === "en") return "English Books"
-        if (languageParam === "hindi") return "Hindi Books"
+        if (language) return `${language} Books`
         if (genreParam !== "all") return `${genreParam} Books`
         return "All Books"
     }

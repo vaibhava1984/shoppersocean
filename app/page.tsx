@@ -12,6 +12,7 @@ import TrendingBooks from "@/components/trending_books";
 import BooksCollections from "@/components/books_collections";
 import HeroSection from "@/components/HeroSection";
 import { getHomepageBooksServer } from "@/utils/homepageBooksServer";
+import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages";
 
 export const dynamic = 'force-dynamic';
 
@@ -30,7 +31,7 @@ export default async function LandingPage() {
     db.prepare("SELECT language FROM books WHERE COALESCE(is_deleted,0)=0 AND language IS NOT NULL").all<{language:string}>(),
   ]);
   const authors = authorsResult.results ?? [];
-  const languages = Array.from(new Set((languageRowsResult.results ?? []).map((row) => row.language).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+  const languages = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...(languageRowsResult.results ?? []).map((row) => row.language).filter(Boolean)])).sort((a, b) => a.localeCompare(b));
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header user={user} categoryNavigation={{ authors, languages }} />

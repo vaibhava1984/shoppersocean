@@ -11,6 +11,7 @@ type ActivityRecord = { userId: string; at: number };
 
 export default function SessionTimeout() {
   const lastWriteRef = useRef(0);
+  const logoutStartedRef = useRef(false);
 
   useEffect(() => {
     const readActivity = (): ActivityRecord | null => {
@@ -35,6 +36,8 @@ export default function SessionTimeout() {
     };
 
     const logoutForInactivity = async () => {
+      if (logoutStartedRef.current) return;
+      logoutStartedRef.current = true;
       try { localStorage.removeItem(ACTIVITY_KEY); } catch {}
       try {
         await fetch("/api/auth/logout", {
@@ -42,9 +45,12 @@ export default function SessionTimeout() {
           credentials: "same-origin",
           cache: "no-store",
         });
-      } finally {
-        window.location.href = "/login?authError=session_expired";
+      } catch {
+        // Do not interrupt the current page with an automatic authentication popup.
       }
+      // Refresh this same URL so server-rendered account controls reflect logout.
+      // Do not redirect to /login or attach an authError query parameter.
+      window.location.reload();
     };
 
     const checkTimeout = async () => {

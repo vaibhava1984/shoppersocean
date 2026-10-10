@@ -3,6 +3,8 @@
 import Link from "next/link"
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
+import { SUPPORTED_BOOK_GENRES } from "@/utils/book-genres"
+import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages"
 
 type Author = { author_id: string; name: string }
 
@@ -13,21 +15,6 @@ type Props = {
     currentLanguage?: string
     currentGenre?: string
 }
-
-const genres = [
-    "Suspense and Thriller",
-    "Science Fiction",
-    "Historical Fiction",
-    "Historical Non fiction",
-    "Novel/Stories",
-    "Short Stories",
-    "Short Books",
-    "Philosophy and Literature",
-    "Learning and Education",
-    "Guide/How to",
-    "Memoir and Biographies",
-    "Books for Children",
-]
 
 function makeHref(type: "genre" | "author" | "language", value: string) {
     // Each category choice is a new filter. Do not carry the previous
@@ -43,6 +30,8 @@ function makeHref(type: "genre" | "author" | "language", value: string) {
 export default function CategoriesAccordion(props: Props) {
     const [open, setOpen] = useState<string | null>(null)
     const toggle = (name: string) => setOpen((current) => current === name ? null : name)
+    const sortedAuthors = [...props.authors].sort((a, b) => a.name.localeCompare(b.name))
+    const sortedLanguages = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...props.languages])).sort((a, b) => a.localeCompare(b))
 
     const buttonClass = (name: string) =>
         "group relative flex min-h-14 w-full items-center justify-between overflow-hidden rounded-xl bg-blue-600 px-4 py-3 text-left text-base font-extrabold text-white shadow-lg shadow-blue-300/40 ring-1 ring-blue-300/50 transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-400/50 active:scale-[0.98] before:pointer-events-none before:absolute before:inset-y-0 before:-left-1/2 before:w-1/3 before:skew-x-[-20deg] before:bg-gradient-to-r before:from-transparent before:via-white/35 before:to-transparent category-shimmer " +
@@ -70,7 +59,7 @@ export default function CategoriesAccordion(props: Props) {
                     <span>Books by Genre</span><ChevronDown className={"h-5 w-5 transition-transform duration-300 " + (open === "genre" ? "rotate-180" : "")} />
                 </button>
                 <div className={menuClass(open === "genre")}><div className="overflow-hidden"><div className="mt-2 rounded-xl border border-blue-100 bg-white/95 p-2 shadow-md">
-                    {genres.map((genre) => <Link key={genre} href={makeHref("genre", genre)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{genre}</Link>)}
+                    {SUPPORTED_BOOK_GENRES.map((genre) => <Link key={genre} onClick={() => setOpen(null)} href={makeHref("genre", genre)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{genre}</Link>)}
                 </div></div></div>
             </div>
 
@@ -79,7 +68,7 @@ export default function CategoriesAccordion(props: Props) {
                     <span>Books by Authors</span><ChevronDown className={"h-5 w-5 transition-transform duration-300 " + (open === "authors" ? "rotate-180" : "")} />
                 </button>
                 <div className={menuClass(open === "authors")}><div className="overflow-hidden"><div className="mt-2 rounded-xl border border-blue-100 bg-white/95 p-2 shadow-md">
-                    {props.authors.length > 0 ? props.authors.map((author) => <Link key={author.author_id} href={makeHref("author", author.author_id)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{author.name}</Link>) : <p className="px-4 py-3 text-sm font-semibold text-black">No authors available yet.</p>}
+                    {props.authors.length > 0 ? sortedAuthors.map((author) => <Link key={author.author_id} onClick={() => setOpen(null)} href={makeHref("author", author.author_id)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{author.name}</Link>) : <p className="px-4 py-3 text-sm font-semibold text-black">No authors available yet.</p>}
                 </div></div></div>
             </div>
 
@@ -88,7 +77,7 @@ export default function CategoriesAccordion(props: Props) {
                     <span>Books by Language</span><ChevronDown className={"h-5 w-5 transition-transform duration-300 " + (open === "languages" ? "rotate-180" : "")} />
                 </button>
                 <div className={menuClass(open === "languages")}><div className="overflow-hidden"><div className="mt-2 rounded-xl border border-blue-100 bg-white/95 p-2 shadow-md">
-                    {props.languages.length > 0 ? props.languages.map((language) => <Link key={language} href={makeHref("language", language)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{language}</Link>) : <p className="px-4 py-3 text-sm font-semibold text-black">No languages available yet.</p>}
+                    {sortedLanguages.map((language) => <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{language}</Link>}
                 </div></div></div>
             </div>
             </div>

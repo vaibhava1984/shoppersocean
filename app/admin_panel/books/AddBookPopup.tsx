@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BookType } from "@/types/Books.type"
 import { useToast } from "@/hooks/use-toast"
+import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages"
+import { SUPPORTED_BOOK_GENRES } from "@/utils/book-genres"
 
 interface Author {
     author_id: string;
@@ -27,6 +29,8 @@ type propsType = {
 export default function AddBookPopup(props: propsType) {
     const { toast } = useToast();
     const { book } = props;
+    const sortedAuthors = [...authors].sort((a, b) => a.name.localeCompare(b.name));
+    const languageOptions = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...(book?.language ? [book.language] : [])])).sort((a, b) => a.localeCompare(b));
     const [authors, setAuthors] = useState<Author[]>([]);
     const [bookFiles, setBookFiles] = useState<BookFile[]>([]);
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -263,7 +267,7 @@ export default function AddBookPopup(props: propsType) {
                                 <SelectValue placeholder="Select Author" />
                             </SelectTrigger>
                             <SelectContent>
-                                {authors.map((author) => (
+                                {sortedAuthors.map((author) => (
                                     <SelectItem key={author.author_id} value={author.author_id}>
                                         {author.name}
                                     </SelectItem>
@@ -366,18 +370,7 @@ export default function AddBookPopup(props: propsType) {
                         <Select name="genre" value={formData.genre} onValueChange={(value) => setFormData({ ...formData, genre: value })}>
                             <SelectTrigger><SelectValue placeholder="Select Genre" /></SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="Suspense and Thriller">Suspense and Thriller</SelectItem>
-                                <SelectItem value="Science Fiction">Science Fiction</SelectItem>
-                                <SelectItem value="Historical Fiction">Historical Fiction</SelectItem>
-                                <SelectItem value="Historical Non fiction">Historical Non fiction</SelectItem>
-                                <SelectItem value="Novel/Stories">Novel/Stories</SelectItem>
-                                <SelectItem value="Short Stories">Short Stories</SelectItem>
-                                <SelectItem value="Short Books">Short Books</SelectItem>
-                                <SelectItem value="Philosophy and Literature">Philosophy and Literature</SelectItem>
-                                <SelectItem value="Learning and Education">Learning and Education</SelectItem>
-                                <SelectItem value="Guide/How to">Guide/How to</SelectItem>
-                                <SelectItem value="Memoir and Biographies">Memoir and Biographies</SelectItem>
-                                <SelectItem value="Books for Children">Books for Children</SelectItem>
+                                {SUPPORTED_BOOK_GENRES.map((genre) => <SelectItem key={genre} value={genre}>{genre}</SelectItem>)}
                             </SelectContent>
                         </Select>
                     </div>
@@ -388,8 +381,7 @@ export default function AddBookPopup(props: propsType) {
                                 <SelectValue placeholder="Select Language" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="English">English</SelectItem>
-                                <SelectItem value="Hindi">Hindi</SelectItem>
+                                {languageOptions.map((language) => <SelectItem key={language} value={language}>{language}</SelectItem>)}
                             </SelectContent>
                         </Select>
                     </div>
