@@ -77,7 +77,7 @@ export default function CategoriesAccordion(props: Props) {
                     <span>Books by Language</span><ChevronDown className={"h-5 w-5 transition-transform duration-300 " + (open === "languages" ? "rotate-180" : "")} />
                 </button>
                 <div className={menuClass(open === "languages")}><div className="overflow-hidden"><div className="mt-2 rounded-xl border border-blue-100 bg-white/95 p-2 shadow-md">
-                    {sortedLanguages.map((language) => <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{language}</Link>}
+                    {sortedLanguages.map((language) => <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black [text-shadow:0_1px_0_white,0_-1px_0_white,1px_0_white,-1px_0_white] transition-all duration-200 hover:bg-blue-50 hover:pl-6">{language}</Link>)}
                 </div></div></div>
             </div>
             </div>
