@@ -35,28 +35,30 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight italic opacity-0 translate-y-4 animate-[fadeInUp_0.6s_ease-out_forwards]">{title}</h1>
                         <p className="text-xl md:text-2xl mb-10 text-white font-semibold opacity-0 scale-95 animate-[zoomIn_6s_ease-out_forwards] italic">{subtitle}</p>
                     </div>
-                    <div className="md:w-1/2 relative">
-                        <div
-                            role="note"
-                            aria-label="A message for visitors"
-                            className="absolute left-1 top-1/2 z-10 w-[54%] -translate-y-1/2 rounded-[48%] border-[3px] border-black bg-white px-3 py-4 text-center text-black shadow-[0_0_10px_rgba(0,0,0,0.35)] opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:left-2 sm:w-[52%] sm:px-4 sm:py-5"
-                        >
-                            <p className="text-sm font-extrabold leading-snug [text-shadow:0_0_1px_rgba(0,0,0,0.85)]">
-                                Heyy! 🙋<br />
-                                Where are you from?<br />
-                                We&apos;ve got something<br />
-                                special for you, too! ❤️
-                            </p>
-                            <span aria-hidden="true" className="absolute -right-[9px] top-[48%] h-4 w-4 rotate-45 border-r-[3px] border-t-[3px] border-black bg-white" />
+                    <div className="md:w-1/2">
+                        <div className="relative mx-auto w-full max-w-md">
+                            <div
+                                role="note"
+                                aria-label="A message for visitors"
+                                className="absolute right-[2%] top-1/2 z-10 w-[47%] -translate-y-1/2 rounded-[48%] border-[3px] border-black bg-white px-3 py-4 text-center text-black shadow-[0_0_10px_rgba(0,0,0,0.35)] opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:w-[47%] sm:px-4 sm:py-5"
+                            >
+                                <p className="text-sm font-extrabold leading-snug [text-shadow:0_0_1px_rgba(0,0,0,0.85)]">
+                                    Heyy! 🙋<br />
+                                    Where are you from?<br />
+                                    We&apos;ve got something<br />
+                                    special for you, too! ❤️
+                                </p>
+                                <span aria-hidden="true" className="absolute -left-3 top-[48%] h-4 w-4 rotate-45 border-l-[3px] border-b-[3px] border-black bg-white" />
+                            </div>
+                            <img
+                                src={imageSrc}
+                                alt={imageAlt}
+                                width={640}
+                                height={420}
+                                fetchPriority="high"
+                                className="block w-full rounded-lg shadow-2xl opacity-0 scale-95 animate-[fadeInUp_0.6s_ease-out_forwards]"
+                            />
                         </div>
-                        <img
-                            src={imageSrc}
-                            alt={imageAlt}
-                            width={640}
-                            height={420}
-                            fetchPriority="high"
-                            className="w-full max-w-md mx-auto rounded-lg shadow-2xl opacity-0 scale-95 animate-[fadeInUp_0.6s_ease-out_forwards]"
-                        />
                     </div>
                 </div>
             </div>
