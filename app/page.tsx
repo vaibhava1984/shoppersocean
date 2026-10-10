@@ -38,7 +38,7 @@ export default async function LandingPage() {
       <div>
         <HeroSection
           title="Shoppers Ocean"
-          subtitle="Where every wave brings a new deal"
+          subtitle="One World. Many Languages. Amazing Flipbooks. Beautiful Stories."
           welcomeName={user?.firstName || undefined}
           buttonText=" Embark on Your Adventure"
           buttonLink="/bookShelf"

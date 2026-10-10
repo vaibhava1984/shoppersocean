@@ -12,7 +12,7 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({
     title = "Shoppers Ocean",
-    subtitle = "Where every wave brings a new deal",
+    subtitle = "One World. Many Languages. Amazing Flipbooks. Beautiful Stories.",
     imageSrc = "/homepage_hero.jpeg",
     imageAlt = "Featured Book",
     welcomeName,
@@ -33,7 +33,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                             <div className="mb-5 min-h-[2.5rem]" aria-hidden="true" />
                         )}
                         <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight italic opacity-0 translate-y-4 animate-[fadeInUp_0.6s_ease-out_forwards]">{title}</h1>
-                        <p className="text-xl md:text-2xl mb-10 opacity-0 translate-y-4 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] italic">{subtitle}</p>
+                        <p className="text-xl md:text-2xl mb-10 text-white font-semibold opacity-0 scale-95 animate-[zoomIn_6s_ease-out_forwards] italic">{subtitle}</p>
                     </div>
                     <div className="md:w-1/2 relative">
                         <img
