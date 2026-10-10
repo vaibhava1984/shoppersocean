@@ -48,9 +48,9 @@ export default function SessionTimeout() {
       } catch {
         // Do not interrupt the current page with an automatic authentication popup.
       }
-      // Refresh this same URL so server-rendered account controls reflect logout.
-      // Do not redirect to /login or attach an authError query parameter.
-      window.location.reload();
+      // Always return to a clean homepage after inactivity logout.
+      // This clears any page/modal state and avoids carrying login/error query parameters.
+      window.location.replace("/");
     };
 
     const checkTimeout = async () => {
