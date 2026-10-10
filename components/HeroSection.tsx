@@ -36,6 +36,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         <p className="text-xl md:text-2xl mb-10 text-white font-semibold opacity-0 scale-95 animate-[zoomIn_6s_ease-out_forwards] italic">{subtitle}</p>
                     </div>
                     <div className="md:w-1/2 relative">
+                        <div
+                            role="note"
+                            aria-label="A message for visitors"
+                            className="absolute right-0 top-0 z-10 w-[min(19rem,88%)] rounded-2xl bg-white px-4 py-3 text-center text-slate-800 shadow-xl opacity-0 scale-90 animate-[zoomIn_3.5s_ease-out_forwards] sm:right-2 sm:top-1 sm:px-5 sm:py-4"
+                        >
+                            <p className="text-base font-bold leading-snug sm:text-lg">Heyy! 🙋 Where are you from?</p>
+                            <p className="mt-1 text-sm font-medium leading-snug sm:text-base">We&apos;ve got something special for you, too! <span aria-label="red heart" role="img">❤️</span></p>
+                            <span aria-hidden="true" className="absolute -bottom-2 left-7 h-4 w-4 rotate-45 rounded-[2px] bg-white" />
+                        </div>
                         <img
                             src={imageSrc}
                             alt={imageAlt}
