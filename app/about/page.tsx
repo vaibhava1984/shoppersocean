@@ -38,7 +38,7 @@ export default function AboutPage() {
                     <div className="max-w-4xl mx-auto">
                         <div className="max-w-none font-sans">
                             <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-8">
-                                At Shoppers Ocean, we invite you to dive into a world of amazing e-books and other commodities where everyone, can discover something very interesting as an e-book reader and also, can have great deals as a buyer of other commodities.
+                                At Shoppers Ocean, we open the doors to a captivating world of beautifully designed flipbooks, where stories come alive and reading becomes an extraordinary experience. With engaging features and an inviting reading experience, we bring knowledge, imagination, and entertainment together on one exclusive platform, serving readers in multiple Indian and international languages and bringing fascinating stories and ideas closer to audiences across the globe.
                             </p>
 
                             <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
