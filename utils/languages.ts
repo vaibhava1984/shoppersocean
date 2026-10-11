@@ -4,6 +4,7 @@ export const SUPPORTED_BOOK_LANGUAGES = [
   "French",
   "German",
   "Hindi",
+  "Kannada",
   "Malayalam",
   "Portuguese",
   "Russian",
