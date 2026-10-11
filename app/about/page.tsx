@@ -42,23 +42,23 @@ export default function AboutPage() {
                             </p>
 
                             <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
-                                Founded on November 10<sup>th</sup>, 2024 we embarked on this journey with a commitment to providing our readers with high-quality and intersting e-book content and to our customers of other commodities a trusted product line.
+                                Our journey began on November 10<sup>th</sup>, 2024, with a vision to make reading more enjoyable and to create meaningful opportunities for authors. Today, we aspire to build a global destination where readers can discover fascinating stories and explore a world of ideas, inspiration, and entertainment.
                             </p>
 
                             <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
-                                We prioritise not only the excellence of our content/ products but also a smooth and hassle-free buying experience. Our goal is to make your buying journey as delightful as possible from selection to purchase.
+                                We believe that great experiences go beyond exceptional content. That is why we strive to offer our readers an enjoyable and convenient journey, while ensuring that every purchase and product delivery is as smooth and hassle-free as possible. Your satisfaction inspires us to keep raising our standards.
                             </p>
 
                             <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
-                                In addition to serving our readers, Shoppers Ocean is proud to support both established and emerging authors. We offer a platform where their writing works can reach a vast and eager audience, ensuring that their creative efforts receive the recognition and financial reward they deserve.
+                                At Shoppers Ocean, we are equally passionate about empowering both emerging and established authors. Our platform offers writers an opportunity to transform their literary creations into beautifully designed flipbooks, reach a worldwide audience, gain recognition for their work, and earn monetary rewards. We want every author to have the opportunity to share their imagination with the world and turn their passion for writing into a rewarding journey.
                             </p>
 
                             <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
-                                Integrity, quality, and responsiveness are at the core of everything we do. We are dedicated to maintaining the highest standards and we promise to address any queries, concerns, or suggestions with prompt and thoughtful attention.
+                                Integrity, quality, and responsiveness are at the heart of everything we do. We are committed to maintaining the highest standards and promise to address your queries, concerns, and suggestions with promptness, sincerity, and thoughtful attention. Your trust matters to us, and your feedback helps us grow.
                             </p>
 
                             <p className="text-xl md:text-2xl font-semibold leading-relaxed text-slate-700 mb-6">
-                                We believe that this endeavour to bring knowledge and entertainment for our readers and a hassle free product delivery at the doorsteps of our buyers will be a great experience for our readers and buyers. We are grateful for your support and look forward to accompanying you on this exciting journey about entertainment and shopping with us. 😊
+                                We envision Shoppers Ocean as more than a reading platform: a place where entertainment meets opportunity, readers discover their next favourite story, authors find their audience, and customers enjoy a seamless shopping experience. We are deeply grateful for your support and look forward to accompanying you on this exciting journey of stories, discovery, and endless possibilities. 😊
                             </p>
 
                             <div className="mt-12 text-right flex flex-col items-end">
