@@ -44,7 +44,7 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
                     });
                     if (!response.ok) throw new Error('Unable to confirm account country');
                     const data = await response.json();
-                    detectedCurrency = isIndiaCountry(data?.user?.publicMetadata?.country ?? data?.user?.unsafeMetadata?.country) ? 'INR' : 'USD';
+                    detectedCurrency = isIndiaCountry(data?.user?.country) ? 'INR' : 'USD';
                 }
 
                 if (!active) return;
