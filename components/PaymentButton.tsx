@@ -54,6 +54,7 @@ function getExchangeRatesOnce(): Promise<ExchangeRates> {
                     const staleRates = exchangeRatesCache.getStale(24 * 60 * 60 * 1000);
                     if (staleRates && Number.isFinite(staleRates.USD) && staleRates.USD > 0) {
                         console.warn('Using a validated browser-cached exchange rate after provider failure.');
+                        exchangeRatesPromise = Promise.resolve(staleRates);
                         return staleRates;
                     }
                 } catch (cacheError) {
