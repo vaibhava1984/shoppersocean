@@ -14,8 +14,7 @@ export async function fetchExchangeRates(): Promise<ExchangeRates> {
         return data?.rates && typeof data.rates === 'object' ? data.rates : {};
     } catch (error) {
         console.error('Error fetching exchange rates:', error);
-        // Return an empty object if the fetch fails
-        // The component will fallback to showing INR
+        // Return no rates; callers must not display or charge an unconverted fallback price.
         return {};
     }
 }
