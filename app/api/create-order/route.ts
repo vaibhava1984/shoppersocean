@@ -90,6 +90,34 @@ export async function POST(req: Request) {
             );
         }
 
+        // Persist the pending purchase BEFORE returning the Razorpay order to the browser.
+        // If D1 cannot record it, do not expose the order for checkout; otherwise a captured
+        // payment could exist at Razorpay without any local purchase record.
+        const now = new Date().toISOString();
+        const localOrderId = crypto.randomUUID();
+        try {
+            await db.prepare(
+                'INSERT INTO orders (id, user_id, book_id, amount, currency, status, razorpay_order_id, created_at, updated_at) ' +
+                'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            ).bind(
+                localOrderId,
+                identity.profile.id,
+                productId,
+                priceInINR,
+                'INR',
+                'pending',
+                String(order.id),
+                now,
+                now
+            ).run();
+        } catch (dbError) {
+            console.error('Unable to persist pending purchase before checkout:', dbError);
+            return NextResponse.json(
+                { error: 'We could not safely prepare your purchase. You have not been asked to pay; please try again.' },
+                { status: 503, headers: { 'Cache-Control': 'no-store' } }
+            );
+        }
+
         return NextResponse.json({
             orderId: order.id,
             amount,
