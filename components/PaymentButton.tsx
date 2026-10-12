@@ -36,7 +36,13 @@ function getExchangeRatesOnce(): Promise<ExchangeRates> {
                 if (!Number.isFinite(rates.USD) || rates.USD <= 0) {
                     throw new Error('A valid INR-to-USD exchange rate was not returned');
                 }
-                exchangeRatesCache.set(rates);
+                // Browser storage is only an optimization; never let a cache write failure
+                // prevent a valid converted price from being displayed.
+                try {
+                    exchangeRatesCache.set(rates);
+                } catch (cacheError) {
+                    console.warn('Could not cache exchange rates; using fetched rates:', cacheError);
+                }
                 return rates;
             })
             .catch(error => {
