@@ -4,6 +4,7 @@ import { getD1 } from "@/utils/cloudflare/d1";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+const FRESH_CACHE_AGE_MS = 60 * 60 * 1000;
 const MAX_STALE_AGE_MS = 24 * 60 * 60 * 1000;
 const PROVIDERS = [
   "https://api.exchangerate-api.com/v4/latest/INR",
@@ -26,10 +27,11 @@ async function fetchLiveRates(): Promise<Rates> {
       const response = await fetch(endpoint, { cache: "no-store" });
       if (!response.ok) throw new Error(`Provider returned HTTP ${response.status}`);
       const data = await response.json() as { result?: string; rates?: unknown };
-      if (data.result === "error" || !isValidRates(data.rates)) {
+      const rates = data.rates;
+      if (data.result === "error" || !isValidRates(rates)) {
         throw new Error("Provider returned invalid exchange-rate data");
       }
-      return data.rates;
+      return rates;
     } catch (error) {
       lastError = error;
       console.warn("Exchange-rate provider failed; trying backup provider.", error);
@@ -53,6 +55,23 @@ export async function GET() {
       ).bind("INR").first<CachedRatesRow>();
     } catch (error) {
       console.warn("Shared exchange-rate cache is unavailable; live providers will still be tried.", error);
+    }
+  }
+
+  // Reuse a recent shared D1 rate to avoid calling external providers for every visitor.
+  if (cached) {
+    const ageMs = Date.now() - Number(cached.fetched_at);
+    try {
+      const rates: unknown = JSON.parse(cached.rates_json);
+      if (ageMs >= 0 && ageMs <= FRESH_CACHE_AGE_MS && isValidRates(rates)) {
+        return NextResponse.json({
+          rates,
+          source: "shared-cache",
+          fetchedAt: Number(cached.fetched_at),
+        }, { headers: { "Cache-Control": "no-store" } });
+      }
+    } catch (error) {
+      console.warn("Ignoring invalid cached exchange rates.", error);
     }
   }
 
