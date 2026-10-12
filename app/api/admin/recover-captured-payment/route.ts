@@ -18,9 +18,10 @@ function basicAuth(keyId: string, keySecret: string) {
 }
 
 function escapeHtml(value: unknown) {
-  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+  const entities: Record<string, string> = {
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-  }[char] as string));
+  };
+  return String(value ?? "").replace(/[&<>"']/g, (char) => entities[char] || char);
 }
 
 export async function POST() {
@@ -98,27 +99,38 @@ export async function POST() {
       return NextResponse.json({ error: "A conflicting database record exists; no changes made" }, { status: 409 });
     }
 
-    const now = new Date().toISOString();
-    let orderRowId = existing ? String(existing.id) : crypto.randomUUID();
-    let createdNewPurchase = !existing;
-
-    if (!existing) {
-      await db.prepare(
-        "INSERT INTO orders (id, user_id, book_id, amount, currency, status, razorpay_order_id, created_at, updated_at) " +
-        "VALUES (?, ?, ?, ?, ?, 'completed', ?, ?, ?)"
-      ).bind(orderRowId, USER_ID, BOOK_ID, 100, "INR", razorpayOrderId, now, now).run();
-    } else {
-      await db.prepare("UPDATE orders SET status = 'completed', updated_at = ? WHERE id = ?")
-        .bind(now, orderRowId).run();
-    }
-
     const existingPayment = await db.prepare(
       "SELECT id, order_id, user_id, book_id FROM payments WHERE razorpay_payment_id = ? OR razorpay_order_id = ? LIMIT 1"
     ).bind(PAYMENT_ID, razorpayOrderId).first<Record<string, any>>();
 
     if (existingPayment && (String(existingPayment.user_id) !== USER_ID ||
-        String(existingPayment.book_id) !== BOOK_ID || String(existingPayment.order_id) !== orderRowId)) {
-      return NextResponse.json({ error: "A conflicting payment record exists; please review before further changes" }, { status: 409 });
+        String(existingPayment.book_id) !== BOOK_ID ||
+        (existing && String(existingPayment.order_id) !== String(existing.id)))) {
+      return NextResponse.json({ error: "A conflicting payment record exists; no changes made" }, { status: 409 });
+    }
+
+    const now = new Date().toISOString();
+    const orderRowId = existing ? String(existing.id) : (existingPayment ? String(existingPayment.order_id) : crypto.randomUUID());
+    const createdNewPurchase = !existing && !existingPayment;
+
+    if (!existing) {
+      const linkedOrder = await db.prepare("SELECT id, user_id, book_id FROM orders WHERE id = ? LIMIT 1")
+        .bind(orderRowId).first<Record<string, any>>();
+      if (linkedOrder && (String(linkedOrder.user_id) !== USER_ID || String(linkedOrder.book_id) !== BOOK_ID)) {
+        return NextResponse.json({ error: "A conflicting linked order exists; no changes made" }, { status: 409 });
+      }
+      if (!linkedOrder) {
+        await db.prepare(
+          "INSERT INTO orders (id, user_id, book_id, amount, currency, status, razorpay_order_id, created_at, updated_at) " +
+          "VALUES (?, ?, ?, ?, ?, 'completed', ?, ?, ?)"
+        ).bind(orderRowId, USER_ID, BOOK_ID, 100, "INR", razorpayOrderId, now, now).run();
+      } else {
+        await db.prepare("UPDATE orders SET status = 'completed', razorpay_order_id = ?, updated_at = ? WHERE id = ?")
+          .bind(razorpayOrderId, now, orderRowId).run();
+      }
+    } else {
+      await db.prepare("UPDATE orders SET status = 'completed', updated_at = ? WHERE id = ?")
+        .bind(now, orderRowId).run();
     }
 
     if (!existingPayment) {
