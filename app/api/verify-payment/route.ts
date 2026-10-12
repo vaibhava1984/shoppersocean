@@ -224,11 +224,14 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Payment does not match the saved purchase amount" }, { status: 409 });
       }
 
+      const orderStatus = String(existing.status) === "completed" && paymentStatus !== "completed"
+        ? "completed"
+        : paymentStatus;
       await db.prepare(
         "UPDATE orders SET status = ?, updated_at = ? WHERE id = ?"
-      ).bind(paymentStatus, now, existing.id).run();
+      ).bind(orderStatus, now, existing.id).run();
 
-      if (existing.payment_row_id) {
+      if (existing.payment_row_id && String(existing.razorpay_payment_id) === razorpayPaymentId) {
         await db.prepare(
           "UPDATE payments SET status = ?, updated_at = ? WHERE id = ?"
         ).bind(paymentStatus, now, existing.payment_row_id).run();
