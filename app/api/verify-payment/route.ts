@@ -164,7 +164,7 @@ export async function POST(req: Request) {
 
     // Match the production D1 schema: orders.book_id and payments.book_id.
     const existing = await db.prepare(
-      "SELECT o.id, o.user_id, o.book_id, o.amount, o.currency, o.status, o.created_at, " +
+      "SELECT o.id, o.user_id, o.book_id, o.amount, o.currency, o.status, o.razorpay_order_id, o.created_at, " +
       "p.id AS payment_row_id, p.razorpay_payment_id, p.amount AS payment_amount, p.currency AS payment_currency, p.status AS payment_status " +
       "FROM orders o LEFT JOIN payments p ON p.order_id = o.id " +
       "WHERE o.razorpay_order_id = ? OR p.razorpay_payment_id = ? LIMIT 1"
@@ -219,7 +219,7 @@ export async function POST(req: Request) {
 
       // The order was persisted as pending before checkout. Reconcile that row and
       // create the payment row if this is the first callback for the captured payment.
-      if (Math.abs(Number(existing.amount) - Number(amountInINR)) > 0.02 ||
+      if (Math.abs(Number(existing.amount) - Number(razorpayOrder.notes?.base_amount)) > 0.01 ||
           String(existing.currency || "INR").toUpperCase() !== "INR") {
         return NextResponse.json({ error: "Payment does not match the saved purchase amount" }, { status: 409 });
       }
@@ -242,7 +242,7 @@ export async function POST(req: Request) {
           existing.id,
           userId,
           bookId,
-          Number(amountInINR),
+          Number(existing.amount),
           "INR",
           paymentStatus,
           razorpayPaymentId,
