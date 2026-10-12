@@ -4,19 +4,36 @@ export interface ExchangeRates {
 }
 
 export async function fetchExchangeRates(): Promise<ExchangeRates> {
-    try {
-        // You can replace this with your preferred exchange rate API
-        const response = await fetch(
-            `https://api.exchangerate-api.com/v4/latest/INR`
-        );
-        if (!response.ok) throw new Error(`Exchange-rate service returned ${response.status}`);
-        const data = await response.json();
-        return data?.rates && typeof data.rates === 'object' ? data.rates : {};
-    } catch (error) {
-        console.error('Error fetching exchange rates:', error);
-        // Return no rates; callers must not display or charge an unconverted fallback price.
-        return {};
+    const endpoints = [
+        'https://api.exchangerate-api.com/v4/latest/INR',
+        'https://open.er-api.com/v6/latest/INR',
+    ];
+
+    let lastError: unknown;
+    for (const endpoint of endpoints) {
+        try {
+            const response = await fetch(endpoint, { cache: 'no-store' });
+            if (!response.ok) throw new Error(`Exchange-rate service returned ${response.status}`);
+            const data = await response.json();
+            const rates = data?.rates;
+            if (
+                data?.result === 'error' ||
+                !rates ||
+                typeof rates !== 'object' ||
+                !Number.isFinite(rates.USD) ||
+                rates.USD <= 0
+            ) {
+                throw new Error('Exchange-rate response did not contain a valid INR-to-USD rate');
+            }
+            return rates as ExchangeRates;
+        } catch (error) {
+            lastError = error;
+            console.warn('Exchange-rate provider failed; trying the next provider:', endpoint, error);
+        }
     }
+
+    console.error('All exchange-rate providers failed:', lastError);
+    throw new Error('Exchange rates are temporarily unavailable');
 }
 
 export function convertCurrency(
