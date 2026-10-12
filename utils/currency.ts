@@ -25,23 +25,28 @@ export function convertCurrency(
     toCurrency: string,
     rates: ExchangeRates
 ): number {
+    if (!Number.isFinite(amount)) return Number.NaN;
     if (fromCurrency === toCurrency) return amount;
 
-    // If rates are empty or missing required currencies, return original amount
-    if (!rates[fromCurrency] || !rates[toCurrency]) {
-        console.warn('Missing exchange rates, using original amount');
-        return amount;
+    // The exchange-rate endpoint uses INR as its base, so INR itself has rate 1
+    // and is not present in the returned rates object.
+    const fromRate = fromCurrency === 'INR' ? 1 : rates[fromCurrency];
+    const toRate = toCurrency === 'INR' ? 1 : rates[toCurrency];
+
+    if (
+        !Number.isFinite(fromRate) || fromRate <= 0 ||
+        !Number.isFinite(toRate) || toRate <= 0
+    ) {
+        console.warn('Missing or invalid exchange rates; currency conversion failed');
+        return Number.NaN;
     }
 
-    // Convert to INR first if not already in INR
-    const amountInINR = fromCurrency === 'INR'
-        ? amount
-        : amount / rates[fromCurrency];
+    return (amount / fromRate) * toRate;
+}
 
-    // Convert from INR to target currency
-    return toCurrency === 'INR'
-        ? amountInINR
-        : amountInINR * rates[toCurrency];
+export function isIndiaCountry(country: unknown): boolean {
+    const normalized = String(country ?? '').trim().toUpperCase();
+    return normalized === 'IN' || normalized === 'INDIA';
 }
 
 // Optional: Add a function to format currency amounts
