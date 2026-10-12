@@ -14,13 +14,34 @@ class CacheManager<T> {
 
     get(): T | null {
         const cachedData = localStorage.getItem(EXCHANGE_RATES_CACHE_KEY);
-        if (cachedData) {
-            const { data, expirationTime } = JSON.parse(cachedData) as Cache<T>;
-            if (expirationTime && expirationTime > Date.now()) {
-                return data;
-            }
+        if (!cachedData) return null;
+
+        const parsed = JSON.parse(cachedData) as Cache<T>;
+        if (
+            parsed.data &&
+            typeof parsed.expirationTime === 'number' &&
+            Number.isFinite(parsed.expirationTime) &&
+            parsed.expirationTime > Date.now()
+        ) {
+            return parsed.data;
         }
         return null;
+    }
+
+    // Used only if the live/shared endpoint fails. The timestamp is reconstructed
+    // from the existing cache format, so previously saved browser entries still work.
+    getStale(maxAgeMs: number): T | null {
+        const cachedData = localStorage.getItem(EXCHANGE_RATES_CACHE_KEY);
+        if (!cachedData) return null;
+
+        const parsed = JSON.parse(cachedData) as Cache<T>;
+        if (!parsed.data || typeof parsed.expirationTime !== 'number' || !Number.isFinite(parsed.expirationTime)) {
+            return null;
+        }
+
+        const savedAt = parsed.expirationTime - this.cacheExpirationTime;
+        const ageMs = Date.now() - savedAt;
+        return ageMs >= 0 && ageMs <= maxAgeMs ? parsed.data : null;
     }
 
     set(data: T): void {
