@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { requireUser } from '@/utils/auth/requireUser';
 import { getD1 } from '@/utils/cloudflare/d1';
-import { convertCurrency, fetchExchangeRates, isIndiaCountry } from '@/utils/currency';
+import { convertCurrency, isIndiaCountry } from '@/utils/currency';
+import { getExchangeRatesWithFallback } from '@/utils/serverExchangeRates';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
 
         const amount = requestedCurrency === 'INR'
             ? priceInINR
-            : convertCurrency(priceInINR, 'INR', 'USD', await fetchExchangeRates());
+            : convertCurrency(priceInINR, 'INR', 'USD', (await getExchangeRatesWithFallback()).rates);
 
         if (!Number.isFinite(amount) || amount <= 0) {
             return NextResponse.json({ error: 'Unable to calculate the payment amount' }, { status: 400 });
