@@ -1,11 +1,12 @@
 function escapeHtml(value: unknown) {
-  return String(value ?? "").replace(/[&<>"']/g, (character) => ({
+  const entities: Record<string, string> = {
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
     '"': "&quot;",
     "'": "&#39;",
-  })[character] || character);
+  };
+  return String(value ?? "").replace(/[&<>"']/g, (character) => entities[character] || character);
 }
 
 export async function sendSaleNotification(input: {
