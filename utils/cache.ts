@@ -44,10 +44,11 @@ class CacheManager<T> {
         return ageMs >= 0 && ageMs <= maxAgeMs ? parsed.data : null;
     }
 
-    set(data: T): void {
+    set(data: T, fetchedAt: number = Date.now()): void {
+        const safeFetchedAt = Number.isFinite(fetchedAt) && fetchedAt <= Date.now() ? fetchedAt : Date.now();
         const cache: Cache<T> = {
             data,
-            expirationTime: Date.now() + this.cacheExpirationTime,
+            expirationTime: safeFetchedAt + this.cacheExpirationTime,
         };
         localStorage.setItem(EXCHANGE_RATES_CACHE_KEY, JSON.stringify(cache));
     }
