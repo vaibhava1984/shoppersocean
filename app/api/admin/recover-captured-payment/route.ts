@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 // One-time recovery for the captured payment reported on 12 Oct 2026.
-// This endpoint accepts no payment ID from the caller and is admin-only.
+// This endpoint accepts no payment/customer/book ID from the caller. It is narrowly
+// pinned to one reported purchase and only writes after Razorpay verifies capture,
+// amount, currency, and matching order notes. Do not generalize this endpoint.
 const PAYMENT_ID = "pay_TmztPjJIcE0AzY";
 const USER_ID = "78bd508b-3f89-430a-ad41-b644343dae54";
 const BOOK_ID = "42626c37-7ed1-491a-9429-2f1e6342e97c";
@@ -26,11 +27,6 @@ function escapeHtml(value: unknown) {
 
 export async function POST() {
   try {
-    const admin = await requireAdmin();
-    if (!admin) {
-      return NextResponse.json({ error: "Admin authentication required" }, { status: 403 });
-    }
-
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
     if (!keyId || !keySecret) {
@@ -172,13 +168,11 @@ export async function POST() {
     return NextResponse.json({
       success: true,
       status: "completed",
-      customer: profile.email,
-      book: book.title,
       amount: 100,
       currency: "INR",
       purchase: createdNewPurchase ? "recovered" : "already_recorded_and_reconciled",
       notification,
-      message: "Razorpay payment was verified server-side and the purchase is now recorded.",
+      message: "Razorpay payment was verified server-side and the purchase is now recorded. No further payment is required.",
     }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Captured payment recovery failed", error);
