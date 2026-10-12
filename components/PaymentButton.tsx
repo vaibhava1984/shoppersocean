@@ -39,7 +39,7 @@ function getExchangeRatesOnce(): Promise<ExchangeRates> {
                 // Do not reset the age of a rate that the server itself served as stale.
                 if (!(rates as any).__staleExchangeRate) {
                     try {
-                        exchangeRatesCache.set(rates);
+                        exchangeRatesCache.set(rates, Number((rates as any).__exchangeRateFetchedAt) || Date.now());
                     } catch (cacheError) {
                         console.warn('Could not cache exchange rates; using fetched rates:', cacheError);
                     }
