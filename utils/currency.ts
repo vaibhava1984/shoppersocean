@@ -4,36 +4,33 @@ export interface ExchangeRates {
 }
 
 export async function fetchExchangeRates(): Promise<ExchangeRates> {
-    const endpoints = [
-        'https://api.exchangerate-api.com/v4/latest/INR',
-        'https://open.er-api.com/v6/latest/INR',
-    ];
+    const response = await fetch('/api/exchange-rates', {
+        method: 'GET',
+        credentials: 'same-origin',
+        cache: 'no-store',
+        headers: { Accept: 'application/json' },
+    });
 
-    let lastError: unknown;
-    for (const endpoint of endpoints) {
-        try {
-            const response = await fetch(endpoint, { cache: 'no-store' });
-            if (!response.ok) throw new Error(`Exchange-rate service returned ${response.status}`);
-            const data = await response.json();
-            const rates = data?.rates;
-            if (
-                data?.result === 'error' ||
-                !rates ||
-                typeof rates !== 'object' ||
-                !Number.isFinite(rates.USD) ||
-                rates.USD <= 0
-            ) {
-                throw new Error('Exchange-rate response did not contain a valid INR-to-USD rate');
-            }
-            return rates as ExchangeRates;
-        } catch (error) {
-            lastError = error;
-            console.warn('Exchange-rate provider failed; trying the next provider:', endpoint, error);
-        }
+    const data = await response.json().catch(() => null) as
+        | { rates?: unknown; error?: string }
+        | null;
+
+    if (!response.ok) {
+        throw new Error(data?.error || 'Exchange rates are temporarily unavailable');
     }
 
-    console.error('All exchange-rate providers failed:', lastError);
-    throw new Error('Exchange rates are temporarily unavailable');
+    const rates = data?.rates;
+    if (
+        !rates ||
+        typeof rates !== 'object' ||
+        Array.isArray(rates) ||
+        !Number.isFinite((rates as Record<string, unknown>).USD) ||
+        Number((rates as Record<string, unknown>).USD) <= 0
+    ) {
+        throw new Error('The exchange-rate endpoint returned invalid data');
+    }
+
+    return rates as ExchangeRates;
 }
 
 export function convertCurrency(
