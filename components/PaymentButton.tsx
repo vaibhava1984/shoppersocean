@@ -20,8 +20,30 @@ interface PaymentButtonProps { amount: number; notes?: object; userId?: string; 
 export interface ExchangeRates { [key: string]: number; }
 let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
 function getExchangeRatesOnce(): Promise<ExchangeRates> {
-    const cachedRates = exchangeRatesCache.get(); if (cachedRates) return Promise.resolve(cachedRates);
-    if (!exchangeRatesPromise) exchangeRatesPromise = fetchExchangeRates().then(rates => { exchangeRatesCache.set(rates); return rates; }).catch(error => { exchangeRatesPromise = null; throw error; });
+    // Do not trust a stale/empty cache entry: it can otherwise keep guest prices unavailable.
+    try {
+        const cachedRates = exchangeRatesCache.get();
+        if (cachedRates && Number.isFinite(cachedRates.USD) && cachedRates.USD > 0) {
+            return Promise.resolve(cachedRates);
+        }
+    } catch (error) {
+        console.warn('Ignoring invalid cached exchange rates:', error);
+    }
+
+    if (!exchangeRatesPromise) {
+        exchangeRatesPromise = fetchExchangeRates()
+            .then(rates => {
+                if (!Number.isFinite(rates.USD) || rates.USD <= 0) {
+                    throw new Error('A valid INR-to-USD exchange rate was not returned');
+                }
+                exchangeRatesCache.set(rates);
+                return rates;
+            })
+            .catch(error => {
+                exchangeRatesPromise = null;
+                throw error;
+            });
+    }
     return exchangeRatesPromise;
 }
 export default function PaymentButton({ amount, notes, userId, productId, productTitle }: PaymentButtonProps) {
