@@ -12,7 +12,7 @@ export async function fetchExchangeRates(): Promise<ExchangeRates> {
     });
 
     const data = await response.json().catch(() => null) as
-        | { rates?: unknown; error?: string }
+        | { rates?: unknown; error?: string; stale?: boolean }
         | null;
 
     if (!response.ok) {
@@ -30,6 +30,10 @@ export async function fetchExchangeRates(): Promise<ExchangeRates> {
         throw new Error('The exchange-rate endpoint returned invalid data');
     }
 
+    if (data?.stale) {
+        // Signal to the caller not to refresh the browser cache's saved-at timestamp.
+        Object.defineProperty(rates, '__staleExchangeRate', { value: true, enumerable: false });
+    }
     return rates as ExchangeRates;
 }
 
