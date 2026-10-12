@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Loader2Icon, Share2, Mail, MessageCircle, Copy, MoreHorizontal } from 'lucide-react';
-import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
+import { fetchExchangeRates, convertCurrency, isIndiaCountry } from '@/utils/currency';
 import { setPurchaseStatus } from '@/utils/purchaseStatusCache';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
@@ -20,56 +20,83 @@ interface PaymentButtonProps { amount: number; notes?: object; userId?: string; 
 export interface ExchangeRates { [key: string]: number; }
 let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
 function getExchangeRatesOnce(): Promise<ExchangeRates> {
-    const cachedRates = exchangeRatesCache.get(); if (cachedRates) return Promise.resolve(cachedRates);
-    if (!exchangeRatesPromise) exchangeRatesPromise = fetchExchangeRates().then(rates => { exchangeRatesCache.set(rates); return rates; }).catch(error => { exchangeRatesPromise = null; throw error; });
+    // Do not trust a stale/empty cache entry: it can otherwise keep guest prices unavailable.
+    try {
+        const cachedRates = exchangeRatesCache.get();
+        if (cachedRates && Number.isFinite(cachedRates.USD) && cachedRates.USD > 0) {
+            return Promise.resolve(cachedRates);
+        }
+    } catch (error) {
+        console.warn('Ignoring invalid cached exchange rates:', error);
+    }
+
+    if (!exchangeRatesPromise) {
+        exchangeRatesPromise = fetchExchangeRates()
+            .then(rates => {
+                if (!Number.isFinite(rates.USD) || rates.USD <= 0) {
+                    throw new Error('A valid INR-to-USD exchange rate was not returned');
+                }
+                // Browser storage is only an optimization; never let a cache write failure
+                // prevent a valid converted price from being displayed.
+                try {
+                    exchangeRatesCache.set(rates);
+                } catch (cacheError) {
+                    console.warn('Could not cache exchange rates; using fetched rates:', cacheError);
+                }
+                return rates;
+            })
+            .catch(error => {
+                exchangeRatesPromise = null;
+                throw error;
+            });
+    }
     return exchangeRatesPromise;
 }
 export default function PaymentButton({ amount, notes, userId, productId, productTitle }: PaymentButtonProps) {
     const { toast } = useToast(); const [isLoading, setIsLoading] = useState(false); const [localAmount, setLocalAmount] = useState(amount);
-    const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [hasPurchased, setHasPurchased] = useState(false);
+    const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [priceUnavailable, setPriceUnavailable] = useState(false); const [hasPurchased, setHasPurchased] = useState(false);
     const [isCurrencyFetching, setIsCurrencyFetching] = useState(true); const [isPurchaseChecking, setIsPurchaseChecking] = useState(true); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false); const [shareCopied, setShareCopied] = useState(false); const [shareMenuOpen, setShareMenuOpen] = useState(false); const [showMoreShareOptions, setShowMoreShareOptions] = useState(false);
     useEffect(() => {
         let active = true;
         setIsCurrencyFetching(true);
+        setPriceUnavailable(false);
 
         async function setupLocalCurrency() {
             try {
-                // Logged-out visitors always see USD. Signed-in users use their D1 profile country.
+                // Guests and non-Indian accounts see USD. Indian accounts see INR.
                 let detectedCurrency = 'USD';
-
                 if (userId) {
                     const response = await fetch('/api/auth/me', {
                         credentials: 'same-origin',
                         cache: 'no-store',
                     });
-                    if (response.ok) {
-                        const data = await response.json();
-                        const country = data?.user?.country;
-                        if (country) {
-                            const mapped = getCurrencyCode(String(country).toUpperCase());
-                            if (mapped && mapped !== 'Unknown') detectedCurrency = mapped;
-                        }
-                    }
+                    if (!response.ok) throw new Error('Unable to confirm account country');
+                    const data = await response.json();
+                    detectedCurrency = isIndiaCountry(data?.user?.country) ? 'INR' : 'USD';
                 }
 
-                const rates = await getExchangeRatesOnce();
                 if (!active) return;
-
                 if (detectedCurrency === 'INR') {
                     setLocalCurrency('INR');
                     setLocalAmount(amount);
-                } else if (rates[detectedCurrency]) {
-                    setLocalCurrency(detectedCurrency);
-                    setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates));
-                } else {
-                    setLocalCurrency('USD');
-                    setLocalAmount(convertCurrency(amount, 'INR', 'USD', rates));
+                    setPriceUnavailable(false);
+                    return;
                 }
+
+                const rates = await getExchangeRatesOnce();
+                const convertedAmount = convertCurrency(amount, 'INR', 'USD', rates);
+                if (!Number.isFinite(convertedAmount) || convertedAmount <= 0) {
+                    throw new Error('Unable to calculate USD price');
+                }
+                if (!active) return;
+                setLocalCurrency('USD');
+                setLocalAmount(convertedAmount);
+                setPriceUnavailable(false);
             } catch (error) {
                 if (!active) return;
-                console.error('Error setting up local currency:', error);
-                setLocalCurrency('INR');
-                setLocalAmount(amount);
+                console.error('Error setting up book price:', error);
+                setLocalCurrency(null);
+                setPriceUnavailable(true);
             } finally {
                 if (active) setIsCurrencyFetching(false);
             }
@@ -196,7 +223,7 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
     const isInitialFetching = isCurrencyFetching || isPurchaseChecking;
     if (hasPurchased) return <div className="w-full mt-6"><BookFlipbook bookId={productId} title={productTitle || 'Book'} onShareBook={handleShareBook} />{shareMenuPanel}</div>;
     return <><div className="flex w-full items-stretch gap-2">
-        <button onClick={userId ? handlePayment : () => setIsLoginNeededDialogOpen(true)} disabled={isLoading} className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center rounded-lg bg-white px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-black shadow-md ring-1 ring-black/10 transition-all hover:bg-slate-50 active:scale-95 disabled:opacity-60 sm:text-sm">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex items-center justify-center'><Loader2Icon width={16} className='mr-1 animate-spin shrink-0' /><span>Fetching</span></span> : `Buy eBook ${formattedAmount ?? '-'}`}</button>
+        <button onClick={userId ? handlePayment : () => setIsLoginNeededDialogOpen(true)} disabled={isLoading || isCurrencyFetching || (Boolean(userId) && priceUnavailable)} className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center rounded-lg bg-white px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-black shadow-md ring-1 ring-black/10 transition-all hover:bg-slate-50 active:scale-95 disabled:opacity-60 sm:text-sm">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex items-center justify-center'><Loader2Icon width={16} className='mr-1 animate-spin shrink-0' /><span>Fetching</span></span> : (priceUnavailable ? 'Price unavailable' : `Buy eBook ${formattedAmount ?? '-'}`)}</button>
         <button type="button" onClick={handleShareBook} aria-label="Share book link" className="inline-flex min-h-[44px] min-w-0 flex-1 items-center justify-center gap-1 rounded-lg bg-white px-2 py-2 text-center text-xs font-extrabold leading-tight text-black shadow-md ring-1 ring-black/10 transition-all hover:bg-slate-50 active:scale-95 sm:text-sm"><Share2 size={16} aria-hidden="true" className="shrink-0" /><span>{shareCopied ? 'Link copied!' : 'Share Book'}</span></button>
     </div>{shareMenuPanel}<AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}><AlertDialogContent className='bg-white'><AlertDialogTitle className='hidden'></AlertDialogTitle><Card className="w-full max-w-md border-0"><CardHeader className="relative"><CardTitle className="text-rxl font-bold text-center">Login Required</CardTitle><Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsLoginNeededDialogOpen(false)} aria-label="Close popup"><X className="h-4 w-4" /></Button></CardHeader><CardContent><p className="text-center text-muted-foreground">You need to be logged in to make a purchase. Please sign up or sign in to continue.</p></CardContent><CardFooter className="flex justify-center space-x-4"><Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link><Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link></CardFooter></Card></AlertDialogContent></AlertDialog></>;
 }

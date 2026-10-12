@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireUser } from '@/utils/auth/requireUser';
 import { getD1 } from '@/utils/cloudflare/d1';
-import { convertCurrency, fetchExchangeRates } from '@/utils/currency';
+import { convertCurrency, fetchExchangeRates, isIndiaCountry } from '@/utils/currency';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -30,10 +30,11 @@ export async function POST(req: Request) {
 
         const body = await req.json();
         const productId = String(body?.productId || '');
-        const requestedCurrency = String(body?.currency || 'INR').toUpperCase();
+        // Currency is determined by the authenticated account, never by browser input.
+        const requestedCurrency = isIndiaCountry(identity.profile.country) ? 'INR' : 'USD';
 
-        if (!productId || !/^[A-Z]{3}$/.test(requestedCurrency)) {
-            return NextResponse.json({ error: 'Book and currency are required' }, { status: 400 });
+        if (!productId) {
+            return NextResponse.json({ error: 'Book is required' }, { status: 400 });
         }
 
         const book = await db.prepare(
@@ -49,10 +50,9 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'This book does not have a valid price' }, { status: 400 });
         }
 
-        const rates = await fetchExchangeRates();
         const amount = requestedCurrency === 'INR'
             ? priceInINR
-            : convertCurrency(priceInINR, 'INR', requestedCurrency, rates);
+            : convertCurrency(priceInINR, 'INR', 'USD', await fetchExchangeRates());
 
         if (!Number.isFinite(amount) || amount <= 0) {
             return NextResponse.json({ error: 'Unable to calculate the payment amount' }, { status: 400 });
