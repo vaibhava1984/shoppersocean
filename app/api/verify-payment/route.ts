@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
-import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
+import { isIndiaCountry } from "@/utils/currency";
 import { sendSaleNotification } from "@/utils/email/sendSaleNotification";
 
 export const dynamic = "force-dynamic";
@@ -88,12 +88,17 @@ export async function POST(req: Request) {
 
     // The live D1 schema uses the users table for the authenticated profile.
     const profile = await db
-      .prepare("SELECT id, email, phone, address FROM users WHERE id = ? LIMIT 1")
+      .prepare("SELECT id, email, phone, address, country FROM users WHERE id = ? LIMIT 1")
       .bind(userId)
       .first<Record<string, any>>();
 
     if (!profile) {
       return NextResponse.json({ error: "Authenticated user was not found" }, { status: 401 });
+    }
+
+    const expectedCurrency = isIndiaCountry(profile.country) ? "INR" : "USD";
+    if (originalCurrency !== expectedCurrency) {
+      return NextResponse.json({ error: "Payment currency does not match the account country" }, { status: 400 });
     }
 
     const signatureValid = await verifySignature(
@@ -115,6 +120,15 @@ export async function POST(req: Request) {
 
     if (!orderResponse.ok || !razorpayOrder?.id) {
       return NextResponse.json({ error: "Unable to verify Razorpay order" }, { status: 502 });
+    }
+
+    const baseAmount = Number(razorpayOrder.notes?.base_amount);
+    if (
+      String(razorpayOrder.notes?.base_currency || "").toUpperCase() !== "INR" ||
+      !Number.isFinite(baseAmount) ||
+      baseAmount <= 0
+    ) {
+      return NextResponse.json({ error: "Server-created order has invalid base-price details" }, { status: 400 });
     }
 
     if (
@@ -173,8 +187,9 @@ export async function POST(req: Request) {
     const shouldNotifySale = paymentStatus === "completed" &&
       (!existing || !existing.payment_row_id || String(existing.razorpay_payment_id) !== razorpayPaymentId);
 
-    const rates = await fetchExchangeRates();
-    const amountInINR = convertCurrency(originalAmount, originalCurrency, "INR", rates);
+    // Use the INR price recorded in the authenticated server-created Razorpay order.
+    // Re-converting at verification time could drift if the exchange rate changed.
+    const amountInINR = baseAmount;
     const now = new Date().toISOString();
 
     if (!existing) {
