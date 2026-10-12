@@ -20,7 +20,7 @@ interface PaymentButtonProps { amount: number; notes?: object; userId?: string; 
 export interface ExchangeRates { [key: string]: number; }
 let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
 function getExchangeRatesOnce(): Promise<ExchangeRates> {
-    // Do not trust a stale/empty cache entry: it can otherwise keep guest prices unavailable.
+    // Use the browser cache only while it is within its normal one-hour lifetime.
     try {
         const cachedRates = exchangeRatesCache.get();
         if (cachedRates && Number.isFinite(cachedRates.USD) && cachedRates.USD > 0) {
@@ -36,17 +36,29 @@ function getExchangeRatesOnce(): Promise<ExchangeRates> {
                 if (!Number.isFinite(rates.USD) || rates.USD <= 0) {
                     throw new Error('A valid INR-to-USD exchange rate was not returned');
                 }
-                // Browser storage is only an optimization; never let a cache write failure
-                // prevent a valid converted price from being displayed.
-                try {
-                    exchangeRatesCache.set(rates);
-                } catch (cacheError) {
-                    console.warn('Could not cache exchange rates; using fetched rates:', cacheError);
+                // Do not reset the age of a rate that the server itself served as stale.
+                if (!(rates as any).__staleExchangeRate) {
+                    try {
+                        exchangeRatesCache.set(rates);
+                    } catch (cacheError) {
+                        console.warn('Could not cache exchange rates; using fetched rates:', cacheError);
+                    }
                 }
                 return rates;
             })
             .catch(error => {
                 exchangeRatesPromise = null;
+                // If both server providers fail, a previously saved browser rate is
+                // acceptable only while it is no more than 24 hours old.
+                try {
+                    const staleRates = exchangeRatesCache.getStale(24 * 60 * 60 * 1000);
+                    if (staleRates && Number.isFinite(staleRates.USD) && staleRates.USD > 0) {
+                        console.warn('Using a validated browser-cached exchange rate after provider failure.');
+                        return staleRates;
+                    }
+                } catch (cacheError) {
+                    console.warn('Ignoring invalid stale exchange-rate cache:', cacheError);
+                }
                 throw error;
             });
     }
