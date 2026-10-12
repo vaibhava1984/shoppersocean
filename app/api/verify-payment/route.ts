@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
-import { Resend } from "resend";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
+import { sendSaleNotification } from "@/utils/email/sendSaleNotification";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -170,6 +170,9 @@ export async function POST(req: Request) {
       "WHERE o.razorpay_order_id = ? OR p.razorpay_payment_id = ? LIMIT 1"
     ).bind(razorpayOrderId, razorpayPaymentId).first<Record<string, any>>();
 
+    const shouldNotifySale = paymentStatus === "completed" &&
+      (!existing || !existing.payment_row_id || String(existing.razorpay_payment_id) !== razorpayPaymentId);
+
     const rates = await fetchExchangeRates();
     const amountInINR = convertCurrency(originalAmount, originalCurrency, "INR", rates);
     const now = new Date().toISOString();
@@ -270,17 +273,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Payment record could not be finalized" }, { status: 500 });
     }
 
-    const resendApiKey = process.env.RESEND_API_KEY;
-    if (resendApiKey && paymentStatus === "completed" && !existing) {
+    if (shouldNotifySale) {
       try {
-        const resend = new Resend(resendApiKey);
-        await resend.emails.send({
-          from: "no-reply@shoppersocean.com",
-          to: "kochimonu@gmail.com",
-          subject: "New Sale | Shoppers Ocean",
-          html: `<p><strong>New Sale details:</strong></p><p><strong>Email:</strong> ${profile.email ?? ""}</p><p><strong>Book ID:</strong>${bookId}</p><p><strong>Book Name:</strong>${book.title ?? ""}</p>`,
+        await sendSaleNotification({
+          paymentId: razorpayPaymentId,
+          customerEmail: String(profile.email || ""),
+          bookId,
+          bookTitle: String(book.title || ""),
         });
       } catch (emailError) {
+        // The webhook also sends with the same Resend idempotency key and can retry.
         console.error("Sale notification email failed:", emailError);
       }
     }

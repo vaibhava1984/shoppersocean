@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
+import { sendSaleNotification } from "@/utils/email/sendSaleNotification";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -157,6 +158,25 @@ export async function POST(req: Request) {
     await db.prepare(
       "UPDATE orders SET status = 'completed', updated_at = ? WHERE id = ?"
     ).bind(now, order.id).run();
+
+    // The browser verification route also sends this notification. Resend's
+    // payment-specific idempotency key ensures these two paths cannot duplicate it.
+    const saleDetails = await db.prepare(
+      "SELECT u.email AS customer_email, b.title AS book_title " +
+      "FROM users u JOIN books b ON b.id = ? " +
+      "WHERE u.id = ? LIMIT 1"
+    ).bind(bookId, userId).first<Record<string, any>>();
+
+    if (!saleDetails) {
+      throw new Error("Could not load customer and book details for sale notification");
+    }
+
+    await sendSaleNotification({
+      paymentId,
+      customerEmail: String(saleDetails.customer_email || ""),
+      bookId,
+      bookTitle: String(saleDetails.book_title || ""),
+    });
 
     return NextResponse.json({ received: true, status: "completed" }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
