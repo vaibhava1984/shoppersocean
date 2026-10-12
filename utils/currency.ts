@@ -12,7 +12,7 @@ export async function fetchExchangeRates(): Promise<ExchangeRates> {
     });
 
     const data = await response.json().catch(() => null) as
-        | { rates?: unknown; error?: string; stale?: boolean }
+        | { rates?: unknown; error?: string; stale?: boolean; fetchedAt?: number; source?: string }
         | null;
 
     if (!response.ok) {
@@ -33,6 +33,9 @@ export async function fetchExchangeRates(): Promise<ExchangeRates> {
     if (data?.stale) {
         // Signal to the caller not to refresh the browser cache's saved-at timestamp.
         Object.defineProperty(rates, '__staleExchangeRate', { value: true, enumerable: false });
+    }
+    if (typeof data?.fetchedAt === 'number' && Number.isFinite(data.fetchedAt)) {
+        Object.defineProperty(rates, '__exchangeRateFetchedAt', { value: data.fetchedAt, enumerable: false });
     }
     return rates as ExchangeRates;
 }
