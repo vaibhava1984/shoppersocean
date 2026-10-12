@@ -119,9 +119,11 @@ export async function POST(req: Request) {
 
     if (
       Number(razorpayOrder.amount) !== Math.round(originalAmount * 100) ||
-      String(razorpayOrder.currency).toUpperCase() !== originalCurrency
+      String(razorpayOrder.currency).toUpperCase() !== originalCurrency ||
+      String(razorpayOrder.notes?.original_currency || "").toUpperCase() !== originalCurrency ||
+      Math.round(Number(razorpayOrder.notes?.original_amount) * 100) !== Math.round(originalAmount * 100)
     ) {
-      return NextResponse.json({ error: "Payment amount or currency does not match the Razorpay order" }, { status: 400 });
+      return NextResponse.json({ error: "Payment amount or currency does not match the server-created Razorpay order" }, { status: 400 });
     }
 
     if (
@@ -163,7 +165,7 @@ export async function POST(req: Request) {
     // Match the production D1 schema: orders.book_id and payments.book_id.
     const existing = await db.prepare(
       "SELECT o.id, o.user_id, o.book_id, o.amount, o.currency, o.status, o.created_at, " +
-      "p.razorpay_payment_id, p.amount AS payment_amount, p.currency AS payment_currency, p.status AS payment_status " +
+      "p.id AS payment_row_id, p.razorpay_payment_id, p.amount AS payment_amount, p.currency AS payment_currency, p.status AS payment_status " +
       "FROM orders o LEFT JOIN payments p ON p.order_id = o.id " +
       "WHERE o.razorpay_order_id = ? OR p.razorpay_payment_id = ? LIMIT 1"
     ).bind(razorpayOrderId, razorpayPaymentId).first<Record<string, any>>();
@@ -210,17 +212,45 @@ export async function POST(req: Request) {
         now
       ).run();
     } else {
-      if (String(existing.user_id) !== userId || String(existing.book_id) !== bookId) {
+      if (String(existing.user_id) !== userId || String(existing.book_id) !== bookId ||
+          String(existing.razorpay_order_id || razorpayOrderId) !== razorpayOrderId) {
         return NextResponse.json({ error: "Payment order ownership mismatch" }, { status: 409 });
+      }
+
+      // The order was persisted as pending before checkout. Reconcile that row and
+      // create the payment row if this is the first callback for the captured payment.
+      if (Math.abs(Number(existing.amount) - Number(amountInINR)) > 0.02 ||
+          String(existing.currency || "INR").toUpperCase() !== "INR") {
+        return NextResponse.json({ error: "Payment does not match the saved purchase amount" }, { status: 409 });
       }
 
       await db.prepare(
         "UPDATE orders SET status = ?, updated_at = ? WHERE id = ?"
       ).bind(paymentStatus, now, existing.id).run();
 
-      await db.prepare(
-        "UPDATE payments SET status = ?, updated_at = ? WHERE order_id = ?"
-      ).bind(paymentStatus, now, existing.id).run();
+      if (existing.payment_row_id) {
+        await db.prepare(
+          "UPDATE payments SET status = ?, updated_at = ? WHERE id = ?"
+        ).bind(paymentStatus, now, existing.payment_row_id).run();
+      } else {
+        await db.prepare(
+          "INSERT INTO payments " +
+          "(id, order_id, user_id, book_id, amount, currency, status, razorpay_payment_id, razorpay_order_id, created_at, updated_at) " +
+          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        ).bind(
+          crypto.randomUUID(),
+          existing.id,
+          userId,
+          bookId,
+          Number(amountInINR),
+          "INR",
+          paymentStatus,
+          razorpayPaymentId,
+          razorpayOrderId,
+          now,
+          now
+        ).run();
+      }
     }
 
     const finalOrder = await db.prepare(
