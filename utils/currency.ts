@@ -9,8 +9,9 @@ export async function fetchExchangeRates(): Promise<ExchangeRates> {
         const response = await fetch(
             `https://api.exchangerate-api.com/v4/latest/INR`
         );
+        if (!response.ok) throw new Error(`Exchange-rate service returned ${response.status}`);
         const data = await response.json();
-        return data.rates;
+        return data?.rates && typeof data.rates === 'object' ? data.rates : {};
     } catch (error) {
         console.error('Error fetching exchange rates:', error);
         // Return an empty object if the fetch fails
@@ -30,8 +31,8 @@ export function convertCurrency(
 
     // The exchange-rate endpoint uses INR as its base, so INR itself has rate 1
     // and is not present in the returned rates object.
-    const fromRate = fromCurrency === 'INR' ? 1 : rates[fromCurrency];
-    const toRate = toCurrency === 'INR' ? 1 : rates[toCurrency];
+    const fromRate = fromCurrency === 'INR' ? 1 : rates?.[fromCurrency];
+    const toRate = toCurrency === 'INR' ? 1 : rates?.[toCurrency];
 
     if (
         !Number.isFinite(fromRate) || fromRate <= 0 ||
