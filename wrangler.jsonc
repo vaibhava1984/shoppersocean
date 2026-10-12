@@ -32,16 +32,5 @@
       "binding": "DB",
       "database_name": "shoppers-ocean-db"
     }
-  ],
-  "preview": {
-    "vars": {
-      "ENVIRONMENT": "preview"
-    },
-    "d1_databases": [
-      {
-        "binding": "DB",
-        "database_name": "shoppers-ocean-preview-db"
-      }
-    ]
-  }
+  ]
 }
