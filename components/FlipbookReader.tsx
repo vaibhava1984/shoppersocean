@@ -446,7 +446,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
         <div
           className={fullscreen ? "relative flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4" : "relative mx-auto flex aspect-[16/10] w-full max-w-6xl max-h-[76vh] min-h-[360px] items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4"}
-          style={{ touchAction: 'pan-y' }}
+          style={{ touchAction: 'pan-y', justifyContent: 'safe center' }}
           onPointerDown={event => {
             if (event.pointerType !== 'mouse' || event.button === 0) {
               event.currentTarget.setPointerCapture?.(event.pointerId);
