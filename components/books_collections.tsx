@@ -44,7 +44,7 @@ export default function BooksCollections({ loggedinUserId, initialBooks = [] }: 
     }, [initialBooks.length])
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {isLoading ? (
                 [...Array(8)].map((_, index) => <BookCardSkeleton key={index} />)
             ) : (
