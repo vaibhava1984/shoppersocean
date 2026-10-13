@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, Loader2, Minus, Plus, Share2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -228,22 +227,6 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     try { localStorage.setItem(pageStorageKey, String(page)); } catch {}
   }, [bookId, page, pageStorageKey]);
 
-  // Keep the website behind the portal from scrolling while the flipbook is open.
-  // This does not change the PDF canvas sizing, page scale, or page positioning.
-  useEffect(() => {
-    if (!opened) return;
-    const body = document.body;
-    const html = document.documentElement;
-    const previousBodyOverflow = body.style.overflow;
-    const previousHtmlOverflow = html.style.overflow;
-    body.style.overflow = 'hidden';
-    html.style.overflow = 'hidden';
-    return () => {
-      body.style.overflow = previousBodyOverflow;
-      html.style.overflow = previousHtmlOverflow;
-    };
-  }, [opened]);
-
   useEffect(() => {
     if (!opened) return;
 
@@ -407,7 +390,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return createPortal(<div ref={viewerRef} data-flipbook-reader="true" className="fixed inset-0 z-[100] flex h-[100dvh] w-screen flex-col overscroll-contain overflow-x-hidden overflow-y-auto bg-slate-950 text-white" style={{ width: '100vw', maxWidth: '100vw', marginLeft: 0 }}>
+  return <div ref={viewerRef} data-flipbook-reader="true" className="relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-slate-950 text-white" style={{ width: '100%', maxWidth: '100%', marginLeft: 0 }}>
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
@@ -434,5 +417,5 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       </div>
     </div>
     <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
-  </div>, document.body);
+  </div>;
 }
