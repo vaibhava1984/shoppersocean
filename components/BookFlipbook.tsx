@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, Loader2, Minus, Plus, Share2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -229,6 +230,13 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
 
   useEffect(() => {
     if (!opened) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previousOverflow; };
+  }, [opened]);
+
+  useEffect(() => {
+    if (!opened) return;
 
     const lastActivityRef = { current: Date.now() };
     let idleTimer: number | null = null;
@@ -365,7 +373,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   };
 
   if (!opened) return <div className="flex flex-col items-center justify-center gap-3 rounded-xl border bg-slate-50 p-4 sm:p-6"><div className="flex w-full max-w-xl flex-col items-stretch gap-2"><Button type="button" variant="outline" className="min-h-[42px] w-full whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={openReader} disabled={loading}>Read as Flipbook</Button><Button type="button" variant="outline" className="min-h-[42px] w-full gap-1 whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={handleShareBook}><Share2 className="h-4 w-4 shrink-0" aria-hidden="true" />Share Book</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
-  if (loading) return <div className="flex min-h-[320px] items-center justify-center rounded-xl bg-slate-100"><Loader2 className="mr-2 animate-spin" />Opening your book…</div>;
+  if (loading) return createPortal(<div className="fixed inset-0 z-[100] flex h-[100dvh] w-screen items-center justify-center bg-slate-950 p-4 text-white"><div className="flex items-center justify-center rounded-xl bg-slate-900 px-6 py-5"><Loader2 className="mr-2 animate-spin" />Opening your book…</div></div>, document.body);
   if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
   const dragProgress = pageFrameRef.current?.clientWidth ? Math.max(-1, Math.min(1, dragOffset / pageFrameRef.current.clientWidth)) : 0;
@@ -380,7 +388,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return <div className="fixed inset-0 z-[100] flex h-[100dvh] w-screen items-center justify-center bg-slate-950 p-2 sm:p-4"><div ref={viewerRef} data-flipbook-reader="true" className="flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
+  return createPortal(<div className="fixed inset-0 z-[100] flex h-[100dvh] w-screen items-center justify-center bg-slate-950 p-2 sm:p-4"><div ref={viewerRef} data-flipbook-reader="true" className="flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
@@ -407,5 +415,5 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       </div>
     </div>
     <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
-  </div></div>;
+  </div></div>, document.body);
 }
