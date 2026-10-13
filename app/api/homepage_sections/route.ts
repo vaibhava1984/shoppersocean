@@ -52,10 +52,15 @@ export async function PATCH(request:Request){
    ? await db.prepare("SELECT id,value FROM layout_settings WHERE page_section=? AND id<? ORDER BY id DESC LIMIT 1").bind(current.page_section,current.id).first<any>()
    : await db.prepare("SELECT id,value FROM layout_settings WHERE page_section=? AND id>? ORDER BY id ASC LIMIT 1").bind(current.page_section,current.id).first<any>();
   if(!neighbor)return NextResponse.json({message:"Already at the requested priority"});
-  const temporary=`__priority_swap__${crypto.randomUUID()}`;
-  await db.prepare("UPDATE layout_settings SET value=? WHERE id=?").bind(temporary,current.id).run();
-  await db.prepare("UPDATE layout_settings SET value=? WHERE id=?").bind(current.value,neighbor.id).run();
-  await db.prepare("UPDATE layout_settings SET value=? WHERE id=?").bind(neighbor.value,current.id).run();
+  // The homepage reads entries in id order, so swap the row IDs—not their book values.
+  // A temporary unused ID prevents a primary-key collision; D1 batch applies the swap atomically.
+  const maximum=await db.prepare("SELECT COALESCE(MAX(id),0) AS maxId FROM layout_settings").first<any>();
+  const temporaryId=Number(maximum?.maxId??0)+1;
+  await db.batch([
+   db.prepare("UPDATE layout_settings SET id=? WHERE id=?").bind(temporaryId,current.id),
+   db.prepare("UPDATE layout_settings SET id=? WHERE id=?").bind(current.id,neighbor.id),
+   db.prepare("UPDATE layout_settings SET id=? WHERE id=?").bind(neighbor.id,temporaryId)
+  ]);
   return NextResponse.json({message:"Display priority updated"});
  }catch(e){console.error(e);return NextResponse.json({error:"Internal server error"},{status:500});}
 }
