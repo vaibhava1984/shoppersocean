@@ -397,9 +397,9 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div className="relative flex min-h-0 flex-1 items-start justify-center overflow-auto overscroll-contain p-2 sm:p-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div className="relative flex min-h-0 flex-1 items-start justify-center overflow-y-auto overflow-x-auto overscroll-contain p-2 sm:p-4" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div ref={pageFrameRef} className="relative flex min-h-full w-full max-w-[900px] items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
-        <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center" style={{ perspective: '1800px' }}>
+        <div className="relative flex h-auto min-h-full w-full max-w-full items-start justify-center" style={{ perspective: '1800px' }}>
           <div className="relative flex min-h-full w-max min-w-full items-start justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
             <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
