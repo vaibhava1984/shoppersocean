@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, Loader2, Minus, Plus, Share2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -151,9 +152,9 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       try {
         const pdfPage = await pdf.getPage(targetPage);
         const baseViewport = pdfPage.getViewport({ scale: 1 });
-        const availableWidth = Math.max(180, frame.clientWidth - 4);
-        const availableHeight = Math.max(260, frame.clientHeight - 4);
-        const fitScale = availableWidth / baseViewport.width;
+        const availableWidth = Math.max(280, Math.min(window.innerWidth - 24, 980));
+        const availableHeight = Math.max(260, Math.min(window.innerHeight - 190, 1100));
+        const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
         const scale = Math.max(0.1, fitScale * zoom);
         const viewport = pdfPage.getViewport({ scale });
         const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -183,9 +184,9 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
         const pdfPage = await currentPdf.getPage(targetPage);
         if (requestId !== renderRequestRef.current) return;
         const baseViewport = pdfPage.getViewport({ scale: 1 });
-        const availableWidth = Math.max(180, frame.clientWidth - 4);
-        const availableHeight = Math.max(260, frame.clientHeight - 4);
-        const fitScale = availableWidth / baseViewport.width;
+        const availableWidth = Math.max(280, Math.min(window.innerWidth - 24, 980));
+        const availableHeight = Math.max(260, Math.min(window.innerHeight - 190, 1100));
+        const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
         const scale = Math.max(0.1, fitScale * zoom);
         const viewport = pdfPage.getViewport({ scale });
         const ratio = Math.min(window.devicePixelRatio || 1, 2);
@@ -390,7 +391,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return <div ref={viewerRef} data-flipbook-reader="true" className="relative w-full max-w-none overflow-visible text-white" style={{ width: '100vw', maxWidth: '100vw', flex: '0 0 100vw', marginLeft: 'calc(100% - 100vw)' }}>
+  return createPortal(<div ref={viewerRef} data-flipbook-reader="true" className="fixed inset-0 z-[100] flex h-[100dvh] w-screen flex-col overflow-x-hidden overflow-y-auto bg-slate-950 text-white" style={{ width: '100vw', maxWidth: '100vw', marginLeft: 0 }}>
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
@@ -417,5 +418,5 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       </div>
     </div>
     <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
-  </div>;
+  </div>, document.body);
 }
