@@ -326,11 +326,20 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     if (Math.abs(offset) >= threshold) changePage(offset < 0 ? page + 1 : page - 1);
     else setDragOffset(0);
   };
-  const handleTouchStart = (event: React.TouchEvent) => { touchStartXRef.current = event.changedTouches[0]?.clientX ?? null; };
+  const touchStartYRef = useRef<number | null>(null);
+  const handleTouchStart = (event: React.TouchEvent) => {
+    touchStartXRef.current = event.changedTouches[0]?.clientX ?? null;
+    touchStartYRef.current = event.changedTouches[0]?.clientY ?? null;
+  };
   const handleTouchEnd = (event: React.TouchEvent) => {
-    const start = touchStartXRef.current; const end = event.changedTouches[0]?.clientX ?? null; touchStartXRef.current = null;
-    if (start === null || end === null || Math.abs(end - start) < 45) return;
-    if (dragStartXRef.current === null) changePage(end < start ? page + 1 : page - 1);
+    const startX = touchStartXRef.current; const startY = touchStartYRef.current;
+    const endX = event.changedTouches[0]?.clientX ?? null; const endY = event.changedTouches[0]?.clientY ?? null;
+    touchStartXRef.current = null; touchStartYRef.current = null;
+    if (startX === null || startY === null || endX === null || endY === null) return;
+    const deltaX = endX - startX; const deltaY = endY - startY;
+    // Only turn pages for a clearly horizontal swipe. Vertical gestures must remain native scrolling.
+    if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.25) return;
+    if (dragStartXRef.current === null) changePage(deltaX < 0 ? page + 1 : page - 1);
   };
   const sliderPageFromPointer = (clientX: number) => {
     if (!sliderRef.current || pageCount <= 1) return;
@@ -397,10 +406,10 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div className="relative flex min-h-0 flex-1 items-start justify-center overflow-y-auto overflow-x-auto overscroll-contain p-2 sm:p-4" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-      <div ref={pageFrameRef} className="relative flex min-h-full w-full max-w-[900px] items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
-        <div className="relative flex h-auto min-h-full w-full max-w-full items-start justify-center" style={{ perspective: '1800px' }}>
-          <div className="relative flex min-h-full w-max min-w-full items-start justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
+    <div className="relative min-h-0 flex-1 overflow-y-scroll overflow-x-hidden overscroll-y-contain p-2 sm:p-4" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div ref={pageFrameRef} className="relative mx-auto flex w-full max-w-[900px] shrink-0 items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
+        <div className="relative flex h-auto w-full max-w-full items-start justify-center" style={{ perspective: '1800px' }}>
+          <div className="relative flex w-max min-w-full shrink-0 items-start justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
             <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
