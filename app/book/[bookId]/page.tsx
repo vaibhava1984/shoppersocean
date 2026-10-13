@@ -1,4 +1,6 @@
 import { getCurrentUser } from "@/utils/auth/session";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 import { getD1 } from "@/utils/cloudflare/d1";
@@ -47,6 +49,9 @@ export default async function BookDetailPage({ params }: { params: any }) {
         <div><AuthorApplicationBanner /></div>
         <section className="py-12 bg-white">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <Link href="/" className="mb-6 inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50" aria-label="Back to homepage">
+                    <ArrowLeft className="h-5 w-5" /> Back to homepage
+                </Link>
                 <div className="flex flex-col md:flex-row gap-8">
                     <div className="md:w-1/2">
                         <Card className="overflow-hidden"><CardContent className="p-0">

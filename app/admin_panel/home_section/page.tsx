@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { X } from 'lucide-react'
+import { X, ArrowUp, ArrowDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import AdminSidebar from '../adminSidebar'
@@ -32,9 +32,10 @@ function Picker({ open, title, query, results, searching, saving, message, onClo
     </div>
 }
 
-function BookSection({ title, sectionType, entries, maxBooks, onAdded, onRemoved }: {
+function BookSection({ title, sectionType, entries, maxBooks, onAdded, onRemoved, onMove }: {
     title: string; sectionType: SectionType; entries: Entry[]; maxBooks: number
     onAdded: (entry: Entry) => void; onRemoved: (id: number) => void
+    onMove: (entryId: number, direction: 'up' | 'down') => void
 }) {
     const [open, setOpen] = React.useState(false)
     const [query, setQuery] = React.useState('')
@@ -93,9 +94,9 @@ function BookSection({ title, sectionType, entries, maxBooks, onAdded, onRemoved
 
     return <section className="mb-8 rounded-lg border bg-white p-6 shadow-sm">
         <h2 className="text-xl font-semibold">{title}</h2>
-        <p className="mt-1 text-sm text-gray-500">Select up to {maxBooks} books ({entries.length}/{maxBooks})</p>
+        <p className="mt-1 text-sm text-gray-500">Select up to {maxBooks} books ({entries.length}/{maxBooks}). Use the arrows to set homepage priority.</p>
         <Button type="button" className="mt-4" disabled={entries.length >= maxBooks} onClick={() => { setMessage(''); setOpen(true) }}>Add book</Button>
-        <div className="mt-4 space-y-2">{entries.map((entry) => <div key={entry.entryId} className="flex items-center justify-between rounded-lg border p-4"><div><div className="font-medium">{entry.title ?? 'Book no longer available'}</div><div className="text-sm text-gray-500">{entry.author ?? ''}</div></div><Button type="button" variant="ghost" size="icon" onClick={() => void removeBook(entry.entryId)}><X className="h-4 w-4" /></Button></div>)}</div>
+        <div className="mt-4 space-y-2">{entries.map((entry, index) => <div key={entry.entryId} className="flex items-center justify-between gap-3 rounded-lg border p-3 sm:p-4"><div className="flex min-w-0 items-center gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-800">{index + 1}</span><div className="min-w-0"><div className="font-medium">{entry.title ?? 'Book no longer available'}</div><div className="text-sm text-gray-500">{entry.author ?? ''}</div></div></div><div className="flex shrink-0 items-center gap-1"><Button type="button" variant="outline" size="icon" aria-label={`Move ${entry.title ?? 'book'} up`} disabled={index === 0} onClick={() => onMove(entry.entryId, 'up')}><ArrowUp className="h-4 w-4" /></Button><Button type="button" variant="outline" size="icon" aria-label={`Move ${entry.title ?? 'book'} down`} disabled={index === entries.length - 1} onClick={() => onMove(entry.entryId, 'down')}><ArrowDown className="h-4 w-4" /></Button><Button type="button" variant="ghost" size="icon" aria-label={`Remove ${entry.title ?? 'book'}`} onClick={() => void removeBook(entry.entryId)}><X className="h-4 w-4" /></Button></div></div>)}</div>
         <Picker open={open} title={title} query={query} results={results} searching={searching} saving={saving} message={message} onClose={() => { setOpen(false); setQuery(''); setResults([]); setMessage('') }} onQuery={search} onSelect={(book) => void selectBook(book)} />
     </section>
 }
@@ -103,16 +104,33 @@ function BookSection({ title, sectionType, entries, maxBooks, onAdded, onRemoved
 export default function HomeSection() {
     const [entries, setEntries] = React.useState<Entry[]>([])
     const [loading, setLoading] = React.useState(true)
+    const [moving, setMoving] = React.useState(false)
     const { toast } = useToast()
 
+    const loadEntries = React.useCallback(async () => {
+        const response = await fetch('/api/homepage_sections', { cache: 'no-store' })
+        const payload = await response.json()
+        if (!response.ok) throw new Error(payload.error || `Load failed (${response.status})`)
+        setEntries(payload.sections || [])
+    }, [])
+
     React.useEffect(() => {
-        fetch('/api/homepage_sections', { cache: 'no-store' }).then(async (response) => {
+        loadEntries().catch((error) => toast({ title: 'Could not load Home Section', description: error instanceof Error ? error.message : 'Please try again.', variant: 'destructive' })).finally(() => setLoading(false))
+    }, [loadEntries, toast])
+
+    async function moveEntry(entryId: number, direction: 'up' | 'down') {
+        if (moving) return
+        setMoving(true)
+        try {
+            const response = await fetch('/api/homepage_sections', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ entryId, direction }), cache: 'no-store' })
             const payload = await response.json()
-            if (!response.ok) throw new Error(payload.error || `Load failed (${response.status})`)
-            setEntries(payload.sections || [])
-        }).catch((error) => toast({ title: 'Could not load Home Section', description: error instanceof Error ? error.message : 'Please try again.', variant: 'destructive' })).finally(() => setLoading(false))
-    }, [toast])
+            if (!response.ok) throw new Error(payload.error || 'Could not change priority')
+            await loadEntries()
+        } catch (error) {
+            toast({ title: 'Could not change priority', description: error instanceof Error ? error.message : 'Please try again.', variant: 'destructive' })
+        } finally { setMoving(false) }
+    }
 
     if (loading) return <div className="flex h-screen items-center justify-center">Loading...</div>
-    return <div className="flex h-screen bg-gray-100"><AdminSidebar /><main className="flex-1 overflow-y-auto p-8"><BookSection title="Trending Books" sectionType="HOMEPAGE_TRENDING" entries={entries.filter((e) => e.pageSection === 'HOMEPAGE_TRENDING')} maxBooks={3} onAdded={(entry) => setEntries((current) => [...current, entry])} onRemoved={(id) => setEntries((current) => current.filter((e) => e.entryId !== id))} /><BookSection title="Books Collection" sectionType="HOMEPAGE_COLLECTION" entries={entries.filter((e) => e.pageSection === 'HOMEPAGE_COLLECTION')} maxBooks={4} onAdded={(entry) => setEntries((current) => [...current, entry])} onRemoved={(id) => setEntries((current) => current.filter((e) => e.entryId !== id))} /></main></div>
+    return <div className="flex h-screen bg-gray-100"><AdminSidebar /><main className="flex-1 overflow-y-auto p-4 sm:p-8"><BookSection title="Trending Books" sectionType="HOMEPAGE_TRENDING" entries={entries.filter((e) => e.pageSection === 'HOMEPAGE_TRENDING')} maxBooks={8} onAdded={(entry) => setEntries((current) => [...current, entry])} onRemoved={(id) => setEntries((current) => current.filter((e) => e.entryId !== id))} onMove={moveEntry} /><BookSection title="Books in International Languages" sectionType="HOMEPAGE_COLLECTION" entries={entries.filter((e) => e.pageSection === 'HOMEPAGE_COLLECTION')} maxBooks={8} onAdded={(entry) => setEntries((current) => [...current, entry])} onRemoved={(id) => setEntries((current) => current.filter((e) => e.entryId !== id))} onMove={moveEntry} /></main></div>
 }
