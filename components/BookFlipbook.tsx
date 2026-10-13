@@ -380,7 +380,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return <div ref={viewerRef} data-flipbook-reader="true" className="overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
+  return <div className="fixed inset-0 z-[100] flex h-[100dvh] w-screen items-center justify-center bg-slate-950 p-2 sm:p-4"><div ref={viewerRef} data-flipbook-reader="true" className="flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
@@ -388,7 +388,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div className="relative flex h-[min(72vh,680px)] min-h-[360px] flex-1 items-center justify-center overflow-hidden p-2 sm:p-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden p-2 sm:p-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div ref={pageFrameRef} className="relative flex h-full w-full max-w-[900px] items-center justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-full max-h-full w-full max-w-full items-center justify-center" style={{ perspective: '1800px' }}>
           <div className="relative flex h-full max-h-full w-full items-center justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
@@ -407,5 +407,5 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       </div>
     </div>
     <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
-  </div>;
+  </div></div>;
 }
