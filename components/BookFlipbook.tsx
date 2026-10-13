@@ -151,9 +151,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       try {
         const pdfPage = await pdf.getPage(targetPage);
         const baseViewport = pdfPage.getViewport({ scale: 1 });
-        const containerWidth = viewerRef.current?.clientWidth || window.innerWidth;
-        const availableWidth = Math.max(1, Math.min(containerWidth - 32, 980));
-        const availableHeight = Math.max(260, Math.min(window.innerHeight - 190, 1100));
+        const availableWidth = Math.max(1, Math.min(window.innerWidth - 32, 980));
         const fitScale = availableWidth / baseViewport.width;
         const scale = Math.max(0.1, fitScale * zoom * 0.9);
         const viewport = pdfPage.getViewport({ scale });
@@ -184,9 +182,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
         const pdfPage = await currentPdf.getPage(targetPage);
         if (requestId !== renderRequestRef.current) return;
         const baseViewport = pdfPage.getViewport({ scale: 1 });
-        const containerWidth = viewerRef.current?.clientWidth || window.innerWidth;
-        const availableWidth = Math.max(1, Math.min(containerWidth - 32, 980));
-        const availableHeight = Math.max(260, Math.min(window.innerHeight - 190, 1100));
+        const availableWidth = Math.max(1, Math.min(window.innerWidth - 32, 980));
         const fitScale = availableWidth / baseViewport.width;
         const scale = Math.max(0.1, fitScale * zoom * 0.9);
         const viewport = pdfPage.getViewport({ scale });
