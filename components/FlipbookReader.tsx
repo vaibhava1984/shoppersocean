@@ -211,13 +211,20 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
 
     // Fit the PDF page to the actual reader area so text cannot spill off-screen.
     const area = readerAreaRef.current;
-    const availableWidth = area?.clientWidth || window.innerWidth;
+    const areaRect = area?.getBoundingClientRect();
+    const areaStyle = area ? window.getComputedStyle(area) : null;
+    const horizontalPadding = areaStyle
+      ? (Number.parseFloat(areaStyle.paddingLeft) || 0) + (Number.parseFloat(areaStyle.paddingRight) || 0)
+      : 0;
+    const availableWidth = areaRect?.width
+      ? areaRect.width - horizontalPadding
+      : Math.max(1, window.innerWidth - 48);
     const availableHeight = area?.clientHeight || window.innerHeight;
-    // Keep a generous safety gutter on both sides, especially on narrow phones.
-    // clientWidth includes the reader's padding, so reserve extra space for it.
-    const sideGutter = window.innerWidth < 640 ? 64 : 80;
+    // Keep a visible safety margin on both sides so the page never touches or
+    // crosses the phone's screen edges, even when the reader is resized late.
+    const sideGutter = window.innerWidth < 640 ? 40 : 48;
     const maxWidth = Math.max(1, Math.min(availableWidth - sideGutter, window.innerWidth - sideGutter, 980));
-    const maxHeight = Math.max(1, Math.min(availableHeight - 32, 1280));
+    const maxHeight = Math.max(1, Math.min(availableHeight - 40, 1280));
     const fitScale = Math.min(maxWidth / base.width, maxHeight / base.height);
     const scale = fitScale * zoom;
 
@@ -361,13 +368,29 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   }, [goToPage, page]);
 
   useEffect(() => {
-    const onResize = () => {
-      if (!pdf || !canvasRef.current) return;
-      void renderPage(pdf, page, canvasRef.current);
+    if (!pdf || !canvasRef.current || !readerAreaRef.current) return;
+
+    let frame = 0;
+    const fitToArea = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        if (!pdf || !canvasRef.current) return;
+        // Reset horizontal scroll after each fit so the left edge cannot remain clipped.
+        if (readerAreaRef.current) readerAreaRef.current.scrollLeft = 0;
+        void renderPage(pdf, page, canvasRef.current);
+      });
     };
 
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    const observer = new ResizeObserver(fitToArea);
+    observer.observe(readerAreaRef.current);
+    window.addEventListener('resize', fitToArea);
+    fitToArea();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', fitToArea);
+      window.cancelAnimationFrame(frame);
+    };
   }, [pdf, page, renderPage]);
 
   const commitPageInput = () => {
