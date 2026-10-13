@@ -375,8 +375,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
       window.cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
         if (!pdf || !canvasRef.current) return;
-        // Reset horizontal scroll after each fit so the left edge cannot remain clipped.
-        if (readerAreaRef.current) readerAreaRef.current.scrollLeft = 0;
+        // Preserve user scrolling. Resetting scrollLeft here can hide the page edge
+        // when a mobile browser reports a late/narrow viewport measurement.
         void renderPage(pdf, page, canvasRef.current);
       });
     };
@@ -474,7 +474,15 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         <div
           ref={readerAreaRef}
           className={fullscreen ? "relative flex min-h-0 flex-1 w-full items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4" : "relative mx-auto flex w-full max-w-6xl min-h-[320px] h-[min(76vh,900px)] items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4"}
-          style={{ touchAction: 'pan-y', minWidth: 0 }}
+          style={{
+            touchAction: 'pan-y',
+            minWidth: 0,
+            // Never center an overflowing flex child with a negative left edge:
+            // safe-start alignment keeps the page's left side reachable by scrolling.
+            justifyContent: pageSize.width > (readerAreaRef.current?.clientWidth ?? window.innerWidth)
+              ? 'flex-start'
+              : 'center',
+          }}
           onPointerDown={event => {
             if (event.pointerType !== 'mouse' || event.button === 0) {
               event.currentTarget.setPointerCapture?.(event.pointerId);
