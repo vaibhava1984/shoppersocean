@@ -32,5 +32,5 @@ export async function requireUser(): Promise<AuthIdentity | null> {
 export async function requireAdmin(): Promise<AuthIdentity | null> {
   const identity = await requireUser();
   if (!identity) return null;
-  return identity.user.publicMetadata.userrole === "ADMIN" ? identity : null;
+  return String(identity.user.publicMetadata.userrole ?? "").trim().toUpperCase() === "ADMIN" ? identity : null;
 }
