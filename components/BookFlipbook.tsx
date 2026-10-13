@@ -84,7 +84,21 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     if (loading) return;
     setOpened(true); setLoading(true); setError(''); setReaderUrl(''); setPdfReady(false);
     try {
-      const response = await fetch('/api/get-book-reader', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookId }) });
+      const response = await fetch('/api/get-book-reader', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        credentials: 'same-origin',
+        cache: 'no-store',
+        body: JSON.stringify({ bookId }),
+      });
+      const contentType = response.headers.get('content-type') || '';
+      if (!contentType.toLowerCase().includes('application/json')) {
+        const responseText = await response.text().catch(() => '');
+        console.error('Book reader API returned non-JSON response:', response.status, responseText.slice(0, 200));
+        throw new Error(response.status === 401 || response.status === 403
+          ? 'Please sign in again to read this book.'
+          : 'The book service temporarily returned an invalid response. Please try again.');
+      }
       const data = await response.json();
       if (!response.ok || !data.readerUrl) throw new Error(data.error || 'Unable to open book');
       setReaderUrl(data.readerUrl);
@@ -350,7 +364,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     }
   };
 
-  if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Read this book online as a flipbook.</p><div className="flex w-full max-w-xl items-stretch gap-2"><Button type="button" variant="outline" className="min-h-[44px] min-w-0 flex-1 whitespace-normal rounded-lg border-black/10 bg-white px-2 py-2 text-center text-xs font-extrabold leading-tight text-black shadow-md hover:bg-slate-50 sm:text-sm" onClick={openReader} disabled={loading}>Read as Flipbook</Button><Button type="button" variant="outline" className="min-h-[44px] min-w-0 flex-1 gap-1 whitespace-normal rounded-lg border-black/10 bg-white px-2 py-2 text-center text-xs font-extrabold leading-tight text-black shadow-md hover:bg-slate-50 sm:text-sm" onClick={handleShareBook}><Share2 className="h-4 w-4 shrink-0" aria-hidden="true" />Share Book</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
+  if (!opened) return <div className="flex flex-col items-center justify-center gap-4 rounded-xl border bg-slate-50 p-6 sm:p-10"><p className="text-center font-semibold text-slate-800">Read this book online as a flipbook.</p><div className="flex w-full max-w-xl items-stretch gap-2"><Button type="button" variant="outline" className="min-h-[44px] min-w-0 flex-1 whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-xs font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={openReader} disabled={loading}>Read as Flipbook</Button><Button type="button" variant="outline" className="min-h-[44px] min-w-0 flex-1 gap-1 whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-xs font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={handleShareBook}><Share2 className="h-4 w-4 shrink-0" aria-hidden="true" />Share Book</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
   if (loading) return <div className="flex min-h-[320px] items-center justify-center rounded-xl bg-slate-100"><Loader2 className="mr-2 animate-spin" />Opening your book…</div>;
   if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
