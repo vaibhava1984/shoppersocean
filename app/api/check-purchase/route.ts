@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     }
 
     const userId = identity.profile.id;
-    const isAdmin = identity.user.publicMetadata.userrole === "ADMIN";
+    const isAdmin = String(identity.user.publicMetadata.userrole ?? "").trim().toUpperCase() === "ADMIN";
     const body = await req.json();
     const { productId, productIds } = body;
 
