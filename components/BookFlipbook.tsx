@@ -151,7 +151,8 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       try {
         const pdfPage = await pdf.getPage(targetPage);
         const baseViewport = pdfPage.getViewport({ scale: 1 });
-        const availableWidth = Math.max(1, Math.min(window.innerWidth - 32, 980));
+        const containerWidth = viewerRef.current?.clientWidth || window.innerWidth;
+        const availableWidth = Math.max(1, Math.min(containerWidth - 32, 980));
         const availableHeight = Math.max(260, Math.min(window.innerHeight - 190, 1100));
         const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
         const scale = Math.max(0.1, fitScale * zoom * 0.9);
@@ -183,7 +184,8 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
         const pdfPage = await currentPdf.getPage(targetPage);
         if (requestId !== renderRequestRef.current) return;
         const baseViewport = pdfPage.getViewport({ scale: 1 });
-        const availableWidth = Math.max(1, Math.min(window.innerWidth - 32, 980));
+        const containerWidth = viewerRef.current?.clientWidth || window.innerWidth;
+        const availableWidth = Math.max(1, Math.min(containerWidth - 32, 980));
         const availableHeight = Math.max(260, Math.min(window.innerHeight - 190, 1100));
         const fitScale = Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height);
         const scale = Math.max(0.1, fitScale * zoom * 0.9);
@@ -300,7 +302,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     // Let touch gestures scroll the page vertically; horizontal page turns are handled by touch events.
-    if (event.pointerType === 'touch' || turning || pageCount <= 1 || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    if (event.pointerType === 'touch' || zoom > 1 || turning || pageCount <= 1 || (event.pointerType === 'mouse' && event.button !== 0)) return;
     dragStartXRef.current = event.clientX; dragOffsetRef.current = 0; setIsDragging(true);
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
@@ -327,7 +329,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     const startX = touchStartXRef.current; const startY = touchStartYRef.current;
     const endX = event.changedTouches[0]?.clientX ?? null; const endY = event.changedTouches[0]?.clientY ?? null;
     touchStartXRef.current = null; touchStartYRef.current = null;
-    if (startX === null || startY === null || endX === null || endY === null) return;
+    if (startX === null || startY === null || endX === null || endY === null || zoom > 1) return;
     const deltaX = endX - startX; const deltaY = endY - startY;
     // Only turn pages for a clearly horizontal swipe. Vertical gestures must remain native scrolling.
     if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.25) return;
@@ -398,7 +400,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div className="relative h-[calc(100dvh-190px)] min-h-[240px] max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4" style={{ height: "calc(100dvh - 190px)", maxHeight: "calc(100dvh - 190px)", overflowX: "auto", overflowY: "scroll", WebkitOverflowScrolling: "touch", touchAction: "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div className="relative h-[calc(100dvh-190px)] min-h-[240px] max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4" style={{ height: "calc(100dvh - 190px)", maxHeight: "calc(100dvh - 190px)", overflowX: "auto", overflowY: "scroll", WebkitOverflowScrolling: "touch", touchAction: zoom > 1 ? "pan-x pan-y pinch-zoom" : "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div ref={pageFrameRef} className="relative mx-auto flex h-max w-max min-w-full shrink-0 items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center" style={{ perspective: '1800px' }}>
           <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center overflow-visible rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
