@@ -213,8 +213,11 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const area = readerAreaRef.current;
     const availableWidth = area?.clientWidth || window.innerWidth;
     const availableHeight = area?.clientHeight || window.innerHeight;
-    const maxWidth = Math.max(1, Math.min(availableWidth - 32, 980));
-    const maxHeight = Math.max(1, Math.min(availableHeight - 24, 1280));
+    // Keep a generous safety gutter on both sides, especially on narrow phones.
+    // clientWidth includes the reader's padding, so reserve extra space for it.
+    const sideGutter = window.innerWidth < 640 ? 64 : 80;
+    const maxWidth = Math.max(1, Math.min(availableWidth - sideGutter, window.innerWidth - sideGutter, 980));
+    const maxHeight = Math.max(1, Math.min(availableHeight - 32, 1280));
     const fitScale = Math.min(maxWidth / base.width, maxHeight / base.height);
     const scale = fitScale * zoom;
 
