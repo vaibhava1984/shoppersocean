@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const { bookId } = await request.json();
     if (!bookId) return NextResponse.json({ error: "Book ID is required" }, { status: 400 });
 
-    const isAdmin = identity.user.publicMetadata.userrole === "ADMIN";
+    const isAdmin = String(identity.user.publicMetadata.userrole ?? "").trim().toUpperCase() === "ADMIN";
 
     if (!isAdmin) {
       const purchase = await db
