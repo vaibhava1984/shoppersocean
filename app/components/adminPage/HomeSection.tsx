@@ -1,98 +1,111 @@
 'use client'
 
 import * as React from 'react'
-import { X } from 'lucide-react'
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core'
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
-
+import { X, ArrowUp, ArrowDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 type Book = { id: string; title: string; author: string }
+type Entry = { entryId: number; pageSection: string; id: string; title: string | null; author: string | null }
 type SectionType = 'HOMEPAGE_TRENDING' | 'HOMEPAGE_COLLECTION'
 
-type SortableBookItemProps = { book: Book; onRemove: (id: string) => void }
+function BookSection({ title, sectionType, entries, onReload, onLocalChange }: {
+  title: string; sectionType: SectionType; entries: Entry[]; onReload: () => Promise<void>; onLocalChange: (fn: (items: Entry[]) => Entry[]) => void
+}) {
+  const [open, setOpen] = React.useState(false)
+  const [query, setQuery] = React.useState('')
+  const [results, setResults] = React.useState<Book[]>([])
+  const [searching, setSearching] = React.useState(false)
+  const [saving, setSaving] = React.useState(false)
+  const [message, setMessage] = React.useState('')
+  const [moving, setMoving] = React.useState(false)
+  const maxBooks = 8
 
-function SortableBookItem({ book, onRemove }: SortableBookItemProps) {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: book.id })
-    const style = { transform: CSS.Transform.toString(transform), transition }
-    return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="relative mb-2">
-            <div className="flex items-center justify-between rounded-lg border bg-card p-4 text-card-foreground shadow-sm">
-                <div><h4 className="text-sm font-medium">{book.title}</h4><p className="text-sm text-muted-foreground">{book.author}</p></div>
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8" onClick={() => onRemove(book.id)}>
-                    <X className="h-4 w-4" /><span className="sr-only">Remove book</span>
-                </Button>
-            </div>
-        </div>
-    )
-}
+  async function search(value: string) {
+    setQuery(value); setMessage('')
+    if (value.trim().length < 2) { setResults([]); return }
+    setSearching(true)
+    try {
+      const response = await fetch('/api/homepage_sections?search=' + encodeURIComponent(value.trim()), { cache: 'no-store' })
+      const payload = await response.json()
+      if (!response.ok) throw new Error(payload.error || 'Search failed')
+      setResults(payload.books || [])
+    } catch (error) {
+      setResults([])
+      setMessage(error instanceof Error ? error.message : 'Search failed. Please try again.')
+    } finally { setSearching(false) }
+  }
 
-type BookSectionProps = { title: string; books: Book[]; maxBooks: number; sectionType: SectionType; onUpdateBooks: (books: Book[]) => void }
+  async function addBook(book: Book) {
+    if (saving || entries.length >= maxBooks || entries.some(item => item.id === book.id)) return
+    setSaving(true); setMessage('Saving book…')
+    try {
+      const response = await fetch('/api/homepage_sections', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pageSection: sectionType, bookId: book.id }), cache: 'no-store' })
+      const payload = await response.json()
+      if (!response.ok) throw new Error(payload.error || 'Could not save book')
+      await onReload(); setOpen(false); setQuery(''); setResults([]); setMessage('')
+    } catch (error) { setMessage(error instanceof Error ? error.message : 'Could not save book') }
+    finally { setSaving(false) }
+  }
 
-function BookSection({ title, books, maxBooks, sectionType, onUpdateBooks }: BookSectionProps) {
-    const [isDialogOpen, setIsDialogOpen] = React.useState(false)
-    const [searchQuery, setSearchQuery] = React.useState('')
-    const [searchResults, setSearchResults] = React.useState<Book[]>([])
-    const [isSearching, setIsSearching] = React.useState(false)
-    const [isSaving, setIsSaving] = React.useState(false)
-    const [errorMessage, setErrorMessage] = React.useState('')
-    const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }), useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }))
+  async function removeBook(entryId: number) {
+    try {
+      const response = await fetch('/api/homepage_sections', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ entryId }), cache: 'no-store' })
+      const payload = await response.json()
+      if (!response.ok) throw new Error(payload.error || 'Could not remove book')
+      onLocalChange(items => items.filter(item => item.entryId !== entryId))
+    } catch (error) { setMessage(error instanceof Error ? error.message : 'Could not remove book') }
+  }
 
-    async function handleSearch(query: string) {
-        setSearchQuery(query); setErrorMessage('')
-        if (query.trim().length < 2) { setSearchResults([]); return }
-        setIsSearching(true)
-        try {
-            const response = await fetch(`/api/homepage_sections?search=${encodeURIComponent(query.trim())}`, { cache: 'no-store' })
-            const payload = await response.json()
-            if (!response.ok) throw new Error(payload.error || 'Unable to search books')
-            setSearchResults(payload.books || [])
-        } catch (error) { console.error('Error searching books:', error); setSearchResults([]); setErrorMessage(error instanceof Error ? error.message : 'Unable to search books. Please try again.') }
-        finally { setIsSearching(false) }
-    }
+  async function moveBook(entryId: number, direction: 'up' | 'down') {
+    if (moving) return
+    setMoving(true)
+    try {
+      const response = await fetch('/api/homepage_sections', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ entryId, direction }), cache: 'no-store' })
+      const payload = await response.json()
+      if (!response.ok) throw new Error(payload.error || 'Could not change priority')
+      await onReload()
+    } catch (error) { setMessage(error instanceof Error ? error.message : 'Could not change priority') }
+    finally { setMoving(false) }
+  }
 
-    async function handleBookSelect(book: Book) {
-        if (books.length >= maxBooks || isSaving) return
-        setIsSaving(true); setErrorMessage('')
-        try {
-            const response = await fetch('/api/homepage_sections', { method: 'POST', headers: { 'Content-Type': 'application/json' }, cache: 'no-store', body: JSON.stringify({ pageSection: sectionType, bookId: book.id }) })
-            const payload = await response.json()
-            if (!response.ok) throw new Error(payload.error || 'Unable to save book')
-            onUpdateBooks([...books, book]); setSearchResults([]); setSearchQuery(''); setIsDialogOpen(false)
-        } catch (error) { console.error('Error saving book selection:', error); setErrorMessage(error instanceof Error ? error.message : 'Unable to save book. Please try again.') }
-        finally { setIsSaving(false) }
-    }
-
-    function handleDragEnd(event: DragEndEvent) {
-        const { active, over } = event
-        if (over && active.id !== over.id) { const oldIndex = books.findIndex((book) => book.id === active.id); const newIndex = books.findIndex((book) => book.id === over.id); onUpdateBooks(arrayMove(books, oldIndex, newIndex)) }
-    }
-    function handleRemoveBook(id: string) { onUpdateBooks(books.filter((book) => book.id !== id)) }
-
-    return (
-        <Card className="mb-8">
-            <CardHeader><CardTitle>{title}</CardTitle><CardDescription>Select up to {maxBooks} books for this section</CardDescription></CardHeader>
-            <CardContent>
-                <Button type="button" onClick={() => setIsDialogOpen(true)} disabled={books.length >= maxBooks} className="mb-4">Add {maxBooks} books for {title}</Button>
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}><SortableContext items={books.map((book) => book.id)} strategy={verticalListSortingStrategy}>{books.map((book) => <SortableBookItem key={book.id} book={book} onRemove={handleRemoveBook} />)}</SortableContext></DndContext>
-                <Dialog open={isDialogOpen} onOpenChange={(open) => { setIsDialogOpen(open); if (!open) { setSearchResults([]); setSearchQuery(''); setErrorMessage('') } }}>
-                    <DialogContent><DialogHeader><DialogTitle>Search Books</DialogTitle></DialogHeader><div className="space-y-4">
-                        <Input placeholder="Search by title or author..." value={searchQuery} onChange={(e) => handleSearch(e.target.value)} autoFocus />
-                        {errorMessage && <p className="text-sm text-destructive">{errorMessage}</p>}
-                        <div className="max-h-80 space-y-2 overflow-y-auto">{isSearching ? <p className="py-3 text-sm text-muted-foreground">Searching...</p> : searchResults.length === 0 && searchQuery.trim().length >= 2 ? <p className="py-3 text-sm text-muted-foreground">No books found.</p> : searchResults.map((book) => <button key={book.id} type="button" disabled={isSaving} className="flex min-h-12 w-full cursor-pointer items-center justify-start rounded-md border border-input bg-background px-4 py-3 text-left text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50" onClick={() => void handleBookSelect(book)}><div className="text-left"><div className="font-medium">{book.title}</div><div className="text-sm text-muted-foreground">{book.author || 'Unknown author'}</div></div></button>)}</div>
-                    </div></DialogContent>
-                </Dialog>
-            </CardContent>
-        </Card>
-    )
+  return <Card className="mb-8">
+    <CardHeader><CardTitle>{title}</CardTitle><CardDescription>Select up to 8 books ({entries.length}/8). Use the arrows to set homepage priority.</CardDescription></CardHeader>
+    <CardContent>
+      <Button type="button" disabled={entries.length >= maxBooks} onClick={() => { setMessage(''); setOpen(true) }} className="mb-4">Add book</Button>
+      {message && <p role="status" className="mb-3 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">{message}</p>}
+      <div className="space-y-2">{entries.map((entry, index) => <div key={entry.entryId} className="flex items-center justify-between gap-3 rounded-lg border p-3 sm:p-4">
+        <div className="flex min-w-0 items-center gap-3"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-800">{index + 1}</span><div className="min-w-0"><div className="font-medium">{entry.title || 'Book no longer available'}</div><div className="text-sm text-muted-foreground">{entry.author || ''}</div></div></div>
+        <div className="flex shrink-0 items-center gap-1"><Button type="button" variant="outline" size="icon" aria-label="Move book up" disabled={index === 0 || moving} onClick={() => void moveBook(entry.entryId, 'up')}><ArrowUp className="h-4 w-4" /></Button><Button type="button" variant="outline" size="icon" aria-label="Move book down" disabled={index === entries.length - 1 || moving} onClick={() => void moveBook(entry.entryId, 'down')}><ArrowDown className="h-4 w-4" /></Button><Button type="button" variant="ghost" size="icon" aria-label="Remove book" onClick={() => void removeBook(entry.entryId)}><X className="h-4 w-4" /></Button></div>
+      </div>)}</div>
+      {open && <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/50 p-4" onClick={() => setOpen(false)}><div className="mx-auto mt-8 w-full max-w-lg rounded-lg bg-white p-5 shadow-xl" onClick={event => event.stopPropagation()}>
+        <div className="mb-4 flex items-center justify-between"><h3 className="text-lg font-semibold">Search Books</h3><button type="button" aria-label="Close" className="rounded-md p-2 hover:bg-gray-100" onClick={() => setOpen(false)}><X className="h-5 w-5" /></button></div>
+        <Input autoFocus placeholder="Search by title or author..." value={query} onChange={event => void search(event.target.value)} />
+        <p className="mt-2 text-xs text-muted-foreground">Adding to: {title}</p>
+        {message && <p role="status" className="mt-3 text-sm text-red-700">{message}</p>}
+        <div className="mt-4 max-h-[55vh] space-y-2 overflow-y-auto">{searching ? <p className="py-4 text-sm">Searching…</p> : query.trim().length >= 2 && results.length === 0 ? <p className="py-4 text-sm">No books found.</p> : results.map(book => <button key={book.id} type="button" disabled={saving || entries.some(item => item.id === book.id)} className="block min-h-14 w-full rounded-md border bg-white px-4 py-3 text-left hover:bg-gray-50 disabled:opacity-50" onClick={() => void addBook(book)}><div className="font-medium">{book.title}</div><div className="text-sm text-muted-foreground">{book.author || 'Unknown author'}</div></button>)}</div>
+      </div></div>}
+    </CardContent>
+  </Card>
 }
 
 export default function HomeSection() {
-    const [trendingBooks, setTrendingBooks] = React.useState<Book[]>([])
-    const [collectionBooks, setCollectionBooks] = React.useState<Book[]>([])
-    return <div className="space-y-8"><BookSection title="Trending Books" books={trendingBooks} maxBooks={3} sectionType="HOMEPAGE_TRENDING" onUpdateBooks={setTrendingBooks} /><BookSection title="Books Collection" books={collectionBooks} maxBooks={4} sectionType="HOMEPAGE_COLLECTION" onUpdateBooks={setCollectionBooks} /></div>
+  const [entries, setEntries] = React.useState<Entry[]>([])
+  const [loading, setLoading] = React.useState(true)
+  const [error, setError] = React.useState('')
+  const reload = React.useCallback(async () => {
+    const response = await fetch('/api/homepage_sections', { cache: 'no-store' })
+    const payload = await response.json()
+    if (!response.ok) throw new Error(payload.error || 'Could not load homepage books')
+    setEntries(payload.sections || [])
+    setError('')
+  }, [])
+  React.useEffect(() => { reload().catch(error => setError(error instanceof Error ? error.message : 'Could not load homepage books')).finally(() => setLoading(false)) }, [reload])
+  if (loading) return <div className="p-6">Loading homepage books…</div>
+  if (error && entries.length === 0) return <div className="rounded-md border border-red-300 bg-red-50 p-4 text-red-800">Could not load homepage books: {error} <Button type="button" variant="outline" className="ml-2" onClick={() => { setLoading(true); reload().catch(e => setError(e instanceof Error ? e.message : 'Could not load')).finally(() => setLoading(false)) }}>Retry</Button></div>
+  return <div className="space-y-8">
+    <BookSection title="Trending Books" sectionType="HOMEPAGE_TRENDING" entries={entries.filter(item => item.pageSection === 'HOMEPAGE_TRENDING')} onReload={reload} onLocalChange={update => setEntries(update)} />
+    <BookSection title="Books in International Languages" sectionType="HOMEPAGE_COLLECTION" entries={entries.filter(item => item.pageSection === 'HOMEPAGE_COLLECTION')} onReload={reload} onLocalChange={update => setEntries(update)} />
+  </div>
 }
