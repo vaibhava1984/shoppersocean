@@ -390,7 +390,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return <div ref={viewerRef} data-flipbook-reader="true" className="relative w-full max-w-none overflow-visible text-white" style={{ width: '100vw', maxWidth: '100vw', marginLeft: 'calc(100% - 100vw)' }}>
+  return <div ref={viewerRef} data-flipbook-reader="true" className="relative w-full max-w-none overflow-visible text-white" style={{ width: '100vw', maxWidth: '100vw', flex: '0 0 100vw', marginLeft: 'calc(100% - 100vw)' }}>
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
