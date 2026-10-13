@@ -390,7 +390,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return <div ref={viewerRef} data-flipbook-reader="true" className="w-full overflow-visible rounded-xl border bg-slate-900 text-white shadow-xl">
+  return <div ref={viewerRef} data-flipbook-reader="true" className="relative left-1/2 w-screen max-w-none -translate-x-1/2 overflow-visible text-white">
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
@@ -399,9 +399,9 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
     <div className="relative w-full overflow-visible p-2 sm:p-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-      <div ref={pageFrameRef} className="relative mx-auto flex h-auto w-full max-w-[900px] items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
+      <div ref={pageFrameRef} className="relative mx-auto flex h-auto w-full max-w-none items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-auto w-full max-w-full items-start justify-center" style={{ perspective: '1800px' }}>
-          <div className="relative flex w-full items-start justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
+          <div className="relative flex w-full shrink-0 items-start justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
             <canvas ref={canvasRef} className="block rounded select-none" draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
