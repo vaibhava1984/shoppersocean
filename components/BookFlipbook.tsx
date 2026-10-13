@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, Loader2, Minus, Plus, Share2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -230,13 +229,6 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
 
   useEffect(() => {
     if (!opened) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = previousOverflow; };
-  }, [opened]);
-
-  useEffect(() => {
-    if (!opened) return;
 
     const lastActivityRef = { current: Date.now() };
     let idleTimer: number | null = null;
@@ -383,7 +375,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   };
 
   if (!opened) return <div className="flex flex-col items-center justify-center gap-3 rounded-xl border bg-slate-50 p-4 sm:p-6"><div className="flex w-full max-w-xl flex-col items-stretch gap-2"><Button type="button" variant="outline" className="min-h-[42px] w-full whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={openReader} disabled={loading}>Read as Flipbook</Button><Button type="button" variant="outline" className="min-h-[42px] w-full gap-1 whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={handleShareBook}><Share2 className="h-4 w-4 shrink-0" aria-hidden="true" />Share Book</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
-  if (loading) return createPortal(<div className="fixed inset-0 z-[100] flex h-[100dvh] w-screen items-center justify-center bg-slate-950 p-4 text-white"><div className="flex items-center justify-center rounded-xl bg-slate-900 px-6 py-5"><Loader2 className="mr-2 animate-spin" />Opening your book…</div></div>, document.body);
+  if (loading) return <div className="flex min-h-[320px] w-full items-center justify-center rounded-xl bg-slate-100"><Loader2 className="mr-2 animate-spin" />Opening your book…</div>;
   if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
   const dragProgress = pageFrameRef.current?.clientWidth ? Math.max(-1, Math.min(1, dragOffset / pageFrameRef.current.clientWidth)) : 0;
@@ -398,7 +390,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return createPortal(<div className="fixed inset-0 z-[100] flex h-[100dvh] w-screen items-center justify-center bg-slate-950 p-2 sm:p-4"><div ref={viewerRef} data-flipbook-reader="true" className="flex h-full w-full max-w-5xl flex-col overflow-hidden rounded-xl border bg-slate-900 text-white shadow-xl">
+  return <div ref={viewerRef} data-flipbook-reader="true" className="w-full overflow-visible rounded-xl border bg-slate-900 text-white shadow-xl">
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
@@ -406,11 +398,11 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div className="relative min-h-0 flex-1 overflow-y-scroll overflow-x-hidden overscroll-y-contain p-2 sm:p-4" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-      <div ref={pageFrameRef} className="relative mx-auto flex w-full max-w-[900px] shrink-0 items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
+    <div className="relative w-full overflow-visible p-2 sm:p-4" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div ref={pageFrameRef} className="relative mx-auto flex h-auto w-full max-w-[900px] items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-auto w-full max-w-full items-start justify-center" style={{ perspective: '1800px' }}>
-          <div className="relative flex w-max min-w-full shrink-0 items-start justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
-            <canvas ref={canvasRef} className="block max-h-full max-w-full rounded select-none" draggable={false} />
+          <div className="relative flex w-full items-start justify-center rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
+            <canvas ref={canvasRef} className="block rounded select-none" draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
             <Button variant="ghost" size="icon" className="absolute bottom-1 left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 1)} aria-label="Previous page"><ArrowLeft className="h-8 w-8 stroke-[3.25]" /></Button>
@@ -425,5 +417,5 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       </div>
     </div>
     <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
-  </div></div>, document.body);
+  </div>;
 }
