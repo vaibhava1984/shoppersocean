@@ -397,8 +397,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const zoomIn = () => setZoom(value => Math.min(1.45, Number((value + 0.10).toFixed(2))));
 
   return (
-    <div data-flipbook-reader="true" className={fullscreen ? 'fixed inset-0 z-[100] bg-[#151515]' : 'w-full'}>
-      <div className={fullscreen ? 'flex h-full w-full flex-col bg-[#151515]' : 'mx-auto flex w-full max-w-7xl flex-col overflow-hidden rounded-xl bg-[#151515] shadow-2xl'}>
+    <div data-flipbook-reader="true" className={fullscreen ? 'fixed inset-0 z-[100] bg-[#151515]' : 'relative left-1/2 w-screen max-w-none -translate-x-1/2'}>
+      <div className={fullscreen ? 'flex h-full w-full flex-col bg-[#151515]' : 'mx-auto flex w-full max-w-none flex-col overflow-hidden rounded-xl bg-[#151515] shadow-2xl'}>
         <div className="flex h-12 shrink-0 items-center justify-between border-b border-white/10 bg-[#202020] px-3 text-white sm:h-14 sm:px-5">
           <div className="min-w-0 pr-3">
             <p className="truncate text-xs font-semibold tracking-wide sm:text-sm">{fileName || 'Book'}</p>
@@ -445,7 +445,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         </div>
 
         <div
-          className={fullscreen ? "relative flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4" : "relative mx-auto flex aspect-[16/10] w-full max-w-6xl max-h-[76vh] min-h-[360px] items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4"}
+          className={fullscreen ? "relative flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4" : "relative mx-auto flex h-[76vh] min-h-[420px] max-h-[900px] w-full max-w-none items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4"}
           style={{ touchAction: 'pan-y' }}
           onPointerDown={event => {
             if (event.pointerType !== 'mouse' || event.button === 0) {
