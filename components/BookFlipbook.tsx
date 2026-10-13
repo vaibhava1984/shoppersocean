@@ -37,10 +37,10 @@ async function extractReflowText(pdfPage: any): Promise<string> {
     const parts = line.items.sort((a: any, b: any) => a.x - b.x);
     let value = ''; let previous: any = null;
     for (const item of parts) {
-      if (previous && value && !/\\s$/.test(value) && !/^\\s/.test(item.str) && item.x - (previous.x + previous.width) > Math.max(1.5, previous.height * 0.12)) value += ' ';
+      if (previous && value && !/\s$/.test(value) && !/^\s/.test(item.str) && item.x - (previous.x + previous.width) > Math.max(1.5, previous.height * 0.12)) value += ' ';
       value += item.str; previous = item;
     }
-    return { y: line.y, text: value.replace(/\\s+/g, ' ').trim() };
+    return { y: line.y, text: value.replace(/\s+/g, ' ').trim() };
   }).filter((line) => line.text);
   if (!rendered.length) return '';
   const gaps = rendered.slice(1).map((line, i) => Math.max(0, rendered[i].y - line.y)).filter((n) => n > 0).sort((a, b) => a - b);
@@ -52,7 +52,7 @@ async function extractReflowText(pdfPage: any): Promise<string> {
     else current += ' ' + rendered[i].text;
   }
   if (current.trim()) paragraphs.push(current.trim());
-  return paragraphs.join('\\n\\n');
+  return paragraphs.join('\n\n');
 }
 function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
   if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
