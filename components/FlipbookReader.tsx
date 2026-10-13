@@ -72,7 +72,6 @@ function loadPdfJs(): Promise<PdfJs> {
 export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps) {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const readerAreaRef = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<PdfDocument | null>(null);
   const renderTokenRef = useRef(0);
   const pageRef = useRef(1);
@@ -209,23 +208,13 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
 
-    // Fit the PDF page to the actual reader area so text cannot spill off-screen.
-    const area = readerAreaRef.current;
-    const areaRect = area?.getBoundingClientRect();
-    const areaStyle = area ? window.getComputedStyle(area) : null;
-    const horizontalPadding = areaStyle
-      ? (Number.parseFloat(areaStyle.paddingLeft) || 0) + (Number.parseFloat(areaStyle.paddingRight) || 0)
-      : 0;
-    const availableWidth = areaRect?.width
-      ? areaRect.width - horizontalPadding
-      : Math.max(1, window.innerWidth - 48);
-    const availableHeight = area?.clientHeight || window.innerHeight;
-    // Keep a visible safety margin on both sides so the page never touches or
-    // crosses the phone's screen edges, even when the reader is resized late.
-    const sideGutter = window.innerWidth < 640 ? 40 : 48;
-    const maxWidth = Math.max(1, Math.min(availableWidth - sideGutter, window.innerWidth - sideGutter, 980));
-    const maxHeight = Math.max(1, Math.min(availableHeight - 40, 1280));
-    const fitScale = Math.min(maxWidth / base.width, maxHeight / base.height);
+    const chromeWidth = fullscreen ? 30 : 24;
+    const chromeHeight = fullscreen ? 170 : 190;
+    const maxWidth = Math.max(280, Math.min(window.innerWidth - chromeWidth, 980));
+    const maxHeight = Math.max(420, Math.min(window.innerHeight - chromeHeight, 1280));
+    const widthScale = maxWidth / base.width;
+    const heightScale = maxHeight / base.height;
+    const fitScale = Math.min(widthScale, heightScale);
     const scale = fitScale * zoom;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -368,29 +357,13 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   }, [goToPage, page]);
 
   useEffect(() => {
-    if (!pdf || !canvasRef.current || !readerAreaRef.current) return;
-
-    let frame = 0;
-    const fitToArea = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        if (!pdf || !canvasRef.current) return;
-        // Preserve user scrolling. Resetting scrollLeft here can hide the page edge
-        // when a mobile browser reports a late/narrow viewport measurement.
-        void renderPage(pdf, page, canvasRef.current);
-      });
+    const onResize = () => {
+      if (!pdf || !canvasRef.current) return;
+      void renderPage(pdf, page, canvasRef.current);
     };
 
-    const observer = new ResizeObserver(fitToArea);
-    observer.observe(readerAreaRef.current);
-    window.addEventListener('resize', fitToArea);
-    fitToArea();
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('resize', fitToArea);
-      window.cancelAnimationFrame(frame);
-    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, [pdf, page, renderPage]);
 
   const commitPageInput = () => {
@@ -472,17 +445,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         </div>
 
         <div
-          ref={readerAreaRef}
-          className={fullscreen ? "relative flex min-h-0 flex-1 w-full items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4" : "relative mx-auto flex w-full max-w-6xl min-h-[320px] h-[min(76vh,900px)] items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4"}
-          style={{
-            touchAction: 'pan-y',
-            minWidth: 0,
-            // Never center an overflowing flex child with a negative left edge:
-            // safe-start alignment keeps the page's left side reachable by scrolling.
-            justifyContent: pageSize.width > (readerAreaRef.current?.clientWidth ?? window.innerWidth)
-              ? 'flex-start'
-              : 'center',
-          }}
+          className={fullscreen ? "relative flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4" : "relative mx-auto flex aspect-[16/10] w-full max-w-6xl max-h-[76vh] min-h-[360px] items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4"}
+          style={{ touchAction: 'pan-y' }}
           onPointerDown={event => {
             if (event.pointerType !== 'mouse' || event.button === 0) {
               event.currentTarget.setPointerCapture?.(event.pointerId);
@@ -517,7 +481,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
                 className="pointer-events-none absolute inset-y-0 left-0 z-20 w-[10px] opacity-40"
                 style={{ background: 'linear-gradient(90deg, rgba(0,0,0,.22), transparent)' }}
               />
-              <canvas ref={canvasRef} className="block max-w-full max-h-full shrink-0 select-none" style={{ objectFit: 'contain' }} draggable={false} />
+              <canvas ref={canvasRef} className="block shrink-0 select-none" draggable={false} />
               <div
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-8 opacity-25"
                 style={{ background: 'linear-gradient(to top, rgba(0,0,0,.16), transparent)' }}
