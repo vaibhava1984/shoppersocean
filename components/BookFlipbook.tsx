@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Loader2, Minus, Plus, Share2, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Loader2, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 declare global {
@@ -394,10 +394,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
 
   return <div ref={viewerRef} data-flipbook-reader="true" className="relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-slate-950 text-white" style={{ width: '100%', maxWidth: '100%', marginLeft: 0 }}>
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
-      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
-      <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
-      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.min(1.35, Number((zoom + 0.1).toFixed(2))))} aria-label="Zoom in"><Plus /></Button>
-      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
+      <Button type="button" variant="ghost" className="min-h-9 rounded-lg border border-white/20 px-4 text-sm font-bold text-white hover:bg-white/10 hover:text-white" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook">close flipbook</Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
     <div className="relative h-[calc(100dvh-190px)] min-h-[240px] max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4" style={{ height: "calc(100dvh - 190px)", maxHeight: "calc(100dvh - 190px)", overflowX: "auto", overflowY: "scroll", WebkitOverflowScrolling: "touch", touchAction: zoom > 1 ? "pan-x pan-y pinch-zoom" : "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
