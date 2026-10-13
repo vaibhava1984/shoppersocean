@@ -208,12 +208,10 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
     const pageProxy = await documentProxy.getPage(pageNumber);
     const base = pageProxy.getViewport({ scale: 1 });
 
-    // Fit the page to the actual available screen instead of constraining it to a
-    // narrow parent or an arbitrary desktop-width cap.
-    const chromeWidth = 24;
-    const chromeHeight = fullscreen ? 150 : 150;
-    const maxWidth = Math.max(240, window.innerWidth - chromeWidth);
-    const maxHeight = Math.max(280, window.innerHeight - chromeHeight);
+    const chromeWidth = fullscreen ? 30 : 24;
+    const chromeHeight = fullscreen ? 170 : 190;
+    const maxWidth = Math.max(280, Math.min(window.innerWidth - chromeWidth, 980));
+    const maxHeight = Math.max(420, Math.min(window.innerHeight - chromeHeight, 1280));
     const widthScale = maxWidth / base.width;
     const heightScale = maxHeight / base.height;
     const fitScale = Math.min(widthScale, heightScale);
@@ -399,8 +397,8 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
   const zoomIn = () => setZoom(value => Math.min(1.45, Number((value + 0.10).toFixed(2))));
 
   return (
-    <div data-flipbook-reader="true" className="fixed inset-0 z-[100] bg-[#151515]">
-      <div className="flex h-[100dvh] w-full flex-col overflow-hidden bg-[#151515]">
+    <div data-flipbook-reader="true" className={fullscreen ? 'fixed inset-0 z-[100] bg-[#151515]' : 'w-full'}>
+      <div className={fullscreen ? 'flex h-full w-full flex-col bg-[#151515]' : 'mx-auto flex w-full max-w-7xl flex-col overflow-hidden rounded-xl bg-[#151515] shadow-2xl'}>
         <div className="flex h-12 shrink-0 items-center justify-between border-b border-white/10 bg-[#202020] px-3 text-white sm:h-14 sm:px-5">
           <div className="min-w-0 pr-3">
             <p className="truncate text-xs font-semibold tracking-wide sm:text-sm">{fileName || 'Book'}</p>
@@ -447,7 +445,7 @@ export default function FlipbookReader({ pdfUrl, fileName }: FlipbookReaderProps
         </div>
 
         <div
-          className="relative flex min-h-0 flex-1 w-full items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-1 py-1 sm:px-3 sm:py-2"
+          className={fullscreen ? "relative flex min-h-0 flex-1 items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4" : "relative mx-auto flex aspect-[16/10] w-full max-w-6xl max-h-[76vh] min-h-[360px] items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#3b3b3b_0%,#252525_48%,#171717_100%)] px-2 py-2 sm:px-6 sm:py-4"}
           style={{ touchAction: 'pan-y' }}
           onPointerDown={event => {
             if (event.pointerType !== 'mouse' || event.button === 0) {
