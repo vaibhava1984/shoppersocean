@@ -20,40 +20,6 @@ const PDFJS_WORKER_URL = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_
 const PAGE_TURN_SOUND = '/page-turn.mp3';
 const READER_IDLE_LIMIT_MS = 10 * 60 * 1000;
 
-async function extractReflowText(pdfPage: any): Promise<string> {
-  const content = await pdfPage.getTextContent();
-  const items = (content.items || []).filter((item: any) => typeof item.str === 'string' && item.str.trim()).map((item: any) => ({
-    str: item.str, x: Number(item.transform?.[4] ?? 0), y: Number(item.transform?.[5] ?? 0),
-    width: Math.max(0, Number(item.width ?? 0)), height: Math.max(1, Number(item.height ?? 10)),
-  })).sort((a: any, b: any) => b.y - a.y || a.x - b.x);
-  if (!items.length) return '';
-  const lines: any[] = [];
-  for (const item of items) {
-    const last = lines[lines.length - 1];
-    if (last && Math.abs(last.y - item.y) <= Math.max(2, item.height * 0.25)) last.items.push(item);
-    else lines.push({ y: item.y, items: [item] });
-  }
-  const rendered = lines.map((line) => {
-    const parts = line.items.sort((a: any, b: any) => a.x - b.x);
-    let value = ''; let previous: any = null;
-    for (const item of parts) {
-      if (previous && value && !/\s$/.test(value) && !/^\s/.test(item.str) && item.x - (previous.x + previous.width) > Math.max(1.5, previous.height * 0.12)) value += ' ';
-      value += item.str; previous = item;
-    }
-    return { y: line.y, text: value.replace(/\s+/g, ' ').trim() };
-  }).filter((line) => line.text);
-  if (!rendered.length) return '';
-  const gaps = rendered.slice(1).map((line, i) => Math.max(0, rendered[i].y - line.y)).filter((n) => n > 0).sort((a, b) => a - b);
-  const normalGap = gaps.length ? gaps[Math.floor(gaps.length / 2)] : 12;
-  const paragraphs: string[] = []; let current = rendered[0].text;
-  for (let i = 1; i < rendered.length; i++) {
-    const gap = Math.max(0, rendered[i - 1].y - rendered[i].y);
-    if (gap > Math.max(normalGap * 1.65, normalGap + 3)) { paragraphs.push(current.trim()); current = rendered[i].text; }
-    else current += ' ' + rendered[i].text;
-  }
-  if (current.trim()) paragraphs.push(current.trim());
-  return paragraphs.join('\n\n');
-}
 function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
   if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
   return new Promise((resolve, reject) => {
@@ -77,7 +43,6 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pageFrameRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<any>(null);
   const renderTaskRef = useRef<any>(null);
   const renderQueueRef = useRef<Promise<void>>(Promise.resolve());
@@ -93,9 +58,6 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const [pageCount, setPageCount] = useState(0);
   const [pdfReady, setPdfReady] = useState(false);
   const [zoom, setZoom] = useState(1);
-  const [reflowMode, setReflowMode] = useState(false);
-  const [reflowText, setReflowText] = useState('');
-  const [reflowLoading, setReflowLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState('');
@@ -249,24 +211,6 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     await queued;
   }, [zoom, cancelRender]);
 
-  useEffect(() => {
-    if (!reflowMode || !pdfReady || !pdfRef.current) return;
-    let cancelled = false;
-    setReflowLoading(true); setReflowText('');
-    const loadText = async () => {
-      try {
-        const currentPdf = pdfRef.current;
-        if (!currentPdf) return;
-        const pdfPage = await currentPdf.getPage(page);
-        const value = await extractReflowText(pdfPage);
-        if (!cancelled) setReflowText(value);
-      } catch { if (!cancelled) setReflowText(''); }
-      finally { if (!cancelled) setReflowLoading(false); }
-    };
-    void loadText();
-    return () => { cancelled = true; };
-  }, [reflowMode, page, pdfReady]);
-
   const renderPage = useCallback(async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -274,9 +218,9 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   }, [page, renderCanvasPage]);
 
   useEffect(() => {
-    if (!opened || reflowMode || !readerUrl || !pdfReady || !pdfRef.current) return;
+    if (!opened || !readerUrl || !pdfReady || !pdfRef.current) return;
     void renderPage();
-  }, [opened, readerUrl, pdfReady, renderPage, reflowMode]);
+  }, [opened, readerUrl, pdfReady, renderPage]);
 
   useEffect(() => {
     if (!bookId || page < 1) return;
@@ -332,14 +276,13 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   }, [opened]);
 
   useEffect(() => {
-    const onResize = () => { if (opened && !reflowMode && pdfRef.current) void renderPage(); };
+    const onResize = () => { if (opened && pdfRef.current) void renderPage(); };
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, [opened, renderPage, reflowMode]);
+  }, [opened, renderPage]);
 
   const changePage = async (next: number) => {
     if (next < 1 || next > pageCount || turning || rendering) return;
-    if (reflowMode) { setPage(next); setDragOffset(0); setTurnDirection(null); playPageTurnSound(); if (viewportRef.current) viewportRef.current.scrollTop = 0; return; }
     const destination = next > page ? 'next' : 'prev';
     const nextCanvas = canvasRef.current;
     if (!nextCanvas) return;
@@ -380,24 +323,15 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     touchStartXRef.current = event.changedTouches[0]?.clientX ?? null;
     touchStartYRef.current = event.changedTouches[0]?.clientY ?? null;
   };
-  const handleTouchMove = (event: React.TouchEvent) => {
-    if (reflowMode) return;
-    const startX = touchStartXRef.current; const startY = touchStartYRef.current; const touch = event.touches[0];
-    if (startX === null || startY === null || !touch) return;
-    const dx = touch.clientX - startX; const dy = touch.clientY - startY;
-    if (Math.abs(dx) < 10 || Math.abs(dx) <= Math.abs(dy) * 1.2) return;
-    const maxDrag = Math.max(80, Math.min(280, (pageFrameRef.current?.clientWidth || 300) * 0.62));
-    setIsDragging(true); setDragOffset(Math.max(-maxDrag, Math.min(maxDrag, dx)));
-  };
   const handleTouchEnd = (event: React.TouchEvent) => {
     const startX = touchStartXRef.current; const startY = touchStartYRef.current;
     const endX = event.changedTouches[0]?.clientX ?? null; const endY = event.changedTouches[0]?.clientY ?? null;
     touchStartXRef.current = null; touchStartYRef.current = null;
-    if (startX === null || startY === null || endX === null || endY === null) { setDragOffset(0); setIsDragging(false); return; }
+    if (startX === null || startY === null || endX === null || endY === null) return;
     const deltaX = endX - startX; const deltaY = endY - startY;
-    const horizontalSwipe = Math.abs(deltaX) >= 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25;
-    setDragOffset(0); setIsDragging(false);
-    if (horizontalSwipe && dragStartXRef.current === null && !reflowMode) changePage(deltaX < 0 ? page + 1 : page - 1);
+    // Only turn pages for a clearly horizontal swipe. Vertical gestures must remain native scrolling.
+    if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.25) return;
+    if (dragStartXRef.current === null) changePage(deltaX < 0 ? page + 1 : page - 1);
   };
   const sliderPageFromPointer = (clientX: number) => {
     if (!sliderRef.current || pageCount <= 1) return;
@@ -460,14 +394,12 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.max(0.8, Number((zoom - 0.1).toFixed(2))))} aria-label="Zoom out"><Minus /></Button>
       <span className="w-12 text-center text-xs">{Math.round(zoom * 100)}%</span>
-      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.min(1.35, Number((zoom + 0.1).toFixed(2))))} aria-label={reflowMode ? "Increase text size" : "Zoom in"}><Plus /></Button>
-      <Button variant="ghost" className="h-9 min-w-9 px-2 text-sm font-bold text-white hover:bg-white/10" onClick={() => { setReflowMode((value) => !value); setZoom(1); setDragOffset(0); setIsDragging(false); if (viewportRef.current) viewportRef.current.scrollTop = 0; }} aria-label={reflowMode ? "Switch to original page view" : "Switch to reflowable text"} title={reflowMode ? "Original page view" : "Reflow text"}>Aa</Button>
+      <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setZoom(Math.min(1.35, Number((zoom + 0.1).toFixed(2))))} aria-label="Zoom in"><Plus /></Button>
       <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook"><X /></Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div ref={viewportRef} className="relative h-[calc(100dvh-190px)] min-h-[240px] max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-auto overscroll-contain p-2 sm:p-4" style={{ height: "calc(100dvh - 190px)", maxHeight: "calc(100dvh - 190px)", overflowX: "auto", overflowY: "auto", WebkitOverflowScrolling: "touch", touchAction: "pan-y", overscrollBehavior: "contain" }} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd} onTouchCancel={() => { setDragOffset(0); setIsDragging(false); touchStartXRef.current = null; touchStartYRef.current = null; }}>
-      <div ref={pageFrameRef} className={reflowMode ? "relative mx-auto flex h-max w-full min-w-0 shrink-0 items-start justify-center" : "relative mx-auto flex h-max w-max min-w-full shrink-0 items-start justify-center"} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
-        {reflowMode ? <article className="w-full max-w-3xl rounded bg-white px-5 py-6 text-slate-900 shadow-2xl sm:px-8 sm:py-8" style={{ fontSize: String(Math.round(18 * zoom)) + 'px', lineHeight: 1.75, overflowWrap: 'anywhere', whiteSpace: 'pre-wrap', minHeight: '100%' }}>{reflowLoading ? <div className="py-10 text-center text-sm text-slate-600">Preparing readable text…</div> : reflowText ? reflowText : <div className="py-8 text-center text-sm text-slate-600">This PDF page does not contain extractable text. Switch back to the original page view to read it.</div>}</article> : (
+    <div className="relative h-[calc(100dvh-190px)] min-h-[240px] max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-auto overscroll-contain p-2 sm:p-4" style={{ height: "calc(100dvh - 190px)", maxHeight: "calc(100dvh - 190px)", overflowX: "auto", overflowY: "auto", WebkitOverflowScrolling: "touch", touchAction: "pan-y", overscrollBehavior: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+      <div ref={pageFrameRef} className="relative mx-auto flex h-max w-max min-w-full shrink-0 items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center" style={{ perspective: '1800px' }}>
           <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center overflow-visible rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
             <canvas ref={canvasRef} className="block rounded select-none" draggable={false} />
@@ -482,9 +414,8 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
             </div>
           </div>
         </div>
-        )}
       </div>
     </div>
-    <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2">{reflowMode && <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" disabled={page <= 1} onClick={() => changePage(page - 1)} aria-label="Previous text page"><ArrowLeft /></Button>}<span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span>{reflowMode && <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" disabled={page >= pageCount} onClick={() => changePage(page + 1)} aria-label="Next text page"><ArrowRight /></Button>}</div>
+    <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
   </div>;
 }
