@@ -388,9 +388,9 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return <div ref={viewerRef} data-flipbook-reader="true" className="relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-slate-950 text-white" style={{ width: '100%', maxWidth: '100%', marginLeft: 0 }}>
-    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-slate-950 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
-      <Button type="button" variant="ghost" className="min-h-9 rounded-lg border border-white/20 px-4 text-sm font-bold text-white hover:bg-white/10 hover:text-white" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook">close flipbook</Button>
+  return <div ref={viewerRef} data-flipbook-reader="true" className="relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb]" style={{ width: '100%', maxWidth: '100%', marginLeft: 0 }}>
+    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/20 bg-blue-700 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
+      <Button type="button" variant="ghost" className="min-h-9 rounded-lg border border-white/25 px-4 text-sm font-bold text-[#e5e7eb] hover:bg-white/10 hover:text-[#e5e7eb]" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook">close flipbook</Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
     <div className="relative h-max max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4" style={{ height: "max-content", maxHeight: "calc(100dvh - 190px)", overflowX: "auto", overflowY: "scroll", WebkitOverflowScrolling: "touch", touchAction: zoom > 1 ? "pan-x pan-y pinch-zoom" : "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
@@ -402,15 +402,17 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
             <Button variant="ghost" size="icon" className="absolute bottom-1 left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 1)} aria-label="Previous page"><ArrowLeft className="h-8 w-8 stroke-[3.25]" /></Button>
             <Button variant="ghost" size="icon" className="absolute bottom-1 right-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page >= pageCount || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page + 1)} aria-label="Next page"><ArrowRight className="h-8 w-8 stroke-[3.25]" /></Button>
-            <div ref={sliderRef} className="absolute bottom-1.5 left-12 right-12 z-30 h-6 cursor-pointer touch-none select-none" onPointerDown={handleSliderPointerDown} onPointerMove={handleSliderPointerMove} onPointerUp={handleSliderPointerUp} onPointerCancel={handleSliderPointerUp}>
-              <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/30 shadow-inner" />
-              <div className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-black/65" style={{ width: `${sliderPercent}%` }} />
-              <div className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-slate-800 shadow-md transition-transform" style={{ left: `${sliderPercent}%`, transform: `translate(-50%, -50%) scale(${isSliderDragging ? 1.18 : 1})` }} aria-label={`Page ${page}`} />
-            </div>
           </div>
         </div>
       </div>
     </div>
-    <div className="flex items-center justify-center gap-3 border-t border-white/10 bg-slate-950 px-3 py-2"><span className="text-xs opacity-80">Page {page} / {pageCount || '—'}</span></div>
+    <div className="flex items-center gap-3 border-t border-white/20 bg-blue-700 px-3 py-1.5 text-[#e5e7eb]">
+      <div ref={sliderRef} className="relative h-6 min-w-0 flex-1 cursor-pointer touch-none select-none" onPointerDown={handleSliderPointerDown} onPointerMove={handleSliderPointerMove} onPointerUp={handleSliderPointerUp} onPointerCancel={handleSliderPointerUp}>
+        <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-white/30 shadow-inner" />
+        <div className="absolute left-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-white/75" style={{ width: `${sliderPercent}%` }} />
+        <div className="absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-blue-950 shadow-md transition-transform" style={{ left: `${sliderPercent}%`, transform: `translate(-50%, -50%) scale(${isSliderDragging ? 1.18 : 1})` }} aria-label={`Page ${page}`} />
+      </div>
+      <span className="shrink-0 text-xs text-[#e5e7eb]">Page {page} / {pageCount || '—'}</span>
+    </div>
   </div>;
 }
