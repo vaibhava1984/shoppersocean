@@ -155,10 +155,11 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
         // Keep the existing mobile sizing unchanged. On desktop, fit the whole
         // page to the reader's visible area so the bottom half is not clipped.
         const pageArea = viewerRef.current?.querySelector<HTMLElement>('[data-flipbook-page-area="true"]');
-        const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+        const isDesktop = window.matchMedia('(min-width: 768px)').matches && window.screen.width >= 768;
+        const physicalViewportWidth = Math.min(window.innerWidth, window.screen.width || window.innerWidth, window.visualViewport?.width || window.innerWidth);
         const availableWidth = isDesktop
           ? Math.max(1, Math.min((pageArea?.clientWidth || viewerRef.current?.clientWidth || window.innerWidth) - 32, 980))
-          : Math.max(1, Math.min(window.innerWidth - 32, 980));
+          : Math.max(1, Math.min(physicalViewportWidth - 32, 980));
         const measuredAreaHeight = pageArea?.clientHeight ?? 0;
         const availableHeight = Math.max(260, (measuredAreaHeight > 120 ? measuredAreaHeight : window.innerHeight - 190) - 32);
         const fitScale = isDesktop
@@ -196,10 +197,11 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
         // Keep the existing mobile sizing unchanged. On desktop, fit the whole
         // page to the reader's visible area so the bottom half is not clipped.
         const pageArea = viewerRef.current?.querySelector<HTMLElement>('[data-flipbook-page-area="true"]');
-        const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+        const isDesktop = window.matchMedia('(min-width: 768px)').matches && window.screen.width >= 768;
+        const physicalViewportWidth = Math.min(window.innerWidth, window.screen.width || window.innerWidth, window.visualViewport?.width || window.innerWidth);
         const availableWidth = isDesktop
           ? Math.max(1, Math.min((pageArea?.clientWidth || viewerRef.current?.clientWidth || window.innerWidth) - 32, 980))
-          : Math.max(1, Math.min(window.innerWidth - 32, 980));
+          : Math.max(1, Math.min(physicalViewportWidth - 32, 980));
         const measuredAreaHeight = pageArea?.clientHeight ?? 0;
         const availableHeight = Math.max(260, (measuredAreaHeight > 120 ? measuredAreaHeight : window.innerHeight - 190) - 32);
         const fitScale = isDesktop
@@ -409,12 +411,16 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  const readerMarkup = <div ref={viewerRef} data-flipbook-reader="true" className="relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb] md:fixed md:inset-0 md:z-[100] md:h-dvh md:w-screen md:max-w-none md:overflow-hidden" style={{ width: '100%', maxWidth: '100%', marginLeft: 0 }}>
+  const portalToBody = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+  const useFullDesktopReader = portalToBody && window.screen.width >= 768;
+  const readerViewportWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth, window.screen.width || window.innerWidth, window.visualViewport?.width || window.innerWidth) : undefined;
+  const readerViewportHeight = typeof window !== 'undefined' ? Math.min(window.innerHeight, window.screen.height || window.innerHeight, window.visualViewport?.height || window.innerHeight) : undefined;
+  const readerMarkup = <div ref={viewerRef} data-flipbook-reader="true" className={`relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb] ${portalToBody ? 'fixed inset-0 z-[100] overflow-hidden' : ''} ${useFullDesktopReader ? 'h-dvh w-screen max-w-none' : ''}`} style={portalToBody ? { position: 'fixed', left: 0, top: 0, width: readerViewportWidth, maxWidth: readerViewportWidth, height: readerViewportHeight, marginLeft: 0 } : { width: '100%', maxWidth: '100%', marginLeft: 0 }}>
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/20 bg-blue-700 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button type="button" variant="ghost" className="min-h-9 rounded-lg border border-white/25 px-4 text-sm font-bold text-[#e5e7eb] hover:bg-white/10 hover:text-[#e5e7eb]" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook">close flipbook</Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div data-flipbook-page-area="true" className="relative h-max max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4 md:!h-auto md:!max-h-none md:min-h-0 md:flex-1" style={{ height: "max-content", maxHeight: "calc(100dvh - 190px)", overflowX: "auto", overflowY: "scroll", WebkitOverflowScrolling: "touch", touchAction: zoom > 1 ? "pan-x pan-y pinch-zoom" : "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div data-flipbook-page-area="true" className={`relative h-max max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4 ${portalToBody ? '!h-auto !max-h-none min-h-0 flex-1' : ''}`} style={{ height: "max-content", maxHeight: "calc(100dvh - 190px)", overflowX: "auto", overflowY: "scroll", WebkitOverflowScrolling: "touch", touchAction: zoom > 1 ? "pan-x pan-y pinch-zoom" : "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div ref={pageFrameRef} className="relative mx-auto flex h-max w-max min-w-full shrink-0 items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center" style={{ perspective: '1800px' }}>
           <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center overflow-visible rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
@@ -438,6 +444,5 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   </div>;
   // Desktop reader escapes the book-card/grid container so another book card
   // can never squeeze the open page into half the viewport. Mobile stays inline.
-  const portalToBody = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
   return portalToBody ? createPortal(readerMarkup, document.body) : readerMarkup;
 }
