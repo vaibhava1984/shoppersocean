@@ -63,7 +63,7 @@ export default async function BookDetailPage({ params }: { params: any }) {
                     <div className="md:w-1/2">
                         <h1 className="text-3xl font-bold mb-2 text-slate-800">{currentBookDetails.title}</h1>
                         <p className="text-xl text-slate-600 mb-4">by {authorRows.results.map((a, i) => <span key={`${i}_author_name`}>{a.name}</span>)}</p>
-                        <div className="mb-6"><span className="text-3xl font-bold text-blue-600">₹{currentBookDetails.price}</span></div>
+                        <div className="mb-6">{String(user?.publicMetadata.userrole ?? "").trim().toUpperCase() !== "ADMIN" && <span className="text-3xl font-bold text-blue-600">₹{currentBookDetails.price}</span>}</div>
                         <div className="mb-6 w-full min-w-0">
                             {currentBookDetails.id && <DynamicPaymentButton amount={Number(currentBookDetails.price || 0)} notes={{ product_name: currentBookDetails.title }} userId={user?.id} isAdmin={String(user?.publicMetadata.userrole ?? "").trim().toUpperCase() === "ADMIN"} productId={String(currentBookDetails.id)} productTitle={currentBookDetails.title} />}
                         </div>
