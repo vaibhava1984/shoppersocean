@@ -4,6 +4,7 @@ import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
 import SiteSearch from "@/components/SiteSearch"
 import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation"
 import HeaderAccountMenu from "@/components/HeaderAccountMenu";
+import HeaderAuthButtons from "@/components/HeaderAuthButtons";
 
 const navigationItems = [
   ["/", "Home"],
@@ -44,15 +45,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                 isAuthor={currentUser.app_metadata?.isAuthor === true}
               />
             ) : (
-              <div className="ml-auto flex flex-shrink-0 items-center gap-2">
-                <Link href="/login" className="inline-flex items-center justify-center px-3 sm:px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm font-semibold shadow-sm transition-colors whitespace-nowrap">
-                  Sign In
-                </Link>
-                <Link href="/login?type=signup" className="inline-flex min-w-[150px] flex-col items-center justify-center px-3 sm:px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-sm font-semibold leading-tight text-center shadow-sm transition-colors">
-                  <span>New user?</span>
-                  <span>Create account now</span>
-                </Link>
-              </div>
+              <HeaderAuthButtons />
             )}
           </div>
         </div>
