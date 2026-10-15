@@ -59,6 +59,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const [pageCount, setPageCount] = useState(0);
   const [pdfReady, setPdfReady] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const [desktopReaderTop, setDesktopReaderTop] = useState(80);
   const [loading, setLoading] = useState(false);
   const [rendering, setRendering] = useState(false);
   const [error, setError] = useState('');
@@ -161,7 +162,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
           ? Math.max(1, Math.min((pageArea?.clientWidth || viewerRef.current?.clientWidth || window.innerWidth) - 32, 980))
           : Math.max(1, Math.min(physicalViewportWidth - 32, 980));
         const measuredAreaHeight = pageArea?.clientHeight ?? 0;
-        const availableHeight = Math.max(260, (measuredAreaHeight > 120 ? measuredAreaHeight : window.innerHeight - 190) - 32);
+        const availableHeight = Math.max(220, (measuredAreaHeight > 120 ? measuredAreaHeight : window.innerHeight - desktopReaderTop - 150) - 24);
         const fitScale = isDesktop
           ? Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height)
           : availableWidth / baseViewport.width;
@@ -302,6 +303,23 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     return () => window.removeEventListener('resize', onResize);
   }, [opened, renderPage]);
 
+  useEffect(() => {
+    if (!opened || !window.matchMedia('(min-width: 768px)').matches || window.screen.width < 768) return;
+    const alignBelowAuthorsButton = () => {
+      const target = Array.from(document.querySelectorAll<HTMLElement>('button')).find((button) => button.textContent?.trim() === 'Books by Authors');
+      if (!target) { setDesktopReaderTop(80); return; }
+      const rect = target.getBoundingClientRect();
+      setDesktopReaderTop(Math.max(80, Math.min(rect.bottom + 12, window.innerHeight - 280)));
+    };
+    alignBelowAuthorsButton();
+    window.addEventListener('resize', alignBelowAuthorsButton);
+    window.addEventListener('scroll', alignBelowAuthorsButton, true);
+    return () => {
+      window.removeEventListener('resize', alignBelowAuthorsButton);
+      window.removeEventListener('scroll', alignBelowAuthorsButton, true);
+    };
+  }, [opened]);
+
   const changePage = async (next: number) => {
     if (next < 1 || next > pageCount || turning || rendering) return;
     const destination = next > page ? 'next' : 'prev';
@@ -415,12 +433,12 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const useFullDesktopReader = portalToBody && window.screen.width >= 768;
   const readerViewportWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth, window.screen.width || window.innerWidth, window.visualViewport?.width || window.innerWidth) : undefined;
   const readerViewportHeight = typeof window !== 'undefined' ? Math.min(window.innerHeight, window.screen.height || window.innerHeight, window.visualViewport?.height || window.innerHeight) : undefined;
-  const readerMarkup = <div ref={viewerRef} data-flipbook-reader="true" className={`relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb] ${portalToBody ? 'fixed inset-0 z-[100] items-center overflow-hidden bg-transparent pointer-events-none pt-20' : ''} ${useFullDesktopReader ? 'h-dvh w-screen max-w-none' : ''}`} style={portalToBody ? { position: 'fixed', left: 0, top: 0, width: readerViewportWidth, maxWidth: readerViewportWidth, height: readerViewportHeight, marginLeft: 0, background: 'transparent' } : { width: '100%', maxWidth: '100%', marginLeft: 0 }}>
+  const readerMarkup = <div ref={viewerRef} data-flipbook-reader="true" className={`relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb] ${portalToBody ? 'fixed inset-0 z-[100] items-center overflow-hidden bg-transparent pointer-events-none pt-20' : ''} ${useFullDesktopReader ? 'h-dvh w-screen max-w-none' : ''}`} style={portalToBody ? { position: 'fixed', left: 0, top: 0, width: readerViewportWidth, maxWidth: readerViewportWidth, height: readerViewportHeight, marginLeft: 0, paddingTop: desktopReaderTop, boxSizing: 'border-box', background: 'transparent' } : { width: '100%', maxWidth: '100%', marginLeft: 0 }}>
     <div className={`flex flex-wrap items-center justify-between gap-2 border-b border-white/20 bg-blue-700 px-3 py-2 ${portalToBody ? 'pointer-events-auto w-fit max-w-[94vw] rounded-t-lg' : ''}`}><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button type="button" variant="ghost" className="min-h-9 rounded-lg border border-white/25 px-4 text-sm font-bold text-[#e5e7eb] hover:bg-white/10 hover:text-[#e5e7eb]" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook">close flipbook</Button>
     </div></div>
     {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
-    <div data-flipbook-page-area="true" className={`relative h-max max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4 ${portalToBody ? '!h-auto !max-h-none !min-w-0 !w-[min(94vw,980px)] max-w-[100vw] flex-none self-center overflow-visible pointer-events-auto' : ''}`} style={{ height: "max-content", maxHeight: "calc(100dvh - 190px)", width: portalToBody ? "min(94vw, 980px)" : undefined, maxWidth: portalToBody ? "100vw" : undefined, marginLeft: portalToBody ? "auto" : undefined, marginRight: portalToBody ? "auto" : undefined, overflowX: portalToBody ? "visible" : "auto", overflowY: portalToBody ? "visible" : "scroll", WebkitOverflowScrolling: "touch", touchAction: zoom > 1 ? "pan-x pan-y pinch-zoom" : "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div data-flipbook-page-area="true" className={`relative h-max max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4 ${portalToBody ? '!h-auto !max-h-none !min-w-0 !w-[min(94vw,980px)] max-w-[100vw] flex-none self-center overflow-visible pointer-events-auto' : ''}`} style={{ height: "max-content", maxHeight: portalToBody ? `calc(100dvh - ${desktopReaderTop + 150}px)` : "calc(100dvh - 190px)", width: portalToBody ? "min(94vw, 980px)" : undefined, maxWidth: portalToBody ? "100vw" : undefined, marginLeft: portalToBody ? "auto" : undefined, marginRight: portalToBody ? "auto" : undefined, overflowX: portalToBody ? "visible" : "auto", overflowY: portalToBody ? "visible" : "scroll", WebkitOverflowScrolling: "touch", touchAction: zoom > 1 ? "pan-x pan-y pinch-zoom" : "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div ref={pageFrameRef} className="relative mx-auto flex h-max w-max min-w-full shrink-0 items-start justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center" style={{ perspective: '1800px' }}>
           <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center overflow-visible rounded bg-white shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
