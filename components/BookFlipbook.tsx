@@ -429,7 +429,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  const portalToBody = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+  const portalToBody = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches && window.screen.width >= 768;
   const useFullDesktopReader = portalToBody && window.screen.width >= 768;
   const readerViewportWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth, window.screen.width || window.innerWidth, window.visualViewport?.width || window.innerWidth) : undefined;
   const readerViewportHeight = typeof window !== 'undefined' ? Math.min(window.innerHeight, window.screen.height || window.innerHeight, window.visualViewport?.height || window.innerHeight) : undefined;
