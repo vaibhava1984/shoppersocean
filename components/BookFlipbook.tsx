@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, Loader2, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -408,7 +409,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  return <div ref={viewerRef} data-flipbook-reader="true" className="relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb] md:fixed md:inset-0 md:z-[100] md:h-dvh md:w-screen md:max-w-none md:overflow-hidden" style={{ width: '100%', maxWidth: '100%', marginLeft: 0 }}>
+  const readerMarkup = <div ref={viewerRef} data-flipbook-reader="true" className="relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb] md:fixed md:inset-0 md:z-[100] md:h-dvh md:w-screen md:max-w-none md:overflow-hidden" style={{ width: '100%', maxWidth: '100%', marginLeft: 0 }}>
     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/20 bg-blue-700 px-3 py-2"><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button type="button" variant="ghost" className="min-h-9 rounded-lg border border-white/25 px-4 text-sm font-bold text-[#e5e7eb] hover:bg-white/10 hover:text-[#e5e7eb]" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook">close flipbook</Button>
     </div></div>
@@ -435,4 +436,8 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       <span className="shrink-0 text-xs text-[#e5e7eb]">Page {page} / {pageCount || '—'}</span>
     </div>
   </div>;
+  // Desktop reader escapes the book-card/grid container so another book card
+  // can never squeeze the open page into half the viewport. Mobile stays inline.
+  const portalToBody = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches;
+  return portalToBody ? createPortal(readerMarkup, document.body) : readerMarkup;
 }
