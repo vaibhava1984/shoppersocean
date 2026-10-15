@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { X, Eye, EyeOff, ChevronDown, Loader2 } from "lucide-react";
@@ -18,6 +18,8 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
   const auth = useMemo(() => createClient(), []);
   const [isSignIn, setIsSignIn] = useState(initialMode === "signin");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = useRef(false);
+  isSubmittingRef.current = isSubmitting;
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,14 +38,14 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !isSubmitting) onClose();
+      if (event.key === "Escape" && !isSubmittingRef.current) onClose();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [open, initialMode, onClose, isSubmitting]);
+  }, [open, initialMode, onClose]);
 
   if (!open) return null;
 
