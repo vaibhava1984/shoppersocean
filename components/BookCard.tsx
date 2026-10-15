@@ -41,6 +41,15 @@ export default function BookCard({ book, loggedinUserId }: {
         return () => observer.disconnect()
     }, [hasAnimatedOnce])
 
+    const handleBookLinkClick = (event: React.MouseEvent<HTMLAnchorElement>, bookId: string) => {
+        // Desktop book clicks open the dedicated detail page and request the reader there.
+        // Keep mobile navigation unchanged.
+        const isDesktop = window.matchMedia("(min-width: 768px)").matches && window.screen.width >= 768
+        if (!isDesktop) return
+        event.preventDefault()
+        window.location.assign(`/book/${encodeURIComponent(bookId)}?read=1`)
+    }
+
     return (
         <>
             <style>{`
@@ -85,6 +94,7 @@ export default function BookCard({ book, loggedinUserId }: {
                             href={`/book/${book.id}`}
                             className="relative block cursor-pointer"
                             aria-label={`View details for ${book.title}`}
+                            onClick={(event) => handleBookLinkClick(event, book.id)}
                         >
                             <OptimizedImage
                                 src={book.coverImage}
@@ -110,6 +120,7 @@ export default function BookCard({ book, loggedinUserId }: {
                                             {book.description.slice(0, 100)}...
                                             <Link
                                                 href={`/book/${book.id}`}
+                                                onClick={(event) => handleBookLinkClick(event, book.id)}
                                                 className="text-blue-500 hover:underline ml-1 text-xs sm:text-base"
                                             >
                                                 Read More
