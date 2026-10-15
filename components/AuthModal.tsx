@@ -132,7 +132,7 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center overflow-y-auto bg-slate-950/25 px-3 py-4 backdrop-blur-[2px] sm:px-6 sm:py-8"
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-transparent px-3 py-2 sm:px-6 sm:py-8"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget && !isSubmitting) onClose();
       }}
@@ -141,7 +141,7 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
         role="dialog"
         aria-modal="true"
         aria-labelledby="auth-modal-title"
-        className="relative my-auto w-full max-w-[440px] max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl border border-white/80 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.24)] sm:max-h-[min(88dvh,760px)]"
+        className="relative my-auto w-full max-w-[400px] max-h-[calc(100dvh-1rem)] overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-[0_12px_36px_rgba(15,23,42,0.18)] sm:max-h-[min(88dvh,760px)]"
       >
         <div className="h-1.5 w-full bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400" />
         <button
@@ -154,18 +154,18 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
           <X className="h-5 w-5" />
         </button>
 
-        <div className="px-5 pb-5 pt-5 sm:px-7 sm:pb-7">
-          <div className="mb-5 pr-8">
+        <div className="px-4 pb-4 pt-4 sm:px-7 sm:pb-7 sm:pt-5">
+          <div className="mb-3 pr-8 sm:mb-5">
             <p className="mb-1 text-xs font-bold uppercase tracking-[0.18em] text-blue-600">Shoppers Ocean</p>
-            <h2 id="auth-modal-title" className="text-2xl font-bold tracking-tight text-slate-900">
-              {isSignIn ? "Welcome back" : "Create your account"}
+            <h2 id="auth-modal-title" className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+              {isSignIn ? "Sign In" : "Create your account"}
             </h2>
             <p className="mt-1 text-sm text-slate-500">
               {isSignIn ? "Sign in to continue your reading journey." : "Join us and discover stories from around the world."}
             </p>
           </div>
 
-          <div className="mb-5 grid grid-cols-2 rounded-xl bg-slate-100 p-1">
+          <div className="mb-3 grid grid-cols-2 rounded-xl bg-slate-100 p-1 sm:mb-5">
             <button type="button" onClick={() => switchMode(true)} className={`rounded-lg px-3 py-2.5 text-sm font-semibold transition ${isSignIn ? "bg-white text-blue-700 shadow-sm" : "text-slate-500 hover:text-slate-800"}`}>Sign In</button>
             <button type="button" onClick={() => switchMode(false)} className={`rounded-lg px-3 py-2.5 text-sm font-semibold transition ${!isSignIn ? "bg-white text-blue-700 shadow-sm" : "text-slate-500 hover:text-slate-800"}`}>Create Account</button>
           </div>
@@ -173,12 +173,12 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
           {notice && <div role="status" className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-sm text-emerald-800">{notice}</div>}
           {errors.general && <div role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-medium text-red-700">{errors.general}</div>}
 
-          <div className="space-y-3.5">
+          <div className="space-y-3 sm:space-y-3.5">
             {!isSignIn && (
               <>
                 <div>
                   <label htmlFor="auth-full-name" className="mb-1 block text-sm font-medium text-slate-700">Full name <span className="text-red-500">*</span></label>
-                  <input id="auth-full-name" autoComplete="name" value={fullName} onChange={(event) => { setFullName(event.target.value); setErrors((prev) => ({ ...prev, fullName: "", general: "" })); }} placeholder="Your full name" className={`w-full rounded-lg border px-3.5 py-2.5 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${errors.fullName ? "border-red-400" : "border-slate-200"}`} />
+                  <input id="auth-full-name" autoComplete="name" value={fullName} onChange={(event) => { setFullName(event.target.value); setErrors((prev) => ({ ...prev, fullName: "", general: "" })); }} placeholder="Your full name" className={`w-full rounded-lg border px-3.5 py-2 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:py-2.5 ${errors.fullName ? "border-red-400" : "border-slate-200"}`} />
                   {errors.fullName && <p className="mt-1 text-xs text-red-600">{errors.fullName}</p>}
                 </div>
                 <div className="relative">
@@ -198,7 +198,7 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
                         setErrors((prev) => ({ ...prev, country: "", general: "" }));
                       }}
                       placeholder="Type to find your country"
-                      className={`w-full rounded-lg border px-3.5 py-2.5 pr-10 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${errors.country ? "border-red-400" : "border-slate-200"}`}
+                      className={`w-full rounded-lg border px-3.5 py-2 pr-10 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:py-2.5 ${errors.country ? "border-red-400" : "border-slate-200"}`}
                     />
                     <button type="button" aria-label="Show country list" onClick={() => setCountryOpen((value) => !value)} className="absolute inset-y-0 right-0 flex items-center px-3 text-slate-500"><ChevronDown className="h-4 w-4" /></button>
                     {countryOpen && (
@@ -223,19 +223,19 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
             <div>
               <label htmlFor="auth-password" className="mb-1 block text-sm font-medium text-slate-700">{isSignIn ? "Password" : "Choose a password (minimum 6 characters)"} <span className="text-red-500">*</span></label>
               <div className="relative">
-                <input id="auth-password" type={showPassword ? "text" : "password"} autoComplete={isSignIn ? "current-password" : "new-password"} value={password} onChange={(event) => { setPassword(event.target.value); setErrors((prev) => ({ ...prev, password: "", general: "" })); }} placeholder={isSignIn ? "Enter your password" : "Minimum 6 characters"} className={`w-full rounded-lg border px-3.5 py-2.5 pr-11 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${errors.password ? "border-red-400" : "border-slate-200"}`} />
+                <input id="auth-password" type={showPassword ? "text" : "password"} autoComplete={isSignIn ? "current-password" : "new-password"} value={password} onChange={(event) => { setPassword(event.target.value); setErrors((prev) => ({ ...prev, password: "", general: "" })); }} placeholder={isSignIn ? "Enter your password" : "Minimum 6 characters"} className={`w-full rounded-lg border px-3.5 py-2 pr-11 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:py-2.5 ${errors.password ? "border-red-400" : "border-slate-200"}`} />
                 <button type="button" aria-label={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword((value) => !value)} className="absolute inset-y-0 right-0 flex items-center px-3 text-slate-500 hover:text-slate-800">{showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button>
               </div>
               {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
             </div>
 
-            <button type="button" onClick={submit} disabled={isSubmitting} className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-sm font-bold text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70">
+            <button type="button" onClick={submit} disabled={isSubmitting} className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-600/20 transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70">
               {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
               {isSubmitting ? (isSignIn ? "Signing in..." : "Creating account...") : (isSignIn ? "Sign In" : "Create Account")}
             </button>
           </div>
 
-          <div className="mt-4 text-center">
+          <div className="mt-3 text-center sm:mt-4">
             {isSignIn && <p className="mb-2 text-sm"><Link href="/forgot-password" onClick={onClose} className="font-medium text-blue-600 hover:text-blue-800">Forgot your password?</Link></p>}
             <p className="text-xs text-slate-500">{isSignIn ? "New to Shoppers Ocean? Use Create Account above." : "Already have an account? Use Sign In above."}</p>
           </div>
