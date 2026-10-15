@@ -52,7 +52,7 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
   const validate = () => {
     const next: Record<string, string> = {};
     if (!email.trim()) next.email = "Email is required";
-    else if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email.trim())) next.email = "Please enter a valid email address";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) next.email = "Please enter a valid email address";
     if (!password) next.password = isSignIn ? "Write your password" : "Password is required";
     else if (password.length < 6) next.password = "Password must be at least 6 letters/digits";
     if (!isSignIn) {
