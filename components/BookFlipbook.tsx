@@ -158,7 +158,8 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
         const availableWidth = isDesktop
           ? Math.max(1, Math.min((pageArea?.clientWidth || viewerRef.current?.clientWidth || window.innerWidth) - 32, 980))
           : Math.max(1, Math.min(window.innerWidth - 32, 980));
-        const availableHeight = pageArea ? Math.max(1, pageArea.clientHeight - 32) : Math.max(1, window.innerHeight - 260);
+        const measuredAreaHeight = pageArea?.clientHeight ?? 0;
+        const availableHeight = Math.max(260, (measuredAreaHeight > 120 ? measuredAreaHeight : window.innerHeight - 190) - 32);
         const fitScale = isDesktop
           ? Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height)
           : availableWidth / baseViewport.width;
@@ -198,7 +199,8 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
         const availableWidth = isDesktop
           ? Math.max(1, Math.min((pageArea?.clientWidth || viewerRef.current?.clientWidth || window.innerWidth) - 32, 980))
           : Math.max(1, Math.min(window.innerWidth - 32, 980));
-        const availableHeight = pageArea ? Math.max(1, pageArea.clientHeight - 32) : Math.max(1, window.innerHeight - 260);
+        const measuredAreaHeight = pageArea?.clientHeight ?? 0;
+        const availableHeight = Math.max(260, (measuredAreaHeight > 120 ? measuredAreaHeight : window.innerHeight - 190) - 32);
         const fitScale = isDesktop
           ? Math.min(availableWidth / baseViewport.width, availableHeight / baseViewport.height)
           : availableWidth / baseViewport.width;
