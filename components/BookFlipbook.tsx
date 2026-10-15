@@ -92,7 +92,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       && window.screen.width >= 768;
     const detailPath = `/book/${encodeURIComponent(bookId)}`;
     if (isDesktopOpen && window.location.pathname !== detailPath) {
-      window.location.assign(detailPath);
+      window.location.assign(`${detailPath}?read=1`);
       return;
     }
     setOpened(true); setLoading(true); setError(''); setReaderUrl(''); setPdfReady(false);
@@ -118,6 +118,16 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     } catch (err: any) { setError(err?.message || 'Unable to open book'); }
     finally { setLoading(false); }
   };
+
+  useEffect(() => {
+    // A desktop book-card click carries read=1 to the dedicated book detail page.
+    // Auto-open the reader there, inline beside the cover, without changing mobile.
+    if (typeof window === 'undefined') return;
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches && window.screen.width >= 768;
+    const isDetailReadRequest = window.location.pathname === `/book/${encodeURIComponent(bookId)}`
+      && new URLSearchParams(window.location.search).get('read') === '1';
+    if (isDesktop && isDetailReadRequest && !opened && !loading) void openReader();
+  }, [bookId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -440,7 +450,8 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
-  const portalToBody = typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches && window.screen.width >= 768;
+  const isBookDetailPage = typeof window !== 'undefined' && window.location.pathname.startsWith('/book/');
+  const portalToBody = typeof window !== 'undefined' && !isBookDetailPage && window.matchMedia('(min-width: 768px)').matches && window.screen.width >= 768;
   const useFullDesktopReader = portalToBody && window.screen.width >= 768;
   const readerViewportWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth, window.screen.width || window.innerWidth, window.visualViewport?.width || window.innerWidth) : undefined;
   const readerViewportHeight = typeof window !== 'undefined' ? Math.min(window.innerHeight, window.screen.height || window.innerHeight, window.visualViewport?.height || window.innerHeight) : undefined;
