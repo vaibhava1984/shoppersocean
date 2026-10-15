@@ -16,7 +16,7 @@ const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
     loading: () => <div className="h-10 w-full" aria-hidden="true" />,
 });
 
-interface PaymentButtonProps { amount: number; notes?: object; userId?: string; productId: string; productTitle?: string; }
+interface PaymentButtonProps { amount: number; notes?: object; userId?: string; isAdmin?: boolean; productId: string; productTitle?: string; }
 export interface ExchangeRates { [key: string]: number; }
 let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
 function getExchangeRatesOnce(): Promise<ExchangeRates> {
@@ -24,7 +24,7 @@ function getExchangeRatesOnce(): Promise<ExchangeRates> {
     if (!exchangeRatesPromise) exchangeRatesPromise = fetchExchangeRates().then(rates => { exchangeRatesCache.set(rates); return rates; }).catch(error => { exchangeRatesPromise = null; throw error; });
     return exchangeRatesPromise;
 }
-export default function PaymentButton({ amount, notes, userId, productId, productTitle }: PaymentButtonProps) {
+export default function PaymentButton({ amount, notes, userId, isAdmin = false, productId, productTitle }: PaymentButtonProps) {
     const { toast } = useToast(); const [isLoading, setIsLoading] = useState(false); const [localAmount, setLocalAmount] = useState(amount);
     const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [hasPurchased, setHasPurchased] = useState(false);
     const [isCurrencyFetching, setIsCurrencyFetching] = useState(true); const [isPurchaseChecking, setIsPurchaseChecking] = useState(true); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false); const [shareCopied, setShareCopied] = useState(false); const [shareMenuOpen, setShareMenuOpen] = useState(false); const [showMoreShareOptions, setShowMoreShareOptions] = useState(false);
@@ -82,6 +82,11 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
     useEffect(() => {
         if (!productId) return;
         let active = true;
+        if (isAdmin) {
+            setHasPurchased(true);
+            setIsPurchaseChecking(false);
+            return () => { active = false; };
+        }
         setHasPurchased(false);
         setIsPurchaseChecking(true);
 
@@ -113,7 +118,7 @@ export default function PaymentButton({ amount, notes, userId, productId, produc
             });
 
         return () => { active = false; };
-    }, [productId]);
+    }, [productId, isAdmin]);
 
     const getShareDetails = () => {
         const url = `${window.location.origin}/book/${encodeURIComponent(productId)}`;
