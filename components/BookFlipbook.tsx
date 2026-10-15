@@ -84,6 +84,17 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
 
   const openReader = async () => {
     if (loading) return;
+    // On desktop, take readers from mixed book grids to the dedicated book-detail
+    // page first. That page has a Back to homepage button and avoids rendering a
+    // reader beside other book cards. Keep mobile's existing flow unchanged.
+    const isDesktopOpen = typeof window !== 'undefined'
+      && window.matchMedia('(min-width: 768px)').matches
+      && window.screen.width >= 768;
+    const detailPath = `/book/${encodeURIComponent(bookId)}`;
+    if (isDesktopOpen && window.location.pathname !== detailPath) {
+      window.location.assign(detailPath);
+      return;
+    }
     setOpened(true); setLoading(true); setError(''); setReaderUrl(''); setPdfReady(false);
     try {
       const response = await fetch('/api/get-book-reader', {
