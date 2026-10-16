@@ -84,8 +84,14 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
 
   const openReader = async () => {
     if (loading) return;
-    // Keep the reader on the page where the reader clicked. On desktop it opens
-    // directly below the "Books by Authors" button instead of navigating away.
+    // On desktop, take the reader to this book's dedicated details page first.
+    // The read=1 query opens the same reader there; mobile behavior stays unchanged.
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches && window.screen.width >= 768;
+    const isBookDetailPage = window.location.pathname === `/book/${encodeURIComponent(bookId)}`;
+    if (isDesktop && !isBookDetailPage) {
+      window.location.assign(`/book/${encodeURIComponent(bookId)}?read=1`);
+      return;
+    }
     setOpened(true); setLoading(true); setError(''); setReaderUrl(''); setPdfReady(false);
     try {
       const response = await fetch('/api/get-book-reader', {
