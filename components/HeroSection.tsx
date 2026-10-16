@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface HeroSectionProps {
     title?: string;
@@ -8,6 +9,7 @@ interface HeroSectionProps {
     imageSrc?: string;
     imageAlt?: string;
     welcomeName?: string;
+    isAdmin?: boolean;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
@@ -16,6 +18,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     imageSrc = "/homepage_hero.jpeg",
     imageAlt = "Featured Book",
     welcomeName,
+    isAdmin = false,
 }) => {
     return (
         <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-18 overflow-hidden">
@@ -28,36 +31,25 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                             </p>
                         </div>
                     )}
+                    {isAdmin && (
+                        <Link href="/admin_panel" className="absolute right-0 top-12 z-20 inline-flex min-h-[40px] items-center justify-center rounded-lg border border-white/70 bg-blue-700 px-4 py-2 text-sm font-bold text-white shadow-md transition-colors hover:bg-blue-800">
+                            Admin Panel
+                        </Link>
+                    )}
                     <div className="md:w-1/2 mb-8 md:mb-0">
-                        {welcomeName?.trim() && (
-                            <div className="mb-5 min-h-[2.5rem]" aria-hidden="true" />
-                        )}
+                        {welcomeName?.trim() && <div className="mb-5 min-h-[2.5rem]" aria-hidden="true" />}
                         <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight italic opacity-0 translate-y-4 animate-[fadeInUp_0.6s_ease-out_forwards]">{title}</h1>
                         <p className="text-xl md:text-2xl mb-10 text-white font-semibold opacity-0 scale-95 animate-[zoomIn_6s_ease-out_forwards] italic">{subtitle}</p>
                     </div>
                     <div className="md:w-1/2">
                         <div className="relative mx-auto w-full max-w-md">
-                            <div
-                                role="note"
-                                aria-label="A message for visitors"
-                                className="absolute right-[3%] top-[17%] z-10 w-[34%] rounded-[48%] border-[3px] border-black bg-white px-1 py-1.5 text-center text-black shadow-[0_0_10px_rgba(0,0,0,0.35)] opacity-0 scale-90 animate-[earthquakeZoom_3.5s_ease-out_forwards] sm:w-[34%] sm:px-2 sm:py-1.5"
-                            >
+                            <div role="note" aria-label="A message for visitors" className="absolute right-[3%] top-[17%] z-10 w-[34%] rounded-[48%] border-[3px] border-black bg-white px-1 py-1.5 text-center text-black shadow-[0_0_10px_rgba(0,0,0,0.35)] opacity-0 scale-90 animate-[earthquakeZoom_3.5s_ease-out_forwards] sm:w-[34%] sm:px-2 sm:py-1.5">
                                 <p className="text-[11px] sm:text-xs font-extrabold leading-snug [text-shadow:0_0_1px_rgba(0,0,0,0.85)]">
-                                    Heyy! 🙋<br />
-                                    Where are you from?<br />
-                                    We&apos;ve got something<br />
-                                    special for you, too! ❤️
+                                    Heyy! 🙋<br />Where are you from?<br />We&apos;ve got something<br />special for you, too! ❤️
                                 </p>
                                 <span aria-hidden="true" className="absolute -left-2 top-[48%] h-3 w-3 rotate-45 border-l-[3px] border-b-[3px] border-black bg-white" />
                             </div>
-                            <img
-                                src={imageSrc}
-                                alt={imageAlt}
-                                width={640}
-                                height={420}
-                                fetchPriority="high"
-                                className="block w-full rounded-lg shadow-2xl opacity-0 scale-95 animate-[fadeInUp_0.6s_ease-out_forwards]"
-                            />
+                            <img src={imageSrc} alt={imageAlt} width={640} height={420} fetchPriority="high" className="block w-full rounded-lg shadow-2xl opacity-0 scale-95 animate-[fadeInUp_0.6s_ease-out_forwards]" />
                         </div>
                     </div>
                 </div>
