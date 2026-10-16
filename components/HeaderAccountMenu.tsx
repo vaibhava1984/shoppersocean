@@ -24,13 +24,15 @@ export default function HeaderAccountMenu({
     }
   }
 
+  const firstName = fullName?.trim().split(/\s+/)[0];
+
   return (
     <div className="ml-auto flex min-w-0 items-center justify-end gap-2 sm:gap-3">
       <span
         title={fullName ?? email ?? "User"}
         className="mr-1 min-w-0 max-w-[92px] truncate font-serif text-sm font-bold tracking-tight text-slate-950 sm:mr-2 sm:max-w-[240px] sm:text-lg"
       >
-        Hi {fullName ?? email}
+        Hi {firstName || email}
       </span>
       <Link href="/settings" className={accountButtonClass}>
         Account Settings
