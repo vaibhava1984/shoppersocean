@@ -86,10 +86,13 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     if (loading) return;
     // On desktop, take the reader to this book's dedicated details page first.
     // The read=1 query opens the same reader there; mobile behavior stays unchanged.
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches && window.screen.width >= 768;
-    const isBookDetailPage = window.location.pathname === `/book/${encodeURIComponent(bookId)}`;
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const currentRouteBookId = pathParts[0] === 'book' ? decodeURIComponent(pathParts[1] || '') : '';
+    const isBookDetailPage = currentRouteBookId === String(bookId);
     if (isDesktop && !isBookDetailPage) {
-      window.location.assign(`/book/${encodeURIComponent(bookId)}?read=1`);
+      // Navigate first; the book detail page mounts the reader and opens it from read=1.
+      window.location.href = `/book/${encodeURIComponent(bookId)}?read=1`;
       return;
     }
     setOpened(true); setLoading(true); setError(''); setReaderUrl(''); setPdfReady(false);
@@ -120,8 +123,10 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     // A desktop book-card click carries read=1 to the dedicated book detail page.
     // Auto-open the reader there, inline beside the cover, without changing mobile.
     if (typeof window === 'undefined') return;
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches && window.screen.width >= 768;
-    const isDetailReadRequest = window.location.pathname === `/book/${encodeURIComponent(bookId)}`
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const currentRouteBookId = pathParts[0] === 'book' ? decodeURIComponent(pathParts[1] || '') : '';
+    const isDetailReadRequest = currentRouteBookId === String(bookId)
       && new URLSearchParams(window.location.search).get('read') === '1';
     if (isDesktop && isDetailReadRequest && !opened && !loading) void openReader();
   }, [bookId]);
