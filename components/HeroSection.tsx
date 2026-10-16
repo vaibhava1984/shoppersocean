@@ -32,7 +32,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         </div>
                     )}
                     {isAdmin && (
-                        <Link href="/admin_panel" className="absolute right-0 top-12 z-20 inline-flex min-h-[40px] items-center justify-center rounded-lg border border-white/70 bg-blue-700 px-4 py-2 text-sm font-bold text-white shadow-md transition-colors hover:bg-blue-800">
+                        <Link href="/admin_panel" className="absolute left-1/2 top-[-3.5rem] z-20 -translate-x-1/2 inline-flex min-h-[40px] items-center justify-center rounded-lg border border-white/70 bg-blue-700 px-4 py-2 text-sm font-bold text-white shadow-md transition-colors hover:bg-blue-800">
                             Admin Panel
                         </Link>
                     )}
