@@ -112,7 +112,7 @@ export default function BookCard({ book, loggedinUserId }: {
                         <div className="p-2 sm:p-6 flex-grow flex flex-col justify-between">
                             <div>
                                 <h3 className="text-sm sm:text-xl font-semibold mb-2 text-slate-800 leading-snug">
-                                    <Link href={`/book/${book.id}`}>{book.title}</Link>
+                                    <Link href={`/book/${book.id}`} onClick={(event) => handleBookLinkClick(event, book.id)}>{book.title}</Link>
                                 </h3>
                                 <div className="mt-2 text-xs sm:text-base">
                                     {book.description.length > 100 ? (
