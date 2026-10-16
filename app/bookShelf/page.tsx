@@ -151,7 +151,7 @@ export default async function BookShelfPage({
                         </div>
                     ) : (
                         <>
-                            <h1 className="mb-8 text-3xl font-bold text-slate-800">Your Books</h1>
+                            <h1 className="mb-8 text-2xl sm:text-3xl font-bold text-slate-800">Hi {String(user?.firstName ?? "").trim().split(/\s+/)[0] || "there"}, here are the books that you purchased. Read and enjoy ! ☺️</h1>
                             {books.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                                     {books.map((book) => (
@@ -160,7 +160,7 @@ export default async function BookShelfPage({
                                 </div>
                             ) : (
                                 <div className="rounded border-2 border-dashed border-gray-300 py-12 text-center">
-                                    <p className="text-lg text-slate-600">You haven’t purchased any books yet.</p>
+                                    <p className="text-lg text-slate-600">Uh oh ! 😯 You haven’t purchased any books so far !! Try one now !! ☺️</p>
                                 </div>
                             )}
                         </>
