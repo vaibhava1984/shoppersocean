@@ -11,9 +11,10 @@ type AuthModalProps = {
   open: boolean;
   initialMode: "signin" | "signup";
   onClose: () => void;
+  onSuccess?: () => void;
 };
 
-export default function AuthModal({ open, initialMode, onClose }: AuthModalProps) {
+export default function AuthModal({ open, initialMode, onClose, onSuccess }: AuthModalProps) {
   const router = useRouter();
   const auth = useMemo(() => createClient(), []);
   const [isSignIn, setIsSignIn] = useState(initialMode === "signin");
@@ -94,8 +95,12 @@ export default function AuthModal({ open, initialMode, onClose }: AuthModalProps
           setErrors({ general: message });
           return;
         }
-        onClose();
-        router.refresh();
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          onClose();
+          router.refresh();
+        }
       } else {
         const { data, error } = await auth.auth.signUp({
           email: email.trim(),
