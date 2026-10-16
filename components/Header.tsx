@@ -5,6 +5,7 @@ import SiteSearch from "@/components/SiteSearch"
 import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation"
 import HeaderAccountMenu from "@/components/HeaderAccountMenu";
 import HeaderAuthButtons from "@/components/HeaderAuthButtons";
+import YourBooksNavigation from "@/components/YourBooksNavigation";
 
 const navigationItems = [
   ["/", "Home"],
@@ -53,9 +54,13 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
         <div className="container mx-auto px-2 sm:px-4 py-2">
           <div className="relative z-50 max-w-5xl mx-auto">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
-              {navigationItems.map(([href, label]) => (
-                <Link key={href} href={href} className={navigationButtonClass}>{label}</Link>
-              ))}
+              {navigationItems.map(([href, label]) =>
+                href === "/bookShelf" && !currentUser ? (
+                  <YourBooksNavigation key={href} className={navigationButtonClass} />
+                ) : (
+                  <Link key={href} href={href} className={navigationButtonClass}>{label}</Link>
+                )
+              )}
               <HeaderAuthorButton />
               <Link href="/my-sales" className={navigationButtonClass}>Your Sales</Link>
             </div>
