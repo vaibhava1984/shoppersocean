@@ -84,17 +84,8 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
 
   const openReader = async () => {
     if (loading) return;
-    // On desktop, take readers from mixed book grids to the dedicated book-detail
-    // page first. That page has a Back to homepage button and avoids rendering a
-    // reader beside other book cards. Keep mobile's existing flow unchanged.
-    const isDesktopOpen = typeof window !== 'undefined'
-      && window.matchMedia('(min-width: 768px)').matches
-      && window.screen.width >= 768;
-    const detailPath = `/book/${encodeURIComponent(bookId)}`;
-    if (isDesktopOpen && window.location.pathname !== detailPath) {
-      window.location.assign(`${detailPath}?read=1`);
-      return;
-    }
+    // Keep the reader on the page where the reader clicked. On desktop it opens
+    // directly below the "Books by Authors" button instead of navigating away.
     setOpened(true); setLoading(true); setError(''); setReaderUrl(''); setPdfReady(false);
     try {
       const response = await fetch('/api/get-book-reader', {
@@ -455,7 +446,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const useFullDesktopReader = portalToBody && window.screen.width >= 768;
   const readerViewportWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth, window.screen.width || window.innerWidth, window.visualViewport?.width || window.innerWidth) : undefined;
   const readerViewportHeight = typeof window !== 'undefined' ? Math.min(window.innerHeight, window.screen.height || window.innerHeight, window.visualViewport?.height || window.innerHeight) : undefined;
-  const readerMarkup = <div ref={viewerRef} data-flipbook-reader="true" className={`relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb] ${portalToBody ? 'fixed inset-0 z-[100] items-center overflow-hidden bg-transparent pointer-events-none pt-20' : ''} ${useFullDesktopReader ? 'h-dvh w-screen max-w-none' : ''}`} style={portalToBody ? { position: 'fixed', left: 0, top: 0, width: readerViewportWidth, maxWidth: readerViewportWidth, height: readerViewportHeight, marginLeft: 0, paddingTop: desktopReaderTop, boxSizing: 'border-box', background: 'transparent' } : { width: '100%', maxWidth: '100%', marginLeft: 0 }}>
+  const readerMarkup = <div ref={viewerRef} data-flipbook-reader="true" className={`relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb] ${portalToBody ? 'fixed inset-0 z-[100] items-center overflow-hidden bg-transparent pointer-events-none' : ''} ${useFullDesktopReader ? 'w-screen max-w-none' : ''}`} style={portalToBody ? { position: 'fixed', left: 0, top: 0, width: readerViewportWidth, maxWidth: readerViewportWidth, height: readerViewportHeight, marginLeft: 0, paddingTop: desktopReaderTop, boxSizing: 'border-box', background: 'transparent' } : { width: '100%', maxWidth: '100%', marginLeft: 0 }}>
     <div className={`flex flex-wrap items-center justify-between gap-2 border-b border-white/20 bg-blue-700 px-3 py-2 ${portalToBody ? 'pointer-events-auto w-fit max-w-[94vw] rounded-t-lg' : ''}`}><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
       <Button type="button" variant="ghost" className="min-h-9 rounded-lg border border-white/25 px-4 text-sm font-bold text-[#e5e7eb] hover:bg-white/10 hover:text-[#e5e7eb]" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook">close flipbook</Button>
     </div></div>
