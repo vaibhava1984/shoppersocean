@@ -118,7 +118,7 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
             });
 
         return () => { active = false; };
-    }, [productId, isAdmin]);
+    }, [productId, isAdmin, userId]);
 
     const getShareDetails = () => {
         const url = `${window.location.origin}/book/${encodeURIComponent(productId)}`;
