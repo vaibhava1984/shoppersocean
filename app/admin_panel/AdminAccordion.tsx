@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, ChevronUp, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, MessageSquare, UserCheck, ExternalLink, Save } from "lucide-react";
+import { ChevronDown, ChevronUp, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, MessageSquare, ExternalLink, Save } from "lucide-react";
 import Dashboard from "../components/adminPage/Dashboard";
 
 const sections = [
@@ -12,7 +12,6 @@ const sections = [
   { label: "Authors", path: "authors", icon: PenTool },
   { label: "Users", path: "users", icon: Users },
   { label: "Review Section", path: "review_section", icon: MessageSquare },
-  { label: "Authors Approvals", path: "authors_approvals", icon: UserCheck },
 ] as const;
 
 export default function AdminAccordion() {
@@ -47,6 +46,11 @@ export default function AdminAccordion() {
           aside { display:none!important; }
           main { display:block!important; padding:8px!important; width:100%!important; max-width:100%!important; min-width:0!important; overflow:visible!important; }
           body .flex.h-screen { display:block!important; width:100%!important; min-width:0!important; }
+          main > section { display:block!important; width:100%!important; min-width:320px!important; max-width:none!important; }
+          main > section > div { max-width:none!important; }
+          main .flex.items-center.justify-between { flex-direction:row!important; align-items:center!important; }
+          main .flex.items-center.justify-between > div { min-width:0!important; }
+          main .flex.items-center.justify-between button { flex-shrink:0!important; }
           form { width:100%; max-width:100%; }
           table { min-width:600px; }
           .overflow-x-auto { width:100%; max-width:100%; overflow-x:auto; }
