@@ -1,29 +1,21 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Loader2Icon, Share2, Mail, MessageCircle, Copy, MoreHorizontal } from 'lucide-react';
-import { fetchExchangeRates, convertCurrency, getCurrencyCode } from '@/utils/currency';
 import { setPurchaseStatus } from '@/utils/purchaseStatusCache';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
-import { exchangeRatesCache } from "@/utils/cache";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import dynamic from 'next/dynamic';
+import PayPalCheckoutButton from '@/components/PayPalCheckoutButton';
 const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
     ssr: false,
     loading: () => <div className="h-10 w-full" aria-hidden="true" />,
 });
 
 interface PaymentButtonProps { amount: number; notes?: object; userId?: string; isAdmin?: boolean; productId: string; productTitle?: string; }
-export interface ExchangeRates { [key: string]: number; }
-let exchangeRatesPromise: Promise<ExchangeRates> | null = null;
-function getExchangeRatesOnce(): Promise<ExchangeRates> {
-    const cachedRates = exchangeRatesCache.get(); if (cachedRates) return Promise.resolve(cachedRates);
-    if (!exchangeRatesPromise) exchangeRatesPromise = fetchExchangeRates().then(rates => { exchangeRatesCache.set(rates); return rates; }).catch(error => { exchangeRatesPromise = null; throw error; });
-    return exchangeRatesPromise;
-}
 export default function PaymentButton({ amount, notes, userId, isAdmin = false, productId, productTitle }: PaymentButtonProps) {
     const { toast } = useToast(); const [isLoading, setIsLoading] = useState(false); const [localAmount, setLocalAmount] = useState(amount);
     const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [hasPurchased, setHasPurchased] = useState(false);
@@ -34,8 +26,9 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
 
         async function setupLocalCurrency() {
             try {
-                // Logged-out visitors always see USD. Signed-in users use their D1 profile country.
-                let detectedCurrency = 'USD';
+                // India keeps the existing ₹ pricing and Razorpay checkout.
+                // International customers use the agreed flat US$3 PayPal price.
+                let isIndia = false;
 
                 if (userId) {
                     const response = await fetch('/api/auth/me', {
@@ -44,32 +37,24 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        const country = data?.user?.country;
-                        if (country) {
-                            const mapped = getCurrencyCode(String(country).toUpperCase());
-                            if (mapped && mapped !== 'Unknown') detectedCurrency = mapped;
-                        }
+                        const country = String(data?.user?.country || '').trim().toUpperCase();
+                        isIndia = country === 'IN' || country === 'INDIA';
                     }
                 }
 
-                const rates = await getExchangeRatesOnce();
                 if (!active) return;
-
-                if (detectedCurrency === 'INR') {
+                if (isIndia) {
                     setLocalCurrency('INR');
                     setLocalAmount(amount);
-                } else if (rates[detectedCurrency]) {
-                    setLocalCurrency(detectedCurrency);
-                    setLocalAmount(convertCurrency(amount, 'INR', detectedCurrency, rates));
                 } else {
                     setLocalCurrency('USD');
-                    setLocalAmount(convertCurrency(amount, 'INR', 'USD', rates));
+                    setLocalAmount(3);
                 }
             } catch (error) {
                 if (!active) return;
                 console.error('Error setting up local currency:', error);
-                setLocalCurrency('INR');
-                setLocalAmount(amount);
+                setLocalCurrency('USD');
+                setLocalAmount(3);
             } finally {
                 if (active) setIsCurrencyFetching(false);
             }
@@ -201,7 +186,17 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
     const isInitialFetching = isCurrencyFetching || isPurchaseChecking;
     if (hasPurchased) return <div className="w-full mt-6"><BookFlipbook bookId={productId} title={productTitle || 'Book'} onShareBook={handleShareBook} />{shareMenuPanel}</div>;
     return <><div className="flex w-full items-stretch gap-2">
-        <button onClick={userId ? handlePayment : () => setIsLoginNeededDialogOpen(true)} disabled={isLoading} className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center rounded-lg bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-[#F8FAFC] shadow-md ring-1 ring-blue-700/20 transition-all hover:bg-blue-700 active:scale-95 disabled:opacity-60 sm:text-sm">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex items-center justify-center'><Loader2Icon width={16} className='mr-1 animate-spin shrink-0' /><span>Fetching</span></span> : `Buy eBook ${formattedAmount ?? '-'}`}</button>
+        {userId && localCurrency !== 'INR' && !isInitialFetching ? (
+            <div className="min-w-0 flex-1">
+                <PayPalCheckoutButton productId={productId} onSuccess={() => {
+                    alert('Payment successful!');
+                    setPurchaseStatus(userId, productId, true);
+                    setHasPurchased(true);
+                }} />
+            </div>
+        ) : (
+            <button onClick={userId ? handlePayment : () => setIsLoginNeededDialogOpen(true)} disabled={isLoading} className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center rounded-lg bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-[#F8FAFC] shadow-md ring-1 ring-blue-700/20 transition-all hover:bg-blue-700 active:scale-95 disabled:opacity-60 sm:text-sm">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex items-center justify-center'><Loader2Icon width={16} className='mr-1 animate-spin shrink-0' /><span>Fetching</span></span> : `Buy eBook ${formattedAmount ?? '-'}`}</button>
+        )}
         <button type="button" onClick={handleShareBook} aria-label="Share book link" className="inline-flex min-h-[44px] min-w-0 flex-1 items-center justify-center gap-1 rounded-lg bg-blue-600 px-2 py-2 text-center text-xs font-extrabold leading-tight text-[#F8FAFC] shadow-md ring-1 ring-blue-700/20 transition-all hover:bg-blue-700 active:scale-95 sm:text-sm"><Share2 size={16} aria-hidden="true" className="shrink-0" /><span>{shareCopied ? 'Link copied!' : 'Share Book'}</span></button>
     </div>{shareMenuPanel}<AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}><AlertDialogContent className='bg-white'><AlertDialogTitle className='hidden'></AlertDialogTitle><Card className="w-full max-w-md border-0"><CardHeader className="relative"><CardTitle className="text-rxl font-bold text-center">Login Required</CardTitle><Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsLoginNeededDialogOpen(false)} aria-label="Close popup"><X className="h-4 w-4" /></Button></CardHeader><CardContent><p className="text-center text-muted-foreground">You need to be logged in to make a purchase. Please sign up or sign in to continue.</p></CardContent><CardFooter className="flex justify-center space-x-4"><Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link><Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link></CardFooter></Card></AlertDialogContent></AlertDialog></>;
 }

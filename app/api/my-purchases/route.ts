@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
+import { ensurePaypalSchema } from "@/utils/paypal";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -23,6 +24,8 @@ export async function GET() {
       );
     }
 
+    await ensurePaypalSchema(db);
+
     const result = await db.prepare(
       `SELECT
         o.id,
@@ -33,7 +36,10 @@ export async function GET() {
         b.id AS book_id,
         b.title AS book_title,
         p.amount AS payment_amount,
-        p.currency AS payment_currency
+        p.currency AS payment_currency,
+        p.original_amount AS payment_original_amount,
+        p.original_currency AS payment_original_currency,
+        p.payment_method AS stored_payment_method
       FROM orders o
       LEFT JOIN books b ON b.id = o.book_id
       LEFT JOIN payments p ON p.order_id = o.id
@@ -50,9 +56,9 @@ export async function GET() {
         ? { id: String(row.book_id), title: row.book_title || null }
         : null,
       payment: {
-        original_amount: row.payment_amount ?? row.original_amount ?? 0,
-        original_currency: row.payment_currency ?? row.original_currency ?? "",
-        payment_method: "N/A",
+        original_amount: row.payment_original_amount ?? row.payment_amount ?? row.original_amount ?? 0,
+        original_currency: row.payment_original_currency ?? row.payment_currency ?? row.original_currency ?? "",
+        payment_method: row.stored_payment_method || (row.payment_currency ? "Razorpay" : "N/A"),
       },
     }));
 
