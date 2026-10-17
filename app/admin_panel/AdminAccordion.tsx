@@ -39,15 +39,19 @@ export default function AdminAccordion() {
         const style = doc.createElement("style");
         style.id = "admin-accordion-frame-style";
         style.textContent = `
-          html,body { min-height:0!important; height:auto!important; background:#fff!important; }
+          html, body { min-height:0!important; height:auto!important; width:100%!important; max-width:100%!important; background:#fff!important; overflow-x:auto!important; }
+          *, *::before, *::after { box-sizing:border-box!important; writing-mode:horizontal-tb!important; }
+          body, body * { word-break:normal!important; }
+          body > div, body > div > div { width:100%!important; max-width:100%!important; min-width:0!important; }
           body > div > .h-screen, body .h-screen { height:auto!important; min-height:0!important; }
           aside { display:none!important; }
-          main { padding:12px!important; width:100%!important; min-width:0!important; overflow:visible!important; }
-          body .flex.h-screen { display:block!important; }
-          table { min-width:640px; }
-          .overflow-x-auto { max-width:100%; overflow-x:auto; }
-          input, textarea, select { max-width:100%; }
-          button, [role="button"] { touch-action:manipulation; }
+          main { display:block!important; padding:8px!important; width:100%!important; max-width:100%!important; min-width:0!important; overflow:visible!important; }
+          body .flex.h-screen { display:block!important; width:100%!important; min-width:0!important; }
+          form { width:100%; max-width:100%; }
+          table { min-width:600px; }
+          .overflow-x-auto { width:100%; max-width:100%; overflow-x:auto; }
+          input, textarea, select { max-width:100%; min-width:0; }
+          button, [role="button"] { touch-action:manipulation; white-space:normal; }
         `;
         doc.head.appendChild(style);
       }
@@ -130,24 +134,25 @@ export default function AdminAccordion() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-4">
+    <div className="mx-auto w-full max-w-6xl space-y-2 px-2 sm:px-3">
       <header className="rounded-xl bg-white p-4 shadow-sm sm:p-5">
         <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Shoppers Ocean</p>
         <h1 className="mt-1 text-2xl font-bold text-slate-900">Admin Panel</h1>
         <p className="mt-1 text-sm text-slate-600">Choose a section to open its controls below.</p>
       </header>
+      <div className="grid grid-cols-2 items-start gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
       {sections.map(({ label, path, icon: Icon, ...rest }) => {
         const isOpen = open === label;
         return (
-          <section key={label} className="overflow-hidden rounded-xl bg-white shadow-sm">
+          <section key={label} className={"min-w-0 overflow-hidden rounded-lg bg-white shadow-sm " + (isOpen ? "col-span-2 sm:col-span-3 lg:col-span-4" : "")}>
             <button
               type="button"
               aria-expanded={isOpen}
               onClick={() => setOpen(isOpen ? null : label)}
-              className="flex min-h-14 w-full items-center justify-between gap-3 rounded-xl bg-blue-600 px-4 py-3 text-left text-base font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:px-5"
+              className="flex min-h-10 w-full items-center justify-between gap-1 rounded-md bg-blue-600 px-2 py-2 text-left text-xs font-semibold leading-tight text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 sm:min-h-10 sm:px-3 sm:text-sm"
             >
-              <span className="flex min-w-0 items-center gap-3"><Icon className="h-5 w-5 shrink-0" /><span>{label}</span></span>
-              {isOpen ? <ChevronUp className="h-5 w-5 shrink-0" /> : <ChevronDown className="h-5 w-5 shrink-0" />}
+              <span className="flex min-w-0 items-center gap-1.5"><Icon className="h-4 w-4 shrink-0" /><span className="min-w-0">{label}</span></span>
+              {isOpen ? <ChevronUp className="h-4 w-4 shrink-0" /> : <ChevronDown className="h-4 w-4 shrink-0" />}
             </button>
             {isOpen && (
               <div className="border-t border-slate-100 p-2 sm:p-4">
@@ -159,8 +164,8 @@ export default function AdminAccordion() {
                     title={label}
                     src={"/admin_panel/" + path}
                     onLoad={() => prepareFrame(label)}
-                    className="block w-full border-0 bg-white"
-                    style={{ minHeight: 360 }}
+                    className="block w-full min-w-0 border-0 bg-white"
+                    style={{ minHeight: 300, width: "100%" }}
                   />
                 )}
                 <div className="mt-3 flex flex-wrap justify-end gap-2 border-t border-slate-100 pt-3">
@@ -172,7 +177,8 @@ export default function AdminAccordion() {
           </section>
         );
       })}
-      <a href="/" className="flex min-h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700"><ExternalLink className="h-4 w-4" /> Back to Homepage</a>
+      </div>
+      <a href="/" className="flex min-h-10 items-center justify-center gap-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700"><ExternalLink className="h-4 w-4" /> Back to Homepage</a>
     </div>
   );
 }
