@@ -92,7 +92,7 @@ export async function POST(req: Request) {
     const email = String(identity.profile.email || profile?.email || "").trim();
     const phone = String(identity.profile.phone || profile?.phone || body.phone || "").replace(/\D/g, "");
     if (!email) return NextResponse.json({ error: "A valid email address is required for card checkout." }, { status: 400 });
-    if (phone.length < 10) return NextResponse.json({ error: "Cashfree requires a phone number for checkout. Please contact support to add one to your account." }, { status: 400 });
+    if (phone.length < 10) return NextResponse.json({ error: "Enter a phone number with at least 10 digits to continue." }, { status: 400 });
     const orderId = `so_cf_${crypto.randomUUID().replace(/-/g, "")}`;
     const response = await fetch(`${c.base}/orders`, {
       method: "POST", headers: apiHeaders(c),
