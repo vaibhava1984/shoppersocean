@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, ChevronUp, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, MessageSquare, UserCheck, ExternalLink } from "lucide-react";
 import Dashboard from "@/components/adminPage/Dashboard";
 
@@ -17,8 +17,16 @@ const sections = [
 
 export default function AdminAccordion() {
   const [open, setOpen] = useState<string | null>(null);
-  const [reloadKey, setReloadKey] = useState(0);
   const frameRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.type === "admin-section-saved") setOpen(null);
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
 
   function prepareFrame(key: string) {
     const frame = frameRefs.current[key];
@@ -56,9 +64,9 @@ export default function AdminAccordion() {
         const originalFetch = win.fetch.bind(win);
         win.fetch = (async (...args: Parameters<typeof fetch>) => {
           const response = await originalFetch(...args);
-          if (savePending && response.ok) {
+          if (savePending) {
             savePending = false;
-            win.parent.postMessage({ type: "admin-section-saved", key }, win.location.origin);
+            if (response.ok) win.parent.postMessage({ type: "admin-section-saved", key }, win.location.origin);
           }
           return response;
         }) as typeof fetch;
@@ -101,7 +109,6 @@ export default function AdminAccordion() {
                   <Dashboard />
                 ) : (
                   <iframe
-                    key={reloadKey + path}
                     ref={(node) => { frameRefs.current[label] = node; }}
                     title={label}
                     src={"/admin_panel/" + path}
