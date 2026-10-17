@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, ChevronUp, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, MessageSquare, UserCheck, ExternalLink } from "lucide-react";
-import Dashboard from "@/components/adminPage/Dashboard";
+import Dashboard from "../components/adminPage/Dashboard";
 
 const sections = [
   { label: "Dashboard", path: "", icon: LayoutDashboard, dashboard: true },
