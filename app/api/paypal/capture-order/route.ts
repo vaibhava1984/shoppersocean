@@ -91,6 +91,8 @@ export async function POST(req: Request) {
       paidCurrency !== "USD" ||
       !Number.isFinite(paidAmount) ||
       Math.abs(paidAmount - EXPECTED_USD) > 0.001 ||
+      !Number.isFinite(Number(savedOrder.amount)) ||
+      Number(savedOrder.amount) <= 0 ||
       String(savedOrder.currency || "").toUpperCase() !== "INR"
     ) {
       return NextResponse.json({ error: "PayPal payment details did not match the expected purchase" }, { status: 409 });
