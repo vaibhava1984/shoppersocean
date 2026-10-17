@@ -12,6 +12,7 @@ declare global {
 type Props = {
   productId: string;
   onSuccess: () => void;
+  fundingSource?: "paypal" | "card";
 };
 
 function loadPaypalSdk(clientId: string): Promise<void> {
@@ -45,7 +46,7 @@ function loadPaypalSdk(clientId: string): Promise<void> {
   return window.__shoppersOceanPaypalSdk ?? Promise.reject(new Error("PayPal checkout failed to initialize"));
 }
 
-export default function PayPalCheckoutButton({ productId, onSuccess }: Props) {
+export default function PayPalCheckoutButton({ productId, onSuccess, fundingSource = "paypal" }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const onSuccessRef = useRef(onSuccess);
   const [status, setStatus] = useState("Loading PayPal…");
@@ -73,7 +74,9 @@ export default function PayPalCheckoutButton({ productId, onSuccess }: Props) {
         if (!active || !container || !window.paypal) return;
 
         container.replaceChildren();
+        const funding = fundingSource === "card" ? window.paypal.FUNDING.CARD : window.paypal.FUNDING.PAYPAL;
         buttons = window.paypal.Buttons({
+          fundingSource: funding,
           style: {
             layout: "vertical",
             shape: "rect",
@@ -130,7 +133,7 @@ export default function PayPalCheckoutButton({ productId, onSuccess }: Props) {
       active = false;
       try { buttons?.close?.(); } catch {}
     };
-  }, [productId, attempt]);
+  }, [productId, attempt, fundingSource]);
 
   return (
     <div className="min-w-0 w-full">
