@@ -39,7 +39,7 @@ export default function AdminAccordion() {
         const style = doc.createElement("style");
         style.id = "admin-accordion-frame-style";
         style.textContent = `
-          html, body { min-height:0!important; height:auto!important; width:100%!important; max-width:100%!important; background:#fff!important; overflow-x:auto!important; }
+          html, body { min-height:0!important; height:100%!important; max-height:100%!important; width:100%!important; max-width:100%!important; background:#fff!important; overflow:auto!important; }
           *, *::before, *::after { box-sizing:border-box!important; writing-mode:horizontal-tb!important; }
           body, body * { word-break:normal!important; }
           body > div, body > div > div { width:100%!important; max-width:100%!important; min-width:0!important; }
@@ -55,16 +55,12 @@ export default function AdminAccordion() {
         `;
         doc.head.appendChild(style);
       }
-      const resize = () => {
-        const height = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight, 320);
-        frame.style.height = Math.min(height + 24, 5000) + "px";
-      };
-      resize();
-      if (!(frame as any).__resizeObserver) {
-        const observer = new win.ResizeObserver(resize);
-        observer.observe(doc.body);
-        (frame as any).__resizeObserver = observer;
-      }
+      // Keep every expanded admin section in a compact, fixed-height viewport.
+      // The iframe itself becomes the scrollable area instead of stretching the page.
+      frame.style.height = "190px";
+      frame.style.minHeight = "190px";
+      frame.style.maxHeight = "190px";
+      frame.setAttribute("scrolling", "yes");
 
       // Do not collapse the Books section on the first successful request:
       // creating a book can be followed by a separate, potentially large PDF upload.
@@ -157,7 +153,9 @@ export default function AdminAccordion() {
             {isOpen && (
               <div className="border-t border-slate-100 p-2 sm:p-4">
                 {"dashboard" in rest && rest.dashboard ? (
-                  <Dashboard />
+                  <div className="h-[190px] max-h-[190px] overflow-auto overscroll-contain rounded-md border border-slate-200">
+                    <Dashboard />
+                  </div>
                 ) : (
                   <iframe
                     ref={(node) => { frameRefs.current[label] = node; }}
@@ -165,7 +163,8 @@ export default function AdminAccordion() {
                     src={"/admin_panel/" + path}
                     onLoad={() => prepareFrame(label)}
                     className="block w-full min-w-0 border-0 bg-white"
-                    style={{ minHeight: 300, width: "100%" }}
+                    scrolling="yes"
+                    style={{ height: 190, minHeight: 190, maxHeight: 190, width: "100%", overflow: "auto" }}
                   />
                 )}
                 <div className="mt-3 flex flex-wrap justify-end gap-2 border-t border-slate-100 pt-3">
