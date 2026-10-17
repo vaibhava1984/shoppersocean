@@ -1,8 +1,13 @@
-import type { D1Database } from "@cloudflare/workers-types";
-
 const PAYPAL_API_BASE = "https://api-m.paypal.com";
 
+const readyDatabases = new WeakSet<object>();
+const pendingDatabases = new WeakMap<object, Promise<void>>();
+
 export async function ensurePaypalSchema(db: any) {
+  if (readyDatabases.has(db)) return;
+  const pending = pendingDatabases.get(db);
+  if (pending) return pending;
+  const setup = (async () => {
   const statements = [
     "ALTER TABLE orders ADD COLUMN paypal_order_id TEXT",
     "ALTER TABLE payments ADD COLUMN paypal_order_id TEXT",
@@ -28,6 +33,14 @@ export async function ensurePaypalSchema(db: any) {
       }
       throw error;
     }
+  }
+  })();
+  pendingDatabases.set(db, setup);
+  try {
+    await setup;
+    readyDatabases.add(db);
+  } finally {
+    pendingDatabases.delete(db);
   }
 }
 
