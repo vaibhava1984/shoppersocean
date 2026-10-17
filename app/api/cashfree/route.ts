@@ -90,7 +90,7 @@ export async function POST(req: Request) {
     if (!Number.isFinite(priceInINR) || priceInINR <= 0) return NextResponse.json({ error: "This book does not have a valid price" }, { status: 400 });
     const profile = await db.prepare("SELECT email, phone FROM users WHERE id = ? LIMIT 1").bind(identity.profile.id).first<Record<string, any>>();
     const email = String(identity.profile.email || profile?.email || "").trim();
-    const phone = String(identity.profile.phone || profile?.phone || "").replace(/\D/g, "");
+    const phone = String(identity.profile.phone || profile?.phone || body.phone || "").replace(/\D/g, "");
     if (!email) return NextResponse.json({ error: "A valid email address is required for card checkout." }, { status: 400 });
     if (phone.length < 10) return NextResponse.json({ error: "Cashfree requires a phone number for checkout. Please contact support to add one to your account." }, { status: 400 });
     const orderId = `so_cf_${crypto.randomUUID().replace(/-/g, "")}`;

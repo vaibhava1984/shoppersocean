@@ -27,11 +27,13 @@ function loadCashfree(): Promise<void> {
 export default function CashfreeCheckoutButton({ productId }: { productId: string }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [phone, setPhone] = useState("");
   async function start() {
     if (busy) return;
+    if (phone.replace(/\\D/g, "").length < 10) { setError("Enter a phone number with at least 10 digits to continue."); return; }
     setBusy(true); setError("");
     try {
-      const response = await fetch("/api/cashfree", { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", cache: "no-store", body: JSON.stringify({ action: "create", productId }) });
+      const response = await fetch("/api/cashfree", { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", cache: "no-store", body: JSON.stringify({ action: "create", productId, phone }) });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.paymentSessionId) throw new Error(data.error || "Unable to start card checkout.");
       await loadCashfree();
@@ -45,6 +47,9 @@ export default function CashfreeCheckoutButton({ productId }: { productId: strin
     }
   }
   return <div className="w-full">
+    <label className="mb-2 block text-sm font-semibold text-slate-700">Phone number for payment
+      <input type="tel" inputMode="tel" autoComplete="tel" value={phone} onChange={event => setPhone(event.target.value)} placeholder="Enter phone number" className="mt-1 min-h-11 w-full rounded-lg border border-slate-300 px-3 py-2 text-base text-slate-900 outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" />
+    </label>
     <button type="button" onClick={start} disabled={busy} className="min-h-12 w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-bold text-white hover:bg-blue-700 disabled:opacity-60">{busy ? "Opening secure checkout…" : "Cards & supported wallets — Cashfree"}</button>
     <p className="mt-2 text-center text-xs text-slate-500">Apple Pay or Google Pay appears only if enabled for the merchant and supported on the customer’s device and in their country.</p>
     {error ? <p role="alert" className="mt-2 text-center text-sm text-red-700">{error}</p> : null}
