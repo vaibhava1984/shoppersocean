@@ -11,6 +11,7 @@ function escapeHtml(value: unknown) {
 
 export async function sendSaleNotification(input: {
   paymentId: string;
+  paymentMethod?: string;
   customerEmail: string;
   bookId: string;
   bookTitle: string;
@@ -18,11 +19,12 @@ export async function sendSaleNotification(input: {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new Error("RESEND_API_KEY is not configured");
 
+  const paymentMethod = input.paymentMethod || "Razorpay";
   const html = `<p><strong>New Sale details:</strong></p>
     <p><strong>Customer email:</strong> ${escapeHtml(input.customerEmail)}</p>
     <p><strong>Book ID:</strong> ${escapeHtml(input.bookId)}</p>
     <p><strong>Book Name:</strong> ${escapeHtml(input.bookTitle)}</p>
-    <p><strong>Razorpay payment ID:</strong> ${escapeHtml(input.paymentId)}</p>`;
+    <p><strong>${escapeHtml(paymentMethod)} payment ID:</strong> ${escapeHtml(input.paymentId)}</p>`;
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
