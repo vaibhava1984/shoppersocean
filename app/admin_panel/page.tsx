@@ -1,17 +1,13 @@
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/utils/auth/requireUser";
-import Dashboard from "../components/adminPage/Dashboard";
-import AdminSidebar from "./adminSidebar";
+import AdminAccordion from "./AdminAccordion";
 
 export default async function AdminDashboard() {
   const identity = await requireAdmin();
   if (!identity) redirect("/");
   return (
-    <div className="flex h-screen bg-gray-100">
-      <AdminSidebar />
-      <main className="flex-1 overflow-y-auto p-8">
-        <Dashboard />
-      </main>
+    <div className="min-h-screen bg-slate-100 px-3 py-4 sm:px-6 sm:py-8">
+      <AdminAccordion />
     </div>
   );
 }
