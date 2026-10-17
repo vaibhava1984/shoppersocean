@@ -42,7 +42,7 @@ function loadPaypalSdk(clientId: string): Promise<void> {
     });
   }
 
-  return window.__shoppersOceanPaypalSdk;
+  return window.__shoppersOceanPaypalSdk ?? Promise.reject(new Error("PayPal checkout failed to initialize"));
 }
 
 export default function PayPalCheckoutButton({ productId, onSuccess }: Props) {
@@ -69,9 +69,10 @@ export default function PayPalCheckoutButton({ productId, onSuccess }: Props) {
         }
 
         await loadPaypalSdk(String(config.clientId));
-        if (!active || !containerRef.current || !window.paypal) return;
+        const container = containerRef.current;
+        if (!active || !container || !window.paypal) return;
 
-        containerRef.current.replaceChildren();
+        container.replaceChildren();
         buttons = window.paypal.Buttons({
           style: {
             layout: "vertical",
@@ -116,7 +117,7 @@ export default function PayPalCheckoutButton({ productId, onSuccess }: Props) {
           },
         });
 
-        await buttons.render(containerRef.current);
+        await buttons.render(container);
         if (active) setStatus("");
       } catch (error) {
         console.error("Unable to initialize PayPal checkout:", error);
