@@ -34,7 +34,8 @@ function loadPaypalSdk(clientId: string): Promise<void> {
       script.async = true;
       script.onload = () => resolve();
       script.onerror = () => {
-        window.__shoppersOceanPaypalSdk = undefined;
+        delete window.__shoppersOceanPaypalSdk;
+        script.remove();
         reject(new Error("PayPal checkout failed to load"));
       };
       document.head.appendChild(script);
