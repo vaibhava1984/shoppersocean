@@ -44,9 +44,11 @@ export async function ensurePaypalSchema(db: any) {
   }
 }
 
-export function getPaypalCredentials() {
-  const clientId = process.env.PAYPAL_CLIENT_ID;
-  const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
+export async function getPaypalCredentials() {
+  // Read secrets from the active Cloudflare Worker environment at request time.
+  const { env } = await (await import("@opennextjs/cloudflare")).getCloudflareContext();
+  const clientId = String((env as any).PAYPAL_CLIENT_ID || process.env.PAYPAL_CLIENT_ID || "").trim();
+  const clientSecret = String((env as any).PAYPAL_CLIENT_SECRET || process.env.PAYPAL_CLIENT_SECRET || "").trim();
   if (!clientId || !clientSecret) {
     throw new Error("PayPal Live credentials are not configured");
   }
@@ -54,7 +56,7 @@ export function getPaypalCredentials() {
 }
 
 export async function getPaypalAccessToken() {
-  const { clientId, clientSecret } = getPaypalCredentials();
+  const { clientId, clientSecret } = await getPaypalCredentials();
   const response = await fetch(`${PAYPAL_API_BASE}/v1/oauth2/token`, {
     method: "POST",
     headers: {
