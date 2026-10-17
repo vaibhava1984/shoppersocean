@@ -30,7 +30,7 @@ export default function CashfreeCheckoutButton({ productId }: { productId: strin
   const [phone, setPhone] = useState("");
   async function start() {
     if (busy) return;
-    if (phone.replace(/\\D/g, "").length < 10) { setError("Enter a phone number with at least 10 digits to continue."); return; }
+    if (phone.replace(/\D/g, "").length < 10) { setError("Enter a phone number with at least 10 digits to continue."); return; }
     setBusy(true); setError("");
     try {
       const response = await fetch("/api/cashfree", { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", cache: "no-store", body: JSON.stringify({ action: "create", productId, phone }) });
