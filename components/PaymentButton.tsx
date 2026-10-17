@@ -53,7 +53,7 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
             } catch (error) {
                 if (!active) return;
                 console.error('Error setting up local currency:', error);
-                setLocalCurrency(userId ? 'USD' : 'USD');
+                setLocalCurrency('USD');
                 setLocalAmount(3);
             } finally {
                 if (active) setIsCurrencyFetching(false);
