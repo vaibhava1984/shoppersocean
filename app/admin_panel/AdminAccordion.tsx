@@ -79,7 +79,7 @@ export default function AdminAccordion() {
 
       // Avoid a ResizeObserver-driven resize loop: the frame is intentionally
       // viewport-sized and should not be resized every time a form changes.
-      if (!(frame as any).__saveHandler && key !== "Books") {
+      if (!(frame as any).__saveHandler) {
         let savePending = false;
         let closeTimer: number | undefined;
         const originalFetch = win.fetch.bind(win);
