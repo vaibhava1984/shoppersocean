@@ -3,6 +3,7 @@ import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 import { sendSaleNotification } from "@/utils/email/sendSaleNotification";
+import { addAdminNotification } from "@/utils/adminNotifications";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -274,6 +275,12 @@ export async function POST(req: Request) {
     }
 
     if (shouldNotifySale) {
+      await addAdminNotification(db, {
+        type: "purchase",
+        title: "Book purchased successfully",
+        message: String(profile.email || "A customer") + " purchased “" + String(book.title || "a book") + "”.",
+        details: { paymentId: razorpayPaymentId, orderId: razorpayOrderId, userId, customerEmail: String(profile.email || ""), bookId, bookTitle: String(book.title || ""), amount: Number(amountInINR), currency: "INR", purchasedAt: now }
+      });
       try {
         await sendSaleNotification({
           paymentId: razorpayPaymentId,
