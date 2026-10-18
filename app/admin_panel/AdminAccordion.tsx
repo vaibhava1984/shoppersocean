@@ -11,7 +11,6 @@ const sections = [
   { label: "Books", path: "books", icon: BookOpen },
   { label: "Authors", path: "authors", icon: PenTool },
   { label: "Users", path: "users", icon: Users },
-  { label: "Review Section", path: "review_section", icon: MessageSquare },
   { label: "Authors Approvals", path: "authors_approvals", icon: UserCheck },
 ] as const;
 
