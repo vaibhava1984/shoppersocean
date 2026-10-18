@@ -89,7 +89,8 @@ export default function AdminAccordion() {
             closeTimer = undefined;
           }
           const response = await originalFetch(...args);
-          const requestMethod = String((args[1] as RequestInit | undefined)?.method || (args[0] instanceof Request ? args[0].method : "GET")).toUpperCase();\n          if (savePending && response.ok && ["POST", "PUT", "PATCH", "DELETE"].includes(requestMethod)) {
+          const requestMethod = String((args[1] as RequestInit | undefined)?.method || (args[0] instanceof Request ? args[0].method : "GET")).toUpperCase();
+          if (savePending && response.ok && ["POST", "PUT", "PATCH", "DELETE"].includes(requestMethod)) {
             if (closeTimer !== undefined) win.clearTimeout(closeTimer);
             closeTimer = win.setTimeout(() => {
               savePending = false;
@@ -103,7 +104,7 @@ export default function AdminAccordion() {
           const target = event.target as HTMLElement | null;
           const button = target?.closest("button, input[type=submit]");
           const label = (button?.textContent || (button as HTMLInputElement | null)?.value || "").trim();
-          if (/^save(?:\s|$)|save changes|update changes|save and add|update book|save book|create book/i.test(label)) {
+          if (/^save(?:\s|$)|save changes|update changes|save and add|update(?:\s|$)|submit|save book|create book/i.test(label)) {
             if (closeTimer !== undefined) win.clearTimeout(closeTimer);
             closeTimer = undefined;
             savePending = true;
@@ -143,14 +144,15 @@ export default function AdminAccordion() {
         saveButton.click();
         return;
       }
-      // Sections with immediate-save actions have nothing extra to submit.
       const form = doc.querySelector("form");
-      if (!form) {
-        setOpen(null);
-      } else {
-        const main = doc.querySelector("main");
-        (main || form).scrollTo({ top: (main || form).scrollHeight, behavior: "smooth" });
+      if (form instanceof HTMLFormElement) {
+        form.requestSubmit();
+        return;
       }
+      // Sections with immediate-save actions have nothing extra to submit.
+      setSaving(false);
+      setSaveNotice("This section saves changes immediately.");
+      setOpen(null);
     } catch {
       // Do not close the section if the current form cannot be accessed.
     }
