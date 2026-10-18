@@ -267,6 +267,9 @@ export default function AddBookPopup(props: propsType) {
                 e.preventDefault();
                 validateAndAddBook();
             }} className="space-y-4">
+                <div className="mb-4 flex justify-end border-b pb-3">
+                    <Button type="submit" disabled={isUploading || isSaving}>{isUploading ? "Uploading…" : isSaving ? "Saving…" : "Save Book"}</Button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <Label htmlFor="title">Book Title <span className="text-red-500">*</span></Label>
@@ -481,14 +484,7 @@ export default function AddBookPopup(props: propsType) {
                         )}
                     </div>
                 </div>
-                <div className="flex space-x-4 mt-4">
-                    <Button type="submit" disabled={isUploading || isSaving}>{isUploading ? "Uploading…" : isSaving ? "Saving…" : "Save"}</Button>
-                    {/* <Button type="button" onClick={() => {
-                        validateAndAddBook();
-                        resetForm();
-                        props.onSuccess(false);
-                    }}>Add Another</Button> */}
-                </div>
+
             </form>
         </>
     );
