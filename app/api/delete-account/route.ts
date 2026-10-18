@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser, clearSession } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { COUNTRIES } from "@/utils/countries";
+import { addAdminNotification } from "@/utils/adminNotifications";
 
 function escapeHtml(value: string) {
   return value
@@ -56,6 +57,13 @@ export async function POST() {
     }
 
     const uid = user.id;
+    const accountName = String(user.firstName ?? "").trim() || email;
+    await addAdminNotification(db, {
+      type: "account_deleted",
+      title: "User account deleted",
+      message: accountName + " deleted their account.",
+      details: { userId: uid, email, name: accountName, deletedAt: new Date().toISOString() }
+    });
 
     // Delete dependent records first. This order matters because the live D1
     // schema has foreign keys from auth_sessions -> profiles and from
