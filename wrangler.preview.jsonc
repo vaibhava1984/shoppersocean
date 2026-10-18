@@ -27,7 +27,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "shoppers-ocean-db"
+      "database_name": "shoppersocean-preview-db",
+      "database_id": "23076205-e4e7-498c-ab82-eb70ffcd17d8"
     }
   ]
 }
