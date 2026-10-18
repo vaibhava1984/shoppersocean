@@ -3,6 +3,8 @@ import { getCurrentUser } from "@/utils/auth/session"
 import { getD1 } from "@/utils/cloudflare/d1"
 import Footer from "@/components/Footer"
 import BookCard from "@/components/BookCard"
+import CategoryFilterButtons from "@/components/CategoryFilterButtons"
+import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages"
 import { redirect } from "next/navigation"
 
 export const metadata = {
@@ -41,8 +43,11 @@ export default async function BookShelfPage({
     if (!db) throw new Error("Cloudflare D1 is not available")
 
     let books: Record<string, any>[] = []
+    let availableLanguages = [...SUPPORTED_BOOK_LANGUAGES]
 
     if (isCategoryBrowse) {
+        const languageResult = await db.prepare("SELECT DISTINCT language FROM books WHERE COALESCE(is_deleted, 0) = 0 AND language IS NOT NULL AND TRIM(language) != ''").all<{ language: string }>()
+        availableLanguages = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...(languageResult.results ?? []).map((row) => row.language.trim()).filter(Boolean)])).sort((a, b) => a.localeCompare(b))
         const conditions = ["COALESCE(b.is_deleted, 0) = 0"]
         const bindings: string[] = []
         if (genre) {
@@ -128,8 +133,9 @@ export default async function BookShelfPage({
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     {isCategoryBrowse ? (
                         <>
-                            <h1 className="mb-8 text-3xl font-bold text-slate-800">
-                                {genre ? `Books by Genre: ${genre}` : author ? "Books by Author" : `Books in ${language}`}
+                            <CategoryFilterButtons genre={genre} author={author} language={language} languages={availableLanguages} />
+                            <h1 className="mb-6 text-xl font-bold leading-snug text-slate-800 sm:text-2xl">
+                                {author ? `Books by Author${genre ? ` · Genre: ${genre}` : ""}${language ? ` · Language: ${language}` : ""}` : genre ? `Books by Genre: ${genre}${language ? ` · Language: ${language}` : ""}` : `Books in ${language}`}
                             </h1>
                             {books.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
