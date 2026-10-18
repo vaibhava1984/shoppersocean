@@ -13,7 +13,7 @@ export async function ensureAdminNotificationsTable(db: any) {
 }
 
 export async function addAdminNotification(
-  db: D1Database,
+  db: any,
   notification: { type: AdminNotificationType; title: string; message: string; details?: Record<string, unknown> }
 ) {
   try {
