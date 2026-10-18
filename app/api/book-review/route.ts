@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { requireUser } from "@/utils/auth/requireUser";
+import { addAdminNotification } from "@/utils/adminNotifications";
 
 export async function GET(request: Request) {
   try {
@@ -66,6 +67,14 @@ export async function POST(request: Request) {
     await db.prepare(
       "INSERT INTO testimonials(id,content,rating,user_id,book_id,approved,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)"
     ).bind(id,text,stars,userId,String(bookId),1,now,now).run();
+
+    const bookTitle = await db.prepare("SELECT title FROM books WHERE id=? LIMIT 1").bind(String(bookId)).first<{title:string}>();
+    await addAdminNotification(db, {
+      type: "book_review",
+      title: "New book comment/review",
+      message: name + " wrote a review on “" + String(bookTitle?.title || "a book") + "”.",
+      details: { reviewId: id, userId, name, bookId: String(bookId), bookTitle: String(bookTitle?.title || ""), rating: stars, review: text }
+    });
 
     return NextResponse.json({
       message: "Review submitted successfully.",
