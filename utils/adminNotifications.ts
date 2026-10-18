@@ -1,5 +1,7 @@
 export type AdminNotificationType = "account_created" | "account_deleted" | "purchase" | "book_review";
 
+const NOTIFICATION_RETENTION_MS = 24 * 60 * 60 * 1000;
+
 export async function ensureAdminNotificationsTable(db: any) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS admin_notifications (
     id TEXT PRIMARY KEY,
@@ -12,12 +14,19 @@ export async function ensureAdminNotificationsTable(db: any) {
   )`).run();
 }
 
+/** Delete notification records older than 24 hours from D1. */
+export async function deleteExpiredAdminNotifications(db: any) {
+  const cutoff = new Date(Date.now() - NOTIFICATION_RETENTION_MS).toISOString();
+  await db.prepare("DELETE FROM admin_notifications WHERE created_at <= ?").bind(cutoff).run();
+}
+
 export async function addAdminNotification(
   db: any,
   notification: { type: AdminNotificationType; title: string; message: string; details?: Record<string, unknown> }
 ) {
   try {
     await ensureAdminNotificationsTable(db);
+    await deleteExpiredAdminNotifications(db);
     await db.prepare(
       "INSERT INTO admin_notifications (id,type,title,message,details,created_at,read_at) VALUES (?,?,?,?,?,?,NULL)"
     ).bind(
