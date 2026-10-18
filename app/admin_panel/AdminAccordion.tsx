@@ -34,13 +34,18 @@ export default function AdminAccordion() {
       if (event.origin !== window.location.origin) return;
       if (event.data?.type === "admin-section-saved" || event.data?.type === "admin-book-uploaded") {
         const sectionName = String(event.data.key || open || "Section");
+        const keepSectionOpen = sectionName === "Books";
         setSaving(false);
         setSaveNotice(event.data?.type === "admin-book-uploaded" ? "Your book is uploaded successfully." : "Your changes are saved successfully.");
         if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
         noticeTimer.current = window.setTimeout(() => {
           setSaveNotice("");
-          setOpen(null);
-          setFrameReady(false);
+          // Book management must remain open so multiple books/files can be
+          // added or edited without being thrown back to the section menu.
+          if (!keepSectionOpen) {
+            setOpen(null);
+            setFrameReady(false);
+          }
           setSaving(false);
         }, 3000);
       }
@@ -78,7 +83,6 @@ export default function AdminAccordion() {
           input, textarea, select { max-width:100%; }
           button, [role="button"] { touch-action:manipulation; }
           [data-radix-portal] { z-index:1000!important; }\n          [data-radix-popper-content-wrapper] { z-index:1001!important; max-width:calc(100vw - 16px)!important; }\n          [role="listbox"] { max-height:min(60dvh, 360px)!important; overflow-y:auto!important; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
-          ${key === "Books" ? "form button[type=submit] { display:none!important; }" : ""}
         `;
         doc.head.appendChild(style);
       }
@@ -147,6 +151,10 @@ export default function AdminAccordion() {
           form.requestSubmit();
           return;
         }
+        // Do not close Books just because the table view has no open form.
+        setSaving(false);
+        setSaveNotice("Open Add New Book or Edit to save book details.");
+        return;
       }
       const candidates = Array.from(doc.querySelectorAll<HTMLButtonElement | HTMLInputElement>(
         'button, input[type="submit"], input[type="button"]'
