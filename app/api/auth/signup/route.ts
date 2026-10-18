@@ -2,6 +2,7 @@ import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 import { hashPassword, createJwt } from '@/lib/auth';
 import { COUNTRIES } from '@/utils/countries';
+import { addAdminNotification } from '@/utils/adminNotifications';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,6 +32,13 @@ export async function POST(req: Request) {
 
     await db.prepare('INSERT INTO users (id, email, password_hash, full_name, country, email_confirmed, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 0, ?, ?)')
       .bind(userId, normalizedEmail, hashedPassword, full_name || null, country || null, now, now).run();
+
+    await addAdminNotification(db, {
+      type: 'account_created',
+      title: 'New user account created',
+      message: (String(full_name || '').trim() || normalizedEmail) + ' created an account.',
+      details: { userId, email: normalizedEmail, name: String(full_name || '').trim(), country: String(country || '').trim(), createdAt: now }
+    });
 
     let emailSent = false;
     if (resendApiKey) {
