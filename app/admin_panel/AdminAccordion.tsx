@@ -53,6 +53,7 @@ export default function AdminAccordion() {
           input, textarea, select { max-width:100%; }
           button, [role="button"] { touch-action:manipulation; }
           [data-radix-portal] { position:relative; z-index:1000; }
+          form button[type=submit] { display:none!important; }
         `;
         doc.head.appendChild(style);
       }
@@ -63,18 +64,9 @@ export default function AdminAccordion() {
       frame.style.minHeight = "300px";
       frame.style.maxHeight = "calc(100dvh - 150px)";
 
-      if (!(frame as any).__resizeObserver) {
-        const observer = new win.ResizeObserver(() => {
-          // A fixed viewport-sized frame keeps the shared Back/Save footer visible.
-          frame.style.height = "calc(100dvh - 176px)";
-        });
-        observer.observe(doc.body);
-        (frame as any).__resizeObserver = observer;
-      }
-
-      // Close only after a successful save/upload request has settled. This is
-      // especially important for book creation, where PDF upload follows metadata.
-      if (!(frame as any).__saveHandler) {
+      // Avoid a ResizeObserver-driven resize loop: the frame is intentionally
+      // viewport-sized and should not be resized every time a form changes.
+      if (!(frame as any).__saveHandler && key !== "Books") {
         let savePending = false;
         let closeTimer: number | undefined;
         const originalFetch = win.fetch.bind(win);
@@ -118,6 +110,13 @@ export default function AdminAccordion() {
       if (!doc) {
         if (key === "Dashboard") setOpen(null);
         return;
+      }
+      if (key === "Books") {
+        const form = doc.querySelector("form");
+        if (form instanceof HTMLFormElement) {
+          form.requestSubmit();
+          return;
+        }
       }
       const candidates = Array.from(doc.querySelectorAll<HTMLButtonElement | HTMLInputElement>(
         'button, input[type="submit"], input[type="button"]'
