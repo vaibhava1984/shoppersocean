@@ -17,15 +17,26 @@ const sections = [
 
 export default function AdminAccordion() {
   const [open, setOpen] = useState<string | null>(null);
+  const [saveNotice, setSaveNotice] = useState<string>("");
+  const noticeTimer = useRef<number | undefined>(undefined);
   const frameRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
 
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
-      if (event.data?.type === "admin-section-saved") setOpen(null);
+      if (event.data?.type === "admin-section-saved") {
+        const sectionName = String(event.data.key || open || "Section");
+        setSaveNotice(`${sectionName} changes saved successfully.`);
+        setOpen(null);
+        if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
+        noticeTimer.current = window.setTimeout(() => setSaveNotice(""), 5000);
+      }
     };
     window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
+    return () => {
+      window.removeEventListener("message", onMessage);
+      if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
+    };
   }, []);
 
   function prepareFrame(key: string) {
@@ -146,7 +157,7 @@ export default function AdminAccordion() {
   const activeSection = sections.find(({ label }) => label === open);
 
   return (
-    <div className="mx-auto flex min-h-[calc(100dvh-2rem)] w-full max-w-5xl flex-col">
+    <div className="mx-0 flex h-[100dvh] min-h-0 w-full max-w-none flex-col overflow-hidden">
       {!open ? (
         <>
           <header className="mb-4 rounded-xl bg-white p-4 shadow-sm sm:p-5">
@@ -160,28 +171,28 @@ export default function AdminAccordion() {
                 key={label}
                 type="button"
                 onClick={() => setOpen(label)}
-                className="flex min-h-12 w-full items-center justify-between gap-3 rounded-md bg-blue-600 px-4 py-3 text-left text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="flex min-h-10 w-full items-center justify-between gap-2 rounded-md bg-blue-600 px-3 py-2 text-left text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 <span className="flex min-w-0 items-center gap-3"><Icon className="h-5 w-5 shrink-0" /><span>{label}</span></span>
                 <span aria-hidden="true" className="text-lg">›</span>
               </button>
             ))}
           </nav>
-          <a href="/" className="mt-4 flex min-h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700"><ExternalLink className="h-4 w-4" /> Back to Homepage</a>
+          <a href="/" className="mt-3 flex min-h-10 items-center justify-center gap-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700"><ExternalLink className="h-4 w-4" /> Back to Homepage</a>
         </>
       ) : (
-        <section className="flex min-h-[calc(100dvh-2rem)] flex-1 flex-col overflow-hidden rounded-xl bg-white shadow-sm">
-          <header className="flex shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-3 py-3 sm:px-5">
+        <section className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-white">
+          <header className="flex h-14 shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-3 py-2 sm:px-4">
             <button
               type="button"
               onClick={() => setOpen(null)}
-              className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <ArrowLeft className="h-4 w-4" /> Back
             </button>
             <h1 className="min-w-0 flex-1 truncate text-lg font-bold text-slate-900 sm:text-xl">{activeSection?.label || open}</h1>
           </header>
-          <div className="min-h-0 flex-1 overflow-hidden p-1 sm:p-2">
+          <div className="min-h-0 flex-1 overflow-hidden p-0">
             {activeSection && "dashboard" in activeSection && activeSection.dashboard ? (
               <div className="h-full overflow-y-auto overscroll-contain [scroll-behavior:smooth]">
                 <Dashboard />
@@ -194,22 +205,22 @@ export default function AdminAccordion() {
                 src={"/admin_panel/" + (activeSection?.path || "")}
                 onLoad={() => prepareFrame(open)}
                 className="block w-full border-0 bg-white"
-                style={{ height: "calc(100dvh - 176px)", minHeight: 300, maxHeight: "calc(100dvh - 150px)" }}
+                style={{ height: "calc(100dvh - 126px)", minHeight: 0, maxHeight: "calc(100dvh - 126px)" }}
               />
             )}
           </div>
-          <footer className="sticky bottom-0 z-20 flex shrink-0 items-center justify-between gap-3 border-t border-slate-200 bg-white px-3 py-3 shadow-[0_-4px_12px_rgba(15,23,42,0.06)] sm:px-5">
+          <footer className="flex h-14 shrink-0 items-center justify-between gap-3 border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
             <button
               type="button"
               onClick={() => setOpen(null)}
-              className="min-h-11 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              className="min-h-9 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               Back
             </button>
             <button
               type="button"
               onClick={() => saveAndClose(open)}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <Save className="h-4 w-4" /> Save
             </button>
