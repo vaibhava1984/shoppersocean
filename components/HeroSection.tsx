@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import AdminNotificationBell from '@/components/AdminNotificationBell';
 
 interface HeroSectionProps {
     title?: string;
@@ -21,7 +22,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     isAdmin = false,
 }) => {
     return (
-        <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-18 overflow-hidden">
+        <section className="bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white py-20 md:py-18 overflow-visible">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="relative flex flex-col md:flex-row items-center justify-between">
                     {welcomeName?.trim() && (
@@ -32,9 +33,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         </div>
                     )}
                     {isAdmin && (
-                        <Link href="/admin_panel" className="absolute left-1/2 top-[-3.5rem] z-20 -translate-x-1/2 inline-flex min-h-[40px] items-center justify-center rounded-lg border border-white/70 bg-blue-700 px-4 py-2 text-sm font-bold text-white shadow-md transition-colors hover:bg-blue-800">
-                            Admin Panel
-                        </Link>
+                        <div className="absolute left-1/2 top-[-3.5rem] z-20 flex -translate-x-1/2 items-center gap-3">
+                            <AdminNotificationBell />
+                            <Link href="/admin_panel" className="inline-flex min-h-[40px] items-center justify-center rounded-lg border border-white/70 bg-blue-700 px-4 py-2 text-sm font-bold text-white shadow-md transition-colors hover:bg-blue-800">
+                                Admin Panel
+                            </Link>
+                        </div>
                     )}
                     <div className="md:w-1/2 mb-8 md:mb-0">
                         {welcomeName?.trim() && <div className="mb-5 min-h-[2.5rem]" aria-hidden="true" />}
