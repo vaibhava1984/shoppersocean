@@ -63,7 +63,7 @@ export default function AdminNotificationBell() {
     </button>
     {open && <>
       <button type="button" aria-label="Close notifications" className="fixed inset-0 z-[80] cursor-default" onClick={() => setOpen(false)} />
-      <section role="dialog" aria-label="Admin notifications" className="fixed right-2 top-20 z-[90] w-[min(90vw,370px)] overflow-hidden rounded-xl border border-slate-200 bg-white text-left text-slate-900 shadow-2xl">
+      <section role="dialog" aria-label="Admin notifications" className="absolute left-0 top-12 z-[90] w-[min(90vw,370px)] overflow-hidden rounded-xl border border-slate-200 bg-white text-left text-slate-900 shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
           <div><h2 className="font-extrabold">Notifications</h2><p className="text-xs text-slate-500">{unread} unread</p></div>
           <div className="flex items-center gap-1">{unread > 0 && <button type="button" onClick={() => void markAllRead()} aria-label="Mark all as read" title="Mark all as read" className="rounded-lg p-2 text-blue-700 hover:bg-blue-50"><CheckCheck size={18}/></button>}<button type="button" onClick={() => setOpen(false)} aria-label="Close notifications panel" className="rounded-lg p-2 text-slate-500 hover:bg-slate-100"><X size={18}/></button></div>
