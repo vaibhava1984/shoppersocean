@@ -46,9 +46,24 @@ async function expireAuthorApplications(env: any) {
   }
 }
 
+async function expireAdminNotifications(env: any) {
+  const db = env.DB as D1Database;
+  if (!db) return;
+  const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  try {
+    await db.prepare("DELETE FROM admin_notifications WHERE created_at <= ?").bind(cutoff).run();
+  } catch (error) {
+    // The notifications table may not exist until the first notification is created.
+    console.error("Admin notification cleanup failed:", error);
+  }
+}
+
 export default {
   fetch: handler.fetch,
   async scheduled(_controller: ScheduledController, env: any, ctx: ExecutionContext) {
-    ctx.waitUntil(expireAuthorApplications(env));
+    ctx.waitUntil(Promise.all([
+      expireAuthorApplications(env),
+      expireAdminNotifications(env)
+    ]));
   },
 };
