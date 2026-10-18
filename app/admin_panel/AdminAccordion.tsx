@@ -19,25 +19,37 @@ export default function AdminAccordion() {
   const [open, setOpen] = useState<string | null>(null);
   const [saveNotice, setSaveNotice] = useState<string>("");
   const [saving, setSaving] = useState(false);
+  const [frameReady, setFrameReady] = useState(false);
   const noticeTimer = useRef<number | undefined>(undefined);
   const frameRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
 
   useEffect(() => {
+    // Warm the Books admin route while the admin menu is visible, reducing the delay on first open.
+    const prefetch = document.createElement("link");
+    prefetch.rel = "prefetch";
+    prefetch.href = "/admin_panel/books";
+    prefetch.as = "document";
+    document.head.appendChild(prefetch);
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
       if (event.data?.type === "admin-section-saved" || event.data?.type === "admin-book-uploaded") {
         const sectionName = String(event.data.key || open || "Section");
         setSaving(false);
         setSaveNotice(event.data?.type === "admin-book-uploaded" ? "Your book is uploaded successfully." : "Your changes are saved successfully.");
-        setOpen(null);
         if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
-        noticeTimer.current = window.setTimeout(() => setSaveNotice(""), 5000);
+        noticeTimer.current = window.setTimeout(() => {
+          setSaveNotice("");
+          setOpen(null);
+          setFrameReady(false);
+          setSaving(false);
+        }, 3000);
       }
     };
     window.addEventListener("message", onMessage);
     return () => {
       window.removeEventListener("message", onMessage);
       if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
+      prefetch.remove();
     };
   }, []);
 
@@ -178,7 +190,7 @@ export default function AdminAccordion() {
               <button
                 key={label}
                 type="button"
-                onClick={() => setOpen(label)}
+                onClick={() => { setFrameReady(false); setSaveNotice(""); setOpen(label); }}
                 className="flex min-h-10 w-full items-center justify-between gap-2 rounded-md bg-blue-600 px-3 py-2 text-left text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
                 <span className="flex min-w-0 items-center gap-3"><Icon className="h-5 w-5 shrink-0" /><span>{label}</span></span>
@@ -211,16 +223,16 @@ export default function AdminAccordion() {
                 ref={(node) => { if (open) frameRefs.current[open] = node; }}
                 title={open}
                 src={"/admin_panel/" + (activeSection?.path || "")}
-                onLoad={() => prepareFrame(open)}
+                onLoad={() => { prepareFrame(open); setFrameReady(true); }}
                 className="block w-full border-0 bg-white"
-                style={{ height: "calc(100dvh - 126px)", minHeight: 0, maxHeight: "calc(100dvh - 126px)" }}
+                style={{ height: "calc(100dvh - 126px)", minHeight: 0, maxHeight: "calc(100dvh - 126px)", visibility: frameReady ? "visible" : "hidden" }}
               />
             )}
           </div>
           <footer className="flex h-14 shrink-0 items-center justify-between gap-3 border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
             <button
               type="button"
-              onClick={() => setOpen(null)}
+              onClick={() => { setOpen(null); setFrameReady(false); }}
               className="min-h-9 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               Back
