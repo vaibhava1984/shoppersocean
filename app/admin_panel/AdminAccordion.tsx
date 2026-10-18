@@ -178,6 +178,11 @@ export default function AdminAccordion() {
 
   return (
     <div className="mx-0 flex h-[100dvh] min-h-0 w-full max-w-none flex-col overflow-hidden">
+      {saveNotice && (
+        <div role="status" aria-live="polite" className={`fixed left-1/2 top-16 z-[2000] w-[calc(100%-24px)] max-w-md -translate-x-1/2 rounded-lg px-4 py-3 text-center text-sm font-semibold shadow-lg ${saving ? "bg-blue-600 text-white" : saveNotice.startsWith("Could not") ? "bg-red-600 text-white" : "bg-green-600 text-white"}`}>
+          {saveNotice}
+        </div>
+      )}
       {!open ? (
         <>
           <header className="mb-4 rounded-xl bg-white p-4 shadow-sm sm:p-5">
