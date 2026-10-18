@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, MessageSquare, UserCheck, ExternalLink } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, UserCheck, ExternalLink } from "lucide-react";
 import Dashboard from "../components/adminPage/Dashboard";
 
 const sections = [
