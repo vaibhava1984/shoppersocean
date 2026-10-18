@@ -34,6 +34,7 @@ export default function AddBookPopup(props: propsType) {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [isUploading, setIsUploading] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
     const [pendingBookFiles, setPendingBookFiles] = useState<File[]>([]);
     // Retain the newly created book ID if its PDF upload fails, so retrying Save
     // uploads the selected PDF without creating a duplicate book record.
@@ -148,14 +149,14 @@ export default function AddBookPopup(props: propsType) {
     }
 
     async function validateAndAddBook() {
+        if (isSaving || isUploading) return;
         const validationErrors: Record<string, string> = {};
-        if (!formData.title) {
-            alert('Please fill in the book title.');
+        if (!formData.title.trim()) validationErrors.title = 'Book title is required';
+        if (!authorName || !formData.author_id) validationErrors.author = 'Please select an author';
+        if (Object.keys(validationErrors).length) {
+            setErrors(validationErrors);
+            toast({ variant: "destructive", title: "Please check the form", description: Object.values(validationErrors).join(". ") });
             return;
-        }
-        if (!authorName) {
-            alert('Please fill in the author name.');
-            return; // Show alert if author name is not provided
         }
         if (!formData.author_id) validationErrors.author = 'Author is required';
         // if (!formData.isbn) validationErrors.isbn = 'ISBN is required';
@@ -175,12 +176,15 @@ export default function AddBookPopup(props: propsType) {
             await addOrUpdateBook();
         } else {
             setErrors(validationErrors);
+            toast({ variant: "destructive", title: "Please check the form", description: Object.values(validationErrors).join(". ") });
         }
     }
 
     async function checkIsbnExists(isbn: string) { return false; }
 
     async function addOrUpdateBook() {
+        if (isSaving || isUploading) return;
+        setIsSaving(true);
         try {
             let savedBookId = String(book?.id || pendingSavedBookId || "");
 
@@ -208,7 +212,9 @@ export default function AddBookPopup(props: propsType) {
             // Do not send a duplicate parent-level save notice for Books.
             props.onSuccess(true);
         } catch(error:any) {
-            toast({variant:"destructive",title:"Error",description:error?.message || "Something went wrong"});
+            toast({variant:"destructive",title:"Save failed",description:error?.message || "Something went wrong. Your form entries have been kept; please try again."});
+        } finally {
+            setIsSaving(false);
         }
     }
 
@@ -476,7 +482,7 @@ export default function AddBookPopup(props: propsType) {
                     </div>
                 </div>
                 <div className="flex space-x-4 mt-4">
-                    <Button type="submit" disabled={isUploading}>{isUploading ? "Uploading…" : "Save"}</Button>
+                    <Button type="submit" disabled={isUploading || isSaving}>{isUploading ? "Uploading…" : isSaving ? "Saving…" : "Save"}</Button>
                     {/* <Button type="button" onClick={() => {
                         validateAndAddBook();
                         resetForm();
