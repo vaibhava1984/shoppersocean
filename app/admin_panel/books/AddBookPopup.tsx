@@ -204,7 +204,8 @@ export default function AddBookPopup(props: propsType) {
 
             resetForm();
             toast({title:"Success!",description:book ? "Updating Book Success" : "Adding Book Success"});
-            if (!hasPendingFiles) window.parent.postMessage({ type: "admin-section-saved", key: "Books" }, window.location.origin);
+            // The form owns its success state and closes only after the save/upload succeeds.
+            // Do not send a duplicate parent-level save notice for Books.
             props.onSuccess(true);
         } catch(error:any) {
             toast({variant:"destructive",title:"Error",description:error?.message || "Something went wrong"});
@@ -475,7 +476,7 @@ export default function AddBookPopup(props: propsType) {
                     </div>
                 </div>
                 <div className="flex space-x-4 mt-4">
-                    <Button type="submit">Save</Button>
+                    <Button type="submit" disabled={isUploading}>{isUploading ? "Uploading…" : "Save"}</Button>
                     {/* <Button type="button" onClick={() => {
                         validateAndAddBook();
                         resetForm();
