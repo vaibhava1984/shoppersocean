@@ -76,7 +76,7 @@ export default function AdminNotificationBell() {
     setOpen(next);
   }
   return <div className="relative flex-shrink-0">
-    <button ref={bellRef} type="button" onClick={togglePanel} aria-label={unread ? `Admin notifications, ${unread} unread` : "Admin notifications"} aria-expanded={open} className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border-0 bg-black p-0 text-amber-400 shadow-none outline-none ring-0 transition-colors hover:bg-slate-900 hover:text-yellow-300 focus:outline-none focus:ring-0">
+    <button ref={bellRef} type="button" onClick={togglePanel} aria-label={unread ? `Admin notifications, ${unread} unread` : "Admin notifications"} aria-expanded={open} className="relative inline-flex h-10 w-8 items-center justify-center rounded-none border-0 bg-transparent p-0 text-amber-400 shadow-none outline-none ring-0 transition-colors hover:bg-transparent hover:text-yellow-300 focus:outline-none focus:ring-0">
       <Bell size={23} strokeWidth={1.8} fill="currentColor" aria-hidden="true" />{unread > 0 && <span className="absolute -right-1 -top-1 flex min-h-[19px] min-w-[19px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-extrabold leading-none text-white">{unread > 99 ? "99+" : unread}</span>}
     </button>
     {open && portalReady && createPortal(<>
