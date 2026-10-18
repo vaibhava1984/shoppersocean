@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import { Bell, CheckCheck, Loader2, X } from "lucide-react";
 
 type Notification = { id: string; type: string; title: string; message: string; details?: string; created_at: string; read_at: string | null };
@@ -10,6 +11,7 @@ export default function AdminNotificationBell() {
   const [items, setItems] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [portalReady, setPortalReady] = useState(false);
   const bellRef = useRef<HTMLButtonElement>(null);
   const [panelStyle, setPanelStyle] = useState<CSSProperties>({ left: 8, top: 64, width: "min(320px, calc(100vw - 16px))" });
 
@@ -23,6 +25,7 @@ export default function AdminNotificationBell() {
     } catch { /* leave the header usable */ }
   }
   useEffect(() => {
+    setPortalReady(true);
     void refresh();
     const timer = window.setInterval(() => void refresh(), 30000);
     return () => window.clearInterval(timer);
@@ -73,26 +76,26 @@ export default function AdminNotificationBell() {
     setOpen(next);
   }
   return <div className="relative flex-shrink-0">
-    <button ref={bellRef} type="button" onClick={togglePanel} aria-label={unread ? `Admin notifications, ${unread} unread` : "Admin notifications"} aria-expanded={open} className="relative inline-flex h-10 w-10 items-center justify-center border-0 bg-transparent p-0 text-amber-400 shadow-none outline-none ring-0 transition-colors hover:text-yellow-300 focus:outline-none focus:ring-0">
-      <Bell size={21} strokeWidth={2.2} aria-hidden="true" />{unread > 0 && <span className="absolute -right-1 -top-1 flex min-h-[19px] min-w-[19px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-extrabold leading-none text-white">{unread > 99 ? "99+" : unread}</span>}
+    <button ref={bellRef} type="button" onClick={togglePanel} aria-label={unread ? `Admin notifications, ${unread} unread` : "Admin notifications"} aria-expanded={open} className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border-0 bg-black p-0 text-amber-400 shadow-none outline-none ring-0 transition-colors hover:bg-slate-900 hover:text-yellow-300 focus:outline-none focus:ring-0">
+      <Bell size={23} strokeWidth={1.8} fill="currentColor" aria-hidden="true" />{unread > 0 && <span className="absolute -right-1 -top-1 flex min-h-[19px] min-w-[19px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-extrabold leading-none text-white">{unread > 99 ? "99+" : unread}</span>}
     </button>
-    {open && <>
-      <button type="button" aria-label="Close notifications" className="fixed inset-0 z-[80] cursor-default" onClick={() => setOpen(false)} />
-      <section role="dialog" aria-label="Admin notifications" style={panelStyle} className="z-[90] overflow-hidden rounded-lg border border-slate-200 bg-white text-left text-slate-900 shadow-md">
-        <div className="flex items-center justify-between border-b border-slate-100 px-2.5 py-1.5">
-          <div><h2 className="text-[13px] font-extrabold">Notifications</h2><p className="text-xs text-slate-500">{unread} unread</p></div>
-          <div className="flex items-center gap-1">{unread > 0 && <button type="button" onClick={() => void markAllRead()} aria-label="Mark all as read" title="Mark all as read" className="rounded-md p-1.5 text-blue-700 hover:bg-blue-50"><CheckCheck size={18}/></button>}<button type="button" onClick={() => setOpen(false)} aria-label="Close notifications panel" className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100"><X size={18}/></button></div>
+    {open && portalReady && createPortal(<>
+      <button type="button" aria-label="Close notifications" className="fixed inset-0 z-[9998] cursor-default bg-transparent" onClick={() => setOpen(false)} />
+      <section role="dialog" aria-label="Admin notifications" style={{ ...panelStyle, zIndex: 9999, maxHeight: `min(52dvh, calc(100dvh - ${Number(panelStyle.top || 64) + 16}px))` }} className="fixed flex flex-col overflow-hidden rounded-lg border border-slate-300 bg-white text-left text-slate-900 shadow-md">
+        <div className="flex flex-shrink-0 items-center justify-between border-b border-slate-100 px-2.5 py-1.5">
+          <div><h2 className="text-[13px] font-extrabold">Notifications</h2><p className="text-[11px] text-slate-500">{unread} unread</p></div>
+          <div className="flex items-center gap-1">{unread > 0 && <button type="button" onClick={() => void markAllRead()} aria-label="Mark all as read" title="Mark all as read" className="rounded-md p-1.5 text-blue-700 hover:bg-blue-50"><CheckCheck size={16}/></button>}<button type="button" onClick={() => setOpen(false)} aria-label="Close notifications panel" className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100"><X size={16}/></button></div>
         </div>
-        {error && <p className="px-4 py-2 text-xs text-red-600">{error}</p>}
-        <div className="overflow-y-auto">
-          {loading && items.length === 0 ? <div className="flex justify-center p-8"><Loader2 className="animate-spin text-blue-600" size={22}/></div> : items.length === 0 ? <p className="px-4 py-10 text-center text-sm text-slate-500">No notifications yet.</p> :
-            items.map(item => <button type="button" key={item.id} onClick={() => void openNotification(item)} className={`block w-full border-b border-slate-100 px-3 py-2 text-left hover:bg-slate-50 ${item.read_at ? "bg-white" : "bg-blue-50/70"}`}>
-              <span className="flex items-start gap-2"><span className={`mt-1.5 h-2 w-2 flex-shrink-0 rounded-full ${item.read_at ? "bg-slate-300" : "bg-blue-600"}`}/><span className="min-w-0 flex-1"><span className="block text-xs font-bold leading-snug">{item.title.replace(/review/gi, "comment")}</span><span className="mt-0.5 block break-words text-[11px] leading-snug text-slate-600">{item.message.replace(/reviews?/gi, match => match.toLowerCase().endsWith("s") ? "comments" : "comment")}</span><time className="mt-1 block text-[11px] text-slate-400">{new Date(item.created_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} IST</time></span></span>
+        {error && <p className="flex-shrink-0 px-3 py-1.5 text-xs text-red-600">{error}</p>}
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          {loading && items.length === 0 ? <div className="flex justify-center p-5"><Loader2 className="animate-spin text-blue-600" size={20}/></div> : items.length === 0 ? <p className="px-3 py-5 text-center text-xs text-slate-500">No notifications yet.</p> :
+            items.map(item => <button type="button" key={item.id} onClick={() => void openNotification(item)} className={`block w-full border-b border-slate-100 px-2.5 py-1.5 text-left hover:bg-slate-50 ${item.read_at ? "bg-white" : "bg-blue-50/70"}`}>
+              <span className="flex items-start gap-1.5"><span className={`mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full ${item.read_at ? "bg-slate-300" : "bg-blue-600"}`}/><span className="min-w-0 flex-1"><span className="block break-words text-xs font-bold leading-snug">{item.title.replace(/review/gi, "comment")}</span><span className="mt-0.5 block break-words text-[11px] leading-snug text-slate-600">{item.message.replace(/reviews?/gi, match => match.toLowerCase().endsWith("s") ? "comments" : "comment")}</span><time className="mt-0.5 block text-[10px] text-slate-400">{new Date(item.created_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} IST</time></span></span>
             </button>)
           }
         </div>
-        <div className="border-t border-slate-100 px-2.5 py-1 text-[9px] text-slate-400">Refreshes automatically every 30 seconds.</div>
+        <div className="flex-shrink-0 border-t border-slate-100 px-2.5 py-1 text-[9px] text-slate-400">Refreshes automatically every 30 seconds.</div>
       </section>
-    </>}
+    </>, document.body)}
   </div>;
 }
