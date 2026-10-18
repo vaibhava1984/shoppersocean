@@ -53,7 +53,7 @@ export default function AdminAccordion() {
           input, textarea, select { max-width:100%; }
           button, [role="button"] { touch-action:manipulation; }
           [data-radix-portal] { position:relative; z-index:1000; }
-          form button[type=submit] { display:none!important; }
+          ${key === "Books" ? "form button[type=submit] { display:none!important; }" : ""}
         `;
         doc.head.appendChild(style);
       }
