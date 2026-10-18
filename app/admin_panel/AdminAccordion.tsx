@@ -122,9 +122,12 @@ export default function AdminAccordion() {
     try {
       const doc = frame?.contentDocument;
       if (!doc) {
-        if (key === "Dashboard") setOpen(null);
+        setSaving(false);
+        setSaveNotice("Could not save changes. Please reopen the section and try again.");
         return;
       }
+      setSaving(true);
+      setSaveNotice("Saving changes…");
       if (key === "Books") {
         const form = doc.querySelector("form");
         if (form instanceof HTMLFormElement) {
