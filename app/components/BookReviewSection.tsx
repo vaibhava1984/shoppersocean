@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
+import type { ReactNode } from "react"
 import { Star, MessageCircle, Trash2 } from "lucide-react"
 
 type Comment = {
@@ -82,7 +83,7 @@ export default function BookReviewSection({ bookId, userId, isAdmin = false }: {
     } catch { setMessage("Unable to delete comment. Please try again.") }
   }
 
-  const renderComment = (comment: Comment, isReply = false) => (
+  const renderComment = (comment: Comment, isReply = false): ReactNode => (
     <article id={`comment-${comment.id}`} key={comment.id} className={`rounded-lg border border-blue-100 bg-white p-3 sm:p-4 ${isReply ? "ml-5 sm:ml-10 mt-2 border-slate-200 bg-slate-50" : ""}`}>
       <div className="flex flex-wrap items-center gap-2">
         <span className="font-semibold text-slate-800">{comment.is_admin || comment.users?.toLowerCase() === "admin" ? "admin" : comment.users || "Reader"}</span>
