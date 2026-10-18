@@ -35,7 +35,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                     {isAdmin && (
                         <div className="absolute left-1/2 top-[-3.5rem] z-20 flex -translate-x-1/2 items-center gap-3">
                             <AdminNotificationBell />
-                            <Link href="/admin_panel" className="inline-flex min-h-[40px] items-center justify-center rounded-lg border border-white/70 bg-blue-700 px-4 py-2 text-sm font-bold text-white shadow-md transition-colors hover:bg-blue-800">
+                            <Link href="/admin_panel" className="relative z-50 pointer-events-auto cursor-pointer flex items-center justify-center min-h-[46px] px-2 sm:px-4 py-2.5 rounded-lg bg-blue-600 border border-blue-600 text-white font-bold text-xs sm:text-sm lg:text-base tracking-wide shadow-sm hover:bg-blue-700 hover:border-blue-700 hover:scale-[1.02] active:scale-95 transition-all duration-200 text-center">
                                 Admin Panel
                             </Link>
                         </div>
