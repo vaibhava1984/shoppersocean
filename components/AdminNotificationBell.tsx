@@ -1,0 +1,97 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Bell, CheckCheck, Loader2, X } from "lucide-react";
+
+type Notification = {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  details?: string;
+  created_at: string;
+  read_at: string | null;
+};
+
+export default function AdminNotificationBell() {
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<Notification[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function refresh() {
+    try {
+      const response = await fetch("/api/admin-notifications", { credentials: "same-origin", cache: "no-store" });
+      if (!response.ok) return;
+      const data = await response.json();
+      setItems(Array.isArray(data.notifications) ? data.notifications : []);
+      setError("");
+    } catch {
+      // Keep the header usable if notifications cannot be loaded.
+    }
+  }
+
+  useEffect(() => {
+    void refresh();
+    const timer = window.setInterval(() => void refresh(), 30000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  async function togglePanel() {
+    const next = !open;
+    setOpen(next);
+    if (next) {
+      setLoading(true);
+      await refresh();
+      setLoading(false);
+    }
+  }
+
+  async function markAllRead() {
+    try {
+      const response = await fetch("/api/admin-notifications", {
+        method: "PATCH",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ markAllRead: true }),
+      });
+      if (!response.ok) throw new Error("Unable to update notifications.");
+      await refresh();
+    } catch {
+      setError("Could not mark notifications as read. Please try again.");
+    }
+  }
+
+  const unread = items.filter(item => !item.read_at).length;
+  return (
+    <div className="relative flex-shrink-0">
+      <button type="button" onClick={togglePanel} aria-label={unread ? `Admin notifications, ${unread} unread` : "Admin notifications"}
+        aria-expanded={open} className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-blue-100 bg-white text-blue-700 shadow-sm transition hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <Bell size={21} aria-hidden="true" />
+        {unread > 0 && <span className="absolute -right-1 -top-1 flex min-h-[19px] min-w-[19px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-extrabold leading-none text-white">{unread > 99 ? "99+" : unread}</span>}
+      </button>
+      {open && <>
+        <button type="button" aria-label="Close notifications" className="fixed inset-0 z-[80] cursor-default" onClick={() => setOpen(false)} />
+        <section role="dialog" aria-label="Admin notifications" className="absolute left-0 top-12 z-[90] w-[min(90vw,370px)] overflow-hidden rounded-xl border border-slate-200 bg-white text-left text-slate-900 shadow-2xl sm:left-0">
+          <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+            <div><h2 className="font-extrabold">Notifications</h2><p className="text-xs text-slate-500">{unread} unread</p></div>
+            <div className="flex items-center gap-1">
+              {unread > 0 && <button type="button" onClick={markAllRead} aria-label="Mark all as read" title="Mark all as read" className="rounded-lg p-2 text-blue-700 hover:bg-blue-50"><CheckCheck size={18}/></button>}
+              <button type="button" onClick={() => setOpen(false)} aria-label="Close notifications panel" className="rounded-lg p-2 text-slate-500 hover:bg-slate-100"><X size={18}/></button>
+            </div>
+          </div>
+          {error && <p className="px-4 py-2 text-xs text-red-600">{error}</p>}
+          <div className="max-h-[65vh] overflow-y-auto">
+            {loading && items.length === 0 ? <div className="flex justify-center p-8"><Loader2 className="animate-spin text-blue-600" size={22}/></div> :
+              items.length === 0 ? <p className="px-4 py-10 text-center text-sm text-slate-500">No notifications yet.</p> :
+              items.map(item => <article key={item.id} className={`border-b border-slate-100 px-4 py-3 ${item.read_at ? "bg-white" : "bg-blue-50/70"}`}>
+                <div className="flex items-start gap-2"><span className={`mt-1.5 h-2 w-2 flex-shrink-0 rounded-full ${item.read_at ? "bg-slate-300" : "bg-blue-600"}`}/><div className="min-w-0 flex-1"><p className="text-sm font-bold">{item.title}</p><p className="mt-1 break-words text-sm text-slate-600">{item.message}</p><time className="mt-1 block text-[11px] text-slate-400">{new Date(item.created_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })} IST</time></div></div>
+              </article>)
+            }
+          </div>
+          <div className="border-t border-slate-100 px-4 py-2 text-[11px] text-slate-400">Refreshes automatically every 30 seconds.</div>
+        </section>
+      </>}
+    </div>
+  );
+}
