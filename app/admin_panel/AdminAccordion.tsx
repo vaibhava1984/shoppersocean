@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, MessageSquare, UserCheck, ExternalLink, Save } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, MessageSquare, UserCheck, ExternalLink } from "lucide-react";
 import Dashboard from "../components/adminPage/Dashboard";
 
 const sections = [
@@ -32,7 +32,7 @@ export default function AdminAccordion() {
     document.head.appendChild(prefetch);
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
-      if (event.data?.type === "admin-section-saved" || event.data?.type === "admin-book-uploaded") {
+      if (event.data?.key !== "Books" && (event.data?.type === "admin-section-saved" || event.data?.type === "admin-book-uploaded")) {
         const sectionName = String(event.data.key || open || "Section");
         const keepSectionOpen = sectionName === "Books";
         setSaving(false);
@@ -242,7 +242,7 @@ export default function AdminAccordion() {
               />
             )}
           </div>
-          <footer className="flex h-14 shrink-0 items-center justify-between gap-3 border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
+          <footer className="flex h-14 shrink-0 items-center justify-end gap-3 border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
             <button
               type="button"
               onClick={() => { setOpen(null); setFrameReady(false); }}
@@ -250,13 +250,13 @@ export default function AdminAccordion() {
             >
               Back
             </button>
-            <button
+            {open !== "Books" && <button
               type="button"
               onClick={() => saveAndClose(open)}
-              className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
-              <Save className="h-4 w-4" /> Save
-            </button>
+              Save
+            </button>}
           </footer>
         </section>
       )}
