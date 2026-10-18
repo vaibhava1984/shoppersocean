@@ -1,8 +1,6 @@
-import type { D1Database } from "@cloudflare/workers-types";
-
 export type AdminNotificationType = "account_created" | "account_deleted" | "purchase" | "book_review";
 
-export async function ensureAdminNotificationsTable(db: D1Database) {
+export async function ensureAdminNotificationsTable(db: any) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS admin_notifications (
     id TEXT PRIMARY KEY,
     type TEXT NOT NULL,
