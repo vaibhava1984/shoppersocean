@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { requireAdmin } from "@/utils/auth/requireUser";
-import { ensureAdminNotificationsTable } from "@/utils/adminNotifications";
+import { ensureAdminNotificationsTable, deleteExpiredAdminNotifications } from "@/utils/adminNotifications";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -12,9 +12,10 @@ export async function GET() {
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Database unavailable" }, { status: 503 });
     await ensureAdminNotificationsTable(db);
+    await deleteExpiredAdminNotifications(db);
     const { results = [] } = await db.prepare(
-      "SELECT id,type,title,message,details,created_at,read_at FROM admin_notifications ORDER BY created_at DESC LIMIT 100"
-    ).all();
+      "SELECT id,type,title,message,details,created_at,read_at FROM admin_notifications WHERE created_at > ? ORDER BY created_at DESC LIMIT 100"
+    ).bind(new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()).all();
     return NextResponse.json({ notifications: results }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Admin notifications GET failed:", error);
@@ -28,6 +29,7 @@ export async function PATCH(request: Request) {
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Database unavailable" }, { status: 503 });
     await ensureAdminNotificationsTable(db);
+    await deleteExpiredAdminNotifications(db);
     const body = await request.json().catch(() => ({}));
     if (body?.markRead) {
       await db.prepare("UPDATE admin_notifications SET read_at=? WHERE id=? AND read_at IS NULL").bind(new Date().toISOString(), String(body.markRead)).run();
