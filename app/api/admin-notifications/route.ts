@@ -29,7 +29,11 @@ export async function PATCH(request: Request) {
     if (!db) return NextResponse.json({ error: "Database unavailable" }, { status: 503 });
     await ensureAdminNotificationsTable(db);
     const body = await request.json().catch(() => ({}));
-    if (body?.markRead) {\n      await db.prepare("UPDATE admin_notifications SET read_at=? WHERE id=? AND read_at IS NULL").bind(new Date().toISOString(), String(body.markRead)).run();\n      return NextResponse.json({ success: true }, { headers: { "Cache-Control": "no-store" } });\n    }\n    if (body?.markAllRead === true) {
+    if (body?.markRead) {
+      await db.prepare("UPDATE admin_notifications SET read_at=? WHERE id=? AND read_at IS NULL").bind(new Date().toISOString(), String(body.markRead)).run();
+      return NextResponse.json({ success: true }, { headers: { "Cache-Control": "no-store" } });
+    }
+    if (body?.markAllRead === true) {
       await db.prepare("UPDATE admin_notifications SET read_at=? WHERE read_at IS NULL").bind(new Date().toISOString()).run();
       return NextResponse.json({ success: true }, { headers: { "Cache-Control": "no-store" } });
     }
