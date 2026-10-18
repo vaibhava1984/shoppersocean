@@ -63,7 +63,7 @@ export default function AdminAccordion() {
           .overflow-x-auto { max-width:100%; overflow-x:auto; }
           input, textarea, select { max-width:100%; }
           button, [role="button"] { touch-action:manipulation; }
-          [data-radix-portal] { position:relative; z-index:1000; }
+          [data-radix-portal] { z-index:1000!important; }\n          [data-radix-popper-content-wrapper] { z-index:1001!important; max-width:calc(100vw - 16px)!important; }\n          [role="listbox"] { max-height:min(60dvh, 360px)!important; overflow-y:auto!important; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
           ${key === "Books" ? "form button[type=submit] { display:none!important; }" : ""}
         `;
         doc.head.appendChild(style);
