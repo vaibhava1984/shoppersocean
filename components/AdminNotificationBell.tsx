@@ -58,7 +58,7 @@ export default function AdminNotificationBell() {
 
   const unread = items.filter(item => !item.read_at).length;
   return <div className="relative flex-shrink-0">
-    <button type="button" onClick={() => { const next = !open; setOpen(next); if (next) { setLoading(true); void refresh().finally(() => setLoading(false)); } }} aria-label={unread ? `Admin notifications, ${unread} unread` : "Admin notifications"} aria-expanded={open} className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-blue-100 bg-white text-blue-700 shadow-sm transition hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <button type="button" onClick={() => { const next = !open; setOpen(next); if (next) { setLoading(true); void (async () => { await refresh(); await markAllRead(); setLoading(false); })(); } }} aria-label={unread ? `Admin notifications, ${unread} unread` : "Admin notifications"} aria-expanded={open} className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-blue-100 bg-white text-blue-700 shadow-sm transition hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
       <Bell size={21} aria-hidden="true" />{unread > 0 && <span className="absolute -right-1 -top-1 flex min-h-[19px] min-w-[19px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-extrabold leading-none text-white">{unread > 99 ? "99+" : unread}</span>}
     </button>
     {open && <>
