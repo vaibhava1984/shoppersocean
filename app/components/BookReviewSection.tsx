@@ -32,7 +32,12 @@ export default function BookReviewSection({ bookId, userId, isAdmin = false }: {
       if (response.ok) setComments(result.reviews || [])
       else setMessage(result.error || "Unable to load comments.")
     } catch { setMessage("Unable to load comments.") }
-    finally { setLoading(false) }
+    finally {
+      setLoading(false)
+      if (typeof window !== "undefined" && window.location.hash.startsWith("#comment-")) {
+        window.setTimeout(() => document.getElementById(decodeURIComponent(window.location.hash.slice(1)))?.scrollIntoView({ behavior: "smooth", block: "center" }), 250)
+      }
+    }
   }, [bookId])
 
   useEffect(() => { void loadComments() }, [loadComments])
@@ -88,13 +93,14 @@ export default function BookReviewSection({ bookId, userId, isAdmin = false }: {
       </div>
       <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-700">{comment.description}</p>
       <div className="mt-3 flex flex-wrap items-center gap-3 text-xs font-semibold">
-        {userId && (!comment.parent_id) && (isAdmin || comment.user_id !== userId) && <button type="button" onClick={() => { setReplyTo(comment); setReplyText(""); setMessage(""); }} className="inline-flex items-center gap-1 text-blue-700 hover:text-blue-900"><MessageCircle size={14}/> Reply</button>}
+        {userId && (isAdmin || comment.user_id !== userId) && <button type="button" onClick={() => { setReplyTo(comment); setReplyText(""); setMessage(""); }} className="inline-flex items-center gap-1 text-blue-700 hover:text-blue-900"><MessageCircle size={14}/> Reply</button>}
         {userId && (isAdmin || comment.user_id === userId) && <button type="button" onClick={() => void deleteComment(comment)} className="inline-flex items-center gap-1 text-red-600 hover:text-red-800"><Trash2 size={14}/> Delete</button>}
       </div>
       {replyTo?.id === comment.id && <div className="mt-3 space-y-2">
         <textarea value={replyText} onChange={e => setReplyText(e.target.value)} rows={3} maxLength={2000} placeholder={`Reply to ${comment.is_admin || comment.users?.toLowerCase() === "admin" ? "admin" : comment.users}...`} className="w-full rounded-lg border border-slate-300 p-3 text-sm text-slate-800 outline-none focus:border-blue-500"/>
         <div className="flex gap-2"><button type="button" disabled={submitting} onClick={() => void submitComment(comment)} className="rounded-md bg-blue-600 px-3 py-2 text-xs font-bold text-white hover:bg-blue-700 disabled:opacity-60">{submitting ? "Posting..." : "Post reply"}</button><button type="button" onClick={() => setReplyTo(null)} className="rounded-md border px-3 py-2 text-xs font-semibold text-slate-600">Cancel</button></div>
       </div>}
+      {comments.filter(reply => reply.parent_id === comment.id).map(reply => renderComment(reply, true))}
     </article>
   )
 
@@ -102,7 +108,7 @@ export default function BookReviewSection({ bookId, userId, isAdmin = false }: {
   return <section id="book-comments" className="mt-12 scroll-mt-24">
     <div className="mb-5"><h2 className="text-2xl font-bold text-slate-800">Comments</h2></div>
     {loading ? <p className="py-4 text-sm text-slate-500">Loading comments...</p> : topLevel.length > 0 ? <div className="mb-8 space-y-3">
-      {topLevel.map(comment => <div key={comment.id}>{renderComment(comment)}{comments.filter(reply => reply.parent_id === comment.id).map(reply => renderComment(reply, true))}</div>)}
+      {topLevel.map(comment => renderComment(comment))}
     </div> : <p className="mb-6 rounded-lg bg-slate-50 p-4 text-sm text-slate-500">No comments yet. Be the first to comment.</p>}
     {userId ? <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-6">
       <h3 className="mb-3 text-lg font-bold text-slate-800">Write a comment</h3>
