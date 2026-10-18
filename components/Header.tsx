@@ -39,8 +39,9 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
               <Link href="/" className="text-slate-600 hover:text-blue-600">
                 <img src="/logo.jpeg" alt="shoppers ocean" className="w-[52px] sm:w-[60px]" />
               </Link>
-              {currentUser?.app_metadata?.userrole === "ADMIN" && <AdminNotificationBell />}
             </div>
+            <div className="ml-auto flex min-w-0 flex-shrink-0 items-center gap-3">
+              {currentUser?.app_metadata?.userrole === "ADMIN" && <AdminNotificationBell />}
             {currentUser ? (
               <HeaderAccountMenu
                 fullName={currentUser.user_metadata?.full_name ?? currentUser.email}
@@ -49,6 +50,7 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
                 isAuthor={currentUser.app_metadata?.isAuthor === true}
               />
             ) : <HeaderAuthButtons />}
+            </div>
           </div>
         </div>
       </nav>
