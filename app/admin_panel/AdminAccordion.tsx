@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, ChevronUp, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, MessageSquare, ExternalLink, Save } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, MessageSquare, UserCheck, ExternalLink, Save } from "lucide-react";
 import Dashboard from "../components/adminPage/Dashboard";
 
 const sections = [
@@ -12,6 +12,7 @@ const sections = [
   { label: "Authors", path: "authors", icon: PenTool },
   { label: "Users", path: "users", icon: Users },
   { label: "Review Section", path: "review_section", icon: MessageSquare },
+  { label: "Authors Approvals", path: "authors_approvals", icon: UserCheck },
 ] as const;
 
 export default function AdminAccordion() {
@@ -34,41 +35,45 @@ export default function AdminAccordion() {
       const doc = frame.contentDocument;
       const win = frame.contentWindow;
       if (!doc || !win) return;
+
       if (!doc.getElementById("admin-accordion-frame-style")) {
         const style = doc.createElement("style");
         style.id = "admin-accordion-frame-style";
         style.textContent = `
-          html, body { min-height:0!important; height:100%!important; max-height:100%!important; width:100%!important; max-width:100%!important; background:#fff!important; overflow:auto!important; }
-          *, *::before, *::after { box-sizing:border-box!important; writing-mode:horizontal-tb!important; }
-          body, body * { word-break:normal!important; }
-          body > div, body > div > div { width:100%!important; max-width:100%!important; min-width:0!important; }
-          body > div > .h-screen, body .h-screen { height:auto!important; min-height:0!important; }
+          html { height:100%!important; scroll-behavior:smooth!important; }
+          html,body { min-height:0!important; height:100%!important; }
+          body { margin:0!important; overflow:hidden!important; background:#fff!important; }
+          body > div { height:100%!important; min-height:0!important; }
+          body > div > .h-screen, body .h-screen { height:100%!important; min-height:0!important; }
           aside { display:none!important; }
-          main { display:block!important; padding:8px!important; width:100%!important; max-width:100%!important; min-width:0!important; overflow:visible!important; }
-          body .flex.h-screen { display:block!important; width:100%!important; min-width:0!important; }
-          main > section { display:block!important; width:100%!important; min-width:320px!important; max-width:none!important; }
-          main > section > div { max-width:none!important; }
-          main .flex.items-center.justify-between { flex-direction:row!important; align-items:center!important; }
-          main .flex.items-center.justify-between > div { min-width:0!important; }
-          main .flex.items-center.justify-between button { flex-shrink:0!important; }
-          form { width:100%; max-width:100%; }
-          table { min-width:600px; }
-          .overflow-x-auto { width:100%; max-width:100%; overflow-x:auto; }
-          input, textarea, select { max-width:100%; min-width:0; }
-          button, [role="button"] { touch-action:manipulation; white-space:normal; }
+          main { box-sizing:border-box!important; height:100%!important; min-height:0!important; padding:12px!important; width:100%!important; min-width:0!important; overflow-y:auto!important; overflow-x:hidden!important; overscroll-behavior:contain; scroll-behavior:smooth!important; -webkit-overflow-scrolling:touch; }
+          body .flex.h-screen { display:flex!important; height:100%!important; min-height:0!important; }
+          table { min-width:640px; }
+          .overflow-x-auto { max-width:100%; overflow-x:auto; }
+          input, textarea, select { max-width:100%; }
+          button, [role="button"] { touch-action:manipulation; }
+          [data-radix-portal] { position:relative; z-index:1000; }
         `;
         doc.head.appendChild(style);
       }
-      // Keep every expanded admin section in a compact, fixed-height viewport.
-      // The iframe itself becomes the scrollable area instead of stretching the page.
-      frame.style.height = "190px";
-      frame.style.minHeight = "190px";
-      frame.style.maxHeight = "190px";
-      frame.setAttribute("scrolling", "yes");
 
-      // Do not collapse the Books section on the first successful request:
-      // creating a book can be followed by a separate, potentially large PDF upload.
-      // Wait until all save/upload-related requests have finished before closing.
+      // Keep the embedded admin page within the available screen area so its
+      // controls scroll inside the section instead of pushing the footer away.
+      frame.style.height = "calc(100dvh - 176px)";
+      frame.style.minHeight = "300px";
+      frame.style.maxHeight = "calc(100dvh - 150px)";
+
+      if (!(frame as any).__resizeObserver) {
+        const observer = new win.ResizeObserver(() => {
+          // A fixed viewport-sized frame keeps the shared Back/Save footer visible.
+          frame.style.height = "calc(100dvh - 176px)";
+        });
+        observer.observe(doc.body);
+        (frame as any).__resizeObserver = observer;
+      }
+
+      // Close only after a successful save/upload request has settled. This is
+      // especially important for book creation, where PDF upload follows metadata.
       if (!(frame as any).__saveHandler) {
         let savePending = false;
         let closeTimer: number | undefined;
@@ -93,7 +98,7 @@ export default function AdminAccordion() {
           const target = event.target as HTMLElement | null;
           const button = target?.closest("button, input[type=submit]");
           const label = (button?.textContent || (button as HTMLInputElement | null)?.value || "").trim();
-          if (/^save$|save changes|update changes|save and add|update book|add book/i.test(label)) {
+          if (/^save(?:\s|$)|save changes|update changes|save and add|update book|save book|create book/i.test(label)) {
             if (closeTimer !== undefined) win.clearTimeout(closeTimer);
             closeTimer = undefined;
             savePending = true;
@@ -102,7 +107,7 @@ export default function AdminAccordion() {
         (frame as any).__saveHandler = true;
       }
     } catch {
-      // Keep the existing admin page usable if frame styling cannot be applied.
+      // Keep the admin page usable if embedded-page styling cannot be applied.
     }
   }
 
@@ -110,78 +115,108 @@ export default function AdminAccordion() {
     const frame = frameRefs.current[key];
     try {
       const doc = frame?.contentDocument;
-      if (!doc) return;
+      if (!doc) {
+        if (key === "Dashboard") setOpen(null);
+        return;
+      }
       const candidates = Array.from(doc.querySelectorAll<HTMLButtonElement | HTMLInputElement>(
         'button, input[type="submit"], input[type="button"]'
       ));
       const saveButton = candidates.find((button) => {
         if ((button as HTMLButtonElement).disabled) return false;
         const label = ((button as HTMLButtonElement).innerText || (button as HTMLInputElement).value || "").trim();
-        return /^save$|save changes|update changes|save and add|update book/i.test(label);
+        return /^save(?:\s|$)|save changes|update changes|save and add|update book|save book|create book/i.test(label);
       });
       if (saveButton) {
         saveButton.click();
         return;
       }
-      // Some sections save immediately as actions are performed; close only when
-      // there is no pending form to submit.
+      // Sections with immediate-save actions have nothing extra to submit.
       const form = doc.querySelector("form");
-      if (!form) setOpen(null);
-      else form.scrollIntoView({ behavior: "smooth", block: "end" });
+      if (!form) {
+        setOpen(null);
+      } else {
+        const main = doc.querySelector("main");
+        (main || form).scrollTo({ top: (main || form).scrollHeight, behavior: "smooth" });
+      }
     } catch {
-      // If a section cannot be accessed, leave it open rather than losing work.
+      // Do not close the section if the current form cannot be accessed.
     }
   }
 
+  const activeSection = sections.find(({ label }) => label === open);
+
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-2 px-2 sm:px-3">
-      <header className="rounded-xl bg-white p-4 shadow-sm sm:p-5">
-        <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Shoppers Ocean</p>
-        <h1 className="mt-1 text-2xl font-bold text-slate-900">Admin Panel</h1>
-        <p className="mt-1 text-sm text-slate-600">Choose a section to open its controls below.</p>
-      </header>
-      <div className="grid grid-cols-2 items-start gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
-      {sections.map(({ label, path, icon: Icon, ...rest }) => {
-        const isOpen = open === label;
-        return (
-          <section key={label} className={"min-w-0 overflow-hidden rounded-lg bg-white shadow-sm " + (isOpen ? "col-span-2 sm:col-span-3 lg:col-span-4" : "")}>
+    <div className="mx-auto flex min-h-[calc(100dvh-2rem)] w-full max-w-5xl flex-col">
+      {!open ? (
+        <>
+          <header className="mb-4 rounded-xl bg-white p-4 shadow-sm sm:p-5">
+            <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Shoppers Ocean</p>
+            <h1 className="mt-1 text-2xl font-bold text-slate-900">Admin Panel</h1>
+            <p className="mt-1 text-sm text-slate-600">Choose a section to open it full screen.</p>
+          </header>
+          <nav aria-label="Admin sections" className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {sections.map(({ label, icon: Icon }) => (
+              <button
+                key={label}
+                type="button"
+                onClick={() => setOpen(label)}
+                className="flex min-h-12 w-full items-center justify-between gap-3 rounded-md bg-blue-600 px-4 py-3 text-left text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              >
+                <span className="flex min-w-0 items-center gap-3"><Icon className="h-5 w-5 shrink-0" /><span>{label}</span></span>
+                <span aria-hidden="true" className="text-lg">›</span>
+              </button>
+            ))}
+          </nav>
+          <a href="/" className="mt-4 flex min-h-12 items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700"><ExternalLink className="h-4 w-4" /> Back to Homepage</a>
+        </>
+      ) : (
+        <section className="flex min-h-[calc(100dvh-2rem)] flex-1 flex-col overflow-hidden rounded-xl bg-white shadow-sm">
+          <header className="flex shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-3 py-3 sm:px-5">
             <button
               type="button"
-              aria-expanded={isOpen}
-              onClick={() => setOpen(isOpen ? null : label)}
-              className="flex min-h-10 w-full items-center justify-between gap-1 rounded-md bg-blue-600 px-2 py-2 text-left text-xs font-semibold leading-tight text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 sm:min-h-10 sm:px-3 sm:text-sm"
+              onClick={() => setOpen(null)}
+              className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
-              <span className="flex min-w-0 items-center gap-1.5"><Icon className="h-4 w-4 shrink-0" /><span className="min-w-0">{label}</span></span>
-              {isOpen ? <ChevronUp className="h-4 w-4 shrink-0" /> : <ChevronDown className="h-4 w-4 shrink-0" />}
+              <ArrowLeft className="h-4 w-4" /> Back
             </button>
-            {isOpen && (
-              <div className="border-t border-slate-100 p-2 sm:p-4">
-                {"dashboard" in rest && rest.dashboard ? (
-                  <div className="h-[190px] max-h-[190px] overflow-auto overscroll-contain rounded-md border border-slate-200">
-                    <Dashboard />
-                  </div>
-                ) : (
-                  <iframe
-                    ref={(node) => { frameRefs.current[label] = node; }}
-                    title={label}
-                    src={"/admin_panel/" + path}
-                    onLoad={() => prepareFrame(label)}
-                    className="block w-full min-w-0 border-0 bg-white"
-                    scrolling="yes"
-                    style={{ height: 190, minHeight: 190, maxHeight: 190, width: "100%", overflow: "auto" }}
-                  />
-                )}
-                <div className="mt-3 flex flex-wrap justify-end gap-2 border-t border-slate-100 pt-3">
-                  <button type="button" onClick={() => setOpen(null)} className="min-h-11 rounded-md border border-slate-300 bg-white px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Close section</button>
-                  <button type="button" onClick={() => saveAndClose(label)} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"><Save className="h-4 w-4" /> Save</button>
-                </div>
+            <h1 className="min-w-0 flex-1 truncate text-lg font-bold text-slate-900 sm:text-xl">{activeSection?.label || open}</h1>
+          </header>
+          <div className="min-h-0 flex-1 overflow-hidden p-1 sm:p-2">
+            {activeSection && "dashboard" in activeSection && activeSection.dashboard ? (
+              <div className="h-full overflow-y-auto overscroll-contain [scroll-behavior:smooth]">
+                <Dashboard />
               </div>
+            ) : (
+              <iframe
+                key={open}
+                ref={(node) => { if (open) frameRefs.current[open] = node; }}
+                title={open}
+                src={"/admin_panel/" + (activeSection?.path || "")}
+                onLoad={() => prepareFrame(open)}
+                className="block w-full border-0 bg-white"
+                style={{ height: "calc(100dvh - 176px)", minHeight: 300, maxHeight: "calc(100dvh - 150px)" }}
+              />
             )}
-          </section>
-        );
-      })}
-      </div>
-      <a href="/" className="flex min-h-10 items-center justify-center gap-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700"><ExternalLink className="h-4 w-4" /> Back to Homepage</a>
+          </div>
+          <footer className="sticky bottom-0 z-20 flex shrink-0 items-center justify-between gap-3 border-t border-slate-200 bg-white px-3 py-3 shadow-[0_-4px_12px_rgba(15,23,42,0.06)] sm:px-5">
+            <button
+              type="button"
+              onClick={() => setOpen(null)}
+              className="min-h-11 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={() => saveAndClose(open)}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            >
+              <Save className="h-4 w-4" /> Save
+            </button>
+          </footer>
+        </section>
+      )}
     </div>
   );
 }
