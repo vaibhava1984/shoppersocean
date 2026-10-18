@@ -100,6 +100,7 @@ export default function AdminAccordion() {
           }
           return response;
         }) as typeof fetch;
+        doc.addEventListener("submit", () => { savePending = true; }, true);
         doc.addEventListener("click", (event) => {
           const target = event.target as HTMLElement | null;
           const button = target?.closest("button, input[type=submit]");
