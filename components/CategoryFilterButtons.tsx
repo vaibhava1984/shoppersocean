@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { SUPPORTED_BOOK_GENRES } from "@/utils/book-genres"
 import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages"
 
@@ -14,6 +15,7 @@ type Props = {
 
 export default function CategoryFilterButtons({ genre = "", author = "", language = "", languages }: Props) {
   const [open, setOpen] = useState<"genre" | "language" | null>(null)
+  const router = useRouter()
   const availableLanguages = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...languages])).sort((a, b) => a.localeCompare(b))
   const filters: Array<{ key: "genre" | "language"; label: string; values: string[] }> = []
 
@@ -29,36 +31,53 @@ export default function CategoryFilterButtons({ genre = "", author = "", languag
     return "/bookShelf?" + params.toString()
   }
 
-  if (!filters.length) return null
-
   return (
-    <div className="mb-3 flex flex-wrap items-center gap-2">
-      {filters.map((filter) => (
-        <div key={filter.key} className="relative">
-          <button
-            type="button"
-            onClick={() => setOpen((current) => current === filter.key ? null : filter.key)}
-            aria-expanded={open === filter.key}
-            className="min-h-[38px] rounded-lg bg-blue-600 px-3 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-blue-700 active:scale-[0.98]"
-          >
-            {filter.label}
-          </button>
-          {open === filter.key && (
-            <div className="absolute left-0 top-full z-30 mt-1 max-h-60 min-w-52 max-w-[85vw] overflow-y-auto overscroll-contain rounded-lg border border-blue-100 bg-white p-1 shadow-xl">
-              {filter.values.map((value) => (
-                <Link
-                  key={value}
-                  href={makeHref(filter.key, value)}
-                  onClick={() => setOpen(null)}
-                  className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-blue-50"
-                >
-                  {value}
-                </Link>
-              ))}
+    <div className="mb-4 flex flex-col items-start gap-3">
+      <button
+        type="button"
+        onClick={() => {
+          if (typeof window !== "undefined" && window.history.length > 1) router.back()
+          else router.push("/")
+        }}
+        aria-label="Go back"
+        className="inline-flex min-h-[38px] items-center justify-center rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-bold text-blue-700 shadow-sm transition-colors hover:bg-blue-50 active:scale-[0.98]"
+      >
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" className="mr-2 h-5 w-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5" />
+          <path d="m12 19-7-7 7-7" />
+        </svg>
+        Back
+      </button>
+      {filters.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          {filters.map((filter) => (
+            <div key={filter.key} className="relative">
+              <button
+                type="button"
+                onClick={() => setOpen((current) => current === filter.key ? null : filter.key)}
+                aria-expanded={open === filter.key}
+                className="min-h-[38px] rounded-lg bg-blue-600 px-3 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-blue-700 active:scale-[0.98]"
+              >
+                {filter.label}
+              </button>
+              {open === filter.key && (
+                <div className="absolute left-0 top-full z-30 mt-1 max-h-60 min-w-52 max-w-[85vw] overflow-y-auto overscroll-contain rounded-lg border border-blue-100 bg-white p-1 shadow-xl">
+                  {filter.values.map((value) => (
+                    <Link
+                      key={value}
+                      href={makeHref(filter.key, value)}
+                      onClick={() => setOpen(null)}
+                      className="block rounded-md px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-blue-50"
+                    >
+                      {value}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+          ))}
         </div>
-      ))}
+      )}
     </div>
   )
 }
