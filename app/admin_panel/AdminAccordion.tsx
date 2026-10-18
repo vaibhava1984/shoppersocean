@@ -151,9 +151,9 @@ export default function AdminAccordion() {
           form.requestSubmit();
           return;
         }
-        // Do not close Books just because the table view has no open form.
+        // Books saves only through its own form. Never show a second parent-level prompt.
         setSaving(false);
-        setSaveNotice("Open Add New Book or Edit to save book details.");
+        setSaveNotice("");
         return;
       }
       const candidates = Array.from(doc.querySelectorAll<HTMLButtonElement | HTMLInputElement>(
@@ -218,7 +218,7 @@ export default function AdminAccordion() {
           <header className="flex h-14 shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-3 py-2 sm:px-4">
             <button
               type="button"
-              onClick={() => setOpen(null)}
+              onClick={() => { setSaveNotice(""); setSaving(false); setOpen(null); setFrameReady(false); }}
               className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <ArrowLeft className="h-4 w-4" /> Back
@@ -245,7 +245,7 @@ export default function AdminAccordion() {
           <footer className="flex h-14 shrink-0 items-center justify-end gap-3 border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
             <button
               type="button"
-              onClick={() => { setOpen(null); setFrameReady(false); }}
+              onClick={() => { setSaveNotice(""); setSaving(false); setOpen(null); setFrameReady(false); }}
               className="min-h-9 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               Back
