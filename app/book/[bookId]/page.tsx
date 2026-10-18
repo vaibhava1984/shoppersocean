@@ -75,7 +75,7 @@ export default async function BookDetailPage({ params }: { params: any }) {
                     </div>
                 </div>
                 <Card className="mt-12"><CardContent className="p-6"><h2 className="text-2xl font-bold mb-4 text-slate-800">Book Summary</h2><p className="text-slate-600 whitespace-pre-line">{currentBookDetails.description}</p></CardContent></Card>
-                <BookReviewSection bookId={String(bookId)} userId={user?.id} />
+                <BookReviewSection bookId={String(bookId)} userId={user?.id} isAdmin={String(user?.publicMetadata.userrole ?? "").trim().toUpperCase() === "ADMIN"} />
             </div>
         </section>
         <Footer />
