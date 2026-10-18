@@ -35,6 +35,9 @@ export default function AddBookPopup(props: propsType) {
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [isUploading, setIsUploading] = useState(false);
     const [pendingBookFiles, setPendingBookFiles] = useState<File[]>([]);
+    // Retain the newly created book ID if its PDF upload fails, so retrying Save
+    // uploads the selected PDF without creating a duplicate book record.
+    const [pendingSavedBookId, setPendingSavedBookId] = useState<string | null>(null);
 
     const sortedAuthors = [...authors].sort((a, b) => a.name.localeCompare(b.name));
     const languageOptions = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...(book?.language ? [book.language] : [])])).sort((a, b) => a.localeCompare(b));
@@ -97,7 +100,7 @@ export default function AddBookPopup(props: propsType) {
         await uploadBookFiles(book.id, Array.from(files));
     }
 
-    async function uploadBookFiles(bookId: string, files: File[]) {
+    async function uploadBookFiles(bookId: string, files: File[]): Promise<boolean> {
         if (!files.length) return;
         setIsUploading(true); setUploadProgress(0);
         try {
@@ -110,8 +113,10 @@ export default function AddBookPopup(props: propsType) {
             setUploadProgress(100);
             await fetchBookFiles(bookId);
             toast({ title:"Success!", description:"Files uploaded successfully" });
+            return true;
         } catch (error:any) {
-            toast({ variant:"destructive", title:"Error", description:error?.message || "Failed to upload files" });
+            toast({ variant:"destructive", title:"PDF upload failed", description:error?.message || "Failed to upload files. Please retry Save." });
+            return false;
         } finally { setIsUploading(false); }
     }
 
@@ -176,17 +181,29 @@ export default function AddBookPopup(props: propsType) {
 
     async function addOrUpdateBook() {
         try {
-            const payload:any = { ...formData, author_name: authorName, id: book?.id };
-            const response=await fetch("/api/admin/books",{method:book?.id ? "PUT" : "POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-            const result=await response.json();
-            if(!response.ok) throw new Error(result.error || "Something went wrong");
-            const savedBookId = String(result.id || book?.id || "");
-            if (pendingBookFiles.length && savedBookId) {
-                await uploadBookFiles(savedBookId, pendingBookFiles);
+            let savedBookId = String(book?.id || pendingSavedBookId || "");
+
+            // If the book record was already created but its PDF upload failed,
+            // retry only the upload instead of creating a duplicate book.
+            if (!pendingSavedBookId) {
+                const payload:any = { ...formData, author_name: authorName, id: book?.id };
+                const response=await fetch("/api/admin/books",{method:book?.id ? "PUT" : "POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+                const result=await response.json();
+                if(!response.ok) throw new Error(result.error || "Something went wrong");
+                savedBookId = String(result.id || book?.id || "");
+                if (!book?.id && savedBookId) setPendingSavedBookId(savedBookId);
+            }
+
+            if (pendingBookFiles.length) {
+                if (!savedBookId) throw new Error("Book details were saved, but the PDF could not be linked. Please retry Save.");
+                const uploaded = await uploadBookFiles(savedBookId, pendingBookFiles);
+                if (!uploaded) return; // Keep the form and selected PDF available for retry.
                 setPendingBookFiles([]);
             }
+
             resetForm();
             toast({title:"Success!",description:book ? "Updating Book Success" : "Adding Book Success"});
+            window.parent.postMessage({ type: "admin-section-saved", key: "Books" }, window.location.origin);
             props.onSuccess(true);
         } catch(error:any) {
             toast({variant:"destructive",title:"Error",description:error?.message || "Something went wrong"});
@@ -231,6 +248,7 @@ export default function AddBookPopup(props: propsType) {
         });
         setAuthorName(''); // Reset author name
         setPendingBookFiles([]);
+        setPendingSavedBookId(null);
         setErrors({});
     }
 
