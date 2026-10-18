@@ -142,7 +142,7 @@ export default function AdminAccordion() {
       const saveButton = candidates.find((button) => {
         if ((button as HTMLButtonElement).disabled) return false;
         const label = ((button as HTMLButtonElement).innerText || (button as HTMLInputElement).value || "").trim();
-        return /^save(?:\s|$)|save changes|update changes|save and add|update book|save book|create book/i.test(label);
+        return /^save(?:\s|$)|save changes|update(?:\s|$)|update changes|save and add|submit|save book|create book/i.test(label);
       });
       if (saveButton) {
         saveButton.click();
