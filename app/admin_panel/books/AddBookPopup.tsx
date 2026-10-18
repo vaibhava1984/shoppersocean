@@ -112,7 +112,8 @@ export default function AddBookPopup(props: propsType) {
             if (!response.ok) throw new Error(result.error || "Failed to upload files");
             setUploadProgress(100);
             await fetchBookFiles(bookId);
-            toast({ title:"Success!", description:"Files uploaded successfully" });
+            toast({ title:"Success!", description:"Your book is uploaded successfully." });
+            window.parent.postMessage({ type: "admin-book-uploaded", key: "Books" }, window.location.origin);
             return true;
         } catch (error:any) {
             toast({ variant:"destructive", title:"PDF upload failed", description:error?.message || "Failed to upload files. Please retry Save." });
@@ -203,7 +204,7 @@ export default function AddBookPopup(props: propsType) {
 
             resetForm();
             toast({title:"Success!",description:book ? "Updating Book Success" : "Adding Book Success"});
-            window.parent.postMessage({ type: "admin-section-saved", key: "Books" }, window.location.origin);
+            if (!hasPendingFiles) window.parent.postMessage({ type: "admin-section-saved", key: "Books" }, window.location.origin);
             props.onSuccess(true);
         } catch(error:any) {
             toast({variant:"destructive",title:"Error",description:error?.message || "Something went wrong"});
