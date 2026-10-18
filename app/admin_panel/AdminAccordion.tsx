@@ -18,15 +18,17 @@ const sections = [
 export default function AdminAccordion() {
   const [open, setOpen] = useState<string | null>(null);
   const [saveNotice, setSaveNotice] = useState<string>("");
+  const [saving, setSaving] = useState(false);
   const noticeTimer = useRef<number | undefined>(undefined);
   const frameRefs = useRef<Record<string, HTMLIFrameElement | null>>({});
 
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
-      if (event.data?.type === "admin-section-saved") {
+      if (event.data?.type === "admin-section-saved" || event.data?.type === "admin-book-uploaded") {
         const sectionName = String(event.data.key || open || "Section");
-        setSaveNotice(`${sectionName} changes saved successfully.`);
+        setSaving(false);
+        setSaveNotice(event.data?.type === "admin-book-uploaded" ? "Your book is uploaded successfully." : "Your changes are saved successfully.");
         setOpen(null);
         if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
         noticeTimer.current = window.setTimeout(() => setSaveNotice(""), 5000);
@@ -87,7 +89,7 @@ export default function AdminAccordion() {
             closeTimer = undefined;
           }
           const response = await originalFetch(...args);
-          if (savePending && response.ok) {
+          const requestMethod = String((args[1] as RequestInit | undefined)?.method || (args[0] instanceof Request ? args[0].method : "GET")).toUpperCase();\n          if (savePending && response.ok && ["POST", "PUT", "PATCH", "DELETE"].includes(requestMethod)) {
             if (closeTimer !== undefined) win.clearTimeout(closeTimer);
             closeTimer = win.setTimeout(() => {
               savePending = false;
