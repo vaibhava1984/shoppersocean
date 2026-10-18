@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
-import { requireUser, requireAdmin } from "@/utils/auth/requireUser";
+import { requireUser } from "@/utils/auth/requireUser";
 import { addAdminNotification } from "@/utils/adminNotifications";
 
 async function ensureCommentReplies(db: any) {
