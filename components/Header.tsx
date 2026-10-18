@@ -6,7 +6,6 @@ import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation"
 import HeaderAccountMenu from "@/components/HeaderAccountMenu";
 import HeaderAuthButtons from "@/components/HeaderAuthButtons";
 import YourBooksNavigation from "@/components/YourBooksNavigation";
-import AdminNotificationBell from "@/components/AdminNotificationBell";
 
 const navigationItems = [
   ["/", "Home"],
@@ -41,7 +40,6 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
               </Link>
             </div>
             <div className="ml-auto flex min-w-0 flex-shrink-0 items-center gap-3">
-              {currentUser?.app_metadata?.userrole === "ADMIN" && <AdminNotificationBell />}
             {currentUser ? (
               <HeaderAccountMenu
                 fullName={currentUser.user_metadata?.full_name ?? currentUser.email}
