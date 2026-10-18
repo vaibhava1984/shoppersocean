@@ -59,13 +59,11 @@ export async function POST(request: Request) {
     const now = new Date().toISOString();
     await db.prepare("INSERT INTO testimonials(id,content,rating,user_id,book_id,approved,created_at,updated_at,parent_id) VALUES(?,?,?,?,?,?,?,?,?)")
       .bind(id,text,stars,userId,bookId,1,now,now,parentId).run();
-    if (!parentId) {
-      await addAdminNotification(db, {
-        type: "book_review", title: "New book comment",
-        message: name + " commented on “" + String(book.title || "a book") + "”.",
-        details: { reviewId: id, commentId: id, userId, name, bookId, bookTitle: String(book.title || ""), comment: text }
-      });
-    }
+    await addAdminNotification(db, {
+      type: "book_review", title: parentId ? "New comment reply" : "New book comment",
+      message: parentId ? name + " replied to a comment on “" + String(book.title || "a book") + "”. " : name + " commented on “" + String(book.title || "a book") + "”.",
+      details: { reviewId: id, commentId: id, parentId, userId, name, bookId, bookTitle: String(book.title || ""), comment: text }
+    });
     return NextResponse.json({ message: "Comment posted successfully.", review: {
       id, description: text, rating: stars, users: name, user_id: userId, book_id: bookId, parent_id: parentId, created_at: now, is_admin: isAdmin ? 1 : 0
     } }, { status: 201, headers: { "Cache-Control": "no-store" } });
@@ -89,8 +87,12 @@ export async function DELETE(request: Request) {
     const isAdmin = String(identity.user.publicMetadata.userrole ?? "").trim().toUpperCase() === "ADMIN";
     if (!isAdmin && String(comment.user_id) !== String(identity.profile.id))
       return NextResponse.json({ error: "You can delete only your own comments." }, { status: 403 });
-    await db.prepare("DELETE FROM testimonials WHERE parent_id=?").bind(String(id)).run();
-    await db.prepare("DELETE FROM testimonials WHERE id=?").bind(String(id)).run();
+    const deleteTree = async (commentId: string): Promise<void> => {
+      const { results: children = [] } = await db.prepare("SELECT id FROM testimonials WHERE parent_id=?").bind(commentId).all<any>();
+      for (const child of children) await deleteTree(String(child.id));
+      await db.prepare("DELETE FROM testimonials WHERE id=?").bind(commentId).run();
+    };
+    await deleteTree(String(id));
     return NextResponse.json({ success: true }, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
     console.error("Book comments DELETE:", e);
