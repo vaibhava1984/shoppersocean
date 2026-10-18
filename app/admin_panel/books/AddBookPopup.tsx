@@ -101,7 +101,7 @@ export default function AddBookPopup(props: propsType) {
     }
 
     async function uploadBookFiles(bookId: string, files: File[]): Promise<boolean> {
-        if (!files.length) return;
+        if (!files.length) return false;
         setIsUploading(true); setUploadProgress(0);
         try {
             const form = new FormData();
