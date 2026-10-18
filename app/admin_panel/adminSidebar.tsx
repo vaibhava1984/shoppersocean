@@ -16,7 +16,6 @@ export default function AdminSidebar() {
                     { icon: BookOpen, label: 'Books', value: 'books' },
                     { icon: PenTool, label: 'Authors', value: 'authors' },
                     { icon: Users, label: 'Users', value: 'users' },
-                    { icon: PenTool, label: 'Review Section', value: 'review_section' },
                     { icon: Home, label: 'Back to Homepage', value: '', homepageButton: true },
                 ].map((item, index) => (
                     <Link
