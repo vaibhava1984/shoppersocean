@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Bell, CheckCheck, Loader2, X } from "lucide-react";
 
 type Notification = { id: string; type: string; title: string; message: string; details?: string; created_at: string; read_at: string | null };
@@ -11,7 +11,7 @@ export default function AdminNotificationBell() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const bellRef = useRef<HTMLButtonElement>(null);
-  const [panelStyle, setPanelStyle] = useState<React.CSSProperties>({ left: 8, top: 64, width: "min(320px, calc(100vw - 16px))" });
+  const [panelStyle, setPanelStyle] = useState<CSSProperties>({ left: 8, top: 64, width: "min(320px, calc(100vw - 16px))" });
 
   async function refresh() {
     try {
@@ -73,8 +73,8 @@ export default function AdminNotificationBell() {
     setOpen(next);
   }
   return <div className="relative flex-shrink-0">
-    <button type="button" onClick={() => { const next = !open; setOpen(next); if (next) { setLoading(true); void (async () => { await refresh(); await markAllRead(); setLoading(false); })(); } }} aria-label={unread ? `Admin notifications, ${unread} unread` : "Admin notifications"} aria-expanded={open} className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-blue-100 bg-white text-blue-700 shadow-sm transition hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <Bell size={21} aria-hidden="true" />{unread > 0 && <span className="absolute -right-1 -top-1 flex min-h-[19px] min-w-[19px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-extrabold leading-none text-white">{unread > 99 ? "99+" : unread}</span>}
+    <button ref={bellRef} type="button" onClick={togglePanel} aria-label={unread ? `Admin notifications, ${unread} unread` : "Admin notifications"} aria-expanded={open} className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-amber-400 bg-black text-amber-400 shadow-none transition-colors hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-400">
+      <Bell size={21} strokeWidth={2.2} aria-hidden="true" />{unread > 0 && <span className="absolute -right-1 -top-1 flex min-h-[19px] min-w-[19px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-extrabold leading-none text-white">{unread > 99 ? "99+" : unread}</span>}
     </button>
     {open && <>
       <button type="button" aria-label="Close notifications" className="fixed inset-0 z-[80] cursor-default" onClick={() => setOpen(false)} />
