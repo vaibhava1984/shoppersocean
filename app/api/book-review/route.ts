@@ -50,7 +50,6 @@ export async function POST(request: Request) {
     if (parentId) {
       const parent = await db.prepare("SELECT id,user_id,parent_id FROM testimonials WHERE id=? AND book_id=? LIMIT 1").bind(parentId,bookId).first<any>();
       if (!parent) return NextResponse.json({ error: "The comment you are replying to could not be found." }, { status: 404 });
-      if (parent.parent_id) return NextResponse.json({ error: "Replies can be made to comments, not to another reply." }, { status: 400 });
       if (!isAdmin && String(parent.user_id) === userId) return NextResponse.json({ error: "You cannot reply to your own comment." }, { status: 403 });
     } else if (stars < 0 || stars > 5) {
       return NextResponse.json({ error: "Rating must be between 1 and 5, or omitted." }, { status: 400 });
