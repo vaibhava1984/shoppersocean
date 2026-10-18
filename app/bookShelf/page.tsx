@@ -145,7 +145,7 @@ export default async function BookShelfPage({
                                 </div>
                             ) : (
                                 <div className="rounded border-2 border-dashed border-gray-300 py-12 text-center">
-                                    <p className="text-lg text-slate-600">No books found in this category.</p>
+                                    <p className="mx-auto max-w-2xl px-4 text-lg leading-relaxed text-slate-600">Sorry !! For now we don't have anything as per your choice, but soon you will find your desired content ☺️</p>
                                 </div>
                             )}
                         </>
