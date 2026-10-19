@@ -108,37 +108,6 @@ export default function AdminAccordion() {
       frame.style.height = frameHeight;
       frame.style.minHeight = "0";
       frame.style.maxHeight = frameHeight;
-      // Keep the Books Save control inside the Books section itself.
-      if (key === "Books" && !doc.getElementById("admin-books-save-button")) {
-        const saveButton = doc.createElement("button");
-        saveButton.id = "admin-books-save-button";
-        saveButton.type = "button";
-        saveButton.textContent = "Save";
-        saveButton.style.cssText = "position:fixed;right:14px;bottom:14px;z-index:10000;min-height:36px;padding:7px 18px;border:0;border-radius:7px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer";
-        saveButton.addEventListener("click", () => {
-          const form = doc.querySelector('[role="dialog"] form') || doc.querySelector("form");
-          if (!form || form.tagName !== "FORM") {
-            let hint = doc.getElementById("admin-books-save-hint");
-            if (!hint) {
-              hint = doc.createElement("div");
-              hint.id = "admin-books-save-hint";
-              hint.style.cssText = "position:fixed;right:14px;bottom:58px;z-index:10000;max-width:calc(100vw - 28px);padding:9px 12px;border-radius:7px;background:#334155;color:#fff;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.15)";
-              doc.body.appendChild(hint);
-            }
-            hint.textContent = "Open Add New Book or Edit Book before saving.";
-            return;
-          }
-          const bookForm = form as HTMLFormElement;
-          if (!bookForm.reportValidity()) return;
-          saveButton.disabled = true;
-          saveButton.textContent = "Saving…";
-          win.parent.postMessage({ type: "admin-section-saving", key: "Books" }, win.location.origin);
-          bookForm.requestSubmit();
-        });
-        doc.body.appendChild(saveButton);
-      }
-
-
       // Avoid a ResizeObserver-driven resize loop: the frame is intentionally
       // viewport-sized and should not be resized every time a form changes.
       if (!(frame as any).__saveHandler) {
