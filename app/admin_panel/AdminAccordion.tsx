@@ -128,11 +128,12 @@ export default function AdminAccordion() {
             hint.textContent = "Open Add New Book or Edit Book before saving.";
             return;
           }
-          if (!form.reportValidity()) return;
+          const bookForm = form as HTMLFormElement;
+          if (!bookForm.reportValidity()) return;
           saveButton.disabled = true;
           saveButton.textContent = "Saving…";
           win.parent.postMessage({ type: "admin-section-saving", key: "Books" }, win.location.origin);
-          form.requestSubmit();
+          bookForm.requestSubmit();
         });
         doc.body.appendChild(saveButton);
       }
@@ -191,9 +192,10 @@ export default function AdminAccordion() {
       if (key === "Books") {
         const form = doc.querySelector('[role="dialog"] form') || doc.querySelector("form");
         if (form && form.tagName === "FORM") {
+          const bookForm = form as HTMLFormElement;
           // Prevent native required-field validation from leaving the common Save
           // button stuck in its loading state when submission is blocked.
-          if (!form.reportValidity()) {
+          if (!bookForm.reportValidity()) {
             setSaving(false);
             setSaveNotice("Please complete the required fields before saving.");
             if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
@@ -202,7 +204,7 @@ export default function AdminAccordion() {
           }
           setSaving(true);
           setSaveNotice("Saving changes…");
-          form.requestSubmit();
+          bookForm.requestSubmit();
           return;
         }
         setSaving(false);
