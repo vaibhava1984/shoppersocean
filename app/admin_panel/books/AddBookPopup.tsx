@@ -35,6 +35,7 @@ export default function AddBookPopup(props: propsType) {
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [isUploading, setIsUploading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [isLoadingBookDetails, setIsLoadingBookDetails] = useState(Boolean(book?.id));
     const [pendingBookFiles, setPendingBookFiles] = useState<File[]>([]);
     // Retain the newly created book ID if its PDF upload fails, so retrying Save
     // uploads the selected PDF without creating a duplicate book record.
@@ -69,6 +70,31 @@ export default function AddBookPopup(props: propsType) {
     useEffect(() => {
         fetchAuthors();
     }, []);
+
+    useEffect(() => {
+        let cancelled = false;
+        async function loadBookDetails() {
+            if (!book?.id) {
+                setIsLoadingBookDetails(false);
+                return;
+            }
+            setIsLoadingBookDetails(true);
+            try {
+                const response = await fetch(`/api/admin/books?id=${encodeURIComponent(String(book.id))}`, { cache: "no-store" });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || "Failed to load book details");
+                if (!cancelled) {
+                    setFormData((previous) => ({ ...previous, cover_images: result.book?.cover_images || [] }));
+                }
+            } catch (error) {
+                console.error("Error loading book cover details:", error);
+            } finally {
+                if (!cancelled) setIsLoadingBookDetails(false);
+            }
+        }
+        loadBookDetails();
+        return () => { cancelled = true; };
+    }, [book?.id]);
 
     useEffect(() => {
         if (authors?.length && book && book?.author_id) {
@@ -510,8 +536,8 @@ export default function AddBookPopup(props: propsType) {
                 </div>
 
                 <div className="sticky bottom-0 z-10 mt-4 flex justify-end border-t border-slate-200 bg-white/95 px-1 py-3 backdrop-blur">
-                    <Button type="submit" disabled={isSaving || isUploading} className="min-h-9 min-w-20 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60">
-                        {isUploading ? "Uploading…" : isSaving ? "Saving…" : "Save"}
+                    <Button type="submit" disabled={isSaving || isUploading || isLoadingBookDetails} className="min-h-9 min-w-20 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60">
+                        {isLoadingBookDetails ? "Loading…" : isUploading ? "Uploading…" : isSaving ? "Saving…" : "Save"}
                     </Button>
                 </div>
             </form>
