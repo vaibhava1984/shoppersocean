@@ -149,19 +149,29 @@ export default function AdminAccordion() {
         setSaveNotice("Could not save changes. Please reopen the section and try again.");
         return;
       }
-      setSaving(true);
-      setSaveNotice("Saving changes…");
       if (key === "Books") {
         const form = doc.querySelector('[role="dialog"] form') || doc.querySelector("form");
         if (form instanceof HTMLFormElement) {
+          // Prevent native required-field validation from leaving the common Save
+          // button stuck in its loading state when submission is blocked.
+          if (!form.reportValidity()) {
+            setSaving(false);
+            setSaveNotice("Please complete the required fields before saving.");
+            if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
+            noticeTimer.current = window.setTimeout(() => setSaveNotice(""), 3500);
+            return;
+          }
+          setSaving(true);
+          setSaveNotice("Saving changes…");
           form.requestSubmit();
           return;
         }
-        // Books saves only through its own form. Never show a second parent-level prompt.
         setSaving(false);
-        setSaveNotice("");
+        setSaveNotice("Could not find the book form. Please reopen the section and try again.");
         return;
       }
+      setSaving(true);
+      setSaveNotice("Saving changes…");
       const candidates = Array.from(doc.querySelectorAll<HTMLButtonElement | HTMLInputElement>(
         'button, input[type="submit"], input[type="button"]'
       ));
