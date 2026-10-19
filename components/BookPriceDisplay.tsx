@@ -17,7 +17,7 @@ export default function BookPriceDisplay({ bookId }: { bookId: string }) {
         if (active && data.currency && Number(data.amount) > 0 && !data.unavailable) setPrice({ currency: data.currency, amount: Number(data.amount) });
         else if (active) setUnavailable(true);
       })
-      .catch(error => console.error("Unable to load local book price:", error));
+      .catch(error => { console.error("Unable to load local book price:", error); if (active) setUnavailable(true); });
     return () => { active = false; };
   }, [bookId]);
 
