@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Loader2Icon, Share2, Mail, MessageCircle, Copy, MoreHorizontal } from 'lucide-react';
 import { setPurchaseStatus } from '@/utils/purchaseStatusCache';
-import { convertCurrency, fetchExchangeRates, getCurrencyCode } from '@/utils/currency';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,69 +23,37 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
         let active = true;
         setIsCurrencyFetching(true);
 
-        async function setupLocalCurrency() {
+        async function loadVisitorPrice() {
             try {
-                // Always use Cloudflare's IP-based visitor geography, regardless of login status
-                // or the country entered in the user's account profile.
-                const response = await fetch('/api/visitor-country', {
+                const response = await fetch(`/api/book-pricing?bookId=${encodeURIComponent(productId)}`, {
                     credentials: 'same-origin',
                     cache: 'no-store',
                 });
-                let country = '';
-                if (response.ok) {
-                    const data = await response.json();
-                    country = String(data?.country || '').trim().toUpperCase();
-                }
-
+                const data = await response.json();
+                if (!response.ok) throw new Error(data?.error || 'Unable to load price');
                 if (!active) return;
 
-                if (country === 'IN' || country === 'INDIA') {
-                    setLocalCurrency('INR');
-                    setLocalAmount(amount);
+                const currency = String(data?.currency || '').toUpperCase();
+                const price = Number(data?.amount);
+                if (!currency || !Number.isFinite(price) || price <= 0 || data?.unavailable) {
+                    setLocalCurrency(null);
                     return;
                 }
-
-                // Keep the existing international reference price at US$3,
-                // converted to the visitor's mapped domestic currency.
-                const domesticCurrency = country ? getCurrencyCode(country) : 'USD';
-                if (!domesticCurrency || domesticCurrency === 'Unknown' || domesticCurrency === 'INR') {
-                    setLocalCurrency('USD');
-                    setLocalAmount(3);
-                    return;
-                }
-
-                if (domesticCurrency === 'USD') {
-                    setLocalCurrency('USD');
-                    setLocalAmount(3);
-                    return;
-                }
-
-                const rates = await fetchExchangeRates();
-                const convertedAmount = convertCurrency(3, 'USD', domesticCurrency, rates);
-                if (!active) return;
-
-                // If a rate is unavailable, do not show a misleading local-currency amount.
-                if (!rates.USD || !rates[domesticCurrency] || !Number.isFinite(convertedAmount) || convertedAmount <= 0) {
-                    setLocalCurrency('USD');
-                    setLocalAmount(3);
-                    return;
-                }
-
-                setLocalCurrency(domesticCurrency);
-                setLocalAmount(convertedAmount);
+                setLocalCurrency(currency);
+                setLocalAmount(price);
             } catch (error) {
                 if (!active) return;
-                console.error('Error setting up local currency:', error);
-                setLocalCurrency('USD');
-                setLocalAmount(3);
+                console.error('Error setting up visitor book price:', error);
+                // Do not invent a fixed international price when geography/rates are unavailable.
+                setLocalCurrency(null);
             } finally {
                 if (active) setIsCurrencyFetching(false);
             }
         }
 
-        setupLocalCurrency();
+        loadVisitorPrice();
         return () => { active = false; };
-    }, [amount, userId]);
+    }, [productId, amount]);
 
     useEffect(() => {
         if (!productId) return;

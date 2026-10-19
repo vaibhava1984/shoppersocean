@@ -48,7 +48,10 @@ export default function AddBookPopup(props: propsType) {
         description: book?.description ?? '',
         published_date: book?.published_date ?? '',
         isbn: book?.isbn ?? '',
-        price: book?.price ?? 0,
+        price: book?.price_inr ?? book?.price ?? 0,
+        price_usd: Number(book?.price_usd ?? 0),
+        price_eur: Number(book?.price_eur ?? 0),
+        price_cny: Number(book?.price_cny ?? 0),
         ratings: book?.ratings ?? 0,
         cover_images: book?.cover_images ?? [],
         binding: book?.binding ?? '',
@@ -160,7 +163,10 @@ export default function AddBookPopup(props: propsType) {
         }
         if (!formData.author_id) validationErrors.author = 'Author is required';
         // if (!formData.isbn) validationErrors.isbn = 'ISBN is required';
-        if (!formData.price || isNaN(Number(formData.price))) validationErrors.price = 'Valid price is required';
+        if (!formData.price || !Number.isFinite(Number(formData.price)) || Number(formData.price) <= 0) validationErrors.price = 'Valid INR price is required';
+        if (!formData.price_usd || !Number.isFinite(Number(formData.price_usd)) || Number(formData.price_usd) <= 0) validationErrors.price_usd = 'Valid USD price is required';
+        if (!formData.price_eur || !Number.isFinite(Number(formData.price_eur)) || Number(formData.price_eur) <= 0) validationErrors.price_eur = 'Valid EUR price is required';
+        if (!formData.price_cny || !Number.isFinite(Number(formData.price_cny)) || Number(formData.price_cny) <= 0) validationErrors.price_cny = 'Valid CNY price is required';
         if (!formData.pages || isNaN(Number(formData.pages))) validationErrors.pages = 'Valid pages number is required';
         if (Number(formData.pages) < 100 && formData.genre !== 'Short Books') {
             validationErrors.pages = "Not fit for full book. Submit in 'Short Books' genre.";
@@ -191,7 +197,7 @@ export default function AddBookPopup(props: propsType) {
             // If the book record was already created but its PDF upload failed,
             // retry only the upload instead of creating a duplicate book.
             if (!pendingSavedBookId) {
-                const payload:any = { ...formData, author_name: authorName, id: book?.id };
+                const payload:any = { ...formData, price_inr: formData.price, author_name: authorName, id: book?.id };
                 const response=await fetch("/api/admin/books",{method:book?.id ? "PUT" : "POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
                 const result=await response.json();
                 if(!response.ok) throw new Error(result.error || "Something went wrong");
@@ -245,6 +251,9 @@ export default function AddBookPopup(props: propsType) {
             published_date: '',
             isbn: '',
             price: 0,
+            price_usd: 0,
+            price_eur: 0,
+            price_cny: 0,
             ratings: 0,
             cover_images: [],
             binding: '',
@@ -340,7 +349,7 @@ export default function AddBookPopup(props: propsType) {
                         {errors.isbn && <span className="text-red-500">{errors.isbn}</span>}
                     </div> */}
                     <div className="space-y-2">
-                        <Label htmlFor="price">Price <span className="text-red-500">*</span></Label>
+                        <Label htmlFor="price">Price (INR ₹) <span className="text-red-500">*</span></Label>
                         <Input
                             id="price"
                             name="price"
@@ -354,6 +363,21 @@ export default function AddBookPopup(props: propsType) {
                             required
                         />
                         {errors.price && <span className="text-red-500">{errors.price}</span>}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="price_usd">Price (USD $) <span className="text-red-500">*</span></Label>
+                        <Input id="price_usd" name="price_usd" type="number" min="0.01" step="0.01" value={formData.price_usd ? String(formData.price_usd) : ''} onChange={(e) => setFormData({ ...formData, price_usd: e.target.value ? Number(e.target.value) : 0 })} required />
+                        {errors.price_usd && <span className="text-red-500">{errors.price_usd}</span>}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="price_eur">Price (EUR €) <span className="text-red-500">*</span></Label>
+                        <Input id="price_eur" name="price_eur" type="number" min="0.01" step="0.01" value={formData.price_eur ? String(formData.price_eur) : ''} onChange={(e) => setFormData({ ...formData, price_eur: e.target.value ? Number(e.target.value) : 0 })} required />
+                        {errors.price_eur && <span className="text-red-500">{errors.price_eur}</span>}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="price_cny">Price (CNY ¥) <span className="text-red-500">*</span></Label>
+                        <Input id="price_cny" name="price_cny" type="number" min="0.01" step="0.01" value={formData.price_cny ? String(formData.price_cny) : ''} onChange={(e) => setFormData({ ...formData, price_cny: e.target.value ? Number(e.target.value) : 0 })} required />
+                        {errors.price_cny && <span className="text-red-500">{errors.price_cny}</span>}
                     </div>
                     {/* <div className="space-y-2">
                         <Label htmlFor="ratings">Ratings</Label>

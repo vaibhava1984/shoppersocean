@@ -3,19 +3,30 @@ export interface ExchangeRates {
     [key: string]: number;
 }
 
+let cachedExchangeRates: { fetchedAt: number; rates: ExchangeRates } | null = null;
+const EXCHANGE_RATE_CACHE_MS = 60 * 60 * 1000;
+
 export async function fetchExchangeRates(): Promise<ExchangeRates> {
+    if (cachedExchangeRates && Date.now() - cachedExchangeRates.fetchedAt < EXCHANGE_RATE_CACHE_MS) {
+        return cachedExchangeRates.rates;
+    }
+
     try {
-        // You can replace this with your preferred exchange rate API
-        const response = await fetch(
-            `https://api.exchangerate-api.com/v4/latest/INR`
-        );
+        const response = await fetch('https://api.exchangerate-api.com/v4/latest/INR', {
+            signal: AbortSignal.timeout(4000),
+            cache: 'no-store',
+        });
+        if (!response.ok) throw new Error(`Exchange-rate service returned ${response.status}`);
         const data = await response.json();
-        return data.rates;
+        if (!data?.rates || typeof data.rates !== 'object' || !data.rates.INR || !data.rates.USD) {
+            throw new Error('Exchange-rate service returned invalid rates');
+        }
+        cachedExchangeRates = { fetchedAt: Date.now(), rates: data.rates as ExchangeRates };
+        return cachedExchangeRates.rates;
     } catch (error) {
         console.error('Error fetching exchange rates:', error);
-        // Return an empty object if the fetch fails
-        // The component will fallback to showing INR
-        return {};
+        // Reuse the last known rates if the service is temporarily unavailable.
+        return cachedExchangeRates?.rates ?? {};
     }
 }
 
@@ -88,7 +99,7 @@ export const getCurrencyCode = (countryCode: string): string => {
         'BW': 'BWP', // Botswana Pula
         'BR': 'BRL', // Brazil Real
         'BN': 'BND', // Brunei Darussalam Dollar
-        'BG': 'BGN', // Bulgaria Lev
+        'BG': 'EUR', // Bulgaria Euro
         'BF': 'XOF', // Burkina Faso CFA Franc BCEAO
         'BI': 'BIF', // Burundi Franc
         'KH': 'KHR', // Cambodia Riel
@@ -103,7 +114,7 @@ export const getCurrencyCode = (countryCode: string): string => {
         'KM': 'KMF', // Comoros Franc
         'CG': 'XAF', // Congo CFA Franc BEAC
         'CR': 'CRC', // Costa Rica Colon
-        'HR': 'HRK', // Croatia Kuna
+        'HR': 'EUR', // Croatia Euro
         'CU': 'CUP', // Cuba Peso
         'CY': 'EUR', // Cyprus Euro
         'CZ': 'CZK', // Czech Republic Koruna

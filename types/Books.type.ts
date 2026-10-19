@@ -5,6 +5,10 @@ export interface BookType {
     published_date: string;
     isbn: string;
     price: number;
+    price_inr?: number | null;
+    price_usd?: number | null;
+    price_eur?: number | null;
+    price_cny?: number | null;
     ratings: number;
     cover_images: string[];
     binding: string;
