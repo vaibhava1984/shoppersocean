@@ -41,7 +41,7 @@ export default function Books() {
         { key: 'price_usd', label: 'Price (USD)' },
         { key: 'price_eur', label: 'Price (EUR)' },
         { key: 'price_cny', label: 'Price (CNY)' },
-        { key: 'price_rub', label: 'Price (RUB)' }
+        { key: 'price_rub', label: 'Price (RUB)' },
         { key: 'ratings', label: 'Ratings' },
         { key: 'language', label: 'Language' },
         { key: 'genre', label: 'Genre' },
