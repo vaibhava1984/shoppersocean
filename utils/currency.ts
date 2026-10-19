@@ -88,7 +88,7 @@ export const getCurrencyCode = (countryCode: string): string => {
         'BW': 'BWP', // Botswana Pula
         'BR': 'BRL', // Brazil Real
         'BN': 'BND', // Brunei Darussalam Dollar
-        'BG': 'BGN', // Bulgaria Lev
+        'BG': 'EUR', // Bulgaria Euro
         'BF': 'XOF', // Burkina Faso CFA Franc BCEAO
         'BI': 'BIF', // Burundi Franc
         'KH': 'KHR', // Cambodia Riel
@@ -103,7 +103,7 @@ export const getCurrencyCode = (countryCode: string): string => {
         'KM': 'KMF', // Comoros Franc
         'CG': 'XAF', // Congo CFA Franc BEAC
         'CR': 'CRC', // Costa Rica Colon
-        'HR': 'HRK', // Croatia Kuna
+        'HR': 'EUR', // Croatia Euro
         'CU': 'CUP', // Cuba Peso
         'CY': 'EUR', // Cyprus Euro
         'CZ': 'CZK', // Czech Republic Koruna
