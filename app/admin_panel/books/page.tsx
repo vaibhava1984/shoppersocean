@@ -212,7 +212,7 @@ export default function Books() {
                         </Dialog>
 
                         <Dialog open={showEditForm} onOpenChange={setShowEditForm}>
-                            <DialogContent className="max-h-[80vh] overflow-y-auto">
+                            <DialogContent className="max-h-[calc(100dvh-1rem)] w-[calc(100vw-1rem)] max-w-3xl overflow-y-auto rounded-2xl p-4 sm:p-6">
                                 <DialogHeader>
                                     <DialogTitle>Edit Book</DialogTitle>
                                 </DialogHeader>
