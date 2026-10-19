@@ -152,6 +152,7 @@ export default function AddBookPopup(props: propsType) {
         if (Object.keys(validationErrors).length) {
             setErrors(validationErrors);
             toast({ variant: "destructive", title: "Please check the form", description: Object.values(validationErrors).join(". ") });
+            window.parent.postMessage({ type: "admin-section-save-failed", key: "Books", message: "Please check the highlighted book details and prices." }, window.location.origin);
             return;
         }
         if (!formData.author_id) validationErrors.author = 'Author is required';
@@ -177,6 +178,7 @@ export default function AddBookPopup(props: propsType) {
         } else {
             setErrors(validationErrors);
             toast({ variant: "destructive", title: "Please check the form", description: Object.values(validationErrors).join(". ") });
+            window.parent.postMessage({ type: "admin-section-save-failed", key: "Books", message: "Please check the highlighted book details and prices." }, window.location.origin);
         }
     }
 
@@ -202,7 +204,10 @@ export default function AddBookPopup(props: propsType) {
             if (pendingBookFiles.length) {
                 if (!savedBookId) throw new Error("Book details were saved, but the PDF could not be linked. Please retry Save.");
                 const uploaded = await uploadBookFiles(savedBookId, pendingBookFiles);
-                if (!uploaded) return; // Keep the form and selected PDF available for retry.
+                if (!uploaded) {
+                    window.parent.postMessage({ type: "admin-section-save-failed", key: "Books", message: "The PDF upload failed. Please retry Save." }, window.location.origin);
+                    return; // Keep the form and selected PDF available for retry.
+                }
                 setPendingBookFiles([]);
             }
 
@@ -213,6 +218,7 @@ export default function AddBookPopup(props: propsType) {
             props.onSuccess(true);
         } catch(error:any) {
             toast({variant:"destructive",title:"Save failed",description:error?.message || "Something went wrong. Your form entries have been kept; please try again."});
+            window.parent.postMessage({ type: "admin-section-save-failed", key: "Books", message: error?.message || "Save failed. Please try again." }, window.location.origin);
         } finally {
             setIsSaving(false);
         }
