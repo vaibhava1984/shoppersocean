@@ -202,7 +202,7 @@ export default function Books() {
                                 <DialogHeader>
                                     <DialogTitle>Add New Book</DialogTitle>
                                 </DialogHeader>
-                                <AddBookPopup onSuccess={(closePopup) => {
+                                <AddBookPopup key="new-book" onSuccess={(closePopup) => {
                                     fetchBooks();
                                     if (closePopup) {
                                         setShowAddForm(false);
@@ -218,6 +218,7 @@ export default function Books() {
                                 </DialogHeader>
                                 {selectedBook && (
                                     <AddBookPopup
+                                        key={selectedBook.id}
                                         book={selectedBook}
                                         onSuccess={() => {
                                             fetchBooks();
