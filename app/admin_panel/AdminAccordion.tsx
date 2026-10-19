@@ -31,11 +31,11 @@ export default function AdminAccordion() {
     document.head.appendChild(prefetch);
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
-      if (event.data?.key !== "Books" && (event.data?.type === "admin-section-saved" || event.data?.type === "admin-book-uploaded")) {
+      if (event.data?.type === "admin-section-saved" || event.data?.type === "admin-book-uploaded") {
         const sectionName = String(event.data.key || open || "Section");
         const keepSectionOpen = sectionName === "Books";
         setSaving(false);
-        setSaveNotice(event.data?.type === "admin-book-uploaded" ? "Your book is uploaded successfully." : "Your changes are saved successfully.");
+        setSaveNotice(event.data?.type === "admin-book-uploaded" ? "The new book uploaded" : "Your changes have been saved");
         if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
         noticeTimer.current = window.setTimeout(() => {
           setSaveNotice("");
@@ -88,9 +88,9 @@ export default function AdminAccordion() {
 
       // Keep the embedded admin page within the available screen area so its
       // controls scroll inside the section instead of pushing the footer away.
-      frame.style.height = "calc(100dvh - 176px)";
-      frame.style.minHeight = "300px";
-      frame.style.maxHeight = "calc(100dvh - 150px)";
+      frame.style.height = "calc(100dvh - 112px)";
+      frame.style.minHeight = "0";
+      frame.style.maxHeight = "calc(100dvh - 112px)";
 
       // Avoid a ResizeObserver-driven resize loop: the frame is intentionally
       // viewport-sized and should not be resized every time a form changes.
@@ -105,7 +105,7 @@ export default function AdminAccordion() {
           }
           const response = await originalFetch(...args);
           const requestMethod = String((args[1] as RequestInit | undefined)?.method || (args[0] instanceof Request ? args[0].method : "GET")).toUpperCase();
-          if (savePending && response.ok && ["POST", "PUT", "PATCH", "DELETE"].includes(requestMethod)) {
+          if (key !== "Books" && savePending && response.ok && ["POST", "PUT", "PATCH", "DELETE"].includes(requestMethod)) {
             if (closeTimer !== undefined) win.clearTimeout(closeTimer);
             closeTimer = win.setTimeout(() => {
               savePending = false;
@@ -145,7 +145,7 @@ export default function AdminAccordion() {
       setSaving(true);
       setSaveNotice("Saving changes…");
       if (key === "Books") {
-        const form = doc.querySelector("form");
+        const form = doc.querySelector('[role="dialog"] form') || doc.querySelector("form");
         if (form instanceof HTMLFormElement) {
           form.requestSubmit();
           return;
@@ -184,7 +184,7 @@ export default function AdminAccordion() {
   const activeSection = sections.find(({ label }) => label === open);
 
   return (
-    <div className="mx-0 flex h-[100dvh] min-h-0 w-full max-w-none flex-col overflow-hidden">
+    <div className="m-0 flex h-[100dvh] min-h-0 w-full max-w-none flex-col overflow-hidden bg-white p-0">
       {saveNotice && (
         <div role="status" aria-live="polite" className={`fixed left-1/2 top-16 z-[2000] w-[calc(100%-24px)] max-w-md -translate-x-1/2 rounded-lg px-4 py-3 text-center text-sm font-semibold shadow-lg ${saving ? "bg-blue-600 text-white" : saveNotice.startsWith("Could not") ? "bg-red-600 text-white" : "bg-green-600 text-white"}`}>
           {saveNotice}
@@ -240,24 +240,18 @@ export default function AdminAccordion() {
                 src={"/admin_panel/" + (activeSection?.path || "")}
                 onLoad={() => { prepareFrame(open); setFrameReady(true); }}
                 className="block w-full border-0 bg-white"
-                style={{ height: "calc(100dvh - 126px)", minHeight: 0, maxHeight: "calc(100dvh - 126px)", visibility: frameReady ? "visible" : "hidden" }}
+                style={{ height: "calc(100dvh - 112px)", minHeight: 0, maxHeight: "calc(100dvh - 112px)", visibility: frameReady ? "visible" : "hidden" }}
               />
             )}
           </div>
-          <footer className="flex h-14 shrink-0 items-center justify-end gap-3 border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
-            <button
-              type="button"
-              onClick={() => { setSaveNotice(""); setSaving(false); setOpen(null); setFrameReady(false); }}
-              className="min-h-9 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-            >
-              Back
-            </button>
+          <footer className="flex h-14 shrink-0 items-center justify-center border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
             <button
               type="button"
               onClick={() => saveAndClose(open)}
-              className="inline-flex min-h-9 items-center justify-center rounded-md bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              disabled={saving}
+              className="inline-flex min-h-10 w-full max-w-sm items-center justify-center rounded-lg bg-blue-600 px-5 py-2 text-sm font-bold text-white shadow-sm transition-all hover:bg-blue-700 active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
-              Save
+              {saving ? "Saving changes…" : "Save changes"}
             </button>
           </footer>
         </section>
