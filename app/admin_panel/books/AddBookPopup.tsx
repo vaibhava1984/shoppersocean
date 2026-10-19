@@ -50,10 +50,10 @@ export default function AddBookPopup(props: propsType) {
         published_date: book?.published_date ?? '',
         isbn: book?.isbn ?? '',
         price: book?.price_inr ?? book?.price ?? 0,
-        price_usd: Number(book?.price_usd ?? 3),
-        price_eur: Number(book?.price_eur ?? 2.68),
-        price_cny: Number(book?.price_cny ?? 20.08),
-        price_rub: Number(book?.price_rub ?? 250.85),
+        price_usd: Number(book?.price_usd) > 0 ? Number(book?.price_usd) : 3,
+        price_eur: Number(book?.price_eur) > 0 ? Number(book?.price_eur) : 2.68,
+        price_cny: Number(book?.price_cny) > 0 ? Number(book?.price_cny) : 20.08,
+        price_rub: Number(book?.price_rub) > 0 ? Number(book?.price_rub) : 250.85,
         ratings: book?.ratings ?? 0,
         cover_images: book?.cover_images ?? [],
         binding: book?.binding ?? '',
@@ -99,7 +99,7 @@ export default function AddBookPopup(props: propsType) {
         const files = event.target.files;
         if (!files || files.length === 0) return;
         const selected = files[0];
-        if (!selected.name.toLowerCase().endsWith('.pdf') || (selected.type && selected.type !== 'application/pdf')) {
+        if (!selected.name.toLowerCase().endsWith('.pdf')) {
             toast({ variant: "destructive", title: "PDF files only", description: "Please choose a PDF book file." });
             event.target.value = '';
             return;
