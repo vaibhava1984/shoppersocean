@@ -207,9 +207,9 @@ export default function AddBookPopup(props: propsType) {
             }
 
             resetForm();
-            toast({title:"Success!",description:book ? "Updating Book Success" : "Adding Book Success"});
-            // The form owns its success state and closes only after the save/upload succeeds.
-            // Do not send a duplicate parent-level save notice for Books.
+            toast({title:"Your changes have been saved",description:"The book details and prices were saved successfully."});
+            window.parent.postMessage({ type: "admin-section-saved", key: "Books" }, window.location.origin);
+            // Close the editor only after the save request succeeds.
             props.onSuccess(true);
         } catch(error:any) {
             toast({variant:"destructive",title:"Save failed",description:error?.message || "Something went wrong. Your form entries have been kept; please try again."});
