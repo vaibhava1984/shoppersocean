@@ -169,14 +169,15 @@
 }
 
 
-@keyframes languageNudge {
-  0%, 100% { transform: translateX(0) rotate(0deg); }
-  20% { transform: translateX(-1px) rotate(-0.6deg); }
-  40% { transform: translateX(1px) rotate(0.6deg); }
-  60% { transform: translateX(-1px) rotate(-0.4deg); }
-  80% { transform: translateX(1px) rotate(0.4deg); }
+.language-bob {
+  animation: languageBob 1.25s ease-in-out infinite;
+  transform-origin: center;
 }
 
+@keyframes languageBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .interaction-feedback-ripple {
