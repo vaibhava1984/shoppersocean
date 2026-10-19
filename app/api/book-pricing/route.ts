@@ -6,23 +6,23 @@ import { convertPrice, ensureBookPricingTable, getVisitorCountry } from "@/utils
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-function response(body: Record<string, unknown>) {
-  return NextResponse.json(body, { headers: { "Cache-Control": "private, no-store, max-age=0" } });
+function response(body: Record<string, unknown>, status = 200) {
+  return NextResponse.json(body, { status, headers: { "Cache-Control": "private, no-store, max-age=0" } });
 }
 
 export async function GET(request: Request) {
   try {
     const bookId = new URL(request.url).searchParams.get("bookId")?.trim();
-    if (!bookId) return response({ error: "Book ID is required" });
+    if (!bookId) return response({ error: "Book ID is required" }, 400);
 
     const db = getD1();
-    if (!db) return response({ error: "Cloudflare database is unavailable" });
+    if (!db) return response({ error: "Cloudflare database is unavailable" }, 503);
 
     await ensureBookPricingTable(db);
     const book = await db.prepare(
       "SELECT id, price FROM books WHERE id=? AND COALESCE(is_deleted,0)=0 LIMIT 1"
     ).bind(bookId).first<any>();
-    if (!book) return response({ error: "Book not found" });
+    if (!book) return response({ error: "Book not found" }, 404);
 
     const pricing = await db.prepare(
       "SELECT price_inr,price_usd,price_eur,price_cny FROM book_pricing WHERE book_id=? LIMIT 1"
