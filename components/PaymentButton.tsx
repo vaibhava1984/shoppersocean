@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Loader2Icon, Share2, Mail, MessageCircle, Copy, MoreHorizontal } from 'lucide-react';
 import { setPurchaseStatus } from '@/utils/purchaseStatusCache';
-import { convertCurrency, fetchExchangeRates, getCurrencyCode } from '@/utils/currency';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
