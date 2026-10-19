@@ -1,8 +1,11 @@
 import type { ExchangeRates } from "@/utils/currency";
 
 /** Create the separate pricing table lazily so existing Cloudflare D1 databases need no manual migration. */
+let pricingTableReady: Promise<void> | null = null;
+
 export async function ensureBookPricingTable(db: any) {
-  await db.prepare(`
+  if (pricingTableReady) return pricingTableReady;
+  pricingTableReady = db.prepare(`
     CREATE TABLE IF NOT EXISTS book_pricing (
       book_id TEXT PRIMARY KEY,
       price_inr REAL,
@@ -11,7 +14,11 @@ export async function ensureBookPricingTable(db: any) {
       price_cny REAL,
       updated_at TEXT NOT NULL
     )
-  `).run();
+  `).run().then(() => undefined).catch((error: unknown) => {
+    pricingTableReady = null;
+    throw error;
+  });
+  return pricingTableReady;
 }
 
 export function convertPrice(amount: number, from: string, to: string, rates: ExchangeRates): number | null {
