@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { requireAdmin } from "@/utils/auth/requireUser";
+import { ensureBookPricingTable } from "@/utils/book-pricing";
 
 function parseBook(row: any) {
   let coverImages: string[] = [];
@@ -23,9 +24,11 @@ function parseBook(row: any) {
 const BOOK_SELECT = `SELECT
   b.id,b.title,b.description,b.published_date,b.isbn,b.price,b.ratings,b.cover_images,
   b.binding,b.language,b.genre,b.publisher,b.pages,b.author_id,b.author_name,b.updated_at,
+  bp.price_inr AS price_inr,bp.price_usd AS price_usd,bp.price_eur AS price_eur,bp.price_cny AS price_cny,
   a.id AS joined_author_id,a.name AS joined_author_name
   FROM books b
   LEFT JOIN authors a ON a.id=b.author_id
+  LEFT JOIN book_pricing bp ON bp.book_id=b.id
 `;
 
 export async function GET() {
@@ -33,6 +36,7 @@ export async function GET() {
     if (!(await requireAdmin())) return NextResponse.json({ error: "Not allowed" }, { status: 403 });
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database is unavailable" }, { status: 503 });
+    await ensureBookPricingTable(db);
 
     const { results = [] } = await db.prepare(
       BOOK_SELECT + " WHERE COALESCE(b.is_deleted,0)=0 ORDER BY b.created_at DESC"
@@ -53,6 +57,7 @@ async function saveBook(request: Request, id?: string) {
   if (!db) return NextResponse.json({ error: "Cloudflare database is unavailable" }, { status: 503 });
 
   const body = await request.json();
+  await ensureBookPricingTable(db);
   const title = String(body.title ?? "").trim();
   const authorId = String(body.author_id ?? "").trim();
   if (!title || !authorId) return NextResponse.json({ error: "Book title and author are required" }, { status: 400 });
@@ -61,6 +66,14 @@ async function saveBook(request: Request, id?: string) {
     "SELECT id,name FROM authors WHERE id=? AND COALESCE(is_deleted,0)=0 LIMIT 1"
   ).bind(authorId).first<any>();
   if (!author) return NextResponse.json({ error: "Author not found" }, { status: 404 });
+
+  const priceINR = Number(body.price_inr ?? body.price ?? 0);
+  const priceUSD = Number(body.price_usd ?? 0);
+  const priceEUR = Number(body.price_eur ?? 0);
+  const priceCNY = Number(body.price_cny ?? 0);
+  if ([priceINR, priceUSD, priceEUR, priceCNY].some((value) => !Number.isFinite(value) || value <= 0)) {
+    return NextResponse.json({ error: "Enter a valid positive price for INR, USD, EUR, and CNY." }, { status: 400 });
+  }
 
   const coverImages = Array.isArray(body.cover_images) ? body.cover_images : [];
   const pages = Number(body.pages ?? 0);
@@ -82,7 +95,7 @@ async function saveBook(request: Request, id?: string) {
     body.description == null ? null : String(body.description),
     body.published_date == null ? null : String(body.published_date),
     body.isbn == null ? null : String(body.isbn),
-    Number(body.price ?? 0) || 0,
+    priceINR,
     Number(body.ratings ?? 0) || 0,
     JSON.stringify(coverImages),
     body.binding == null ? null : String(body.binding),
@@ -111,6 +124,13 @@ async function saveBook(request: Request, id?: string) {
        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,?,?)`
     ).bind(savedId, ...values.slice(0, 14), now, now).run();
   }
+
+  await db.prepare(
+    `INSERT INTO book_pricing (book_id,price_inr,price_usd,price_eur,price_cny,updated_at)
+     VALUES (?,?,?,?,?,?)
+     ON CONFLICT(book_id) DO UPDATE SET price_inr=excluded.price_inr,price_usd=excluded.price_usd,
+       price_eur=excluded.price_eur,price_cny=excluded.price_cny,updated_at=excluded.updated_at`
+  ).bind(savedId, priceINR, priceUSD, priceEUR, priceCNY, now).run();
 
   return NextResponse.json({ id: savedId, message: id ? "Book updated successfully" : "Book added successfully" });
 }
