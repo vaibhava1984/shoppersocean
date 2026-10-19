@@ -192,21 +192,24 @@ export default function AdminAccordion() {
       )}
       {!open ? (
         <>
-          <header className="mb-4 rounded-xl bg-white p-4 shadow-sm sm:p-5">
+          <header className="mb-3 rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-blue-50/60 p-4 shadow-sm sm:mb-4 sm:p-5">
             <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">Shoppers Ocean</p>
-            <h1 className="mt-1 text-2xl font-bold text-slate-900">Admin Panel</h1>
+            <h1 className="mt-1 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">Admin Panel</h1>
             <p className="mt-1 text-sm text-slate-600">Choose a section to open it full screen.</p>
           </header>
-          <nav aria-label="Admin sections" className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <nav aria-label="Admin sections" className="grid grid-cols-2 gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3">
             {sections.map(({ label, icon: Icon }) => (
               <button
                 key={label}
                 type="button"
                 onClick={() => { setFrameReady(false); setSaveNotice(""); setOpen(label); }}
-                className="flex min-h-10 w-full items-center justify-between gap-2 rounded-md bg-blue-600 px-3 py-2 text-left text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="group flex min-h-[64px] w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-3 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
               >
-                <span className="flex min-w-0 items-center gap-3"><Icon className="h-5 w-5 shrink-0" /><span>{label}</span></span>
-                <span aria-hidden="true" className="text-lg">›</span>
+                <span className="flex min-w-0 items-center gap-2">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700 transition-colors group-hover:bg-blue-600 group-hover:text-white"><Icon className="h-5 w-5" /></span>
+                  <span className="min-w-0 break-words text-sm font-semibold leading-tight text-slate-800">{label}</span>
+                </span>
+                <span aria-hidden="true" className="shrink-0 text-lg text-slate-400 transition-transform group-hover:translate-x-0.5 group-hover:text-blue-600">›</span>
               </button>
             ))}
           </nav>
@@ -249,13 +252,13 @@ export default function AdminAccordion() {
             >
               Back
             </button>
-            {open !== "Books" && <button
+            <button
               type="button"
               onClick={() => saveAndClose(open)}
-              className="inline-flex min-h-9 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               Save
-            </button>}
+            </button>
           </footer>
         </section>
       )}

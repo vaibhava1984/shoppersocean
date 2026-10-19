@@ -279,8 +279,8 @@ export default function AddBookPopup(props: propsType) {
                 e.preventDefault();
                 validateAndAddBook();
             }} className="space-y-4">
-                <div className="mb-4 flex justify-end border-b pb-3">
-                    <Button type="submit" disabled={isUploading || isSaving}>{isUploading ? "Uploading…" : isSaving ? "Saving…" : "Save Book"}</Button>
+                <div className="mb-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+                    Complete the required details and all five prices, then use the blue <strong>Save</strong> button at the bottom of the admin panel.
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -351,42 +351,39 @@ export default function AddBookPopup(props: propsType) {
                         />
                         {errors.isbn && <span className="text-red-500">{errors.isbn}</span>}
                     </div> */}
-                    <div className="space-y-2">
-                        <Label htmlFor="price">Price (INR ₹) <span className="text-red-500">*</span></Label>
-                        <Input
-                            id="price"
-                            name="price"
-                            type="number"
-                            value={formData.price !== 0 ? formData.price.toString() : ''}
-                            onChange={(e) => {
-                                const priceValue = e.target.value;
-                                const parsedPrice = priceValue ? parseFloat(priceValue) : 0; // parseFloat will return NaN for invalid input, or 0 for empty input
-                                setFormData({ ...formData, price: isNaN(parsedPrice) ? 0 : parsedPrice })
-                            }}
-                            required
-                        />
-                        {errors.price && <span className="text-red-500">{errors.price}</span>}
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="price_usd">Price (USD $) <span className="text-red-500">*</span></Label>
-                        <Input id="price_usd" name="price_usd" type="number" min="0.01" step="0.01" value={formData.price_usd ? String(formData.price_usd) : ''} onChange={(e) => setFormData({ ...formData, price_usd: e.target.value ? Number(e.target.value) : 0 })} required />
-                        {errors.price_usd && <span className="text-red-500">{errors.price_usd}</span>}
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="price_eur">Price (EUR €) <span className="text-red-500">*</span></Label>
-                        <Input id="price_eur" name="price_eur" type="number" min="0.01" step="0.01" value={formData.price_eur ? String(formData.price_eur) : ''} onChange={(e) => setFormData({ ...formData, price_eur: e.target.value ? Number(e.target.value) : 0 })} required />
-                        {errors.price_eur && <span className="text-red-500">{errors.price_eur}</span>}
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="price_cny">Price (CNY ¥) <span className="text-red-500">*</span></Label>
-                        <Input id="price_cny" name="price_cny" type="number" min="0.01" step="0.01" value={formData.price_cny ? String(formData.price_cny) : ''} onChange={(e) => setFormData({ ...formData, price_cny: e.target.value ? Number(e.target.value) : 0 })} required />
-                        {errors.price_cny && <span className="text-red-500">{errors.price_cny}</span>}
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="price_rub">Price (RUB ₽) <span className="text-red-500">*</span></Label>
-                        <Input id="price_rub" name="price_rub" type="number" min="0.01" step="0.01" value={formData.price_rub ? String(formData.price_rub) : ''} onChange={(e) => setFormData({ ...formData, price_rub: e.target.value ? Number(e.target.value) : 0 })} required />
-                        {errors.price_rub && <span className="text-red-500">{errors.price_rub}</span>}
-                    </div>
+                    <section className="col-span-full rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50/70 to-white p-4 shadow-sm sm:p-5">
+                        <div className="mb-4">
+                            <h2 className="text-base font-bold text-slate-900 sm:text-lg">Book prices by currency</h2>
+                            <p className="mt-1 text-xs leading-relaxed text-slate-600 sm:text-sm">Enter the exact price for this book in all five currencies. These amounts are saved separately and are not automatically converted.</p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+                            <div className="min-w-0 space-y-1.5">
+                                <Label htmlFor="price" className="text-xs font-semibold text-slate-700 sm:text-sm">INR ₹ <span className="text-red-500">*</span></Label>
+                                <Input id="price" name="price" type="number" min="0.01" step="0.01" inputMode="decimal" value={formData.price !== 0 ? String(formData.price) : ''} onChange={(e) => { const value = e.target.value; const parsed = value ? Number(value) : 0; setFormData({ ...formData, price: Number.isFinite(parsed) ? parsed : 0 }); }} className="h-10 rounded-lg bg-white" required />
+                                {errors.price && <span className="block text-xs text-red-600">{errors.price}</span>}
+                            </div>
+                            <div className="min-w-0 space-y-1.5">
+                                <Label htmlFor="price_usd" className="text-xs font-semibold text-slate-700 sm:text-sm">USD $ <span className="text-red-500">*</span></Label>
+                                <Input id="price_usd" name="price_usd" type="number" min="0.01" step="0.01" inputMode="decimal" value={formData.price_usd ? String(formData.price_usd) : ''} onChange={(e) => setFormData({ ...formData, price_usd: e.target.value ? Number(e.target.value) : 0 })} className="h-10 rounded-lg bg-white" required />
+                                {errors.price_usd && <span className="block text-xs text-red-600">{errors.price_usd}</span>}
+                            </div>
+                            <div className="min-w-0 space-y-1.5">
+                                <Label htmlFor="price_eur" className="text-xs font-semibold text-slate-700 sm:text-sm">EUR € <span className="text-red-500">*</span></Label>
+                                <Input id="price_eur" name="price_eur" type="number" min="0.01" step="0.01" inputMode="decimal" value={formData.price_eur ? String(formData.price_eur) : ''} onChange={(e) => setFormData({ ...formData, price_eur: e.target.value ? Number(e.target.value) : 0 })} className="h-10 rounded-lg bg-white" required />
+                                {errors.price_eur && <span className="block text-xs text-red-600">{errors.price_eur}</span>}
+                            </div>
+                            <div className="min-w-0 space-y-1.5">
+                                <Label htmlFor="price_cny" className="text-xs font-semibold text-slate-700 sm:text-sm">CNY ¥ <span className="text-red-500">*</span></Label>
+                                <Input id="price_cny" name="price_cny" type="number" min="0.01" step="0.01" inputMode="decimal" value={formData.price_cny ? String(formData.price_cny) : ''} onChange={(e) => setFormData({ ...formData, price_cny: e.target.value ? Number(e.target.value) : 0 })} className="h-10 rounded-lg bg-white" required />
+                                {errors.price_cny && <span className="block text-xs text-red-600">{errors.price_cny}</span>}
+                            </div>
+                            <div className="min-w-0 space-y-1.5">
+                                <Label htmlFor="price_rub" className="text-xs font-semibold text-slate-700 sm:text-sm">RUB ₽ <span className="text-red-500">*</span></Label>
+                                <Input id="price_rub" name="price_rub" type="number" min="0.01" step="0.01" inputMode="decimal" value={formData.price_rub ? String(formData.price_rub) : ''} onChange={(e) => setFormData({ ...formData, price_rub: e.target.value ? Number(e.target.value) : 0 })} className="h-10 rounded-lg bg-white" required />
+                                {errors.price_rub && <span className="block text-xs text-red-600">{errors.price_rub}</span>}
+                            </div>
+                        </div>
+                    </section>
                     {/* <div className="space-y-2">
                         <Label htmlFor="ratings">Ratings</Label>
                         <Input
