@@ -6,7 +6,7 @@ export default async function AdminDashboard() {
   const identity = await requireAdmin();
   if (!identity) redirect("/");
   return (
-    <div className="min-h-screen bg-slate-100 px-3 py-4 sm:px-6 sm:py-8">
+    <div className="m-0 h-[100dvh] w-full overflow-hidden bg-white p-0">
       <AdminAccordion />
     </div>
   );
