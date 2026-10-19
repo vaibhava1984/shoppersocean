@@ -49,9 +49,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         <div className="relative mx-auto w-full max-w-md">
                             <img src={imageSrc} alt={imageAlt} width={640} height={420} fetchPriority="high" className="block w-full rounded-lg shadow-2xl opacity-0 scale-95 animate-[fadeInUp_0.6s_ease-out_forwards]" />
                             <div className="pointer-events-none absolute right-0 top-[8%] z-10 flex items-start gap-1 sm:right-[1%] sm:top-[7%]" aria-label="Choose your language">
-                                <div role="note" className="mt-1 rounded-2xl border-2 border-black bg-white px-2.5 py-2 text-center text-black shadow-[0_3px_8px_rgba(0,0,0,0.28)] animate-[earthquakeZoom_3.5s_ease-out_forwards]">
+                                <div role="note" className="relative mt-1 rounded-2xl border-2 border-black bg-white px-2.5 py-2 text-center text-black shadow-[0_3px_8px_rgba(0,0,0,0.28)] animate-[earthquakeZoom_3.5s_ease-out_forwards]">
                                     <p className="text-[12px] font-extrabold not-italic leading-[1.15] sm:text-sm">choose<br />your<br />Language</p>
-                                    <span aria-hidden="true" className="absolute left-[57%] top-[52px] h-2.5 w-2.5 rotate-45 border-b-2 border-r-2 border-black bg-white sm:top-[58px]" />
+                                    <span aria-hidden="true" className="absolute -right-1 top-[42px] h-2.5 w-2.5 rotate-45 border-b-2 border-r-2 border-black bg-white sm:top-[48px]" />
                                 </div>
                                 <svg aria-hidden="true" viewBox="0 0 100 180" className="h-[112px] w-[62px] shrink-0 sm:h-[140px] sm:w-[78px]" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <ellipse cx="51" cy="172" rx="27" ry="5" fill="#164E63" opacity=".28"/>
@@ -61,9 +61,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                                     <path d="M31 69 Q22 73 25 91 L31 113 Q49 123 68 111 L68 81 Q67 69 57 67 Z" fill="#F59E0B" stroke="#263238" strokeWidth="2.5"/>
                                     <path d="M34 75 L20 91 L10 75" stroke="#F7C8A5" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M34 75 L20 91 L10 75" stroke="#263238" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M60 75 L72 56 L83 38" stroke="#F7C8A5" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M60 75 L72 56 L83 38" stroke="#263238" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M79 41 L84 31 L87 39 L95 38 L89 45 L91 52 L83 48 L77 53 L78 45 Z" fill="#F7C8A5" stroke="#263238" strokeWidth="1.7" strokeLinejoin="round"/>
+                                    <path d="M60 75 L44 54 L27 32" stroke="#F7C8A5" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M60 75 L44 54 L27 32" stroke="#263238" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M30 35 L27 25 L23 33 L15 29 L19 38 L13 44 L22 43 L27 50 L29 42 Z" fill="#F7C8A5" stroke="#263238" strokeWidth="1.7" strokeLinejoin="round"/>
                                     <path d="M30 32 Q25 8 49 8 Q73 8 70 35 L64 49 L35 48 Z" fill="#5B352B" stroke="#263238" strokeWidth="2.5"/>
                                     <path d="M33 28 Q33 12 49 12 Q66 12 66 30 L64 42 Q61 55 49 55 Q36 54 33 41 Z" fill="#F7C8A5" stroke="#263238" strokeWidth="2"/>
                                     <path d="M31 31 Q27 14 43 8 Q61 3 70 22 L67 31 L60 21 Q49 27 34 23 Z" fill="#5B352B" stroke="#263238" strokeWidth="2" strokeLinejoin="round"/>
