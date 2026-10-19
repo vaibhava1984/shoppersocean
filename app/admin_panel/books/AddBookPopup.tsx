@@ -278,7 +278,7 @@ export default function AddBookPopup(props: propsType) {
                 validateAndAddBook();
             }} className="space-y-4">
                 <div className="mb-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
-                    Complete the required details and all five prices, then use the blue <strong>Save</strong> button at the bottom of the admin panel.
+                    Complete the required details and enter the currency prices manually. Use the small blue <strong>Save</strong> button at the bottom-right of this editor.
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -509,6 +509,11 @@ export default function AddBookPopup(props: propsType) {
                     </div>
                 </div>
 
+                <div className="sticky bottom-0 z-10 mt-4 flex justify-end border-t border-slate-200 bg-white/95 px-1 py-3 backdrop-blur">
+                    <Button type="submit" disabled={isSaving || isUploading} className="min-h-9 min-w-20 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60">
+                        {isUploading ? "Uploading…" : isSaving ? "Saving…" : "Save"}
+                    </Button>
+                </div>
             </form>
         </>
     );
