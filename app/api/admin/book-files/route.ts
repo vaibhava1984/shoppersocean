@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     if (!files.length) return NextResponse.json({ error: "No PDF file selected" }, { status: 400 });
     const file = files[0];
     const originalName = file.name || "book.pdf";
-    if (!originalName.toLowerCase().endsWith(".pdf") || (file.type && file.type !== "application/pdf")) {
+    if (!originalName.toLowerCase().endsWith(".pdf")) {
       return NextResponse.json({ error: "PDF files only" }, { status: 400 });
     }
 
@@ -53,6 +53,9 @@ export async function POST(request: Request) {
     const safeName = originalName.replace(/[^a-zA-Z0-9._-]+/g, "_");
     const storageKey = `books/${bookId}/${crypto.randomUUID()}-${safeName}`;
     const bytes = new Uint8Array(await file.arrayBuffer());
+    if (new TextDecoder().decode(bytes.slice(0, 5)) !== "%PDF-") {
+      return NextResponse.json({ error: "The selected file is not a valid PDF" }, { status: 400 });
+    }
     await putB2Object(storageKey, bytes, "application/pdf");
 
     const id = crypto.randomUUID();
