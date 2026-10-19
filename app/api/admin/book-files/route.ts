@@ -42,25 +42,43 @@ export async function POST(request: Request) {
     if (!book) return NextResponse.json({ error: "Book not found" }, { status: 404 });
 
     const files = form.getAll("file").filter((v): v is File => v instanceof File);
-    if (!files.length) return NextResponse.json({ error: "No files selected" }, { status: 400 });
-
-    const uploaded: any[] = [];
-    for (const file of files) {
-      const originalName = file.name || "book-file";
-      const safeName = originalName.replace(/[^a-zA-Z0-9._-]+/g, "_");
-      const storageKey = `books/${bookId}/${crypto.randomUUID()}-${safeName}`;
-      const bytes = new Uint8Array(await file.arrayBuffer());
-      await putB2Object(storageKey, bytes, file.type || "application/octet-stream");
-
-      const id = crypto.randomUUID();
-      await db.prepare(
-        "INSERT INTO private_book_files(id,book_id,storage_key,file_name,mime_type,size_bytes,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)"
-      ).bind(id,bookId,storageKey,originalName,file.type || "application/octet-stream",bytes.byteLength,new Date().toISOString(),new Date().toISOString()).run();
-
-      uploaded.push({ id, file_path: storageKey, file_name: originalName, file_type: file.type || "application/octet-stream" });
+    if (!files.length) return NextResponse.json({ error: "No PDF file selected" }, { status: 400 });
+    const file = files[0];
+    const originalName = file.name || "book.pdf";
+    if (!originalName.toLowerCase().endsWith(".pdf")) {
+      return NextResponse.json({ error: "PDF files only" }, { status: 400 });
     }
 
-    return NextResponse.json({ files: uploaded, message: "Files uploaded successfully" }, { status: 201 });
+    // Upload the replacement first, keeping the existing PDF intact if this fails.
+    const safeName = originalName.replace(/[^a-zA-Z0-9._-]+/g, "_");
+    const storageKey = `books/${bookId}/${crypto.randomUUID()}-${safeName}`;
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    if (new TextDecoder().decode(bytes.slice(0, 5)) !== "%PDF-") {
+      return NextResponse.json({ error: "The selected file is not a valid PDF" }, { status: 400 });
+    }
+    await putB2Object(storageKey, bytes, "application/pdf");
+
+    const id = crypto.randomUUID();
+    const now = new Date().toISOString();
+    await db.prepare(
+      "INSERT INTO private_book_files(id,book_id,storage_key,file_name,mime_type,size_bytes,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)"
+    ).bind(id,bookId,storageKey,originalName,"application/pdf",bytes.byteLength,now,now).run();
+
+    // Keep only the newly uploaded PDF for this book.
+    const { results: previousFiles = [] } = await db.prepare(
+      "SELECT id,storage_key FROM private_book_files WHERE book_id=? AND id<>?"
+    ).bind(bookId,id).all<any>();
+    for (const previous of previousFiles) {
+      try { await deleteB2Object(String(previous.storage_key)); } catch (error) {
+        console.error("Could not delete replaced book PDF from storage:", error);
+      }
+      await db.prepare("DELETE FROM private_book_files WHERE id=?").bind(previous.id).run();
+    }
+
+    return NextResponse.json({
+      files: [{ id, file_path: storageKey, file_name: originalName, file_type: "application/pdf" }],
+      message: "The new book uploaded"
+    }, { status: 201 });
   } catch (e) {
     console.error("Admin book-files POST:", e);
     return NextResponse.json({ error: "Unable to upload book files" }, { status: 500 });

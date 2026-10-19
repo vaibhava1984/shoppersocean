@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, useEffect } from 'react';
+import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -39,6 +39,7 @@ export default function AddBookPopup(props: propsType) {
     // Retain the newly created book ID if its PDF upload fails, so retrying Save
     // uploads the selected PDF without creating a duplicate book record.
     const [pendingSavedBookId, setPendingSavedBookId] = useState<string | null>(null);
+    const bookFileInputRef = useRef<HTMLInputElement>(null);
 
     const sortedAuthors = [...authors].sort((a, b) => a.name.localeCompare(b.name));
     const languageOptions = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...(book?.language ? [book.language] : [])])).sort((a, b) => a.localeCompare(b));
@@ -49,10 +50,10 @@ export default function AddBookPopup(props: propsType) {
         published_date: book?.published_date ?? '',
         isbn: book?.isbn ?? '',
         price: book?.price_inr ?? book?.price ?? 0,
-        price_usd: Number(book?.price_usd ?? 0),
-        price_eur: Number(book?.price_eur ?? 0),
-        price_cny: Number(book?.price_cny ?? 0),
-        price_rub: Number(book?.price_rub ?? 0),
+        price_usd: Number(book?.price_usd) > 0 ? Number(book?.price_usd) : 3,
+        price_eur: Number(book?.price_eur) > 0 ? Number(book?.price_eur) : 2.68,
+        price_cny: Number(book?.price_cny) > 0 ? Number(book?.price_cny) : 20.08,
+        price_rub: Number(book?.price_rub) > 0 ? Number(book?.price_rub) : 250.85,
         ratings: book?.ratings ?? 0,
         cover_images: book?.cover_images ?? [],
         binding: book?.binding ?? '',
@@ -97,12 +98,20 @@ export default function AddBookPopup(props: propsType) {
     async function handleBookFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
         const files = event.target.files;
         if (!files || files.length === 0) return;
-        if (!book?.id) {
-            setPendingBookFiles(Array.from(files));
-            toast({ title: "Files selected", description: "The book files will upload after you save the book details." });
+        const selected = files[0];
+        if (!selected.name.toLowerCase().endsWith('.pdf')) {
+            toast({ variant: "destructive", title: "PDF files only", description: "Please choose a PDF book file." });
+            event.target.value = '';
             return;
         }
-        await uploadBookFiles(book.id, Array.from(files));
+        if (!book?.id) {
+            setPendingBookFiles([selected]);
+            toast({ title: "PDF selected", description: "The PDF will upload when you press Save." });
+            event.target.value = '';
+            return;
+        }
+        await uploadBookFiles(book.id, [selected]);
+        event.target.value = '';
     }
 
     async function uploadBookFiles(bookId: string, files: File[]): Promise<boolean> {
@@ -111,36 +120,19 @@ export default function AddBookPopup(props: propsType) {
         try {
             const form = new FormData();
             form.append("bookId", bookId);
-            Array.from(files).forEach(file => form.append("file", file));
+            form.append("file", files[0]);
             const response = await fetch("/api/admin/book-files", { method: "POST", body: form });
             const result = await response.json();
             if (!response.ok) throw new Error(result.error || "Failed to upload files");
             setUploadProgress(100);
             await fetchBookFiles(bookId);
-            toast({ title:"Success!", description:"Your book is uploaded successfully." });
+            toast({ title:"The new book uploaded", description:"The PDF is saved. If a previous PDF existed, it has been replaced." });
             window.parent.postMessage({ type: "admin-book-uploaded", key: "Books" }, window.location.origin);
             return true;
         } catch (error:any) {
             toast({ variant:"destructive", title:"PDF upload failed", description:error?.message || "Failed to upload files. Please retry Save." });
             return false;
         } finally { setIsUploading(false); }
-    }
-
-    // Remove a book file
-    async function removeBookFile(fileId: string, filePath: string) {
-        if (!book?.id) return;
-        try {
-            const response = await fetch("/api/admin/book-files", {
-                method:"DELETE", headers:{"Content-Type":"application/json"},
-                body:JSON.stringify({id:fileId,filePath})
-            });
-            const result=await response.json();
-            if(!response.ok) throw new Error(result.error || "Failed to remove file");
-            await fetchBookFiles(book.id);
-            toast({ title:"Success!", description:"File removed successfully" });
-        } catch(error:any) {
-            toast({ variant:"destructive", title:"Error", description:error?.message || "Failed to remove file" });
-        }
     }
 
     async function fetchAuthors() {
@@ -470,47 +462,44 @@ export default function AddBookPopup(props: propsType) {
                         {errors.pages && <span className="text-red-500">{errors.pages}</span>}
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="book_files">Add Book File (PDF, EPUB, MOBI, or JPEG)</Label>
-                        <Input
-                            id="book_files"
-                            name="book_files"
-                            type="file"
-                            accept=".pdf,.epub,.mobi,.jpeg,.jpg"
-                            multiple
-                            onChange={handleBookFileUpload}
-                            disabled={isUploading}
-                        />
-                        {!book?.id && pendingBookFiles.length > 0 && (
-                            <p className="text-sm text-green-700">{pendingBookFiles.length} file(s) selected. They will upload after you save the book.</p>
-                        )}
-                        {isUploading && (
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                <div
-                                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                    style={{ width: `${uploadProgress}%` }}
-                                ></div>
-                            </div>
-                        )}
-                        {bookFiles.length > 0 && (
-                            <div className="mt-4">
-                                <h4 className="font-medium">Uploaded Files:</h4>
-                                <ul className="list-disc">
-                                    {bookFiles.map((file) => (
-                                        <li key={file.id} className="flex items-center justify-between">
-                                            <span>{file.file_name}</span>
-                                            <Button
-                                                type="button"
-                                                variant="destructive"
-                                                size="sm"
-                                                onClick={() => removeBookFile(file.id, file.file_path)}
-                                            >
-                                                Remove
-                                            </Button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
+                        <div className="space-y-2">
+                            <input
+                                ref={bookFileInputRef}
+                                id="book_files"
+                                name="book_files"
+                                type="file"
+                                accept="application/pdf,.pdf"
+                                className="hidden"
+                                onChange={handleBookFileUpload}
+                                disabled={isUploading}
+                            />
+                            {bookFiles.length > 0 ? (
+                                <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3">
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-semibold text-emerald-800">PDF uploaded</p>
+                                        <p className="break-all text-xs text-emerald-700">{bookFiles[0].file_name}</p>
+                                    </div>
+                                    <Button type="button" onClick={() => bookFileInputRef.current?.click()} disabled={isUploading} className="shrink-0">
+                                        Change file
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-slate-300 bg-white p-3">
+                                    <p className="text-sm text-slate-600">{pendingBookFiles.length ? `Selected: ${pendingBookFiles[0].name}` : "No PDF uploaded yet."}</p>
+                                    <Button type="button" onClick={() => bookFileInputRef.current?.click()} disabled={isUploading} className="shrink-0">
+                                        Upload file
+                                    </Button>
+                                </div>
+                            )}
+                            {!book?.id && pendingBookFiles.length > 0 && (
+                                <p className="text-xs text-green-700">This PDF will upload when you press Save.</p>
+                            )}
+                            {isUploading && (
+                                <div className="w-full rounded-full bg-gray-200 h-2.5">
+                                    <div className="h-2.5 rounded-full bg-blue-600 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
