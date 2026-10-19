@@ -252,13 +252,13 @@ export default function AdminAccordion() {
             >
               Back
             </button>
-            {open !== "Books" && <button
+            <button
               type="button"
               onClick={() => saveAndClose(open)}
-              className="inline-flex min-h-9 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               Save
-            </button>}
+            </button>
           </footer>
         </section>
       )}
