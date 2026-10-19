@@ -31,6 +31,13 @@ export default function AdminAccordion() {
     document.head.appendChild(prefetch);
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
+      if (event.data?.type === "admin-section-save-failed" && event.data?.key === "Books") {
+        setSaving(false);
+        setSaveNotice(String(event.data.message || "Please check the form and try again."));
+        if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
+        noticeTimer.current = window.setTimeout(() => setSaveNotice(""), 3500);
+        return;
+      }
       if (event.data?.type === "admin-section-saved" || event.data?.type === "admin-book-uploaded") {
         const sectionName = String(event.data.key || open || "Section");
         const keepSectionOpen = sectionName === "Books";
