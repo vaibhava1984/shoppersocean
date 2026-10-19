@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     if (!book) return response({ error: "Book not found" }, 404);
 
     const pricing = await db.prepare(
-      "SELECT price_inr,price_usd,price_eur,price_cny FROM book_pricing WHERE book_id=? LIMIT 1"
+      "SELECT price_inr,price_usd,price_eur,price_cny,price_rub FROM book_pricing WHERE book_id=? LIMIT 1"
     ).bind(bookId).first<any>();
 
     const country = getVisitorCountry(request);
@@ -33,41 +33,49 @@ export async function GET(request: Request) {
     const savedUSD = Number(pricing?.price_usd) > 0 ? Number(pricing.price_usd) : null;
     const savedEUR = Number(pricing?.price_eur) > 0 ? Number(pricing.price_eur) : null;
     const savedCNY = Number(pricing?.price_cny) > 0 ? Number(pricing.price_cny) : null;
+    const savedRUB = Number(pricing?.price_rub) > 0 ? Number(pricing.price_rub) : null;
+    const domesticCurrency = country ? getCurrencyCode(country) : null;
 
-    // The four chosen geographies use their own manually configured per-book prices.
-    if (country === "IN" && priceINR > 0) return response({ country, currency: "INR", amount: priceINR });
-    if (country === "US" && savedUSD) return response({ country, currency: "USD", amount: savedUSD });
-
-    const domesticCurrency = country ? getCurrencyCode(country) : "USD";
-    if (domesticCurrency === "EUR" && savedEUR) return response({ country, currency: "EUR", amount: savedEUR });
-    if (domesticCurrency === "CNY" && savedCNY) return response({ country, currency: "CNY", amount: savedCNY });
-
-    // Only request rates when a legacy book needs a USD fallback or a visitor needs conversion.
-    let rates: Record<string, number> = {};
-    let priceUSD = savedUSD;
-    const needsRates = !priceUSD || (domesticCurrency !== "USD");
-    if (needsRates) {
-      rates = await fetchExchangeRates();
-      if (!priceUSD && rates.INR && rates.USD) {
-        priceUSD = convertPrice(priceINR, "INR", "USD", rates);
-      }
+    // These five currencies always use the administrator's exact per-book price.
+    if (domesticCurrency === "INR") {
+      return priceINR > 0
+        ? response({ country, currency: "INR", amount: priceINR })
+        : response({ country, currency: "INR", amount: null, unavailable: true });
+    }
+    if (domesticCurrency === "USD") {
+      return savedUSD
+        ? response({ country, currency: "USD", amount: savedUSD })
+        : response({ country, currency: "USD", amount: null, unavailable: true });
+    }
+    if (domesticCurrency === "EUR") {
+      return savedEUR
+        ? response({ country, currency: "EUR", amount: savedEUR })
+        : response({ country, currency: "EUR", amount: null, unavailable: true });
+    }
+    if (domesticCurrency === "CNY") {
+      return savedCNY
+        ? response({ country, currency: "CNY", amount: savedCNY })
+        : response({ country, currency: "CNY", amount: null, unavailable: true });
+    }
+    if (domesticCurrency === "RUB") {
+      return savedRUB
+        ? response({ country, currency: "RUB", amount: savedRUB })
+        : response({ country, currency: "RUB", amount: null, unavailable: true });
     }
 
-    if (!priceUSD || priceUSD <= 0) {
-      return response({ country, currency: "USD", amount: null, unavailable: true });
+    // All other known geographies use their local currency converted from the manually
+    // configured USD price. Never silently substitute INR/USD when a conversion rate is missing.
+    if (!savedUSD) {
+      return response({ country, currency: domesticCurrency || "USD", amount: null, unavailable: true });
     }
-
-    // Unknown geography, USD geography, or unavailable exchange rates use the configured USD price.
-    if (!country || domesticCurrency === "USD" || !rates.USD || !rates[domesticCurrency]) {
-      return response({ country, currency: "USD", amount: priceUSD });
+    if (!domesticCurrency) {
+      return response({ country: null, currency: "USD", amount: savedUSD });
     }
-
-    // EUR/CNY visitors use their separately configured prices above; until an existing book is
-    // edited, derive those missing prices from its USD price rather than imposing a fixed price.
-    const converted = convertPrice(priceUSD, "USD", domesticCurrency, rates);
+    const rates = await fetchExchangeRates();
+    const converted = convertPrice(savedUSD, "USD", domesticCurrency, rates);
     return converted
       ? response({ country, currency: domesticCurrency, amount: converted })
-      : response({ country, currency: "USD", amount: priceUSD });
+      : response({ country, currency: domesticCurrency, amount: null, unavailable: true });
   } catch (error) {
     console.error("Book pricing GET:", error);
     return NextResponse.json({ error: "Unable to calculate the book price" }, { status: 500, headers: { "Cache-Control": "no-store" } });

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireUser } from '@/utils/auth/requireUser';
 import { getD1 } from '@/utils/cloudflare/d1';
-import { convertCurrency, fetchExchangeRates } from '@/utils/currency';
+import { ensureBookPricingTable, getVisitorCountry } from '@/utils/book-pricing';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -31,28 +31,30 @@ export async function POST(req: Request) {
         const body = await req.json();
         const productId = String(body?.productId || '');
         const requestedCurrency = String(body?.currency || 'INR').toUpperCase();
+        const visitorCountry = getVisitorCountry(req);
+        if (visitorCountry !== 'IN' || requestedCurrency !== 'INR') {
+            return NextResponse.json({ error: 'Purchases are currently available only in INR for visitors in India.' }, { status: 400 });
+        }
 
         if (!productId || !/^[A-Z]{3}$/.test(requestedCurrency)) {
             return NextResponse.json({ error: 'Book and currency are required' }, { status: 400 });
         }
 
+        await ensureBookPricingTable(db);
         const book = await db.prepare(
-            'SELECT id, title, price FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1'
+            'SELECT b.id, b.title, COALESCE(bp.price_inr, b.price) AS price_inr FROM books b LEFT JOIN book_pricing bp ON bp.book_id=b.id WHERE b.id = ? AND COALESCE(b.is_deleted, 0) = 0 LIMIT 1'
         ).bind(productId).first<Record<string, any>>();
 
         if (!book) {
             return NextResponse.json({ error: 'Book not found' }, { status: 404 });
         }
 
-        const priceInINR = Number(book.price);
+        const priceInINR = Number(book.price_inr);
         if (!Number.isFinite(priceInINR) || priceInINR <= 0) {
             return NextResponse.json({ error: 'This book does not have a valid price' }, { status: 400 });
         }
 
-        const rates = await fetchExchangeRates();
-        const amount = requestedCurrency === 'INR'
-            ? priceInINR
-            : convertCurrency(priceInINR, 'INR', requestedCurrency, rates);
+        const amount = priceInINR;
 
         if (!Number.isFinite(amount) || amount <= 0) {
             return NextResponse.json({ error: 'Unable to calculate the payment amount' }, { status: 400 });

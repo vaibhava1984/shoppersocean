@@ -52,6 +52,7 @@ export default function AddBookPopup(props: propsType) {
         price_usd: Number(book?.price_usd ?? 0),
         price_eur: Number(book?.price_eur ?? 0),
         price_cny: Number(book?.price_cny ?? 0),
+        price_rub: Number(book?.price_rub ?? 0),
         ratings: book?.ratings ?? 0,
         cover_images: book?.cover_images ?? [],
         binding: book?.binding ?? '',
@@ -167,6 +168,7 @@ export default function AddBookPopup(props: propsType) {
         if (!formData.price_usd || !Number.isFinite(Number(formData.price_usd)) || Number(formData.price_usd) <= 0) validationErrors.price_usd = 'Valid USD price is required';
         if (!formData.price_eur || !Number.isFinite(Number(formData.price_eur)) || Number(formData.price_eur) <= 0) validationErrors.price_eur = 'Valid EUR price is required';
         if (!formData.price_cny || !Number.isFinite(Number(formData.price_cny)) || Number(formData.price_cny) <= 0) validationErrors.price_cny = 'Valid CNY price is required';
+        if (!formData.price_rub || !Number.isFinite(Number(formData.price_rub)) || Number(formData.price_rub) <= 0) validationErrors.price_rub = 'Valid RUB price is required';
         if (!formData.pages || isNaN(Number(formData.pages))) validationErrors.pages = 'Valid pages number is required';
         if (Number(formData.pages) < 100 && formData.genre !== 'Short Books') {
             validationErrors.pages = "Not fit for full book. Submit in 'Short Books' genre.";
@@ -254,6 +256,7 @@ export default function AddBookPopup(props: propsType) {
             price_usd: 0,
             price_eur: 0,
             price_cny: 0,
+            price_rub: 0,
             ratings: 0,
             cover_images: [],
             binding: '',
@@ -378,6 +381,11 @@ export default function AddBookPopup(props: propsType) {
                         <Label htmlFor="price_cny">Price (CNY ¥) <span className="text-red-500">*</span></Label>
                         <Input id="price_cny" name="price_cny" type="number" min="0.01" step="0.01" value={formData.price_cny ? String(formData.price_cny) : ''} onChange={(e) => setFormData({ ...formData, price_cny: e.target.value ? Number(e.target.value) : 0 })} required />
                         {errors.price_cny && <span className="text-red-500">{errors.price_cny}</span>}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="price_rub">Price (RUB ₽) <span className="text-red-500">*</span></Label>
+                        <Input id="price_rub" name="price_rub" type="number" min="0.01" step="0.01" value={formData.price_rub ? String(formData.price_rub) : ''} onChange={(e) => setFormData({ ...formData, price_rub: e.target.value ? Number(e.target.value) : 0 })} required />
+                        {errors.price_rub && <span className="text-red-500">{errors.price_rub}</span>}
                     </div>
                     {/* <div className="space-y-2">
                         <Label htmlFor="ratings">Ratings</Label>

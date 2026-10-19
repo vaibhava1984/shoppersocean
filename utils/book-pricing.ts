@@ -12,9 +12,17 @@ export async function ensureBookPricingTable(db: any) {
       price_usd REAL,
       price_eur REAL,
       price_cny REAL,
+      price_rub REAL,
       updated_at TEXT NOT NULL
     )
-  `).run().then(() => undefined).catch((error: unknown) => {
+  `).run().then(async () => {
+    try {
+      await db.prepare("ALTER TABLE book_pricing ADD COLUMN price_rub REAL").run();
+    } catch (error) {
+      const message = String((error as any)?.message ?? error).toLowerCase();
+      if (!message.includes("duplicate column")) throw error;
+    }
+  }).then(() => undefined).catch((error: unknown) => {
     pricingTableReady = null;
     throw error;
   });
