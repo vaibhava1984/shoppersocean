@@ -25,23 +25,38 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
 
         async function setupLocalCurrency() {
             try {
-                // India keeps the existing ₹ pricing and Razorpay checkout.
-                // International price is displayed, but checkout is unavailable until a gateway is configured.
-                let isIndia = false;
+                // Prefer the registered country for signed-in customers.
+                // For guests (or accounts without a country), use Cloudflare's IP country.
+                let country = '';
 
                 if (userId) {
-                    const response = await fetch('/api/auth/me', {
+                    try {
+                        const response = await fetch('/api/auth/me', {
+                            credentials: 'same-origin',
+                            cache: 'no-store',
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            country = String(data?.user?.country || '').trim().toUpperCase();
+                        }
+                    } catch (error) {
+                        console.warn('Could not read account country; falling back to visitor country:', error);
+                    }
+                }
+
+                if (!country) {
+                    const response = await fetch('/api/visitor-country', {
                         credentials: 'same-origin',
                         cache: 'no-store',
                     });
                     if (response.ok) {
                         const data = await response.json();
-                        const country = String(data?.user?.country || '').trim().toUpperCase();
-                        isIndia = country === 'IN' || country === 'INDIA';
+                        country = String(data?.country || '').trim().toUpperCase();
                     }
                 }
 
                 if (!active) return;
+                const isIndia = country === 'IN' || country === 'INDIA';
                 if (isIndia) {
                     setLocalCurrency('INR');
                     setLocalAmount(amount);
