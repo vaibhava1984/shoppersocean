@@ -89,7 +89,20 @@ export default function AddBookPopup(props: propsType) {
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.error || "Failed to load book details");
                 if (!cancelled) {
-                    setFormData((previous) => ({ ...previous, cover_images: result.book?.cover_images || [] }));
+                    const details = result.book || {};
+                    // The list endpoint intentionally omits cover-image payloads and may
+                    // contain stale fields. Hydrate the editor from the authoritative
+                    // single-book response so saved descriptions/summaries are restored.
+                    setFormData((previous) => ({
+                        ...previous,
+                        ...details,
+                        price: details.price_inr ?? details.price ?? previous.price,
+                        price_usd: Number(details.price_usd ?? previous.price_usd ?? 0),
+                        price_eur: Number(details.price_eur ?? previous.price_eur ?? 0),
+                        price_cny: Number(details.price_cny ?? previous.price_cny ?? 0),
+                        price_rub: Number(details.price_rub ?? previous.price_rub ?? 0),
+                        cover_images: Array.isArray(details.cover_images) ? details.cover_images : previous.cover_images,
+                    }));
                 }
             } catch (error) {
                 console.error("Error loading book cover details:", error);
@@ -141,7 +154,11 @@ export default function AddBookPopup(props: propsType) {
             event.target.value = '';
             return;
         }
-        await uploadBookFiles(book.id, [selected]);
+        // Keep the selected file in state until the server confirms success.
+        // If B2/D1 upload fails, the admin can retry without choosing the PDF again.
+        setPendingBookFiles([selected]);
+        const uploaded = await uploadBookFiles(book.id, [selected]);
+        if (uploaded) setPendingBookFiles([]);
         event.target.value = '';
     }
 
@@ -526,7 +543,30 @@ export default function AddBookPopup(props: propsType) {
                                 onChange={handleBookFileUpload}
                                 disabled={isUploading}
                             />
-                            {bookFiles.length > 0 ? (
+                            {pendingBookFiles.length > 0 ? (
+                                <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3">
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-semibold text-amber-900">{book?.id ? "PDF selected — upload not yet confirmed" : "PDF selected"}</p>
+                                        <p className="break-all text-xs text-amber-800">{pendingBookFiles[0].name}</p>
+                                    </div>
+                                    <Button
+                                        type="button"
+                                        onClick={() => {
+                                            if (book?.id) {
+                                                void uploadBookFiles(book.id, pendingBookFiles).then((uploaded) => {
+                                                    if (uploaded) setPendingBookFiles([]);
+                                                });
+                                            } else {
+                                                bookFileInputRef.current?.click();
+                                            }
+                                        }}
+                                        disabled={isUploading}
+                                        className="shrink-0"
+                                    >
+                                        {isUploading ? "Uploading…" : book?.id ? "Retry upload" : "Change file"}
+                                    </Button>
+                                </div>
+                            ) : bookFiles.length > 0 ? (
                                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3">
                                     <div className="min-w-0">
                                         <p className="text-sm font-semibold text-emerald-800">PDF uploaded</p>
@@ -538,7 +578,7 @@ export default function AddBookPopup(props: propsType) {
                                 </div>
                             ) : (
                                 <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-slate-300 bg-white p-3">
-                                    <p className="text-sm text-slate-600">{pendingBookFiles.length ? `Selected: ${pendingBookFiles[0].name}` : "No PDF uploaded yet."}</p>
+                                    <p className="text-sm text-slate-600">No PDF uploaded yet.</p>
                                     <Button type="button" onClick={() => bookFileInputRef.current?.click()} disabled={isUploading} className="shrink-0">
                                         Upload file
                                     </Button>
