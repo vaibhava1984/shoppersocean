@@ -117,7 +117,7 @@ export default function AdminAccordion() {
         saveButton.style.cssText = "position:fixed;right:14px;bottom:14px;z-index:10000;min-height:36px;padding:7px 18px;border:0;border-radius:7px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer";
         saveButton.addEventListener("click", () => {
           const form = doc.querySelector('[role="dialog"] form') || doc.querySelector("form");
-          if (!(form instanceof HTMLFormElement)) {
+          if (!form || form.tagName !== "FORM") {
             let hint = doc.getElementById("admin-books-save-hint");
             if (!hint) {
               hint = doc.createElement("div");
@@ -190,7 +190,7 @@ export default function AdminAccordion() {
       }
       if (key === "Books") {
         const form = doc.querySelector('[role="dialog"] form') || doc.querySelector("form");
-        if (form instanceof HTMLFormElement) {
+        if (form && form.tagName === "FORM") {
           // Prevent native required-field validation from leaving the common Save
           // button stuck in its loading state when submission is blocked.
           if (!form.reportValidity()) {
