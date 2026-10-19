@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Loader2Icon, Share2, Mail, MessageCircle, Copy, MoreHorizontal } from 'lucide-react';
 import { setPurchaseStatus } from '@/utils/purchaseStatusCache';
+import { convertCurrency, fetchExchangeRates, getCurrencyCode } from '@/utils/currency';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,7 +27,7 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
         async function setupLocalCurrency() {
             try {
                 // Prefer the registered country for signed-in customers.
-                // For guests (or accounts without a country), use Cloudflare's IP country.
+                // Guests are identified using Cloudflare's visitor IP country.
                 let country = '';
 
                 if (userId) {
@@ -56,14 +57,41 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
                 }
 
                 if (!active) return;
-                const isIndia = country === 'IN' || country === 'INDIA';
-                if (isIndia) {
+
+                if (country === 'IN' || country === 'INDIA') {
                     setLocalCurrency('INR');
                     setLocalAmount(amount);
-                } else {
+                    return;
+                }
+
+                // Keep the existing international reference price at US$3,
+                // converted to the visitor's mapped domestic currency.
+                const domesticCurrency = country ? getCurrencyCode(country) : 'USD';
+                if (!domesticCurrency || domesticCurrency === 'Unknown' || domesticCurrency === 'INR') {
                     setLocalCurrency('USD');
                     setLocalAmount(3);
+                    return;
                 }
+
+                if (domesticCurrency === 'USD') {
+                    setLocalCurrency('USD');
+                    setLocalAmount(3);
+                    return;
+                }
+
+                const rates = await fetchExchangeRates();
+                const convertedAmount = convertCurrency(3, 'USD', domesticCurrency, rates);
+                if (!active) return;
+
+                // If a rate is unavailable, do not show a misleading local-currency amount.
+                if (!rates.USD || !rates[domesticCurrency] || !Number.isFinite(convertedAmount) || convertedAmount <= 0) {
+                    setLocalCurrency('USD');
+                    setLocalAmount(3);
+                    return;
+                }
+
+                setLocalCurrency(domesticCurrency);
+                setLocalAmount(convertedAmount);
             } catch (error) {
                 if (!active) return;
                 console.error('Error setting up local currency:', error);
