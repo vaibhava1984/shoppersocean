@@ -39,8 +39,8 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
         <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center text-[11px] font-extrabold not-italic text-[#0A0A0A] shadow-md ring-1 ring-black/10 transition-all active:scale-95 sm:text-sm">
           Books by Authors
         </button>
-        <button type="button" onClick={() => toggle("language")} aria-expanded={open === "language"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center text-[11px] font-extrabold not-italic text-[#0A0A0A] shadow-md ring-1 ring-black/10 transition-all active:scale-95 sm:text-sm">
-          Books by Language
+        <button type="button" onClick={() => toggle("language")} aria-expanded={open === "language"} className="min-h-[46px] rounded-lg bg-blue-600 border border-blue-600 px-2 sm:px-4 py-2.5 text-center text-[11px] sm:text-sm font-bold text-white shadow-sm hover:bg-blue-700 hover:border-blue-700 transition-all active:scale-95 animate-[languageNudge_2.8s_ease-in-out_infinite]">
+          Choose Your Language
         </button>
       </div>
 
