@@ -31,8 +31,15 @@ export default function AdminAccordion() {
     document.head.appendChild(prefetch);
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
+      if (event.data?.type === "admin-section-saving" && event.data?.key === "Books") {
+        setSaving(true);
+        setSaveNotice("Saving changes…");
+        return;
+      }
       if (event.data?.type === "admin-section-save-failed" && event.data?.key === "Books") {
         setSaving(false);
+        const saveButton = frameRefs.current.Books?.contentDocument?.getElementById("admin-books-save-button") as HTMLButtonElement | null;
+        if (saveButton) { saveButton.disabled = false; saveButton.textContent = "Save"; }
         setSaveNotice(String(event.data.message || "Please check the form and try again."));
         if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
         noticeTimer.current = window.setTimeout(() => setSaveNotice(""), 3500);
@@ -42,6 +49,8 @@ export default function AdminAccordion() {
         const sectionName = String(event.data.key || open || "Section");
         const keepSectionOpen = sectionName === "Books";
         setSaving(false);
+        const saveButton = frameRefs.current.Books?.contentDocument?.getElementById("admin-books-save-button") as HTMLButtonElement | null;
+        if (saveButton) { saveButton.disabled = false; saveButton.textContent = "Save"; }
         setSaveNotice(event.data?.type === "admin-book-uploaded" ? "The new book uploaded" : "Your changes have been saved");
         if (noticeTimer.current !== undefined) window.clearTimeout(noticeTimer.current);
         noticeTimer.current = window.setTimeout(() => {
@@ -95,9 +104,39 @@ export default function AdminAccordion() {
 
       // Keep the embedded admin page within the available screen area so its
       // controls scroll inside the section instead of pushing the footer away.
-      frame.style.height = "calc(100dvh - 112px)";
+      const frameHeight = key === "Books" ? "calc(100dvh - 56px)" : "calc(100dvh - 112px)";
+      frame.style.height = frameHeight;
       frame.style.minHeight = "0";
-      frame.style.maxHeight = "calc(100dvh - 112px)";
+      frame.style.maxHeight = frameHeight;
+      // Keep the Books Save control inside the Books section itself.
+      if (key === "Books" && !doc.getElementById("admin-books-save-button")) {
+        const saveButton = doc.createElement("button");
+        saveButton.id = "admin-books-save-button";
+        saveButton.type = "button";
+        saveButton.textContent = "Save";
+        saveButton.style.cssText = "position:fixed;right:14px;bottom:14px;z-index:10000;min-height:36px;padding:7px 18px;border:0;border-radius:7px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer";
+        saveButton.addEventListener("click", () => {
+          const form = doc.querySelector('[role="dialog"] form') || doc.querySelector("form");
+          if (!(form instanceof HTMLFormElement)) {
+            let hint = doc.getElementById("admin-books-save-hint");
+            if (!hint) {
+              hint = doc.createElement("div");
+              hint.id = "admin-books-save-hint";
+              hint.style.cssText = "position:fixed;right:14px;bottom:58px;z-index:10000;max-width:calc(100vw - 28px);padding:9px 12px;border-radius:7px;background:#334155;color:#fff;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.15)";
+              doc.body.appendChild(hint);
+            }
+            hint.textContent = "Open Add New Book or Edit Book before saving.";
+            return;
+          }
+          if (!form.reportValidity()) return;
+          saveButton.disabled = true;
+          saveButton.textContent = "Saving…";
+          win.parent.postMessage({ type: "admin-section-saving", key: "Books" }, win.location.origin);
+          form.requestSubmit();
+        });
+        doc.body.appendChild(saveButton);
+      }
+
 
       // Avoid a ResizeObserver-driven resize loop: the frame is intentionally
       // viewport-sized and should not be resized every time a form changes.
@@ -257,11 +296,12 @@ export default function AdminAccordion() {
                 src={"/admin_panel/" + (activeSection?.path || "")}
                 onLoad={() => { prepareFrame(open); setFrameReady(true); }}
                 className="block w-full border-0 bg-white"
-                style={{ height: "calc(100dvh - 112px)", minHeight: 0, maxHeight: "calc(100dvh - 112px)", visibility: frameReady ? "visible" : "hidden" }}
+                style={{ height: open === "Books" ? "calc(100dvh - 56px)" : "calc(100dvh - 112px)", minHeight: 0, maxHeight: open === "Books" ? "calc(100dvh - 56px)" : "calc(100dvh - 112px)", visibility: frameReady ? "visible" : "hidden" }}
               />
             )}
           </div>
-          <footer className="flex h-14 shrink-0 items-center justify-center border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
+          {open !== "Books" && (
+            <footer className="flex h-14 shrink-0 items-center justify-center border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
             <button
               type="button"
               onClick={() => saveAndClose(open)}
@@ -271,6 +311,7 @@ export default function AdminAccordion() {
               {saving ? "Saving changes…" : "Save changes"}
             </button>
           </footer>
+          )}
         </section>
       )}
     </div>
