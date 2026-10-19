@@ -26,34 +26,16 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
 
         async function setupLocalCurrency() {
             try {
-                // Prefer the registered country for signed-in customers.
-                // Guests are identified using Cloudflare's visitor IP country.
+                // Always use Cloudflare's IP-based visitor geography, regardless of login status
+                // or the country entered in the user's account profile.
+                const response = await fetch('/api/visitor-country', {
+                    credentials: 'same-origin',
+                    cache: 'no-store',
+                });
                 let country = '';
-
-                if (userId) {
-                    try {
-                        const response = await fetch('/api/auth/me', {
-                            credentials: 'same-origin',
-                            cache: 'no-store',
-                        });
-                        if (response.ok) {
-                            const data = await response.json();
-                            country = String(data?.user?.country || '').trim().toUpperCase();
-                        }
-                    } catch (error) {
-                        console.warn('Could not read account country; falling back to visitor country:', error);
-                    }
-                }
-
-                if (!country) {
-                    const response = await fetch('/api/visitor-country', {
-                        credentials: 'same-origin',
-                        cache: 'no-store',
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        country = String(data?.country || '').trim().toUpperCase();
-                    }
+                if (response.ok) {
+                    const data = await response.json();
+                    country = String(data?.country || '').trim().toUpperCase();
                 }
 
                 if (!active) return;
