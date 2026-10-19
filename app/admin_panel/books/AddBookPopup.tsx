@@ -21,6 +21,11 @@ interface BookFile {
     file_type: string;
 }
 
+// Reuse the author list between Add/Edit Book dialogs instead of fetching it
+// again every time the admin opens another book.
+let cachedAuthors: Author[] | null = null;
+let authorsRequest: Promise<Author[]> | null = null;
+
 type propsType = {
     book?: BookType,
     onSuccess: (closePopup: boolean) => void,
@@ -162,12 +167,28 @@ export default function AddBookPopup(props: propsType) {
     }
 
     async function fetchAuthors() {
+        if (cachedAuthors) {
+            setAuthors(cachedAuthors);
+            return;
+        }
         try {
-            const response=await fetch("/api/admin/authors",{cache:"no-store"});
-            const result=await response.json();
-            if(!response.ok) throw new Error(result.error || "Failed to fetch authors");
-            setAuthors(result.authors || []);
-        } catch(error){ console.error("Error fetching authors:",error); }
+            if (!authorsRequest) {
+                authorsRequest = fetch("/api/admin/authors", { cache: "no-store" })
+                    .then(async (response) => {
+                        const result = await response.json();
+                        if (!response.ok) throw new Error(result.error || "Failed to fetch authors");
+                        const list = Array.isArray(result.authors) ? result.authors : [];
+                        cachedAuthors = list;
+                        return list;
+                    })
+                    .finally(() => { authorsRequest = null; });
+            }
+            const list = await authorsRequest;
+            setAuthors(list);
+        } catch(error) {
+            authorsRequest = null;
+            console.error("Error fetching authors:", error);
+        }
     }
 
     async function validateAndAddBook() {
