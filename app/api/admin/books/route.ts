@@ -31,18 +31,31 @@ const BOOK_SELECT = `SELECT
   LEFT JOIN book_pricing bp ON bp.book_id=b.id
 `;
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     if (!(await requireAdmin())) return NextResponse.json({ error: "Not allowed" }, { status: 403 });
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database is unavailable" }, { status: 503 });
     await ensureBookPricingTable(db);
 
+    const requestedBookId = new URL(request.url).searchParams.get("id");
+    if (requestedBookId) {
+      const row = await db.prepare(
+        BOOK_SELECT + " WHERE b.id=? AND COALESCE(b.is_deleted,0)=0 LIMIT 1"
+      ).bind(requestedBookId).first<any>();
+      if (!row) return NextResponse.json({ error: "Book not found" }, { status: 404 });
+      return NextResponse.json({ book: parseBook(row) }, {
+        headers: { "Cache-Control": "no-store" },
+      });
+    }
+
+    // The list view does not display cover images. Avoid parsing and sending
+    // potentially large base64 images for every book; load them only on edit.
     const { results = [] } = await db.prepare(
       BOOK_SELECT + " WHERE COALESCE(b.is_deleted,0)=0 ORDER BY b.created_at DESC"
     ).all<any>();
 
-    return NextResponse.json({ books: results.map(parseBook) }, {
+    return NextResponse.json({ books: results.map((row) => parseBook({ ...row, cover_images: "[]" })) }, {
       headers: { "Cache-Control": "no-store" },
     });
   } catch (e) {
