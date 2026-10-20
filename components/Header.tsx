@@ -11,7 +11,7 @@ const navigationItems = [
   ["/", "Home"],
   ["/bookShelf", "Your Books"],
   ["/about", "About"],
-  ["/contact", "Have a Question"],
+  ["/books-for-children", "Books for Children"],
 ] as const;
 
 type HeaderProps = {
