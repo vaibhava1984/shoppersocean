@@ -71,13 +71,13 @@ export default function CategoryFilterButtons({ genre = "", author = "", languag
                 {filter.label}
               </button>
               {open === filter.key && (
-                <div className="absolute left-0 top-full z-30 mt-1 max-h-60 min-w-52 max-w-[85vw] overflow-y-auto overscroll-contain rounded-xl border border-blue-200 bg-gradient-to-br from-white via-blue-50/60 to-cyan-50 p-1.5 shadow-xl ring-1 ring-blue-100/70">
+                <div className="absolute left-0 top-full z-30 mt-1 max-h-60 min-w-52 max-w-[85vw] overflow-y-auto overscroll-contain rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
                   {filter.values.map((value) => (
                     <Link
                       key={value}
                       href={makeHref(filter.key, value)}
                       onClick={() => setOpen(null)}
-                      className="mb-0.5 block rounded-lg border border-transparent px-3 py-2 text-sm font-bold tracking-wide text-slate-800 transition-all hover:border-blue-100 hover:bg-white hover:text-blue-700 hover:shadow-sm"
+                      className="mb-0.5 block rounded-lg border border-transparent px-3 py-2 font-serif text-sm font-bold tracking-wide text-[#111111] transition-all hover:border-slate-200 hover:bg-white hover:text-black hover:shadow-sm"
                     >
                       {value}
                     </Link>
