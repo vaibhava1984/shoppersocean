@@ -18,6 +18,12 @@ const DynamicPaymentButton = nextDynamic(() => import("@/components/PaymentButto
 
 type Props = { params: { bookId: string }; searchParams: { [key: string]: string | string[] | undefined } };
 
+function formatPublishedDate(value: unknown): string {
+    const date = String(value ?? "").trim();
+    const iso = date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    return iso ? `${iso[3]}-${iso[2]}-${iso[1]}` : date;
+}
+
 function parseImages(value: unknown): string[] {
     if (Array.isArray(value)) return value.filter((item): item is string => typeof item === "string");
     if (typeof value === "string") {
@@ -70,7 +76,7 @@ export default async function BookDetailPage({ params }: { params: any }) {
                         </div>
                         <Card className="mb-6"><CardContent className="p-4"><h2 className="text-lg font-semibold mb-2">Book Details</h2><ul className="space-y-1 text-sm">
                             <li><span className="font-medium">Language:</span> {currentBookDetails.language}</li>
-                            <li><span className="font-medium">Published Date:</span> {currentBookDetails.published_date}</li>
+                            <li><span className="font-medium">Published Date:</span> {formatPublishedDate(currentBookDetails.published_date)}</li>
                             <li><span className="font-medium">Flipbook Pages:</span> {currentBookDetails.pages}</li>
                         </ul></CardContent></Card>
                     </div>
