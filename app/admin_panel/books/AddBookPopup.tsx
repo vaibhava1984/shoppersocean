@@ -226,7 +226,7 @@ export default function AddBookPopup(props: propsType) {
         if (!formData.price_eur || !Number.isFinite(Number(formData.price_eur)) || Number(formData.price_eur) <= 0) validationErrors.price_eur = 'Valid EUR price is required';
         if (!formData.price_cny || !Number.isFinite(Number(formData.price_cny)) || Number(formData.price_cny) <= 0) validationErrors.price_cny = 'Valid CNY price is required';
         if (!formData.price_rub || !Number.isFinite(Number(formData.price_rub)) || Number(formData.price_rub) <= 0) validationErrors.price_rub = 'Valid RUB price is required';
-        if (!formData.pages || isNaN(Number(formData.pages))) validationErrors.pages = 'Valid pages number is required';
+        if (!formData.pages || isNaN(Number(formData.pages))) validationErrors.pages = 'Valid flipbook pages number is required';
         if (Number(formData.pages) < 100 && formData.genre !== 'Short Books') {
             validationErrors.pages = "Not fit for full book. Submit in 'Short Books' genre.";
         }
@@ -519,7 +519,7 @@ export default function AddBookPopup(props: propsType) {
                         />
                     </div> */}
                     <div className="space-y-2">
-                        <Label htmlFor="pages">Pages <span className="text-red-500">*</span></Label>
+                        <Label htmlFor="pages">Flipbook Pages <span className="text-red-500">*</span></Label>
                         <Input
                             id="pages"
                             name="pages"

@@ -67,7 +67,7 @@ export default async function BookShelfPage({
             `SELECT b.id, b.title, b.description, b.price, b.cover_images, b.author_name, b.genre, b.author_id, b.language
              FROM books b
              WHERE ${conditions.join(" AND ")}
-             ORDER BY COALESCE(b.updated_at, b.published_date) DESC, b.title ASC`
+             ORDER BY COALESCE(b.created_at, b.updated_at, b.published_date) DESC, b.title ASC`
         ).bind(...bindings).all<Record<string, any>>()
 
         books = (result.results ?? []).map((book) => {

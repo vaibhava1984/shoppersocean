@@ -36,7 +36,7 @@ export default function Books() {
         { key: 'title', label: 'Title' },
         { key: 'description', label: 'Description' },
         { key: 'isbn', label: 'ISBN' },
-        { key: 'pages', label: 'Pages' },
+        { key: 'pages', label: 'Flipbook Pages' },
         { key: 'price', label: 'Price (INR)' },
         { key: 'price_usd', label: 'Price (USD)' },
         { key: 'price_eur', label: 'Price (EUR)' },
@@ -125,7 +125,7 @@ export default function Books() {
                                                     <h3 className="break-words text-sm font-bold leading-snug text-slate-900">{book.title}</h3>
                                                     <p className="mt-1 text-xs text-slate-600">{book.author_name || "Author not set"} · {book.language || "Language not set"}</p>
                                                 </div>
-                                                <span className="shrink-0 rounded-full bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700">{book.pages || "—"} pages</span>
+                                                <span className="shrink-0 rounded-full bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700">{book.pages || "—"} flipbook pages</span>
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-2">
                                                 {([

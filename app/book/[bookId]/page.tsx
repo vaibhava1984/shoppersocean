@@ -71,7 +71,7 @@ export default async function BookDetailPage({ params }: { params: any }) {
                         <Card className="mb-6"><CardContent className="p-4"><h2 className="text-lg font-semibold mb-2">Book Details</h2><ul className="space-y-1 text-sm">
                             <li><span className="font-medium">Language:</span> {currentBookDetails.language}</li>
                             <li><span className="font-medium">Published Date:</span> {currentBookDetails.published_date}</li>
-                            <li><span className="font-medium">Pages:</span> {currentBookDetails.pages}</li>
+                            <li><span className="font-medium">Flipbook Pages:</span> {currentBookDetails.pages}</li>
                         </ul></CardContent></Card>
                     </div>
                 </div>
