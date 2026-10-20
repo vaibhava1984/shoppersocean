@@ -1,5 +1,4 @@
 export const SUPPORTED_BOOK_GENRES = [
-  "Books for Children",
   "Guide/How to",
   "Historical Fiction",
   "Historical Non fiction",
