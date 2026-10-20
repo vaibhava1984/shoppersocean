@@ -26,6 +26,20 @@ interface BookFile {
 let cachedAuthors: Author[] | null = null;
 let authorsRequest: Promise<Author[]> | null = null;
 
+function dateToDisplay(value: unknown): string {
+    const date = String(value ?? "").trim();
+    const iso = date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (iso) return `${iso[3]}-${iso[2]}-${iso[1]}`;
+    return date;
+}
+
+function dateToStorage(value: unknown): string {
+    const date = String(value ?? "").trim();
+    const display = date.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+    if (display) return `${display[3]}-${display[2]}-${display[1]}`;
+    return date;
+}
+
 type propsType = {
     book?: BookType,
     onSuccess: (closePopup: boolean) => void,
@@ -53,7 +67,7 @@ export default function AddBookPopup(props: propsType) {
     const [formData, setFormData] = useState<Omit<BookType, 'id' | 'author_name' | 'updated_at'>>({
         title: book?.title ?? '',
         description: book?.description ?? '',
-        published_date: book?.published_date ?? '',
+        published_date: dateToDisplay(book?.published_date ?? ''),
         isbn: book?.isbn ?? '',
         price: book?.price_inr ?? book?.price ?? 0,
         price_usd: 0,
@@ -96,6 +110,7 @@ export default function AddBookPopup(props: propsType) {
                     setFormData((previous) => ({
                         ...previous,
                         ...details,
+                        published_date: dateToDisplay(details.published_date ?? previous.published_date),
                         price: details.price_inr ?? details.price ?? previous.price,
                         price_usd: Number(details.price_usd ?? previous.price_usd ?? 0),
                         price_eur: Number(details.price_eur ?? previous.price_eur ?? 0),
@@ -257,7 +272,7 @@ export default function AddBookPopup(props: propsType) {
             // If the book record was already created but its PDF upload failed,
             // retry only the upload instead of creating a duplicate book.
             if (!pendingSavedBookId) {
-                const payload:any = { ...formData, price_inr: formData.price, author_name: authorName, id: book?.id };
+                const payload:any = { ...formData, published_date: dateToStorage(formData.published_date), price_inr: formData.price, author_name: authorName, id: book?.id };
                 const response=await fetch("/api/admin/books",{method:book?.id ? "PUT" : "POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
                 const result=await response.json();
                 if(!response.ok) throw new Error(result.error || "Something went wrong");
@@ -394,7 +409,7 @@ export default function AddBookPopup(props: propsType) {
                         <Label htmlFor="published_date">Published Date <span className="text-red-500">*</span></Label>
                         <input
                             type="text"
-                            placeholder="YYYY-MM-DD"
+                            placeholder="DD-MM-YYYY"
                             value={formData.published_date}
                             onChange={(e) => setFormData({ ...formData, published_date: e.target.value })}
                             className="ml-2 border rounded p-1"
