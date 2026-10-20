@@ -26,6 +26,17 @@ interface BookFile {
 let cachedAuthors: Author[] | null = null;
 let authorsRequest: Promise<Author[]> | null = null;
 
+function toDisplayDate(value: string) {
+    if (!value) return '';
+    const match = value.match(/^(\\d{4})-(\\d{2})-(\\d{2})/);
+    return match ? `${match[3]}-${match[2]}-${match[1]}` : value;
+}
+
+function toStorageDate(value: string) {
+    const match = value.match(/^(\\d{2})-(\\d{2})-(\\d{4})$/);
+    return match ? `${match[3]}-${match[2]}-${match[1]}` : value;
+}
+
 type propsType = {
     book?: BookType,
     onSuccess: (closePopup: boolean) => void,
@@ -53,7 +64,7 @@ export default function AddBookPopup(props: propsType) {
     const [formData, setFormData] = useState<Omit<BookType, 'id' | 'author_name' | 'updated_at'>>({
         title: book?.title ?? '',
         description: book?.description ?? '',
-        published_date: book?.published_date ?? '',
+        published_date: toDisplayDate(book?.published_date ?? ''),
         isbn: book?.isbn ?? '',
         price: book?.price_inr ?? book?.price ?? 0,
         price_usd: 0,
@@ -257,7 +268,7 @@ export default function AddBookPopup(props: propsType) {
             // If the book record was already created but its PDF upload failed,
             // retry only the upload instead of creating a duplicate book.
             if (!pendingSavedBookId) {
-                const payload:any = { ...formData, price_inr: formData.price, author_name: authorName, id: book?.id };
+                const payload:any = { ...formData, published_date: toStorageDate(formData.published_date), price_inr: formData.price, author_name: authorName, id: book?.id };
                 const response=await fetch("/api/admin/books",{method:book?.id ? "PUT" : "POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
                 const result=await response.json();
                 if(!response.ok) throw new Error(result.error || "Something went wrong");
@@ -394,7 +405,7 @@ export default function AddBookPopup(props: propsType) {
                         <Label htmlFor="published_date">Published Date <span className="text-red-500">*</span></Label>
                         <input
                             type="text"
-                            placeholder="YYYY-MM-DD"
+                            placeholder="DD-MM-YYYY"
                             value={formData.published_date}
                             onChange={(e) => setFormData({ ...formData, published_date: e.target.value })}
                             className="ml-2 border rounded p-1"
