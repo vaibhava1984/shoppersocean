@@ -4,10 +4,9 @@ export const SUPPORTED_BOOK_GENRES = [
   "Historical Non fiction",
   "Learning and Education",
   "Memoir and Biographies",
-  "Novel/Stories",
   "Philosophy and Literature",
   "Science Fiction",
   "Short Books",
-  "Short Stories",
+  "Social/drama/romance",
   "Suspense and Thriller",
 ] as const;
