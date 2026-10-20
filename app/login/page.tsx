@@ -154,7 +154,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 shadow-md">
         <div className="container mx-auto px-2 sm:px-4 py-2">
           <div className="flex items-center justify-center gap-1 sm:gap-2 overflow-x-auto">
-            {[["/", "Home"], ["/bookShelf", "Bookshelf"], ["/about", "About"], ["/contact", "Have a question"]].map(([href, label]) => (
+            {[["/", "Home"], ["/bookShelf", "Bookshelf"], ["/about", "About"], ["/books-for-children", "Books for Children"]].map(([href, label]) => (
               <Link key={href} href={href} className="flex-1 min-w-0 text-center px-2 py-2 rounded-md text-xs sm:text-sm font-medium text-white hover:bg-white/15 transition-colors whitespace-nowrap">{label}</Link>
             ))}
           </div>
