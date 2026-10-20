@@ -34,6 +34,7 @@ function dateToDisplay(value: unknown): string {
     return date;
 }
 
+// Convert the displayed DD-MM-YYYY date back to the ISO value expected by the database.
 function dateToStorage(value: unknown): string {
     const date = String(value ?? "").trim();
     const display = date.match(/^(\d{2})-(\d{2})-(\d{4})$/);
