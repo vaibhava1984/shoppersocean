@@ -166,7 +166,7 @@ export default function Books() {
                                             <TableRow key={book.id}>
                                                 {Array.from(selectedColumns).map((column, columnIndex) => (
                                                     <TableCell key={`${column}_${columnIndex}`}>
-                                                        {column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : book[column]}
+                                                        {column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : column === "published_date" && book[column] ? (String(book[column]).match(/^(\d{4})-(\d{2})-(\d{2})$/) ? `${String(book[column]).slice(8, 10)}-${String(book[column]).slice(5, 7)}-${String(book[column]).slice(0, 4)}` : book[column]) : book[column]}
                                                     </TableCell>
                                                 ))}
                                                 <TableCell>
