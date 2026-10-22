@@ -47,6 +47,9 @@ async function ensureTable(db: D1Database) {
   ]) {
     try { await db.prepare(statement).run(); } catch {}
   }
+  try {
+    await db.prepare("UPDATE author_applications SET payment_deadline=datetime(approved_at, '+3 days') WHERE status='approved_payment_pending' AND approved_at IS NOT NULL AND payment_deadline IS NOT NULL AND julianday(payment_deadline) < julianday(approved_at, '+3 days')").run();
+  } catch {}
 }
 
 export async function POST(request: Request) {
