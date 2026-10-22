@@ -47,6 +47,9 @@ async function ensureTable(db: D1Database) {
   ]) {
     try { await db.prepare(statement).run(); } catch {}
   }
+  try {
+    await db.prepare("UPDATE author_applications SET payment_deadline=datetime(approved_at, '+3 days') WHERE status='approved_payment_pending' AND approved_at IS NOT NULL AND payment_deadline IS NOT NULL AND julianday(payment_deadline) < julianday(approved_at, '+3 days') - (1.0/86400.0)").run();
+  } catch {}
 }
 
 export async function POST(request: Request) {
@@ -185,7 +188,7 @@ export async function GET(request: Request) {
       return new Response("<h2>Application rejected</h2><p>The applicant has been notified.</p>", { headers: { "Content-Type": "text/html; charset=utf-8" } });
     }
 
-    const paymentDeadline = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
+    const paymentDeadline = new Date(Date.now() + 3 * 24 * 3600 * 1000).toISOString();
     await db.prepare("UPDATE author_applications SET status='approved_payment_pending',reviewed_at=?,approved_at=?,payment_deadline=? WHERE id=? AND status='pending'")
       .bind(now, now, paymentDeadline, application.id).run();
 
@@ -196,12 +199,12 @@ export async function GET(request: Request) {
       html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
         <p>Dear ${escapeHtml(application.full_name)},</p>
         <p>Congratulations 🎉</p>
-        <p>Your application to register yourself as an author at Shoppers ocean has been approved. Please login and continue your registration process within 24 hours. Looking forward to having a long lasting journey together.</p>
+        <p>Your application to register yourself as an author at Shoppers ocean has been approved. Please log in and complete your registration payment within three days. Looking forward to having a long lasting journey together.</p>
         <p>Regards,<br/>Shoppers Ocean</p>
       </div>`,
     });
 
-    return new Response("<h2>Application approved</h2><p>The applicant has been notified and may now log in to complete the registration payment within 24 hours.</p>", { headers: { "Content-Type": "text/html; charset=utf-8" } });
+    return new Response("<h2>Application approved</h2><p>The applicant has been notified and may now log in to complete the registration payment within three days.</p>", { headers: { "Content-Type": "text/html; charset=utf-8" } });
   } catch (error) {
     console.error("Author application review error:", error);
     return new Response("Unable to process this application.", { status: 500 });
