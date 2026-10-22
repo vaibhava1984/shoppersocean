@@ -41,7 +41,9 @@ export async function GET() {
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database unavailable" }, { status: 503 });
     await ensureTable(db);
-    const { results = [] } = await db.prepare("SELECT * FROM author_applications ORDER BY created_at DESC").all<any>();
+    const now = new Date().toISOString();
+    await db.prepare("UPDATE author_applications SET status='expired',reviewed_at=? WHERE status='approved_payment_pending' AND (payment_deadline IS NULL OR payment_deadline<=?)").bind(now, now).run();
+    const { results = [] } = await db.prepare("SELECT * FROM author_applications WHERE status='approved_payment_pending' AND payment_deadline>? ORDER BY approved_at DESC,created_at DESC").bind(now).all<any>();
     return NextResponse.json({ authors: results }, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
     console.error(e);
@@ -79,7 +81,7 @@ export async function POST(request: Request) {
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
     const { env } = await getCloudflareContext();
     const now = new Date().toISOString();
-    const paymentDeadline = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
+    const paymentDeadline = new Date(Date.now() + 3 * 24 * 3600 * 1000).toISOString();
 
     await db.prepare("UPDATE author_applications SET status='approved_payment_pending',reviewed_at=?,approved_at=?,payment_deadline=? WHERE id=? AND status='pending'")
       .bind(now, now, paymentDeadline, application.id).run();
@@ -87,7 +89,7 @@ export async function POST(request: Request) {
     const { error } = await sendApprovalEmail(env, application);
     if (error) console.error("Manual author approval email error:", error);
 
-    return NextResponse.json({ message: "Application approved. Payment is now required within 24 hours." });
+    return NextResponse.json({ message: "Application approved. Payment is now required within 3 days." });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
