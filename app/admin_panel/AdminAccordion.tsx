@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, UserCheck, ExternalLink } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, Users, UserCheck, ExternalLink } from "lucide-react";
 import Dashboard from "../components/adminPage/Dashboard";
 
 const sections = [
@@ -9,7 +9,6 @@ const sections = [
   { label: "Orders", path: "orders", icon: ShoppingCart },
   { label: "Home Section", path: "home_section", icon: Home },
   { label: "Books", path: "books", icon: BookOpen },
-  { label: "Authors", path: "authors", icon: PenTool },
   { label: "Users", path: "users", icon: Users },
   { label: "Authors Approvals", path: "authors_approvals", icon: UserCheck },
 ] as const;
