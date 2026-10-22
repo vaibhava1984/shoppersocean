@@ -111,7 +111,14 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
         }),
       });
       const order = await response.json();
-      if (!response.ok) throw new Error(order.error || "Unable to create payment order.");
+      if (!response.ok) {
+        if (order.status === "expired" || order.status === "not_started") {
+          setStatus({ status: "not_started", paymentDeadline: null });
+          setMessage("");
+          return;
+        }
+        throw new Error(order.error || "Unable to create payment order.");
+      }
 
       const Razorpay = (window as any).Razorpay;
       if (!Razorpay) throw new Error("Razorpay could not be loaded.");
@@ -135,6 +142,11 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
             }),
           });
           const result = await verify.json();
+          if (!verify.ok && (result.status === "expired" || result.status === "not_started")) {
+            setStatus({ status: "not_started", paymentDeadline: null });
+            setMessage("");
+            return;
+          }
           if (!verify.ok || result.status !== "completed") throw new Error(result.error || "Payment could not be verified.");
           setStatus({ status: "completed", paymentDeadline: null });
           setMessage("Congratulations 🎉 Your author registration is complete.");
@@ -231,7 +243,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
             </div>
           </div>
 
-          <p className="text-lg text-slate-600 leading-relaxed mt-8 mb-4 text-center">Please complete the one-time registration payment within 24 hours to finalize your author registration.</p>
+          <p className="text-lg text-slate-600 leading-relaxed mt-8 mb-4 text-center">Please complete the one-time registration payment within three days to finalize your author registration.</p>
           <p className="text-2xl font-bold text-slate-800 text-center mb-2">{status.currency} {status.amount}</p>
           <p className="text-green-700 font-semibold text-center mb-8">{remaining}</p>
           <div className="text-center">
@@ -246,7 +258,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   }
 
   if (status?.status === "expired") {
-    return <div className="max-w-3xl mx-auto px-4 py-16 text-center"><h2 className="text-3xl font-bold text-slate-800 mb-4">Author Registration Expired</h2><p className="text-lg text-slate-600">Your 24-hour payment period has expired, so the author registration could not be completed.</p></div>;
+    return <div className="max-w-3xl mx-auto px-4 py-16 text-center"><h2 className="text-3xl font-bold text-slate-800 mb-4">Author Registration Expired</h2><p className="text-lg text-slate-600">Your three-day payment period has expired, so the author registration could not be completed.</p></div>;
   }
 
   if (status?.status === "completed") {
