@@ -20,10 +20,10 @@ async function expireAuthorApplications(env: any) {
   const resendKey = String(env.RESEND_API_KEY || "");
   for (const application of results) {
     const updated = await db.prepare(
-      "UPDATE author_applications SET status='expired',reviewed_at=? WHERE id=? AND status='approved_payment_pending'"
-    ).bind(new Date().toISOString(), application.id).run();
+      "DELETE FROM author_applications WHERE id=? AND status='approved_payment_pending' AND payment_deadline IS NOT NULL AND payment_deadline <= ?"
+    ).bind(application.id, new Date().toISOString()).run();
 
-    if (updated.success && resendKey) {
+    if (updated.meta?.changes && resendKey) {
       try {
         const { Resend } = await import("resend");
         const resend = new Resend(resendKey);
@@ -34,7 +34,7 @@ async function expireAuthorApplications(env: any) {
           subject: "Shoppers Ocean Author Registration",
           html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
             <p>Dear ${safeName},</p>
-            <p>Sorry! Your author registration payment was not completed within the required 24-hour period. As a result, your registration as an author could not be completed.</p>
+            <p>Sorry! Your author registration payment was not completed within the required three-day period. As a result, your registration as an author could not be completed.</p>
             <p>You may contact Shoppers Ocean if you wish to enquire about registering again.</p>
             <p>Regards,<br/>Shoppers Ocean</p>
           </div>`,
