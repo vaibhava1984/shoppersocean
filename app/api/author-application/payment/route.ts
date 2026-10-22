@@ -71,8 +71,11 @@ export async function GET() {
     await ensureColumns(db);
     let application = await db.prepare("SELECT * FROM author_applications WHERE user_id=? ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
     if (!application) return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
+    if (application.status === "rejected" && Date.now() - new Date(application.created_at).getTime() > 7 * 24 * 60 * 60 * 1000) {
+      return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
+    }
     if (await expireApplication(db, application, env)) {
-      application = await db.prepare("SELECT * FROM author_applications WHERE id=? LIMIT 1").bind(application.id).first<any>();
+      return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
     }
     return NextResponse.json({
       status: application.status,
@@ -109,7 +112,7 @@ export async function POST(request: Request) {
 
     if (application.status === "completed") return NextResponse.json({ success: true, status: "completed" });
     if (application.status !== "approved_payment_pending") return NextResponse.json({ error: "Your author application is not currently awaiting payment.", status: application.status }, { status: 409 });
-    if (await expireApplication(db, application, env)) return NextResponse.json({ error: "The three-day payment period has expired. Your author registration could not be completed.", status: "expired" }, { status: 410 });
+    if (await expireApplication(db, application, env)) return NextResponse.json({ error: "The three-day payment period has expired. Your author registration could not be completed.", status: "not_started" }, { status: 410 });
 
     const keyId = String(env.RAZORPAY_KEY_ID || "");
     const keySecret = String(env.RAZORPAY_KEY_SECRET || "");
