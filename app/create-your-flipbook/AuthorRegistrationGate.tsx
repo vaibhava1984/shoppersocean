@@ -106,8 +106,6 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
           city,
           age: Number(age),
           gender,
-          paypalId,
-          upiNumber,
         }),
       });
       const order = await response.json();
@@ -136,8 +134,8 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
           });
           const result = await verify.json();
           if (!verify.ok || result.status !== "completed") throw new Error(result.error || "Payment could not be verified.");
-          setStatus({ status: "completed", paymentDeadline: null });
-          setMessage("Congratulations 🎉 Your author registration is complete.");
+          setStatus({ status: "completed", paymentDeadline: null, fullName });
+          setMessage("");
         },
         theme: { color: "#16a34a" },
       }).open();
@@ -228,18 +226,6 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
               </select>
             </div>
 
-            {country === "India" && (
-              <div>
-                <label className="block text-base font-semibold text-slate-800 mb-2">UPI-connected mobile number — for authors in India</label>
-                <input className={inputClass} value={upiNumber} onChange={(e) => setUpiNumber(e.target.value)} placeholder="UPI-connected mobile number" />
-                <p className="mt-1 text-sm text-slate-500">The UPI account name must match the registered author.</p>
-              </div>
-            )}
-
-            <div>
-              <label className="block text-base font-semibold text-slate-800 mb-2">PayPal ID for authors outside India</label>
-              <input className={inputClass} value={paypalId} onChange={(e) => setPaypalId(e.target.value)} placeholder="PayPal ID" />
-            </div>
           </div>
 
           <p className="text-lg text-slate-600 leading-relaxed mt-8 mb-4 text-center">Please complete the one-time registration payment within 24 hours to finalize your author registration.</p>
@@ -261,7 +247,19 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   }
 
   if (status?.status === "completed") {
-    return <div className="max-w-3xl mx-auto px-4 py-16 text-center"><h2 className="text-3xl font-bold text-green-700 mb-4">Author Registration Complete 🎉</h2><p className="text-lg text-slate-600">You are now a registered Shoppers Ocean author.</p></div>;
+    const registeredName = status.fullName || fullName || "Author";
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-16 text-center">
+        <div className="relative overflow-hidden rounded-3xl border border-emerald-100 bg-gradient-to-br from-white via-emerald-50 to-sky-50 px-6 py-12 shadow-xl sm:px-12">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 text-5xl text-emerald-700 shadow-inner">✓</div>
+          <p className="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-emerald-700">Welcome to our community</p>
+          <h2 className="mb-4 font-serif text-3xl font-bold leading-tight text-emerald-800 sm:text-4xl">Congratulations, {registeredName}! 🎉</h2>
+          <p className="mx-auto max-w-2xl font-serif text-lg leading-relaxed text-slate-700 sm:text-xl">Your registration as a Shoppers Ocean author has been completed successfully. We are delighted to welcome you as a registered author and look forward to a long-lasting journey together, filled with creativity, stories, and readers around the world.</p>
+          <div className="mx-auto mt-8 h-1 w-24 rounded-full bg-gradient-to-r from-emerald-500 to-sky-500" />
+          <p className="mt-5 font-serif text-base italic text-slate-600">With warm wishes,<br/><span className="font-semibold not-italic text-slate-800">Team Shoppers Ocean</span></p>
+        </div>
+      </div>
+    );
   }
 
   if (message) return <div className="py-12 text-center text-red-600">{message}</div>;
