@@ -43,7 +43,7 @@ async function ensureColumns(db: D1Database) {
 
 async function expireApplication(db: D1Database, application: any, env: any) {
   if (application.status !== "approved_payment_pending") return false;
-  if (!application.payment_deadline || new Date(application.payment_deadline).getTime() > Date.now()) return false;
+  if (!application.payment_deadline || Number.isNaN(new Date(application.payment_deadline).getTime()) || new Date(application.payment_deadline).getTime() > Date.now()) return false;
   const now = new Date().toISOString();
   const updated = await db.prepare("UPDATE author_applications SET status='expired',reviewed_at=? WHERE id=? AND status='approved_payment_pending'")
     .bind(now, application.id).run();
