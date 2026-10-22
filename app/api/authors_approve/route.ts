@@ -56,11 +56,24 @@ export async function POST(request: Request) {
     if (!db) return NextResponse.json({ error: "Cloudflare database unavailable" }, { status: 503 });
     await ensureTable(db);
 
-    const { application_id } = await request.json();
+    const body = await request.json();
+    const application_id = String(body.application_id || "").trim();
+    const action = String(body.action || "approve");
     if (!application_id) return NextResponse.json({ error: "Application ID is required" }, { status: 400 });
 
     const application = await db.prepare("SELECT * FROM author_applications WHERE id=? LIMIT 1").bind(application_id).first<any>();
     if (!application) return NextResponse.json({ error: "Application not found" }, { status: 404 });
+
+    if (action === "remove_registered_author") {
+      if (application.status !== "completed") return NextResponse.json({ error: "Only a registered author can be removed here." }, { status: 409 });
+      const now = new Date().toISOString();
+      await db.prepare("UPDATE authors SET is_deleted=1,updated_at=? WHERE user_id=? AND COALESCE(is_deleted,0)=0")
+        .bind(now, application.user_id).run();
+      await db.prepare("UPDATE author_applications SET status='removed',reviewed_at=? WHERE id=? AND status='completed'")
+        .bind(now, application.id).run();
+      return NextResponse.json({ message: "Author registration removed. The user may apply again." });
+    }
+
     if (application.status !== "pending") return NextResponse.json({ error: "Application has already been reviewed" }, { status: 409 });
 
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
