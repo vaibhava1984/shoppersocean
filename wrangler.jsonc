@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "shoppersocean",
+  "pages_build_output_dir": ".open-next/dist",
   "main": "custom-worker.ts",
   "compatibility_date": "2026-09-24",
   "compatibility_flags": [
