@@ -70,11 +70,14 @@ export async function GET() {
     if (!db) return NextResponse.json({ error: "Cloudflare database unavailable" }, { status: 503 });
     const { env } = await getCloudflareContext();
     await ensureColumns(db);
-    let application = await db.prepare("SELECT * FROM author_applications WHERE user_id=? ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
-    // Also match the signed-in account email so an existing application is not missed
-    // if the account ID differs from the one recorded when the application was submitted.
-    if (!application && identity.profile.email) {
-      application = await db.prepare("SELECT * FROM author_applications WHERE lower(email)=lower(?) ORDER BY created_at DESC LIMIT 1").bind(identity.profile.email).first<any>();
+    // Match by email first: the same person may have submitted under an older account ID.
+    let application = null;
+    const accountEmail = String(identity.profile.email || "").trim().toLowerCase();
+    if (accountEmail) {
+      application = await db.prepare("SELECT * FROM author_applications WHERE lower(trim(email))=? ORDER BY created_at DESC LIMIT 1").bind(accountEmail).first<any>();
+    }
+    if (!application) {
+      application = await db.prepare("SELECT * FROM author_applications WHERE user_id=? ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
     }
     if (!application) return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
     if (await expireApplication(db, application, env)) {
