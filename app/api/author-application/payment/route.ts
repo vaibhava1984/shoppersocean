@@ -4,7 +4,7 @@ import { getD1 } from "@/utils/cloudflare/d1";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "resend";
 
-const INDIA_AMOUNT = 1;
+const INDIA_AMOUNT = 250;
 const FOREIGN_AMOUNT = 5;
 const BASE_URL = "https://www.shoppersocean.com";
 
