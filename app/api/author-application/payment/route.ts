@@ -7,6 +7,7 @@ import { Resend } from "resend";
 const INDIA_AMOUNT = 250;
 const FOREIGN_AMOUNT = 5;
 const BASE_URL = "https://www.shoppersocean.com";
+const ADMIN_EMAIL = "kochimonu@gmail.com";
 
 function basicAuth(keyId: string, keySecret: string) {
   return "Basic " + btoa(keyId + ":" + keySecret);
@@ -35,13 +36,18 @@ async function ensureColumns(db: D1Database) {
     "ALTER TABLE author_applications ADD COLUMN payment_currency TEXT",
     "ALTER TABLE author_applications ADD COLUMN payment_amount REAL"
   ]) { try { await db.prepare(statement).run(); } catch {} }
+  try {
+    await db.prepare("UPDATE author_applications SET payment_deadline=datetime(approved_at, '+3 days') WHERE status='approved_payment_pending' AND approved_at IS NOT NULL AND payment_deadline IS NOT NULL AND julianday(payment_deadline) < julianday(approved_at, '+3 days') - (1.0/86400.0)").run();
+  } catch {}
 }
 
 async function expireApplication(db: D1Database, application: any, env: any) {
   if (application.status !== "approved_payment_pending") return false;
-  if (!application.payment_deadline || new Date(application.payment_deadline).getTime() > Date.now()) return false;
-  await db.prepare("UPDATE author_applications SET status='expired',reviewed_at=? WHERE id=? AND status='approved_payment_pending'")
-    .bind(new Date().toISOString(), application.id).run();
+  if (!application.payment_deadline || Number.isNaN(new Date(application.payment_deadline).getTime()) || new Date(application.payment_deadline).getTime() > Date.now()) return false;
+  const now = new Date().toISOString();
+  const updated = await db.prepare("UPDATE author_applications SET status='expired',reviewed_at=? WHERE id=? AND status='approved_payment_pending'")
+    .bind(now, application.id).run();
+  if (!updated.meta?.changes) return false;
   const resendKey = String(env.RESEND_API_KEY || "");
   if (resendKey) {
     try {
@@ -50,15 +56,11 @@ async function expireApplication(db: D1Database, application: any, env: any) {
         from: "no-reply@shoppersocean.com",
         to: application.email,
         subject: "Shoppers Ocean Author Registration",
-        html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
-          <p>Dear ${String(application.full_name).replace(/</g, "&lt;")},</p>
-          <p>Sorry! Your author registration payment was not completed within the required 24-hour period. As a result, your author registration could not be completed.</p>
-          <p>You may contact Shoppers Ocean if you wish to enquire about registering again.</p>
-          <p>Regards,<br/>Shoppers Ocean</p>
-        </div>`,
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;"><p>Dear ${String(application.full_name).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")},</p><p>Your Shoppers Ocean author registration payment was not completed within the three-day payment period, so the registration could not be finalized.</p><p>You are welcome to apply again if you wish to register as an author.</p><p>Regards,<br/>Shoppers Ocean</p></div>`,
       });
     } catch (e) { console.error("Author expiry email failed:", e); }
   }
+  await db.prepare("DELETE FROM author_applications WHERE id=? AND status='expired'").bind(application.id).run();
   return true;
 }
 
@@ -72,8 +74,11 @@ export async function GET() {
     await ensureColumns(db);
     let application = await db.prepare("SELECT * FROM author_applications WHERE user_id=? ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
     if (!application) return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
+    if (application.status === "rejected" && Date.now() - new Date(application.created_at).getTime() > 7 * 24 * 60 * 60 * 1000) {
+      return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
+    }
     if (await expireApplication(db, application, env)) {
-      application = await db.prepare("SELECT * FROM author_applications WHERE id=? LIMIT 1").bind(application.id).first<any>();
+      return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
     }
     return NextResponse.json({
       status: application.status,
@@ -110,7 +115,7 @@ export async function POST(request: Request) {
 
     if (application.status === "completed") return NextResponse.json({ success: true, status: "completed" });
     if (application.status !== "approved_payment_pending") return NextResponse.json({ error: "Your author application is not currently awaiting payment.", status: application.status }, { status: 409 });
-    if (await expireApplication(db, application, env)) return NextResponse.json({ error: "The 24-hour payment period has expired. Your author registration could not be completed.", status: "expired" }, { status: 410 });
+    if (await expireApplication(db, application, env)) return NextResponse.json({ error: "The three-day payment period has expired. Your author registration could not be completed.", status: "not_started" }, { status: 410 });
 
     const keyId = String(env.RAZORPAY_KEY_ID || "");
     const keySecret = String(env.RAZORPAY_KEY_SECRET || "");
@@ -172,15 +177,14 @@ export async function POST(request: Request) {
 
       const resendKey = String(env.RESEND_API_KEY || "");
       if (resendKey) {
-        try {
-          const resend = new Resend(resendKey);
-          await resend.emails.send({
-            from: "no-reply@shoppersocean.com",
-            to: application.email,
-            subject: "Shoppers Ocean Author Registration Completed",
-            html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;"><p>Dear ${String(application.full_name).replace(/</g, "&lt;")},</p><p>Congratulations 🎉 Your author registration with Shoppers Ocean is now complete. You can log in and continue using your author features.</p><p>Regards,<br/>Shoppers Ocean</p></div>`,
-          });
-        } catch (e) { console.error("Author completion email failed:", e); }
+        const safeName = String(application.full_name || "Author").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        const emailBody = `<div style="margin:0;padding:32px 16px;background:#f1f5f9;font-family:Arial,sans-serif;color:#1e293b;"><div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #dbeafe;"><div style="padding:28px 24px;background:linear-gradient(135deg,#1d4ed8,#0891b2);color:#ffffff;text-align:center;"><h1 style="margin:0;font-size:26px;">Welcome to Shoppers Ocean!</h1><p style="margin:10px 0 0;font-size:17px;">Your author journey begins here</p></div><div style="padding:28px 26px;line-height:1.8;"><p>Dear ${safeName},</p><h2 style="color:#15803d;">Congratulations on becoming a registered author! 🎉</h2><p>Your registration payment has been successfully verified, and your author registration with Shoppers Ocean is now complete.</p><p>We are delighted to welcome you to our community. We look forward to seeing your creativity reach readers around the world.</p><p style="margin-top:28px;">Warm regards,<br/><strong>The Shoppers Ocean Team</strong></p></div></div></div>`;
+        const resend = new Resend(resendKey);
+        const emailResults = await Promise.allSettled([
+          resend.emails.send({ from: "no-reply@shoppersocean.com", to: application.email, subject: "Welcome to Shoppers Ocean — Your Author Registration Is Complete 🎉", html: emailBody }),
+          resend.emails.send({ from: "no-reply@shoppersocean.com", to: ADMIN_EMAIL, subject: "New Registered Author — Shoppers Ocean", html: `<div style="font-family:Arial,sans-serif;line-height:1.8;color:#1e293b;"><h2 style="color:#15803d;">Author registration completed successfully</h2><p>A new author has completed the registration payment.</p><p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> ${String(application.email || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p><p><strong>Country:</strong> ${String(application.country || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p><p><strong>Payment:</strong> ${currency} ${amount}</p><p>The author has been added to the Authors list and appears as Registered Author in Author Approval.</p><p>Regards,<br/>Shoppers Ocean</p></div>` }),
+        ]);
+        emailResults.forEach((result) => { if (result.status === "rejected") console.error("Author registration email failed:", result.reason); else if (result.value?.error) console.error("Author registration email error:", result.value.error); });
       }
       return NextResponse.json({ success: true, status: "completed" });
     }
