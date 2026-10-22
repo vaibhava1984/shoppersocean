@@ -74,7 +74,7 @@ export async function GET() {
     await ensureColumns(db);
     let application = await db.prepare("SELECT * FROM author_applications WHERE user_id=? ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
     if (!application) return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
-    if (application.status === "rejected" && Date.now() - new Date(application.created_at).getTime() > 7 * 24 * 60 * 60 * 1000) {
+    if (application.status === "rejected" && Date.now() - new Date(application.reviewed_at || application.created_at).getTime() > 7 * 24 * 60 * 60 * 1000) {
       return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
     }
     if (await expireApplication(db, application, env)) {
