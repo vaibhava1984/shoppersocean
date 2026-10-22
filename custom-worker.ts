@@ -17,13 +17,13 @@ async function expireAuthorApplications(env: any) {
   } catch {}
 
   const { results = [] } = await db.prepare(
-    "SELECT id,full_name,email FROM author_applications WHERE status='approved_payment_pending' AND payment_deadline IS NOT NULL AND payment_deadline <= ?"
+    "SELECT id,full_name,email FROM author_applications WHERE status='approved_payment_pending' AND payment_deadline IS NOT NULL AND julianday(payment_deadline) <= julianday(?)"
   ).bind(new Date().toISOString()).all<any>();
 
   const resendKey = String(env.RESEND_API_KEY || "");
   for (const application of results) {
     const updated = await db.prepare(
-      "DELETE FROM author_applications WHERE id=? AND status='approved_payment_pending' AND payment_deadline IS NOT NULL AND payment_deadline <= ?"
+      "DELETE FROM author_applications WHERE id=? AND status='approved_payment_pending' AND payment_deadline IS NOT NULL AND julianday(payment_deadline) <= julianday(?)"
     ).bind(application.id, new Date().toISOString()).run();
 
     if (updated.meta?.changes && resendKey) {
