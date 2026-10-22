@@ -39,7 +39,7 @@ async function ensureColumns(db: D1Database) {
 
 async function expireApplication(db: D1Database, application: any, env: any) {
   if (application.status !== "approved_payment_pending") return false;
-  if (!application.payment_deadline || new Date(application.payment_deadline).getTime() > Date.now()) return false;
+  if (application.payment_deadline && new Date(application.payment_deadline).getTime() > Date.now()) return false;
   await db.prepare("UPDATE author_applications SET status='expired',reviewed_at=? WHERE id=? AND status='approved_payment_pending'")
     .bind(new Date().toISOString(), application.id).run();
   const resendKey = String(env.RESEND_API_KEY || "");
@@ -52,7 +52,7 @@ async function expireApplication(db: D1Database, application: any, env: any) {
         subject: "Shoppers Ocean Author Registration",
         html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
           <p>Dear ${String(application.full_name).replace(/</g, "&lt;")},</p>
-          <p>Sorry! Your author registration payment was not completed within the required 24-hour period. As a result, your author registration could not be completed.</p>
+          <p>Sorry! Your author registration payment was not completed within the required 3-day period. As a result, your author registration could not be completed.</p>
           <p>You may contact Shoppers Ocean if you wish to enquire about registering again.</p>
           <p>Regards,<br/>Shoppers Ocean</p>
         </div>`,
@@ -122,7 +122,7 @@ export async function POST(request: Request) {
 
     if (application.status === "completed") return NextResponse.json({ success: true, status: "completed" });
     if (application.status !== "approved_payment_pending") return NextResponse.json({ error: "Your author application is not currently awaiting payment.", status: application.status }, { status: 409 });
-    if (await expireApplication(db, application, env)) return NextResponse.json({ error: "The 24-hour payment period has expired. Your author registration could not be completed.", status: "expired" }, { status: 410 });
+    if (await expireApplication(db, application, env)) return NextResponse.json({ error: "The 3-day payment period has expired. Your author registration could not be completed.", status: "expired" }, { status: 410 });
 
     const keyId = String(env.RAZORPAY_KEY_ID || "");
     const keySecret = String(env.RAZORPAY_KEY_SECRET || "");
