@@ -37,7 +37,7 @@ async function ensureColumns(db: D1Database) {
     "ALTER TABLE author_applications ADD COLUMN payment_amount REAL"
   ]) { try { await db.prepare(statement).run(); } catch {} }
   try {
-    await db.prepare("UPDATE author_applications SET payment_deadline=datetime(approved_at, '+3 days') WHERE status='approved_payment_pending' AND approved_at IS NOT NULL AND payment_deadline IS NOT NULL AND julianday(payment_deadline) < julianday(approved_at, '+3 days')").run();
+    await db.prepare("UPDATE author_applications SET payment_deadline=datetime(approved_at, '+3 days') WHERE status='approved_payment_pending' AND approved_at IS NOT NULL AND payment_deadline IS NOT NULL AND julianday(payment_deadline) < julianday(approved_at, '+3 days') - (1.0/86400.0)").run();
   } catch {}
 }
 
