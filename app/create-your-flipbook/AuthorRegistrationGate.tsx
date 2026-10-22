@@ -150,6 +150,17 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
 
   if (loading) return <div className="py-12 text-center text-slate-600">Checking your author registration status...</div>;
 
+  if (status?.status === "pending") {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-16 text-center">
+        <div className="rounded-xl border border-blue-100 bg-white p-8 shadow-sm sm:p-12">
+          <h2 className="mb-4 text-3xl font-bold text-blue-700">Your Application Is Under Review</h2>
+          <p className="text-lg leading-relaxed text-slate-600">Your application is under review, we will get back to you shortly.</p>
+        </div>
+      </div>
+    );
+  }
+
   if (status?.status === "rejected") {
     return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl py-10">
