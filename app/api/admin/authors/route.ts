@@ -10,7 +10,7 @@ export async function GET() {
 
     const { results = [] } = await db.prepare(
       `SELECT a.id,a.name,a.bio,a.photo_url,a.created_at,a.updated_at,
-              a.user_id,u.email
+              a.user_id,u.email,u.role
        FROM authors a
        LEFT JOIN users u ON u.id=a.user_id
        WHERE COALESCE(a.is_deleted,0)=0
@@ -25,6 +25,7 @@ export async function GET() {
         name: a.name ?? "",
         bio: a.bio ?? "",
         email: a.email ?? "",
+        is_admin: String(a.role || "").toLowerCase() === "admin",
       }))
     }, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
