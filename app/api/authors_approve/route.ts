@@ -19,6 +19,9 @@ async function ensureTable(db: D1Database) {
     "ALTER TABLE author_applications ADD COLUMN payment_currency TEXT",
     "ALTER TABLE author_applications ADD COLUMN payment_amount REAL"
   ]) { try { await db.prepare(statement).run(); } catch {} }
+  try {
+    await db.prepare("UPDATE author_applications SET payment_deadline=datetime(approved_at, '+3 days') WHERE status='approved_payment_pending' AND approved_at IS NOT NULL AND payment_deadline IS NOT NULL AND julianday(payment_deadline) < julianday(approved_at, '+3 days') - (1.0/86400.0)").run();
+  } catch {}
 }
 
 function escapeHtml(value: string) {
@@ -31,7 +34,7 @@ async function sendApprovalEmail(env: any, application: any) {
     from: "no-reply@shoppersocean.com",
     to: application.email,
     subject: "Shoppers Ocean Author Application Approved",
-    html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;"><p>Dear ${escapeHtml(application.full_name)},</p><p>Congratulations 🎉</p><p>Your application to register yourself as an author at Shoppers ocean has been approved. Please login and continue your registration process within 24 hours. Looking forward to having a long lasting journey together.</p><p>Regards,<br/>Shoppers Ocean</p></div>`,
+    html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;"><p>Dear ${escapeHtml(application.full_name)},</p><p>Congratulations 🎉</p><p>Your application to register yourself as an author at Shoppers ocean has been approved. Please log in and complete your registration payment within three days. Looking forward to having a long lasting journey together.</p><p>Regards,<br/>Shoppers Ocean</p></div>`,
   });
 }
 
@@ -41,7 +44,15 @@ export async function GET() {
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database unavailable" }, { status: 503 });
     await ensureTable(db);
-    const { results = [] } = await db.prepare("SELECT * FROM author_applications ORDER BY created_at DESC").all<any>();
+    const now = new Date().toISOString();
+    const { results = [] } = await db.prepare(
+      `SELECT aa.*, a.id AS author_id
+       FROM author_applications aa
+       LEFT JOIN authors a ON a.user_id=aa.user_id AND COALESCE(a.is_deleted,0)=0
+       WHERE (aa.status='approved_payment_pending' AND aa.payment_deadline IS NOT NULL AND aa.payment_deadline > ?)
+          OR (aa.status='completed' AND a.id IS NOT NULL)
+       ORDER BY CASE WHEN aa.status='approved_payment_pending' THEN 0 ELSE 1 END, aa.created_at DESC`
+    ).bind(now).all<any>();
     return NextResponse.json({ authors: results }, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
     console.error(e);
@@ -66,7 +77,7 @@ export async function POST(request: Request) {
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
     const { env } = await getCloudflareContext();
     const now = new Date().toISOString();
-    const paymentDeadline = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
+    const paymentDeadline = new Date(Date.now() + 3 * 24 * 3600 * 1000).toISOString();
 
     await db.prepare("UPDATE author_applications SET status='approved_payment_pending',reviewed_at=?,approved_at=?,payment_deadline=? WHERE id=? AND status='pending'")
       .bind(now, now, paymentDeadline, application.id).run();
@@ -74,7 +85,7 @@ export async function POST(request: Request) {
     const { error } = await sendApprovalEmail(env, application);
     if (error) console.error("Manual author approval email error:", error);
 
-    return NextResponse.json({ message: "Application approved. Payment is now required within 24 hours." });
+    return NextResponse.json({ message: "Application approved. Payment is now required within three days." });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

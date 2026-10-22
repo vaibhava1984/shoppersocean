@@ -29,7 +29,7 @@ export default function AuthorsApproval() {
       toast({ variant: "destructive", title: "Error", description: d.error });
       return;
     }
-    toast({ title: "Approved", description: "The author has been added to the Authors list." });
+    toast({ title: "Approved", description: "Payment is now pending. The author will be registered after successful payment." });
     void load();
   }
 
@@ -65,10 +65,16 @@ export default function AuthorsApproval() {
                   <TableCell>{a.age}</TableCell>
                   <TableCell>{a.gender}</TableCell>
                   <TableCell>{a.country === "India" ? "UPI: " + (a.upi_number || "-") : "PayPal: " + (a.paypal_id || "-")}</TableCell>
-                  <TableCell>{a.status}</TableCell>
+                  <TableCell>{a.status === "approved_payment_pending" ? "Payment Pending" : a.status === "completed" ? "Registered Author" : a.status}</TableCell>
                   <TableCell>{a.created_at ? new Date(a.created_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) : ""}</TableCell>
                   <TableCell>
-                    {a.status === "pending" && <Button onClick={() => approve(a.id)}>Approve</Button>}
+                    {a.status === "completed" && a.author_id && <Button variant="destructive" onClick={async () => {
+                      const r = await fetch("/api/delete_author", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ author_id: a.author_id }) });
+                      const d = await r.json();
+                      if (!r.ok) { toast({ variant: "destructive", title: "Unable to remove author", description: d.error }); return; }
+                      toast({ title: "Author removed", description: "The registered author has been removed." });
+                      void load();
+                    }}>Remove Author</Button>}
                   </TableCell>
                 </TableRow>
               ))}

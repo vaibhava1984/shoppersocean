@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BookOpen, Home, ShoppingCart, Users, PenTool } from 'lucide-react'
+import { BookOpen, Home, ShoppingCart, Users } from 'lucide-react'
 
 export default function AdminSidebar() {
     return (
@@ -14,7 +14,6 @@ export default function AdminSidebar() {
                     { icon: ShoppingCart, label: 'Orders', value: 'orders' },
                     { icon: Home, label: 'Home Section', value: 'home_section' },
                     { icon: BookOpen, label: 'Books', value: 'books' },
-                    { icon: PenTool, label: 'Authors', value: 'authors' },
                     { icon: Users, label: 'Users', value: 'users' },
                     { icon: Home, label: 'Back to Homepage', value: '', homepageButton: true },
                 ].map((item, index) => (
