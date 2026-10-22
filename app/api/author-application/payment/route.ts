@@ -71,6 +71,11 @@ export async function GET() {
     const { env } = await getCloudflareContext();
     await ensureColumns(db);
     let application = await db.prepare("SELECT * FROM author_applications WHERE user_id=? ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
+    // Also match the signed-in account email so an existing application is not missed
+    // if the account ID differs from the one recorded when the application was submitted.
+    if (!application && identity.profile.email) {
+      application = await db.prepare("SELECT * FROM author_applications WHERE lower(email)=lower(?) ORDER BY created_at DESC LIMIT 1").bind(identity.profile.email).first<any>();
+    }
     if (!application) return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
     if (await expireApplication(db, application, env)) {
       application = await db.prepare("SELECT * FROM author_applications WHERE id=? LIMIT 1").bind(application.id).first<any>();
