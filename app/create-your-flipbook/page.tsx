@@ -102,7 +102,7 @@ export default function CreateYourFlipbookPage() {
           <h2 className="text-3xl font-bold text-slate-800 mt-14 mb-6">How We Do This</h2>
           <div className="space-y-5 text-lg text-slate-600 leading-relaxed">
             <p>Becoming an author with Shoppers Ocean is simple. To get started, you need to register with us as an author by completing the author registration process.</p>
-            <p>A one-time, lifetime registration fee of ₹250 for authors in India or US$5 for authors outside India is applicable. Once your registration is successfully completed, you will become a registered Shoppers Ocean author and gain the opportunity to showcase your work to readers worldwide.</p>
+            <p>A one-time, lifetime registration fee of ₹1 for authors in India or US$5 for authors outside India is applicable. Once your registration is successfully completed, you will become a registered Shoppers Ocean author and gain the opportunity to showcase your work to readers worldwide.</p>
             <p>We are committed to providing authors with a platform to present their books professionally, reach a wider audience, and build a meaningful connection with readers across the globe.</p>
             <p>Ready to begin your journey with us?</p>
             <p>Please read our Author Policies carefully before registering. Once you are familiar with the policies, take the next step and become a valued member of the Shoppers Ocean authors and readers community.</p>
