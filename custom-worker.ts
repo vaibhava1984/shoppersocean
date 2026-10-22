@@ -10,7 +10,8 @@ async function expireAuthorApplications(env: any) {
     "ALTER TABLE author_applications ADD COLUMN payment_order_id TEXT",
     "ALTER TABLE author_applications ADD COLUMN payment_id TEXT",
     "ALTER TABLE author_applications ADD COLUMN payment_currency TEXT",
-    "ALTER TABLE author_applications ADD COLUMN payment_amount REAL"
+    "ALTER TABLE author_applications ADD COLUMN payment_amount REAL",
+    "ALTER TABLE author_applications ADD COLUMN reminder_sent_at TEXT"
   ]) { try { await db.prepare(statement).run(); } catch {} }
   try {
     await db.prepare("UPDATE author_applications SET payment_deadline=datetime(approved_at, '+3 days') WHERE status='approved_payment_pending' AND approved_at IS NOT NULL AND payment_deadline IS NOT NULL AND julianday(payment_deadline) < julianday(approved_at, '+3 days') - (1.0/86400.0)").run();
@@ -49,6 +50,48 @@ async function expireAuthorApplications(env: any) {
   }
 }
 
+
+async function sendAuthorPaymentReminders(env: any) {
+  const db = env.DB as D1Database;
+  const resendKey = String(env.RESEND_API_KEY || "");
+  if (!db || !resendKey) return;
+
+  const now = new Date().toISOString();
+  const reminderCutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  try {
+    const { results = [] } = await db.prepare(
+      "SELECT id,full_name,email FROM author_applications WHERE status='approved_payment_pending' AND approved_at IS NOT NULL AND julianday(approved_at) <= julianday(?) AND payment_deadline IS NOT NULL AND julianday(payment_deadline) > julianday(?) AND reminder_sent_at IS NULL"
+    ).bind(reminderCutoff, now).all<any>();
+
+    const { Resend } = await import("resend");
+    const resend = new Resend(resendKey);
+    for (const application of results) {
+      const safeName = String(application.full_name || "Author")
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+      const { error } = await resend.emails.send({
+        from: "no-reply@shoppersocean.com",
+        to: application.email,
+        subject: "Reminder: Complete Your Shoppers Ocean Author Registration",
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
+          <p>Dear ${safeName},</p>
+          <p>This is a friendly reminder that your Shoppers Ocean author application has been approved, but your one-time registration payment is still pending.</p>
+          <p>Please log in to Shoppers Ocean and complete your author registration payment within the three-day approval period.</p>
+          <p>Regards,<br/>Shoppers Ocean</p>
+        </div>`,
+      });
+      if (!error) {
+        await db.prepare("UPDATE author_applications SET reminder_sent_at=? WHERE id=? AND status='approved_payment_pending' AND reminder_sent_at IS NULL")
+          .bind(new Date().toISOString(), application.id).run();
+      } else {
+        console.error("Author payment reminder email failed:", error);
+      }
+    }
+  } catch (error) {
+    console.error("Author payment reminder job failed:", error);
+  }
+}
+
 async function expireAdminNotifications(env: any) {
   const db = env.DB as D1Database;
   if (!db) return;
@@ -66,6 +109,7 @@ export default {
   async scheduled(_controller: ScheduledController, env: any, ctx: ExecutionContext) {
     ctx.waitUntil(Promise.all([
       expireAuthorApplications(env),
+      sendAuthorPaymentReminders(env),
       expireAdminNotifications(env)
     ]));
   },
