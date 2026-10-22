@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     const { error } = await sendApprovalEmail(env, application);
     if (error) console.error("Manual author approval email error:", error);
 
-    return NextResponse.json({ message: "Application approved. Payment is now required within 24 hours." });
+    return NextResponse.json({ message: "Application approved. Payment is now required within three days." });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
