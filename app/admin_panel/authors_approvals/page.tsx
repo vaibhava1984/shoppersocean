@@ -18,6 +18,23 @@ export default function AuthorsApproval() {
 
   useEffect(() => { void load(); }, []);
 
+  async function removeRegisteredAuthor(applicationId: string) {
+    const confirmed = window.confirm("Remove this registered author? They will be allowed to apply again.");
+    if (!confirmed) return;
+    const r = await fetch("/api/authors_approve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ application_id: applicationId, action: "remove_registered_author" }),
+    });
+    const d = await r.json();
+    if (!r.ok) {
+      toast({ variant: "destructive", title: "Error", description: d.error });
+      return;
+    }
+    toast({ title: "Author removed", description: "The user may now apply again." });
+    void load();
+  }
+
   async function approve(applicationId: string) {
     const r = await fetch("/api/authors_approve", {
       method: "POST",
@@ -69,6 +86,7 @@ export default function AuthorsApproval() {
                   <TableCell>{a.created_at ? new Date(a.created_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) : ""}</TableCell>
                   <TableCell>
                     {a.status === "pending" && <Button onClick={() => approve(a.id)}>Approve</Button>}
+                    {a.status === "completed" && <Button variant="destructive" onClick={() => removeRegisteredAuthor(a.id)}>Remove Registered Author</Button>}
                   </TableCell>
                 </TableRow>
               ))}
