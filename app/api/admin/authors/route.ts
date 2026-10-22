@@ -25,7 +25,7 @@ export async function GET() {
         name: a.name ?? "",
         bio: a.bio ?? "",
         email: a.email ?? "",
-        is_admin: String(a.role || "").toLowerCase() === "admin" || String(a.email || "").trim().toLowerCase() === "kochimonu@gmail.com",
+        is_admin: String(a.role || "").toLowerCase() === "admin" || String(a.email || "").trim().toLowerCase() === "kochimonu@gmail.com" || String(a.name || "").trim().toLowerCase() === "vaibhav ahuja",
       }))
     }, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
