@@ -42,13 +42,11 @@ export async function GET() {
     if (!db) return NextResponse.json({ error: "Cloudflare database unavailable" }, { status: 503 });
     await ensureTable(db);
     const now = new Date().toISOString();
-    // Keep expired unpaid applications out of the admin view immediately.
-    await db.prepare("DELETE FROM author_applications WHERE status='approved_payment_pending' AND payment_deadline IS NOT NULL AND payment_deadline <= ?").bind(now).run();
     const { results = [] } = await db.prepare(
       `SELECT aa.*, a.id AS author_id
        FROM author_applications aa
        LEFT JOIN authors a ON a.user_id=aa.user_id AND COALESCE(a.is_deleted,0)=0
-       WHERE (aa.status='approved_payment_pending' AND (aa.payment_deadline IS NULL OR aa.payment_deadline > ?))
+       WHERE (aa.status='approved_payment_pending' AND aa.payment_deadline IS NOT NULL AND aa.payment_deadline > ?)
           OR (aa.status='completed' AND a.id IS NOT NULL)
        ORDER BY CASE WHEN aa.status='approved_payment_pending' THEN 0 ELSE 1 END, aa.created_at DESC`
     ).bind(now).all<any>();
