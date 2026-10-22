@@ -4,7 +4,7 @@ import { getD1 } from "@/utils/cloudflare/d1";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "resend";
 
-const INDIA_AMOUNT = 250;
+const INDIA_AMOUNT = 1;
 const FOREIGN_AMOUNT = 5;
 const BASE_URL = "https://www.shoppersocean.com";
 
@@ -83,6 +83,10 @@ export async function GET() {
     if (await expireApplication(db, application, env)) {
       application = await db.prepare("SELECT * FROM author_applications WHERE id=? LIMIT 1").bind(application.id).first<any>();
     }
+    if (application.status === "completed") {
+      const registeredAuthor = await db.prepare("SELECT id FROM authors WHERE user_id=? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(application.user_id).first();
+      if (!registeredAuthor) return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
+    }
     return NextResponse.json({
       status: application.status,
       paymentDeadline: application.payment_deadline || null,
@@ -142,15 +146,8 @@ export async function POST(request: Request) {
       if (!title || !fullName || !city || !gender || !Number.isInteger(age) || age < 1 || age > 120) {
         return NextResponse.json({ error: "Please complete all required fields." }, { status: 400 });
       }
-      if (country === "India" && !upiNumber) {
-        return NextResponse.json({ error: "Please provide your UPI-connected mobile number." }, { status: 400 });
-      }
-      if (country !== "India" && !paypalId) {
-        return NextResponse.json({ error: "Please provide your PayPal ID." }, { status: 400 });
-      }
-
-      await db.prepare("UPDATE author_applications SET title=?,full_name=?,city=?,age=?,gender=?,paypal_id=?,upi_number=? WHERE id=? AND status='approved_payment_pending'")
-        .bind(title, fullName, city, age, gender, country === "India" ? null : paypalId, country === "India" ? upiNumber : null, application.id).run();
+      await db.prepare("UPDATE author_applications SET title=?,full_name=?,city=?,age=?,gender=?,paypal_id=NULL,upi_number=NULL WHERE id=? AND status='approved_payment_pending'")
+        .bind(title, fullName, city, age, gender, application.id).run();
     }
 
     if (action === "verify") {
