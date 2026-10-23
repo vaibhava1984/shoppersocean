@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 
 type PeriodTotal = { period: string; revenue: number | null };
-type Props = { monthly: PeriodTotal[]; yearly: PeriodTotal[] };
+type Props = { monthly: PeriodTotal[]; yearly: PeriodTotal[]; authorMonthly?: PeriodTotal[]; authorYearly?: PeriodTotal[]; isAdmin?: boolean };
 
 function formatRevenue(value: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -23,7 +23,7 @@ function monthLabel(period: string) {
   });
 }
 
-export default function RevenueCalculator({ monthly, yearly }: Props) {
+export default function RevenueCalculator({ monthly, yearly, authorMonthly, authorYearly, isAdmin = false }: Props) {
   const now = new Date();
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Kolkata",
@@ -37,6 +37,7 @@ export default function RevenueCalculator({ monthly, yearly }: Props) {
   const [view, setView] = useState<"monthly" | "yearly">("monthly");
   const [selectedMonth, setSelectedMonth] = useState(currentMonthKey);
   const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [authorPreview, setAuthorPreview] = useState(false);
 
   const monthOptions = useMemo(() => {
     const values = new Set(monthly.map((item) => item.period));
@@ -53,7 +54,11 @@ export default function RevenueCalculator({ monthly, yearly }: Props) {
 
   const selectedPeriod = view === "monthly" ? selectedMonth : selectedYear;
   const options = view === "monthly" ? monthOptions : yearOptions;
-  const totals = view === "monthly" ? monthly : yearly;
+  const regularMonthly = authorMonthly || monthly;
+  const regularYearly = authorYearly || yearly;
+  const totals = authorPreview && isAdmin
+    ? (view === "monthly" ? regularMonthly : regularYearly)
+    : (view === "monthly" ? monthly : yearly);
   const selectedTotal = totals.find((item) => item.period === selectedPeriod);
   const isPending = selectedTotal?.revenue === null;
 
@@ -98,6 +103,16 @@ export default function RevenueCalculator({ monthly, yearly }: Props) {
           <div aria-hidden="true" className="absolute -right-8 -top-10 h-36 w-36 rounded-full border-[22px] border-white/5" />
           <div aria-hidden="true" className="absolute -bottom-12 right-16 h-28 w-28 rounded-full bg-blue-500/10 blur-2xl" />
           <div className="relative">
+            {isAdmin && (
+              <div className="mb-5">
+                <p className="mb-2 text-xs font-bold uppercase tracking-[0.12em] text-slate-300">Calculation view</p>
+                <div className="grid grid-cols-2 gap-1 rounded-xl border border-white/15 bg-white/5 p-1">
+                  <button type="button" aria-pressed={!authorPreview} onClick={() => setAuthorPreview(false)} className={!authorPreview ? "min-h-10 rounded-lg bg-white px-2 py-2 text-xs font-bold text-slate-900 shadow-sm" : "min-h-10 rounded-lg px-2 py-2 text-xs font-semibold text-slate-300 transition hover:text-white"}>Admin Earnings</button>
+                  <button type="button" aria-pressed={authorPreview} onClick={() => setAuthorPreview(true)} className={authorPreview ? "min-h-10 rounded-lg bg-white px-2 py-2 text-xs font-bold text-slate-900 shadow-sm" : "min-h-10 rounded-lg px-2 py-2 text-xs font-semibold text-slate-300 transition hover:text-white"}>Author Share Preview</button>
+                </div>
+                {authorPreview && <p className="mt-2 text-xs leading-5 text-amber-200">Preview only — actual earnings, sales records, and payouts are unchanged.</p>}
+              </div>
+            )}
             <p className="text-sm font-medium text-slate-300">{view === "monthly" ? monthLabel(selectedPeriod) : `Year ${selectedPeriod}`} · Net revenue</p>
             <p className="mt-3 break-words text-3xl font-bold tracking-tight sm:text-4xl">{isPending ? "Pending" : formatRevenue(selectedTotal?.revenue ?? 0)}</p>
             <div className="mt-5 flex items-center gap-2 border-t border-white/10 pt-4 text-xs text-slate-300">
