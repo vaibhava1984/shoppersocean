@@ -91,11 +91,11 @@ export default async function MySales({ authorId, fromDate = "", toDate = "" }: 
         <form method="get" action="/my-sales" className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
           <label className="block text-sm font-medium text-slate-700">
             From date
-            <input required type="date" name="fromDate" value={fromDate} max={toDate || undefined} className="mt-1.5 block min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100" />
+            <input required type="date" name="fromDate" defaultValue={fromDate} max={toDate || undefined} className="mt-1.5 block min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100" />
           </label>
           <label className="block text-sm font-medium text-slate-700">
             To date
-            <input required type="date" name="toDate" value={toDate} min={fromDate || undefined} max={todayKey} className="mt-1.5 block min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100" />
+            <input required type="date" name="toDate" defaultValue={toDate} min={fromDate || undefined} max={todayKey} className="mt-1.5 block min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100" />
           </label>
           <button type="submit" className="min-h-11 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Show Sales</button>
         </form>
