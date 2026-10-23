@@ -46,7 +46,7 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
         <button type="button" onClick={() => toggle("genre")} aria-expanded={open === "genre"} className="min-h-[42px] rounded-lg border border-slate-300 bg-white px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-[#050505] shadow-md ring-1 ring-black/10 transition-all hover:border-slate-500 hover:bg-white active:scale-95 sm:text-sm">
           Books by Genre
         </button>
-        <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center text-[11px] font-extrabold not-italic text-[#0A0A0A] shadow-md ring-1 ring-black/10 transition-all active:scale-95 sm:text-sm">
+        <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-[#050505] shadow-md ring-1 ring-black/10 transition-all active:scale-95 sm:text-sm">
           Books by Authors
         </button>
         <button type="button" onClick={() => toggle("language")} aria-expanded={open === "language"} className="min-h-[42px] rounded-lg border border-slate-300 bg-white px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-[#050505] shadow-md ring-1 ring-black/10 transition-all hover:border-slate-500 hover:bg-white active:scale-95 sm:text-sm language-bob">
