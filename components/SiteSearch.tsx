@@ -4,15 +4,17 @@ import { Search, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 
-type SearchResult = {
+type SearchSuggestion = {
   id: string
-  title: string
-  author?: string | null
+  label: string
+  detail?: string | null
+  type: "book" | "author" | "language" | "genre"
+  href: string
 }
 
 export default function SiteSearch() {
   const [query, setQuery] = useState("")
-  const [results, setResults] = useState<SearchResult[]>([])
+  const [results, setResults] = useState<SearchSuggestion[]>([])
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -36,7 +38,7 @@ export default function SiteSearch() {
         })
         if (!response.ok) throw new Error("Search failed")
         const data = await response.json()
-        setResults(data.books ?? [])
+        setResults(data.suggestions ?? [])
         setOpen(true)
       } catch (error) {
         if ((error as Error).name !== "AbortError") {
@@ -46,7 +48,7 @@ export default function SiteSearch() {
       } finally {
         if (!controller.signal.aborted) setLoading(false)
       }
-    }, 250)
+    }, 180)
 
     return () => {
       window.clearTimeout(timer)
@@ -73,8 +75,9 @@ export default function SiteSearch() {
           onKeyDown={(event) => {
             if (event.key === "Escape") setOpen(false)
           }}
-          placeholder="Search books or authors..."
-          aria-label="Search books or authors"
+          placeholder="What are you looking for?"
+          aria-label="What are you looking for?"
+          autoComplete="off"
           className="h-full min-w-0 flex-1 bg-transparent px-4 text-base text-slate-800 outline-none placeholder:text-slate-400"
         />
         <div className="flex h-full w-12 items-center justify-center text-slate-600" aria-hidden="true">
@@ -86,20 +89,23 @@ export default function SiteSearch() {
         <div className="absolute left-1 right-1 top-full z-[60] mt-1 overflow-hidden rounded-lg bg-white shadow-xl ring-1 ring-black/10">
           {results.length > 0 ? (
             <div className="max-h-80 overflow-y-auto py-1">
-              {results.map((book) => (
+              {results.map((item) => (
                 <Link
-                  key={book.id}
-                  href={`/book/${book.id}`}
-                  onClick={() => setOpen(false)}
+                  key={item.type + ":" + item.id}
+                  href={item.href}
+                  onClick={() => { setOpen(false); setQuery("") }}
                   className="block border-b border-slate-100 px-4 py-3 last:border-0 hover:bg-slate-50 active:bg-slate-100"
                 >
-                  <div className="font-semibold text-slate-800">{book.title}</div>
-                  {book.author && <div className="mt-0.5 text-sm text-slate-500">{book.author}</div>}
+                  <div className="font-semibold text-slate-800">{item.label}</div>
+                  <div className="mt-0.5 text-xs font-semibold uppercase tracking-wide text-blue-700">
+                    {item.type === "book" ? "Book" : item.type === "author" ? "Author" : item.type === "language" ? "Language" : "Genre"}
+                    {item.detail ? <span className="font-normal normal-case tracking-normal text-slate-500"> · {item.detail}</span> : null}
+                  </div>
                 </Link>
               ))}
             </div>
           ) : !loading ? (
-            <div className="px-4 py-3 text-sm text-slate-500">No matching books or authors found.</div>
+            <div className="px-4 py-3 text-sm text-slate-500">No close matches found. Try a book title, author, language, or genre.</div>
           ) : null}
         </div>
       )}
