@@ -105,10 +105,10 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     }
   }
   // Show every month from January through the current month, even with no sales.
-  const now = new Date();
-  const currentParts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit" }).formatToParts(now);
-  const currentYear = Number(currentParts.find((part) => part.type === "year")?.value || now.getUTCFullYear());
-  const currentMonth = Number(currentParts.find((part) => part.type === "month")?.value || now.getUTCMonth() + 1);
+  const periodNow = new Date();
+  const currentParts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit" }).formatToParts(periodNow);
+  const currentYear = Number(currentParts.find((part) => part.type === "year")?.value || periodNow.getUTCFullYear());
+  const currentMonth = Number(currentParts.find((part) => part.type === "month")?.value || periodNow.getUTCMonth() + 1);
   for (let month = 1; month <= currentMonth; month++) {
     const period = `${currentYear}-${String(month).padStart(2, "0")}`;
     if (!monthlyMap.has(period)) monthlyMap.set(period, { revenue: 0, complete: true });
