@@ -11,7 +11,9 @@ export default async function MySalesPage({ searchParams }: { searchParams?: Pro
   const user = await getCurrentUser();
   let authorId: string | null = null;
 
-  if (user?.publicMetadata?.isAuthor === true) {
+  const isAdmin = user?.publicMetadata?.userrole === "ADMIN";
+
+  if (user?.publicMetadata?.isAuthor === true || isAdmin) {
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
     const profile = await db.prepare("SELECT id FROM users WHERE id = ? LIMIT 1").bind(user.id).first<{ id: string }>();
@@ -30,8 +32,8 @@ export default async function MySalesPage({ searchParams }: { searchParams?: Pro
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header />
       <section className="min-h-[55vh] bg-white py-5 sm:py-7">
-        {authorId ? (
-          <MySales authorId={authorId} fromDate={fromDate} toDate={toDate} />
+        {authorId || isAdmin ? (
+          <MySales authorId={authorId} isAdmin={isAdmin} fromDate={fromDate} toDate={toDate} />
         ) : (
           <div className="mx-auto flex min-h-[35vh] max-w-4xl items-center justify-center px-5 text-center">
             <p className="text-lg font-semibold text-slate-800">Sorry !! You are not registered as an author, please enjoy reading our Flipbooks.</p>

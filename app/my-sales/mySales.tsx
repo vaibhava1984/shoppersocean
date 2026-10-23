@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { getD1 } from "@/utils/cloudflare/d1";
+import { ensureRevenueSchema } from "@/utils/revenue";
+import RevenueCalculator from "./RevenueCalculator";
 
-type Props = { authorId: string; fromDate?: string; toDate?: string };
+type Props = { authorId: string | null; isAdmin: boolean; fromDate?: string; toDate?: string };
 
 function saleTimestamp(sale: any) {
   const value = sale.updated_at || sale.created_at;
@@ -27,14 +29,15 @@ function formatPrice(amount: unknown, currency: unknown) {
   }
 }
 
-export default async function MySales({ authorId, fromDate = "", toDate = "" }: Props) {
+export default async function MySales({ authorId, isAdmin, fromDate = "", toDate = "" }: Props) {
   const db = getD1();
   if (!db) throw new Error("Cloudflare D1 is not available");
+  await ensureRevenueSchema(db);
 
-  const books = (await db
+  const books = authorId ? ((await db
     .prepare("SELECT id,title FROM books WHERE author_id=? AND COALESCE(is_deleted,0)=0 ORDER BY title ASC")
     .bind(authorId)
-    .all<{ id: string; title: string }>()).results || [];
+    .all<{ id: string; title: string }>()).results || []) : [];
 
   const ids = books.map((book) => book.id);
   let sales: any[] = [];
@@ -49,6 +52,60 @@ export default async function MySales({ authorId, fromDate = "", toDate = "" }: 
       "ORDER BY COALESCE(p.updated_at,o.created_at) DESC";
     sales = (await db.prepare(sql).bind(...ids).all<any>()).results || [];
   }
+
+  // Revenue is based on completed sales and confirmed gateway fees only.
+  const revenueRows = ids.length ? ((await db.prepare(
+    "SELECT p.id AS payment_id, p.amount, p.gateway_fee_inr, p.gateway_fee_checked_at, p.razorpay_payment_id, p.created_at, p.updated_at, o.created_at AS order_created_at " +
+    "FROM payments p JOIN orders o ON o.id=p.order_id WHERE p.book_id IN (" + ids.map(() => "?").join(",") + ") AND p.status='completed' AND o.status='completed' ORDER BY COALESCE(p.updated_at,p.created_at,o.created_at) DESC"
+  ).bind(...ids).all<any>()).results || []) : [];
+
+  const keyId = process.env.RAZORPAY_KEY_ID;
+  const keySecret = process.env.RAZORPAY_KEY_SECRET;
+  if (keyId && keySecret) {
+    const staleBefore = Date.now() - 24 * 60 * 60 * 1000;
+    for (const row of revenueRows) {
+      const checked = row.gateway_fee_checked_at ? new Date(row.gateway_fee_checked_at).getTime() : 0;
+      if (row.gateway_fee_inr != null || !row.razorpay_payment_id || (checked && checked > staleBefore)) continue;
+      try {
+        const response = await fetch("https://api.razorpay.com/v1/payments/" + encodeURIComponent(String(row.razorpay_payment_id)), { headers: { Authorization: "Basic " + btoa(keyId + ":" + keySecret) }, cache: "no-store" });
+        const payment = await response.json() as Record<string, any>;
+        const checkedAt = new Date().toISOString();
+        if (response.ok && payment?.id === row.razorpay_payment_id && payment.fee != null && Number.isFinite(Number(payment.fee))) {
+          const feeInr = (Number(payment.fee) + Number(payment.tax || 0)) / 100;
+          await db.prepare("UPDATE payments SET gateway_fee_inr=?, gateway_name='Razorpay', gateway_fee_checked_at=? WHERE id=?").bind(feeInr, checkedAt, row.payment_id).run();
+          row.gateway_fee_inr = feeInr;
+        } else {
+          await db.prepare("UPDATE payments SET gateway_fee_checked_at=? WHERE id=?").bind(checkedAt, row.payment_id).run();
+        }
+        row.gateway_fee_checked_at = checkedAt;
+      } catch (error) { console.error("Could not reconcile gateway fee", row.payment_id, error); }
+    }
+  }
+
+  const monthlyMap = new Map<string, { revenue: number; complete: boolean }>();
+  const yearlyMap = new Map<string, { revenue: number; complete: boolean }>();
+  const getPeriods = (date: Date) => {
+    const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit" }).formatToParts(date);
+    const year = parts.find((part) => part.type === "year")?.value || String(date.getUTCFullYear());
+    const month = parts.find((part) => part.type === "month")?.value || String(date.getUTCMonth() + 1).padStart(2, "0");
+    return { month: year + "-" + month, year };
+  };
+  for (const row of revenueRows) {
+    const date = new Date(row.updated_at || row.created_at || row.order_created_at || "");
+    if (!Number.isFinite(date.getTime())) continue;
+    const period = getPeriods(date);
+    const gross = Number(row.amount);
+    const fee = row.gateway_fee_inr == null ? NaN : Number(row.gateway_fee_inr);
+    const valid = Number.isFinite(gross) && gross >= 0 && Number.isFinite(fee) && fee >= 0;
+    const earned = valid ? Math.max(0, gross - fee) * (isAdmin ? 1 : 0.75) : 0;
+    for (const [map, key] of [[monthlyMap, period.month], [yearlyMap, period.year]] as const) {
+      const total = map.get(key) || { revenue: 0, complete: true };
+      if (valid) total.revenue += earned; else total.complete = false;
+      map.set(key, total);
+    }
+  }
+  const monthlyRevenue = Array.from(monthlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
+  const yearlyRevenue = Array.from(yearlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
 
   const now = new Date();
   const todayKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
@@ -140,6 +197,7 @@ export default async function MySales({ authorId, fromDate = "", toDate = "" }: 
       ) : (
         <p className="px-1 text-xs text-slate-500">Choose a from date and to date to view sales for that period.</p>
       )}
+      <RevenueCalculator monthly={monthlyRevenue} yearly={yearlyRevenue} />
     </main>
   );
 }
