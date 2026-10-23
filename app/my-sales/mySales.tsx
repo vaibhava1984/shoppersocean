@@ -84,6 +84,8 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
 
   const monthlyMap = new Map<string, { revenue: number; complete: boolean }>();
   const yearlyMap = new Map<string, { revenue: number; complete: boolean }>();
+  const authorMonthlyMap = new Map<string, { revenue: number; complete: boolean }>();
+  const authorYearlyMap = new Map<string, { revenue: number; complete: boolean }>();
   const getPeriods = (date: Date) => {
     const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit" }).formatToParts(date);
     const year = parts.find((part) => part.type === "year")?.value || String(date.getUTCFullYear());
@@ -97,10 +99,16 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     const gross = Number(row.amount);
     const fee = row.gateway_fee_inr == null ? NaN : Number(row.gateway_fee_inr);
     const valid = Number.isFinite(gross) && gross >= 0 && Number.isFinite(fee) && fee >= 0;
-    const earned = valid ? Math.max(0, gross - fee) * (isAdmin ? 1 : 0.75) : 0;
-    for (const [map, key] of [[monthlyMap, period.month], [yearlyMap, period.year]] as const) {
+    const net = valid ? Math.max(0, gross - fee) : 0;
+    const earned = net * (isAdmin ? 1 : 0.75);
+    for (const [map, key, amount] of [
+      [monthlyMap, period.month, earned],
+      [yearlyMap, period.year, earned],
+      [authorMonthlyMap, period.month, net * 0.75],
+      [authorYearlyMap, period.year, net * 0.75],
+    ] as const) {
       const total = map.get(key) || { revenue: 0, complete: true };
-      if (valid) total.revenue += earned; else total.complete = false;
+      if (valid) total.revenue += amount; else total.complete = false;
       map.set(key, total);
     }
   }
@@ -112,14 +120,18 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
   for (let month = 1; month <= currentMonth; month++) {
     const period = `${currentYear}-${String(month).padStart(2, "0")}`;
     if (!monthlyMap.has(period)) monthlyMap.set(period, { revenue: 0, complete: true });
+    if (!authorMonthlyMap.has(period)) authorMonthlyMap.set(period, { revenue: 0, complete: true });
   }
   // Always offer 2025 and the current year, plus any earlier years with recorded sales.
   for (let year = Math.min(2025, currentYear); year <= currentYear; year++) {
     const period = String(year);
     if (!yearlyMap.has(period)) yearlyMap.set(period, { revenue: 0, complete: true });
+    if (!authorYearlyMap.has(period)) authorYearlyMap.set(period, { revenue: 0, complete: true });
   }
   const monthlyRevenue = Array.from(monthlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
   const yearlyRevenue = Array.from(yearlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
+  const authorMonthlyRevenue = Array.from(authorMonthlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
+  const authorYearlyRevenue = Array.from(authorYearlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
 
   const now = new Date();
   const todayKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
@@ -211,7 +223,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
       ) : (
         <p className="px-1 text-xs text-slate-500">Choose a from date and to date to view sales for that period.</p>
       )}
-      <RevenueCalculator monthly={monthlyRevenue} yearly={yearlyRevenue} />
+      <RevenueCalculator monthly={monthlyRevenue} yearly={yearlyRevenue} authorMonthly={authorMonthlyRevenue} authorYearly={authorYearlyRevenue} isAdmin={isAdmin} />
     </main>
   );
 }
