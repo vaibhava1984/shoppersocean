@@ -135,7 +135,7 @@ export default async function MySales({ authorId }: Props) {
                         </td>
                         <td className="whitespace-nowrap px-5 py-4 font-semibold text-slate-900">{formatPrice(sale.amount, sale.currency)}</td>
                         <td className="whitespace-nowrap px-5 py-4 text-slate-600 sm:px-7">
-                          {new Date(sale.updated_at || sale.created_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
+                          {new Date(sale.updated_at || sale.created_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "medium" })}
                         </td>
                       </tr>
                     ))}
