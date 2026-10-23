@@ -43,10 +43,10 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
   return (
     <div ref={menuRef} className="mx-auto mt-3 w-full max-w-3xl px-1 pb-8">
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
-        <button type="button" onClick={() => toggle("genre")} aria-expanded={open === "genre"} className="min-h-[42px] rounded-lg border border-slate-300 bg-white px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-[#050505] shadow-md ring-1 ring-black/10 transition-all hover:border-slate-500 hover:bg-white active:scale-95 sm:text-sm">
+        <button type="button" onClick={() => toggle("genre")} aria-expanded={open === "genre"} className="min-h-[42px] rounded-lg border border-slate-300 bg-white px-2 py-2 text-center font-serif text-xs font-black tracking-wide text-[#111111] shadow-md ring-1 ring-black/10 transition-all hover:border-slate-500 hover:bg-white active:scale-95 sm:text-sm">
           Books by Genre
         </button>
-        <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-[#050505] shadow-md ring-1 ring-black/10 transition-all active:scale-95 sm:text-sm">
+        <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center font-serif text-xs font-black tracking-wide text-[#111111] shadow-md ring-1 ring-black/10 transition-all active:scale-95 sm:text-sm">
           Books by Authors
         </button>
         <button type="button" onClick={() => toggle("language")} aria-expanded={open === "language"} className="min-h-[42px] rounded-lg border border-slate-300 bg-white px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-[#050505] shadow-md ring-1 ring-black/10 transition-all hover:border-slate-500 hover:bg-white active:scale-95 sm:text-sm language-bob">
