@@ -7,7 +7,7 @@ import MySales from "./mySales";
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Your Sales", description: "Your Shoppers Ocean sales" };
 
-export default async function MySalesPage({ searchParams }: { searchParams?: Promise<{ timeFrame?: string }> }) {
+export default async function MySalesPage({ searchParams }: { searchParams?: Promise<{ fromDate?: string; toDate?: string }> }) {
   const user = await getCurrentUser();
   let authorId: string | null = null;
 
@@ -22,15 +22,16 @@ export default async function MySalesPage({ searchParams }: { searchParams?: Pro
   }
 
   const params = searchParams ? await searchParams : {};
-  const allowed = ["today", "week", "month", "year", "untilnow"] as const;
-  const timeFrame = allowed.includes(params.timeFrame as any) ? params.timeFrame as typeof allowed[number] : "month";
+  const validDate = (value?: string) => !!value && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value));
+  const fromDate = validDate(params.fromDate) ? params.fromDate! : "";
+  const toDate = validDate(params.toDate) ? params.toDate! : "";
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header />
-      <section className="min-h-[55vh] py-10 bg-white">
+      <section className="min-h-[55vh] bg-white py-5 sm:py-7">
         {authorId ? (
-          <MySales authorId={authorId} timeFrame={timeFrame} />
+          <MySales authorId={authorId} fromDate={fromDate} toDate={toDate} />
         ) : (
           <div className="mx-auto flex min-h-[35vh] max-w-4xl items-center justify-center px-5 text-center">
             <p className="text-lg font-semibold text-slate-800">Sorry !! You are not registered as an author, please enjoy reading our Flipbooks.</p>
