@@ -27,7 +27,7 @@ export async function GET(request: Request) {
       if (!text) return 99;
       if (text === needle) return 0;
       if (text.startsWith(needle)) return 1;
-      if (text.split(/\\s+/).some((word) => word.startsWith(needle))) return 2;
+      if (text.split(/\s+/).some((word) => word.startsWith(needle))) return 2;
       if (text.includes(needle)) return 3;
       return 99;
     };
