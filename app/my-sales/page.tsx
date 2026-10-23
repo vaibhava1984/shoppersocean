@@ -5,7 +5,7 @@ import { getD1 } from "@/utils/cloudflare/d1";
 import MySales from "./mySales";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Your Sales", description: "Your Shoppers Ocean sales" };
+export const metadata = { title: "Sales Dashboard", description: "Your Shoppers Ocean sales dashboard" };
 
 export default async function MySalesPage({ searchParams }: { searchParams?: Promise<{ fromDate?: string; toDate?: string }> }) {
   const user = await getCurrentUser();
