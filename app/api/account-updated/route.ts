@@ -1,4 +1,4 @@
-import { Resend } from 'resend';
+import { Resend } from "@/utils/email/resend";
 import { NextResponse } from 'next/server';
 
 const escapeHtml = (value: string) =>
