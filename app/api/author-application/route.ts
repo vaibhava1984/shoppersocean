@@ -60,7 +60,6 @@ export async function POST(request: Request) {
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database unavailable" }, { status: 503 });
 
-    const body = await request.json();
     const title = "";
     const fullName = String(identity.profile.full_name ?? "").trim();
     const city = String(identity.profile.city ?? "").trim();
