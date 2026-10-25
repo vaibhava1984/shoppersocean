@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { requireAdmin } from "@/utils/auth/requireUser";
-import { Resend } from "resend";
+import { Resend } from "@/utils/email/resend";
 
 async function ensureTable(db: D1Database) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS author_applications (
