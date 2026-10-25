@@ -58,6 +58,15 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   }, []);
 
   useEffect(() => {
+    if (!policiesOnly) return;
+    const timer = window.setTimeout(() => {
+      document.getElementById("author-policies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 200);
+    return () => window.clearTimeout(timer);
+  }, [policiesOnly]);
+
+
+  useEffect(() => {
     let active = true;
     fetch("/api/author-application/payment", { cache: "no-store", credentials: "same-origin" })
       .then(async (r) => {
