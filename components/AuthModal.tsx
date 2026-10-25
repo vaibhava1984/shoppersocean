@@ -101,12 +101,10 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
           setErrors({ general: message });
           return;
         }
-        if (onSuccess) {
-          onSuccess();
-        } else {
-          onClose();
-          router.refresh();
-        }
+        try { localStorage.removeItem("shoppers-ocean-last-activity"); } catch {}
+        // Every successful login, including login from a required-action popup,
+        // must land on the homepage rather than returning to the previous page.
+        window.location.replace("/");
       } else {
         const { data, error } = await auth.auth.signUp({
           email: email.trim(),
