@@ -15,7 +15,7 @@ const genders = ["Male", "Female", "Other", "Prefer not to say"];
 export default function AuthorRegisterPage() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [form, setForm] = useState({ title: "", fullName: "", email: "", city: "", country: "", age: "", gender: "", paypalId: "" });
+  const [form, setForm] = useState({ title: "", fullName: "", email: "", city: "", country: "", age: "", gender: "" });
   const [accepted, setAccepted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -33,7 +33,6 @@ export default function AuthorRegisterPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const isIndia = profile?.country === "India";
   const set = (key: string, value: string) => setForm((f) => ({ ...f, [key]: value }));
 
   async function submit() {
@@ -88,7 +87,6 @@ export default function AuthorRegisterPage() {
             <div><Label>Country* (same as user registration)</Label><Input className="mt-1 bg-slate-100" value={form.country} readOnly /></div>
             <div><Label>Age*</Label><Input className="mt-1" type="number" min="1" max="120" value={form.age} onChange={(e) => set("age", e.target.value)} /></div>
             <div><Label>Gender*</Label><select className="w-full h-10 border rounded-md px-3 mt-1" value={form.gender} onChange={(e) => set("gender", e.target.value)}><option value="">Select</option>{genders.map((v) => <option key={v}>{v}</option>)}</select></div>
-            {!isIndia && <div className="sm:col-span-2"><Label>PayPal ID (For outside India)</Label><Input className="mt-1" value={form.paypalId} onChange={(e) => set("paypalId", e.target.value)} /></div>}
           </div>
 
           <label className="flex items-start gap-3 text-slate-700 leading-relaxed cursor-pointer">
