@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AuthorRegistrationGate from "./AuthorRegistrationGate";
 
 export const metadata = {
   title: "Create Your Flipbook",
@@ -44,7 +43,6 @@ export default function CreateYourFlipbookPage() {
             </Link>
           </div>
         </div>
-        <AuthorRegistrationGate>{null}</AuthorRegistrationGate>
       </section>
       <Footer />
     </div>
