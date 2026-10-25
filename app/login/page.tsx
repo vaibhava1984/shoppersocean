@@ -30,7 +30,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [countryQuery, setCountryQuery] = useState("")
   const [countryOpen, setCountryOpen] = useState(false)
   const [showAllCountries, setShowAllCountries] = useState(false)
-  const [address, setAddress] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
   const showDialog = (title: string, description: string) => setDialogState({ isOpen: true, title, description })
