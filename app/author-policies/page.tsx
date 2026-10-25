@@ -12,7 +12,7 @@ export const metadata = {
 const policies = [
   {
     title: "1. One-Time Lifetime Registration",
-    content: "The author registration fee is a one-time, lifetime registration fee with Shoppers Ocean. No recurring author registration fee will be applicable.",
+    content: "A one-time registration fee of ₹250 applies to authors registering in India. This fee covers lifetime author registration with Shoppers Ocean, and no recurring registration fee will be charged.",
   },
   {
     title: "2. Individual Author Registration",
@@ -40,7 +40,7 @@ const policies = [
   },
   {
     title: "8. Book Format and Appearance",
-    content: "Books submitted by authors must be provided in DOCX format only. Before submission, you are solely responsible for ensuring that your book is properly written, formatted, designed, and prepared, including appropriate fonts, spacing, page layout, images, and other visual elements. Once your Word file is converted into an amazingly designed flipbook, complaints relating to the original formatting, appearance, fonts, spacing, or design of the submitted book may not be entertained.",
+    content: "Books must be submitted in DOCX format and contain text only. Books containing images or hyperlinks will not be approved. Authors are responsible for ensuring that the text is complete, properly written, and ready for publication before submission. Once the submitted Word file is converted into a flipbook, requests or complaints concerning the original formatting, fonts, spacing, or layout may not be entertained.",
   },
   {
     title: "9. Book and Cover Submission",
@@ -64,7 +64,7 @@ const policies = [
   },
   {
     title: "14. Book Size and Submission Requirements",
-    content: "To manage storage and data consumption efficiently, Shoppers Ocean follows specific book-submission requirements for its flipbook system. Our flipbook design is optimized for approximately 70–80 words per page, excluding images. The following maximum file sizes apply: Book manuscript in DOCX format: Maximum 2 MB. Book cover: Maximum 200 KB. Accepted cover formats: JPG, PNG, or WebP. Books or files that do not comply with these requirements may be rejected or disapproved by the Shoppers Ocean administration.",
+    content: "To maintain consistent publishing standards and ensure efficient processing, each submitted book must contain no more than 15,000 words. Submissions exceeding this limit will not be accepted for publication. The following maximum file sizes also apply: book manuscript in DOCX format: 2 MB; book cover: 200 KB. Accepted cover formats are JPG, PNG, and WebP. Submissions that do not meet these requirements may be rejected by the Shoppers Ocean administration.",
   },
   {
     title: "15. Trending Books",
