@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { Resend } from "resend";
+import { Resend } from "@/utils/email/resend";
 
 const INDIA_AMOUNT = 250;
 const FOREIGN_AMOUNT = 5;
