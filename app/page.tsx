@@ -27,7 +27,7 @@ export default async function LandingPage() {
   const [user, homepageBooks, authorsResult, languageRowsResult] = await Promise.all([
     getCurrentUser(),
     getHomepageBooksServer(),
-    db.prepare("SELECT author_id,name FROM authors WHERE COALESCE(is_deleted,0)=0 ORDER BY name ASC").all<{author_id:string;name:string}>(),
+    db.prepare("SELECT id AS author_id,name FROM authors WHERE COALESCE(is_deleted,0)=0 ORDER BY name ASC").all<{author_id:string;name:string}>(),
     db.prepare("SELECT language FROM books WHERE COALESCE(is_deleted,0)=0 AND language IS NOT NULL").all<{language:string}>(),
   ]);
   const authors = authorsResult.results ?? [];
