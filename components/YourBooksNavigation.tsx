@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
 import AuthModal from "@/components/AuthModal";
 
 type YourBooksNavigationProps = {
@@ -10,13 +9,12 @@ type YourBooksNavigationProps = {
 
 export default function YourBooksNavigation({ className }: YourBooksNavigationProps) {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
   const close = useCallback(() => setOpen(false), []);
 
   const handleAuthenticated = useCallback(() => {
     setOpen(false);
-    router.push("/bookShelf");
-  }, [router]);
+    window.location.replace("/");
+  }, []);
 
   return (
     <>
