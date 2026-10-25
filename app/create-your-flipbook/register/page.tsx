@@ -30,8 +30,6 @@ export default function AuthorRegisterPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const set = (key: string, value: string) => setForm((f) => ({ ...f, [key]: value }));
-
   async function submit() {
     setError("");
     if (!accepted) return;
