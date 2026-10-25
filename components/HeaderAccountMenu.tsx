@@ -18,9 +18,14 @@ export default function HeaderAccountMenu({
 }: HeaderAccountMenuProps) {
   async function signOut() {
     try {
-      await fetch("/api/auth/logout", { method: "POST" });
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "same-origin",
+        cache: "no-store",
+      });
     } finally {
-      window.location.href = "/";
+      try { localStorage.removeItem("shoppers-ocean-last-activity"); } catch {}
+      window.location.replace("/");
     }
   }
 
