@@ -7,15 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-type Profile = { fullName: string; email: string; country: string };
-
-const titles = ["Mr.", "Ms.", "Mrs.", "Dr.", "Prof."];
-const genders = ["Male", "Female", "Other", "Prefer not to say"];
+type Profile = { fullName: string; email: string; country: string; gender: string; city: string };
 
 export default function AuthorRegisterPage() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [form, setForm] = useState({ title: "", fullName: "", email: "", city: "", country: "", age: "", gender: "" });
+  const [form, setForm] = useState({ fullName: "", email: "", city: "", country: "", gender: "" });
   const [accepted, setAccepted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -27,7 +24,7 @@ export default function AuthorRegisterPage() {
         const d = await r.json();
         if (!r.ok) throw new Error(d.error || "Please sign in to register as an author.");
         setProfile(d.profile);
-        setForm((f) => ({ ...f, fullName: d.profile.fullName, email: d.profile.email, country: d.profile.country }));
+        setForm({ fullName: d.profile.fullName, email: d.profile.email, country: d.profile.country, city: d.profile.city, gender: d.profile.gender });
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
@@ -80,13 +77,11 @@ export default function AuthorRegisterPage() {
         <div className="bg-white rounded-xl shadow-md p-6 sm:p-10 space-y-6">
           {error && <p className="text-red-600 font-medium">{error}</p>}
           <div className="grid sm:grid-cols-2 gap-5">
-            <div><Label>Title*</Label><select className="w-full h-10 border rounded-md px-3 mt-1" value={form.title} onChange={(e) => set("title", e.target.value)}><option value="">Select</option>{titles.map((v) => <option key={v}>{v}</option>)}</select></div>
-            <div><Label>Full name*</Label><Input className="mt-1" value={form.fullName} onChange={(e) => set("fullName", e.target.value)} /></div>
+            <div><Label>Full name*</Label><Input className="mt-1 bg-slate-100" value={form.fullName} readOnly /></div>
             <div><Label>E-mail ID* (same as user ID)</Label><Input className="mt-1 bg-slate-100" value={form.email} readOnly /></div>
-            <div><Label>City*</Label><Input className="mt-1" value={form.city} onChange={(e) => set("city", e.target.value)} /></div>
+            <div><Label>City*</Label><Input className="mt-1 bg-slate-100" value={form.city} readOnly /></div>
             <div><Label>Country* (same as user registration)</Label><Input className="mt-1 bg-slate-100" value={form.country} readOnly /></div>
-            <div><Label>Age*</Label><Input className="mt-1" type="number" min="1" max="120" value={form.age} onChange={(e) => set("age", e.target.value)} /></div>
-            <div><Label>Gender*</Label><select className="w-full h-10 border rounded-md px-3 mt-1" value={form.gender} onChange={(e) => set("gender", e.target.value)}><option value="">Select</option>{genders.map((v) => <option key={v}>{v}</option>)}</select></div>
+            <div><Label>Gender*</Label><Input className="mt-1 bg-slate-100" value={form.gender} readOnly /></div>
           </div>
 
           <label className="flex items-start gap-3 text-slate-700 leading-relaxed cursor-pointer">
