@@ -35,7 +35,9 @@ export async function GET() {
     if (!identity) return NextResponse.json({error:"Authentication required"},{status:401});
     const db = getD1(); if (!db) return NextResponse.json({error:"Database unavailable"},{status:503});
     await ensureTable(db);
-    const author = await db.prepare("SELECT full_name FROM author_applications WHERE user_id=? AND status='completed' ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
+    const applicationAuthor = await db.prepare("SELECT full_name FROM author_applications WHERE user_id=? AND status='completed' ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
+    const existingAuthor = await db.prepare("SELECT name FROM authors WHERE user_id=? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(identity.profile.id).first<any>();
+    const author = applicationAuthor || (existingAuthor ? { full_name: existingAuthor.name } : null);
     if (!author) return NextResponse.json({status:"not_author"},{headers:{"Cache-Control":"no-store"}});
     const row = await db.prepare("SELECT status,submitted_at,reviewed_at FROM author_book_submissions WHERE user_id=? ORDER BY submitted_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
     if (!row) return NextResponse.json({status:"available"},{headers:{"Cache-Control":"no-store"}});
@@ -54,7 +56,9 @@ export async function POST(request: Request) {
     if (!identity) return NextResponse.json({error:"Please sign in to submit your book."},{status:401});
     const db = getD1(); if (!db) return NextResponse.json({error:"Database unavailable."},{status:503});
     await ensureTable(db);
-    const author = await db.prepare("SELECT full_name,email FROM author_applications WHERE user_id=? AND status='completed' ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
+    const applicationAuthor = await db.prepare("SELECT full_name,email FROM author_applications WHERE user_id=? AND status='completed' ORDER BY created_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
+    const existingAuthor = await db.prepare("SELECT name FROM authors WHERE user_id=? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(identity.profile.id).first<any>();
+    const author = applicationAuthor || (existingAuthor ? { full_name: existingAuthor.name, email: identity.profile.email } : null);
     if (!author) return NextResponse.json({error:"Only registered authors can submit books."},{status:403});
     const latest = await db.prepare("SELECT status,submitted_at FROM author_book_submissions WHERE user_id=? ORDER BY submitted_at DESC LIMIT 1").bind(identity.profile.id).first<any>();
     if (latest?.status === "pending") return NextResponse.json({error:"Your previous book is still under review."},{status:409});
