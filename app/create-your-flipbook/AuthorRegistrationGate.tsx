@@ -51,6 +51,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   const [uploadMessage, setUploadMessage] = useState("");
   const [uploadError, setUploadError] = useState("");
   const [cooldownUntil, setCooldownUntil] = useState("");
+  const [reviewNotice, setReviewNotice] = useState("");
 
   useEffect(() => {
     setPoliciesOnly(new URLSearchParams(window.location.search).get("policies") === "1");
@@ -172,7 +173,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
     setUploadLoading(true);
     fetch("/api/author-book-submission", { cache: "no-store", credentials: "same-origin" })
       .then(async (r) => { const data=await r.json(); if(!r.ok) throw new Error(data.error || "Unable to check book submission status."); return data; })
-      .then((data) => { if(active) { setSubmissionStatus(data.status || "available"); setCooldownUntil(data.cooldownUntil || ""); } })
+      .then((data) => { if(active) { setCooldownUntil(data.cooldownUntil || ""); setReviewNotice(data.status === "rejected" ? "We’re sorry, but after review, your submitted book could not be approved because it did not meet Shoppers Ocean’s Community Guidelines or Author Policies. We appreciate your understanding and encourage you to review the policies before submitting another book." : ""); setSubmissionStatus(data.status === "rejected" && data.cooldownUntil && Date.now() >= new Date(data.cooldownUntil).getTime() ? "available" : (data.status || "available")); } })
       .catch((e) => { if(active) setUploadError(e.message || "Unable to check submission status."); })
       .finally(() => { if(active) setUploadLoading(false); });
     return () => { active=false; };
@@ -325,6 +326,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
           </div>
         ) : (
           <>
+            {reviewNotice && <p role="status" className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-5 text-base leading-relaxed text-amber-900">{reviewNotice}</p>}
             <div className="rounded-xl border border-blue-100 bg-white p-8 shadow-sm sm:p-12">
               <h2 className="mb-5 text-2xl font-bold text-blue-700 sm:text-3xl">Hello, {status.fullName || fullName || "Author"}!</h2>
               <p className="mb-5 text-lg leading-relaxed text-slate-600">Welcome to the Shoppers Ocean Author Family! As a registered author, you now have the opportunity to share your creativity and showcase your talent to readers around the world. You may submit <strong>one book every 24 hours</strong>, subject to the following submission guidelines.</p>
