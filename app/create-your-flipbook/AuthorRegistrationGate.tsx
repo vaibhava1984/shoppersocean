@@ -183,7 +183,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
     if (bookFile.size > 2*1024*1024) { setUploadMessage("Your DOCX manuscript must not exceed 2 MB."); return; }
     if (!bookFile.name.toLowerCase().endsWith(".docx")) { setUploadMessage("Dear author, only DOCX file format is supported"); return; }
     if (coverFile.size > 200*1024) { setUploadMessage("Your cover image must not exceed 200 KB."); return; }
-    if (!/\\.(jpe?g|png|webp)$/i.test(coverFile.name)) { setUploadMessage("Please upload a JPG, PNG, or WebP cover image."); return; }
+    if (!/\.(jpe?g|png|webp)$/i.test(coverFile.name)) { setUploadMessage("Please upload a JPG, PNG, or WebP cover image."); return; }
     setSubmitting(true); setUploadMessage(""); setUploadError("");
     try {
       const data=new FormData(); data.append("book",bookFile); data.append("cover",coverFile);
