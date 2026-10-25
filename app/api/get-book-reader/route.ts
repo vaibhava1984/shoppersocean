@@ -19,12 +19,18 @@ export async function POST(request: Request) {
     const isAdmin = String(identity.user.publicMetadata.userrole ?? "").trim().toUpperCase() === "ADMIN";
 
     if (!isAdmin) {
-      const purchase = await db
-        .prepare("SELECT o.id FROM orders o LEFT JOIN payments p ON p.order_id = o.id WHERE o.user_id=? AND o.book_id=? AND (o.status='completed' OR p.status='completed') LIMIT 1")
-        .bind(identity.profile.id, String(bookId))
-        .first();
+      const ownBook = await db.prepare(
+        "SELECT b.id FROM books b INNER JOIN authors a ON a.author_id = b.author_id WHERE b.id = ? AND a.user_id = ? AND COALESCE(b.is_deleted,0)=0 AND COALESCE(a.is_deleted,0)=0 LIMIT 1"
+      ).bind(String(bookId), identity.profile.id).first();
 
-      if (!purchase) return NextResponse.json({ error: "Purchase required" }, { status: 403 });
+      if (!ownBook) {
+        const purchase = await db
+          .prepare("SELECT o.id FROM orders o LEFT JOIN payments p ON p.order_id = o.id WHERE o.user_id=? AND o.book_id=? AND (o.status='completed' OR p.status='completed') LIMIT 1")
+          .bind(identity.profile.id, String(bookId))
+          .first();
+
+        if (!purchase) return NextResponse.json({ error: "Purchase required" }, { status: 403 });
+      }
     }
 
     const files = await db
