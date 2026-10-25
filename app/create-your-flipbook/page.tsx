@@ -31,12 +31,20 @@ export default function CreateYourFlipbookPage() {
               <p>Your story deserves to be read. Let Shoppers Ocean help turn your words into an engaging digital experience.</p>
             </div>
 
-              <div className="mt-5">
+            <h2 className="text-3xl font-bold text-slate-800 mt-14 mb-6">How We Do This</h2>
+            <div className="space-y-5 text-lg text-slate-600 leading-relaxed">
+              <p>Becoming an author with Shoppers Ocean is simple. To get started, you need to register with us as an author by completing the author registration process.</p>
+              <p>A one-time, lifetime registration fee of ₹250 for authors in India or US$5 for authors outside India is applicable. Once your registration is successfully completed, you will become a registered Shoppers Ocean author and gain the opportunity to showcase your work to readers worldwide.</p>
+              <p>We are committed to providing authors with a platform to present their books professionally, reach a wider audience, and build a meaningful connection with readers across the globe.</p>
+              <p>Ready to begin your journey with us?</p>
+              <p>Please read our <Link href="/author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link> carefully before registering. Once you are familiar with the policies, take the next step and become a valued member of the Shoppers Ocean authors and readers community.</p>
+            </div>
+            <div className="mt-5">
               <Link href="/author-policies" className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
                 Register as Author
               </Link>
             </div>
-        </div>
+          </div>
         </AuthorRegistrationGate>
       </section>
       <Footer />
