@@ -49,7 +49,7 @@ export async function GET() {
   } catch(e) { console.error("Author book status:",e); return NextResponse.json({error:"Unable to check your submission status."},{status:500}); }
 }
 export async function POST(request: Request) {
-  let bookKey="", coverKey="";
+  let bookKey="", coverKey="", submissionId="";
   try {
     const identity = await requireUser();
     if (!identity) return NextResponse.json({error:"Please sign in to submit your book."},{status:401});
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
     if (bookBytes[0] !== 0x50 || bookBytes[1] !== 0x4b) return NextResponse.json({error:"The selected file does not appear to be a valid DOCX document."},{status:400});
     if (cover.type==="image/jpeg" && !(coverBytes[0]===0xff && coverBytes[1]===0xd8) || cover.type==="image/png" && !(coverBytes[0]===0x89 && coverBytes[1]===0x50 && coverBytes[2]===0x4e && coverBytes[3]===0x47) || cover.type==="image/webp" && !(String.fromCharCode(...coverBytes.slice(0,4))==="RIFF" && String.fromCharCode(...coverBytes.slice(8,12))==="WEBP")) return NextResponse.json({error:"The selected cover file is not a valid supported image."},{status:400});
     const {env} = await getCloudflareContext();
-    const id=crypto.randomUUID(), token=crypto.randomUUID()+crypto.randomUUID(), now=new Date().toISOString();
+    const id=crypto.randomUUID(), token=crypto.randomUUID()+crypto.randomUUID(), now=new Date().toISOString(); submissionId=id;
     const prefix="author-submissions/"+identity.profile.id+"/"+id;
     bookKey=prefix+"/manuscript.docx"; coverKey=prefix+"/cover"+IMAGE_TYPES[cover.type];
     await putB2Object(bookKey,bookBytes,"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -93,6 +93,7 @@ export async function POST(request: Request) {
     return NextResponse.json({success:true,status:"pending"},{headers:{"Cache-Control":"no-store"}});
   } catch(e) {
     console.error("Author book submission failed:",e);
+    try { if(submissionId) { const db=getD1(); if(db) await db.prepare("DELETE FROM author_book_submissions WHERE id=? AND status='pending'").bind(submissionId).run(); } } catch {}
     try { if(bookKey) await deleteB2Object(bookKey); } catch {}
     try { if(coverKey) await deleteB2Object(coverKey); } catch {}
     return NextResponse.json({error:e instanceof Error ? e.message : "Your submission could not be completed. Please try again."},{status:500});
