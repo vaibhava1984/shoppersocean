@@ -1,5 +1,5 @@
 import {NextResponse} from "next/server";
-import {Resend} from "resend";
+import {Resend} from "@/utils/email/resend";
 import {getCurrentUser} from "@/utils/auth/session";
 import {hashPassword} from "@/lib/auth";
 import {getD1} from "@/utils/cloudflare/d1";
