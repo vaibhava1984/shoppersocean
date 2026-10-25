@@ -2,6 +2,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getCurrentUser } from "@/utils/auth/session";
+import AuthorRegistrationAction from "@/components/AuthorRegistrationAction";
 
 export const metadata = {
   title: "Author Policies",
@@ -101,9 +102,13 @@ export default async function AuthorPoliciesPage() {
           </div>
           {(showRegisterButton || showSubmitButton) && (
             <div className="mt-12 text-center">
-              <Link href={showSubmitButton ? "/submit-your-book" : "/create-your-flipbook"} className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
-                {showSubmitButton ? "Submit Your Book" : "Register as Author"}
-              </Link>
+              {showSubmitButton ? (
+                <Link href="/submit-your-book" className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
+                  Submit Your Book
+                </Link>
+              ) : (
+                <AuthorRegistrationAction isLoggedIn={Boolean(user)} />
+              )}
             </div>
           )}
         </div>
