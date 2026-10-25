@@ -92,7 +92,6 @@ export default async function CreateYourFlipbookPage({ searchParams }: { searchP
       <section className="py-16 bg-white">
         <AuthorRegistrationGate>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          {!policiesOnly && <>
           <h2 className="text-3xl font-bold text-slate-800 mb-6">Welcome, Future Authors!</h2>
           <div className="space-y-5 text-lg text-slate-600 leading-relaxed">
             <p>Have you always dreamed of writing the first book of your life and seeing your book gaining recognition for your writing?</p>
@@ -111,9 +110,7 @@ export default async function CreateYourFlipbookPage({ searchParams }: { searchP
             <p>Please read our Author Policies carefully before registering. Once you are familiar with the policies, take the next step and become a valued member of the Shoppers Ocean authors and readers community.</p>
           </div>
 
-          </>}
-
-                    <h2 id="author-policies" className="text-3xl font-bold text-slate-800 mt-14 mb-4">Author Policies</h2>
+          <h2 id="author-policies" className="scroll-mt-24 text-3xl font-bold text-slate-800 mt-14 mb-4">Author Policies</h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
             By registering as an author with Shoppers Ocean, you confirm that you have read, understood, and agreed to all of the following policies and terms:
           </p>
@@ -127,13 +124,13 @@ export default async function CreateYourFlipbookPage({ searchParams }: { searchP
             ))}
           </div>
 
-          {!policiesOnly && <div className="mt-12 text-center">
+          <div className="mt-12 text-center">
             <Link href="/create-your-flipbook/register">
               <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg rounded-lg">
                 Register as author
               </Button>
             </Link>
-          </div>}
+          </div>
         </div>
         </AuthorRegistrationGate>
       </section>
