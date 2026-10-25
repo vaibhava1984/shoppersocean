@@ -40,6 +40,11 @@ export default function CreateYourFlipbookPage() {
             <p>We are committed to providing authors with a platform to present their books professionally, reach a wider audience, and build a meaningful connection with readers across the globe.</p>
             <p>Ready to begin your journey with us?</p>
             <p>Please read our <Link href="/author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link> carefully before registering. Once you are familiar with the policies, take the next step and become a valued member of the Shoppers Ocean authors and readers community.</p>
+            <div className="pt-3">
+              <Link href="/author-policies" className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
+                Register as Author
+              </Link>
+            </div>
           </div>
         </div>
         </AuthorRegistrationGate>
