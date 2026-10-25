@@ -3,7 +3,7 @@
   "name": "shoppersocean",
   "main": ".open-next/worker.js",
   "pages_build_output_dir": ".open-next/dist",
-  "compatibility_date": "2026-09-24",
+  "compatibility_date": "2026-10-25",
   "compatibility_flags": [
     "nodejs_compat"
   ],
