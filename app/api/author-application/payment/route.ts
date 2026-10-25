@@ -85,7 +85,7 @@ export async function GET() {
       return NextResponse.json({
         status: "completed",
         paymentDeadline: null,
-        country: application?.country || identity.profile.country || "",
+        country: application?.country || "",
         title: application?.title || "",
         fullName: registeredAuthor.name || application?.full_name || identity.profile.full_name || "",
         email: application?.email || identity.profile.email || "",
