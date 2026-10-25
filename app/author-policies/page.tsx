@@ -80,6 +80,7 @@ export default async function AuthorPoliciesPage() {
   const isAdmin = user?.publicMetadata?.userrole === "ADMIN";
   const isRegisteredAuthor = Boolean(user?.publicMetadata?.isAuthor);
   const showRegisterButton = !isAdmin && !isRegisteredAuthor;
+  const showSubmitButton = !isAdmin && isRegisteredAuthor;
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -98,10 +99,10 @@ export default async function AuthorPoliciesPage() {
               </div>
             ))}
           </div>
-          {showRegisterButton && (
+          {(showRegisterButton || showSubmitButton) && (
             <div className="mt-12 text-center">
-              <Link href="/create-your-flipbook" className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
-                Register as Author
+              <Link href={showSubmitButton ? "/submit-your-book" : "/create-your-flipbook"} className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
+                {showSubmitButton ? "Submit Your Book" : "Register as Author"}
               </Link>
             </div>
           )}
