@@ -14,8 +14,8 @@ const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
     loading: () => <div className="h-10 w-full" aria-hidden="true" />,
 });
 
-interface PaymentButtonProps { amount: number; notes?: object; userId?: string; isAdmin?: boolean; productId: string; productTitle?: string; }
-export default function PaymentButton({ amount, notes, userId, isAdmin = false, productId, productTitle }: PaymentButtonProps) {
+interface PaymentButtonProps { amount: number; notes?: object; userId?: string; isAdmin?: boolean; isAuthorBook?: boolean; productId: string; productTitle?: string; }
+export default function PaymentButton({ amount, notes, userId, isAdmin = false, isAuthorBook = false, productId, productTitle }: PaymentButtonProps) {
     const { toast } = useToast(); const [isLoading, setIsLoading] = useState(false); const [localAmount, setLocalAmount] = useState(amount);
     const [localCurrency, setLocalCurrency] = useState<string | null>(null); const [hasPurchased, setHasPurchased] = useState(false);
     const [isCurrencyFetching, setIsCurrencyFetching] = useState(true); const [isPurchaseChecking, setIsPurchaseChecking] = useState(true); const [isLoginNeededDialogOpen, setIsLoginNeededDialogOpen] = useState(false); const [shareCopied, setShareCopied] = useState(false); const [shareMenuOpen, setShareMenuOpen] = useState(false); const [showMoreShareOptions, setShowMoreShareOptions] = useState(false);
@@ -58,7 +58,7 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
     useEffect(() => {
         if (!productId) return;
         let active = true;
-        if (isAdmin) {
+        if (isAdmin || isAuthorBook) {
             setHasPurchased(true);
             setIsPurchaseChecking(false);
             return () => { active = false; };
@@ -94,7 +94,7 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
             });
 
         return () => { active = false; };
-    }, [productId, isAdmin, userId]);
+    }, [productId, isAdmin, isAuthorBook, userId]);
 
     const getShareDetails = () => {
         const url = `${window.location.origin}/book/${encodeURIComponent(productId)}`;
