@@ -1,4 +1,4 @@
-import { Resend } from "resend";
+import { Resend } from "@/utils/email/resend";
 import { NextResponse } from "next/server";
 import { getCurrentUser, clearSession } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
