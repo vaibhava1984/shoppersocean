@@ -79,6 +79,23 @@ export async function GET() {
     if (!application && identity.profile.email) {
       application = await db.prepare("SELECT * FROM author_applications WHERE lower(email)=lower(?) ORDER BY created_at DESC LIMIT 1").bind(identity.profile.email).first<any>();
     }
+    // The Authors table is the source of truth for already-registered authors, including legacy authors whose application record predates this workflow.
+    const registeredAuthor = await db.prepare("SELECT name FROM authors WHERE user_id=? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(identity.profile.id).first<any>();
+    if (registeredAuthor) {
+      return NextResponse.json({
+        status: "completed",
+        paymentDeadline: null,
+        country: application?.country || identity.profile.country || "",
+        title: application?.title || "",
+        fullName: registeredAuthor.name || application?.full_name || identity.profile.full_name || "",
+        email: application?.email || identity.profile.email || "",
+        city: application?.city || "",
+        age: application?.age || null,
+        gender: application?.gender || "",
+        amount: application?.country === "India" ? INDIA_AMOUNT : FOREIGN_AMOUNT,
+        currency: application?.country === "India" ? "INR" : "USD",
+      }, { headers: { "Cache-Control": "no-store" } });
+    }
     if (!application) return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
     if (application.status === "rejected" && Date.now() - new Date(application.reviewed_at || application.created_at).getTime() > 7 * 24 * 60 * 60 * 1000) {
       return NextResponse.json({ status: "not_started" }, { headers: { "Cache-Control": "no-store" } });
