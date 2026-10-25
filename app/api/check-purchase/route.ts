@@ -34,9 +34,13 @@ export async function POST(req: Request) {
       const order = await db.prepare(
         "SELECT o.id, o.created_at, CASE WHEN o.status = 'completed' OR p.status = 'completed' THEN 'completed' ELSE o.status END AS status FROM orders o LEFT JOIN payments p ON p.order_id = o.id WHERE o.user_id = ? AND o.book_id = ? AND (o.status = 'completed' OR p.status = 'completed') ORDER BY o.created_at DESC LIMIT 1"
       ).bind(userId, String(productId)).first<{ id: string; created_at: string; status: string }>();
+      const ownBook = await db.prepare(
+        "SELECT b.id FROM books b INNER JOIN authors a ON a.id = b.author_id WHERE b.id = ? AND a.user_id = ? AND COALESCE(b.is_deleted,0)=0 AND COALESCE(a.is_deleted,0)=0 LIMIT 1"
+      ).bind(String(productId), userId).first<{ id: string }>();
 
       return NextResponse.json({
-        hasPurchased: isAdmin || Boolean(order),
+        hasPurchased: isAdmin || Boolean(order) || Boolean(ownBook),
+        isAuthorBook: Boolean(ownBook),
         orderDetails: order ? [{ order_id: order.id, purchase_date: order.created_at, status: order.status }] : [],
       }, { headers: { 'Cache-Control': 'no-store' } });
     }
@@ -54,8 +58,14 @@ export async function POST(req: Request) {
          ORDER BY o.created_at DESC`
       ).bind(userId, ...ids).all<{ id: string; book_id: string; created_at: string; status: string }>();
 
+      const ownBooks = await db.prepare(
+        `SELECT b.id FROM books b INNER JOIN authors a ON a.id = b.author_id
+         WHERE a.user_id = ? AND b.id IN (${placeholders})
+           AND COALESCE(b.is_deleted,0)=0 AND COALESCE(a.is_deleted,0)=0`
+      ).bind(userId, ...ids).all<{ id: string }>();
+      const ownBookIds = new Set((ownBooks.results || []).map((book) => String(book.id)));
       const result: Record<string, any> = {};
-      ids.forEach((id) => { result[id] = { hasPurchased: isAdmin, orderDetails: [] }; });
+      ids.forEach((id) => { result[id] = { hasPurchased: isAdmin || ownBookIds.has(id), isAuthorBook: ownBookIds.has(id), orderDetails: [] }; });
 
       (orders.results || []).forEach((order) => {
         const bookId = String(order.book_id);
