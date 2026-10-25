@@ -66,7 +66,6 @@ export async function POST(request: Request) {
     const city = String(body.city ?? "").trim();
     const age = Number(body.age);
     const gender = String(body.gender ?? "").trim();
-    const paypalId = String(body.paypalId ?? "").trim();
 
     const country = COUNTRIES.find((c) => c.code === String(identity.profile.country ?? "").toUpperCase())?.name
       || String(identity.profile.country ?? "").trim();
@@ -74,10 +73,6 @@ export async function POST(request: Request) {
     if (!title || !fullName || !city || !country || !gender || !Number.isInteger(age) || age < 1 || age > 120) {
       return NextResponse.json({ error: "Please complete all required fields." }, { status: 400 });
     }
-    if (country !== "India" && !paypalId) {
-      return NextResponse.json({ error: "Please provide your PayPal ID." }, { status: 400 });
-    }
-
     await ensureTable(db);
 
     const existingAuthor = await db.prepare("SELECT id FROM authors WHERE user_id=? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(identity.profile.id).first();
@@ -98,7 +93,7 @@ export async function POST(request: Request) {
       (id,user_id,title,full_name,email,city,country,age,gender,paypal_id,upi_number,status,created_at)
       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`)
       .bind(id, identity.profile.id, title, fullName, identity.profile.email, city, country, age, gender,
-        country === "India" ? null : paypalId, null, "pending", now).run();
+        null, null, "pending", now).run();
 
     const { env } = await getCloudflareContext();
     const jwtSecret = String(env.JWT_SECRET || "");
@@ -133,7 +128,6 @@ export async function POST(request: Request) {
         <p><strong>Country:</strong> ${escapeHtml(country)}</p>
         <p><strong>Age:</strong> ${age}</p>
         <p><strong>Gender:</strong> ${escapeHtml(gender)}</p>
-        <p><strong>PayPal ID:</strong> ${escapeHtml(paypalId || "Not applicable")}</p>
         <div style="margin:30px 0;text-align:center;">
           <a href="${approveUrl}" style="display:inline-block;background:#16a34a;color:#fff;padding:13px 25px;border-radius:6px;text-decoration:none;font-weight:700;margin-right:12px;">Approve</a>
           <a href="${rejectUrl}" style="display:inline-block;background:#dc2626;color:#fff;padding:13px 25px;border-radius:6px;text-decoration:none;font-weight:700;">Reject</a>
