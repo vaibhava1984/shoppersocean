@@ -61,16 +61,16 @@ export async function POST(request: Request) {
     if (!db) return NextResponse.json({ error: "Cloudflare database unavailable" }, { status: 503 });
 
     const body = await request.json();
-    const title = String(body.title ?? "").trim();
-    const fullName = String(body.fullName ?? "").trim();
-    const city = String(body.city ?? "").trim();
-    const age = Number(body.age);
-    const gender = String(body.gender ?? "").trim();
+    const title = "";
+    const fullName = String(identity.profile.full_name ?? "").trim();
+    const city = String(identity.profile.city ?? "").trim();
+    const age = 0;
+    const gender = String(identity.profile.gender ?? "").trim();
 
     const country = COUNTRIES.find((c) => c.code === String(identity.profile.country ?? "").toUpperCase())?.name
       || String(identity.profile.country ?? "").trim();
 
-    if (!title || !fullName || !city || !country || !gender || !Number.isInteger(age) || age < 1 || age > 120) {
+    if (!fullName || !city || !country || !gender) {
       return NextResponse.json({ error: "Please complete all required fields." }, { status: 400 });
     }
     await ensureTable(db);
@@ -121,12 +121,10 @@ export async function POST(request: Request) {
       subject: "New Author Registration Application | Shoppers Ocean",
       html: `<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">
         <h2>New Author Registration Application</h2>
-        <p><strong>Title:</strong> ${escapeHtml(title)}</p>
         <p><strong>Full name:</strong> ${escapeHtml(fullName)}</p>
         <p><strong>E-mail ID:</strong> ${escapeHtml(identity.profile.email)}</p>
         <p><strong>City:</strong> ${escapeHtml(city)}</p>
         <p><strong>Country:</strong> ${escapeHtml(country)}</p>
-        <p><strong>Age:</strong> ${age}</p>
         <p><strong>Gender:</strong> ${escapeHtml(gender)}</p>
         <div style="margin:30px 0;text-align:center;">
           <a href="${approveUrl}" style="display:inline-block;background:#16a34a;color:#fff;padding:13px 25px;border-radius:6px;text-decoration:none;font-weight:700;margin-right:12px;">Approve</a>
