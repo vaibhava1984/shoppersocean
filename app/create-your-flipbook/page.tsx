@@ -40,7 +40,7 @@ const policies = [
   },
   {
     title: "8. Book Format and Appearance",
-    content: "Books submitted by authors must be provided in PDF format only. Before submission, you are solely responsible for ensuring that your book is properly written, formatted, designed, and prepared, including appropriate fonts, spacing, page layout, images, and other visual elements. Once the PDF is converted into a digital flipbook, complaints relating to the original formatting, appearance, fonts, spacing, or design of the submitted book may not be entertained.",
+    content: "Books submitted by authors must be provided in DOCX format only. Before submission, you are solely responsible for ensuring that your book is properly written, formatted, designed, and prepared, including appropriate fonts, spacing, page layout, images, and other visual elements. Once your Word file is converted into an amazingly designed flipbook, complaints relating to the original formatting, appearance, fonts, spacing, or design of the submitted book may not be entertained.",
   },
   {
     title: "9. Book and Cover Submission",
@@ -102,13 +102,13 @@ export default function CreateYourFlipbookPage() {
           <h2 className="text-3xl font-bold text-slate-800 mt-14 mb-6">How We Do This</h2>
           <div className="space-y-5 text-lg text-slate-600 leading-relaxed">
             <p>Becoming an author with Shoppers Ocean is simple. To get started, you need to register with us as an author by completing the author registration process.</p>
-            <p>A one-time, lifetime registration fee of ₹1 for authors in India or US$5 for authors outside India is applicable. Once your registration is successfully completed, you will become a registered Shoppers Ocean author and gain the opportunity to showcase your work to readers worldwide.</p>
+            <p>A one-time, lifetime registration fee of ₹250 for authors in India or US$5 for authors outside India is applicable. Once your registration is successfully completed, you will become a registered Shoppers Ocean author and gain the opportunity to showcase your work to readers worldwide.</p>
             <p>We are committed to providing authors with a platform to present their books professionally, reach a wider audience, and build a meaningful connection with readers across the globe.</p>
             <p>Ready to begin your journey with us?</p>
             <p>Please read our Author Policies carefully before registering. Once you are familiar with the policies, take the next step and become a valued member of the Shoppers Ocean authors and readers community.</p>
           </div>
 
-          <h2 className="text-3xl font-bold text-slate-800 mt-14 mb-4">Author Policies</h2>
+          <h2 id="author-policies" className="text-3xl font-bold text-slate-800 mt-14 mb-4">Author Policies</h2>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
             By registering as an author with Shoppers Ocean, you confirm that you have read, understood, and agreed to all of the following policies and terms:
           </p>
