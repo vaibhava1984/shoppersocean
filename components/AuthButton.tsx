@@ -1,2 +1,23 @@
-import Link from "next/link"; import {redirect} from "next/navigation"; import {getCurrentUser,clearSession} from "@/utils/auth/session";
-export default async function AuthButton(){const user=await getCurrentUser();const signOut=async()=>{"use server";await clearSession();redirect("/login")};return user?<div className="flex items-center gap-4">Hey, {user.emailAddresses[0]?.emailAddress}!<form action={signOut}><button className="py-2 px-4 rounded-md no-underline bg-blue-600 text-white hover:bg-blue-700">Logout</button></form></div>:<Link href="/login" className="py-2 px-3 flex rounded-md no-underline bg-blue-600 text-white hover:bg-blue-700">Login</Link>}
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getCurrentUser, clearSession } from "@/utils/auth/session";
+
+export default async function AuthButton() {
+  const user = await getCurrentUser();
+  const signOut = async () => {
+    "use server";
+    await clearSession();
+    redirect("/");
+  };
+
+  return user ? (
+    <div className="flex items-center gap-4">
+      Hey, {user.emailAddresses[0]?.emailAddress}!
+      <form action={signOut}>
+        <button className="py-2 px-4 rounded-md no-underline bg-blue-600 text-white hover:bg-blue-700">Logout</button>
+      </form>
+    </div>
+  ) : (
+    <Link href="/login" className="py-2 px-3 flex rounded-md no-underline bg-blue-600 text-white hover:bg-blue-700">Login</Link>
+  );
+}
