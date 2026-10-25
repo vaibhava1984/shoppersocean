@@ -41,6 +41,7 @@ export default async function LandingPage() {
           subtitle="One World. Many Languages. Amazing Flipbooks. Beautiful Stories."
           welcomeName={user?.firstName || undefined}
           isAdmin={user?.publicMetadata?.userrole === "ADMIN"}
+          isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
           buttonText=" Embark on Your Adventure"
           buttonLink="/bookShelf"
           imageSrc="/homepage_hero (1).jpeg"
