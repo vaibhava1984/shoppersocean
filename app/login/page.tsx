@@ -91,7 +91,8 @@ export default function Login({ searchParams }: { searchParams: any }) {
         return
       }
 
-      await router.replace("/")
+      try { localStorage.removeItem("shoppers-ocean-last-activity"); } catch {}
+      window.location.replace("/")
     } catch (error: any) {
       setIsSubmitting(false)
       setErrors({ general: error?.message || "An error occurred during sign in. Please try again." })
