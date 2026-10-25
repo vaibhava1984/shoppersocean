@@ -1,13 +1,20 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { getCurrentUser } from "@/utils/auth/session";
 
 export const metadata = {
   title: "Create Your Flipbook",
   description: "Become a Shoppers Ocean author and create your digital flipbook.",
 };
 
-export default function CreateYourFlipbookPage() {
+export default async function CreateYourFlipbookPage() {
+  const user = await getCurrentUser();
+  const isAdmin = user?.publicMetadata?.userrole === "ADMIN";
+  const isRegisteredAuthor = Boolean(user?.publicMetadata?.isAuthor);
+  const showRegisterButton = !isAdmin && !isRegisteredAuthor;
+  const showSubmitButton = !isAdmin && isRegisteredAuthor;
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header />
@@ -37,11 +44,13 @@ export default function CreateYourFlipbookPage() {
             <p>Ready to begin your journey with us?</p>
             <p>Please read our <Link href="/author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link> carefully before registering. Once you are familiar with the policies, take the next step and become a valued member of the Shoppers Ocean authors and readers community.</p>
           </div>
-          <div className="mt-5">
-            <Link href="/author-policies" className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
-              Register as Author
-            </Link>
-          </div>
+          {(showRegisterButton || showSubmitButton) && (
+            <div className="mt-5">
+              <Link href={showSubmitButton ? "/submit-your-book" : "/author-policies"} className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
+                {showSubmitButton ? "Submit Your Book" : "Register as Author"}
+              </Link>
+            </div>
+          )}
         </div>
       </section>
       <Footer />
