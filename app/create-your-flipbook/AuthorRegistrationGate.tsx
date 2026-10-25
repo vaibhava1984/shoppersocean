@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 type Status = {
@@ -31,6 +32,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   const router = useRouter();
   const [status, setStatus] = useState<Status | null>(null);
   const [loading, setLoading] = useState(true);
+  const [policiesOnly, setPoliciesOnly] = useState(false);
   const [remaining, setRemaining] = useState("");
   const [paying, setPaying] = useState(false);
   const [message, setMessage] = useState("");
@@ -41,6 +43,10 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   const [country, setCountry] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
+
+  useEffect(() => {
+    setPoliciesOnly(new URLSearchParams(window.location.search).get("policies") === "1");
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -140,7 +146,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
             return;
           }
           if (!verify.ok || result.status !== "completed") throw new Error(result.error || "Payment could not be verified.");
-          setStatus({ status: "completed", paymentDeadline: null });
+          setStatus({ status: "completed", paymentDeadline: null, fullName });
           setMessage("Congratulations 🎉 Your author registration is complete.");
         },
         theme: { color: "#16a34a" },
@@ -151,6 +157,8 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
       setPaying(false);
     }
   }
+
+  if (policiesOnly) return <>{children}</>;
 
   if (loading) return <div className="py-12 text-center text-slate-600">Checking your author registration status...</div>;
 
@@ -252,7 +260,25 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   }
 
   if (status?.status === "completed") {
-    return <div className="max-w-3xl mx-auto px-4 py-16 text-center"><h2 className="text-3xl font-bold text-green-700 mb-4">Author Registration Complete 🎉</h2><p className="text-lg text-slate-600">You are now a registered Shoppers Ocean author.</p></div>;
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-12">
+        <div className="rounded-xl border border-blue-100 bg-white p-8 shadow-sm sm:p-12">
+          <h2 className="mb-5 text-2xl font-bold text-blue-700 sm:text-3xl">Hello, {status.fullName || fullName || "Author"}!</h2>
+          <p className="mb-5 text-lg leading-relaxed text-slate-600">Welcome to the Shoppers Ocean Author Family! As a registered author, you now have the opportunity to share your creativity and showcase your talent to readers around the world. You may submit <strong>one book every 24 hours</strong>, subject to the following submission guidelines.</p>
+          <h3 className="mb-2 text-xl font-semibold text-slate-800">Book Submission Guidelines</h3>
+          <ul className="mb-6 list-disc space-y-2 pl-6 text-lg leading-relaxed text-slate-600">
+            <li><strong>Book Manuscript:</strong> Submit your book in DOCX format only. Other file formats will not be accepted.</li>
+            <li><strong>File Size:</strong> Your manuscript must not exceed 2 MB.</li>
+            <li><strong>Cover Page:</strong> Upload a professionally designed cover page in a commonly supported image format. The file size must not exceed 200 KB.</li>
+          </ul>
+          <h3 className="mb-2 text-xl font-semibold text-slate-800">Review and Publication</h3>
+          <p className="mb-5 text-lg leading-relaxed text-slate-600">Every submitted manuscript will undergo a review process. Once your book has been reviewed and approved, it will be published on Shoppers Ocean within <strong>2–3 working days</strong>, subject to our review and publication process.</p>
+          <p className="mb-5 text-lg leading-relaxed text-slate-600">For further information about submission requirements and publication guidelines, please refer to our <Link href="/create-your-flipbook?policies=1#author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link>.</p>
+          <p className="text-lg leading-relaxed text-slate-600">We look forward to showcasing your work and bringing your stories to readers across the globe!</p>
+          <p className="mt-6 text-lg font-semibold text-slate-700">Warm regards,<br />Team Shoppers Ocean</p>
+        </div>
+      </div>
+    );
   }
 
   if (message) return <div className="py-12 text-center text-red-600">{message}</div>;
