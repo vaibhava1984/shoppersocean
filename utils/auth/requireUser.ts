@@ -21,7 +21,6 @@ export async function requireUser(): Promise<AuthIdentity | null> {
     if (!user) return null;
     const db = getD1();
     if (!db) return null;
-    for (const column of ["gender TEXT", "city TEXT"]) { try { await db.prepare("ALTER TABLE users ADD COLUMN " + column).run(); } catch {} }
     const profile = await db.prepare(
       "SELECT id, email, full_name, country, gender, city, phone AS mobile, address FROM users WHERE id = ? LIMIT 1"
     ).bind(user.id).first<AuthIdentity["profile"]>();
