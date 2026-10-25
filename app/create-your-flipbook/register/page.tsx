@@ -91,7 +91,7 @@ export default function AuthorRegisterPage() {
 
           <label className="flex items-start gap-3 text-slate-700 leading-relaxed cursor-pointer">
             <input type="checkbox" className="mt-1 h-5 w-5" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />
-            <span>I ({form.fullName || "Your name"})* confirm that I have read, understood, and agree to all <Link href="/create-your-flipbook" className="font-semibold text-blue-700 underline">Author Policies</Link>. I also declare that the information I have provided is true and accurate to the best of my knowledge.</span>
+            <span>I ({form.fullName || "Your name"})* confirm that I have read, understood, and agree to all <Link href="/author-policies#author-policies" className="font-semibold text-blue-700 underline">Author Policies</Link>. I also declare that the information I have provided is true and accurate to the best of my knowledge.</span>
           </label>
 
           <div className="text-center pt-2">
