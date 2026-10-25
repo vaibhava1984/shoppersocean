@@ -49,10 +49,10 @@ export default async function BookDetailPage({ params }: { params: any }) {
     const authorRows = currentBookDetails.author_id
         ? await db.prepare("SELECT * FROM authors WHERE author_id = ? AND COALESCE(is_deleted, 0) = 0").bind(currentBookDetails.author_id).all<Record<string, any>>()
         : { results: [] };
-    const isAuthorBook = user?.id
+    const isAuthorBook = user?.id && currentBookDetails.author_id
         ? await db.prepare(
-            "SELECT id FROM authors WHERE id = ? AND user_id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1"
-          ).bind(String(currentBookDetails.author_id ?? ""), String(user.id)).first<{ id: string }>()
+            "SELECT author_id FROM authors WHERE author_id = ? AND user_id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1"
+          ).bind(String(currentBookDetails.author_id), String(user.id)).first<{ author_id: string }>()
         : null;
     const images = parseImages(currentBookDetails.cover_images);
 
