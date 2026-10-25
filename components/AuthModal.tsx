@@ -24,7 +24,9 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState("")
+  const [gender, setGender] = useState("")
+  const [city, setCity] = useState("");
   const [countryQuery, setCountryQuery] = useState("");
   const [countryOpen, setCountryOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -58,7 +60,9 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
     else if (password.length < 6) next.password = "Password must be at least 6 letters/digits";
     if (!isSignIn) {
       if (!fullName.trim()) next.fullName = "Full name is required";
-      if (!country) next.country = "Country is required";
+      if (!country) next.country = "Country is required"
+      if (!gender) next.gender = "Gender is required"
+      if (!city.trim()) next.city = "City is required";
     }
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -73,6 +77,8 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
     setPassword("");
     setCountry("");
     setCountryQuery("");
+    setGender("");
+    setCity("");
     setCountryOpen(false);
     setShowPassword(false);
   };
@@ -107,6 +113,8 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
           password,
           full_name: fullName.trim(),
           country,
+          gender,
+          city: city.trim(),
         });
         if (error) {
           setErrors({
@@ -215,6 +223,18 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
                     )}
                   </div>
                   {errors.country && <p className="mt-1 text-xs text-red-600">{errors.country}</p>}
+                </div>
+                <div>
+                  <label htmlFor="auth-gender" className="mb-1 block text-sm font-medium text-slate-700">Gender <span className="text-red-500">*</span></label>
+                  <select id="auth-gender" value={gender} onChange={event => { setGender(event.target.value); setErrors(prev => ({...prev, gender: "", general: ""})); }} className={`w-full rounded-lg border px-3.5 py-2.5 text-base text-slate-900 outline-none ${errors.gender ? "border-red-400" : "border-slate-200"}`}>
+                    <option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option><option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                  {errors.gender && <p className="mt-1 text-xs text-red-600">{errors.gender}</p>}
+                </div>
+                <div>
+                  <label htmlFor="auth-city" className="mb-1 block text-sm font-medium text-slate-700">City <span className="text-red-500">*</span></label>
+                  <input id="auth-city" autoComplete="address-level2" value={city} onChange={event => { setCity(event.target.value); setErrors(prev => ({...prev, city: "", general: ""})); }} placeholder="Your city" className={`w-full rounded-lg border px-3.5 py-2.5 text-base text-slate-900 outline-none ${errors.city ? "border-red-400" : "border-slate-200"}`} />
+                  {errors.city && <p className="mt-1 text-xs text-red-600">{errors.city}</p>}
                 </div>
               </>
             )}
