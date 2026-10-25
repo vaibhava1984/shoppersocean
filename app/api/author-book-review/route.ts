@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-export const runtime = "edge";
 const ADMIN_EMAIL = "kochimonu@gmail.com";
 function escapeHtml(v: unknown) { return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
 function page(title:string,body:string,status=200) {
