@@ -4,7 +4,6 @@ import { requireUser } from "@/utils/auth/requireUser";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { putB2Object, deleteB2Object, getB2ObjectUrl } from "@/utils/cloudflare/b2";
 
-export const runtime = "edge";
 const MAX_BOOK = 2 * 1024 * 1024;
 const MAX_COVER = 200 * 1024;
 const ADMIN_EMAIL = "kochimonu@gmail.com";
