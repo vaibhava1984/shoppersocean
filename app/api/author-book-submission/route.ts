@@ -69,11 +69,11 @@ export async function POST(request: Request) {
     if (!(book instanceof File) || !(cover instanceof File) || !book.size || !cover.size) return NextResponse.json({error:"Please select both your DOCX manuscript and cover page."},{status:400});
     if (book.size > MAX_BOOK) return NextResponse.json({error:"Your DOCX manuscript must not exceed 2 MB."},{status:400});
     if (cover.size > MAX_COVER) return NextResponse.json({error:"Your cover image must not exceed 200 KB."},{status:400});
-    if (!book.name.toLowerCase().endsWith(".docx") || !["application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/octet-stream","application/zip"].includes(book.type || "application/octet-stream")) return NextResponse.json({error:"Dear author, only DOCX file format is supported"},{status:400});
+    if (!book.name.toLowerCase().endsWith(".docx") || !["application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/octet-stream","application/zip"].includes(book.type || "application/octet-stream")) return NextResponse.json({error:"Dear Author, only DOCX format is permitted for a book manuscript. Please select a .docx book file."},{status:400});
     if (!IMAGE_TYPES[cover.type] || !cover.name.toLowerCase().match(/\.(jpe?g|png|webp)$/)) return NextResponse.json({error:"Please upload a JPG, PNG, or WebP cover image."},{status:400});
     const bookBytes = new Uint8Array(await book.arrayBuffer());
     const coverBytes = new Uint8Array(await cover.arrayBuffer());
-    if (bookBytes[0] !== 0x50 || bookBytes[1] !== 0x4b) return NextResponse.json({error:"The selected file does not appear to be a valid DOCX document."},{status:400});
+    if (bookBytes[0] !== 0x50 || bookBytes[1] !== 0x4b) return NextResponse.json({error:"Dear Author, the selected book file is not a valid DOCX document. Please upload a valid .docx manuscript."},{status:400});
     if (cover.type==="image/jpeg" && !(coverBytes[0]===0xff && coverBytes[1]===0xd8) || cover.type==="image/png" && !(coverBytes[0]===0x89 && coverBytes[1]===0x50 && coverBytes[2]===0x4e && coverBytes[3]===0x47) || cover.type==="image/webp" && !(String.fromCharCode(...coverBytes.slice(0,4))==="RIFF" && String.fromCharCode(...coverBytes.slice(8,12))==="WEBP")) return NextResponse.json({error:"The selected cover file is not a valid supported image."},{status:400});
     const {env} = await getCloudflareContext();
     const id=crypto.randomUUID(), token=crypto.randomUUID()+crypto.randomUUID(), now=new Date().toISOString(); submissionId=id;
