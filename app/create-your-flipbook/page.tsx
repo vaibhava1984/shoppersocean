@@ -64,7 +64,7 @@ const policies = [
   },
   {
     title: "14. Book Size and Submission Requirements",
-    content: "To manage storage and data consumption efficiently, Shoppers Ocean follows specific book-submission requirements for its flipbook system. Our flipbook design is optimized for approximately 70–80 words per page, excluding images. The following maximum file sizes apply: Book PDF: Maximum 4 MB. Book cover: Maximum 300 KB. Cover format: A commonly supported image format. Books or files that do not comply with these requirements may be rejected or disapproved by the Shoppers Ocean administration.",
+    content: "To manage storage and data consumption efficiently, Shoppers Ocean follows specific book-submission requirements for its flipbook system. Our flipbook design is optimized for approximately 70–80 words per page, excluding images. The following maximum file sizes apply: Book manuscript in DOCX format: Maximum 2 MB. Book cover: Maximum 200 KB. Accepted cover formats: JPG, PNG, or WebP. Books or files that do not comply with these requirements may be rejected or disapproved by the Shoppers Ocean administration.",
   },
   {
     title: "15. Trending Books",
