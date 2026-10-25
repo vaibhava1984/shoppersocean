@@ -1,4 +1,4 @@
-import { Resend } from 'resend';
+import { Resend } from "@/utils/email/resend";
 import { NextResponse } from 'next/server';
 import { hashPassword, createJwt } from '@/lib/auth';
 import { COUNTRIES } from '@/utils/countries';
