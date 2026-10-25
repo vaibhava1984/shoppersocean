@@ -7,10 +7,6 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
-  "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  },
   "vars": {
     "B2_BUCKET": "Shoppers-ocean-books",
     "B2_ENDPOINT": "s3.us-west-004.backblazeb2.com",
