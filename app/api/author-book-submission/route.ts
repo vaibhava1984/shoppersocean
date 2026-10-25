@@ -43,7 +43,7 @@ export async function GET() {
     const submitted = new Date(row.submitted_at).getTime();
     const cooldownUntil = submitted + 24*60*60*1000;
     if (row.status === "pending") return NextResponse.json({status:"pending",submittedAt:row.submitted_at},{headers:{"Cache-Control":"no-store"}});
-    if (row.status === "rejected" && Date.now() < cooldownUntil) return NextResponse.json({status:"rejected",cooldownUntil:new Date(cooldownUntil).toISOString()},{headers:{"Cache-Control":"no-store"}});
+    if (row.status === "rejected") return NextResponse.json({status:"rejected",cooldownUntil:new Date(cooldownUntil).toISOString()},{headers:{"Cache-Control":"no-store"}});
     if (Date.now() < cooldownUntil) return NextResponse.json({status:"cooldown",cooldownUntil:new Date(cooldownUntil).toISOString()},{headers:{"Cache-Control":"no-store"}});
     return NextResponse.json({status:"available"},{headers:{"Cache-Control":"no-store"}});
   } catch(e) { console.error("Author book status:",e); return NextResponse.json({error:"Unable to check your submission status."},{status:500}); }
