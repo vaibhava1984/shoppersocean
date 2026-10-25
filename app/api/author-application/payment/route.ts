@@ -96,7 +96,6 @@ export async function GET() {
       city: application.city || "",
       age: application.age || null,
       gender: application.gender || "",
-      upiNumber: application.upi_number || "",
       amount: application.country === "India" ? INDIA_AMOUNT : FOREIGN_AMOUNT,
       currency: application.country === "India" ? "INR" : "USD",
     }, { headers: { "Cache-Control": "no-store" } });
@@ -138,20 +137,12 @@ export async function POST(request: Request) {
       const city = String(body?.city ?? application.city ?? "").trim();
       const age = Number(body?.age ?? application.age);
       const gender = String(body?.gender ?? application.gender ?? "").trim();
-      const upiNumber = String(body?.upiNumber ?? application.upi_number ?? "").trim();
 
       if (!title || !fullName || !city || !gender || !Number.isInteger(age) || age < 1 || age > 120) {
         return NextResponse.json({ error: "Please complete all required fields." }, { status: 400 });
       }
-      if (country === "India" && !upiNumber) {
-        return NextResponse.json({ error: "Please provide your UPI-connected mobile number." }, { status: 400 });
-      }
-      if (country !== "India" && !paypalId) {
-        return NextResponse.json({ error: "Please provide your PayPal ID." }, { status: 400 });
-      }
-
-      await db.prepare("UPDATE author_applications SET title=?,full_name=?,city=?,age=?,gender=?,paypal_id=?,upi_number=? WHERE id=? AND status='approved_payment_pending'")
-        .bind(title, fullName, city, age, gender, country === "India" ? null : paypalId, country === "India" ? upiNumber : null, application.id).run();
+      await db.prepare("UPDATE author_applications SET title=?,full_name=?,city=?,age=?,gender=? WHERE id=? AND status='approved_payment_pending'")
+        .bind(title, fullName, city, age, gender, application.id).run();
     }
 
     if (action === "verify") {
