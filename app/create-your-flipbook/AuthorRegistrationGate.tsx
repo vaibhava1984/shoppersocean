@@ -350,7 +350,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
               </ul>
               <h3 className="mb-2 text-xl font-semibold text-slate-800">Review and Publication</h3>
               <p className="mb-5 text-lg leading-relaxed text-slate-600">Every submitted manuscript will undergo a review process. Once your book has been reviewed and approved, it will be published on Shoppers Ocean within <strong>2–3 working days</strong>, subject to our review and publication process.</p>
-              <p className="mb-5 text-lg leading-relaxed text-slate-600">For further information about submission requirements and publication guidelines, please refer to our <Link href="/create-your-flipbook?policies=1#author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link>.</p>
+              <p className="mb-5 text-lg leading-relaxed text-slate-600">For further information about submission requirements and publication guidelines, please refer to our <Link href="/author-policies#author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link>.</p>
               <p className="text-lg leading-relaxed text-slate-600">We look forward to showcasing your work and bringing your stories to readers across the globe!</p>
               <p className="mt-6 text-lg font-semibold text-slate-700">Warm regards,<br />Team Shoppers Ocean</p>
             </div>
