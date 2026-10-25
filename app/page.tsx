@@ -64,6 +64,13 @@ export default async function LandingPage() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8"><TestimonialSection user={user} /></div>
       </section>
+      <section className="bg-white py-8 sm:py-10">
+        <div className="container mx-auto px-4 text-center">
+          <Link href="/author-policies" className="inline-flex min-h-11 items-center justify-center rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2">
+            Author Policies
+          </Link>
+        </div>
+      </section>
       <section className="py-20 bg-white"><ContactForm /></section>
       <Footer />
     </div>
