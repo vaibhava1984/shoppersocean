@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 
 const ContactForm = ({
+    user,
     title = 'Have a Question?',
     description = "We're here to help! Reach out to us with any queries or suggestions.",
     successMessage = 'Thank you for your message!',
@@ -16,10 +17,33 @@ const ContactForm = ({
     description?: string,
     successMessage?: string,
     hideDescription?: boolean,
+    user?: any,
 }) => {
     const [showThankYou, setShowThankYou] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState(''); // Track validation errors
+    const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+
+    const handleDeleteAccount = async () => {
+        if (isDeletingAccount) return;
+        const confirmed = window.confirm(
+            'Are you sure you want to permanently delete your Shoppers Ocean account? This action cannot be undone.'
+        );
+        if (!confirmed) return;
+        setIsDeletingAccount(true);
+        try {
+            const response = await fetch('/api/delete-account', { method: 'POST' });
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) throw new Error(result.error || 'Unable to delete your account. Please try again.');
+            await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin', cache: 'no-store' });
+            window.alert('Your account has been deleted successfully !');
+            window.location.href = '/';
+        } catch (err) {
+            console.error('Account deletion failed:', err);
+            window.alert(err instanceof Error ? err.message : 'Unable to delete your account. Please try again.');
+            setIsDeletingAccount(false);
+        }
+    };
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
@@ -137,6 +161,14 @@ const ContactForm = ({
                             </form>
                         </CardContent>
                     </Card>
+                )}
+                {user && (
+                    <div className="mt-4 flex justify-center">
+                        <button type="button" onClick={handleDeleteAccount} disabled={isDeletingAccount}
+                            className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60">
+                            {isDeletingAccount ? 'Deleting account...' : 'delete my account'}
+                        </button>
+                    </div>
                 )}
             </div>
         </div>
