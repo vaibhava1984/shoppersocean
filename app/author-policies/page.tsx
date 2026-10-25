@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
+import { getCurrentUser } from "@/utils/auth/session";
 
 export const metadata = {
   title: "Author Policies",
@@ -75,13 +75,18 @@ const policies = [
   },
 ];
 
-export default function AuthorPoliciesPage() {
+export default async function AuthorPoliciesPage() {
+  const user = await getCurrentUser();
+  const isAdmin = user?.publicMetadata?.userrole === "ADMIN";
+  const isRegisteredAuthor = Boolean(user?.publicMetadata?.isAuthor);
+  const showRegisterButton = !isAdmin && !isRegisteredAuthor;
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header />
       <main className="py-12 sm:py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <h1 id="author-policies" className="scroll-mt-24 text-base font-bold text-slate-800 mb-4">Author Policies</h1>
+          <h1 id="author-policies" className="scroll-mt-24 text-3xl sm:text-4xl font-bold text-slate-800 mb-6">Author Policies</h1>
           <p className="text-lg text-slate-600 leading-relaxed mb-8">
             By registering as an author with Shoppers Ocean, you confirm that you have read, understood, and agreed to all of the following policies and terms:
           </p>
@@ -93,13 +98,13 @@ export default function AuthorPoliciesPage() {
               </div>
             ))}
           </div>
-          <div className="mt-12 text-center">
-            <Link href="/create-your-flipbook/register">
-              <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg rounded-lg">
+          {showRegisterButton && (
+            <div className="mt-12 text-center">
+              <Link href="/create-your-flipbook" className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
                 Register as Author
-              </Button>
-            </Link>
-          </div>
+              </Link>
+            </div>
+          )}
         </div>
       </main>
       <Footer />
