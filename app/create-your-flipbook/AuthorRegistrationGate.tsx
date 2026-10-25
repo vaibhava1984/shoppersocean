@@ -350,7 +350,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
               </ul>
               <h3 className="mb-2 text-xl font-semibold text-slate-800">Review and Publication</h3>
               <p className="mb-5 text-lg leading-relaxed text-slate-600">Every submitted manuscript will undergo a review process. Once your book has been reviewed and approved, it will be published on Shoppers Ocean within <strong>2–3 working days</strong>, subject to our review and publication process.</p>
-              <p className="mb-5 text-lg leading-relaxed text-slate-600">For further information about submission requirements and publication guidelines, please refer to our <Link href="https://shoppersocean.com/create-your-flipbook?policies=1#author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link>.</p>
+              <p className="mb-5 text-lg leading-relaxed text-slate-600">For further information about submission requirements and publication guidelines, please refer to our <Link href="/create-your-flipbook?policies=1#author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link>.</p>
               <p className="text-lg leading-relaxed text-slate-600">We look forward to showcasing your work and bringing your stories to readers across the globe!</p>
               <p className="mt-6 text-lg font-semibold text-slate-700">Warm regards,<br />Team Shoppers Ocean</p>
             </div>
@@ -360,14 +360,14 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
                 <div>
                   <p className="mb-3 text-base font-semibold text-slate-800">Book manuscript</p>
                   <input id="author-book-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={(e) => { const file=e.target.files?.[0]||null; setBookFile(file); setUploadMessage(file && file.size>2*1024*1024 ? "Your DOCX manuscript must not exceed 2 MB." : file && !file.name.toLowerCase().endsWith(".docx") ? "Dear author, only DOCX file format is supported" : ""); }} className="sr-only" />
-                  <label htmlFor="author-book-file" className="flex min-h-14 w-full cursor-pointer items-center justify-center rounded-lg bg-blue-600 px-5 py-4 text-center font-semibold text-white shadow-sm hover:bg-blue-700 focus-within:ring-2 focus-within:ring-blue-300">Submit Your DOCX File</label>
+                  <label htmlFor="author-book-file" className="inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-700 focus-within:ring-2 focus-within:ring-blue-300">Upload your docx file</label>
                   <p className="mt-3 text-sm leading-relaxed text-slate-600">Upload your complete manuscript in DOCX format only. Maximum file size: 2 MB.</p>
                   <p className="mt-2 break-all text-sm font-medium text-slate-500">{bookFile ? bookFile.name : "No manuscript selected"}</p>
                 </div>
                 <div>
                   <p className="mb-3 text-base font-semibold text-slate-800">Cover page</p>
                   <input id="author-cover-file" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" onChange={(e) => { const file=e.target.files?.[0]||null; setCoverFile(file); setUploadMessage(file && file.size>200*1024 ? "Your cover image must not exceed 200 KB." : file && !/\.(jpe?g|png|webp)$/i.test(file.name) ? "Please upload a JPG, PNG, or WebP cover image." : ""); }} className="sr-only" />
-                  <label htmlFor="author-cover-file" className="flex min-h-14 w-full cursor-pointer items-center justify-center rounded-lg bg-blue-600 px-5 py-4 text-center font-semibold text-white shadow-sm hover:bg-blue-700 focus-within:ring-2 focus-within:ring-blue-300">Submit Your Cover Page</label>
+                  <label htmlFor="author-cover-file" className="inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-700 focus-within:ring-2 focus-within:ring-blue-300">Upload coverpage</label>
                   <p className="mt-3 text-sm leading-relaxed text-slate-600">Upload your book cover in JPG, PNG, or WebP format only. Maximum file size: 200 KB.</p>
                   <p className="mt-2 break-all text-sm font-medium text-slate-500">{coverFile ? coverFile.name : "No cover page selected"}</p>
                 </div>
@@ -375,8 +375,8 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
               {uploadMessage && <p role="alert" className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">{uploadMessage}</p>}
               {uploadError && <p role="alert" className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">{uploadError}</p>}
               <div className="mt-6">
-                <Button onClick={submitBook} disabled={submitting || !bookFile || !coverFile} className="w-full bg-blue-600 px-6 py-4 text-base font-semibold text-white hover:bg-blue-700 sm:w-auto">
-                  {submitting ? "Submitting..." : "Submit Book for Review"}
+                <Button onClick={submitBook} disabled={submitting || !bookFile || !coverFile} className="inline-flex h-10 bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+                  {submitting ? "Submitting..." : "Submit"}
                 </Button>
               </div>
               <p className="mt-3 text-sm text-slate-500">Both files are submitted together. Your submission will be securely sent to the Shoppers Ocean review team.</p>
