@@ -62,7 +62,7 @@ export default async function LandingPage() {
         </div>
       </section>
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8"><TestimonialSection user={user} /></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8"><TestimonialSection /></div>
       </section>
       <section className="bg-white py-8 sm:py-10">
         <div className="container mx-auto px-4 text-center">
@@ -71,7 +71,7 @@ export default async function LandingPage() {
           </Link>
         </div>
       </section>
-      <section className="py-20 bg-white"><ContactForm /></section>
+      <section className="py-20 bg-white"><ContactForm user={user} /></section>
       <Footer />
     </div>
   )
