@@ -52,6 +52,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   const [uploadError, setUploadError] = useState("");
   const [cooldownUntil, setCooldownUntil] = useState("");
   const [reviewNotice, setReviewNotice] = useState("");
+  const [showReviewPopup, setShowReviewPopup] = useState(false);
 
   useEffect(() => {
     setPoliciesOnly(new URLSearchParams(window.location.search).get("policies") === "1");
@@ -194,7 +195,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   async function submitBook() {
     if (!bookFile || !coverFile) { setUploadMessage("Please select both your DOCX manuscript and cover page."); return; }
     if (bookFile.size > 2*1024*1024) { setUploadMessage("Your DOCX manuscript must not exceed 2 MB."); return; }
-    if (!bookFile.name.toLowerCase().endsWith(".docx")) { setUploadMessage("Dear author, only DOCX file format is supported"); return; }
+    if (!bookFile.name.toLowerCase().endsWith(".docx")) { setUploadMessage("Dear Author, only DOCX format is permitted for a book manuscript. Please select a .docx book file."); return; }
     if (coverFile.size > 200*1024) { setUploadMessage("Your cover image must not exceed 200 KB."); return; }
     if (!/\.(jpe?g|png|webp)$/i.test(coverFile.name)) { setUploadMessage("Please upload a JPG, PNG, or WebP cover image."); return; }
     setSubmitting(true); setUploadMessage(""); setUploadError("");
@@ -204,7 +205,8 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
       const result=await response.json();
       if(!response.ok) throw new Error(result.error || "Your book could not be submitted.");
       setSubmissionStatus("pending"); setBookFile(null); setCoverFile(null);
-      router.push("/");
+      setShowReviewPopup(true);
+      window.setTimeout(() => router.push("/"), 4000);
     } catch(e) { setUploadError(e instanceof Error ? e.message : "Your book could not be submitted. Please try again."); }
     finally { setSubmitting(false); }
   }
@@ -333,8 +335,8 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
         ) : submissionStatus === "cooldown" ? (
           <div className="rounded-xl border border-blue-100 bg-white p-8 shadow-sm sm:p-12 text-center">
             <h2 className="mb-4 text-3xl font-bold text-blue-700">Thank You for Your Submission</h2>
-            <p className="text-lg leading-relaxed text-slate-600">Your previous submission has been reviewed. You may submit one book every 24 hours.</p>
-            <p className="mt-4 text-base text-slate-500">You can submit another book in {cooldownText}.</p>
+            <p className="text-lg leading-relaxed text-slate-600">Dear Author, your previous book has been uploaded within the last 24 hours. Please wait until the remaining waiting period has passed before submitting your next book.</p>
+            <p className="mt-4 text-base font-medium text-slate-500">You may submit your next book in {cooldownText}.</p>
           </div>
         ) : (
           <>
@@ -359,7 +361,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <p className="mb-3 text-base font-semibold text-slate-800">Book manuscript</p>
-                  <input id="author-book-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={(e) => { const file=e.target.files?.[0]||null; setBookFile(file); setUploadMessage(file && file.size>2*1024*1024 ? "Your DOCX manuscript must not exceed 2 MB." : file && !file.name.toLowerCase().endsWith(".docx") ? "Dear author, only DOCX file format is supported" : ""); }} className="sr-only" />
+                  <input id="author-book-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={(e) => { const file=e.target.files?.[0]||null; setBookFile(file); setUploadMessage(file && file.size>2*1024*1024 ? "Your DOCX manuscript must not exceed 2 MB." : file && !file.name.toLowerCase().endsWith(".docx") ? "Dear Author, only DOCX format is permitted for a book manuscript. Please select a .docx book file." : ""); }} className="sr-only" />
                   <label htmlFor="author-book-file" className="inline-flex h-10 cursor-pointer items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-700 focus-within:ring-2 focus-within:ring-blue-300">Upload your docx file</label>
                   <p className="mt-3 text-sm leading-relaxed text-slate-600">Upload your complete manuscript in DOCX format only. Maximum file size: 2 MB.</p>
                   <p className="mt-2 break-all text-sm font-medium text-slate-500">{bookFile ? bookFile.name : "No manuscript selected"}</p>
@@ -383,6 +385,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
             </div>
           </>
         )}
+        {showReviewPopup && <div role="status" aria-live="polite" className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/50 px-4"><div className="w-full max-w-md rounded-2xl bg-white p-7 text-center shadow-2xl"><h2 className="mb-3 text-2xl font-bold text-blue-700">Your Book Is Under Review</h2><p className="text-base leading-relaxed text-slate-600">Your book has been submitted successfully and is now under review. If it meets our Community Guidelines and Author Policies, it will be published within 2–3 working days.</p></div></div>}
         {uploadLoading && <p className="mt-4 text-center text-sm text-slate-500">Checking your previous book submission...</p>}
       </div>
     );
