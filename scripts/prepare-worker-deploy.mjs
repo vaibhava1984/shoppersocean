@@ -2,7 +2,7 @@ import { writeFileSync } from "node:fs";
 
 const config = {
   name: "shoppersocean",
-  main: ".open-next/worker.js",
+  main: "worker.js",
   compatibility_date: "2026-10-25",
   compatibility_flags: ["nodejs_compat"],
   vars: {
@@ -11,7 +11,7 @@ const config = {
     B2_REGION: "us-west-004"
   },
   assets: {
-    directory: ".open-next/assets",
+    directory: "assets",
     binding: "ASSETS"
   },
   d1_databases: [
