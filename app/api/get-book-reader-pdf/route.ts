@@ -24,7 +24,7 @@ async function resolveBookFile(request: Request, bookId: string) {
 
   if (!admin) {
     const ownBook = await db.prepare(
-      "SELECT b.id FROM books b INNER JOIN authors a ON a.author_id = b.author_id WHERE b.id = ? AND a.user_id = ? AND COALESCE(b.is_deleted,0)=0 AND COALESCE(a.is_deleted,0)=0 LIMIT 1"
+      "SELECT b.id FROM books b INNER JOIN authors a ON a.id = b.author_id WHERE b.id = ? AND a.user_id = ? AND COALESCE(b.is_deleted,0)=0 AND COALESCE(a.is_deleted,0)=0 LIMIT 1"
     ).bind(bookId, identity.profile.id).first();
 
     if (!ownBook) {
