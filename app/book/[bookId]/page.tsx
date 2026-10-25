@@ -49,6 +49,11 @@ export default async function BookDetailPage({ params }: { params: any }) {
     const authorRows = currentBookDetails.author_id
         ? await db.prepare("SELECT * FROM authors WHERE author_id = ? AND COALESCE(is_deleted, 0) = 0").bind(currentBookDetails.author_id).all<Record<string, any>>()
         : { results: [] };
+    const isAuthorBook = user?.id
+        ? await db.prepare(
+            "SELECT id FROM authors WHERE id = ? AND user_id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1"
+          ).bind(String(currentBookDetails.author_id ?? ""), String(user.id)).first<{ id: string }>()
+        : null;
     const images = parseImages(currentBookDetails.cover_images);
 
     return <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -72,7 +77,7 @@ export default async function BookDetailPage({ params }: { params: any }) {
                         <p className="text-xl text-slate-600 mb-4">by {authorRows.results.map((a, i) => <span key={`${i}_author_name`}>{a.name}</span>)}</p>
                         <div className="mb-6">{String(user?.publicMetadata.userrole ?? "").trim().toUpperCase() !== "ADMIN" && <span className="text-3xl font-bold text-blue-600"><BookPriceDisplay bookId={String(currentBookDetails.id)} /></span>}</div>
                         <div className="mb-6 w-full min-w-0">
-                            {currentBookDetails.id && <DynamicPaymentButton amount={Number(currentBookDetails.price || 0)} notes={{ product_name: currentBookDetails.title }} userId={user?.id} isAdmin={String(user?.publicMetadata.userrole ?? "").trim().toUpperCase() === "ADMIN"} productId={String(currentBookDetails.id)} productTitle={currentBookDetails.title} />}
+                            {currentBookDetails.id && <DynamicPaymentButton amount={Number(currentBookDetails.price || 0)} notes={{ product_name: currentBookDetails.title }} userId={user?.id} isAdmin={String(user?.publicMetadata.userrole ?? "").trim().toUpperCase() === "ADMIN"} isAuthorBook={Boolean(isAuthorBook)} productId={String(currentBookDetails.id)} productTitle={currentBookDetails.title} />}
                         </div>
                         <Card className="mb-6"><CardContent className="p-4"><h2 className="text-lg font-semibold mb-2">Book Details</h2><ul className="space-y-1 text-sm">
                             <li><span className="font-medium">Language:</span> {currentBookDetails.language}</li>
