@@ -1,6 +1,6 @@
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 import AuthorRegistrationGate from "./AuthorRegistrationGate";
 
 export const metadata = {
@@ -24,7 +24,7 @@ export default function CreateYourFlipbookPage() {
       <section className="py-16 bg-white">
         <AuthorRegistrationGate>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <h2 className="text-3xl font-bold text-slate-800 mb-6">Welcome, Future Authors!</h2>
+          <h2 className="text-3xl font-bold text-slate-800 mb-6">Welcome Future Authors</h2>
           <div className="space-y-5 text-lg text-slate-600 leading-relaxed">
             <p>Have you always dreamed of writing the first book of your life and seeing your book gaining recognition for your writing?</p>
             <p>Shoppers Ocean welcomes aspiring and established authors who wish to showcase their work and explore new opportunities to earn both fame and monetary benefits.</p>
@@ -40,8 +40,6 @@ export default function CreateYourFlipbookPage() {
             <p>We are committed to providing authors with a platform to present their books professionally, reach a wider audience, and build a meaningful connection with readers across the globe.</p>
             <p>Ready to begin your journey with us?</p>
             <p>Please read our <Link href="/author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link> carefully before registering. Once you are familiar with the policies, take the next step and become a valued member of the Shoppers Ocean authors and readers community.</p>
-          </div>
-
           </div>
         </div>
         </AuthorRegistrationGate>
