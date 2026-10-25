@@ -14,11 +14,6 @@ function cacheKey(request: Request, bookId: string) {
 }
 
 async function resolveBookFile(request: Request, bookId: string) {
-  const key = cacheKey(request, bookId);
-  const cached = readerCache.get(key);
-  if (cached && cached.expires > Date.now()) return { file: cached.file };
-  if (cached) readerCache.delete(key);
-
   const db = getD1();
   if (!db) throw new Error("Cloudflare D1 is not available");
 
@@ -28,17 +23,28 @@ async function resolveBookFile(request: Request, bookId: string) {
   const admin = await requireAdmin();
 
   if (!admin) {
-    const purchase = await db
-      .prepare(
-        "SELECT o.id FROM orders o LEFT JOIN payments p ON p.order_id = o.id " +
-        "WHERE o.user_id = ? AND o.book_id = ? " +
-        "AND (o.status = 'completed' OR p.status = 'completed') LIMIT 1"
-      )
-      .bind(identity.profile.id, bookId)
-      .first();
+    const ownBook = await db.prepare(
+      "SELECT b.id FROM books b INNER JOIN authors a ON a.author_id = b.author_id WHERE b.id = ? AND a.user_id = ? AND COALESCE(b.is_deleted,0)=0 AND COALESCE(a.is_deleted,0)=0 LIMIT 1"
+    ).bind(bookId, identity.profile.id).first();
 
-    if (!purchase) return { error: NextResponse.json({ error: "Purchase required" }, { status: 403 }) };
+    if (!ownBook) {
+      const purchase = await db
+        .prepare(
+          "SELECT o.id FROM orders o LEFT JOIN payments p ON p.order_id = o.id " +
+          "WHERE o.user_id = ? AND o.book_id = ? " +
+          "AND (o.status = 'completed' OR p.status = 'completed') LIMIT 1"
+        )
+        .bind(identity.profile.id, bookId)
+        .first();
+
+      if (!purchase) return { error: NextResponse.json({ error: "Purchase required" }, { status: 403 }) };
+    }
   }
+
+  const key = cacheKey(request, bookId);
+  const cached = readerCache.get(key);
+  if (cached && cached.expires > Date.now()) return { file: cached.file };
+  if (cached) readerCache.delete(key);
 
   const file = await db
     .prepare("SELECT storage_key,file_name,mime_type FROM private_book_files WHERE book_id=? ORDER BY created_at DESC LIMIT 20")
