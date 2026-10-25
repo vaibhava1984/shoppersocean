@@ -25,6 +25,8 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [country, setCountry] = useState("")
+  const [gender, setGender] = useState("")
+  const [city, setCity] = useState("")
   const [countryQuery, setCountryQuery] = useState("")
   const [countryOpen, setCountryOpen] = useState(false)
   const [showAllCountries, setShowAllCountries] = useState(false)
@@ -59,6 +61,8 @@ export default function Login({ searchParams }: { searchParams: any }) {
     if (!signingIn) {
       if (!username.trim()) next.username = "Full name is required"
       if (!country) next.country = "Country is required"
+      if (!gender) next.gender = "Gender is required"
+      if (!city.trim()) next.city = "City is required"
     }
     setErrors(next)
     return Object.keys(next).length === 0
@@ -112,6 +116,8 @@ export default function Login({ searchParams }: { searchParams: any }) {
         password,
         full_name: username.trim(),
         country,
+        gender,
+        city: city.trim(),
       })
 
       setIsSubmitting(false)
@@ -229,6 +235,18 @@ export default function Login({ searchParams }: { searchParams: any }) {
                 </div>
                 {errors.country && <p className="mt-1 text-sm text-red-500">{errors.country}</p>}
               </div>
+              <div>
+                <label htmlFor="gender">{field("Gender", true)}</label>
+                <select id="gender" value={gender} onChange={e => { setGender(e.target.value); setErrors(p => ({...p, gender: ""})) }} className={`mt-1 w-full rounded-md border ${errors.gender ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`}>
+                  <option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option><option value="Prefer not to say">Prefer not to say</option>
+                </select>
+                {errors.gender && <p className="mt-1 text-sm text-red-500">{errors.gender}</p>}
+              </div>
+              <div>
+                <label htmlFor="city">{field("City", true)}</label>
+                <input id="city" value={city} onChange={e => { setCity(e.target.value); setErrors(p => ({...p, city: ""})) }} autoComplete="address-level2" placeholder="Your city" className={`mt-1 w-full rounded-md border ${errors.city ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} />
+                {errors.city && <p className="mt-1 text-sm text-red-500">{errors.city}</p>}
+              </div>
             </>
           )}
 
@@ -248,15 +266,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
             </div>
             {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
           </div>
-
-          {!isSignIn && (
-            <>
-              <div>
-                <label htmlFor="address">{field("Complete Address", false)}</label>
-                <textarea id="address" className="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-gray-900 min-h-24 focus:outline-none focus:ring-0 focus:border-gray-300" placeholder="Complete address (optional)" value={address} onChange={e => setAddress(e.target.value)} />
-              </div>
-            </>
-          )}
 
           {isSignIn ? (
             <SubmitButton onClick={handleSignIn} disabled={isSubmitting} className="w-full bg-blue-600 text-white rounded-md px-4 py-3 font-medium" pendingText="Signing In...">
