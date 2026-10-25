@@ -346,16 +346,18 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
               <h3 className="mb-5 text-xl font-bold text-slate-800">Submit Your Book</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <p className="mb-3 text-sm font-semibold text-slate-700">Book manuscript (DOCX, max 2 MB)</p>
-                  <input id="author-book-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={(e) => { const file=e.target.files?.[0]||null; setBookFile(file); setUploadMessage(file && file.size>2*1024*1024 ? "Your DOCX manuscript must not exceed 2 MB." : file && !file.name.toLowerCase().endsWith(".docx") ? "Dear author, only DOCX file format is supported" : ""); }} className="hidden" />
-                  <label htmlFor="author-book-file" className="inline-flex cursor-pointer items-center justify-center rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700">Submit Your DOCX File</label>
-                  <p className="mt-3 break-all text-sm text-slate-500">{bookFile ? bookFile.name : "No manuscript selected"}</p>
+                  <p className="mb-3 text-base font-semibold text-slate-800">Book manuscript</p>
+                  <input id="author-book-file" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={(e) => { const file=e.target.files?.[0]||null; setBookFile(file); setUploadMessage(file && file.size>2*1024*1024 ? "Your DOCX manuscript must not exceed 2 MB." : file && !file.name.toLowerCase().endsWith(".docx") ? "Dear author, only DOCX file format is supported" : ""); }} className="sr-only" />
+                  <label htmlFor="author-book-file" className="flex min-h-14 w-full cursor-pointer items-center justify-center rounded-lg bg-blue-600 px-5 py-4 text-center font-semibold text-white shadow-sm hover:bg-blue-700 focus-within:ring-2 focus-within:ring-blue-300">Submit Your DOCX File</label>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600">Upload your complete manuscript in DOCX format only. Maximum file size: 2 MB.</p>
+                  <p className="mt-2 break-all text-sm font-medium text-slate-500">{bookFile ? bookFile.name : "No manuscript selected"}</p>
                 </div>
                 <div>
-                  <p className="mb-3 text-sm font-semibold text-slate-700">Cover page (JPG, PNG, WebP; max 200 KB)</p>
-                  <input id="author-cover-file" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" onChange={(e) => { const file=e.target.files?.[0]||null; setCoverFile(file); setUploadMessage(file && file.size>200*1024 ? "Your cover image must not exceed 200 KB." : file && !/\.(jpe?g|png|webp)$/i.test(file.name) ? "Please upload a JPG, PNG, or WebP cover image." : ""); }} className="hidden" />
-                  <label htmlFor="author-cover-file" className="inline-flex cursor-pointer items-center justify-center rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-700">Submit Your Cover Page</label>
-                  <p className="mt-3 break-all text-sm text-slate-500">{coverFile ? coverFile.name : "No cover page selected"}</p>
+                  <p className="mb-3 text-base font-semibold text-slate-800">Cover page</p>
+                  <input id="author-cover-file" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" onChange={(e) => { const file=e.target.files?.[0]||null; setCoverFile(file); setUploadMessage(file && file.size>200*1024 ? "Your cover image must not exceed 200 KB." : file && !/\.(jpe?g|png|webp)$/i.test(file.name) ? "Please upload a JPG, PNG, or WebP cover image." : ""); }} className="sr-only" />
+                  <label htmlFor="author-cover-file" className="flex min-h-14 w-full cursor-pointer items-center justify-center rounded-lg bg-blue-600 px-5 py-4 text-center font-semibold text-white shadow-sm hover:bg-blue-700 focus-within:ring-2 focus-within:ring-blue-300">Submit Your Cover Page</label>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600">Upload your book cover in JPG, PNG, or WebP format only. Maximum file size: 200 KB.</p>
+                  <p className="mt-2 break-all text-sm font-medium text-slate-500">{coverFile ? coverFile.name : "No cover page selected"}</p>
                 </div>
               </div>
               {uploadMessage && <p role="alert" className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">{uploadMessage}</p>}
