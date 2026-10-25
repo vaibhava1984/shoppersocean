@@ -8,6 +8,7 @@ export default function AuthorRegistrationAction({ isLoggedIn }: { isLoggedIn: b
   const router = useRouter();
   const [showPrompt, setShowPrompt] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signup");
 
   function proceed() {
     if (isLoggedIn) {
@@ -29,14 +30,14 @@ export default function AuthorRegistrationAction({ isLoggedIn }: { isLoggedIn: b
             <h2 id="author-account-title" className="text-center text-2xl font-bold text-slate-900">Become a Shoppers Ocean Author</h2>
             <p className="mt-3 text-center leading-relaxed text-slate-600">To begin author registration, please create a Shoppers Ocean account first. Already have an account? Sign in and then return here to continue.</p>
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
-              <button type="button" onClick={() => { setShowPrompt(false); setShowAuth(true); }} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700">Create Account</button>
-              <button type="button" onClick={() => { setShowPrompt(false); setShowAuth(true); }} className="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-3 font-semibold text-slate-700 transition hover:bg-slate-50">Sign In</button>
+              <button type="button" onClick={() => { setAuthMode("signup"); setShowPrompt(false); setShowAuth(true); }} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700">Create Account</button>
+              <button type="button" onClick={() => { setAuthMode("signin"); setShowPrompt(false); setShowAuth(true); }} className="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-3 font-semibold text-slate-700 transition hover:bg-slate-50">Sign In</button>
             </div>
             <button type="button" onClick={() => setShowPrompt(false)} className="mt-4 w-full py-2 text-sm font-medium text-slate-500 hover:text-slate-800">Maybe later</button>
           </section>
         </div>
       )}
-      <AuthModal open={showAuth} initialMode="signup" onClose={() => setShowAuth(false)} />
+      <AuthModal open={showAuth} initialMode={authMode} onClose={() => setShowAuth(false)} />
     </>
   );
 }
