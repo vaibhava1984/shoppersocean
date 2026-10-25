@@ -59,10 +59,13 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
 
   useEffect(() => {
     if (!policiesOnly) return;
-    const timer = window.setTimeout(() => {
-      document.getElementById("author-policies")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 200);
-    return () => window.clearTimeout(timer);
+    // The page initially renders the registration gate. Retry scrolling after the policy
+    // content has replaced that gate so the heading is reliably placed in the viewport.
+    const timers = [100, 400, 900].map((delay) => window.setTimeout(() => {
+      const heading = document.getElementById("author-policies");
+      if (heading) heading.scrollIntoView({ behavior: delay === 900 ? "auto" : "smooth", block: "start" });
+    }, delay));
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
   }, [policiesOnly]);
 
 
@@ -347,7 +350,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
               </ul>
               <h3 className="mb-2 text-xl font-semibold text-slate-800">Review and Publication</h3>
               <p className="mb-5 text-lg leading-relaxed text-slate-600">Every submitted manuscript will undergo a review process. Once your book has been reviewed and approved, it will be published on Shoppers Ocean within <strong>2–3 working days</strong>, subject to our review and publication process.</p>
-              <p className="mb-5 text-lg leading-relaxed text-slate-600">For further information about submission requirements and publication guidelines, please refer to our <Link href="/create-your-flipbook?policies=1#author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link>.</p>
+              <p className="mb-5 text-lg leading-relaxed text-slate-600">For further information about submission requirements and publication guidelines, please refer to our <Link href="https://shoppersocean.com/create-your-flipbook?policies=1#author-policies" className="font-semibold text-blue-600 underline underline-offset-2 hover:text-blue-800">Author Policies</Link>.</p>
               <p className="text-lg leading-relaxed text-slate-600">We look forward to showcasing your work and bringing your stories to readers across the globe!</p>
               <p className="mt-6 text-lg font-semibold text-slate-700">Warm regards,<br />Team Shoppers Ocean</p>
             </div>
