@@ -3,11 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from 'lucide-react'
 
-const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
+const TestimonialSection: React.FC = () => {
     const [testimonials, setTestimonials] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         const fetchTestimonialsAndUser = async () => {
@@ -28,33 +27,7 @@ const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
         fetchTestimonialsAndUser();
     }, []);
 
-    const handleDeleteAccount = async () => {
-        if (isDeleting) return;
 
-        const confirmed = window.confirm(
-            'Are you sure you want to permanently delete your Shoppers Ocean account? This action cannot be undone.'
-        );
-        if (!confirmed) return;
-
-        setIsDeleting(true);
-
-        try {
-            const response = await fetch('/api/delete-account', { method: 'POST' });
-            const result = await response.json().catch(() => ({}));
-
-            if (!response.ok) {
-                throw new Error(result.error || 'Unable to delete your account. Please try again.');
-            }
-
-            await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin', cache: 'no-store' });
-            window.alert('Your account has been deleted successfully !');
-            window.location.href = '/';
-        } catch (err) {
-            console.error('Account deletion failed:', err);
-            window.alert(err instanceof Error ? err.message : 'Unable to delete your account. Please try again.');
-            setIsDeleting(false);
-        }
-    };
 
     return (
         <>
@@ -84,18 +57,7 @@ const TestimonialSection: React.FC<{ user: any }> = ({ user }) => {
                 </div>
             )}
 
-            {user && (
-                <div className="mt-12 flex justify-center">
-                    <button
-                        type="button"
-                        onClick={handleDeleteAccount}
-                        disabled={isDeleting}
-                        className="rounded-lg bg-red-600 px-6 py-3 font-bold text-white shadow-sm transition-all duration-200 hover:bg-red-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        {isDeleting ? 'Deleting account...' : 'delete my account'}
-                    </button>
-                </div>
-            )}
+}
         </>
     );
 };
