@@ -4,7 +4,7 @@ import { getD1 } from "@/utils/cloudflare/d1";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "resend";
 
-const INDIA_AMOUNT = 1;
+const INDIA_AMOUNT = 250;
 const FOREIGN_AMOUNT = 5;
 const BASE_URL = "https://www.shoppersocean.com";
 const ADMIN_EMAIL = "kochimonu@gmail.com";
@@ -96,7 +96,6 @@ export async function GET() {
       city: application.city || "",
       age: application.age || null,
       gender: application.gender || "",
-      paypalId: application.paypal_id || "",
       upiNumber: application.upi_number || "",
       amount: application.country === "India" ? INDIA_AMOUNT : FOREIGN_AMOUNT,
       currency: application.country === "India" ? "INR" : "USD",
@@ -139,7 +138,6 @@ export async function POST(request: Request) {
       const city = String(body?.city ?? application.city ?? "").trim();
       const age = Number(body?.age ?? application.age);
       const gender = String(body?.gender ?? application.gender ?? "").trim();
-      const paypalId = String(body?.paypalId ?? application.paypal_id ?? "").trim();
       const upiNumber = String(body?.upiNumber ?? application.upi_number ?? "").trim();
 
       if (!title || !fullName || !city || !gender || !Number.isInteger(age) || age < 1 || age > 120) {
