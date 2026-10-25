@@ -56,8 +56,6 @@ const TestimonialSection: React.FC = () => {
                     ))}
                 </div>
             )}
-
-}
         </>
     );
 };
