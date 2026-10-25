@@ -52,7 +52,7 @@ export async function GET(request: Request) {
     }
 
     const authors = await db.prepare(
-      "SELECT author_id,name FROM authors WHERE COALESCE(is_deleted,0)=0 AND name LIKE ? ESCAPE '!' COLLATE NOCASE ORDER BY CASE WHEN name LIKE ? ESCAPE '!' COLLATE NOCASE THEN 0 ELSE 1 END, name ASC LIMIT 4"
+      "SELECT id AS author_id,name FROM authors WHERE COALESCE(is_deleted,0)=0 AND name LIKE ? ESCAPE '!' COLLATE NOCASE ORDER BY CASE WHEN name LIKE ? ESCAPE '!' COLLATE NOCASE THEN 0 ELSE 1 END, name ASC LIMIT 4"
     ).bind(like, startsWith).all<{ author_id: string; name: string }>();
 
     for (const author of authors.results ?? []) {
