@@ -81,7 +81,7 @@ export default async function BookDetailPage({ params }: { params: any }) {
     if (Number.isFinite(pageCount) && pageCount > 0) bookStructuredData.numberOfPages = pageCount;
     if (currentBookDetails.published_date) {
         const publishedDate = String(currentBookDetails.published_date).trim();
-        if (/^\\d{4}-\\d{2}-\\d{2}$/.test(publishedDate)) bookStructuredData.datePublished = publishedDate;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(publishedDate)) bookStructuredData.datePublished = publishedDate;
     }
     const safeBookStructuredData = JSON.stringify(bookStructuredData).replace(/</g, "\\u003c");
 
