@@ -2,8 +2,8 @@ import "./globals.css";
 import InteractionFeedback from "@/components/InteractionFeedback";
 import SessionTimeout from "@/components/SessionTimeout";
 
-// Use the site's permanent public origin for metadata during builds.
-const defaultUrl = "https://www.shoppersocean.com";
+// Use the canonical non-www public origin for metadata URLs.
+const defaultUrl = "https://shoppersocean.com";
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
