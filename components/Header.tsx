@@ -9,6 +9,7 @@ import YourBooksNavigation from "@/components/YourBooksNavigation";
 
 const navigationItems = [
   ["/", "Home"],
+  ["/books", "Explore Books"],
   ["/bookShelf", "Your Books"],
   ["/about", "About"],
   ["/books-for-children", "Books for Children"],
