@@ -38,7 +38,7 @@ export default async function LandingPage() {
       <div>
         <HeroSection
           title="Shoppers Ocean"
-          subtitle="One World. Many Languages. Amazing Flipbooks. Beautiful Stories."
+          subtitle="One World. Many Languages. Amazing E-books. Beautiful Stories."
           welcomeName={user?.firstName || undefined}
           isAdmin={user?.publicMetadata?.userrole === "ADMIN"}
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
