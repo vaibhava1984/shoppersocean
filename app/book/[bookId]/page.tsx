@@ -99,5 +99,9 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     const db = getD1();
     if (!db) return { title: "Book details" };
     const book = await db.prepare("SELECT title, description FROM books WHERE id = ? LIMIT 1").bind(id).first<Record<string, any>>();
-    return { title: book?.title ?? "Book details", description: book?.description ?? undefined };
+    return {
+        title: book?.title ?? "Book details",
+        description: book?.description ?? undefined,
+        alternates: { canonical: `https://shoppersocean.com/book/${encodeURIComponent(id)}` },
+    };
 }
