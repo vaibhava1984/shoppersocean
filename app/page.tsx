@@ -49,6 +49,17 @@ export default async function LandingPage() {
         />
       </div>
       <div><AuthorApplicationBanner /></div>
+      <section className="bg-white px-4 py-12 sm:py-16">
+        <style>{`@keyframes shoppersOceanSeoZoom { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }`}</style>
+        <div className="mx-auto max-w-4xl text-center" style={{ animation: "shoppersOceanSeoZoom 5s ease-out both" }}>
+          <h2 className="mb-5 font-serif text-3xl font-bold tracking-tight text-slate-800 sm:text-4xl md:text-5xl">
+            Discover E-books Online in Multiple Languages
+          </h2>
+          <p className="mx-auto max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
+            Welcome to Shoppers Ocean, your destination for discovering and reading e-books online. Explore fascinating stories in many languages of the world, discover books by independent authors, and enjoy a world of reading in one place.
+          </p>
+        </div>
+      </section>
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold mb-12 text-center text-slate-800">Trending Books</h2>
