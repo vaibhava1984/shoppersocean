@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getD1 } from "@/utils/cloudflare/d1";
 
-const SITE_URL = "https://www.shoppersocean.com";
+const SITE_URL = "https://shoppersocean.com";
 
 // Generate this at request time so newly published books are discoverable.
 export const dynamic = "force-dynamic";
