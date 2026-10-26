@@ -55,8 +55,38 @@ export default async function BookDetailPage({ params }: { params: any }) {
           ).bind(String(currentBookDetails.author_id), String(user.id)).first<{ id: string }>()
         : null;
     const images = parseImages(currentBookDetails.cover_images);
+    const bookAuthors = (authorRows.results ?? [])
+        .map((author) => String(author.name ?? "").trim())
+        .filter(Boolean);
+    const bookStructuredData: Record<string, unknown> = {
+        "@context": "https://schema.org",
+        "@type": "Book",
+        name: String(currentBookDetails.title ?? ""),
+        url: `https://shoppersocean.com/book/${encodeURIComponent(String(currentBookDetails.id))}`,
+    };
+    if (currentBookDetails.description) bookStructuredData.description = String(currentBookDetails.description);
+    if (currentBookDetails.language) bookStructuredData.inLanguage = String(currentBookDetails.language);
+    if (bookAuthors.length === 1) {
+        bookStructuredData.author = { "@type": "Person", name: bookAuthors[0] };
+    } else if (bookAuthors.length > 1) {
+        bookStructuredData.author = bookAuthors.map((name) => ({ "@type": "Person", name }));
+    }
+    if (images.length) {
+        bookStructuredData.image = images.map((image) => {
+            try { return new URL(image, "https://shoppersocean.com").toString(); }
+            catch { return image; }
+        });
+    }
+    const pageCount = Number(currentBookDetails.pages);
+    if (Number.isFinite(pageCount) && pageCount > 0) bookStructuredData.numberOfPages = pageCount;
+    if (currentBookDetails.published_date) {
+        const publishedDate = String(currentBookDetails.published_date).trim();
+        if (/^\\d{4}-\\d{2}-\\d{2}$/.test(publishedDate)) bookStructuredData.datePublished = publishedDate;
+    }
+    const safeBookStructuredData = JSON.stringify(bookStructuredData).replace(/</g, "\\u003c");
 
     return <div className="min-h-screen bg-slate-50 text-slate-900">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeBookStructuredData }} />
         <Header />
         <div><AuthorApplicationBanner /></div>
         <section className="py-12 bg-white">
