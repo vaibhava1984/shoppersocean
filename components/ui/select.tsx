@@ -26,7 +26,7 @@ function useDropdownRevealRef<T extends HTMLElement>(forwardedRef: React.Forward
       const items = Array.from(node.querySelectorAll<HTMLElement>('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]'))
       const total = items.length
       items.forEach((item, index) => {
-        const delay = total > 3 ? (4.5 * index / Math.max(1, total - 1)) : (0.08 * index)
+        const delay = 0.5 * index
         item.style.setProperty("--dropdown-item-delay", `${delay}s`)
       })
     }

@@ -40,7 +40,7 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
   const sortedAuthors = [...authors].sort((a, b) => a.name.localeCompare(b.name))
   const sortedLanguages = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...languages])).sort((a, b) => a.localeCompare(b))
   const activeItemsCount = open === "genre" ? SUPPORTED_BOOK_GENRES.length : open === "author" ? Math.max(1, sortedAuthors.length) : sortedLanguages.length
-  const revealStyle = (index: number) => ({ "--dropdown-item-delay": `${activeItemsCount > 3 ? 4.5 * index / Math.max(1, activeItemsCount - 1) : 0.08 * index}s` } as React.CSSProperties)
+  const revealStyle = (index: number) => ({ "--dropdown-item-delay": `${0.5 * index}s` } as React.CSSProperties)
 
   return (
     <div ref={menuRef} className="mx-auto mt-3 w-full max-w-3xl px-1 pb-8">
