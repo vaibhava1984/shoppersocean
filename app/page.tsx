@@ -38,7 +38,7 @@ export default async function LandingPage() {
       <div>
         <HeroSection
           title="Shoppers Ocean"
-          subtitle="One World. Many Languages. Amazing E-books. Beautiful Stories."
+          subtitle="One World. Many Languages. Endless Flipbooks."
           welcomeName={user?.firstName || undefined}
           isAdmin={user?.publicMetadata?.userrole === "ADMIN"}
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
@@ -68,8 +68,8 @@ export default async function LandingPage() {
               {n:"07",icon:"👀",title:"Memory & Observation",desc:"Notice details, remember patterns and match pairs.",activities:"Memory Match · Sequence Recall",href:"/entertainment#memory-observation",tone:"border-cyan-100",iconTone:"bg-cyan-50 text-cyan-700"},
               {n:"08",icon:"📚",title:"Explore Flipbooks",desc:"Travel through stories and languages in a few taps.",activities:"Short Reads · World Languages",href:"/bookShelf",tone:"border-sky-100",iconTone:"bg-sky-50 text-sky-700"}
             ].map((item) => (
-              <Link key={item.n} href={item.href} prefetch={item.href==="/bookShelf"?undefined:false} className={`group relative flex min-h-[224px] flex-col overflow-hidden rounded-2xl border ${item.tone} bg-white p-5 shadow-[0_5px_22px_rgba(30,64,175,0.06)] transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_14px_32px_rgba(30,64,175,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:p-6`}>
-                <span className="absolute right-5 top-4 text-xs font-extrabold tracking-widest not-italic text-slate-300">{item.n}</span>
+              <Link key={item.n} href={item.href} prefetch={item.href==="/bookShelf"?undefined:false} className={`group relative flex min-h-[244px] flex-col overflow-hidden rounded-[1.6rem] border ${item.tone} bg-white/95 p-5 shadow-[0_8px_28px_rgba(30,64,175,0.08)] transition duration-300 hover:-translate-y-2 hover:scale-[1.015] hover:border-blue-300 hover:shadow-[0_22px_48px_rgba(30,64,175,0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:p-6`}>
+                <span aria-hidden="true" className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-gradient-to-br from-blue-100/70 to-cyan-100/20 blur-2xl transition-transform duration-500 group-hover:scale-150" /><span className="absolute right-5 top-4 rounded-full bg-slate-50 px-2.5 py-1 text-[10px] font-extrabold tracking-[0.18em] not-italic text-slate-400">{item.n} / 08</span>
                 <span className={`flex h-14 w-14 items-center justify-center rounded-2xl ${item.iconTone} text-3xl transition duration-300 group-hover:scale-110`} aria-hidden="true">{item.icon}</span>
                 <h3 className="mt-4 text-xl font-bold not-italic tracking-tight text-slate-800">{item.title}</h3>
                 <p className="mt-2 text-sm not-italic leading-6 text-slate-600">{item.desc}</p>
