@@ -25,14 +25,14 @@ export default async function LandingPage() {
       <div>
         <HeroSection
           title="Shoppers Ocean"
-          subtitle="Play Bold. Think Deeper. Discover More."
+          subtitle="Play. Connect. Compete. Your Next Favourite Escape Starts Here."
           welcomeName={user?.firstName || undefined}
           isAdmin={user?.publicMetadata?.userrole === "ADMIN"}
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
           buttonText="Explore Flipbooks"
           buttonLink="/bookShelf"
-          imageSrc="https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1200&q=85"
-          imageAlt="Vibrant digital entertainment and interactive experiences"
+          imageSrc="https://images.pexels.com/photos/17370284/pexels-photo-17370284.jpeg?auto=compress&cs=tinysrgb&w=1200"
+          imageAlt="Woman enjoying herself dancing in a colourful nightclub"
         />
       </div>
       <section className="relative overflow-hidden bg-gradient-to-br from-[#07152e] via-[#123d70] to-[#087e8c] py-14 sm:py-20">
