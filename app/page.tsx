@@ -25,14 +25,14 @@ export default async function LandingPage() {
       <div>
         <HeroSection
           title="Shoppers Ocean"
-          subtitle="One World. Many Languages. Endless Flipbooks."
+          subtitle="Play Bold. Think Deeper. Discover More."
           welcomeName={user?.firstName || undefined}
           isAdmin={user?.publicMetadata?.userrole === "ADMIN"}
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
           buttonText=" Embark on Your Adventure"
           buttonLink="/bookShelf"
-          imageSrc="/homepage_hero (1).jpeg"
-          imageAlt=" Embark on Your Adventure"
+          imageSrc="https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1200&q=85"
+          imageAlt="Vibrant digital entertainment and interactive experiences"
         />
       </div>
       <section className="relative overflow-hidden bg-gradient-to-br from-[#07152e] via-[#123d70] to-[#087e8c] py-14 sm:py-20">
@@ -48,26 +48,8 @@ export default async function LandingPage() {
         </div>
       </section>
       <div><AuthorApplicationBanner /></div>
-      <section className="bg-white px-4 py-12 sm:py-16">
-        <style>{`@keyframes shoppersOceanSeoZoom { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }`}</style>
-        <div className="mx-auto max-w-4xl text-center" style={{ animation: "shoppersOceanSeoZoom 5s ease-out both" }}>
-          <h2 className="mb-5 font-serif text-3xl font-bold tracking-tight text-slate-800 sm:text-4xl md:text-5xl">
-            Discover E-books Online in Multiple Languages
-          </h2>
-          <p className="mx-auto max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
-            Welcome to Shoppers Ocean, your destination for discovering and reading e-books online. Explore fascinating stories in many languages of the world, discover books by independent authors, and enjoy a world of reading in one place.
-          </p>
-        </div>
-      </section>
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8"><TestimonialSection /></div>
-      </section>
-      <section className="bg-white py-8 sm:py-10">
-        <div className="container mx-auto px-4 text-center">
-          <Link href="/author-policies" className="inline-flex min-h-11 items-center justify-center rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2">
-            Author Policies
-          </Link>
-        </div>
       </section>
       <section className="py-20 bg-white"><ContactForm user={user} /></section>
       <Footer />
