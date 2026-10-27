@@ -31,7 +31,7 @@ export default async function LandingPage() {
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
           buttonText="Explore Flipbooks"
           buttonLink="/bookShelf"
-          imageSrc="/1.jpg"
+          imageSrc="/1.jpg?rev=2"
           imageAlt="Shoppers Ocean featured hero image"
         />
       </div>
