@@ -100,7 +100,7 @@ async function saveBook(request: Request, id?: string) {
   const rawPages = body.pages;
   const pages = rawPages == null || String(rawPages).trim() === "" ? 0 : Number(rawPages);
   const genre = body.genre == null ? "" : String(body.genre);
-  if (rawPages != null && String(rawPages).trim() !== "" && (!Number.isFinite(pages) || pages <= 0)) {
+  if (!Number.isFinite(pages) || pages < 0) {
     return NextResponse.json({ error: "Enter a valid number of pages, or leave it blank until the PDF is uploaded." }, { status: 400 });
   }
   if (pages > 0 && pages <= 50 && genre !== "Short Books") {
