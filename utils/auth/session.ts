@@ -51,10 +51,10 @@ function rowToUser(r: any): AppUser {
 }
 
 export async function getCurrentUser(): Promise<AppUser | null> {
-  const token = (await cookies()).get(COOKIE_NAME)?.value;
-  if (!token) return null;
-
   try {
+    const token = (await cookies()).get(COOKIE_NAME)?.value;
+    if (!token) return null;
+
     const { env } = await getCloudflareContext();
     const db = (env as any).DB as D1Database | undefined;
     const jwtSecret = (env as any).JWT_SECRET as string | undefined;
