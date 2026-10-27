@@ -31,7 +31,9 @@ function parseImages(value: unknown): string[] {
   return [];
 }
 
-export default async function PublicBooksPage() {
+export default async function PublicBooksPage({ searchParams }: { searchParams: Promise<{ language?: string }> }) {
+  const params = await searchParams;
+  const selectedLanguage = String(params.language ?? "").trim();
   const db = getD1();
   let books: Record<string, any>[] = [];
 
@@ -60,6 +62,9 @@ export default async function PublicBooksPage() {
     });
   }
 
+  const languages = Array.from(new Set(books.map((book) => String(book.language ?? "").trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+  const catalogueBooks = selectedLanguage ? books.filter((book) => String(book.language ?? "").trim().toLowerCase() === selectedLanguage.toLowerCase()) : books;
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header />
@@ -74,12 +79,22 @@ export default async function PublicBooksPage() {
             </p>
             {books.length > 0 ? (
               <>
-                <p className="mb-6 text-sm text-slate-500">{books.length} books in the catalogue</p>
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {books.map((book) => (
-                    <BookCard key={book.id} book={book} />
-                  ))}
-                </div>
+                <p className="mb-3 text-sm text-slate-500">{catalogueBooks.length} {catalogueBooks.length === 1 ? "book" : "books"} in the catalogue</p>
+                <form action="/books" method="get" className="mb-6 flex flex-col gap-3 rounded-2xl border border-blue-100 bg-blue-50/70 p-3 sm:flex-row sm:items-center sm:p-4">
+                  <label htmlFor="catalogue-language" className="shrink-0 text-sm font-semibold text-slate-800">Choose your language</label>
+                  <select id="catalogue-language" name="language" defaultValue={selectedLanguage} className="h-11 min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+                    <option value="">All languages</option>
+                    {languages.map((language) => <option key={language} value={language}>{language}</option>)}
+                  </select>
+                  <button type="submit" className="inline-flex h-11 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">Show books</button>
+                </form>
+                {catalogueBooks.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {catalogueBooks.map((book) => <BookCard key={book.id} book={book} />)}
+                  </div>
+                ) : (
+                  <p className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm text-slate-600">No books are currently available in {selectedLanguage}. Please choose another language.</p>
+                )}
               </>
             ) : (
               <p className="rounded-lg border border-slate-200 bg-slate-50 p-6 text-slate-600">
