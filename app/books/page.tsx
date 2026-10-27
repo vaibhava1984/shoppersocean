@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BookCard from "@/components/BookCard";
 import { getD1 } from "@/utils/cloudflare/d1";
+import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const metadata: Metadata = {
   title: "Discover E-books Online in Multiple Languages | Shoppers Ocean",
@@ -33,7 +35,8 @@ function parseImages(value: unknown): string[] {
 
 export default async function PublicBooksPage({ searchParams }: { searchParams: Promise<{ language?: string }> }) {
   const params = await searchParams;
-  const selectedLanguage = String(params.language ?? "").trim();
+  const selectedLanguageParam = String(params.language ?? "").trim();
+  const selectedLanguage = selectedLanguageParam.toLowerCase() === "all" ? "" : selectedLanguageParam;
   const db = getD1();
   let books: Record<string, any>[] = [];
 
@@ -62,7 +65,7 @@ export default async function PublicBooksPage({ searchParams }: { searchParams: 
     });
   }
 
-  const languages = Array.from(new Set(books.map((book) => String(book.language ?? "").trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+  const languages = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...books.map((book) => String(book.language ?? "").trim()).filter(Boolean)])).sort((a, b) => a.localeCompare(b));
   const catalogueBooks = selectedLanguage ? books.filter((book) => String(book.language ?? "").trim().toLowerCase() === selectedLanguage.toLowerCase()) : books;
 
   return (
@@ -80,12 +83,17 @@ export default async function PublicBooksPage({ searchParams }: { searchParams: 
             {books.length > 0 ? (
               <>
                 <p className="mb-3 text-sm text-slate-500">{catalogueBooks.length} {catalogueBooks.length === 1 ? "book" : "books"} in the catalogue</p>
-                <form action="/books" method="get" className="mb-6 flex flex-col gap-3 rounded-2xl border border-blue-100 bg-blue-50/70 p-3 sm:flex-row sm:items-center sm:p-4">
-                  <label htmlFor="catalogue-language" className="shrink-0 text-sm font-semibold text-slate-800">Choose your language</label>
-                  <select id="catalogue-language" name="language" defaultValue={selectedLanguage} className="h-11 min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
-                    <option value="">All languages</option>
-                    {languages.map((language) => <option key={language} value={language}>{language}</option>)}
-                  </select>
+                <form action="/books" method="get" className="mb-7 flex flex-col gap-3 rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white p-4 shadow-sm sm:flex-row sm:items-center sm:p-5">
+                  <label htmlFor="catalogue-language" className="shrink-0 font-sans text-base font-bold not-italic text-slate-900">Choose your language</label>
+                  <Select name="language" defaultValue={selectedLanguage || "all"}>
+                    <SelectTrigger id="catalogue-language" aria-label="Choose your language" className="h-14 min-w-0 flex-1 rounded-2xl border-2 border-blue-200 bg-white px-4 text-base font-semibold text-slate-900 shadow-sm transition hover:border-blue-400 focus:ring-2 focus:ring-blue-100">
+                      <SelectValue placeholder="Choose a language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All languages</SelectItem>
+                      {languages.map((language) => <SelectItem key={language} value={language}>{language}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
                   <button type="submit" className="inline-flex h-11 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">Show books</button>
                 </form>
                 {catalogueBooks.length > 0 ? (
