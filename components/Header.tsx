@@ -2,7 +2,6 @@ import { getCurrentUser } from "@/utils/auth/session";
 import Link from "next/link";
 import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
 import SiteSearch from "@/components/SiteSearch"
-import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation"
 import HeaderAccountMenu from "@/components/HeaderAccountMenu";
 import HeaderAuthButtons from "@/components/HeaderAuthButtons";
 import YourBooksNavigation from "@/components/YourBooksNavigation";
@@ -11,11 +10,11 @@ const navigationItems = [
   ["/", "Home"],
   ["/bookShelf", "Your Books"],
   ["/about", "About"],
+  ["/read-ebooks", "Read E-books"],
 ] as const;
 
 type HeaderProps = {
   user?: Awaited<ReturnType<typeof getCurrentUser>>
-  categoryNavigation?: { authors: { author_id: string; name: string }[]; languages: string[] }
 }
 
 export default async function Header({ user, categoryNavigation }: HeaderProps) {
@@ -69,9 +68,6 @@ export default async function Header({ user, categoryNavigation }: HeaderProps) 
               )}
             </div>
             <SiteSearch />
-            {categoryNavigation && (
-              <HomepageCategoryNavigation authors={categoryNavigation.authors} languages={categoryNavigation.languages} />
-            )}
           </div>
         </div>
       </nav>
