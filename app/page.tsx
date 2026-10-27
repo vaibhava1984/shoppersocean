@@ -17,8 +17,8 @@ import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages";
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Shoppers Ocean – Read E-books Online in Multiple Languages',
-  description: 'Discover and read e-books online in multiple languages at Shoppers Ocean. Explore fascinating stories, discover books by independent authors, and enjoy reading from around the world.',
+  title: 'Read Digital Flipbooks & E-books in Multiple Languages',
+  description: 'Discover digital flipbooks and e-books in multiple languages at Shoppers Ocean. Explore stories from independent authors, browse books by language, and enjoy reading from around the world.',
 }
 
 export default async function LandingPage() {
