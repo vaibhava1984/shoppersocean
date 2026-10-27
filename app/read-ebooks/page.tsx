@@ -52,7 +52,6 @@ export default async function ReadEbooksPage() {
           <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base">Use the book buttons above to browse by genre, author, or language.</p>
         </div>
       </section>
-      <section className="bg-white px-4 py-10"><div className="mx-auto max-w-4xl text-center"><h2 className="font-serif text-3xl font-black text-slate-800">Discover E-books Online in Multiple Languages</h2><p className="mx-auto mt-3 max-w-3xl text-base leading-7 text-slate-600">Explore fascinating stories from independent authors, browse by language, and enjoy a world of reading in one place.</p></div></section>
       <section id="trending-books" className="scroll-mt-32 bg-white py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="mb-8 text-center font-serif text-2xl font-black text-slate-800 sm:mb-10 sm:text-3xl">Trending Books</h2>
