@@ -47,7 +47,7 @@ export default async function CreateYourFlipbookPage() {
           {(showRegisterButton || showSubmitButton) && (
             <div className="mt-5">
               <Link href={showSubmitButton ? "/submit-your-book" : "/author-policies"} className="inline-flex min-h-11 items-center justify-center rounded-md bg-green-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2">
-                {showSubmitButton ? "Submit Your Book" : "Read the Author Policies and Register"}
+                {showSubmitButton ? "Submit Your Book" : "Register as an Author"}
               </Link>
             </div>
           )}
