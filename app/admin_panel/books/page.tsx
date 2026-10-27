@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import AddBookPopup from "./AddBookPopup";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -24,13 +23,12 @@ export default function Books() {
     const [showAddForm, setShowAddForm] = useState(false);
     const [showEditForm, setShowEditForm] = useState(false);
     const [showViewAll, setShowViewAll] = useState(true);
-    const [showColumnSelector, setShowColumnSelector] = useState(false);
     const [selectedBook, setSelectedBook] = useState<BookType | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
     const [bookToDelete, setBookToDelete] = useState<BookType | null>(null);
 
-    const [selectedColumns, setSelectedColumns] = useState<any>(new Set(['title', 'author_name', 'language']));
+    const [selectedColumns] = useState<any>(new Set(['title', 'author_name', 'language', 'pages']));
 
     const availableColumns: Column[] = [
         { key: 'title', label: 'Title' },
@@ -101,11 +99,14 @@ export default function Books() {
                                 <CardTitle>Books Management</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <div className="flex justify-between mb-4">
-                                    <div className="space-x-2">
-                                        <Button onClick={() => setShowAddForm(true)}>Add New Book</Button>
-                                        <Button onClick={() => setShowColumnSelector(true)}>Columns to Display</Button>
+                                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <h2 className="text-lg font-bold text-slate-900">Your book catalogue</h2>
+                                        <p className="mt-1 text-sm text-slate-500">Manage book details, language, code names, and prices.</p>
                                     </div>
+                                    <Button onClick={() => setShowAddForm(true)} className="h-11 w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg sm:w-auto">
+                                        <span className="mr-2 text-lg leading-none">＋</span> Add New Book
+                                    </Button>
                                 </div>
                                 <Input
                                     placeholder="Search by title, author, language, or publisher"
@@ -125,7 +126,10 @@ export default function Books() {
                                                     <h3 className="break-words text-sm font-bold leading-snug text-slate-900">{book.title}</h3>
                                                     <p className="mt-1 text-xs text-slate-600">{book.author_name || "Author not set"} · {book.language || "Language not set"}</p>
                                                 </div>
-                                                <span className="shrink-0 rounded-full bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700">{book.pages || "—"} flipbook pages</span>
+                                                <div className="shrink-0 text-right">
+                                                    <span className="block rounded-full bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700">{book.pages || "—"} flipbook pages</span>
+                                                    {book.code_name && <span className="mt-1 block max-w-28 break-words text-[10px] font-medium leading-tight text-slate-500">{book.code_name}</span>}
+                                                </div>
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-2">
                                                 {([
@@ -166,7 +170,7 @@ export default function Books() {
                                             <TableRow key={book.id}>
                                                 {Array.from(selectedColumns).map((column, columnIndex) => (
                                                     <TableCell key={`${column}_${columnIndex}`}>
-                                                        {column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : column === "published_date" && book[column] ? (String(book[column]).match(/^(\d{4})-(\d{2})-(\d{2})$/) ? `${String(book[column]).slice(8, 10)}-${String(book[column]).slice(5, 7)}-${String(book[column]).slice(0, 4)}` : book[column]) : book[column]}
+                                                        {column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : column === "published_date" && book[column] ? (String(book[column]).match(/^(\d{4})-(\d{2})-(\d{2})$/) ? `${String(book[column]).slice(8, 10)}-${String(book[column]).slice(5, 7)}-${String(book[column]).slice(0, 4)}` : book[column]) : column === "pages" ? <div className="min-w-24"><span className="block">{book.pages || "—"}</span>{book.code_name && <span className="mt-0.5 block max-w-32 break-words text-[10px] leading-tight text-slate-500">{book.code_name}</span>}</div> : book[column]}
                                                     </TableCell>
                                                 ))}
                                                 <TableCell>
@@ -226,34 +230,6 @@ export default function Books() {
                                         }}
                                     />
                                 )}
-                            </DialogContent>
-                        </Dialog>
-
-                        <Dialog open={showColumnSelector} onOpenChange={setShowColumnSelector}>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Select Columns</DialogTitle>
-                                </DialogHeader>
-                                <div className="grid grid-cols-2 gap-4">
-                                    {availableColumns.map((column) => (
-                                        <div key={column.key} className="flex items-center space-x-2">
-                                            <Checkbox
-                                                id={column.key}
-                                                checked={selectedColumns.has(column.key)}
-                                                onCheckedChange={(checked) => {
-                                                    const newColumns = new Set(selectedColumns);
-                                                    if (checked) {
-                                                        newColumns.add(column.key);
-                                                    } else {
-                                                        newColumns.delete(column.key);
-                                                    }
-                                                    setSelectedColumns(newColumns);
-                                                }}
-                                            />
-                                            <label htmlFor={column.key}>{column.label}</label>
-                                        </div>
-                                    ))}
-                                </div>
                             </DialogContent>
                         </Dialog>
 
