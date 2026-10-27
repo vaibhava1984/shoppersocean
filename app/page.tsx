@@ -62,7 +62,7 @@ export default async function LandingPage() {
               { icon: "🏆", title: "Daily Challenge", description: "Try a brain teaser.", href: "/entertainment#daily-challenge" },
               { icon: "📚", title: "Explore Flipbooks", description: "Read stories in many languages.", href: "/bookShelf" },
             ].map((item) => (
-              <Link key={item.title} href={item.href} className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-md">
+              <Link key={item.title} href={item.href} prefetch={item.href === "/bookShelf" ? undefined : false} className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-md">
                 <span className="text-3xl" aria-hidden="true">{item.icon}</span>
                 <h3 className="mt-3 text-lg font-extrabold not-italic text-slate-900 group-hover:text-blue-700">{item.title}</h3>
                 <p className="mt-2 text-sm not-italic leading-relaxed text-slate-600">{item.description}</p>
@@ -70,7 +70,7 @@ export default async function LandingPage() {
               </Link>
             ))}
           </div>
-          <div className="mt-6 text-center"><Link href="/entertainment" className="inline-flex rounded-xl bg-blue-600 px-6 py-3 font-bold not-italic text-white shadow-sm hover:bg-blue-700">Open Entertainment Hub</Link></div>
+          <div className="mt-6 text-center"><Link href="/entertainment" prefetch={false} className="inline-flex rounded-xl bg-blue-600 px-6 py-3 font-bold not-italic text-white shadow-sm hover:bg-blue-700">Open Entertainment Hub</Link></div>
         </div>
       </section>
       <div><AuthorApplicationBanner /></div>
