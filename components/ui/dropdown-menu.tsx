@@ -5,6 +5,33 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { cn } from "@/lib/utils"
 import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "@radix-ui/react-icons"
 
+
+function useDropdownRevealRef<T extends HTMLElement>(forwardedRef: React.ForwardedRef<T>) {
+  const localRef = React.useRef<T | null>(null)
+  const setRef = React.useCallback((node: T | null) => {
+    localRef.current = node
+    if (typeof forwardedRef === "function") forwardedRef(node)
+    else if (forwardedRef) (forwardedRef as React.MutableRefObject<T | null>).current = node
+  }, [forwardedRef])
+  React.useEffect(() => {
+    const node = localRef.current
+    if (!node) return
+    const applyDelays = () => {
+      const items = Array.from(node.querySelectorAll<HTMLElement>('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]'))
+      const total = items.length
+      items.forEach((item, index) => {
+        const delay = total > 3 ? (4.5 * index / Math.max(1, total - 1)) : (0.08 * index)
+        item.style.setProperty("--dropdown-item-delay", `${delay}s`)
+      })
+    }
+    applyDelays()
+    const observer = new MutationObserver(applyDelays)
+    observer.observe(node, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [])
+  return setRef
+}
+
 const DropdownMenu = DropdownMenuPrimitive.Root
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
@@ -42,26 +69,31 @@ DropdownMenuSubTrigger.displayName =
 const DropdownMenuSubContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>
->(({ className, ...props }, ref) => (
+>(({ className, ...props }, ref) => {
+  const contentRef = useDropdownRevealRef(ref)
+  return (
   <DropdownMenuPrimitive.SubContent
-    ref={ref}
+    ref={contentRef}
     className={cn(
       "dropdown-open-motion z-50 min-w-[8rem] overflow-hidden rounded-2xl border border-slate-200 bg-white p-1.5 text-slate-900 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
       className
     )}
     {...props}
   />
-))
+  )
+})
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName
 
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
+>(({ className, sideOffset = 4, ...props }, ref) => {
+  const contentRef = useDropdownRevealRef(ref)
+  return (
   <DropdownMenuPrimitive.Portal>
     <DropdownMenuPrimitive.Content
-      ref={ref}
+      ref={contentRef}
       side="bottom"
       avoidCollisions={false}
       sideOffset={sideOffset}
@@ -73,7 +105,8 @@ const DropdownMenuContent = React.forwardRef<
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
-))
+  )
+})
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
 
 const DropdownMenuItem = React.forwardRef<

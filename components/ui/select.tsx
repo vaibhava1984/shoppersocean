@@ -11,6 +11,33 @@ import * as SelectPrimitive from "@radix-ui/react-select"
 
 import { cn } from "@/lib/utils"
 
+
+function useDropdownRevealRef<T extends HTMLElement>(forwardedRef: React.ForwardedRef<T>) {
+  const localRef = React.useRef<T | null>(null)
+  const setRef = React.useCallback((node: T | null) => {
+    localRef.current = node
+    if (typeof forwardedRef === "function") forwardedRef(node)
+    else if (forwardedRef) (forwardedRef as React.MutableRefObject<T | null>).current = node
+  }, [forwardedRef])
+  React.useEffect(() => {
+    const node = localRef.current
+    if (!node) return
+    const applyDelays = () => {
+      const items = Array.from(node.querySelectorAll<HTMLElement>('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]'))
+      const total = items.length
+      items.forEach((item, index) => {
+        const delay = total > 3 ? (4.5 * index / Math.max(1, total - 1)) : (0.08 * index)
+        item.style.setProperty("--dropdown-item-delay", `${delay}s`)
+      })
+    }
+    applyDelays()
+    const observer = new MutationObserver(applyDelays)
+    observer.observe(node, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [])
+  return setRef
+}
+
 const Select = SelectPrimitive.Root
 
 const SelectGroup = SelectPrimitive.Group
@@ -75,10 +102,12 @@ SelectScrollDownButton.displayName =
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, position = "popper", sideOffset = 6, collisionPadding = 12, ...props }, ref) => (
+>(({ className, children, position = "popper", sideOffset = 6, collisionPadding = 12, ...props }, ref) => {
+  const contentRef = useDropdownRevealRef(ref)
+  return (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
-      ref={ref}
+      ref={contentRef}
       className={cn(
         "dropdown-open-motion relative z-[1000] max-h-[var(--radix-select-content-available-height)] min-w-[12rem] overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-2xl ring-1 ring-blue-100/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 duration-200 font-sans not-italic",
         position === "popper" &&
@@ -105,7 +134,8 @@ const SelectContent = React.forwardRef<
       <SelectScrollDownButton />
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
-))
+  )
+})
 SelectContent.displayName = SelectPrimitive.Content.displayName
 
 const SelectLabel = React.forwardRef<

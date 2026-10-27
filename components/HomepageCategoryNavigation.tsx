@@ -39,6 +39,8 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
   }
   const sortedAuthors = [...authors].sort((a, b) => a.name.localeCompare(b.name))
   const sortedLanguages = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...languages])).sort((a, b) => a.localeCompare(b))
+  const activeItemsCount = open === "genre" ? SUPPORTED_BOOK_GENRES.length : open === "author" ? Math.max(1, sortedAuthors.length) : sortedLanguages.length
+  const revealStyle = (index: number) => ({ "--dropdown-item-delay": `${activeItemsCount > 3 ? 4.5 * index / Math.max(1, activeItemsCount - 1) : 0.08 * index}s` } as React.CSSProperties)
 
   return (
     <div ref={menuRef} className="mx-auto mt-3 w-full max-w-3xl px-1 pb-8">
@@ -55,19 +57,19 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
       </div>
 
       {open && (
-        <div className="category-dropdown-panel mt-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
+        <div className="category-dropdown-panel mt-2 rounded-2xl border p-2 shadow-xl">
           {open === "genre" && SUPPORTED_BOOK_GENRES.map((genre) => (
-            <Link key={genre} onClick={() => setOpen(null)} href={makeHref("genre", genre)} className="mb-1 block rounded-lg border border-transparent px-4 py-2.5 font-serif text-sm font-bold tracking-wide text-[#111111] transition-all hover:border-slate-200 hover:bg-white hover:text-black hover:shadow-sm">
+            <Link key={genre} onClick={() => setOpen(null)} href={makeHref("genre", genre)} style={revealStyle(SUPPORTED_BOOK_GENRES.indexOf(genre))} className="category-dropdown-item mb-1 block rounded-lg border border-transparent px-4 py-2.5 text-sm font-semibold tracking-wide transition-all hover:shadow-sm">
               {genre}
             </Link>
           ))}
           {open === "author" && (authors.length > 0 ? sortedAuthors.map((author) => (
-            <Link key={author.author_id} onClick={() => setOpen(null)} href={makeHref("author", author.author_id)} className="block rounded-lg px-4 py-2.5 font-serif text-sm font-bold tracking-wide text-[#111111] transition-colors hover:bg-white hover:text-black">
+            <Link key={author.author_id} onClick={() => setOpen(null)} href={makeHref("author", author.author_id)} style={revealStyle(sortedAuthors.findIndex((item) => item.author_id === author.author_id))} className="category-dropdown-item block rounded-lg px-4 py-2.5 text-sm font-semibold tracking-wide transition-colors">
               {author.name}
             </Link>
-          )) : <p className="px-4 py-3 font-serif text-sm font-semibold text-[#111111]">No authors available yet.</p>)}
+          )) : <p className="category-dropdown-item px-4 py-3 text-sm font-semibold">No authors available yet.</p>)}
           {open === "language" && sortedLanguages.map((language) => (
-            <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black hover:bg-blue-50">
+            <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} style={revealStyle(sortedLanguages.indexOf(language))} className="category-dropdown-item block rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors">
               {language}
             </Link>
           ))}
