@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/utils/auth/session";
 import { getD1 } from "@/utils/cloudflare/d1";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import HomepageCategoryNavigation from "@/components/HomepageCategoryNavigation";
 import TrendingBooks from "@/components/trending_books";
 import BooksCollections from "@/components/books_collections";
 import { getHomepageBooksServer } from "@/utils/homepageBooksServer";
@@ -29,7 +30,7 @@ export default async function ReadEbooksPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <Header user={user} categoryNavigation={{ authors, languages }} />
+      <Header user={user} />
       <section className="relative overflow-hidden bg-gradient-to-br from-[#07152e] via-[#123d70] to-[#087e8c] py-12 sm:py-16">
         <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-cyan-300/20 blur-3xl" />
         <div aria-hidden="true" className="pointer-events-none absolute -left-16 bottom-0 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl" />
@@ -45,6 +46,7 @@ export default async function ReadEbooksPage() {
       </section>
       <section className="bg-white px-4 py-7 sm:py-9">
         <div className="mx-auto max-w-5xl text-center">
+          <HomepageCategoryNavigation authors={authors} languages={languages} />
           <h2 className="font-serif text-2xl font-black text-slate-800 sm:text-3xl">Find Your Next Read</h2>
           <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base">Use the book buttons above to browse by genre, author, or language.</p>
         </div>
