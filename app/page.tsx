@@ -8,11 +8,8 @@ import AuthorApplicationBanner from './components/AuthorApplicationBanner';
 import TestimonialSection from './components/TestimonialSection';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer"
-import TrendingBooks from "@/components/trending_books";
-import BooksCollections from "@/components/books_collections";
 import HeroSection from "@/components/HeroSection";
 import EntertainmentHub from "@/components/EntertainmentHub";
-import { getHomepageBooksServer } from "@/utils/homepageBooksServer";
 import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages";
 
 export const dynamic = 'force-dynamic';
@@ -25,9 +22,8 @@ export const metadata = {
 export default async function LandingPage() {
   const db = getD1();
   if (!db) throw new Error("Cloudflare D1 is not available");
-  const [user, homepageBooks, authorsResult, languageRowsResult] = await Promise.all([
+  const [user, authorsResult, languageRowsResult] = await Promise.all([
     getCurrentUser(),
-    getHomepageBooksServer(),
     db.prepare("SELECT id AS author_id,name FROM authors WHERE COALESCE(is_deleted,0)=0 ORDER BY name ASC").all<{author_id:string;name:string}>(),
     db.prepare("SELECT language FROM books WHERE COALESCE(is_deleted,0)=0 AND language IS NOT NULL").all<{language:string}>(),
   ]);
