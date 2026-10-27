@@ -55,7 +55,7 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
       </div>
 
       {open && (
-        <div className="mt-2 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
+        <div className="category-dropdown-panel mt-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">
           {open === "genre" && SUPPORTED_BOOK_GENRES.map((genre) => (
             <Link key={genre} onClick={() => setOpen(null)} href={makeHref("genre", genre)} className="mb-1 block rounded-lg border border-transparent px-4 py-2.5 font-serif text-sm font-bold tracking-wide text-[#111111] transition-all hover:border-slate-200 hover:bg-white hover:text-black hover:shadow-sm">
               {genre}
