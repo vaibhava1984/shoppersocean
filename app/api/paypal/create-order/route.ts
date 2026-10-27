@@ -19,7 +19,6 @@ export async function POST(req: Request) {
     const country = String(
       req.headers.get("cf-ipcountry") ||
       req.headers.get("x-country-code") ||
-      identity.profile.country ||
       ""
     ).trim().toUpperCase();
     if (country === "IN" || country === "INDIA") {
