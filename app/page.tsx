@@ -11,7 +11,6 @@ import Footer from "@/components/Footer"
 import TrendingBooks from "@/components/trending_books";
 import BooksCollections from "@/components/books_collections";
 import HeroSection from "@/components/HeroSection";
-import PayPalHostedButtonBanner from "@/components/PayPalHostedButtonBanner";
 import { getHomepageBooksServer } from "@/utils/homepageBooksServer";
 import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages";
 
@@ -36,7 +35,6 @@ export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header user={user} categoryNavigation={{ authors, languages }} />
-      <PayPalHostedButtonBanner />
       <div>
         <HeroSection
           title="Shoppers Ocean"
