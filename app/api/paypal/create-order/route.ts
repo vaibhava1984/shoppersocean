@@ -15,6 +15,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Authentication required" }, { status: 401 });
     }
 
+    // Prefer Cloudflare's visitor geolocation. The profile country is a fallback only.
+    const country = String(
+      req.headers.get("cf-ipcountry") ||
+      req.headers.get("x-country-code") ||
+      ""
+    ).trim().toUpperCase();
+    if (country === "IN" || country === "INDIA") {
+      return NextResponse.json(
+        { error: "Customers in India must use the existing Razorpay checkout." },
+        { status: 400 }
+      );
+    }
+
     const db = getD1();
     if (!db) {
       return NextResponse.json({ error: "Cloudflare D1 is not available" }, { status: 503 });
