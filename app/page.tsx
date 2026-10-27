@@ -31,8 +31,8 @@ export default async function LandingPage() {
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
           buttonText="Explore Flipbooks"
           buttonLink="/bookShelf"
-          imageSrc=""
-          imageAlt=""
+          imageSrc="/1.jpg"
+          imageAlt="Shoppers Ocean featured hero image"
         />
       </div>
       <section className="relative overflow-hidden bg-gradient-to-br from-[#07152e] via-[#123d70] to-[#087e8c] py-14 sm:py-20">
