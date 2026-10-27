@@ -43,7 +43,7 @@ export async function ensurePaypalSchema(db: any) {
 
 export async function getPaypalCredentials() {
   // Resolve runtime secrets from the active Cloudflare Worker request context.
-  const { env } = await (await import("@opennextjs/cloudflare")).getCloudflareContext({ async: true });
+  const { env } = (await import("@opennextjs/cloudflare")).getCloudflareContext();
   const clientId = String((env as any).PAYPAL_CLIENT_ID || process.env.PAYPAL_CLIENT_ID || "").trim();
   const clientSecret = String((env as any).PAYPAL_CLIENT_SECRET || process.env.PAYPAL_CLIENT_SECRET || "").trim();
   if (!clientId || !clientSecret) {
