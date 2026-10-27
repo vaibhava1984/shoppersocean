@@ -128,7 +128,7 @@ export default function Books() {
                                                 </div>
                                                 <div className="shrink-0 text-right">
                                                     <span className="block rounded-full bg-blue-50 px-2 py-1 text-[11px] font-semibold text-blue-700">{book.pages || "—"} flipbook pages</span>
-                                                    {book.code_name && <span className="mt-1 block max-w-28 break-words text-[10px] font-medium leading-tight text-slate-500">{book.code_name}</span>}
+                                                    {book.code_name && <span className="admin-book-code-name mt-1 inline-flex max-w-36 break-words rounded-md border border-slate-300 bg-slate-100 px-2 py-1 text-[11px] font-extrabold leading-tight text-slate-950 shadow-sm">{book.code_name}</span>}
                                                 </div>
                                             </div>
                                             <div className="mt-3 grid grid-cols-2 gap-2">
@@ -170,7 +170,7 @@ export default function Books() {
                                             <TableRow key={book.id}>
                                                 {Array.from(selectedColumns).map((column, columnIndex) => (
                                                     <TableCell key={`${column}_${columnIndex}`}>
-                                                        {column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : column === "published_date" && book[column] ? (String(book[column]).match(/^(\d{4})-(\d{2})-(\d{2})$/) ? `${String(book[column]).slice(8, 10)}-${String(book[column]).slice(5, 7)}-${String(book[column]).slice(0, 4)}` : book[column]) : column === "pages" ? <div className="min-w-24"><span className="block">{book.pages || "—"}</span>{book.code_name && <span className="mt-0.5 block max-w-32 break-words text-[10px] leading-tight text-slate-500">{book.code_name}</span>}</div> : book[column]}
+                                                        {column === "author_name" ? book?.authors?.name ?? `${book[column]} 000` : column === "published_date" && book[column] ? (String(book[column]).match(/^(\d{4})-(\d{2})-(\d{2})$/) ? `${String(book[column]).slice(8, 10)}-${String(book[column]).slice(5, 7)}-${String(book[column]).slice(0, 4)}` : book[column]) : column === "pages" ? <div className="min-w-24"><span className="block">{book.pages || "—"}</span>{book.code_name && <span className="admin-book-code-name mt-1 block max-w-36 break-words rounded-md border border-slate-300 bg-slate-100 px-2 py-1 text-[11px] font-extrabold leading-tight text-slate-950 shadow-sm">{book.code_name}</span>}</div> : book[column]}
                                                     </TableCell>
                                                 ))}
                                                 <TableCell>
