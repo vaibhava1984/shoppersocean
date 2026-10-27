@@ -8,32 +8,29 @@ export async function ensurePaypalSchema(db: any) {
   const pending = pendingDatabases.get(db);
   if (pending) return pending;
   const setup = (async () => {
-  const statements = [
-    "ALTER TABLE orders ADD COLUMN paypal_order_id TEXT",
-    "ALTER TABLE payments ADD COLUMN paypal_order_id TEXT",
-    "ALTER TABLE payments ADD COLUMN paypal_capture_id TEXT",
-    "ALTER TABLE payments ADD COLUMN original_amount REAL",
-    "ALTER TABLE payments ADD COLUMN original_currency TEXT",
-    "ALTER TABLE payments ADD COLUMN payment_method TEXT",
-    "CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_paypal_order_id ON orders(paypal_order_id) WHERE paypal_order_id IS NOT NULL",
-    "CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_paypal_order_id ON payments(paypal_order_id) WHERE paypal_order_id IS NOT NULL",
-    "CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_paypal_capture_id ON payments(paypal_capture_id) WHERE paypal_capture_id IS NOT NULL",
-  ];
+    const statements = [
+      "ALTER TABLE orders ADD COLUMN paypal_order_id TEXT",
+      "ALTER TABLE payments ADD COLUMN paypal_order_id TEXT",
+      "ALTER TABLE payments ADD COLUMN paypal_capture_id TEXT",
+      "ALTER TABLE payments ADD COLUMN original_amount REAL",
+      "ALTER TABLE payments ADD COLUMN original_currency TEXT",
+      "ALTER TABLE payments ADD COLUMN payment_method TEXT",
+      "CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_paypal_order_id ON orders(paypal_order_id) WHERE paypal_order_id IS NOT NULL",
+      "CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_paypal_order_id ON payments(paypal_order_id) WHERE paypal_order_id IS NOT NULL",
+      "CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_paypal_capture_id ON payments(paypal_capture_id) WHERE paypal_capture_id IS NOT NULL",
+    ];
 
-  for (const statement of statements) {
-    try {
-      await db.prepare(statement).run();
-    } catch (error) {
-      const message = String(error).toLowerCase();
-      if (
-        message.includes("duplicate column") ||
-        message.includes("already exists")
-      ) {
-        continue;
+    for (const statement of statements) {
+      try {
+        await db.prepare(statement).run();
+      } catch (error) {
+        const message = String(error).toLowerCase();
+        if (message.includes("duplicate column") || message.includes("already exists")) {
+          continue;
+        }
+        throw error;
       }
-      throw error;
     }
-  }
   })();
   pendingDatabases.set(db, setup);
   try {
@@ -45,8 +42,8 @@ export async function ensurePaypalSchema(db: any) {
 }
 
 export async function getPaypalCredentials() {
-  // Read secrets from the active Cloudflare Worker environment at request time.
-  const { env } = await (await import("@opennextjs/cloudflare")).getCloudflareContext();
+  // Resolve runtime secrets from the active Cloudflare Worker request context.
+  const { env } = await (await import("@opennextjs/cloudflare")).getCloudflareContext({ async: true });
   const clientId = String((env as any).PAYPAL_CLIENT_ID || process.env.PAYPAL_CLIENT_ID || "").trim();
   const clientSecret = String((env as any).PAYPAL_CLIENT_SECRET || process.env.PAYPAL_CLIENT_SECRET || "").trim();
   if (!clientId || !clientSecret) {
