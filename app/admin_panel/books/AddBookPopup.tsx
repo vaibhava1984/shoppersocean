@@ -536,17 +536,16 @@ export default function AddBookPopup(props: propsType) {
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="language">Language</Label>
-                        <select
-                            id="language"
-                            name="language"
-                            value={formData.language}
-                            onChange={(event) => setFormData({ ...formData, language: event.target.value })}
-                            className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                        >
-                            {languageOptions.map((language) => (
-                                <option key={language} value={language}>{language}</option>
-                            ))}
-                        </select>
+                        <Select name="language" value={formData.language} onValueChange={(value) => setFormData({ ...formData, language: value })}>
+                            <SelectTrigger id="language" aria-label="Book language" className="h-11 rounded-xl border-slate-300 bg-white font-sans not-italic text-slate-900 shadow-sm">
+                                <SelectValue placeholder="Choose language" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {languageOptions.map((language) => (
+                                    <SelectItem key={language} value={language}>{language}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
                     {/* <div className="space-y-2">
                         <Label htmlFor="publisher">Publisher</Label>
