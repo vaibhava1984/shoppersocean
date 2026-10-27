@@ -15,7 +15,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Authentication required" }, { status: 401 });
     }
 
-    const country = String(identity.profile.country || "").trim().toUpperCase();
+    // Prefer Cloudflare's visitor geolocation. The profile country is a fallback only.
+    const country = String(
+      req.headers.get("cf-ipcountry") ||
+      req.headers.get("x-country-code") ||
+      identity.profile.country ||
+      ""
+    ).trim().toUpperCase();
     if (country === "IN" || country === "INDIA") {
       return NextResponse.json(
         { error: "Customers in India must use the existing Razorpay checkout." },
