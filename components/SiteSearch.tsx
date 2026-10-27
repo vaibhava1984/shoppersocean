@@ -73,8 +73,8 @@ export default function SiteSearch() {
           onKeyDown={(event) => {
             if (event.key === "Escape") setOpen(false)
           }}
-          placeholder="Search books or authors..."
-          aria-label="Search books or authors"
+          placeholder="Search your favourite entertainment"
+          aria-label="Search your favourite entertainment"
           className="h-full min-w-0 flex-1 bg-transparent px-4 text-base text-slate-800 outline-none placeholder:text-slate-400"
         />
         <div className="flex h-full w-12 items-center justify-center text-slate-600" aria-hidden="true">
@@ -99,7 +99,7 @@ export default function SiteSearch() {
               ))}
             </div>
           ) : !loading ? (
-            <div className="px-4 py-3 text-sm text-slate-500">No matching books or authors found.</div>
+            <div className="px-4 py-3 text-sm text-slate-500">No matching results found.</div>
           ) : null}
         </div>
       )}
