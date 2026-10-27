@@ -6,9 +6,8 @@ export const revalidate = 0;
 
 export async function GET() {
   try {
-    // Cloudflare Worker secrets are runtime bindings, not reliably exposed
-    // through process.env in the OpenNext Worker runtime.
-    const { env } = await getCloudflareContext();
+    // Use the asynchronous OpenNext context API inside a request handler.
+    const { env } = await getCloudflareContext({ async: true });
     const clientId = String((env as any).PAYPAL_CLIENT_ID || process.env.PAYPAL_CLIENT_ID || "").trim();
 
     if (!clientId) {
