@@ -48,6 +48,31 @@ export default async function LandingPage() {
           imageAlt=" Embark on Your Adventure"
         />
       </div>
+      <section className="bg-slate-50 py-12 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 text-center">
+            <p className="text-sm font-extrabold uppercase tracking-[0.2em] not-italic text-blue-700">Shoppers Ocean Entertainment</p>
+            <h2 className="mt-2 text-3xl font-black not-italic text-slate-900 sm:text-4xl">Your World of Entertainment</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-base not-italic text-slate-600 sm:text-lg">Play, think, challenge yourself, and discover stories from around the world.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { icon: "🎮", title: "Play Games", description: "Free, quick browser games.", href: "/entertainment#play-games" },
+              { icon: "🧠", title: "Quizzes & Brain Challenges", description: "Test your knowledge and logic.", href: "/entertainment#brain-challenges" },
+              { icon: "🏆", title: "Daily Challenge", description: "Try a brain teaser.", href: "/entertainment#daily-challenge" },
+              { icon: "📚", title: "Explore Flipbooks", description: "Read stories in many languages.", href: "/bookShelf" },
+            ].map((item) => (
+              <Link key={item.title} href={item.href} className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-md">
+                <span className="text-3xl" aria-hidden="true">{item.icon}</span>
+                <h3 className="mt-3 text-lg font-extrabold not-italic text-slate-900 group-hover:text-blue-700">{item.title}</h3>
+                <p className="mt-2 text-sm not-italic leading-relaxed text-slate-600">{item.description}</p>
+                <span className="mt-4 inline-block text-sm font-bold not-italic text-blue-700">Explore →</span>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-6 text-center"><Link href="/entertainment" className="inline-flex rounded-xl bg-blue-600 px-6 py-3 font-bold not-italic text-white shadow-sm hover:bg-blue-700">Open Entertainment Hub</Link></div>
+        </div>
+      </section>
       <div><AuthorApplicationBanner /></div>
       <section className="bg-white px-4 py-12 sm:py-16">
         <style>{`@keyframes shoppersOceanSeoZoom { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }`}</style>
