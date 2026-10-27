@@ -88,6 +88,7 @@ export default function AddBookPopup(props: propsType) {
     });
 
     const [authorName, setAuthorName] = useState(''); // State for author name
+    const [selectedCoverFileNames, setSelectedCoverFileNames] = useState<string[]>([]);
 
     useEffect(() => {
         fetchAuthors();
@@ -310,6 +311,7 @@ export default function AddBookPopup(props: propsType) {
         const files = event.target.files;
         if (files) {
             const selectedFiles = Array.from(files).slice(0, 5); // Limit to 5 files
+            setSelectedCoverFileNames(selectedFiles.map((file) => file.name));
             const fileReaders = selectedFiles.map(file => {
                 return new Promise<string>((resolve) => {
                     const reader = new FileReader();
@@ -491,8 +493,19 @@ export default function AddBookPopup(props: propsType) {
                                 type="file"
                                 accept="image/*"
                                 multiple
+                                className="sr-only"
                                 onChange={handleFileChange}
                             />
+                            <label htmlFor="cover_images" className="flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100">
+                                {selectedCoverFileNames.length > 0 ? "Change cover image" : "Choose cover image"}
+                            </label>
+                            <p className="mt-1 break-words text-xs text-slate-600">
+                                {selectedCoverFileNames.length > 0
+                                    ? selectedCoverFileNames.join(", ")
+                                    : formData.cover_images?.length
+                                        ? "Cover image already saved"
+                                        : "No cover image selected"}
+                            </p>
                         </div>
                         {/* {console.log("yeah, formdata=>", formData)} */}
                         <div className='py-2'>
