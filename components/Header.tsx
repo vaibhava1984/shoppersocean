@@ -17,7 +17,7 @@ type HeaderProps = {
   user?: Awaited<ReturnType<typeof getCurrentUser>>
 }
 
-export default async function Header({ user, categoryNavigation }: HeaderProps) {
+export default async function Header({ user }: HeaderProps) {
   const sessionUser = user ?? await getCurrentUser()
   const currentUser = sessionUser ? {
     email: sessionUser.emailAddresses?.[0]?.emailAddress,
