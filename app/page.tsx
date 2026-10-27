@@ -31,8 +31,8 @@ export default async function LandingPage() {
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
           buttonText="Explore Flipbooks"
           buttonLink="/bookShelf"
-          imageSrc="/homepage_hero%20(1).jpeg"
-          imageAlt="Teenage girl playing a video game in the uploaded gaming setup"
+          imageSrc=""
+          imageAlt=""
         />
       </div>
       <section className="relative overflow-hidden bg-gradient-to-br from-[#07152e] via-[#123d70] to-[#087e8c] py-14 sm:py-20">
