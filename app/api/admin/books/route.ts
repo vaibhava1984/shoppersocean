@@ -95,9 +95,15 @@ async function saveBook(request: Request, id?: string) {
   if (!Number.isFinite(pages) || pages <= 0) {
     return NextResponse.json({ error: "A valid number of pages is required" }, { status: 400 });
   }
-  if (pages < 100 && genre !== "Short Books") {
+  if (pages <= 50 && genre !== "Short Books") {
     return NextResponse.json(
-      { error: "Not fit for full book. Submit in 'Short Books' genre." },
+      { error: "Books with 50 pages or fewer must be submitted in the 'Short Books' genre." },
+      { status: 400 }
+    );
+  }
+  if (pages > 50 && genre === "Short Books") {
+    return NextResponse.json(
+      { error: "Books with more than 50 pages must be submitted in a non-short-book genre." },
       { status: 400 }
     );
   }
