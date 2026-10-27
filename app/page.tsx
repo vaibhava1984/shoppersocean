@@ -1,6 +1,4 @@
 import { getCurrentUser } from "@/utils/auth/session";
-import { getD1 } from "@/utils/cloudflare/d1";
-import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card"
 import { Star } from 'lucide-react'
 import ContactForm from './components/ContactForm';
@@ -10,7 +8,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer"
 import HeroSection from "@/components/HeroSection";
 import EntertainmentHub from "@/components/EntertainmentHub";
-import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages";
 
 export const dynamic = 'force-dynamic';
 
@@ -20,18 +17,10 @@ export const metadata = {
 }
 
 export default async function LandingPage() {
-  const db = getD1();
-  if (!db) throw new Error("Cloudflare D1 is not available");
-  const [user, authorsResult, languageRowsResult] = await Promise.all([
-    getCurrentUser(),
-    db.prepare("SELECT id AS author_id,name FROM authors WHERE COALESCE(is_deleted,0)=0 ORDER BY name ASC").all<{author_id:string;name:string}>(),
-    db.prepare("SELECT language FROM books WHERE COALESCE(is_deleted,0)=0 AND language IS NOT NULL").all<{language:string}>(),
-  ]);
-  const authors = authorsResult.results ?? [];
-  const languages = Array.from(new Set([...SUPPORTED_BOOK_LANGUAGES, ...(languageRowsResult.results ?? []).map((row) => row.language).filter(Boolean)])).sort((a, b) => a.localeCompare(b));
+  const user = await getCurrentUser();
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
-      <Header user={user} categoryNavigation={{ authors, languages }} />
+      <Header user={user} />
       <div>
         <HeroSection
           title="Shoppers Ocean"
@@ -55,14 +44,6 @@ export default async function LandingPage() {
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-blue-50/85 sm:text-lg">Eight colourful worlds. Quick games, clever puzzles, quizzes and daily challenges. Pick one to open it—everything else gets out of your way.</p>
           </div>
           <EntertainmentHub />
-        </div>
-      </section>
-      <section className="relative overflow-hidden bg-white px-4 py-9 sm:py-12">
-        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
-          <p className="mb-4 text-sm font-semibold text-slate-600">Ready to explore stories from around the world?</p>
-          <Link href="/read-ebooks" className="inline-flex min-h-14 items-center justify-center gap-3 rounded-xl bg-blue-600 px-9 py-4 text-lg font-extrabold not-italic tracking-wide text-white shadow-lg shadow-blue-600/25 transition duration-200 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300">
-            📚 Read E-books <span aria-hidden="true">→</span>
-          </Link>
         </div>
       </section>
       <div><AuthorApplicationBanner /></div>
