@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 type Game = "tic"|"rps"|"memory"|"word"|"hidden"|"missing"|"sequence"|"odd"|"quiz"|"riddle"|"daily"|"recall"|"spot"|"books";
-const groups = [
+const groups: {id:string;icon:string;title:string;desc:string;games:[string,string][]}[] = [
 {id:"play-games",icon:"🎮",title:"Play Games",desc:"Quick interactive games",games:[["tic","Tic-Tac-Toe"],["rps","Rock, Paper, Scissors"]]},
 {id:"word-playground",icon:"🔤",title:"Word Playground",desc:"Play with letters and words",games:[["word","Word Scramble"],["hidden","Hidden Word"],["missing","Missing Letter"]]},
 {id:"brain-logic",icon:"🧠",title:"Brain & Logic Lab",desc:"Patterns, numbers and reasoning",games:[["sequence","Number Sequences"],["odd","Odd One Out"]]},
@@ -12,7 +12,7 @@ const groups = [
 {id:"daily-challenge",icon:"🏆",title:"Daily Challenge",desc:"One more puzzle to crack",games:[["daily","Today's Brain Teaser"]]},
 {id:"memory-observation",icon:"👀",title:"Memory & Observation",desc:"Test your attention and recall",games:[["memory","Memory Match"],["recall","Sequence Recall"],["spot","Spot the Different One"]]},
 {id:"explore-flipbooks",icon:"📚",title:"Explore Flipbooks",desc:"Discover stories across languages",games:[["books","Browse Flipbooks"]]}
-] as {id:string;icon:string;title:string;desc:string;games:[string,string][]}[];
+ ];
 const words=["PLANET","GARDEN","PUZZLE","OCEANS","CASTLE","POCKET"];
 const hidden=[["ORANGE","A citrus fruit and a colour"],["PLANET","Earth is one"],["GUITAR","A musical instrument with strings"],["CASTLE","A grand fortified building"]];
 const missing=[["C_T","CAT","A small furry pet"],["B_OK","BOOK","You can read one"],["ST_R","STAR","It shines at night"],["PL_NT","PLANT","A living thing that grows in soil"]];
