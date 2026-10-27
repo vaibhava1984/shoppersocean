@@ -56,7 +56,9 @@ export default async function Header({ user }: HeaderProps) {
           <div className="relative z-50 max-w-5xl mx-auto">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
               {navigationItems.map(([href, label]) =>
-                href === "/bookShelf" && !currentUser ? (
+                href === "/" ? (
+                  <a key={href} href="/" onClick={(event) => { event.preventDefault(); window.location.assign("/"); }} className={navigationButtonClass}>Home</a>
+                ) : href === "/bookShelf" && !currentUser ? (
                   <YourBooksNavigation key={href} className={navigationButtonClass} />
                 ) : (
                   <Link key={href} href={href} className={navigationButtonClass}>{label}</Link>
