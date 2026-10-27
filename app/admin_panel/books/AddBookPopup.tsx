@@ -244,8 +244,10 @@ export default function AddBookPopup(props: propsType) {
         if (!formData.price_cny || !Number.isFinite(Number(formData.price_cny)) || Number(formData.price_cny) <= 0) validationErrors.price_cny = 'Valid CNY price is required';
         if (!formData.price_rub || !Number.isFinite(Number(formData.price_rub)) || Number(formData.price_rub) <= 0) validationErrors.price_rub = 'Valid RUB price is required';
         if (!formData.pages || isNaN(Number(formData.pages))) validationErrors.pages = 'Valid flipbook pages number is required';
-        if (Number(formData.pages) < 100 && formData.genre !== 'Short Books') {
-            validationErrors.pages = "Not fit for full book. Submit in 'Short Books' genre.";
+        if (Number(formData.pages) <= 50 && formData.genre !== 'Short Books') {
+            validationErrors.pages = "Books with 50 pages or fewer must be submitted in the 'Short Books' genre.";
+        } else if (Number(formData.pages) > 50 && formData.genre === 'Short Books') {
+            validationErrors.pages = "Books with more than 50 pages must be submitted in a non-short-book genre.";
         }
         if (!formData.published_date) validationErrors.published_date = 'Published date is required';
 
