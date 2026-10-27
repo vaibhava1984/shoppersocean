@@ -3,6 +3,10 @@ import { getD1 } from "@/utils/cloudflare/d1";
 import { requireAdmin } from "@/utils/auth/requireUser";
 import { ensureBookPricingTable } from "@/utils/book-pricing";
 
+async function ensureBookCodeNameColumn(db: any) {
+  try { await db.prepare("ALTER TABLE books ADD COLUMN code_name TEXT").run(); } catch { /* column already exists */ }
+}
+
 function parseBook(row: any) {
   let coverImages: string[] = [];
   try {
@@ -22,7 +26,7 @@ function parseBook(row: any) {
 }
 
 const BOOK_SELECT = `SELECT
-  b.id,b.title,b.description,b.published_date,b.isbn,b.price,b.ratings,b.cover_images,
+  b.id,b.title,b.code_name,b.description,b.published_date,b.isbn,b.price,b.ratings,b.cover_images,
   b.binding,b.language,b.genre,b.publisher,b.pages,b.author_id,b.author_name,b.updated_at,
   bp.price_inr AS price_inr,bp.price_usd AS price_usd,bp.price_eur AS price_eur,bp.price_cny AS price_cny,bp.price_rub AS price_rub,
   a.id AS joined_author_id,a.name AS joined_author_name
@@ -37,6 +41,7 @@ export async function GET(request: Request) {
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database is unavailable" }, { status: 503 });
     await ensureBookPricingTable(db);
+    await ensureBookCodeNameColumn(db);
 
     const requestedBookId = new URL(request.url).searchParams.get("id");
     if (requestedBookId) {
@@ -71,7 +76,9 @@ async function saveBook(request: Request, id?: string) {
 
   const body = await request.json();
   await ensureBookPricingTable(db);
+  await ensureBookCodeNameColumn(db);
   const title = String(body.title ?? "").trim();
+  const codeName = String(body.code_name ?? "").trim();
   const authorId = String(body.author_id ?? "").trim();
   if (!title || !authorId) return NextResponse.json({ error: "Book title and author are required" }, { status: 400 });
 
@@ -90,12 +97,13 @@ async function saveBook(request: Request, id?: string) {
   }
 
   const coverImages = Array.isArray(body.cover_images) ? body.cover_images : [];
-  const pages = Number(body.pages ?? 0);
+  const rawPages = body.pages;
+  const pages = rawPages == null || String(rawPages).trim() === "" ? 0 : Number(rawPages);
   const genre = body.genre == null ? "" : String(body.genre);
-  if (!Number.isFinite(pages) || pages <= 0) {
-    return NextResponse.json({ error: "A valid number of pages is required" }, { status: 400 });
+  if (rawPages != null && String(rawPages).trim() !== "" && (!Number.isFinite(pages) || pages <= 0)) {
+    return NextResponse.json({ error: "Enter a valid number of pages, or leave it blank until the PDF is uploaded." }, { status: 400 });
   }
-  if (pages <= 50 && genre !== "Short Books") {
+  if (pages > 0 && pages <= 50 && genre !== "Short Books") {
     return NextResponse.json(
       { error: "Books with 50 pages or fewer must be submitted in the 'Short Books' genre." },
       { status: 400 }
@@ -112,6 +120,7 @@ async function saveBook(request: Request, id?: string) {
 
   const values = [
     title,
+    codeName,
     body.description == null ? null : String(body.description),
     body.published_date == null ? null : String(body.published_date),
     body.isbn == null ? null : String(body.isbn),
@@ -133,16 +142,16 @@ async function saveBook(request: Request, id?: string) {
     if (!existing) return NextResponse.json({ error: "Book not found" }, { status: 404 });
 
     await db.prepare(
-      `UPDATE books SET title=?,description=?,published_date=?,isbn=?,price=?,ratings=?,
+      `UPDATE books SET title=?,code_name=?,description=?,published_date=?,isbn=?,price=?,ratings=?,
        cover_images=?,binding=?,language=?,genre=?,publisher=?,pages=?,author_id=?,author_name=?,updated_at=?
        WHERE id=?`
     ).bind(...values, id).run();
   } else {
     await db.prepare(
       `INSERT INTO books
-       (id,title,description,published_date,isbn,price,ratings,cover_images,binding,language,genre,publisher,pages,author_id,author_name,is_deleted,created_at,updated_at)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,?,?)`
-    ).bind(savedId, ...values.slice(0, 14), now, now).run();
+       (id,title,code_name,description,published_date,isbn,price,ratings,cover_images,binding,language,genre,publisher,pages,author_id,author_name,is_deleted,created_at,updated_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0,?,?)`
+    ).bind(savedId, ...values.slice(0, 15), now, now).run();
   }
 
   await db.prepare(

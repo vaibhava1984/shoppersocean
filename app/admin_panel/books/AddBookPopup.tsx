@@ -68,6 +68,7 @@ export default function AddBookPopup(props: propsType) {
 
     const [formData, setFormData] = useState<Omit<BookType, 'id' | 'author_name' | 'updated_at'>>({
         title: book?.title ?? '',
+        code_name: book?.code_name ?? '',
         description: book?.description ?? '',
         published_date: dateToDisplay(book?.published_date ?? ''),
         isbn: book?.isbn ?? '',
@@ -161,7 +162,7 @@ export default function AddBookPopup(props: propsType) {
         if (!files || files.length === 0) return;
         const selected = files[0];
         if (!selected.name.toLowerCase().endsWith('.pdf')) {
-            toast({ variant: "destructive", title: "PDF files only", description: "Please choose a PDF book file." });
+            toast({ title: "PDF files only", description: "Please choose a PDF book file." });
             event.target.value = '';
             return;
         }
@@ -232,8 +233,9 @@ export default function AddBookPopup(props: propsType) {
         if (!authorName || !formData.author_id) validationErrors.author = 'Please select an author';
         if (Object.keys(validationErrors).length) {
             setErrors(validationErrors);
-            toast({ variant: "destructive", title: "Please check the form", description: Object.values(validationErrors).join(". ") });
-            window.parent.postMessage({ type: "admin-section-save-failed", key: "Books", message: "Please check the highlighted book details and prices." }, window.location.origin);
+            const reason = Object.values(validationErrors).join(". ");
+            toast({ title: "Please check the form", description: reason });
+            window.parent.postMessage({ type: "admin-section-save-failed", key: "Books", message: reason }, window.location.origin);
             return;
         }
         if (!formData.author_id) validationErrors.author = 'Author is required';
@@ -243,8 +245,7 @@ export default function AddBookPopup(props: propsType) {
         if (!formData.price_eur || !Number.isFinite(Number(formData.price_eur)) || Number(formData.price_eur) <= 0) validationErrors.price_eur = 'Valid EUR price is required';
         if (!formData.price_cny || !Number.isFinite(Number(formData.price_cny)) || Number(formData.price_cny) <= 0) validationErrors.price_cny = 'Valid CNY price is required';
         if (!formData.price_rub || !Number.isFinite(Number(formData.price_rub)) || Number(formData.price_rub) <= 0) validationErrors.price_rub = 'Valid RUB price is required';
-        if (!formData.pages || isNaN(Number(formData.pages))) validationErrors.pages = 'Valid flipbook pages number is required';
-        if (Number(formData.pages) <= 50 && formData.genre !== 'Short Books') {
+        if (Number(formData.pages) > 0 && Number(formData.pages) <= 50 && formData.genre !== 'Short Books') {
             validationErrors.pages = "Books with 50 pages or fewer must be submitted in the 'Short Books' genre.";
         } else if (Number(formData.pages) > 50 && formData.genre === 'Short Books') {
             validationErrors.pages = "Books with more than 50 pages must be submitted in a non-short-book genre.";
@@ -300,7 +301,8 @@ export default function AddBookPopup(props: propsType) {
             // Close the editor only after the save request succeeds.
             props.onSuccess(true);
         } catch(error:any) {
-            toast({variant:"destructive",title:"Save failed",description:error?.message || "Something went wrong. Your form entries have been kept; please try again."});
+            const reason = error?.message || "Something went wrong. Your form entries have been kept; please try again.";
+            toast({title:"Save failed",description:reason});
             window.parent.postMessage({ type: "admin-section-save-failed", key: "Books", message: error?.message || "Save failed. Please try again." }, window.location.origin);
         } finally {
             setIsSaving(false);
@@ -374,6 +376,14 @@ export default function AddBookPopup(props: propsType) {
                             required
                         />
                         {errors.title && <span className="text-red-500">{errors.title}</span>}
+                        <Label htmlFor="code_name">Code Name</Label>
+                        <Input
+                            id="code_name"
+                            name="code_name"
+                            value={formData.code_name ?? ''}
+                            placeholder="Short name in a language you know"
+                            onChange={(e) => setFormData({ ...formData, code_name: e.target.value })}
+                        />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="author">Author <span className="text-red-500">*</span></Label>
@@ -538,7 +548,7 @@ export default function AddBookPopup(props: propsType) {
                         />
                     </div> */}
                     <div className="space-y-2">
-                        <Label htmlFor="pages">Flipbook Pages <span className="text-red-500">*</span></Label>
+                        <Label htmlFor="pages">Flipbook Pages (optional)</Label>
                         <Input
                             id="pages"
                             name="pages"
@@ -549,7 +559,6 @@ export default function AddBookPopup(props: propsType) {
                                 const parsedPages = pagesValue ? parseInt(pagesValue) : 0;
                                 setFormData({ ...formData, pages: isNaN(parsedPages) ? 0 : parsedPages });
                             }}
-                            required
                         />
                         {errors.pages && <span className="text-red-500">{errors.pages}</span>}
                     </div>

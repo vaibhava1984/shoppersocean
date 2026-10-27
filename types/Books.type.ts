@@ -1,6 +1,7 @@
 export interface BookType {
     id: string;
     title: string;
+    code_name?: string;
     description: string;
     published_date: string;
     isbn: string;

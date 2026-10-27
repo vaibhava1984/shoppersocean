@@ -95,6 +95,10 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       window.location.href = `/book/${encodeURIComponent(bookId)}?read=1`;
       return;
     }
+    try {
+      localStorage.setItem('shoppers-ocean-active-flipbook', String(bookId));
+      window.dispatchEvent(new CustomEvent('shoppers-ocean-open-flipbook', { detail: { bookId: String(bookId) } }));
+    } catch {}
     setOpened(true); setLoading(true); setError(''); setReaderUrl(''); setPdfReady(false);
     try {
       const response = await fetch('/api/get-book-reader', {
@@ -115,9 +119,29 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
       const data = await response.json();
       if (!response.ok || !data.readerUrl) throw new Error(data.error || 'Unable to open book');
       setReaderUrl(data.readerUrl);
-    } catch (err: any) { setError(err?.message || 'Unable to open book'); }
+    } catch { setError('Unable to load now, please try again.'); }
     finally { setLoading(false); }
   };
+
+  useEffect(() => {
+    const closeThisReader = () => {
+      setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setPdfReady(false);
+      setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null);
+    };
+    const onAnotherBookOpened = (event: Event) => {
+      const otherBookId = (event as CustomEvent<{ bookId?: string }>).detail?.bookId;
+      if (otherBookId && otherBookId !== String(bookId)) closeThisReader();
+    };
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === 'shoppers-ocean-active-flipbook' && event.newValue && event.newValue !== String(bookId)) closeThisReader();
+    };
+    window.addEventListener('shoppers-ocean-open-flipbook', onAnotherBookOpened);
+    window.addEventListener('storage', onStorage);
+    return () => {
+      window.removeEventListener('shoppers-ocean-open-flipbook', onAnotherBookOpened);
+      window.removeEventListener('storage', onStorage);
+    };
+  }, [bookId]);
 
   useEffect(() => {
     // A desktop book-card click carries read=1 to the dedicated book detail page.
@@ -154,7 +178,7 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
         // waiting for the user to turn the page.
         setPdfReady(true);
       } catch (err: any) {
-        if (!cancelled) setError(err?.message || 'Unable to load the purchased book');
+        if (!cancelled) setError('Unable to load now, please try again.');
       }
     };
     void load();
@@ -436,9 +460,9 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     }
   };
 
-  if (!opened) return <div className="flex flex-col items-center justify-center gap-3 rounded-xl border bg-slate-50 p-4 sm:p-6"><div className="flex w-full max-w-xl flex-col items-stretch gap-2"><Button type="button" variant="outline" className="min-h-[42px] w-full whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={openReader} disabled={loading}>Read as Flipbook</Button><Button type="button" variant="outline" className="min-h-[42px] w-full gap-1 whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={handleShareBook}><Share2 className="h-4 w-4 shrink-0" aria-hidden="true" />Share Book</Button></div>{error && <p className="text-sm text-red-600">{error}</p>}</div>;
+  if (!opened) return <div className="flex flex-col items-center justify-center gap-3 rounded-xl border bg-slate-50 p-4 sm:p-6"><div className="flex w-full max-w-xl flex-col items-stretch gap-2"><Button type="button" variant="outline" className="min-h-[42px] w-full whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={openReader} disabled={loading}>Read as Flipbook</Button><Button type="button" variant="outline" className="min-h-[42px] w-full gap-1 whitespace-normal rounded-lg border-blue-700/20 bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-white shadow-md hover:bg-blue-700 sm:text-sm" onClick={handleShareBook}><Share2 className="h-4 w-4 shrink-0" aria-hidden="true" />Share Book</Button></div>{error && <p className="text-sm text-slate-600">Unable to load now, please try again.</p>}</div>;
   if (loading) return <div className="flex min-h-[320px] w-full items-center justify-center rounded-xl bg-slate-100"><Loader2 className="mr-2 animate-spin" />Opening your book…</div>;
-  if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Could not open this book</p><p className="mt-1 text-sm">{error}</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
+  if (error && !readerUrl) return <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700"><p className="font-semibold">Unable to load now, please try again.</p><Button className="mt-4" onClick={openReader}>Try again</Button></div>;
 
   const dragProgress = pageFrameRef.current?.clientWidth ? Math.max(-1, Math.min(1, dragOffset / pageFrameRef.current.clientWidth)) : 0;
   const dragAngle = dragProgress * 52;
@@ -459,9 +483,9 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const readerViewportHeight = typeof window !== 'undefined' ? Math.min(window.innerHeight, window.screen.height || window.innerHeight, window.visualViewport?.height || window.innerHeight) : undefined;
   const readerMarkup = <div ref={viewerRef} data-flipbook-reader="true" className={`relative z-10 flex w-full min-w-0 flex-col overflow-x-hidden bg-blue-700 text-[#e5e7eb] ${portalToBody ? 'fixed inset-0 z-[100] items-center overflow-hidden bg-transparent pointer-events-none' : ''} ${useFullDesktopReader ? 'w-screen max-w-none' : ''}`} style={portalToBody ? { position: 'fixed', left: 0, top: 0, width: readerViewportWidth, maxWidth: readerViewportWidth, height: readerViewportHeight, marginLeft: 0, paddingTop: desktopReaderTop, boxSizing: 'border-box', background: 'transparent' } : { width: '100%', maxWidth: '100%', marginLeft: 0 }}>
     <div className={`flex flex-wrap items-center justify-between gap-2 border-b border-white/20 bg-blue-700 px-3 py-2 ${portalToBody ? 'pointer-events-auto w-fit max-w-[94vw] rounded-t-lg' : ''}`}><div className="min-w-0 truncate font-medium">{title}</div><div className="flex items-center gap-1">
-      <Button type="button" variant="ghost" className="min-h-9 rounded-lg border border-white/25 px-4 text-sm font-bold text-[#e5e7eb] hover:bg-white/10 hover:text-[#e5e7eb]" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); }} aria-label="Close flipbook">close flipbook</Button>
+      <Button type="button" variant="ghost" className="min-h-9 rounded-lg border border-white/25 px-4 text-sm font-bold text-[#e5e7eb] hover:bg-white/10 hover:text-[#e5e7eb]" onClick={() => { setOpened(false); setReaderUrl(''); setError(''); setLoading(false); setTurning(false); setIsDragging(false); setIsSliderDragging(false); setSliderPreviewPage(null); try { if (localStorage.getItem('shoppers-ocean-active-flipbook') === String(bookId)) localStorage.removeItem('shoppers-ocean-active-flipbook'); } catch {} }} aria-label="Close flipbook">close flipbook</Button>
     </div></div>
-    {error && <div className="bg-amber-50 px-4 py-2 text-sm text-amber-900">{error}</div>}
+    {error && <div className="bg-slate-50 px-4 py-2 text-sm text-slate-700">Unable to load now, please try again.</div>
     <div data-flipbook-page-area="true" className={`relative flex min-h-0 items-center justify-center h-max max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4 ${portalToBody ? '!min-h-0 !min-w-0 !w-[min(94vw,980px)] max-w-[100vw] flex-none self-center overflow-hidden pointer-events-auto' : ''}`} style={{ height: portalToBody ? `calc(100dvh - ${desktopReaderTop + 150}px)` : "max-content", maxHeight: portalToBody ? `calc(100dvh - ${desktopReaderTop + 150}px)` : "calc(100dvh - 190px)", width: portalToBody ? "min(94vw, 980px)" : undefined, maxWidth: portalToBody ? "100vw" : undefined, marginLeft: portalToBody ? "auto" : undefined, marginRight: portalToBody ? "auto" : undefined, overflowX: portalToBody ? "visible" : "auto", overflowY: portalToBody ? "visible" : "scroll", WebkitOverflowScrolling: "touch", touchAction: zoom > 1 ? "pan-x pan-y pinch-zoom" : "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div ref={pageFrameRef} className="relative mx-auto flex h-max w-max min-w-full shrink-0 items-center justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center" style={{ perspective: '1800px' }}>
