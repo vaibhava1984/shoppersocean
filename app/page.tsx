@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getCurrentUser } from "@/utils/auth/session";
 import { Card, CardContent } from "@/components/ui/card"
 import { Star } from 'lucide-react'
