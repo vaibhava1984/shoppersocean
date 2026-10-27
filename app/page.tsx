@@ -61,6 +61,14 @@ export default async function LandingPage() {
           <EntertainmentHub />
         </div>
       </section>
+      <section className="relative overflow-hidden bg-white px-4 py-9 sm:py-12">
+        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+          <p className="mb-4 text-sm font-semibold text-slate-600">Ready to explore stories from around the world?</p>
+          <Link href="/read-ebooks" className="inline-flex min-h-14 items-center justify-center gap-3 rounded-xl bg-blue-600 px-9 py-4 text-lg font-extrabold not-italic tracking-wide text-white shadow-lg shadow-blue-600/25 transition duration-200 hover:-translate-y-1 hover:bg-blue-700 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300">
+            📚 Read E-books <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </section>
       <div><AuthorApplicationBanner /></div>
       <section className="bg-white px-4 py-12 sm:py-16">
         <style>{`@keyframes shoppersOceanSeoZoom { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }`}</style>
@@ -71,19 +79,6 @@ export default async function LandingPage() {
           <p className="mx-auto max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
             Welcome to Shoppers Ocean, your destination for discovering and reading e-books online. Explore fascinating stories in many languages of the world, discover books by independent authors, and enjoy a world of reading in one place.
           </p>
-        </div>
-      </section>
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-12 text-center text-slate-800">Trending Books</h2>
-          <div><TrendingBooks loggedinUserId={user?.id} initialBooks={homepageBooks} /></div>
-        </div>
-      </section>
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-6 text-center text-slate-800">Books in International Languages</h2>
-          <p className="text-xl text-center mb-12 text-slate-600">Explore stories and ideas from authors around the world, in languages that bring every culture closer.</p>
-          <BooksCollections loggedinUserId={user?.id} initialBooks={homepageBooks} />
         </div>
       </section>
       <section className="py-20 bg-white">
