@@ -5,8 +5,6 @@ import BookCard from "@/components/BookCard";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const metadata: Metadata = {
   title: "Discover E-books Online in Multiple Languages | Shoppers Ocean",
