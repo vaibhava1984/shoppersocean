@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/utils/auth/session";
+import Link from "next/link";
 import { getD1 } from "@/utils/cloudflare/d1";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -34,7 +35,7 @@ export default async function ReadEbooksPage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-[#07152e] via-[#123d70] to-[#087e8c] py-12 sm:py-16">
         <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-cyan-300/20 blur-3xl" />
         <div aria-hidden="true" className="pointer-events-none absolute -left-16 bottom-0 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl" />
-        <div className="container relative mx-auto px-4 text-center sm:px-6 lg:px-8">
+        <div className="container relative mx-auto px-4 text-center sm:px-6 lg:px-8"><div className="mb-5"><Link href="/" className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-extrabold text-white backdrop-blur hover:bg-white/20">← Back</Link></div>
           <p className="text-xs font-extrabold uppercase tracking-[0.2em] not-italic text-cyan-200">Shoppers Ocean · A world of stories</p>
           <h1 className="mt-3 font-serif text-3xl font-black tracking-tight text-white sm:text-5xl">Read E-books</h1>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-blue-50/90 sm:text-lg">Choose a genre, discover an author, select your language, or explore trending and international stories.</p>
@@ -51,6 +52,7 @@ export default async function ReadEbooksPage() {
           <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base">Use the book buttons above to browse by genre, author, or language.</p>
         </div>
       </section>
+      <section className="bg-white px-4 py-10"><div className="mx-auto max-w-4xl text-center"><h2 className="font-serif text-3xl font-black text-slate-800">Discover E-books Online in Multiple Languages</h2><p className="mx-auto mt-3 max-w-3xl text-base leading-7 text-slate-600">Explore fascinating stories from independent authors, browse by language, and enjoy a world of reading in one place.</p></div></section>
       <section id="trending-books" className="scroll-mt-32 bg-white py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="mb-8 text-center font-serif text-2xl font-black text-slate-800 sm:mb-10 sm:text-3xl">Trending Books</h2>
@@ -64,6 +66,7 @@ export default async function ReadEbooksPage() {
           <BooksCollections loggedinUserId={user?.id} initialBooks={homepageBooks} />
         </div>
       </section>
+      <section className="bg-white px-4 py-8 text-center"><Link href="/author-policies" className="inline-flex min-h-11 items-center justify-center rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-blue-700">Author Policies</Link></section>
       <Footer />
     </div>
   );
