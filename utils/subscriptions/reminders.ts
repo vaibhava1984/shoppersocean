@@ -1,5 +1,5 @@
-import { ensureSubscriptionSchema } from "@/utils/subscriptions/schema";
-import { sendSubscriptionReminder } from "@/utils/subscriptions/email";
+import { ensureSubscriptionSchema } from "./schema";
+import { sendSubscriptionReminder } from "./email";
 
 export async function runSubscriptionReminders(db: any, apiKey: string) {
   if (!db) throw new Error("Cloudflare D1 binding is missing.");
