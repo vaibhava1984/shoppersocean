@@ -7,7 +7,7 @@ function hash(n:number){let x=n|0;x=Math.imul(x^(x>>>16),0x45d9f3b);x=Math.imul(
 function rng(seed:number){let x=hash(seed)||1;return()=>{x=(Math.imul(x,1664525)+1013904223)>>>0;return x/4294967296;};}
 function shuffled<T>(values:T[],seed:number){const out=[...values],random=rng(seed);for(let i=out.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;}
 const answers=[...new Set(DAILY_GK_QUESTIONS.map(x=>x.answer))];
-const longAnswers=answers.filter(a=>a.replace(/[^A-Za-z]/g,"").length>=7);
+const longAnswers=answers.filter(a=>!/[\\s]/.test(a)&&a.replace(/[^A-Za-z]/g,"").length>=7);
 export function getWordPuzzle(date:string,slot:number):Puzzle{
  const seed=seedFor(date,slot),answer=longAnswers[hash(seed)%longAnswers.length],letters=answer.toUpperCase().replace(/[^A-Z]/g,"");
  let scrambled=shuffled(letters.split(""),seed).join("");
