@@ -37,11 +37,21 @@ export function getSequencePuzzle(date:string,slot:number):Puzzle & {explanation
  const nums=[0,1,2,3,4].map(i=>a+i*step+i*i*curve),next=a+5*step+25*curve;
  return {id:"sequence:"+nums.join(",")+":"+next,question:nums.join(", ") + ", ?",answer:String(next),explanation:"The sequence adds a steady step and a growing square-based amount."};
 }
+const oddWordSets=[
+ {o:["Violin","Cello","Flute","Viola"],a:"Flute",why:"Flute is a wind instrument; the others are string instruments."},
+ {o:["Eagle","Falcon","Owl","Dolphin"],a:"Dolphin",why:"Dolphin is a mammal; the others are birds."},
+ {o:["Mercury","Venus","Mars","Europa"],a:"Europa",why:"Europa is a moon; the others are planets."},
+ {o:["Novel","Poem","Play","Compass"],a:"Compass",why:"Compass is a navigation tool; the others are literary forms."},
+ {o:["Copper","Silver","Gold","Granite"],a:"Granite",why:"Granite is a rock; the others are metals."},
+ {o:["Rose","Tulip","Orchid","Fern"],a:"Fern",why:"Fern reproduces by spores; the others are flowering plants."},
+ {o:["Whisper","Murmur","Shout","Silence"],a:"Silence",why:"Silence is the absence of sound; the others are ways of speaking."},
+ {o:["Painter","Sculptor","Composer","Gallery"],a:"Gallery",why:"A gallery is a place; the others are creators."},
+ {o:["January","April","August","Tuesday"],a:"Tuesday",why:"Tuesday is a weekday; the others are months."},
+ {o:["Maple","Oak","Pine","Lily"],a:"Lily",why:"Lily is a flowering plant; the others are trees."}
+];
 export function getOddPuzzle(date:string,slot:number):Puzzle & {options:string[];explanation:string}{
- const seed=seedFor(date,slot),base=11+(seed%97),start=1000+seed*3,outsider=base*start+1;
- const vals=[base*start,base*(start+1),outsider,base*(start+2)];
- const options=shuffled(vals.map(String),seed+17);
- return {id:"odd:"+base+":"+options.join(","),question:"Three numbers are multiples of "+base+". Which one is the odd one out?",options,answer:String(outsider),explanation:"The other three numbers are multiples of "+base+"."};
+ const seed=seedFor(date,slot),item=oddWordSets[((seed%oddWordSets.length)+oddWordSets.length)%oddWordSets.length],options=shuffled(item.o,seed+17);
+ return {id:"odd:"+item.a+":"+options.join(","),question:"Read the words carefully. Which one does not belong with the others?",options,answer:item.a,explanation:item.why};
 }
 const answerPools:Record<string,string[]>={
  capital:Array.from(new Set(DAILY_GK_QUESTIONS.filter(x=>x.id.startsWith("capital-")).map(x=>x.answer))),
@@ -62,22 +72,27 @@ export function getQuizPuzzle(date:string,slot:number):Puzzle & {options:string[
  const question=(category==="capital"?capitalForms:category==="element"?elementForms:generalForms)[cycle];
  return {id:"quiz:"+item.id+":"+cycle+":"+options.join("|"),question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:category==="capital"?"World Capitals":category==="element"?"Chemical Elements":category==="science"?"Science":"World Geography"};
 }
+const riddleBank=[
+ {q:"I have keys but no locks, a space but no room, and you can enter but never go inside. What am I?",a:"keyboard",e:"A keyboard has keys, a space bar, and an Enter key."},
+ {q:"What gets wetter while it dries something else?",a:"towel",e:"A towel becomes wet as it dries you."},
+ {q:"I have a face and hands but no arms or legs. What am I?",a:"clock",e:"A clock has a face and hands."},
+ {q:"I can show you roads, rivers, and cities, but I contain no cars, water, or people. What am I?",a:"map",e:"A map represents places without containing them."},
+ {q:"The more you take away from me, the bigger I become. What am I?",a:"hole",e:"Removing more material makes a hole bigger."},
+ {q:"I speak without a mouth and answer without ears. I have no body, but I come alive when sound travels. What am I?",a:"echo",e:"An echo repeats sound."},
+ {q:"What word becomes shorter when you add two letters to it?",a:"short",e:"Adding E and R makes SHORT into SHORTER."},
+ {q:"I have a neck but no head, and I can hold something without hands. What am I?",a:"bottle",e:"A bottle has a neck and can hold liquid."},
+ {q:"Which familiar object is shown by these pictures together: 🐝 + 🍃?",a:"belief",e:"Say the picture clues aloud: bee + leaf suggests the sound of belief."},
+ {q:"Look at this picture clue: 🌧️ + 🌞. What colourful arc can appear in the sky?",a:"rainbow",e:"Sunlight and rain can produce a rainbow."}
+];
 export function getRiddlePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
- const seed=seedFor(date,slot),target=1000+seed*7,double=target*2,add=target+17;
- const style=seed%3;
- if(style===0)return {id:"riddle:double:"+target,question:"I am a number. Double me and you get "+double+". What number am I?",answer:String(target),explanation:"Half of "+double+" is "+target+"."};
- if(style===1)return {id:"riddle:add:"+target,question:"A number plus 17 equals "+add+". What is the number?",answer:String(target),explanation:add+" − 17 = "+target+"."};
- return {id:"riddle:sequence:"+target,question:"A number sequence goes "+target+", "+(target+3)+", "+(target+6)+", "+(target+9)+", ?. What comes next?",answer:String(target+12),explanation:"Each step adds 3."};
+ const seed=seedFor(date,slot),item=riddleBank[((seed%riddleBank.length)+riddleBank.length)%riddleBank.length];
+ return {id:"riddle:"+item.a+":"+item.q,question:item.q,answer:item.a,explanation:item.e};
 }
-
 export function getSpotPuzzle(date:string,slot:number):{id:string;size:number;target:number;targetIcon:number;baseIcon:number}{
- const seed=seedFor(date,slot),cycleSeed=((seed%4312)+4312)%4312;
- let size:number,offset:number;
- if(cycleSeed<896){size=16;offset=cycleSeed;}else if(cycleSeed<2296){size=25;offset=cycleSeed-896;}else{size=36;offset=cycleSeed-2296;}
- const target=Math.floor(offset/56),targetIcon=Math.floor((offset%56)/7),baseIcon=(targetIcon+1+(offset%7))%8;
+ const seed=seedFor(date,slot),size=seed%2===0?25:36,target=(hash(seed+77)%(size));
+ const pairIndex=(seed%8)*2,baseIcon=8+pairIndex,targetIcon=baseIcon+1;
  return {id:"spot:"+size+":"+target+":"+targetIcon+":"+baseIcon,size,target,targetIcon,baseIcon};
 }
-
 export function getRecallSequence(date:string,slot:number):number[]{
  const seed=seedFor(date,slot),total=6720;let rank=((seed%total)+total)%total;
  const pool=[0,1,2,3,4,5,6,7],out:number[]=[];
