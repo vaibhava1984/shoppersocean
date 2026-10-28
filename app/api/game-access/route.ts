@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
-const SECTION_IDS = ["word-playground", "brain-logic", "quiz-arena", "riddle-corner", "daily-challenge", "memory-observation", "ludo-arena"];
+const SECTION_IDS = ["word-playground", "brain-logic", "quiz-arena", "riddle-corner", "daily-challenge", "memory-observation"];
 
 async function getAccess(req: Request, consume = false) {
   try {
