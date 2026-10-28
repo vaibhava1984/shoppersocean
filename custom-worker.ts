@@ -109,12 +109,29 @@ async function expireAdminNotifications(env: any) {
 export default {
   fetch: handler.fetch,
   async scheduled(_controller: ScheduledController, env: any, ctx: ExecutionContext) {
-    ctx.waitUntil(Promise.all([
-      expireAuthorApplications(env),
-      sendAuthorPaymentReminders(env),
-      expireAdminNotifications(env),
-      runSubscriptionReminders(env.DB, String(env.RESEND_API_KEY || "")),
-      reconcilePendingSubscriptions(env.DB, { keyId: String(env.RAZORPAY_KEY_ID || ""), keySecret: String(env.RAZORPAY_KEY_SECRET || ""), apiKey: String(env.RESEND_API_KEY || "") })
-    ]));
+    ctx.waitUntil((async () => {
+      const backgroundTasks = Promise.all([
+        expireAuthorApplications(env),
+        sendAuthorPaymentReminders(env),
+        expireAdminNotifications(env)
+      ]);
+      try {
+        const reconciliation = await reconcilePendingSubscriptions(env.DB, {
+          keyId: String(env.RAZORPAY_KEY_ID || ""),
+          keySecret: String(env.RAZORPAY_KEY_SECRET || ""),
+          apiKey: String(env.RESEND_API_KEY || "")
+        });
+        console.log("Subscription payment reconciliation completed", reconciliation);
+      } catch (error) {
+        console.error("Subscription payment reconciliation job failed", error);
+      }
+      try {
+        const reminders = await runSubscriptionReminders(env.DB, String(env.RESEND_API_KEY || ""));
+        console.log("Subscription reminder job completed", reminders);
+      } catch (error) {
+        console.error("Subscription reminder job failed", error);
+      }
+      await backgroundTasks;
+    })());
   },
 };
