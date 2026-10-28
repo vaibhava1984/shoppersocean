@@ -65,3 +65,10 @@ export function getSpotPuzzle(date:string,slot:number):{id:string;size:number;ta
  const target=Math.floor(offset/56),targetIcon=Math.floor((offset%56)/7),baseIcon=(targetIcon+1+(offset%7))%8;
  return {id:"spot:"+size+":"+target+":"+targetIcon+":"+baseIcon,size,target,targetIcon,baseIcon};
 }
+
+export function getRecallSequence(date:string,slot:number):number[]{
+ const seed=seedFor(date,slot),total=6720;let rank=((seed%total)+total)%total;
+ const pool=[0,1,2,3,4,5,6,7],out:number[]=[];
+ for(let i=0;i<5;i++){const remainingPicks=4-i,block=factorial(pool.length-1)/factorial(pool.length-1-remainingPicks);const choice=Math.floor(rank/block);rank%=block;out.push(pool.splice(choice,1)[0]);}
+ return out;
+}
