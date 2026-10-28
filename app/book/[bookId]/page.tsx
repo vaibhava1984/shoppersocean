@@ -127,11 +127,38 @@ export default async function BookDetailPage({ params }: { params: any }) {
 export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
     const id = (await params).bookId;
     const db = getD1();
-    if (!db) return { title: "Book details" };
-    const book = await db.prepare("SELECT title, description FROM books WHERE id = ? LIMIT 1").bind(id).first<Record<string, any>>();
+    if (!db) return { title: "Book details | Shoppers Ocean" };
+    const book = await db.prepare("SELECT title, description, cover_images FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1").bind(id).first<Record<string, any>>();
+    if (!book) return { title: "Book not found | Shoppers Ocean" };
+
+    const title = String(book.title ?? "Book details").trim();
+    const fullDescription = String(book.description ?? "Discover this book on Shoppers Ocean.").replace(/\\s+/g, " ").trim();
+    const description = fullDescription.length > 200 ? `${fullDescription.slice(0, 197).trimEnd()}...` : fullDescription;
+    const coverImages = parseImages(book.cover_images);
+    const socialImages = coverImages.slice(0, 3).map((image) => {
+        try { return new URL(image, "https://shoppersocean.com").toString(); }
+        catch { return ""; }
+    }).filter(Boolean);
+    const canonical = `https://shoppersocean.com/book/${encodeURIComponent(id)}`;
+    const images = socialImages.length ? socialImages : ["https://shoppersocean.com/1.jpg?rev=2"];
+
     return {
-        title: book?.title ?? "Book details",
-        description: book?.description ?? undefined,
-        alternates: { canonical: `https://shoppersocean.com/book/${encodeURIComponent(id)}` },
+        title,
+        description,
+        alternates: { canonical },
+        openGraph: {
+            type: "book",
+            url: canonical,
+            siteName: "Shoppers Ocean",
+            title: `${title} | Shoppers Ocean`,
+            description,
+            images: images.map((url) => ({ url, alt: `Cover of ${title}` })),
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: `${title} | Shoppers Ocean`,
+            description,
+            images,
+        },
     };
 }
