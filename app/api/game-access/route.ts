@@ -7,6 +7,12 @@ const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUE
 const NO_MORE_TODAY="No more games in this section for today, please visit again tomorrow";
 const headers={"Cache-Control":"no-store"};
 const today=()=>new Date().toISOString().slice(0,10);
+async function claimChallenge(db:D1Database,userId:string,type:string,challenge:string,playedAt:string){
+ if(!challenge)return true;
+ const cutoff=new Date(Date.now()-365*86400000).toISOString();
+ const row=await db.prepare("INSERT INTO game_challenge_history(user_id,game_type_id,challenge_id,played_at) VALUES(?,?,?,?) ON CONFLICT(user_id,game_type_id,challenge_id) DO UPDATE SET played_at=excluded.played_at WHERE game_challenge_history.played_at <= ? RETURNING played_at").bind(userId,type,challenge,playedAt,cutoff).first<any>();
+ return Boolean(row);
+}
 export async function GET(req:Request){return handle(req,false)}
 export async function POST(req:Request){return handle(req,true)}
 async function handle(req:Request,consume:boolean){
@@ -37,7 +43,11 @@ async function handle(req:Request,consume:boolean){
     const limit=section==="daily-challenge"?DAILY_QUESTION_LIMIT:DAILY_LIMIT;
     const changed=await db.prepare("INSERT INTO game_subscriber_usage_by_type(user_id,game_type_id,usage_date,plays_used) VALUES(?,?,?,1) ON CONFLICT(user_id,game_type_id,usage_date) DO UPDATE SET plays_used=plays_used+1 WHERE game_subscriber_usage_by_type.plays_used < ? RETURNING plays_used").bind(user.id,type,date,limit).first<any>();
     if(!changed){const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);const sectionRemaining=section==="daily-challenge"?Math.max(0,1-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,DAILY_LIMIT-(usedTypes[t]??0)),0);const message=sectionRemaining===0?NO_MORE_TODAY:"Today's limit for this game type is complete. Please choose another activity in this section.";return NextResponse.json({error:message,sectionId:section,gameTypeId:type,remaining:0,sectionRemaining,isSubscribed:true},{status:403,headers});}
-    if(challenge)await db.prepare("INSERT INTO game_challenge_history(user_id,game_type_id,challenge_id,played_at) VALUES(?,?,?,?) ON CONFLICT(user_id,game_type_id,challenge_id) DO UPDATE SET played_at=excluded.played_at").bind(user.id,type,challenge,new Date().toISOString()).run();
+    const playedAt=new Date().toISOString();
+    if(challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt)){
+     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
+     return NextResponse.json({error:"This challenge has already been played within the last 365 days.",repeated:true},{status:409,headers});
+    }
     const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
     const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
     const sectionRemaining=section==="daily-challenge"?Math.max(0,1-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,DAILY_LIMIT-(usedTypes[t]??0)),0);
@@ -45,7 +55,11 @@ async function handle(req:Request,consume:boolean){
    }
    const changed=await db.prepare("INSERT INTO game_free_trials_by_section(user_id,section_id,trials_used,updated_at) VALUES(?,?,1,?) ON CONFLICT(user_id,section_id) DO UPDATE SET trials_used=trials_used+1,updated_at=excluded.updated_at WHERE game_free_trials_by_section.trials_used < ? RETURNING trials_used").bind(user.id,section,new Date().toISOString(),FREE_LIMIT).first<any>();
    if(!changed)return NextResponse.json({error:"Your three free trials in this section have been used. Subscribe to continue.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false},{status:403,headers});
-   if(challenge)await db.prepare("INSERT INTO game_challenge_history(user_id,game_type_id,challenge_id,played_at) VALUES(?,?,?,?) ON CONFLICT(user_id,game_type_id,challenge_id) DO UPDATE SET played_at=excluded.played_at").bind(user.id,type,challenge,new Date().toISOString()).run();
+   const playedAt=new Date().toISOString();
+   if(challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt)){
+    await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
+    return NextResponse.json({error:"This challenge has already been played within the last 365 days.",repeated:true},{status:409,headers});
+   }
    const left=FREE_LIMIT-Number(changed.trials_used??0);
    return NextResponse.json({sectionId:section,gameTypeId:type,remaining:left,sectionRemaining:left,isSubscribed:false,freeTrialsRemaining:left},{headers});
   }
