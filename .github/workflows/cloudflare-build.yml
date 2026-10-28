@@ -28,3 +28,7 @@ jobs:
         run: bun install
       - name: Build Next.js application
         run: bun run build
+      - name: Build Cloudflare OpenNext Worker
+        run: bunx opennextjs-cloudflare build
+      - name: Validate custom Worker and Wrangler configuration
+        run: bunx wrangler deploy --dry-run
