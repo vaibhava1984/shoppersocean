@@ -38,11 +38,7 @@ async function handle(req:Request,consume:boolean){
    let body:any={};try{body=await req.json()}catch{}
    const section=body.sectionId,type=body.gameTypeId,challenge=typeof body.challengeId==="string"?body.challengeId.slice(0,160):"";
    if(!SECTIONS.includes(section)||!TYPES[section]?.includes(type))return NextResponse.json({error:"Choose a valid game and section."},{status:400,headers});
-   if(challenge){
-    const prior=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).first<any>();
-    if(prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)return NextResponse.json({error:"This challenge has already been played within the last 365 days.",repeated:true},{status:409,headers});
-   }
-   // Admins bypass usage caps. Daily Challenge has its own one-challenge-per-day limit and never consumes the generic free-trial quota.
+   // Check the section's daily quota before duplicate-history checks so exhausted sections stop immediately.
    const limit=type==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT;
    const changed=admin?{plays_used:1}:await db.prepare("INSERT INTO game_subscriber_usage_by_type(user_id,game_type_id,usage_date,plays_used) VALUES(?,?,?,1) ON CONFLICT(user_id,game_type_id,usage_date) DO UPDATE SET plays_used=plays_used+1 WHERE game_subscriber_usage_by_type.plays_used < ? RETURNING plays_used").bind(user.id,type,date,limit).first<any>();
    if(!changed){
@@ -51,6 +47,13 @@ async function handle(req:Request,consume:boolean){
     const sectionRemaining=section==="daily-challenge"?Math.max(0,1-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedTypes[t]??0)),0);
     const message=sectionRemaining===0?NO_MORE_TODAY:"Today's limit for this game type is complete. Please choose another activity in this section.";
     return NextResponse.json({error:message,sectionId:section,gameTypeId:type,remaining:0,sectionRemaining,isAdmin:admin,isSubscribed:subscribed},{status:403,headers});
+   }
+   if(challenge){
+    const prior=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).first<any>();
+    if(prior&&Date.now()-Date.parse(prior.played_at)<365*86400000){
+     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
+     return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
+    }
    }
    let freeTrialsUsed:number|null=null;
    if(!admin&&!subscribed&&section!=="daily-challenge"){
