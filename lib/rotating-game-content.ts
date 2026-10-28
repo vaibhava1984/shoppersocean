@@ -7,12 +7,18 @@ function hash(n:number){let x=n|0;x=Math.imul(x^(x>>>16),0x45d9f3b);x=Math.imul(
 function rng(seed:number){let x=hash(seed)||1;return()=>{x=(Math.imul(x,1664525)+1013904223)>>>0;return x/4294967296;};}
 function shuffled<T>(values:T[],seed:number){const out=[...values],random=rng(seed);for(let i=out.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;}
 const answers=[...new Set(DAILY_GK_QUESTIONS.map(x=>x.answer))];
-const longAnswers=answers.filter(a=>!/[\\s]/.test(a)&&a.replace(/[^A-Za-z]/g,"").length>=7);
+const capitalAnswers=[...new Set(DAILY_GK_QUESTIONS.filter(x=>x.id.startsWith("capital-")).map(x=>x.answer))];
+const longAnswers=capitalAnswers.filter(a=>!/[\\s]/.test(a)&&a.replace(/[^A-Za-z]/g,"").length>=7);
+function factorial(n:number){let value=1;for(let i=2;i<=n;i++)value*=i;return value;}
+function multisetPermutations(chars:string[]){let total=factorial(chars.length);const counts:Record<string,number>={};for(const ch of chars)counts[ch]=(counts[ch]??0)+1;for(const count of Object.values(counts))total/=factorial(count);return Math.floor(total);}
+function rankPermutation(sortedChars:string[],target:string){const pool=[...sortedChars].sort();let rank=0;for(let i=0;i<target.length;i++){const current=target[i];for(const ch of [...new Set(pool)].sort()){if(ch>=current)break;const at=pool.indexOf(ch);pool.splice(at,1);rank+=multisetPermutations(pool);pool.splice(at,0,ch);}const at=pool.indexOf(current);if(at<0)return 0;pool.splice(at,1);}return rank;}
+function unrankPermutation(chars:string[],rank:number){const pool=[...chars].sort(),out:string[]=[];for(let i=0;i<chars.length;i++){for(const ch of [...new Set(pool)].sort()){const at=pool.indexOf(ch);pool.splice(at,1);const count=multisetPermutations(pool);if(rank<count){out.push(ch);break;}rank-=count;pool.splice(at,0,ch);}}return out.join("");}
 export function getWordPuzzle(date:string,slot:number):Puzzle{
- const seed=seedFor(date,slot),answer=longAnswers[hash(seed)%longAnswers.length],letters=answer.toUpperCase().replace(/[^A-Z]/g,"");
- let scrambled=shuffled(letters.split(""),seed).join("");
- if(scrambled===letters&&letters.length>1)scrambled=letters.slice(1)+letters[0];
- return {id:"word:"+scrambled,question:"Rearrange these letters to make a capital city.",answer,pattern:scrambled};
+ const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,answer=longAnswers[cycleSeed%longAnswers.length],letters=answer.toUpperCase().replace(/[^A-Z]/g,"").split("").sort(),original=answer.toUpperCase().replace(/[^A-Z]/g,"");
+ const rank=rankPermutation(letters,original),permutations=multisetPermutations(letters),rawRank=Math.floor(cycleSeed/longAnswers.length);
+ const safeRank=rawRank>=rank?rawRank+1:rawRank;
+ const scrambled=unrankPermutation(letters,safeRank%permutations);
+ return {id:"word:"+answer+":"+scrambled,question:"Rearrange these letters to make a capital city.",answer,pattern:scrambled};
 }
 export function getHiddenPuzzle(date:string,slot:number):Puzzle{
  const seed=seedFor(date,slot),item=DAILY_GK_QUESTIONS[seed%DAILY_GK_QUESTIONS.length];
