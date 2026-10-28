@@ -6,10 +6,9 @@ export async function runSubscriptionReminders(db: any, apiKey: string) {
   if (!apiKey) throw new Error("RESEND_API_KEY is not configured for subscription reminders.");
   await ensureSubscriptionSchema(db);
   const now = Date.now();
-  // Daily Cloudflare cron: include expiries 2–3.5 days away, so a reminder is sent
-  // approximately three days before expiry and still has a small recovery window.
+  // Hourly Cloudflare cron: send once when expiry is 2–3 days away.
   const lower = new Date(now + 2 * 86400000).toISOString();
-  const upper = new Date(now + 3.5 * 86400000).toISOString();
+  const upper = new Date(now + 3 * 86400000).toISOString();
   const rows = await db.prepare(
     "SELECT s.user_id,s.plan_name,s.expires_at,s.reminder_sent_for,u.email,u.full_name " +
     "FROM user_subscriptions s JOIN users u ON u.id=s.user_id " +
