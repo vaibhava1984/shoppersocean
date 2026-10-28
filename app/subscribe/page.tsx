@@ -10,10 +10,10 @@ export const metadata = {
 };
 
 const plans = [
-  { name: "1 Month", price: "₹299", detail: "A month of entertainment", featured: false },
-  { name: "3 Months", price: "₹850", detail: "Great for regular players", featured: false },
-  { name: "6 Months", price: "₹1,550", detail: "More time for daily challenges", featured: true },
-  { name: "12 Months", price: "₹3,000", detail: "Best value for a full year", featured: false },
+  { name: "1 Month", price: "₹299", value: "1-month", featured: false },
+  { name: "3 Months", price: "₹850", value: "3-months", featured: false },
+  { name: "6 Months", price: "₹1,550", value: "6-months", featured: true },
+  { name: "12 Months", price: "₹3,000", value: "12-months", featured: false },
 ];
 
 export default async function SubscribePage() {
@@ -21,34 +21,74 @@ export default async function SubscribePage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <Header user={user} />
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-blue-900 px-4 py-14 text-center text-white sm:py-20">
-        <p className="text-sm font-bold uppercase tracking-[0.24em] text-cyan-200">Your next favourite escape</p>
-        <h1 className="mx-auto mt-3 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">Subscribe to Shoppers Ocean</h1>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-blue-100 sm:text-lg">Unlock entertainment designed to keep your mind active and your day exciting—with games, quizzes, exercises and fresh challenges.</p>
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-blue-900 px-4 py-12 text-center text-white sm:py-16">
+        <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-cyan-200 sm:text-base">Shoppers Ocean</p>
+        <h1 className="mx-auto mt-3 max-w-4xl text-3xl font-black leading-tight tracking-tight sm:text-5xl">One World. Endless Entertainment. New Challenges.</h1>
       </section>
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto mb-9 max-w-2xl text-center">
-          <h2 className="text-3xl font-extrabold text-slate-900">Choose your plan</h2>
-          <p className="mt-3 text-slate-600">Pick the duration that works best for you.</p>
+
+      <section className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
+        <div className="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm sm:p-8">
+          <p className="text-base leading-8 text-slate-700 sm:text-lg">
+            Welcome to Shoppers Ocean, a worldwide entertainment hub offering exciting games, quizzes, brain exercises, daily challenges, and many engaging activities. Our goal is to provide quality entertainment, encourage learning, and bring you fresh, interesting experiences with minimal repetition.
+          </p>
+
+          <div className="mt-8">
+            <h2 className="text-2xl font-extrabold text-blue-950 sm:text-3xl">Why Subscribe?</h2>
+            <ul className="mt-4 space-y-3 text-base leading-7 text-slate-700 sm:text-lg">
+              <li className="flex gap-3"><span className="font-black text-blue-600">✓</span><span>Enjoy our entertainment facilities according to your chosen subscription plan.</span></li>
+              <li className="flex gap-3"><span className="font-black text-blue-600">✓</span><span>Challenge yourself with games, quizzes, brain exercises, and engaging activities.</span></li>
+              <li className="flex gap-3"><span className="font-black text-blue-600">✓</span><span>Discover fresh challenges designed to keep your experience interesting.</span></li>
+              <li className="flex gap-3"><span className="font-black text-blue-600">✓</span><span>Enjoy an entertaining experience that combines fun, knowledge, and mental activity.</span></li>
+            </ul>
+          </div>
+
+          <div className="mt-8 rounded-2xl bg-indigo-50 p-5 sm:p-6">
+            <h2 className="text-2xl font-extrabold text-indigo-950 sm:text-3xl">E-books and Flipbooks</h2>
+            <p className="mt-3 text-base leading-8 text-slate-700 sm:text-lg">
+              Shoppers Ocean also offers beautifully designed online e-books in multiple languages and provides an exclusive platform for authors to publish their books. E-books and flipbooks are separate from entertainment subscriptions and are not included in any subscription plan.
+            </p>
+          </div>
+
+          <div className="mt-8">
+            <h2 className="text-2xl font-extrabold text-blue-950 sm:text-3xl">Your Subscription, Your Access</h2>
+            <p className="mt-3 text-base leading-8 text-slate-700 sm:text-lg">
+              Your access to subscription-based facilities depends on your selected plan. Access to subscription-protected services ends when your subscription expires.
+            </p>
+            <p className="mt-3 text-base leading-8 text-slate-700 sm:text-lg">
+              You will receive a reminder email three days before your subscription expires so you can renew it and continue enjoying the facilities.
+            </p>
+          </div>
+
+          <div className="mt-8 text-center">
+            <h2 className="text-2xl font-extrabold text-blue-950 sm:text-3xl">Ready to Begin?</h2>
+            <p className="mx-auto mt-3 max-w-3xl text-base leading-8 text-slate-700 sm:text-lg">
+              Choose the subscription plan that suits you and unlock a world of entertainment, knowledge, and exciting challenges with Shoppers Ocean.
+            </p>
+          </div>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+        <div className="mt-10 text-center">
+          <h2 className="text-3xl font-black text-slate-900 sm:text-4xl">Choose Your Subscription Plan</h2>
+          <p className="mt-3 text-base text-slate-600 sm:text-lg">Select the duration that works best for you.</p>
+        </div>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {plans.map((plan) => (
-            <article key={plan.name} className={`relative flex flex-col rounded-2xl border bg-white p-6 shadow-lg transition hover:-translate-y-1 ${plan.featured ? "border-blue-500 ring-2 ring-blue-200" : "border-slate-200"}`}>
-              {plan.featured && <span className="mb-3 self-start rounded-full bg-blue-100 px-3 py-1 text-xs font-extrabold text-blue-800">POPULAR CHOICE</span>}
-              <h3 className="text-xl font-bold">{plan.name}</h3>
-              <p className="mt-2 min-h-10 text-sm text-slate-500">{plan.detail}</p>
-              <p className="mt-5 text-4xl font-black text-blue-800">{plan.price}</p>
-              <p className="mt-1 text-xs text-slate-500">INR · one-time plan price</p>
-              <Link href={user ? "/account" : "/"} className="mt-6 inline-flex min-h-12 items-center justify-center rounded-xl bg-blue-700 px-4 py-3 text-center font-bold text-white shadow transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">{user ? "Continue" : "Sign in to continue"}</Link>
+            <article key={plan.value} className={`relative flex flex-col rounded-2xl border bg-white p-5 text-center shadow-lg transition hover:-translate-y-1 ${plan.featured ? "border-blue-500 ring-2 ring-blue-200" : "border-slate-200"}`}>
+              {plan.featured && <span className="mb-3 self-center rounded-full bg-blue-100 px-3 py-1 text-xs font-extrabold text-blue-800">POPULAR CHOICE</span>}
+              <h3 className="text-xl font-extrabold text-slate-900">{plan.name}</h3>
+              <p className="mt-3 text-3xl font-black text-blue-800 sm:text-4xl">{plan.price}</p>
+              <Link href={user ? `/account?subscription=${plan.value}` : `/?subscribe=${plan.value}`} className="mt-5 inline-flex min-h-12 items-center justify-center rounded-xl bg-blue-700 px-4 py-3 text-center text-sm font-extrabold text-white shadow-md transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                {user ? `Continue — ${plan.price}` : `Sign in — ${plan.price}`}
+              </Link>
             </article>
           ))}
         </div>
-        <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-blue-100 bg-white p-6 text-center shadow-sm">
-          <h2 className="text-xl font-bold text-slate-900">One ocean. Many ways to enjoy.</h2>
-          <p className="mt-2 leading-7 text-slate-600">Explore games, quizzes, exercise and activities, with new challenges designed to keep things interesting. Shoppers Ocean also offers beautifully designed online flipbooks and a place for authors to publish their books.</p>
-          <p className="mt-3 text-sm font-semibold text-slate-700">E-books and flipbooks are separate from entertainment subscriptions.</p>
-        </div>
-        <div className="mt-8 text-center"><Link href="/" className="font-semibold text-blue-700 hover:text-blue-900">← Back to homepage</Link></div>
+
+        <p className="mx-auto mt-6 max-w-3xl rounded-xl border border-amber-200 bg-amber-50 p-4 text-center text-sm leading-6 text-amber-900">
+          Entertainment subscriptions cover subscription-based games and activities only. E-books and flipbooks are not included.
+        </p>
+        <div className="mt-8 text-center"><Link href="/" className="font-bold text-blue-700 hover:text-blue-900">← Back to homepage</Link></div>
       </section>
       <Footer />
     </main>
