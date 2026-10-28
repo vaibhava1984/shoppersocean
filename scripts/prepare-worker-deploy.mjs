@@ -1,8 +1,15 @@
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+
+const customWorker = readFileSync("custom-worker.ts", "utf8")
+  .replace('from "./.open-next/worker.js"', 'from "./worker.js"')
+  .replace('from "./utils/subscriptions/reminders"', 'from "../utils/subscriptions/reminders"')
+  .replace('from "./utils/subscriptions/reconcile"', 'from "../utils/subscriptions/reconcile"');
+
+writeFileSync(".open-next/custom-worker.ts", customWorker);
 
 const config = {
   name: "shoppersocean",
-  main: "worker.js",
+  main: "custom-worker.ts",
   compatibility_date: "2026-10-25",
   compatibility_flags: ["nodejs_compat"],
   vars: {
@@ -20,8 +27,11 @@ const config = {
       database_name: "shoppers-ocean-db",
       database_id: "735056e1-63e7-410b-94bb-853221ab50fc"
     }
-  ]
+  ],
+  triggers: {
+    crons: ["0 * * * *"]
+  }
 };
 
 writeFileSync(".open-next/wrangler.json", JSON.stringify(config, null, 2));
-console.log("Created Worker deployment configuration for shoppersocean.");
+console.log("Created Shoppers Ocean Worker configuration with subscription reminder and reconciliation cron handlers.");
