@@ -16,21 +16,35 @@ function formatDate(value: string) { return new Date(value).toLocaleDateString("
 
 export default function SubscriptionPlanSelector({ signedIn }: { signedIn: boolean }) {
   const [loading, setLoading] = useState("");
+  const [checkoutReady, setCheckoutReady] = useState(false);
   const [error, setError] = useState("");
   const [confirmation, setConfirmation] = useState<{planName:string;amount:number;startedAt:string;expiresAt:string}|null>(null);
   useEffect(() => {
-    if (document.querySelector('script[data-razorpay-checkout="true"]')) return;
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    script.dataset.razorpayCheckout = "true";
-    document.body.appendChild(script);
+    if (window.Razorpay) { setCheckoutReady(true); return; }
+    let script = document.querySelector<HTMLScriptElement>('script[data-razorpay-checkout="true"]');
+    const created = !script;
+    if (!script) {
+      script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      script.dataset.razorpayCheckout = "true";
+    }
+    const loaded = () => setCheckoutReady(Boolean(window.Razorpay));
+    const failed = () => setError("The secure payment window could not be loaded. Please check your connection and try again.");
+    script.addEventListener("load", loaded);
+    script.addEventListener("error", failed);
+    if (created) document.body.appendChild(script);
+    if (window.Razorpay) setCheckoutReady(true);
+    return () => {
+      script?.removeEventListener("load", loaded);
+      script?.removeEventListener("error", failed);
+    };
   }, []);
 
   const subscribe = async (planId: string) => {
     setError("");
     if (!signedIn) { window.location.href = "/login?next=%2Fsubscribe-now"; return; }
-    if (!window.Razorpay) { setError("The secure payment window is loading. Please wait a moment and try again."); return; }
+    if (!window.Razorpay) { setError("The secure payment window is still loading. Please wait a moment and try again."); return; }
     setLoading(planId);
     try {
       const response = await fetch("/api/subscription/create-order", { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId }) });
@@ -75,7 +89,7 @@ export default function SubscriptionPlanSelector({ signedIn }: { signedIn: boole
         <h3 className="text-lg font-extrabold text-slate-900">{plan.name}</h3><p className="mt-1 text-xs text-slate-500">{plan.duration}</p>
         <p className="mt-4 text-3xl font-black tracking-tight text-blue-800">₹{plan.amount.toLocaleString("en-IN")}</p>
         <p className="mt-2 text-xs leading-5 text-slate-500">Access to subscription-covered entertainment features while your plan is active.</p>
-        <button disabled={Boolean(loading)} onClick={() => void subscribe(plan.id)} className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-700 px-4 py-3 text-sm font-extrabold text-white shadow transition hover:bg-blue-800 disabled:cursor-wait disabled:opacity-60">{loading === plan.id ? "Preparing secure checkout…" : loading ? "Please wait…" : "Subscribe Now →"}</button>
+        <button disabled={Boolean(loading) || (!checkoutReady && signedIn)} onClick={() => void subscribe(plan.id)} className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-700 px-4 py-3 text-sm font-extrabold text-white shadow transition hover:bg-blue-800 disabled:cursor-wait disabled:opacity-60">{loading === plan.id ? "Preparing secure checkout…" : loading ? "Please wait…" : signedIn && !checkoutReady ? "Loading secure checkout…" : "Subscribe Now →"}</button>
       </div>)}
     </div>
   </div>;
