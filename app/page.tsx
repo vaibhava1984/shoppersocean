@@ -36,7 +36,7 @@ export default async function LandingPage() {
         />
       </div>
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-12 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8"><EntertainmentHub /></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8"><EntertainmentHub userId={user?.id ?? null} /></div>
       </section>
 
       <section className="relative overflow-hidden border-y border-blue-100 bg-gradient-to-r from-white via-blue-50 to-cyan-50 py-10 sm:py-12">

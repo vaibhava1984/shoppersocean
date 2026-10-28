@@ -2,13 +2,15 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EntertainmentHub from "@/components/EntertainmentHub";
+import { getCurrentUser } from "@/utils/auth/session";
 
 export const metadata = {
   title: "Play Games & Brain Challenges",
   description: "Enjoy free browser games, quizzes, riddles, daily brain challenges, and flipbooks on Shoppers Ocean.",
 };
 
-export default function EntertainmentPage() {
+export default async function EntertainmentPage() {
+  const user = await getCurrentUser();
   return <div className="min-h-screen bg-slate-50 text-slate-900">
     <Header />
     <section className="relative overflow-hidden border-b border-blue-100 bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-12 sm:py-16">
@@ -21,7 +23,7 @@ export default function EntertainmentPage() {
         <p className="mt-4 max-w-2xl text-base not-italic leading-7 text-slate-600 sm:text-lg">Enjoy quick games, stretch your mind with quizzes and riddles, take on a daily challenge, or explore beautiful flipbooks. All in one place.</p>
       </div>
     </section>
-    <section className="container mx-auto px-4 py-10 sm:px-6 lg:px-8"><EntertainmentHub /></section>
+    <section className="container mx-auto px-4 py-10 sm:px-6 lg:px-8"><EntertainmentHub userId={user?.id ?? null} /></section>
     <Footer />
   </div>;
 }
