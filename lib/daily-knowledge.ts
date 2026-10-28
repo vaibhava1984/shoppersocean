@@ -53,9 +53,9 @@ const elementQuestions=elements.map(([name,symbol],i)=>({id:"element-"+i,questio
 const scienceQuestions=science.map(([question,answer],i)=>({id:"science-"+i,question,answer}));
 const geographyQuestions=geography.map(([question,answer],i)=>({id:"geography-"+i,question,answer}));
 export const DAILY_GK_QUESTIONS=[...capitalQuestions,...elementQuestions,...scienceQuestions,...geographyQuestions];
-export function getDailyGKQuestion(date=new Date()){
+export function getDailyGKQuestion(date=new Date(),offset=0){
  const start=Date.UTC(date.getUTCFullYear(),0,1);
  const dayIndex=Math.floor((Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate())-start)/86400000);
- const index=dayIndex%DAILY_GK_QUESTIONS.length;
+ const index=((dayIndex+Math.max(0,Math.floor(offset)))%DAILY_GK_QUESTIONS.length+DAILY_GK_QUESTIONS.length)%DAILY_GK_QUESTIONS.length;
  return DAILY_GK_QUESTIONS[index];
 }
