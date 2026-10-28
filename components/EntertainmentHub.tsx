@@ -87,7 +87,7 @@ export default function EntertainmentHub({userId}:{userId:string|null}){
   {game!=="books"&&game!=="quiz"&&<div className="mt-5 border-t border-slate-200 pt-4"><button type="button" onClick={()=>void handleDontKnow()} className="rounded-full bg-gradient-to-r from-amber-400 via-pink-500 to-violet-600 px-5 py-3 text-sm font-black text-white shadow-lg ring-2 ring-pink-200 transition hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-violet-200">🤷 I Don’t Know</button><p className="mt-2 text-xs text-slate-500">Counts as an attempt and uses one of today’s available plays.</p></div>}
  {game==="books"&&<div className="max-w-xl"><h3 className="text-xl font-black not-italic">Stories from Around the World</h3><p className="my-3 text-sm not-italic leading-6 text-slate-600">Explore flipbooks already available on Shoppers Ocean. Browse languages, discover genres, and find your next short read.</p><Link href="/bookShelf" className={`inline-flex ${btn}`}>Explore Flipbooks →</Link></div>}
  </>}
- </>}
+ </div></>}
  </div></div></section>}
 
  {userId&&!isAdmin&&!isSubscribed&&<Link href="/subscribe-now" className="fixed bottom-5 right-4 z-[105] inline-flex items-center gap-2 rounded-full border border-white/80 bg-gradient-to-r from-amber-300 via-yellow-300 to-amber-400 px-4 py-2.5 text-xs font-black text-slate-900 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl sm:right-6 sm:px-5 sm:text-sm" aria-label="View Shoppers Ocean subscription plans"><span aria-hidden="true">✨</span> Subscribe Now <span aria-hidden="true">→</span></Link>}
