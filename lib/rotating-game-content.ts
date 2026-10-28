@@ -26,10 +26,11 @@ export function getHiddenPuzzle(date:string,slot:number):Puzzle{
  return {id:"hidden:"+styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+item.question,question:item.question,clue:styles[seed%styles.length]+" "+item.question,answer:item.answer};
 }
 export function getMissingPuzzle(date:string,slot:number):Puzzle{
- const seed=seedFor(date,slot),item=DAILY_GK_QUESTIONS[hash(seed)%DAILY_GK_QUESTIONS.length],letters=item.answer.toUpperCase().replace(/[^A-Z]/g,"").split("");
- const count=letters.length>7?2:1,positions=shuffled(letters.map((_,i)=>i),seed).slice(0,count);
- const pattern=letters.map((v,i)=>positions.includes(i)?"_":v).join("");
- return {id:"missing:"+pattern+":"+item.question,question:item.question,clue:"Complete the missing letter(s). "+item.question,answer:item.answer,pattern};
+ const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length),letters=item.answer.toUpperCase().replace(/[^A-Z]/g,"").split("");
+ const count=letters.length>7?2:1,positions=shuffled(letters.map((_,i)=>i),seed+cycle*97).slice(0,count);
+ const styles=["Fill the missing letter(s):","Complete this word using the clue:","A word puzzle for you:","Use the clue to restore the word:","Find the missing character(s):","Complete the hidden answer:","Solve this letter challenge:","Restore the answer from the clue:","Which letters belong in the blanks?","Finish the word to solve the clue:"];
+ const pattern=letters.map((v,i)=>positions.includes(i)?"_":v).join(""),clue=styles[cycle]+" "+item.question;
+ return {id:"missing:"+pattern+":"+clue,question:item.question,clue,answer:item.answer,pattern};
 }
 export function getSequencePuzzle(date:string,slot:number):Puzzle{
  const seed=seedFor(date,slot),a=2+(seed%1000),step=1+((seed*7)%23),curve=1+((seed*13)%17);
@@ -43,11 +44,11 @@ export function getOddPuzzle(date:string,slot:number):Puzzle{
  return {id:"odd:"+base+":"+options.join(","),question:"Three numbers are multiples of "+base+". Which one is the odd one out?",options,answer:String(outsider),explanation:"The other three numbers are multiples of "+base+"."};
 }
 export function getQuizPuzzle(date:string,slot:number):Puzzle{
- const seed=seedFor(date,slot),item=DAILY_GK_QUESTIONS[seed%DAILY_GK_QUESTIONS.length];
- const cycle=Math.floor(seed/DAILY_GK_QUESTIONS.length);
- const distractors=shuffled(answers.filter(a=>a.toLowerCase()!==item.answer.toLowerCase()),seed+101+cycle*7919).slice(0,3);
+ const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length);
+ const correct=answers.indexOf(item.answer),distractors:string[]=[];
+ for(let offset=1;distractors.length<3&&offset<answers.length*2;offset++){const candidate=answers[((correct+cycle*7+offset)%answers.length+answers.length)%answers.length];if(candidate!==item.answer&&!distractors.includes(candidate))distractors.push(candidate);}
  const options=shuffled([item.answer,...distractors],seed+211+cycle*104729);
- return {id:"quiz:"+item.id+":"+options.join("|"),question:item.question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:"World Knowledge"};
+ return {id:"quiz:"+item.id+":"+options.join("|"),question:item.question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:"General Knowledge"};
 }
 export function getRiddlePuzzle(date:string,slot:number):Puzzle{
  const seed=seedFor(date,slot),target=1000+seed*7,double=target*2,add=target+17;
@@ -58,7 +59,9 @@ export function getRiddlePuzzle(date:string,slot:number):Puzzle{
 }
 
 export function getSpotPuzzle(date:string,slot:number):{id:string;size:number;target:number;targetIcon:number;baseIcon:number}{
- const seed=seedFor(date,slot),sizes=[16,25,36],size=sizes[hash(seed+701)%sizes.length];
- const target=hash(seed+1709)%size,targetIcon=hash(seed+2711)%8,baseIcon=(targetIcon+1+(hash(seed+3911)%7))%8;
+ const seed=seedFor(date,slot),cycleSeed=((seed%4312)+4312)%4312;
+ let size:number,offset:number;
+ if(cycleSeed<896){size=16;offset=cycleSeed;}else if(cycleSeed<2296){size=25;offset=cycleSeed-896;}else{size=36;offset=cycleSeed-2296;}
+ const target=Math.floor(offset/56),targetIcon=Math.floor((offset%56)/7),baseIcon=(targetIcon+1+(offset%7))%8;
  return {id:"spot:"+size+":"+target+":"+targetIcon+":"+baseIcon,size,target,targetIcon,baseIcon};
 }
