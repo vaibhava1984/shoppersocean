@@ -22,8 +22,8 @@ export function getWordPuzzle(date:string,slot:number):Puzzle{
 }
 export function getHiddenPuzzle(date:string,slot:number):Puzzle{
  const seed=seedFor(date,slot),item=DAILY_GK_QUESTIONS[seed%DAILY_GK_QUESTIONS.length];
- const styles=["Geography clue:","Think of a world capital:","Name the city asked for here:","Use your world knowledge:","Solve this capital-city clue:","A country-capital challenge:","Your destination is a capital city:","Read carefully and identify the capital:","Find the city that answers this clue:","World geography challenge:"];
- return {id:"hidden:"+styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+item.question,question:item.question,clue:styles[seed%styles.length]+" "+item.question,answer:item.answer};
+ const styles=["Knowledge clue:","Think carefully:","General knowledge challenge:","Read the clue:","Identify the answer:","Use what you know:","Here is your next challenge:","Reason it out:","Choose your knowledge carefully:","Solve this challenge:"];
+ return {id:"hidden:"+styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+item.question,question:item.question,clue:styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+" "+item.question,answer:item.answer};
 }
 export function getMissingPuzzle(date:string,slot:number):Puzzle{
  const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length),letters=item.answer.toUpperCase().replace(/[^A-Z]/g,"").split("");
@@ -43,12 +43,18 @@ export function getOddPuzzle(date:string,slot:number):Puzzle{
  const options=shuffled(vals.map(String),seed+17);
  return {id:"odd:"+base+":"+options.join(","),question:"Three numbers are multiples of "+base+". Which one is the odd one out?",options,answer:String(outsider),explanation:"The other three numbers are multiples of "+base+"."};
 }
+const answerPools:Record<string,string[]>={
+ capital:Array.from(new Set(DAILY_GK_QUESTIONS.filter(x=>x.id.startsWith("capital-")).map(x=>x.answer))),
+ element:Array.from(new Set(DAILY_GK_QUESTIONS.filter(x=>x.id.startsWith("element-")).map(x=>x.answer))),
+ science:Array.from(new Set(DAILY_GK_QUESTIONS.filter(x=>x.id.startsWith("science-")).map(x=>x.answer))),
+ geography:Array.from(new Set(DAILY_GK_QUESTIONS.filter(x=>x.id.startsWith("geography-")).map(x=>x.answer)))
+};
 export function getQuizPuzzle(date:string,slot:number):Puzzle{
- const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length);
- const correct=answers.indexOf(item.answer),distractors:string[]=[];
- for(let offset=1;distractors.length<3&&offset<answers.length*2;offset++){const candidate=answers[((correct+cycle*7+offset)%answers.length+answers.length)%answers.length];if(candidate!==item.answer&&!distractors.includes(candidate))distractors.push(candidate);}
+ const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length),category=item.id.split("-")[0],pool=answerPools[category]??answers;
+ const correct=pool.indexOf(item.answer),distractors:string[]=[];
+ for(let offset=1;distractors.length<3&&offset<pool.length*2;offset++){const candidate=pool[((correct+cycle*7+offset)%pool.length+pool.length)%pool.length];if(candidate!==item.answer&&!distractors.includes(candidate))distractors.push(candidate);}
  const options=shuffled([item.answer,...distractors],seed+211+cycle*104729);
- return {id:"quiz:"+item.id+":"+options.join("|"),question:item.question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:"General Knowledge"};
+ return {id:"quiz:"+item.id+":"+options.join("|"),question:item.question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:category==="capital"?"World Capitals":category==="element"?"Chemical Elements":category==="science"?"Science":"World Geography"};
 }
 export function getRiddlePuzzle(date:string,slot:number):Puzzle{
  const seed=seedFor(date,slot),target=1000+seed*7,double=target*2,add=target+17;
