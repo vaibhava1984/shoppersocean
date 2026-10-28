@@ -132,7 +132,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     if (!book) return { title: "Book not found | Shoppers Ocean" };
 
     const title = String(book.title ?? "Book details").trim();
-    const fullDescription = String(book.description ?? "Discover this book on Shoppers Ocean.").replace(/\\s+/g, " ").trim();
+    const fullDescription = String(book.description ?? "Discover this book on Shoppers Ocean.").replace(/\s+/g, " ").trim();
     const description = fullDescription.length > 200 ? `${fullDescription.slice(0, 197).trimEnd()}...` : fullDescription;
     const coverImages = parseImages(book.cover_images);
     const socialImages = coverImages.slice(0, 3).map((image) => {
