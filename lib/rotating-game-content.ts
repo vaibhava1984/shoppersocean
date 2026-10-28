@@ -13,31 +13,31 @@ function factorial(n:number){let value=1;for(let i=2;i<=n;i++)value*=i;return va
 function multisetPermutations(chars:string[]){let total=factorial(chars.length);const counts:Record<string,number>={};for(const ch of chars)counts[ch]=(counts[ch]??0)+1;for(const count of Object.values(counts))total/=factorial(count);return Math.floor(total);}
 function rankPermutation(sortedChars:string[],target:string){const pool=[...sortedChars].sort();let rank=0;for(let i=0;i<target.length;i++){const current=target[i];for(const ch of [...new Set(pool)].sort()){if(ch>=current)break;const at=pool.indexOf(ch);pool.splice(at,1);rank+=multisetPermutations(pool);pool.splice(at,0,ch);}const at=pool.indexOf(current);if(at<0)return 0;pool.splice(at,1);}return rank;}
 function unrankPermutation(chars:string[],rank:number){const pool=[...chars].sort(),out:string[]=[];for(let i=0;i<chars.length;i++){for(const ch of [...new Set(pool)].sort()){const at=pool.indexOf(ch);pool.splice(at,1);const count=multisetPermutations(pool);if(rank<count){out.push(ch);break;}rank-=count;pool.splice(at,0,ch);}}return out.join("");}
-export function getWordPuzzle(date:string,slot:number):Puzzle{
+export function getWordPuzzle(date:string,slot:number):Puzzle & {pattern:string}{
  const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,answer=longAnswers[cycleSeed%longAnswers.length],letters=answer.toUpperCase().replace(/[^A-Z]/g,"").split("").sort(),original=answer.toUpperCase().replace(/[^A-Z]/g,"");
  const rank=rankPermutation(letters,original),permutations=multisetPermutations(letters),rawRank=Math.floor(cycleSeed/longAnswers.length);
  const safeRank=rawRank>=rank?rawRank+1:rawRank;
  const scrambled=unrankPermutation(letters,safeRank%permutations);
  return {id:"word:"+answer+":"+scrambled,question:"Rearrange these letters to make a capital city.",answer,pattern:scrambled};
 }
-export function getHiddenPuzzle(date:string,slot:number):Puzzle{
+export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string}{
  const seed=seedFor(date,slot),item=DAILY_GK_QUESTIONS[seed%DAILY_GK_QUESTIONS.length];
  const styles=["Knowledge clue:","Think carefully:","General knowledge challenge:","Read the clue:","Identify the answer:","Use what you know:","Here is your next challenge:","Reason it out:","Choose your knowledge carefully:","Solve this challenge:"];
  return {id:"hidden:"+styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+item.question,question:item.question,clue:styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+" "+item.question,answer:item.answer};
 }
-export function getMissingPuzzle(date:string,slot:number):Puzzle{
+export function getMissingPuzzle(date:string,slot:number):Puzzle & {clue:string;pattern:string}{
  const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length),letters=item.answer.toUpperCase().replace(/[^A-Z]/g,"").split("");
  const count=letters.length>7?2:1,positions=shuffled(letters.map((_,i)=>i),seed+cycle*97).slice(0,count);
  const styles=["Fill the missing letter(s):","Complete this word using the clue:","A word puzzle for you:","Use the clue to restore the word:","Find the missing character(s):","Complete the hidden answer:","Solve this letter challenge:","Restore the answer from the clue:","Which letters belong in the blanks?","Finish the word to solve the clue:"];
  const pattern=letters.map((v,i)=>positions.includes(i)?"_":v).join(""),clue=styles[cycle]+" "+item.question;
  return {id:"missing:"+pattern+":"+clue,question:item.question,clue,answer:item.answer,pattern};
 }
-export function getSequencePuzzle(date:string,slot:number):Puzzle{
+export function getSequencePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
  const seed=seedFor(date,slot),a=2+(seed%1000),step=1+((seed*7)%23),curve=1+((seed*13)%17);
  const nums=[0,1,2,3,4].map(i=>a+i*step+i*i*curve),next=a+5*step+25*curve;
  return {id:"sequence:"+nums.join(",")+":"+next,question:nums.join(", ") + ", ?",answer:String(next),explanation:"The sequence adds a steady step and a growing square-based amount."};
 }
-export function getOddPuzzle(date:string,slot:number):Puzzle{
+export function getOddPuzzle(date:string,slot:number):Puzzle & {options:string[];explanation:string}{
  const seed=seedFor(date,slot),base=11+(seed%97),start=1000+seed*3,outsider=base*start+1;
  const vals=[base*start,base*(start+1),outsider,base*(start+2)];
  const options=shuffled(vals.map(String),seed+17);
@@ -49,14 +49,14 @@ const answerPools:Record<string,string[]>={
  science:Array.from(new Set(DAILY_GK_QUESTIONS.filter(x=>x.id.startsWith("science-")).map(x=>x.answer))),
  geography:Array.from(new Set(DAILY_GK_QUESTIONS.filter(x=>x.id.startsWith("geography-")).map(x=>x.answer)))
 };
-export function getQuizPuzzle(date:string,slot:number):Puzzle{
+export function getQuizPuzzle(date:string,slot:number):Puzzle & {options:string[];correctIndex:number;topic:string}{
  const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length),category=item.id.split("-")[0],pool=answerPools[category]??answers;
  const correct=pool.indexOf(item.answer),distractors:string[]=[];
  for(let offset=1;distractors.length<3&&offset<pool.length*2;offset++){const candidate=pool[((correct+cycle*7+offset)%pool.length+pool.length)%pool.length];if(candidate!==item.answer&&!distractors.includes(candidate))distractors.push(candidate);}
  const options=shuffled([item.answer,...distractors],seed+211+cycle*104729);
  return {id:"quiz:"+item.id+":"+options.join("|"),question:item.question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:category==="capital"?"World Capitals":category==="element"?"Chemical Elements":category==="science"?"Science":"World Geography"};
 }
-export function getRiddlePuzzle(date:string,slot:number):Puzzle{
+export function getRiddlePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
  const seed=seedFor(date,slot),target=1000+seed*7,double=target*2,add=target+17;
  const style=seed%3;
  if(style===0)return {id:"riddle:double:"+target,question:"I am a number. Double me and you get "+double+". What number am I?",answer:String(target),explanation:"Half of "+double+" is "+target+"."};
