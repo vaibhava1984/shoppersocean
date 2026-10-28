@@ -14,7 +14,21 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Shoppers Ocean | Play, Think, Discover & Read',
-  description: 'Play lightweight browser games, solve quizzes and brain challenges, take daily challenges, and discover digital flipbooks in multiple languages at Shoppers Ocean.',
+  description: 'Play. Connect. Compete. Your Next Favourite Escape Starts Here. Explore games, quizzes, brain challenges and beautifully designed online flipbooks.',
+  openGraph: {
+    type: 'website',
+    url: 'https://shoppersocean.com',
+    siteName: 'Shoppers Ocean',
+    title: 'Shoppers Ocean — Play, Think, Discover & Read',
+    description: 'Play. Connect. Compete. Your Next Favourite Escape Starts Here.',
+    images: [{ url: 'https://shoppersocean.com/1.jpg?rev=2', width: 1200, height: 630, alt: 'Shoppers Ocean — Play. Connect. Compete. Your Next Favourite Escape Starts Here.' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Shoppers Ocean — Play, Think, Discover & Read',
+    description: 'Play. Connect. Compete. Your Next Favourite Escape Starts Here.',
+    images: ['https://shoppersocean.com/1.jpg?rev=2'],
+  },
 }
 
 export default async function LandingPage() {
