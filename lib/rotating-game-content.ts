@@ -81,7 +81,7 @@ const riddleBank=[
  {q:"I speak without a mouth and answer without ears. I have no body, but I come alive when sound travels. What am I?",a:"echo",e:"An echo repeats sound."},
  {q:"What word becomes shorter when you add two letters to it?",a:"short",e:"Adding E and R makes SHORT into SHORTER."},
  {q:"I have a neck but no head, and I can hold something without hands. What am I?",a:"bottle",e:"A bottle has a neck and can hold liquid."},
- {q:"Which familiar object is shown by these pictures together: 🐝 + 🍃?",a:"belief",e:"Say the picture clues aloud: bee + leaf suggests the sound of belief."},
+ {q:"What has many teeth but cannot bite?",a:"comb",e:"A comb has teeth used to arrange hair."},
  {q:"Look at this picture clue: 🌧️ + 🌞. What colourful arc can appear in the sky?",a:"rainbow",e:"Sunlight and rain can produce a rainbow."}
 ];
 export function getRiddlePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
@@ -89,8 +89,8 @@ export function getRiddlePuzzle(date:string,slot:number):Puzzle & {explanation:s
  return {id:"riddle:"+item.a+":"+item.q,question:item.q,answer:item.a,explanation:item.e};
 }
 export function getSpotPuzzle(date:string,slot:number):{id:string;size:number;target:number;targetIcon:number;baseIcon:number}{
- const seed=seedFor(date,slot),size=seed%2===0?25:36,target=(hash(seed+77)%(size));
- const pairIndex=(seed%8)*2,baseIcon=8+pairIndex,targetIcon=baseIcon+1;
+ const seed=seedFor(date,slot),size=seed%3===0?36:25,target=(hash(seed+77)%(size));
+ const similarPairs=[[8,9],[10,11],[12,13],[14,15],[16,17],[18,19],[20,21],[22,23]],pair=similarPairs[seed%similarPairs.length],baseIcon=pair[0],targetIcon=pair[1];
  return {id:"spot:"+size+":"+target+":"+targetIcon+":"+baseIcon,size,target,targetIcon,baseIcon};
 }
 export function getRecallSequence(date:string,slot:number):number[]{
