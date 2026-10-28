@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import AdminNotificationBell from '@/components/AdminNotificationBell';
-import Link from 'next/link';
 
 interface HeroSectionProps {
  title?: string; subtitle?: string; buttonText?: string; buttonLink?: string;
