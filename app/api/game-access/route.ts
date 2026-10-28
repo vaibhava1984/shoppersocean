@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 const SECTION_IDS = ["word-playground", "brain-logic", "quiz-arena", "riddle-corner", "daily-challenge", "memory-observation"];
 const DAILY_SECTION_LIMIT = 10;
+const FREE_LIFETIME_SECTION_LIMIT = 3;
 
 async function getAccess(req: Request, consume = false) {
   try {
