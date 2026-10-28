@@ -50,3 +50,9 @@ export function getRiddlePuzzle(date:string,slot:number):Puzzle{
  if(style===1)return {id:"riddle:add:"+target,question:"A number plus 17 equals "+add+". What is the number?",answer:String(target),explanation:add+" − 17 = "+target+"."};
  return {id:"riddle:sequence:"+target,question:"A number sequence goes "+target+", "+(target+3)+", "+(target+6)+", "+(target+9)+", ?. What comes next?",answer:String(target+12),explanation:"Each step adds 3."};
 }
+
+export function getSpotPuzzle(date:string,slot:number):{id:string;size:number;target:number;targetIcon:number;baseIcon:number}{
+ const seed=seedFor(date,slot),sizes=[16,25,36],size=sizes[hash(seed+701)%sizes.length];
+ const target=hash(seed+1709)%size,targetIcon=hash(seed+2711)%8,baseIcon=(targetIcon+1+(hash(seed+3911)%7))%8;
+ return {id:"spot:"+size+":"+target+":"+targetIcon+":"+baseIcon,size,target,targetIcon,baseIcon};
+}
