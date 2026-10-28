@@ -29,7 +29,7 @@ jobs:
       - name: Build Next.js application
         run: bun run build
       - name: Build Cloudflare OpenNext Worker
-        run: bunx opennextjs-cloudflare build
+        run: bunx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion
       - name: Prepare custom Cloudflare Worker entrypoint
         run: node scripts/prepare-worker-deploy.mjs
       - name: Validate custom Worker and Wrangler configuration
