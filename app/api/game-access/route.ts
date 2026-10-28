@@ -39,13 +39,16 @@ async function handle(req:Request,consume:boolean){
     if(Number(prior?.plays_used??0)>=limit)return NextResponse.json({error:NO_MORE_TODAY,sectionId:section,gameTypeId:type,remaining:0,isSubscribed:true},{status:403,headers});
     await db.prepare("INSERT INTO game_subscriber_usage_by_type(user_id,game_type_id,usage_date,plays_used) VALUES(?,?,?,1) ON CONFLICT(user_id,game_type_id,usage_date) DO UPDATE SET plays_used=plays_used+1").bind(user.id,type,date).run();
     if(challenge)await db.prepare("INSERT OR IGNORE INTO game_challenge_history(user_id,game_type_id,challenge_id,played_at) VALUES(?,?,?,?)").bind(user.id,type,challenge,new Date().toISOString()).run();
-    return NextResponse.json({sectionId:section,gameTypeId:type,remaining:Math.max(0,limit-Number(prior?.plays_used??0)-1),isSubscribed:true},{headers});
+    const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
+    const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
+    const sectionRemaining=section==="daily-challenge"?Math.max(0,1-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,DAILY_LIMIT-(usedTypes[t]??0)),0);
+    return NextResponse.json({sectionId:section,gameTypeId:type,remaining:Math.max(0,limit-Number(prior?.plays_used??0)-1),sectionRemaining,isSubscribed:true},{headers});
    }
    const prior=await db.prepare("SELECT trials_used FROM game_free_trials_by_section WHERE user_id=? AND section_id=?").bind(user.id,section).first<any>(),used=Number(prior?.trials_used??0);
    if(used>=FREE_LIMIT)return NextResponse.json({error:"Your three free trials in this section have been used. Subscribe to continue.",sectionId:section,gameTypeId:type,remaining:0,freeTrialsExhausted:true,isSubscribed:false},{status:403,headers});
    await db.prepare("INSERT INTO game_free_trials_by_section(user_id,section_id,trials_used,updated_at) VALUES(?,?,1,?) ON CONFLICT(user_id,section_id) DO UPDATE SET trials_used=trials_used+1,updated_at=excluded.updated_at").bind(user.id,section,new Date().toISOString()).run();
    if(challenge)await db.prepare("INSERT OR IGNORE INTO game_challenge_history(user_id,game_type_id,challenge_id,played_at) VALUES(?,?,?,?)").bind(user.id,type,challenge,new Date().toISOString()).run();
-   return NextResponse.json({sectionId:section,gameTypeId:type,remaining:FREE_LIMIT-used-1,isSubscribed:false,freeTrialsRemaining:FREE_LIMIT-used-1},{headers});
+   return NextResponse.json({sectionId:section,gameTypeId:type,remaining:FREE_LIMIT-used-1,sectionRemaining:FREE_LIMIT-used-1,isSubscribed:false,freeTrialsRemaining:FREE_LIMIT-used-1},{headers});
   }
   const free=await db.prepare("SELECT section_id,trials_used FROM game_free_trials_by_section WHERE user_id=?").bind(user.id).all<any>();
   const usage=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
