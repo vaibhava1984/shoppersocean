@@ -1,5 +1,5 @@
-import { addMonthsKeepingMonthEnd, ensureSubscriptionSchema } from "@/utils/subscriptions/schema";
-import { sendSubscriptionWelcome } from "@/utils/subscriptions/email";
+import { addMonthsKeepingMonthEnd, ensureSubscriptionSchema } from "./schema";
+import { sendSubscriptionWelcome } from "./email";
 
 export async function activatePaidSubscription(db: any, input: { razorpayOrderId: string; paymentId: string; apiKey: string }) {
   await ensureSubscriptionSchema(db);
