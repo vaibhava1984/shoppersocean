@@ -20,8 +20,6 @@ export async function ensureSubscriptionSchema(db: any) {
     "ALTER TABLE user_subscriptions ADD COLUMN amount INTEGER",
     "ALTER TABLE user_subscriptions ADD COLUMN payment_id TEXT",
     "ALTER TABLE user_subscriptions ADD COLUMN reminder_sent_for TEXT",
-    "ALTER TABLE subscription_orders ADD COLUMN subscription_started_at TEXT",
-    "ALTER TABLE subscription_orders ADD COLUMN subscription_expires_at TEXT",
     `CREATE TABLE IF NOT EXISTS subscription_orders (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
@@ -37,6 +35,8 @@ export async function ensureSubscriptionSchema(db: any) {
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     )`,
+    "ALTER TABLE subscription_orders ADD COLUMN subscription_started_at TEXT",
+    "ALTER TABLE subscription_orders ADD COLUMN subscription_expires_at TEXT",
     "CREATE INDEX IF NOT EXISTS idx_subscription_orders_user_created ON subscription_orders(user_id, created_at)",
     "CREATE INDEX IF NOT EXISTS idx_user_subscriptions_expiry ON user_subscriptions(status, expires_at)"
   ]) {
