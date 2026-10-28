@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { sendSaleNotification } from "@/utils/email/sendSaleNotification";
+import { activatePaidSubscription } from "@/utils/subscriptions/activate";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -91,15 +92,37 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Captured payment does not match Razorpay order" }, { status: 409 });
     }
 
+    const db = getD1();
+    if (!db) return NextResponse.json({ error: "Cloudflare D1 is not available" }, { status: 503 });
+
+    if (String(razorpayOrder.notes?.purchase_type || "") === "subscription") {
+      const userId = String(razorpayOrder.notes?.user_id || "");
+      const planId = String(razorpayOrder.notes?.plan_id || "");
+      const amount = Number(razorpayOrder.notes?.base_amount);
+      if (!userId || !planId || !Number.isFinite(amount) || amount <= 0 || String(razorpayOrder.currency || "").toUpperCase() !== "INR") {
+        return NextResponse.json({ error: "Razorpay subscription order is missing trusted details" }, { status: 409 });
+      }
+      const saved = await db.prepare("SELECT user_id,plan_id,amount,currency FROM subscription_orders WHERE razorpay_order_id=? LIMIT 1")
+        .bind(razorpayOrderId).first<Record<string, any>>();
+      if (!saved) return NextResponse.json({ error: "Saved subscription order not found; retry reconciliation" }, { status: 503 });
+      if (String(saved.user_id) !== userId || String(saved.plan_id) !== planId || Math.abs(Number(saved.amount) - amount) > 0.01 ||
+          Math.abs(Number(payment.amount) / 100 - Number(saved.amount)) > 0.01 || String(saved.currency || "").toUpperCase() !== "INR") {
+        return NextResponse.json({ error: "Captured payment does not match the saved subscription" }, { status: 409 });
+      }
+      const activated = await activatePaidSubscription(db, {
+        razorpayOrderId,
+        paymentId,
+        apiKey: String(process.env.RESEND_API_KEY || ""),
+      });
+      return NextResponse.json({ received: true, purchaseType: "subscription", ...activated }, { headers: { "Cache-Control": "no-store" } });
+    }
+
     const userId = String(razorpayOrder.notes?.user_id || "");
     const bookId = String(razorpayOrder.notes?.product_id || "");
     const baseAmount = Number(razorpayOrder.notes?.base_amount);
     if (!userId || !bookId || !Number.isFinite(baseAmount) || baseAmount <= 0) {
       return NextResponse.json({ error: "Razorpay order is missing trusted purchase details" }, { status: 409 });
     }
-
-    const db = getD1();
-    if (!db) return NextResponse.json({ error: "Cloudflare D1 is not available" }, { status: 503 });
 
     const order = await db.prepare(
       "SELECT id, user_id, book_id, amount, currency, status FROM orders WHERE razorpay_order_id = ? LIMIT 1"
