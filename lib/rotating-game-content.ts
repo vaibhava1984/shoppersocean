@@ -54,7 +54,13 @@ export function getQuizPuzzle(date:string,slot:number):Puzzle & {options:string[
  const correct=pool.indexOf(item.answer),distractors:string[]=[];
  for(let offset=1;distractors.length<3&&offset<pool.length*2;offset++){const candidate=pool[((correct+cycle*7+offset)%pool.length+pool.length)%pool.length];if(candidate!==item.answer&&!distractors.includes(candidate))distractors.push(candidate);}
  const options=shuffled([item.answer,...distractors],seed+211+cycle*104729);
- return {id:"quiz:"+item.id+":"+options.join("|"),question:item.question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:category==="capital"?"World Capitals":category==="element"?"Chemical Elements":category==="science"?"Science":"World Geography"};
+ const country=item.question.replace(/^What is the capital city of /,"").replace(/\?$/,"");
+ const symbol=item.question.replace(/^Which chemical element has the symbol /,"").replace(/\?$/,"");
+ const capitalForms=[item.question,"Name the capital city of "+country+".","Which city is the capital of "+country+"?","Identify the national capital of "+country+".","Which city serves as the capital of "+country+"?","Choose the capital of "+country+".","What city is the seat of government in "+country+"?","For "+country+", which city is the capital?","Select the correct capital city for "+country+".","Which city should complete this statement: the capital of "+country+" is ...?"];
+ const elementForms=[item.question,"The symbol "+symbol+" belongs to which chemical element?","Identify the element represented by "+symbol+".","Which element is denoted by "+symbol+"?","Name the element whose chemical symbol is "+symbol+".","Select the element associated with the symbol "+symbol+".","Which chemical name matches the symbol "+symbol+"?","What element would you find listed as "+symbol+" on the periodic table?","Match the symbol "+symbol+" to its element.","Which element is abbreviated as "+symbol+"?"];
+ const generalForms=[item.question,"General knowledge: "+item.question,"Think carefully: "+item.question,"Choose the correct answer to this: "+item.question,"Quick quiz: "+item.question,"Test your knowledge: "+item.question,"Knowledge check: "+item.question,"Select the best answer: "+item.question,"Challenge question: "+item.question,"Can you answer this? "+item.question];
+ const question=(category==="capital"?capitalForms:category==="element"?elementForms:generalForms)[cycle];
+ return {id:"quiz:"+item.id+":"+cycle+":"+options.join("|"),question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:category==="capital"?"World Capitals":category==="element"?"Chemical Elements":category==="science"?"Science":"World Geography"};
 }
 export function getRiddlePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
  const seed=seedFor(date,slot),target=1000+seed*7,double=target*2,add=target+17;
