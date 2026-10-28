@@ -5,7 +5,6 @@ import LudoGame from "@/components/LudoGame";
 
 type Game = "tic"|"rps"|"memory"|"word"|"hidden"|"missing"|"sequence"|"odd"|"quiz"|"riddle"|"daily"|"recall"|"spot"|"books"|"ludo";
 const groups: {id:string;icon:string;title:string;desc:string;games:[string,string][]}[] = [
-{id:"play-games",icon:"🎮",title:"Play Games",desc:"Quick interactive games",games:[["tic","Tic-Tac-Toe"],["rps","Rock, Paper, Scissors"],["ludo","Online Ludo"]]},
 {id:"word-playground",icon:"🔤",title:"Word Playground",desc:"Play with letters and words",games:[["word","Word Scramble"],["hidden","Hidden Word"],["missing","Missing Letter"]]},
 {id:"brain-logic",icon:"🧠",title:"Brain & Logic Lab",desc:"Patterns, numbers and reasoning",games:[["sequence","Number Sequences"],["odd","Odd One Out"]]},
 {id:"quiz-arena",icon:"🌍",title:"Quiz Arena",desc:"Explore facts about our world",games:[["quiz","World Knowledge Quiz"]]},
