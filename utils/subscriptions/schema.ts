@@ -20,6 +20,8 @@ export async function ensureSubscriptionSchema(db: any) {
     "ALTER TABLE user_subscriptions ADD COLUMN amount INTEGER",
     "ALTER TABLE user_subscriptions ADD COLUMN payment_id TEXT",
     "ALTER TABLE user_subscriptions ADD COLUMN reminder_sent_for TEXT",
+    "ALTER TABLE subscription_orders ADD COLUMN subscription_started_at TEXT",
+    "ALTER TABLE subscription_orders ADD COLUMN subscription_expires_at TEXT",
     `CREATE TABLE IF NOT EXISTS subscription_orders (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,
