@@ -30,5 +30,7 @@ jobs:
         run: bun run build
       - name: Build Cloudflare OpenNext Worker
         run: bunx opennextjs-cloudflare build
+      - name: Prepare custom Cloudflare Worker entrypoint
+        run: node scripts/prepare-worker-deploy.mjs
       - name: Validate custom Worker and Wrangler configuration
-        run: bunx wrangler deploy --dry-run
+        run: bunx wrangler deploy --config .open-next/wrangler.json --dry-run
