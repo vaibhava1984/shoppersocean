@@ -27,7 +27,7 @@ async function getAccess(req: Request, consume = false) {
       return NextResponse.json({ sectionId, used, remaining: Math.max(0, 3 - used) }, { headers: { "Cache-Control": "no-store" } });
     }
 
-    const rows = await db.prepare("SELECT section_id, plays_used FROM game_play_usage_by_section WHERE user_id = ?").bind(user.id).all<{section_id:string;plays_used:number}>();
+    const rows = await db.prepare("SELECT section_id, plays_used, updated_at FROM game_play_usage_by_section WHERE user_id = ?").bind(user.id).all<{section_id:string;plays_used:number}>();
     const usedBySection: Record<string, number> = {};
     const remainingBySection: Record<string, number> = {};
     for (const id of SECTION_IDS) { usedBySection[id] = 0; remainingBySection[id] = 3; }
