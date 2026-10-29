@@ -8,8 +8,8 @@ import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages"
 import { redirect } from "next/navigation"
 
 export const metadata = {
-    title: "Your Books",
-    description: "Books you have purchased",
+    title: "User Panel",
+    description: "Your entertainment subscription and purchased books",
 }
 
 export const dynamic = "force-dynamic"
@@ -44,6 +44,17 @@ export default async function BookShelfPage({
 
     let books: Record<string, any>[] = []
     let availableLanguages = [...SUPPORTED_BOOK_LANGUAGES]
+    let subscription: Record<string, any> | null = null
+    let dailyUsed = 0
+    const dailyTotal = 121
+    if (user && !isCategoryBrowse) {
+        await db.prepare("CREATE TABLE IF NOT EXISTS user_subscriptions (user_id TEXT PRIMARY KEY, status TEXT NOT NULL DEFAULT 'inactive', started_at TEXT, expires_at TEXT, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run()
+        await db.prepare("CREATE TABLE IF NOT EXISTS game_subscriber_usage_by_type (user_id TEXT NOT NULL, game_type_id TEXT NOT NULL, usage_date TEXT NOT NULL, plays_used INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(user_id,game_type_id,usage_date))").run()
+        subscription = await db.prepare("SELECT status, started_at, expires_at, plan_name FROM user_subscriptions WHERE user_id=? LIMIT 1").bind(user.id).first<Record<string, any>>()
+        const today = new Date().toISOString().slice(0, 10)
+        const usage = await db.prepare("SELECT game_type_id, plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id, today).all<Record<string, any>>()
+        dailyUsed = (usage.results ?? []).reduce((sum, row) => sum + Math.max(0, Number(row.plays_used ?? 0)), 0)
+    }
 
     if (isCategoryBrowse) {
         const languageResult = await db.prepare("SELECT DISTINCT language FROM books WHERE COALESCE(is_deleted, 0) = 0 AND language IS NOT NULL AND TRIM(language) != ''").all<{ language: string }>()
@@ -131,6 +142,34 @@ export default async function BookShelfPage({
             <Header />
             <section className="bg-white py-10 sm:py-16">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    {!isCategoryBrowse && user && (
+                        <div className="mb-10 rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-cyan-50 p-5 shadow-sm sm:p-7">
+                            <h1 className="mb-5 text-2xl font-bold text-slate-900 sm:text-3xl">Entertainment</h1>
+                            <div className="grid gap-4 md:grid-cols-2">
+                                <div className="rounded-xl bg-white p-5 shadow-sm">
+                                    <h2 className="mb-3 text-lg font-bold text-blue-800">Subscription Status</h2>
+                                    {subscription && String(subscription.status ?? "").toLowerCase() === "active" && subscription.expires_at && Date.parse(String(subscription.expires_at)) > Date.now() ? (
+                                        <div className="space-y-2 text-slate-700">
+                                            <p><strong>Plan:</strong> {String(subscription.plan_name || "Active subscription")}</p>
+                                            <p><strong>Start date:</strong> {subscription.started_at ? new Date(String(subscription.started_at)).toLocaleDateString("en-GB", { timeZone: "UTC" }) : "—"}</p>
+                                            <p><strong>Days remaining:</strong> {Math.max(0, Math.ceil((Date.parse(String(subscription.expires_at)) - Date.now()) / 86400000))}</p>
+                                            <p><strong>Expiry date:</strong> {new Date(String(subscription.expires_at)).toLocaleDateString("en-GB", { timeZone: "UTC" })}</p>
+                                        </div>
+                                    ) : <p className="text-slate-700">You have not taken any subscription plan</p>}
+                                </div>
+                                <div className="rounded-xl bg-white p-5 shadow-sm">
+                                    <h2 className="mb-3 text-lg font-bold text-blue-800">Daily Usage Quota</h2>
+                                    {subscription && String(subscription.status ?? "").toLowerCase() === "active" && subscription.expires_at && Date.parse(String(subscription.expires_at)) > Date.now() ? (
+                                        <>
+                                            <p className="mb-3 text-slate-700">{Math.min(100, Math.round((dailyUsed / dailyTotal) * 100))}% used today ({Math.min(dailyUsed, dailyTotal)} of {dailyTotal} attempts)</p>
+                                            <div className="h-3 overflow-hidden rounded-full bg-slate-200"><div className="h-full rounded-full bg-gradient-to-r from-blue-600 to-cyan-500" style={{ width: String(Math.min(100, (dailyUsed / dailyTotal) * 100)) + "%" }} /></div>
+                                        </>
+                                    ) : <p className="text-slate-700">Nill</p>}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {!isCategoryBrowse && user && <h2 className="mb-6 text-2xl font-bold text-slate-900">Your Books</h2>}
                     {isCategoryBrowse ? (
                         <>
                             <CategoryFilterButtons genre={genre} author={author} language={language} languages={availableLanguages} />
