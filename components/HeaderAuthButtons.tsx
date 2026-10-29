@@ -1,11 +1,16 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AuthModal from "@/components/AuthModal";
 
 export default function HeaderAuthButtons() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [deviceRegistered, setDeviceRegistered] = useState(false);
+
+  useEffect(() => {
+    try { setDeviceRegistered(localStorage.getItem("so-admin-device-shortcut") === "registered"); } catch {}
+  }, []);
   const close = useCallback(() => setOpen(false), []);
 
   const show = (nextMode: "signin" | "signup") => {
