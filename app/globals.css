@@ -441,3 +441,20 @@ div[class*="bg-white/95"][class*="shadow-md"] a:hover {
 [data-radix-select-content] [role="option"]{font-family:"Palatino Linotype","Book Antiqua",Georgia,serif!important;font-size:1rem!important;font-weight:700!important;font-style:normal!important;color:#fff8e9!important;animation:oceanDropdownLuxuryItem 420ms cubic-bezier(.2,.85,.25,1) both!important;animation-delay:var(--dropdown-item-delay,0s)!important}
 [data-radix-select-content] [role="option"][data-highlighted]{color:#32113f!important;background:linear-gradient(100deg,#ffe6a7,#ffc2c8)!important}
 @media(prefers-reduced-motion:reduce){.dropdown-open-motion[data-state="open"],.category-dropdown-panel,.dropdown-open-motion [role="menuitem"],.dropdown-open-motion [role="menuitemcheckbox"],.dropdown-open-motion [role="menuitemradio"],.dropdown-open-motion [role="option"],.category-dropdown-item,[data-radix-select-content] [role="option"]{animation:none!important;transition:none!important}}
+
+/* Polished homepage title and search-result page-drag transition */
+.ocean-title {
+  color: #fff3bd;
+  background: linear-gradient(100deg, #fff6c7 0%, #ffffff 32%, #a5f3fc 68%, #fde68a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 5px 18px rgba(8, 47, 73, .32));
+  transform-origin: left center;
+}
+html { scroll-behavior: smooth; }
+html.ocean-search-page-exit body { animation: oceanPageDragOut .18s ease-in both; }
+html.ocean-search-page-enter body { animation: oceanPageDragIn .55s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes oceanPageDragOut { to { opacity: .25; transform: translateX(-3.5vw); } }
+@keyframes oceanPageDragIn { from { opacity: .55; transform: translateX(3.5vw); } to { opacity: 1; transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) { .ocean-title, html.ocean-search-page-exit body, html.ocean-search-page-enter body { animation: none !important; } html { scroll-behavior: auto; } }
