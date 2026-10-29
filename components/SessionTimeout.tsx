@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 const IDLE_LIMIT_MS = 10 * 60 * 1000;
 const ACTIVITY_KEY = "shoppers-ocean-last-activity";
 const ACTIVITY_WRITE_INTERVAL_MS = 1000;
-const CHECK_INTERVAL_MS = 15 * 1000;
+const CHECK_INTERVAL_MS = 5000;
 
 type ActivityRecord = { userId: string; at: number };
 
@@ -14,6 +14,8 @@ export default function SessionTimeout() {
   const logoutStartedRef = useRef(false);
 
   useEffect(() => {
+    let checkInProgress = false;
+
     const readActivity = (): ActivityRecord | null => {
       try {
         const raw = localStorage.getItem(ACTIVITY_KEY);
@@ -46,22 +48,22 @@ export default function SessionTimeout() {
           cache: "no-store",
         });
       } catch {
-        // Do not interrupt the current page with an automatic authentication popup.
+        // Still redirect to the homepage if the logout request fails.
       }
-      // Always return to a clean homepage after inactivity logout.
-      // This clears any page/modal state and avoids carrying login/error query parameters.
       window.location.replace("/");
     };
 
     const checkTimeout = async () => {
-      if (document.visibilityState !== "visible") return;
-
+      if (checkInProgress || document.visibilityState !== "visible") return;
+      checkInProgress = true;
       try {
         const response = await fetch("/api/auth/me", {
           credentials: "same-origin",
           cache: "no-store",
         });
+        if (!response.ok) return;
         const data = await response.json();
+        // Apply the same timeout to all authenticated users, including admins.
         const userId = data?.user?.id;
         if (!userId) {
           try { localStorage.removeItem(ACTIVITY_KEY); } catch {}
@@ -70,8 +72,6 @@ export default function SessionTimeout() {
 
         const activity = readActivity();
         if (!activity || activity.userId !== userId) {
-          // Start the inactivity window when this authenticated browser session
-          // is first observed. Do not refresh it from the timeout checker.
           writeActivity(userId, true);
           return;
         }
@@ -79,9 +79,11 @@ export default function SessionTimeout() {
         if (Date.now() - activity.at >= IDLE_LIMIT_MS) {
           await logoutForInactivity();
         }
-        // IMPORTANT: do not write activity here. The 15-second checker itself
-        // must never count as user activity.
-      } catch {}
+      } catch {
+        // Network failures must not reset the inactivity clock.
+      } finally {
+        checkInProgress = false;
+      }
     };
 
     const recordActivity = () => {
@@ -90,10 +92,15 @@ export default function SessionTimeout() {
       if (activity?.userId) writeActivity(activity.userId);
     };
 
-    const activityEvents = ["click", "keydown", "mousemove", "scroll", "touchstart", "pointerdown"];
-    activityEvents.forEach(event => window.addEventListener(event, recordActivity, { passive: true }));
-    const timer = window.setInterval(() => { void checkTimeout(); }, CHECK_INTERVAL_MS);
+    const activityEvents = [
+      "click", "keydown", "mousemove", "scroll", "touchstart",
+      "pointerdown", "input", "change"
+    ] as const;
+    activityEvents.forEach(event =>
+      window.addEventListener(event, recordActivity, { passive: true })
+    );
 
+    const timer = window.setInterval(() => { void checkTimeout(); }, CHECK_INTERVAL_MS);
     const onVisibilityChange = () => {
       if (document.visibilityState === "visible") void checkTimeout();
     };
