@@ -8,7 +8,7 @@ import YourBooksNavigation from "@/components/YourBooksNavigation";
 
 const navigationItems = [
   ["/", "Home"],
-  ["/bookShelf", "Your Books"],
+  ["/bookShelf", "User Panel"],
   ["/about", "About"],
   ["/read-ebooks", "Read E-books"],
 ] as const;
