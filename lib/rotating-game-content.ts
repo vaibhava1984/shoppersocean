@@ -92,7 +92,7 @@ const logicRiddleBank:Array<{q:string;a:string;o:[string,string,string,string];e
  {q:"A farmer has 17 sheep. All but 9 run away. How many sheep remain?",a:"9",o:["8","9","17","26"],e:"All but nine means nine remain."},
  {q:"You pass the runner who is in second place. What place are you in now?",a:"Second",o:["First","Second","Third","Fourth"],e:"You take the second runner's position."},
  {q:"Two fathers and two sons go fishing. They catch three fish, and each person gets one. How many people are there?",a:"3",o:["2","3","4","6"],e:"They are a grandfather, his son, and his grandson."},
- {q:"A pond's lily pads double in area every day. The pond is fully covered on day 48. On which day was it half covered?",a:"Day 47",o:["Day 46","Day 47","Day 24","Day ang"],e:"If the area doubles daily, it was half covered one day before full coverage."},
+ {q:"A pond's lily pads double in area every day. The pond is fully covered on day 48. On which day was it half covered?",a:"Day 47",o:["Day 46","Day 47","Day 48","Day 24"],e:"If the area doubles daily, it was half covered one day before full coverage."},
  {q:"How many months in a year have at least 28 days?",a:"12",o:["1","2","11","12"],e:"Every month has at least 28 days."},
  {q:"You overtake the person in third place in a race. What place are you in?",a:"Third",o:["Second","Third","Fourth","First"],e:"You take the position of the person you passed."},
  {q:"A clock takes 5 seconds to strike 6. At the same pace, how long does it take to strike 12?",a:"11 seconds",o:["10 seconds","11 seconds","12 seconds","6 seconds"],e:"Six strikes have five intervals; twelve strikes have eleven intervals."},
