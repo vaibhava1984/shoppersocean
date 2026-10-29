@@ -28,7 +28,7 @@ export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string}{
 }
 export function getMissingPuzzle(date:string,slot:number):Puzzle & {clue:string;pattern:string}{
  const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length),letters=item.answer.toUpperCase().replace(/[^A-Z]/g,"").split("");
- const count=letters.length>7?2:1,positions=shuffled(letters.map((_,i)=>i),seed+cycle*97).slice(0,count);
+ const count=Math.min(Math.max(2,Math.ceil(letters.length*0.4)),Math.max(2,letters.length-2)),positions=shuffled(letters.map((_,i)=>i),seed+cycle*97).slice(0,count);
  const styles=["Fill the missing letter(s):","Complete this word using the clue:","A word puzzle for you:","Use the clue to restore the word:","Find the missing character(s):","Complete the hidden answer:","Solve this letter challenge:","Restore the answer from the clue:","Which letters belong in the blanks?","Finish the word to solve the clue:"];
  const pattern=letters.map((v,i)=>positions.includes(i)?"_":v).join(""),clue=styles[cycle]+" "+item.question;
  const category=item.id.split("-")[0],pool=DAILY_GK_QUESTIONS.filter(entry=>entry.id.split("-")[0]===category).map(entry=>entry.answer).filter(answer=>answer!==item.answer),options=shuffled([item.answer,...shuffled([...new Set(pool)],seed+173).slice(0,3)],seed+29);
