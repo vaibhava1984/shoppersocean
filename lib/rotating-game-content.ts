@@ -23,14 +23,16 @@ export function getWordPuzzle(date:string,slot:number):Puzzle & {pattern:string}
 export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string}{
  const seed=seedFor(date,slot),item=DAILY_GK_QUESTIONS[seed%DAILY_GK_QUESTIONS.length];
  const styles=["Knowledge clue:","Think carefully:","General knowledge challenge:","Read the clue:","Identify the answer:","Use what you know:","Here is your next challenge:","Reason it out:","Choose your knowledge carefully:","Solve this challenge:"];
- return {id:"hidden:"+styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+item.question,question:item.question,clue:styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+" "+item.question,answer:item.answer};
+ const category=item.id.split("-")[0],pool=DAILY_GK_QUESTIONS.filter(entry=>entry.id.split("-")[0]===category).map(entry=>entry.answer).filter(answer=>answer!==item.answer),options=[item.answer,...shuffled([...new Set(pool)],seed+91).slice(0,3)];
+ return {id:"hidden:"+item.id,question:item.question,clue:styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+" "+item.question,answer:item.answer,options:shuffled(options,seed+19)};
 }
 export function getMissingPuzzle(date:string,slot:number):Puzzle & {clue:string;pattern:string}{
  const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length),letters=item.answer.toUpperCase().replace(/[^A-Z]/g,"").split("");
  const count=letters.length>7?2:1,positions=shuffled(letters.map((_,i)=>i),seed+cycle*97).slice(0,count);
  const styles=["Fill the missing letter(s):","Complete this word using the clue:","A word puzzle for you:","Use the clue to restore the word:","Find the missing character(s):","Complete the hidden answer:","Solve this letter challenge:","Restore the answer from the clue:","Which letters belong in the blanks?","Finish the word to solve the clue:"];
  const pattern=letters.map((v,i)=>positions.includes(i)?"_":v).join(""),clue=styles[cycle]+" "+item.question;
- return {id:"missing:"+pattern+":"+clue,question:item.question,clue,answer:item.answer,pattern};
+ const category=item.id.split("-")[0],pool=DAILY_GK_QUESTIONS.filter(entry=>entry.id.split("-")[0]===category).map(entry=>entry.answer).filter(answer=>answer!==item.answer),options=shuffled([item.answer,...shuffled([...new Set(pool)],seed+173).slice(0,3)],seed+29);
+ return {id:"missing:"+item.id+":"+cycle,question:item.question,clue,answer:item.answer,pattern,options};
 }
 export function getSequencePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
  const seed=seedFor(date,slot),a=2+(seed%1000),step=1+((seed*7)%23),curve=1+((seed*13)%17);
