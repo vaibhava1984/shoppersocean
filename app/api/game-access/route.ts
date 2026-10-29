@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 const SECTIONS=["word-playground","brain-logic","quiz-arena","riddle-corner","daily-challenge","memory-observation","classic-games"];
 const TYPES:Record<string,string[]>={"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot"],"classic-games":["tic","connect"]};
 const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUESTION_LIMIT=1;
-const NO_MORE_TODAY="No more games in this section for today, please visit again tomorrow";
+const NO_MORE_TODAY="Your today's quota on this section is exhausted. Please visit tomorrow.";
 const headers={"Cache-Control":"no-store"};
 const today=()=>new Date().toISOString().slice(0,10);
 async function claimChallenge(db:D1Database,userId:string,type:string,challenge:string,playedAt:string){
@@ -45,7 +45,7 @@ async function handle(req:Request,consume:boolean){
     const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
     const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
     const sectionRemaining=section==="daily-challenge"?Math.max(0,1-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedTypes[t]??0)),0);
-    const message=sectionRemaining===0?NO_MORE_TODAY:"Today's limit for this game type is complete. Please choose another activity in this section.";
+    const message=NO_MORE_TODAY;
     return NextResponse.json({error:message,sectionId:section,gameTypeId:type,remaining:0,sectionRemaining,isAdmin:admin,isSubscribed:subscribed},{status:403,headers});
    }
    if(challenge){
