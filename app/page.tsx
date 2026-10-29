@@ -14,19 +14,19 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Shoppers Ocean | Play, Think, Discover & Read',
-  description: 'Play. Connect. Compete. Your Next Favourite Escape Starts Here. Explore games, quizzes, brain challenges and beautifully designed online flipbooks.',
+  description: 'One Destination. Endless Ways to Enjoy. Explore games, quizzes, brain challenges and beautifully designed online flipbooks.',
   openGraph: {
     type: 'website',
     url: 'https://shoppersocean.com',
     siteName: 'Shoppers Ocean',
     title: 'Shoppers Ocean — Play, Think, Discover & Read',
-    description: 'Play. Connect. Compete. Your Next Favourite Escape Starts Here.',
-    images: [{ url: 'https://shoppersocean.com/1.jpg?rev=2', width: 1200, height: 630, alt: 'Shoppers Ocean — Play. Connect. Compete. Your Next Favourite Escape Starts Here.' }],
+    description: 'One Destination. Endless Ways to Enjoy.',
+    images: [{ url: 'https://shoppersocean.com/1.jpg?rev=2', width: 1200, height: 630, alt: 'Shoppers Ocean — One Destination. Endless Ways to Enjoy.' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Shoppers Ocean — Play, Think, Discover & Read',
-    description: 'Play. Connect. Compete. Your Next Favourite Escape Starts Here.',
+    description: 'One Destination. Endless Ways to Enjoy.',
     images: ['https://shoppersocean.com/1.jpg?rev=2'],
   },
 }
@@ -39,7 +39,7 @@ export default async function LandingPage() {
       <div>
         <HeroSection
           title="Shoppers Ocean"
-          subtitle="Play. Connect. Compete. Your Next Favourite Escape Starts Here."
+          subtitle="One Destination. Endless Ways to Enjoy."
           welcomeName={user?.firstName || undefined}
           isAdmin={user?.publicMetadata?.userrole === "ADMIN"}
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
