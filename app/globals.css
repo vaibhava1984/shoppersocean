@@ -458,3 +458,6 @@ html.ocean-search-page-enter body { animation: oceanPageDragIn .55s cubic-bezier
 @keyframes oceanPageDragOut { to { opacity: .25; transform: translateX(-3.5vw); } }
 @keyframes oceanPageDragIn { from { opacity: .55; transform: translateX(3.5vw); } to { opacity: 1; transform: translateX(0); } }
 @media (prefers-reduced-motion: reduce) { .ocean-title, html.ocean-search-page-exit body, html.ocean-search-page-enter body { animation: none !important; } html { scroll-behavior: auto; } }
+
+/* Rich, centered gold-and-aqua title that complements the blue/cyan hero */
+.ocean-title{background:linear-gradient(100deg,#fff2a6 0%,#ffd166 28%,#fff8df 52%,#67e8f9 78%,#d9f99d 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 3px 0 rgba(7,35,74,.72)) drop-shadow(0 7px 15px rgba(3,24,58,.58));transform-origin:center center;margin-left:auto;margin-right:auto;}
