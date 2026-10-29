@@ -29,7 +29,7 @@ const config = {
     }
   ],
   triggers: {
-    crons: ["0 * * * *"]
+    crons: ["0 * * * *", "30 2 * * *"]
   }
 };
 
