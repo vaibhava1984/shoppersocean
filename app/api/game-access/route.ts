@@ -36,11 +36,11 @@ async function handle(req:Request,consume:boolean){
   const date=today();
   if(consume){
    let body:any={};try{body=await req.json()}catch{}
-   const section=body.sectionId,type=body.gameTypeId,challenge=typeof body.challengeId==="string"?body.challengeId.slice(0,160):"";
+   const section=body.sectionId,type=body.gameTypeId,challenge=typeof body.challengeId==="string"?body.challengeId.slice(0,160):"",questionText=typeof body.challengeQuestion==="string"?body.challengeQuestion.normalize("NFKC").toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu," ").trim().slice(0,300):"";
    if(!SECTIONS.includes(section)||!TYPES[section]?.includes(type))return NextResponse.json({error:"Choose a valid game and section."},{status:400,headers});
    // Check the section's daily quota before duplicate-history checks so exhausted sections stop immediately.
    const limit=type==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT;
-   const changed=admin?{plays_used:1}:await db.prepare("INSERT INTO game_subscriber_usage_by_type(user_id,game_type_id,usage_date,plays_used) VALUES(?,?,?,1) ON CONFLICT(user_id,game_type_id,usage_date) DO UPDATE SET plays_used=plays_used+1 WHERE game_subscriber_usage_by_type.plays_used < ? RETURNING plays_used").bind(user.id,type,date,limit).first<any>();
+   const changed=await db.prepare("INSERT INTO game_subscriber_usage_by_type(user_id,game_type_id,usage_date,plays_used) VALUES(?,?,?,1) ON CONFLICT(user_id,game_type_id,usage_date) DO UPDATE SET plays_used=plays_used+1 WHERE game_subscriber_usage_by_type.plays_used < ? RETURNING plays_used").bind(user.id,type,date,limit).first<any>();
    if(!changed){
     const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
     const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
@@ -50,7 +50,7 @@ async function handle(req:Request,consume:boolean){
    }
    if(challenge){
     const prior=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).first<any>();
-    if(prior&&Date.now()-Date.parse(prior.played_at)<365*86400000){
+    const priorQuestion=questionText?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,"__question__",questionText).first<any>():null;\n    if((prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)||(priorQuestion&&Date.now()-Date.parse(priorQuestion.played_at)<365*86400000)){
      await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
@@ -65,7 +65,7 @@ async function handle(req:Request,consume:boolean){
     freeTrialsUsed=Number(trial.trials_used??0);
    }
    const playedAt=new Date().toISOString();
-   if(challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt)){
+   if((challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt))||(questionText&&!await claimChallenge(db,user.id,"__question__",questionText,playedAt))){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
     if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
     return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
@@ -74,7 +74,7 @@ async function handle(req:Request,consume:boolean){
    const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
    const dailyRemaining=Math.max(0,limit-Number(changed.plays_used??0));
    const dailySectionRemaining=section==="daily-challenge"?Math.max(0,1-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedTypes[t]??0)),0);
-   const sectionRemaining=admin?DAILY_LIMIT:section==="daily-challenge"||subscribed?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
+   const sectionRemaining=admin||subscribed||section==="daily-challenge"?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    return NextResponse.json({sectionId:section,gameTypeId:type,remaining:dailyRemaining,sectionRemaining,isAdmin:admin,isSubscribed:subscribed,freeTrialsRemaining:freeTrialsUsed===null?undefined:Math.max(0,FREE_LIMIT-freeTrialsUsed)},{headers});
   }
   const free=await db.prepare("SELECT section_id,trials_used FROM game_free_trials_by_section WHERE user_id=?").bind(user.id).all<any>();
@@ -83,8 +83,8 @@ async function handle(req:Request,consume:boolean){
   for(const s of SECTIONS)freeUsed[s]=0;for(const x of free.results??[])freeUsed[x.section_id]=Number(x.trials_used??0);for(const x of usage.results??[])usedByType[x.game_type_id]=Number(x.plays_used??0);
   for(const s of SECTIONS){
    const dailySection=s==="daily-challenge"?Math.max(0,1-(usedByType.daily??0)):TYPES[s].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedByType[t]??0)),0);
-   remainingBySection[s]=admin?DAILY_LIMIT:s==="daily-challenge"||subscribed?dailySection:Math.min(dailySection,Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
-   for(const t of TYPES[s])remainingByType[t]=admin?DAILY_LIMIT:Math.min(Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedByType[t]??0)),subscribed||s==="daily-challenge"?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
+   remainingBySection[s]=admin||s==="daily-challenge"||subscribed?dailySection:Math.min(dailySection,Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
+   for(const t of TYPES[s])remainingByType[t]=Math.min(Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedByType[t]??0)),admin||subscribed||s==="daily-challenge"?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
   }
   return NextResponse.json({isAdmin:admin,isSubscribed:subscribed,role:admin?"admin":subscribed?"subscriber":"free",remainingBySection,remainingByType,freeUsedBySection:freeUsed,usedByType,utcDate:date},{headers});
  }catch(error){console.error("Game access check failed:",error);return NextResponse.json({error:"Game access could not be verified."},{status:503,headers})}
