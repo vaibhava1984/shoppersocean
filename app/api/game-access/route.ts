@@ -38,6 +38,14 @@ async function handle(req:Request,consume:boolean){
    let body:any={};try{body=await req.json()}catch{}
    const section=body.sectionId,type=body.gameTypeId,challenge=typeof body.challengeId==="string"?body.challengeId.slice(0,160):"",questionText=typeof body.challengeQuestion==="string"?body.challengeQuestion.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300):"";
    if(!SECTIONS.includes(section)||!TYPES[section]?.includes(type))return NextResponse.json({error:"Choose a valid game and section."},{status:400,headers});
+   // Enforce the free section quota before touching daily usage; this prevents stale clients
+   // from receiving another question after their free allowance has run out.
+   if(!admin&&!subscribed&&section!=="daily-challenge"){
+    const freeRow=await db.prepare("SELECT trials_used FROM game_free_trials_by_section WHERE user_id=? AND section_id=? LIMIT 1").bind(user.id,section).first<any>();
+    if(Number(freeRow?.trials_used??0)>=FREE_LIMIT){
+     return NextResponse.json({error:"Your three free trials in this section have been used. Subscribe to continue.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false,isAdmin:false},{status:403,headers});
+    }
+   }
    // Check the section's daily quota before duplicate-history checks so exhausted sections stop immediately.
    const limit=type==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT;
    const changed=await db.prepare("INSERT INTO game_subscriber_usage_by_type(user_id,game_type_id,usage_date,plays_used) VALUES(?,?,?,1) ON CONFLICT(user_id,game_type_id,usage_date) DO UPDATE SET plays_used=plays_used+1 WHERE game_subscriber_usage_by_type.plays_used < ? RETURNING plays_used").bind(user.id,type,date,limit).first<any>();
