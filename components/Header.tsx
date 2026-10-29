@@ -4,6 +4,7 @@ import HeaderAuthorButton from "@/app/components/HeaderAuthorButton"
 import SiteSearch from "@/components/SiteSearch"
 import HeaderAccountMenu from "@/components/HeaderAccountMenu";
 import HeaderAuthButtons from "@/components/HeaderAuthButtons";
+import AdminDeviceMarker from "@/components/AdminDeviceMarker";
 import YourBooksNavigation from "@/components/YourBooksNavigation";
 
 const navigationItems = [
