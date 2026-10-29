@@ -13,13 +13,13 @@ export default function YourBooksNavigation({ className }: YourBooksNavigationPr
 
   const handleAuthenticated = useCallback(() => {
     setOpen(false);
-    window.location.replace("/");
+    window.location.replace("/bookShelf");
   }, []);
 
   return (
     <>
       <button type="button" onClick={() => setOpen(true)} className={className}>
-        Your Books
+        User Panel
       </button>
       <AuthModal
         open={open}
