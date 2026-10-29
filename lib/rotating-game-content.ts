@@ -87,6 +87,35 @@ export function getQuizPuzzle(date:string,slot:number):Puzzle & {options:string[
  const question=(category==="capital"?capitalForms:category==="element"?elementForms:generalForms)[cycle];
  return {id:"quiz:"+item.id+":"+cycle+":"+options.join("|"),question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:category==="capital"?"World Capitals":category==="element"?"Chemical Elements":category==="science"?"Science":"World Geography"};
 }
+const logicRiddleBank:Array<{q:string;a:string;o:[string,string,string,string];e:string}>= [
+ {q:"A family has two parents and four daughters. Each daughter has one brother. How many children are there?",a:"5",o:["4","5","6","8"],e:"The four daughters share the same one brother."},
+ {q:"A farmer has 17 sheep. All but 9 run away. How many sheep remain?",a:"9",o:["8","9","17","26"],e:"All but nine means nine remain."},
+ {q:"You pass the runner who is in second place. What place are you in now?",a:"Second",o:["First","Second","Third","Fourth"],e:"You take the second runner's position."},
+ {q:"Two fathers and two sons go fishing. They catch three fish, and each person gets one. How many people are there?",a:"3",o:["2","3","4","6"],e:"They are a grandfather, his son, and his grandson."},
+ {q:"A pond's lily pads double in area every day. The pond is fully covered on day 48. On which day was it half covered?",a:"Day 47",o:["Day 46","Day 47","Day 24","Day ang"],e:"If the area doubles daily, it was half covered one day before full coverage."},
+ {q:"How many months in a year have at least 28 days?",a:"12",o:["1","2","11","12"],e:"Every month has at least 28 days."},
+ {q:"You overtake the person in third place in a race. What place are you in?",a:"Third",o:["Second","Third","Fourth","First"],e:"You take the position of the person you passed."},
+ {q:"A clock takes 5 seconds to strike 6. At the same pace, how long does it take to strike 12?",a:"11 seconds",o:["10 seconds","11 seconds","12 seconds","6 seconds"],e:"Six strikes have five intervals; twelve strikes have eleven intervals."},
+ {q:"There are 10 candles burning. You blow out 2 and leave the others burning until they finish. How many candles remain?",a:"2",o:["0","2","8","10"],e:"The two blown-out candles remain; the others burn away."},
+ {q:"A bat and a ball cost $1.10 together. The bat costs $1 more than the ball. How much is the ball?",a:"$0.05",o:["$0.05","$0.10","$0.15","$1.00"],e:"The ball is five cents and the bat is $1.05."},
+ {q:"A drawer contains 5 black socks and 5 blue socks. In darkness, how many socks must you take to guarantee a matching-colour pair?",a:"3",o:["2","3","5","6"],e:"With only two colours, three socks guarantee at least two of one colour."},
+ {q:"A number is doubled, then 6 is added, giving 20. What was the original number?",a:"7",o:["6","7","8","13"],e:"Undo the addition: 20 − 6 = 14; halve it to get 7."},
+ {q:"A code uses the rule A=1, B=2, C=3, and so on. What is the total value of CAB?",a:"6",o:["5","6","7","8"],e:"C=3, A=1, B=2; total 6."},
+ {q:"A book's pages are numbered from 1 to 20. How many times does the digit 1 appear?",a:"12",o:["10","11","12","13"],e:"It appears in 1, 10–19 (eleven appearances there including 1 in 10), and 11 has two ones: total 12."},
+ {q:"If yesterday was two days before Friday, what day is tomorrow?",a:"Friday",o:["Thursday","Friday","Saturday","Sunday"],e:"Yesterday was Wednesday, so today is Thursday and tomorrow is Friday."},
+ {q:"A train travels 60 kilometres in one hour. At the same speed, how far does it travel in 15 minutes?",a:"15 km",o:["10 km","12 km","15 km","20 km"],e:"Fifteen minutes is one quarter of an hour; one quarter of 60 is 15."},
+ {q:"A basket holds 6 apples. You take away 2 apples. How many apples do you have?",a:"2",o:["2","4","6","8"],e:"You have the two apples you took."},
+ {q:"Three machines make three toys in three minutes. At the same rate, how long do 100 machines take to make 100 toys?",a:"3 minutes",o:["1 minute","3 minutes","33 minutes","100 minutes"],e:"Each machine makes one toy in three minutes."},
+ {q:"A number leaves remainder 1 when divided by 2, 3, and 4. Which is the smallest option that works?",a:"13",o:["7","9","13","17"],e:"13 leaves remainder 1 when divided by 2, 3, and 4."},
+ {q:"A father is four times as old as his son. In 20 years, he will be twice as old as his son. How old is the son now?",a:"10",o:["5","10","15","20"],e:"If the son is 10, the father is 40; in 20 years they will be 30 and 60."}
+];
+export function getLogicRiddlePuzzle(date:string,slot:number):Puzzle & {options:string[];correctIndex:number;explanation:string}{
+ const seed=seedFor(date,slot),index=((seed%logicRiddleBank.length)+logicRiddleBank.length)%logicRiddleBank.length,item=logicRiddleBank[index],cycle=Math.floor(seed/logicRiddleBank.length);
+ const forms=[item.q,item.q.replace(/^A /,"Consider a ").replace(/^How many /,"Work out how many "),item.q.replace(/^A /,"Think carefully: a ").replace(/^You /,"Imagine you ").replace(/^How many /,"Reason this out: how many ")];
+ const question=cycle%3===0?item.q:forms[cycle%forms.length];
+ const options=shuffled(item.o,seed+71);
+ return {id:"logic-riddle:"+index+":"+cycle+":"+question,question,answer:item.a,options,correctIndex:options.indexOf(item.a),explanation:item.e,topic:"Logic"};
+}
 const riddleBank=[
  {q:"I have keys but no locks, a space but no room, and you can enter but never go inside. What am I?",a:"keyboard",e:"A keyboard has keys, a space bar, and an Enter key."},
  {q:"What gets wetter while it dries something else?",a:"towel",e:"A towel becomes wet as it dries you."},
