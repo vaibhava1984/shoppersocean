@@ -26,13 +26,26 @@ export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string}{
  const category=item.id.split("-")[0],pool=DAILY_GK_QUESTIONS.filter(entry=>entry.id.split("-")[0]===category).map(entry=>entry.answer).filter(answer=>answer!==item.answer),options=[item.answer,...shuffled([...new Set(pool)],seed+91).slice(0,3)];
  return {id:"hidden:"+item.id,question:item.question,clue:styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+" "+item.question,answer:item.answer,options:shuffled(options,seed+19)};
 }
+const MISSING_WORD_CHALLENGES:Array<{sentence:string;answer:string;clue:string;options:string[]}>= [
+ {sentence:"A stitch in time saves ____.",answer:"nine",clue:"A proverb about solving problems early.",options:["nine","fine","line","mine"]},
+ {sentence:"Don't count your chickens before they ____.",answer:"hatch",clue:"Do not assume success before it happens.",options:["hatch","match","catch","patch"]},
+ {sentence:"Every cloud has a silver ____.",answer:"lining",clue:"Look for the hopeful side of a difficult situation.",options:["lining","timing","mining","dining"]},
+ {sentence:"Actions speak louder than ____.",answer:"words",clue:"What people do can matter more than what they say.",options:["words","world","works","worse"]},
+ {sentence:"The early bird catches the ____.",answer:"worm",clue:"A proverb about being early and prepared.",options:["worm","warm","word","worn"]},
+ {sentence:"When in Rome, do as the ____ do.",answer:"Romans",clue:"Adapt to the customs of the place you visit.",options:["Romans","rulers","roamers","robins"]},
+ {sentence:"Practice makes ____.",answer:"perfect",clue:"Repeated effort improves a skill.",options:["perfect","present","patient","precious"]},
+ {sentence:"Better late than ____.",answer:"never",clue:"Doing something late is better than not doing it.",options:["never","newer","nearer","clever"]},
+ {sentence:"A picture is worth a thousand ____.",answer:"words",clue:"An image can communicate a great deal.",options:["words","worlds","works","wonders"]},
+ {sentence:"Where there's a will, there's a ____.",answer:"way",clue:"Determination helps people find a solution.",options:["way","day","ray","say"]},
+ {sentence:"Too many cooks spoil the ____.",answer:"broth",clue:"Too many people directing one task can harm it.",options:["broth","bread","broad","growth"]},
+ {sentence:"The pen is mightier than the ____.",answer:"sword",clue:"Ideas and writing can be more powerful than force.",options:["sword","word","world","storm"]},
+ {sentence:"Look before you ____.",answer:"leap",clue:"Think carefully before taking action.",options:["leap","heap","keep","deep"]},
+ {sentence:"Honesty is the best ____.",answer:"policy",clue:"Truthfulness is generally the wisest approach.",options:["policy","poetry","police","polish"]},
+ {sentence:"Two heads are better than ____.",answer:"one",clue:"Working together can improve problem-solving.",options:["one","once","only","own"]}
+];
 export function getMissingPuzzle(date:string,slot:number):Puzzle & {clue:string;pattern:string}{
- const seed=seedFor(date,slot),cycleSeed=((seed%4000)+4000)%4000,item=DAILY_GK_QUESTIONS[cycleSeed%DAILY_GK_QUESTIONS.length],cycle=Math.floor(cycleSeed/DAILY_GK_QUESTIONS.length),letters=item.answer.toUpperCase().replace(/[^A-Z]/g,"").split("");
- const count=Math.min(Math.max(2,Math.ceil(letters.length*0.4)),Math.max(2,letters.length-2)),positions=shuffled(letters.map((_,i)=>i),seed+cycle*97).slice(0,count);
- const styles=["Fill the missing letter(s):","Complete this word using the clue:","A word puzzle for you:","Use the clue to restore the word:","Find the missing character(s):","Complete the hidden answer:","Solve this letter challenge:","Restore the answer from the clue:","Which letters belong in the blanks?","Finish the word to solve the clue:"];
- const pattern=letters.map((v,i)=>positions.includes(i)?"_":v).join(""),clue=styles[cycle]+" "+item.question;
- const category=item.id.split("-")[0],pool=DAILY_GK_QUESTIONS.filter(entry=>entry.id.split("-")[0]===category).map(entry=>entry.answer).filter(answer=>answer!==item.answer),options=shuffled([item.answer,...shuffled([...new Set(pool)],seed+173).slice(0,3)],seed+29);
- return {id:"missing:"+item.id+":"+cycle,question:item.question,clue,answer:item.answer,pattern,options};
+ const seed=seedFor(date,slot),index=((seed%MISSING_WORD_CHALLENGES.length)+MISSING_WORD_CHALLENGES.length)%MISSING_WORD_CHALLENGES.length,item=MISSING_WORD_CHALLENGES[index];
+ return {id:"missing:"+index+":"+item.answer,question:item.sentence.replace("____","_____"),clue:item.clue,answer:item.answer,pattern:"_____",options:shuffled(item.options,seed+29)};
 }
 export function getSequencePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
  const seed=seedFor(date,slot),a=2+(seed%1000),step=1+((seed*7)%23),curve=1+((seed*13)%17);
