@@ -6,11 +6,6 @@ import AuthModal from "@/components/AuthModal";
 export default function HeaderAuthButtons() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [deviceRegistered, setDeviceRegistered] = useState(false);
-
-  useEffect(() => {
-    try { setDeviceRegistered(localStorage.getItem("so-admin-device-shortcut") === "registered"); } catch {}
-  }, []);
   const close = useCallback(() => setOpen(false), []);
 
   const show = (nextMode: "signin" | "signup") => {
@@ -21,17 +16,6 @@ export default function HeaderAuthButtons() {
   return (
     <>
       <div className="ml-auto flex flex-shrink-0 items-center gap-2">
-        {deviceRegistered && (
-          <button
-            type="button"
-            aria-label="Admin sign-in shortcut"
-            title="Admin sign-in"
-            onClick={() => show("signin")}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-amber-300 bg-gradient-to-br from-fuchsia-600 via-purple-600 to-blue-600 text-lg font-black text-yellow-200 shadow-md ring-2 ring-purple-200 hover:scale-105"
-          >
-            A
-          </button>
-        )}
         <button
           type="button"
           onClick={() => show("signin")}
