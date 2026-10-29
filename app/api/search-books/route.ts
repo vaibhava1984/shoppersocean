@@ -44,7 +44,6 @@ export async function GET(request: Request) {
     if (q.length < 2) return NextResponse.json({ suggestions: [] });
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database is unavailable" }, { status: 503 });
-    const needle = normalize(q);
     const items: Item[] = sections.map(section => ({ ...section, type: "section" as const, score: rank(section.label, q) }));
     const bookRows = await db.prepare("SELECT id,title,author_name FROM books WHERE COALESCE(is_deleted,0)=0 ORDER BY title ASC LIMIT 1500").all<{id:string;title:string;author_name:string|null}>();
     for (const book of bookRows.results ?? []) {
