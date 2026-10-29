@@ -56,6 +56,6 @@ export const DAILY_GK_QUESTIONS=[...capitalQuestions,...elementQuestions,...scie
 export function getDailyGKQuestion(date=new Date(),offset=0){
  const start=Date.UTC(date.getUTCFullYear(),0,1);
  const dayIndex=Math.floor((Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate())-start)/86400000);
- const index=((dayIndex+Math.max(0,Math.floor(offset)))%DAILY_GK_QUESTIONS.length+DAILY_GK_QUESTIONS.length)%DAILY_GK_QUESTIONS.length;
+ const index=((dayIndex*10+Math.max(0,Math.floor(offset)))%DAILY_GK_QUESTIONS.length+DAILY_GK_QUESTIONS.length)%DAILY_GK_QUESTIONS.length;
  return DAILY_GK_QUESTIONS[index];
 }
