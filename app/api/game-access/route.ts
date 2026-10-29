@@ -109,7 +109,7 @@ async function handle(req:Request,consume:boolean){
    const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
    const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
    const dailyRemaining=Math.max(0,limit-Number(changed.plays_used??0));
-   const dailySectionRemaining=section==="daily-challenge"?Math.max(0,1-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedTypes[t]??0)),0);
+   const dailySectionRemaining=section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedTypes[t]??0)),0);
    const sectionRemaining=admin||subscribed||section==="daily-challenge"?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    const remaining=admin||subscribed||section==="daily-challenge"?dailyRemaining:Math.min(dailyRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    return NextResponse.json({sectionId:section,gameTypeId:type,remaining,sectionRemaining,isAdmin:admin,isSubscribed:subscribed,freeTrialsRemaining:freeTrialsUsed===null?undefined:Math.max(0,FREE_LIMIT-freeTrialsUsed)},{headers});
