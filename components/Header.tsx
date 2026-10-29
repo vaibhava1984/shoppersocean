@@ -31,7 +31,7 @@ export default async function Header({ user }: HeaderProps) {
 
   return (
     <>
-      <nav className="bg-white sticky top-0 z-50 shadow-md">
+      {currentUser?.app_metadata?.userrole === "ADMIN" && <AdminDeviceMarker />}\n      <nav className="bg-white sticky top-0 z-50 shadow-md">
         <div className="container mx-auto px-2 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-between gap-2 py-3 sm:py-4 min-h-[72px]">
             <div className="flex min-w-0 flex-shrink items-center gap-3">
