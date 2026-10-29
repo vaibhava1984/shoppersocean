@@ -3,10 +3,10 @@ import { getCurrentUser } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 const SECTIONS=["word-playground","brain-logic","quiz-arena","riddle-corner","daily-challenge","memory-observation","classic-games"];
 const TYPES:Record<string,string[]>={"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot"],"classic-games":["tic","connect"]};
-const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUESTION_LIMIT=1;
+const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUESTION_LIMIT=10;
 const NO_MORE_TODAY="Your today's quota on this section is exhausted. Please visit tomorrow.";
 const headers={"Cache-Control":"no-store"};
-const today=()=>new Date().toISOString().slice(0,10);
+const today=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10); // India day boundary: 08:00 IST (02:30 UTC).
 async function claimChallenge(db:D1Database,userId:string,type:string,challenge:string,playedAt:string){
  if(!challenge)return true;
  const cutoff=new Date(Date.now()-365*86400000).toISOString();
@@ -76,7 +76,7 @@ async function handle(req:Request,consume:boolean){
    if(!changed){
     const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
     const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
-    const sectionRemaining=section==="daily-challenge"?Math.max(0,1-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedTypes[t]??0)),0);
+    const sectionRemaining=section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedTypes[t]??0)),0);
     const message=NO_MORE_TODAY;
     return NextResponse.json({error:message,sectionId:section,gameTypeId:type,remaining:0,sectionRemaining,isAdmin:admin,isSubscribed:subscribed},{status:403,headers});
    }
@@ -119,10 +119,10 @@ async function handle(req:Request,consume:boolean){
   const freeUsed:Record<string,number>={},usedByType:Record<string,number>={},remainingBySection:Record<string,number>={},remainingByType:Record<string,number>={};
   for(const s of SECTIONS)freeUsed[s]=0;for(const x of free.results??[])freeUsed[x.section_id]=Number(x.trials_used??0);for(const x of usage.results??[])usedByType[x.game_type_id]=Number(x.plays_used??0);
   for(const s of SECTIONS){
-   const dailySection=s==="daily-challenge"?Math.max(0,1-(usedByType.daily??0)):TYPES[s].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedByType[t]??0)),0);
+   const dailySection=s==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedByType.daily??0)):TYPES[s].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedByType[t]??0)),0);
    remainingBySection[s]=admin||s==="daily-challenge"||subscribed?dailySection:Math.min(dailySection,Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
    for(const t of TYPES[s])remainingByType[t]=Math.min(Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedByType[t]??0)),admin||subscribed||s==="daily-challenge"?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
   }
-  return NextResponse.json({isAdmin:admin,isSubscribed:subscribed,role:admin?"admin":subscribed?"subscriber":"free",remainingBySection,remainingByType,freeUsedBySection:freeUsed,usedByType,utcDate:date},{headers});
+  return NextResponse.json({isAdmin:admin,isSubscribed:subscribed,role:admin?"admin":subscribed?"subscriber":"free",remainingBySection,remainingByType,freeUsedBySection:freeUsed,usedByType,gameDay:date,resetTime:"08:00 Asia/Kolkata"},{headers});
  }catch(error){console.error("Game access check failed:",error);return NextResponse.json({error:"Game access could not be verified."},{status:503,headers})}
 }
