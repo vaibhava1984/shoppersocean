@@ -7,6 +7,7 @@ import {ADVERB_QUESTION_BANK} from "@/data/english-expert-adverb-bank";
 import {ARTICLE_QUESTION_BANK} from "@/data/english-expert-article-bank";
 import {INTERJECTION_QUESTION_BANK} from "@/data/english-expert-interjection-bank";
 import {HELPING_VERB_QUESTION_BANK} from "@/data/english-expert-helping-verbs-bank";
+import {PAST_TENSE_QUESTION_BANK} from "@/data/english-expert-past-tense-bank";
 import {Component,useEffect,useMemo,useRef,useState} from "react";
 import {createPortal} from "react-dom";
 
@@ -23,12 +24,7 @@ const TOPICS:Topic[]=[
 {id:"articles",name:"Articles",definition:"Articles are determiners used before nouns. A and an are indefinite articles; the is the definite article. Choice depends on meaning, countability, and sound—not simply spelling. This 300-question bank covers sound-based a/an choices, definite reference, unique nouns, geographical names, and zero article.",bank:ARTICLE_QUESTION_BANK},
 {id:"interjection",name:"Interjection",definition:"An interjection is a word or short expression that conveys a sudden feeling, reaction, greeting, or response. It may express joy, surprise, pain, relief, sorrow, hesitation, approval, or a call for attention. This 300-question bank tests meaning, identification, and context.",bank:INTERJECTION_QUESTION_BANK},{id:"helping-verbs",name:"Helping Verbs",definition:"Helping verbs (auxiliary verbs) work with main verbs to form tenses, questions, negatives, emphasis, and passive constructions. This 300-question bank covers primary auxiliaries (be, have, do), modal auxiliaries, agreement, progressive and perfect forms, questions, negatives, and passive voice.",bank:HELPING_VERB_QUESTION_BANK},
 {id:"modal-verbs",name:"Modal Verbs",definition:"Modal verbs are auxiliary verbs such as can, could, may, might, must, shall, should, will, and would. They express ability, possibility, permission, obligation, advice, or willingness.",bank:buildModalQuestionBank()},
-{id:"past-tense",name:"Past Tense",definition:"The past tense locates an action or state before the present. Its main forms include simple past, past continuous, past perfect, and past perfect continuous.",bank:[
-{q:"Choose the simple past form: “Yesterday, Mira ___ the museum.”",o:["visits","visited","has visited","will visit"],a:1,e:"Visited is the simple past form."},
-{q:"Complete the sentence: “At 8 p.m. last night, I ___ dinner.”",o:["cook","was cooking","have cooked","will cook"],a:1,e:"Was cooking describes an action in progress at a specific past time."},
-{q:"Choose the past perfect form: “The train ___ before we reached the station.”",o:["left","has left","had left","was leaving"],a:2,e:"Had left marks the earlier of two past events."},
-{q:"Which sentence is in the simple past tense?",o:["She has written a letter.","She writes a letter.","She wrote a letter.","She will write a letter."],a:2,e:"Wrote is the simple past form of write."},
-{q:"Complete the sentence: “They ___ for two hours before the bus arrived.”",o:["wait","had been waiting","have waited","will wait"],a:1,e:"Past perfect continuous describes duration up to a past point."},{q:"Choose the correct form: “When I called, he ___ a shower.”",o:["takes","was taking","has taken","will take"],a:1,e:"Past continuous describes an action in progress when another past event occurred."}]},
+{id:"past-tense",name:"Past Tense",definition:"This 300-question bank covers simple past, past continuous, past perfect, past perfect continuous, negatives, questions, irregular verbs, used to, and would for past habits.",bank:PAST_TENSE_QUESTION_BANK},
 {id:"present-tense",name:"Present Tense",definition:"The present tense describes current states, habits, general truths, and actions connected with the present. Its forms include simple present, present continuous, present perfect, and present perfect continuous.",bank:[
 {q:"Choose the correct form: “Water ___ at 100°C at standard atmospheric pressure.”",o:["boil","boils","is boil","boiling"],a:1,e:"The simple present expresses a general scientific fact."},
 {q:"Complete the sentence: “Look! The children ___ in the garden.”",o:["play","played","are playing","have play"],a:2,e:"Present continuous describes an action happening now."},
