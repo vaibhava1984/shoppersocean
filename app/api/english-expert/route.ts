@@ -44,10 +44,19 @@ async function handle(req:Request,consume:boolean){
     return NextResponse.json({ok:!exhausted,topicId:topic,used,limit,remaining:Math.max(0,limit-used),quotaExhausted:exhausted&&paid,freeQuotaExhausted:exhausted&&!paid,usage:await readUsage(db,user.id,date,paid)},{status:exhausted?403:200,headers});
    }
    if(action==="reserve"){
-    const cutoff=new Date(Date.now()-90*86400000).toISOString(),now=new Date().toISOString();
-    const seen=await db.prepare("INSERT INTO english_expert_question_history_v2(user_id,question_id,first_seen_at) VALUES(?,?,?) ON CONFLICT(user_id,question_id) DO UPDATE SET first_seen_at=excluded.first_seen_at WHERE english_expert_question_history_v2.first_seen_at<=? RETURNING question_id").bind(user.id,questionId,now,cutoff).first<any>();
-    if(!seen)return NextResponse.json({repeated:true,skipQuestion:true},{status:409,headers});
-    return NextResponse.json({reserved:true},{headers});
+    const totalQuestions=Number(body.totalQuestions);
+    if(!Number.isInteger(totalQuestions)||totalQuestions<1||totalQuestions>1000||!questionId.startsWith(topic+":"))return NextResponse.json({error:"Invalid question rotation request."},{status:400,headers});
+    const now=new Date().toISOString();
+    const seen=await db.prepare("INSERT INTO english_expert_question_history_v2(user_id,question_id,first_seen_at) VALUES(?,?,?) ON CONFLICT(user_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,questionId,now).first<any>();
+    if(seen)return NextResponse.json({reserved:true,cycleReset:false},{headers});
+    const progress=await db.prepare("SELECT COUNT(*) AS total FROM english_expert_question_history_v2 WHERE user_id=? AND question_id LIKE ?").bind(user.id,topic+":%").first<any>();
+    const seenCount=Number(progress?.total??0);
+    if(seenCount>=totalQuestions){
+     await db.prepare("DELETE FROM english_expert_question_history_v2 WHERE user_id=? AND question_id LIKE ?").bind(user.id,topic+":%").run();
+     const restarted=await db.prepare("INSERT INTO english_expert_question_history_v2(user_id,question_id,first_seen_at) VALUES(?,?,?) ON CONFLICT(user_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,questionId,now).first<any>();
+     if(restarted)return NextResponse.json({reserved:true,cycleReset:true},{headers});
+    }
+    return NextResponse.json({repeated:true,skipQuestion:true},{status:409,headers});
    }
    const claimed=await db.prepare("INSERT INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
    if(!claimed)return NextResponse.json({error:"This question has already been attempted.",alreadyRecorded:true},{status:409,headers});
