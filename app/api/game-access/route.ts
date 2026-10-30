@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 const SECTIONS=["word-playground","brain-logic","quiz-arena","riddle-corner","daily-challenge","memory-observation","classic-games"];
 const TYPES:Record<string,string[]>={"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot"],"classic-games":["tic","connect"]};
-const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUESTION_LIMIT=10;
+const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUESTION_LIMIT=1;
 const NO_MORE_TODAY="Your today's quota on this section is exhausted. Please visit tomorrow.";
 const headers={"Cache-Control":"no-store"};
 const today=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10); // India day boundary: 08:00 IST (02:30 UTC).
