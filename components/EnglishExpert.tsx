@@ -8,6 +8,7 @@ import {ARTICLE_QUESTION_BANK} from "@/data/english-expert-article-bank";
 import {INTERJECTION_QUESTION_BANK} from "@/data/english-expert-interjection-bank";
 import {HELPING_VERB_QUESTION_BANK} from "@/data/english-expert-helping-verbs-bank";
 import {PAST_TENSE_QUESTION_BANK} from "@/data/english-expert-past-tense-bank";
+import {PRESENT_TENSE_QUESTION_BANK} from "@/data/english-expert-present-tense-bank";
 import {Component,useEffect,useMemo,useRef,useState} from "react";
 import {createPortal} from "react-dom";
 
@@ -25,12 +26,7 @@ const TOPICS:Topic[]=[
 {id:"interjection",name:"Interjection",definition:"An interjection is a word or short expression that conveys a sudden feeling, reaction, greeting, or response. It may express joy, surprise, pain, relief, sorrow, hesitation, approval, or a call for attention. This 300-question bank tests meaning, identification, and context.",bank:INTERJECTION_QUESTION_BANK},{id:"helping-verbs",name:"Helping Verbs",definition:"Helping verbs (auxiliary verbs) work with main verbs to form tenses, questions, negatives, emphasis, and passive constructions. This 300-question bank covers primary auxiliaries (be, have, do), modal auxiliaries, agreement, progressive and perfect forms, questions, negatives, and passive voice.",bank:HELPING_VERB_QUESTION_BANK},
 {id:"modal-verbs",name:"Modal Verbs",definition:"Modal verbs are auxiliary verbs such as can, could, may, might, must, shall, should, will, and would. They express ability, possibility, permission, obligation, advice, or willingness.",bank:buildModalQuestionBank()},
 {id:"past-tense",name:"Past Tense",definition:"This 300-question bank covers simple past, past continuous, past perfect, past perfect continuous, negatives, questions, irregular verbs, used to, and would for past habits.",bank:PAST_TENSE_QUESTION_BANK},
-{id:"present-tense",name:"Present Tense",definition:"The present tense describes current states, habits, general truths, and actions connected with the present. Its forms include simple present, present continuous, present perfect, and present perfect continuous.",bank:[
-{q:"Choose the correct form: “Water ___ at 100°C at standard atmospheric pressure.”",o:["boil","boils","is boil","boiling"],a:1,e:"The simple present expresses a general scientific fact."},
-{q:"Complete the sentence: “Look! The children ___ in the garden.”",o:["play","played","are playing","have play"],a:2,e:"Present continuous describes an action happening now."},
-{q:"Choose the present perfect form: “I ___ my assignment.”",o:["finish","finished","have finished","am finish"],a:2,e:"Have finished connects a completed action with the present."},
-{q:"Which sentence expresses a habit?",o:["She is sleeping now.","She walks to work every day.","She had walked yesterday.","She will walk tomorrow."],a:1,e:"The simple present commonly expresses habits."},
-{q:"Complete the sentence: “He ___ here since 2020.”",o:["works","worked","has worked","is work"],a:2,e:"Has worked describes a situation continuing from the past to the present."},{q:"Choose the correct form: “The train ___ at 6:30 every morning.”",o:["leave","leaves","is leave","leaving"],a:1,e:"The simple present expresses a regular timetable; the singular subject takes leaves."}]},
+{id:"present-tense",name:"Present Tense",definition:"This 300-question bank covers simple present, present continuous, present perfect, present perfect continuous, negatives, questions, subject–verb agreement, stative verbs, and timetables.",bank:PRESENT_TENSE_QUESTION_BANK},
 {id:"future-tense",name:"Future Tense",definition:"Future-time meaning can be expressed with will, be going to, the present continuous, and other constructions. The choice depends on intention, prediction, arrangement, and context.",bank:[
 {q:"Choose the natural prediction: “I think it ___ rain later.”",o:["rained","will","has","was"],a:1,e:"Will expresses a prediction about the future."},
 {q:"Complete the planned intention: “They have bought the paint; they ___ the room this weekend.”",o:["are going to paint","painted","have painted","were painting"],a:0,e:"Be going to commonly expresses an intention or plan."},
