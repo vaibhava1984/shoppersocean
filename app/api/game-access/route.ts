@@ -2,12 +2,13 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 const SECTIONS=["word-playground","brain-logic","quiz-arena","world-knowledge-quiz","riddle-corner","daily-challenge","memory-observation","classic-games"];
-const TYPES:Record<string,string[]>={"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"world-knowledge-quiz":["worldquiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot"],"classic-games":["tic","connect"]};
+const TYPES:Record<string,string[]>={"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"world-knowledge-quiz":["worldquiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot","jigsaw"],"classic-games":["tic","connect"]};
 const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUESTION_LIMIT=1;
 const NO_MORE_TODAY="Your today's quota on this section is exhausted. Please visit tomorrow.";
 const headers={"Cache-Control":"no-store"};
-const typeLimit=(type:string)=>type==="daily"||type==="memory"?DAILY_QUESTION_LIMIT:DAILY_LIMIT;
+const typeLimit=(type:string)=>type==="daily"||type==="jigsaw"?DAILY_QUESTION_LIMIT:DAILY_LIMIT;
 const today=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10); // India day boundary: 08:00 IST (02:30 UTC).
+const sectionDailyRemaining=(section:string,used:Record<string,number>)=>{if(section==="memory-observation"){const legacy=["memory","recall","spot"].reduce((n,t)=>n+Math.max(0,DAILY_LIMIT-(used[t]??0)),0);return Math.min(legacy,Math.max(0,DAILY_QUESTION_LIMIT-(used.jigsaw??0)));}return section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(used.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(used[t]??0)),0);};
 async function claimChallenge(db:D1Database,userId:string,type:string,challenge:string,playedAt:string){
  if(!challenge)return true;
  const cutoff=new Date(Date.now()-365*86400000).toISOString();
@@ -77,7 +78,7 @@ async function handle(req:Request,consume:boolean){
    if(!changed){
     const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
     const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
-    const sectionRemaining=section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(usedTypes[t]??0)),0);
+    const sectionRemaining=sectionDailyRemaining(section,usedTypes);
     const message=NO_MORE_TODAY;
     return NextResponse.json({error:message,sectionId:section,gameTypeId:type,remaining:0,sectionRemaining,isAdmin:admin,isSubscribed:subscribed},{status:403,headers});
    }
@@ -110,7 +111,7 @@ async function handle(req:Request,consume:boolean){
    const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
    const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
    const dailyRemaining=Math.max(0,limit-Number(changed.plays_used??0));
-   const dailySectionRemaining=section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(usedTypes[t]??0)),0);
+   const dailySectionRemaining=sectionDailyRemaining(section,usedTypes);
    const sectionRemaining=admin||subscribed||section==="daily-challenge"?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    const remaining=admin||subscribed||section==="daily-challenge"?dailyRemaining:Math.min(dailyRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    return NextResponse.json({sectionId:section,gameTypeId:type,remaining,sectionRemaining,isAdmin:admin,isSubscribed:subscribed,freeTrialsRemaining:freeTrialsUsed===null?undefined:Math.max(0,FREE_LIMIT-freeTrialsUsed)},{headers});
@@ -120,7 +121,7 @@ async function handle(req:Request,consume:boolean){
   const freeUsed:Record<string,number>={},usedByType:Record<string,number>={},remainingBySection:Record<string,number>={},remainingByType:Record<string,number>={};
   for(const s of SECTIONS)freeUsed[s]=0;for(const x of free.results??[])freeUsed[x.section_id]=Number(x.trials_used??0);for(const x of usage.results??[])usedByType[x.game_type_id]=Number(x.plays_used??0);
   for(const s of SECTIONS){
-   const dailySection=s==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedByType.daily??0)):TYPES[s].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(usedByType[t]??0)),0);
+   const dailySection=sectionDailyRemaining(s,usedByType);
    remainingBySection[s]=admin||s==="daily-challenge"||subscribed?dailySection:Math.min(dailySection,Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
    for(const t of TYPES[s])remainingByType[t]=Math.min(Math.max(0,typeLimit(t)-(usedByType[t]??0)),admin||subscribed||s==="daily-challenge"?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
   }
