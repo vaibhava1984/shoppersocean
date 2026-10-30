@@ -2,6 +2,7 @@
 import {NOUN_QUESTION_BANK} from "@/data/english-expert-noun-bank";
 import {PRONOUN_QUESTION_BANK} from "@/data/english-expert-pronoun-bank";
 import {ADJECTIVE_QUESTION_BANK} from "@/data/english-expert-adjective-bank";
+import {VERB_QUESTION_BANK} from "@/data/english-expert-verb-bank";
 import {Component,useEffect,useMemo,useRef,useState} from "react";
 import {createPortal} from "react-dom";
 
@@ -9,12 +10,7 @@ type Q={q:string;o:string[];a:number;e:string};
 type Topic={id:string;name:string;definition:string;bank:Q[]};
 const TOPICS:Topic[]=[
 {id:"noun",name:"Noun",definition:"A noun is a word that names a person, place, animal, thing, substance, or idea. Nouns may be common, proper, collective, abstract, or material.",bank:NOUN_QUESTION_BANK},
-{id:"pronoun",name:"Pronoun",definition:"A pronoun is a word used instead of a noun or noun phrase. Topics include personal, possessive, reflexive, demonstrative, relative, interrogative, indefinite, and reciprocal pronouns, as well as pronoun case.",bank:PRONOUN_QUESTION_BANK},{id:"adjective",name:"Adjective",definition:"An adjective describes or gives more information about a noun or pronoun. Topics include quality, quantity, number, demonstrative, possessive, interrogative, proper, compound, comparative, and superlative adjectives.",bank:ADJECTIVE_QUESTION_BANK},{id:"verb",name:"Verb",definition:"A verb expresses an action, occurrence, or state of being. It is central to the predicate and may be finite or non-finite, transitive or intransitive.",bank:[
-{q:"Which word is the verb in “The children laughed loudly”?",o:["children","laughed","loudly","the"],a:1,e:"Laughed expresses the action."},
-{q:"Choose the verb: “The soup tastes delicious.”",o:["soup","tastes","delicious","the"],a:1,e:"Tastes is a linking verb connecting the subject to a description."},
-{q:"Which sentence contains a transitive verb?",o:["The baby slept.","The guests arrived.","Rina opened the window.","The sun rose."],a:2,e:"Opened takes the direct object the window."},
-{q:"Choose the correct verb: “Neither answer ___ correct.”",o:["are","were","is","have"],a:2,e:"Neither is singular here, so it takes is."},
-{q:"Which is the infinitive form?",o:["writing","wrote","to write","written"],a:2,e:"To write is the infinitive form."},{q:"Which sentence uses a linking verb rather than an action verb?",o:["The audience applauded loudly.","The soup smells delicious.","The chef chopped onions.","The dog chased the ball."],a:1,e:"Smells links the subject soup to the description delicious."}]},
+{id:"pronoun",name:"Pronoun",definition:"A pronoun is a word used instead of a noun or noun phrase. Topics include personal, possessive, reflexive, demonstrative, relative, interrogative, indefinite, and reciprocal pronouns, as well as pronoun case.",bank:PRONOUN_QUESTION_BANK},{id:"adjective",name:"Adjective",definition:"An adjective describes or gives more information about a noun or pronoun. Topics include quality, quantity, number, demonstrative, possessive, interrogative, proper, compound, comparative, and superlative adjectives.",bank:ADJECTIVE_QUESTION_BANK},{id:"verb",name:"Verb",definition:"A verb expresses an action, occurrence, or state of being. This 300-question bank covers irregular forms, participles, subject–verb agreement, auxiliaries, modals, gerunds and infinitives, phrasal verbs, and perfect and passive constructions.",bank:VERB_QUESTION_BANK},
 {id:"adverb",name:"Adverb",definition:"An adverb modifies a verb, an adjective, another adverb, or sometimes a whole clause. It can express manner, time, place, frequency, or degree.",bank:[
 {q:"Identify the adverb: “The athlete ran swiftly.”",o:["athlete","ran","swiftly","the"],a:2,e:"Swiftly tells how the athlete ran."},
 {q:"Choose the correct adverb: “She speaks English ___.”",o:["fluent","fluency","fluently","more fluent"],a:2,e:"Fluently modifies the verb speaks."},
