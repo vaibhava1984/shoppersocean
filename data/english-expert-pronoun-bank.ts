@@ -2,7 +2,7 @@
 type PronounQuestion={q:string;o:string[];a:number;e:string};
 export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
   {
-    "q": "Identify the subject personal pronoun in this sentence: “I will present the opening report at the conference.”",
+    "q": "Identify the subject personal pronoun in this sentence: “I will explain the findings at the review meeting.”",
     "o": [
       "I",
       "you",
@@ -13,7 +13,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“I” is the subject personal used in this sentence."
   },
   {
-    "q": "Which option is the subject personal pronoun used here? “you will present the opening report at the conference.”",
+    "q": "Which option is the subject personal pronoun used here? “you will explain the findings at the review meeting.”",
     "o": [
       "she",
       "you",
@@ -24,7 +24,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“you” is the subject personal used in this sentence."
   },
   {
-    "q": "Read the example and select its subject personal pronoun: “he will present the opening report at the conference.”",
+    "q": "Read the example and select its subject personal pronoun: “he will explain the findings at the review meeting.”",
     "o": [
       "you",
       "she",
@@ -35,7 +35,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“he” is the subject personal used in this sentence."
   },
   {
-    "q": "Choose the subject personal pronoun appearing in the sentence: “she will present the opening report at the conference.”",
+    "q": "Choose the subject personal pronoun appearing in the sentence: “she will explain the findings at the review meeting.”",
     "o": [
       "I",
       "you",
@@ -46,7 +46,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“she” is the subject personal used in this sentence."
   },
   {
-    "q": "Find the subject personal pronoun in the following example: “we will present the opening report at the conference.”",
+    "q": "Find the subject personal pronoun in the following example: “we will explain the findings at the review meeting.”",
     "o": [
       "we",
       "I",
@@ -57,7 +57,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“we” is the subject personal used in this sentence."
   },
   {
-    "q": "Which answer correctly identifies the subject personal pronoun? “they will present the opening report at the conference.”",
+    "q": "Which answer correctly identifies the subject personal pronoun? “they will explain the findings at the review meeting.”",
     "o": [
       "he",
       "they",
@@ -68,7 +68,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“they” is the subject personal used in this sentence."
   },
   {
-    "q": "Select the subject personal pronoun from this sentence: “I have reserved seats near the front of the auditorium.”",
+    "q": "Select the subject personal pronoun from this sentence: “I can identify the error in the final calculation.”",
     "o": [
       "he",
       "she",
@@ -79,7 +79,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“I” is the subject personal used in this sentence."
   },
   {
-    "q": "In this example, which word is the subject personal pronoun? “you have reserved seats near the front of the auditorium.”",
+    "q": "In this example, which word is the subject personal pronoun? “you can identify the error in the final calculation.”",
     "o": [
       "I",
       "he",
@@ -90,7 +90,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“you” is the subject personal used in this sentence."
   },
   {
-    "q": "Point out the subject personal pronoun in the sentence below: “he have reserved seats near the front of the auditorium.”",
+    "q": "Point out the subject personal pronoun in the sentence below: “he can identify the error in the final calculation.”",
     "o": [
       "he",
       "I",
@@ -101,7 +101,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“he” is the subject personal used in this sentence."
   },
   {
-    "q": "Which choice names the subject personal pronoun in this example? “she have reserved seats near the front of the auditorium.”",
+    "q": "Which choice names the subject personal pronoun in this example? “she can identify the error in the final calculation.”",
     "o": [
       "he",
       "she",
@@ -112,7 +112,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“she” is the subject personal used in this sentence."
   },
   {
-    "q": "Examine the sentence and identify its subject personal pronoun: “we have reserved seats near the front of the auditorium.”",
+    "q": "Examine the sentence and identify its subject personal pronoun: “we can identify the error in the final calculation.”",
     "o": [
       "you",
       "he",
@@ -123,7 +123,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“we” is the subject personal used in this sentence."
   },
   {
-    "q": "Select the word functioning as a subject personal pronoun: “they have reserved seats near the front of the auditorium.”",
+    "q": "Select the word functioning as a subject personal pronoun: “they can identify the error in the final calculation.”",
     "o": [
       "I",
       "you",
@@ -134,7 +134,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“they” is the subject personal used in this sentence."
   },
   {
-    "q": "Which of these options is the subject personal pronoun in context? “I was selected to lead the environmental project.”",
+    "q": "Which of these options is the subject personal pronoun in context? “I should receive the revised schedule tomorrow.”",
     "o": [
       "I",
       "you",
@@ -145,7 +145,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“I” is the subject personal used in this sentence."
   },
   {
-    "q": "Choose the word that serves as the subject personal pronoun: “you was selected to lead the environmental project.”",
+    "q": "Choose the word that serves as the subject personal pronoun: “you should receive the revised schedule tomorrow.”",
     "o": [
       "she",
       "you",
@@ -156,7 +156,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“you” is the subject personal used in this sentence."
   },
   {
-    "q": "From the sentence below, identify the subject personal pronoun: “he was selected to lead the environmental project.”",
+    "q": "From the sentence below, identify the subject personal pronoun: “he should receive the revised schedule tomorrow.”",
     "o": [
       "you",
       "she",
@@ -167,7 +167,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“he” is the subject personal used in this sentence."
   },
   {
-    "q": "Which listed word functions as a subject personal pronoun here? “she was selected to lead the environmental project.”",
+    "q": "Which listed word functions as a subject personal pronoun here? “she should receive the revised schedule tomorrow.”",
     "o": [
       "I",
       "you",
@@ -178,7 +178,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“she” is the subject personal used in this sentence."
   },
   {
-    "q": "Locate the subject personal pronoun used in this example: “we was selected to lead the environmental project.”",
+    "q": "Locate the subject personal pronoun used in this example: “we should receive the revised schedule tomorrow.”",
     "o": [
       "we",
       "I",
@@ -189,7 +189,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“we” is the subject personal used in this sentence."
   },
   {
-    "q": "Which option contains the subject personal pronoun from the sentence? “they was selected to lead the environmental project.”",
+    "q": "Which option contains the subject personal pronoun from the sentence? “they should receive the revised schedule tomorrow.”",
     "o": [
       "he",
       "they",
@@ -200,7 +200,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“they” is the subject personal used in this sentence."
   },
   {
-    "q": "Read carefully: which word is the subject personal pronoun? “I are expected to submit the forms before Friday.”",
+    "q": "Read carefully: which word is the subject personal pronoun? “I may represent the school at the regional event.”",
     "o": [
       "he",
       "she",
@@ -211,7 +211,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“I” is the subject personal used in this sentence."
   },
   {
-    "q": "Choose the correct subject personal pronoun identified in this sentence: “you are expected to submit the forms before Friday.”",
+    "q": "Choose the correct subject personal pronoun identified in this sentence: “you may represent the school at the regional event.”",
     "o": [
       "I",
       "he",
@@ -222,7 +222,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“you” is the subject personal used in this sentence."
   },
   {
-    "q": "Which word in the example is acting as a subject personal pronoun? “he are expected to submit the forms before Friday.”",
+    "q": "Which word in the example is acting as a subject personal pronoun? “he may represent the school at the regional event.”",
     "o": [
       "he",
       "I",
@@ -233,7 +233,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“he” is the subject personal used in this sentence."
   },
   {
-    "q": "Select the correct identification of the subject personal pronoun: “she are expected to submit the forms before Friday.”",
+    "q": "Select the correct identification of the subject personal pronoun: “she may represent the school at the regional event.”",
     "o": [
       "he",
       "she",
@@ -244,7 +244,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“she” is the subject personal used in this sentence."
   },
   {
-    "q": "Find the word that functions as a subject personal pronoun in context: “we are expected to submit the forms before Friday.”",
+    "q": "Find the word that functions as a subject personal pronoun in context: “we may represent the school at the regional event.”",
     "o": [
       "you",
       "he",
@@ -255,7 +255,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“we” is the subject personal used in this sentence."
   },
   {
-    "q": "Which option points to the subject personal pronoun in the sentence? “they are expected to submit the forms before Friday.”",
+    "q": "Which option points to the subject personal pronoun in the sentence? “they may represent the school at the regional event.”",
     "o": [
       "I",
       "you",
@@ -266,7 +266,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“they” is the subject personal used in this sentence."
   },
   {
-    "q": "Identify the word used as a subject personal pronoun below: “I has volunteered to guide the visiting students.”",
+    "q": "Identify the word used as a subject personal pronoun below: “I must complete the safety briefing before entering.”",
     "o": [
       "I",
       "you",
@@ -277,7 +277,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“I” is the subject personal used in this sentence."
   },
   {
-    "q": "Which answer selects the subject personal pronoun correctly? “you has volunteered to guide the visiting students.”",
+    "q": "Which answer selects the subject personal pronoun correctly? “you must complete the safety briefing before entering.”",
     "o": [
       "she",
       "you",
@@ -288,7 +288,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“you” is the subject personal used in this sentence."
   },
   {
-    "q": "Study the sentence and choose its subject personal pronoun: “he has volunteered to guide the visiting students.”",
+    "q": "Study the sentence and choose its subject personal pronoun: “he must complete the safety briefing before entering.”",
     "o": [
       "you",
       "she",
@@ -299,7 +299,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“he” is the subject personal used in this sentence."
   },
   {
-    "q": "Pick out the subject personal pronoun from the example: “she has volunteered to guide the visiting students.”",
+    "q": "Pick out the subject personal pronoun from the example: “she must complete the safety briefing before entering.”",
     "o": [
       "I",
       "you",
@@ -310,7 +310,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“she” is the subject personal used in this sentence."
   },
   {
-    "q": "Which word should be classified as the subject personal pronoun here? “we has volunteered to guide the visiting students.”",
+    "q": "Which word should be classified as the subject personal pronoun here? “we must complete the safety briefing before entering.”",
     "o": [
       "we",
       "I",
@@ -321,7 +321,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“we” is the subject personal used in this sentence."
   },
   {
-    "q": "Choose the subject personal pronoun that appears in this sentence: “they has volunteered to guide the visiting students.”",
+    "q": "Choose the subject personal pronoun that appears in this sentence: “they must complete the safety briefing before entering.”",
     "o": [
       "he",
       "they",
@@ -992,7 +992,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“theirs” is the possessive used in this sentence."
   },
   {
-    "q": "Identify the reflexive pronoun in this sentence: “The participants introduced myself before the workshop began.”",
+    "q": "Identify the reflexive pronoun in this sentence: “I prepared myself for the demanding interview.”",
     "o": [
       "herself",
       "myself",
@@ -1003,7 +1003,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“myself” is the reflexive used in this sentence."
   },
   {
-    "q": "Which option is the reflexive pronoun used here? “The participants introduced yourself before the workshop began.”",
+    "q": "Which option is the reflexive pronoun used here? “You prepared yourself for the demanding interview.”",
     "o": [
       "himself",
       "herself",
@@ -1014,7 +1014,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“yourself” is the reflexive used in this sentence."
   },
   {
-    "q": "Read the example and select its reflexive pronoun: “The participants introduced himself before the workshop began.”",
+    "q": "Read the example and select its reflexive pronoun: “He prepared himself for the demanding interview.”",
     "o": [
       "myself",
       "yourself",
@@ -1025,7 +1025,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“himself” is the reflexive used in this sentence."
   },
   {
-    "q": "Choose the reflexive pronoun appearing in the sentence: “The participants introduced herself before the workshop began.”",
+    "q": "Choose the reflexive pronoun appearing in the sentence: “She prepared herself for the demanding interview.”",
     "o": [
       "herself",
       "myself",
@@ -1036,7 +1036,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“herself” is the reflexive used in this sentence."
   },
   {
-    "q": "Find the reflexive pronoun in the following example: “The participants introduced ourselves before the workshop began.”",
+    "q": "Find the reflexive pronoun in the following example: “We prepared ourselves for the demanding interview.”",
     "o": [
       "himself",
       "ourselves",
@@ -1047,7 +1047,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“ourselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Which answer correctly identifies the reflexive pronoun? “The participants introduced themselves before the workshop began.”",
+    "q": "Which answer correctly identifies the reflexive pronoun? “They prepared themselves for the demanding interview.”",
     "o": [
       "yourself",
       "himself",
@@ -1058,7 +1058,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“themselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Select the reflexive pronoun from this sentence: “The researcher reminded myself to check every calculation.”",
+    "q": "Select the reflexive pronoun from this sentence: “I reminded myself to check every detail.”",
     "o": [
       "yourself",
       "himself",
@@ -1069,7 +1069,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“myself” is the reflexive used in this sentence."
   },
   {
-    "q": "In this example, which word is the reflexive pronoun? “The researcher reminded yourself to check every calculation.”",
+    "q": "In this example, which word is the reflexive pronoun? “You reminded yourself to check every detail.”",
     "o": [
       "yourself",
       "myself",
@@ -1080,7 +1080,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“yourself” is the reflexive used in this sentence."
   },
   {
-    "q": "Point out the reflexive pronoun in the sentence below: “The researcher reminded himself to check every calculation.”",
+    "q": "Point out the reflexive pronoun in the sentence below: “He reminded himself to check every detail.”",
     "o": [
       "herself",
       "himself",
@@ -1091,7 +1091,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“himself” is the reflexive used in this sentence."
   },
   {
-    "q": "Which choice names the reflexive pronoun in this example? “The researcher reminded herself to check every calculation.”",
+    "q": "Which choice names the reflexive pronoun in this example? “She reminded herself to check every detail.”",
     "o": [
       "yourself",
       "himself",
@@ -1102,7 +1102,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“herself” is the reflexive used in this sentence."
   },
   {
-    "q": "Examine the sentence and identify its reflexive pronoun: “The researcher reminded ourselves to check every calculation.”",
+    "q": "Examine the sentence and identify its reflexive pronoun: “We reminded ourselves to check every detail.”",
     "o": [
       "myself",
       "yourself",
@@ -1113,7 +1113,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“ourselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Select the word functioning as a reflexive pronoun: “The researcher reminded themselves to check every calculation.”",
+    "q": "Select the word functioning as a reflexive pronoun: “They reminded themselves to check every detail.”",
     "o": [
       "themselves",
       "myself",
@@ -1124,7 +1124,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“themselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Which of these options is the reflexive pronoun in context? “The volunteers organised the entire exhibition by myself.”",
+    "q": "Which of these options is the reflexive pronoun in context? “I introduced myself before the workshop began.”",
     "o": [
       "herself",
       "myself",
@@ -1135,7 +1135,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“myself” is the reflexive used in this sentence."
   },
   {
-    "q": "Choose the word that serves as the reflexive pronoun: “The volunteers organised the entire exhibition by yourself.”",
+    "q": "Choose the word that serves as the reflexive pronoun: “You introduced yourself before the workshop began.”",
     "o": [
       "himself",
       "herself",
@@ -1146,7 +1146,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“yourself” is the reflexive used in this sentence."
   },
   {
-    "q": "From the sentence below, identify the reflexive pronoun: “The volunteers organised the entire exhibition by himself.”",
+    "q": "From the sentence below, identify the reflexive pronoun: “He introduced himself before the workshop began.”",
     "o": [
       "myself",
       "yourself",
@@ -1157,7 +1157,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“himself” is the reflexive used in this sentence."
   },
   {
-    "q": "Which listed word functions as a reflexive pronoun here? “The volunteers organised the entire exhibition by herself.”",
+    "q": "Which listed word functions as a reflexive pronoun here? “She introduced herself before the workshop began.”",
     "o": [
       "herself",
       "myself",
@@ -1168,7 +1168,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“herself” is the reflexive used in this sentence."
   },
   {
-    "q": "Locate the reflexive pronoun used in this example: “The volunteers organised the entire exhibition by ourselves.”",
+    "q": "Locate the reflexive pronoun used in this example: “We introduced ourselves before the workshop began.”",
     "o": [
       "himself",
       "ourselves",
@@ -1179,7 +1179,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“ourselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Which option contains the reflexive pronoun from the sentence? “The volunteers organised the entire exhibition by themselves.”",
+    "q": "Which option contains the reflexive pronoun from the sentence? “They introduced themselves before the workshop began.”",
     "o": [
       "yourself",
       "himself",
@@ -1190,7 +1190,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“themselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Read carefully: which word is the reflexive pronoun? “The speaker prepared myself for the challenging interview.”",
+    "q": "Read carefully: which word is the reflexive pronoun? “I promised to complete the task by myself.”",
     "o": [
       "yourself",
       "himself",
@@ -1201,7 +1201,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“myself” is the reflexive used in this sentence."
   },
   {
-    "q": "Choose the correct reflexive pronoun identified in this sentence: “The speaker prepared yourself for the challenging interview.”",
+    "q": "Choose the correct reflexive pronoun identified in this sentence: “You promised to complete the task by yourself.”",
     "o": [
       "yourself",
       "myself",
@@ -1212,7 +1212,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“yourself” is the reflexive used in this sentence."
   },
   {
-    "q": "Which word in the example is acting as a reflexive pronoun? “The speaker prepared himself for the challenging interview.”",
+    "q": "Which word in the example is acting as a reflexive pronoun? “He promised to complete the task by himself.”",
     "o": [
       "herself",
       "himself",
@@ -1223,7 +1223,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“himself” is the reflexive used in this sentence."
   },
   {
-    "q": "Select the correct identification of the reflexive pronoun: “The speaker prepared herself for the challenging interview.”",
+    "q": "Select the correct identification of the reflexive pronoun: “She promised to complete the task by herself.”",
     "o": [
       "yourself",
       "himself",
@@ -1234,7 +1234,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“herself” is the reflexive used in this sentence."
   },
   {
-    "q": "Find the word that functions as a reflexive pronoun in context: “The speaker prepared ourselves for the challenging interview.”",
+    "q": "Find the word that functions as a reflexive pronoun in context: “We promised to complete the task by ourselves.”",
     "o": [
       "myself",
       "yourself",
@@ -1245,7 +1245,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“ourselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Which option points to the reflexive pronoun in the sentence? “The speaker prepared themselves for the challenging interview.”",
+    "q": "Which option points to the reflexive pronoun in the sentence? “They promised to complete the task by themselves.”",
     "o": [
       "themselves",
       "myself",
@@ -1256,7 +1256,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“themselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Identify the word used as a reflexive pronoun below: “The students promised to conduct the experiment by myself.”",
+    "q": "Identify the word used as a reflexive pronoun below: “I taught myself to use the new software.”",
     "o": [
       "herself",
       "myself",
@@ -1267,7 +1267,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“myself” is the reflexive used in this sentence."
   },
   {
-    "q": "Which answer selects the reflexive pronoun correctly? “The students promised to conduct the experiment by yourself.”",
+    "q": "Which answer selects the reflexive pronoun correctly? “You taught yourself to use the new software.”",
     "o": [
       "himself",
       "herself",
@@ -1278,7 +1278,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“yourself” is the reflexive used in this sentence."
   },
   {
-    "q": "Study the sentence and choose its reflexive pronoun: “The students promised to conduct the experiment by himself.”",
+    "q": "Study the sentence and choose its reflexive pronoun: “He taught himself to use the new software.”",
     "o": [
       "myself",
       "yourself",
@@ -1289,7 +1289,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“himself” is the reflexive used in this sentence."
   },
   {
-    "q": "Pick out the reflexive pronoun from the example: “The students promised to conduct the experiment by herself.”",
+    "q": "Pick out the reflexive pronoun from the example: “She taught herself to use the new software.”",
     "o": [
       "herself",
       "myself",
@@ -1300,7 +1300,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“herself” is the reflexive used in this sentence."
   },
   {
-    "q": "Which word should be classified as the reflexive pronoun here? “The students promised to conduct the experiment by ourselves.”",
+    "q": "Which word should be classified as the reflexive pronoun here? “We taught ourselves to use the new software.”",
     "o": [
       "himself",
       "ourselves",
@@ -1311,7 +1311,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“ourselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Choose the reflexive pronoun that appears in this sentence: “The students promised to conduct the experiment by themselves.”",
+    "q": "Choose the reflexive pronoun that appears in this sentence: “They taught themselves to use the new software.”",
     "o": [
       "yourself",
       "himself",
@@ -1322,7 +1322,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“themselves” is the reflexive used in this sentence."
   },
   {
-    "q": "Identify the demonstrative pronoun in this sentence: “this is the document that requires the director's signature.”",
+    "q": "Identify the demonstrative pronoun in this sentence: “this is the document(s) requiring the director's signature.”",
     "o": [
       "this",
       "that",
@@ -1333,7 +1333,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“this” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which option is the demonstrative pronoun used here? “that is the document that requires the director's signature.”",
+    "q": "Which option is the demonstrative pronoun used here? “that is the document(s) requiring the director's signature.”",
     "o": [
       "those",
       "that",
@@ -1344,7 +1344,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the demonstrative used in this sentence."
   },
   {
-    "q": "Read the example and select its demonstrative pronoun: “these is the document that requires the director's signature.”",
+    "q": "Read the example and select its demonstrative pronoun: “these are the document(s) requiring the director's signature.”",
     "o": [
       "that",
       "those",
@@ -1355,7 +1355,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“these” is the demonstrative used in this sentence."
   },
   {
-    "q": "Choose the demonstrative pronoun appearing in the sentence: “those is the document that requires the director's signature.”",
+    "q": "Choose the demonstrative pronoun appearing in the sentence: “those are the document(s) requiring the director's signature.”",
     "o": [
       "this",
       "that",
@@ -1366,7 +1366,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“those” is the demonstrative used in this sentence."
   },
   {
-    "q": "Find the demonstrative pronoun in the following example: “this were the instructions distributed at the beginning of the session.”",
+    "q": "Find the demonstrative pronoun in the following example: “this was the photograph(s) taken during the expedition.”",
     "o": [
       "this",
       "that",
@@ -1377,7 +1377,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“this” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which answer correctly identifies the demonstrative pronoun? “that were the instructions distributed at the beginning of the session.”",
+    "q": "Which answer correctly identifies the demonstrative pronoun? “that was the photograph(s) taken during the expedition.”",
     "o": [
       "those",
       "that",
@@ -1388,7 +1388,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the demonstrative used in this sentence."
   },
   {
-    "q": "Select the demonstrative pronoun from this sentence: “these were the instructions distributed at the beginning of the session.”",
+    "q": "Select the demonstrative pronoun from this sentence: “these were the photograph(s) taken during the expedition.”",
     "o": [
       "that",
       "those",
@@ -1399,7 +1399,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“these” is the demonstrative used in this sentence."
   },
   {
-    "q": "In this example, which word is the demonstrative pronoun? “those were the instructions distributed at the beginning of the session.”",
+    "q": "In this example, which word is the demonstrative pronoun? “those were the photograph(s) taken during the expedition.”",
     "o": [
       "this",
       "that",
@@ -1410,7 +1410,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“those” is the demonstrative used in this sentence."
   },
   {
-    "q": "Point out the demonstrative pronoun in the sentence below: “this is the explanation I wanted everyone to consider.”",
+    "q": "Point out the demonstrative pronoun in the sentence below: “this is exactly the point(s) I wanted to make.”",
     "o": [
       "this",
       "that",
@@ -1421,7 +1421,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“this” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which choice names the demonstrative pronoun in this example? “that is the explanation I wanted everyone to consider.”",
+    "q": "Which choice names the demonstrative pronoun in this example? “that is exactly the point(s) I wanted to make.”",
     "o": [
       "those",
       "that",
@@ -1432,7 +1432,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the demonstrative used in this sentence."
   },
   {
-    "q": "Examine the sentence and identify its demonstrative pronoun: “these is the explanation I wanted everyone to consider.”",
+    "q": "Examine the sentence and identify its demonstrative pronoun: “these are exactly the point(s) I wanted to make.”",
     "o": [
       "that",
       "those",
@@ -1443,7 +1443,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“these” is the demonstrative used in this sentence."
   },
   {
-    "q": "Select the word functioning as a demonstrative pronoun: “those is the explanation I wanted everyone to consider.”",
+    "q": "Select the word functioning as a demonstrative pronoun: “those are exactly the point(s) I wanted to make.”",
     "o": [
       "this",
       "that",
@@ -1454,7 +1454,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“those” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which of these options is the demonstrative pronoun in context? “this are the photographs taken during the earlier expedition.”",
+    "q": "Which of these options is the demonstrative pronoun in context? “this was the instruction(s) distributed yesterday.”",
     "o": [
       "this",
       "that",
@@ -1465,7 +1465,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“this” is the demonstrative used in this sentence."
   },
   {
-    "q": "Choose the word that serves as the demonstrative pronoun: “that are the photographs taken during the earlier expedition.”",
+    "q": "Choose the word that serves as the demonstrative pronoun: “that was the instruction(s) distributed yesterday.”",
     "o": [
       "those",
       "that",
@@ -1476,7 +1476,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the demonstrative used in this sentence."
   },
   {
-    "q": "From the sentence below, identify the demonstrative pronoun: “these are the photographs taken during the earlier expedition.”",
+    "q": "From the sentence below, identify the demonstrative pronoun: “these were the instruction(s) distributed yesterday.”",
     "o": [
       "that",
       "those",
@@ -1487,7 +1487,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“these” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which listed word functions as a demonstrative pronoun here? “those are the photographs taken during the earlier expedition.”",
+    "q": "Which listed word functions as a demonstrative pronoun here? “those were the instruction(s) distributed yesterday.”",
     "o": [
       "this",
       "that",
@@ -1498,7 +1498,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“those” is the demonstrative used in this sentence."
   },
   {
-    "q": "Locate the demonstrative pronoun used in this example: “this was the moment when the entire audience stood up.”",
+    "q": "Locate the demonstrative pronoun used in this example: “this is the item(s) selected for the display.”",
     "o": [
       "this",
       "that",
@@ -1509,7 +1509,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“this” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which option contains the demonstrative pronoun from the sentence? “that was the moment when the entire audience stood up.”",
+    "q": "Which option contains the demonstrative pronoun from the sentence? “that is the item(s) selected for the display.”",
     "o": [
       "those",
       "that",
@@ -1520,7 +1520,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the demonstrative used in this sentence."
   },
   {
-    "q": "Read carefully: which word is the demonstrative pronoun? “these was the moment when the entire audience stood up.”",
+    "q": "Read carefully: which word is the demonstrative pronoun? “these are the item(s) selected for the display.”",
     "o": [
       "that",
       "those",
@@ -1531,7 +1531,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“these” is the demonstrative used in this sentence."
   },
   {
-    "q": "Choose the correct demonstrative pronoun identified in this sentence: “those was the moment when the entire audience stood up.”",
+    "q": "Choose the correct demonstrative pronoun identified in this sentence: “those are the item(s) selected for the display.”",
     "o": [
       "this",
       "that",
@@ -1542,7 +1542,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“those” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which word in the example is acting as a demonstrative pronoun? “this is the document that requires the director's signature.”",
+    "q": "Which word in the example is acting as a demonstrative pronoun? “this is the document(s) requiring the director's signature.”",
     "o": [
       "this",
       "that",
@@ -1553,7 +1553,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“this” is the demonstrative used in this sentence."
   },
   {
-    "q": "Select the correct identification of the demonstrative pronoun: “that is the document that requires the director's signature.”",
+    "q": "Select the correct identification of the demonstrative pronoun: “that is the document(s) requiring the director's signature.”",
     "o": [
       "those",
       "that",
@@ -1564,7 +1564,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the demonstrative used in this sentence."
   },
   {
-    "q": "Find the word that functions as a demonstrative pronoun in context: “these is the document that requires the director's signature.”",
+    "q": "Find the word that functions as a demonstrative pronoun in context: “these are the document(s) requiring the director's signature.”",
     "o": [
       "that",
       "those",
@@ -1575,7 +1575,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“these” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which option points to the demonstrative pronoun in the sentence? “those is the document that requires the director's signature.”",
+    "q": "Which option points to the demonstrative pronoun in the sentence? “those are the document(s) requiring the director's signature.”",
     "o": [
       "this",
       "that",
@@ -1586,7 +1586,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“those” is the demonstrative used in this sentence."
   },
   {
-    "q": "Identify the word used as a demonstrative pronoun below: “this were the instructions distributed at the beginning of the session.”",
+    "q": "Identify the word used as a demonstrative pronoun below: “this was the photograph(s) taken during the expedition.”",
     "o": [
       "this",
       "that",
@@ -1597,7 +1597,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“this” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which answer selects the demonstrative pronoun correctly? “that were the instructions distributed at the beginning of the session.”",
+    "q": "Which answer selects the demonstrative pronoun correctly? “that was the photograph(s) taken during the expedition.”",
     "o": [
       "those",
       "that",
@@ -1608,7 +1608,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the demonstrative used in this sentence."
   },
   {
-    "q": "Study the sentence and choose its demonstrative pronoun: “these were the instructions distributed at the beginning of the session.”",
+    "q": "Study the sentence and choose its demonstrative pronoun: “these were the photograph(s) taken during the expedition.”",
     "o": [
       "that",
       "those",
@@ -1619,7 +1619,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“these” is the demonstrative used in this sentence."
   },
   {
-    "q": "Pick out the demonstrative pronoun from the example: “those were the instructions distributed at the beginning of the session.”",
+    "q": "Pick out the demonstrative pronoun from the example: “those were the photograph(s) taken during the expedition.”",
     "o": [
       "this",
       "that",
@@ -1630,7 +1630,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“those” is the demonstrative used in this sentence."
   },
   {
-    "q": "Which word should be classified as the demonstrative pronoun here? “this is the explanation I wanted everyone to consider.”",
+    "q": "Which word should be classified as the demonstrative pronoun here? “this is exactly the point(s) I wanted to make.”",
     "o": [
       "this",
       "that",
@@ -1641,7 +1641,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“this” is the demonstrative used in this sentence."
   },
   {
-    "q": "Choose the demonstrative pronoun that appears in this sentence: “that is the explanation I wanted everyone to consider.”",
+    "q": "Choose the demonstrative pronoun that appears in this sentence: “that is exactly the point(s) I wanted to make.”",
     "o": [
       "those",
       "that",
@@ -1652,7 +1652,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the demonstrative used in this sentence."
   },
   {
-    "q": "Identify the relative pronoun in this sentence: “The scientist who discovered the rare species received an international award.”",
+    "q": "Identify the relative pronoun in this sentence: “The scientist who discovered the rare species received an award.”",
     "o": [
       "whom",
       "whose",
@@ -1663,7 +1663,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the relative used in this sentence."
   },
   {
-    "q": "Which option is the relative pronoun used here? “The scientist whom discovered the rare species received an international award.”",
+    "q": "Which option is the relative pronoun used here? “The consultant to whom we sent the plans replied immediately.”",
     "o": [
       "whom",
       "who",
@@ -1674,7 +1674,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the relative used in this sentence."
   },
   {
-    "q": "Read the example and select its relative pronoun: “The scientist whose discovered the rare species received an international award.”",
+    "q": "Read the example and select its relative pronoun: “The athlete whose coach designed the programme broke the record.”",
     "o": [
       "which",
       "whose",
@@ -1685,7 +1685,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the relative used in this sentence."
   },
   {
-    "q": "Choose the relative pronoun appearing in the sentence: “The scientist which discovered the rare species received an international award.”",
+    "q": "Choose the relative pronoun appearing in the sentence: “The instrument which measures air pressure needs calibration.”",
     "o": [
       "whom",
       "whose",
@@ -1696,7 +1696,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the relative used in this sentence."
   },
   {
-    "q": "Find the relative pronoun in the following example: “The scientist that discovered the rare species received an international award.”",
+    "q": "Find the relative pronoun in the following example: “The bridge that connects the two villages was reopened yesterday.”",
     "o": [
       "who",
       "whom",
@@ -1707,7 +1707,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the relative used in this sentence."
   },
   {
-    "q": "Which answer correctly identifies the relative pronoun? “The manuscript who was found in the archive is nearly two centuries old.”",
+    "q": "Which answer correctly identifies the relative pronoun? “The student who solved the puzzle explained the method.”",
     "o": [
       "who",
       "whom",
@@ -1718,7 +1718,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the relative used in this sentence."
   },
   {
-    "q": "Select the relative pronoun from this sentence: “The manuscript whom was found in the archive is nearly two centuries old.”",
+    "q": "Select the relative pronoun from this sentence: “The guest whom the organisers invited arrived early.”",
     "o": [
       "which",
       "whom",
@@ -1729,7 +1729,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the relative used in this sentence."
   },
   {
-    "q": "In this example, which word is the relative pronoun? “The manuscript whose was found in the archive is nearly two centuries old.”",
+    "q": "In this example, which word is the relative pronoun? “The author whose novel won the prize thanked her editor.”",
     "o": [
       "whom",
       "which",
@@ -1740,7 +1740,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the relative used in this sentence."
   },
   {
-    "q": "Point out the relative pronoun in the sentence below: “The manuscript which was found in the archive is nearly two centuries old.”",
+    "q": "Point out the relative pronoun in the sentence below: “The report which contains the figures is on my desk.”",
     "o": [
       "who",
       "whom",
@@ -1751,7 +1751,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the relative used in this sentence."
   },
   {
-    "q": "Which choice names the relative pronoun in this example? “The manuscript that was found in the archive is nearly two centuries old.”",
+    "q": "Which choice names the relative pronoun in this example? “The path that crosses the valley is closed today.”",
     "o": [
       "that",
       "who",
@@ -1762,7 +1762,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the relative used in this sentence."
   },
   {
-    "q": "Examine the sentence and identify its relative pronoun: “The athlete who coach designed the training programme broke the record.”",
+    "q": "Examine the sentence and identify its relative pronoun: “The engineer who inspected the tower submitted a report.”",
     "o": [
       "which",
       "who",
@@ -1773,7 +1773,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the relative used in this sentence."
   },
   {
-    "q": "Select the word functioning as a relative pronoun: “The athlete whom coach designed the training programme broke the record.”",
+    "q": "Select the word functioning as a relative pronoun: “The candidate to whom the letter was addressed has replied.”",
     "o": [
       "whose",
       "which",
@@ -1784,7 +1784,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the relative used in this sentence."
   },
   {
-    "q": "Which of these options is the relative pronoun in context? “The athlete whose coach designed the training programme broke the record.”",
+    "q": "Which of these options is the relative pronoun in context? “The musician whose violin was damaged borrowed another.”",
     "o": [
       "who",
       "whom",
@@ -1795,7 +1795,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the relative used in this sentence."
   },
   {
-    "q": "Choose the word that serves as the relative pronoun: “The athlete which coach designed the training programme broke the record.”",
+    "q": "Choose the word that serves as the relative pronoun: “The machine which sorts the parcels is automatic.”",
     "o": [
       "which",
       "who",
@@ -1806,7 +1806,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the relative used in this sentence."
   },
   {
-    "q": "From the sentence below, identify the relative pronoun: “The athlete that coach designed the training programme broke the record.”",
+    "q": "From the sentence below, identify the relative pronoun: “The rule that governs this process is clearly stated.”",
     "o": [
       "whose",
       "that",
@@ -1817,7 +1817,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the relative used in this sentence."
   },
   {
-    "q": "Which listed word functions as a relative pronoun here? “The colleague to who I sent the revised figures replied immediately.”",
+    "q": "Which listed word functions as a relative pronoun here? “The guide who led our group knew every trail.”",
     "o": [
       "whose",
       "which",
@@ -1828,7 +1828,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the relative used in this sentence."
   },
   {
-    "q": "Locate the relative pronoun used in this example: “The colleague to whom I sent the revised figures replied immediately.”",
+    "q": "Locate the relative pronoun used in this example: “The colleague with whom I worked has moved abroad.”",
     "o": [
       "who",
       "whose",
@@ -1839,7 +1839,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the relative used in this sentence."
   },
   {
-    "q": "Which option contains the relative pronoun from the sentence? “The colleague to whose I sent the revised figures replied immediately.”",
+    "q": "Which option contains the relative pronoun from the sentence? “The neighbour whose garden won the award thanked the judges.”",
     "o": [
       "whose",
       "who",
@@ -1850,7 +1850,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the relative used in this sentence."
   },
   {
-    "q": "Read carefully: which word is the relative pronoun? “The colleague to which I sent the revised figures replied immediately.”",
+    "q": "Read carefully: which word is the relative pronoun? “The map which shows the coastal route is outdated.”",
     "o": [
       "whose",
       "which",
@@ -1861,7 +1861,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the relative used in this sentence."
   },
   {
-    "q": "Choose the correct relative pronoun identified in this sentence: “The colleague to that I sent the revised figures replied immediately.”",
+    "q": "Choose the correct relative pronoun identified in this sentence: “The proposal that received the most votes will proceed.”",
     "o": [
       "whom",
       "whose",
@@ -1872,7 +1872,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the relative used in this sentence."
   },
   {
-    "q": "Which word in the example is acting as a relative pronoun? “The bridge who connects the two villages was reopened yesterday.”",
+    "q": "Which word in the example is acting as a relative pronoun? “The doctor who treated the injured climber was praised.”",
     "o": [
       "whom",
       "whose",
@@ -1883,7 +1883,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the relative used in this sentence."
   },
   {
-    "q": "Select the correct identification of the relative pronoun: “The bridge whom connects the two villages was reopened yesterday.”",
+    "q": "Select the correct identification of the relative pronoun: “The professor whom the students admired retired last year.”",
     "o": [
       "whom",
       "who",
@@ -1894,7 +1894,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the relative used in this sentence."
   },
   {
-    "q": "Find the word that functions as a relative pronoun in context: “The bridge whose connects the two villages was reopened yesterday.”",
+    "q": "Find the word that functions as a relative pronoun in context: “The director whose film premiered yesterday attended the event.”",
     "o": [
       "which",
       "whose",
@@ -1905,7 +1905,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the relative used in this sentence."
   },
   {
-    "q": "Which option points to the relative pronoun in the sentence? “The bridge which connects the two villages was reopened yesterday.”",
+    "q": "Which option points to the relative pronoun in the sentence? “The key which opens this cabinet is missing.”",
     "o": [
       "whom",
       "whose",
@@ -1916,7 +1916,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the relative used in this sentence."
   },
   {
-    "q": "Identify the word used as a relative pronoun below: “The bridge that connects the two villages was reopened yesterday.”",
+    "q": "Identify the word used as a relative pronoun below: “The decision that changed the schedule was announced.”",
     "o": [
       "who",
       "whom",
@@ -1927,7 +1927,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the relative used in this sentence."
   },
   {
-    "q": "Which answer selects the relative pronoun correctly? “The scientist who discovered the rare species received an international award.”",
+    "q": "Which answer selects the relative pronoun correctly? “The scientist who discovered the rare species received an award.”",
     "o": [
       "who",
       "whom",
@@ -1938,7 +1938,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the relative used in this sentence."
   },
   {
-    "q": "Study the sentence and choose its relative pronoun: “The scientist whom discovered the rare species received an international award.”",
+    "q": "Study the sentence and choose its relative pronoun: “The consultant to whom we sent the plans replied immediately.”",
     "o": [
       "which",
       "whom",
@@ -1949,7 +1949,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the relative used in this sentence."
   },
   {
-    "q": "Pick out the relative pronoun from the example: “The scientist whose discovered the rare species received an international award.”",
+    "q": "Pick out the relative pronoun from the example: “The athlete whose coach designed the programme broke the record.”",
     "o": [
       "whom",
       "which",
@@ -1960,7 +1960,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the relative used in this sentence."
   },
   {
-    "q": "Which word should be classified as the relative pronoun here? “The scientist which discovered the rare species received an international award.”",
+    "q": "Which word should be classified as the relative pronoun here? “The instrument which measures air pressure needs calibration.”",
     "o": [
       "who",
       "whom",
@@ -1971,7 +1971,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the relative used in this sentence."
   },
   {
-    "q": "Choose the relative pronoun that appears in this sentence: “The scientist that discovered the rare species received an international award.”",
+    "q": "Choose the relative pronoun that appears in this sentence: “The bridge that connects the two villages was reopened yesterday.”",
     "o": [
       "that",
       "who",
@@ -1982,7 +1982,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“that” is the relative used in this sentence."
   },
   {
-    "q": "Identify the interrogative pronoun in this sentence: “who has been appointed to supervise the laboratory?”",
+    "q": "Identify the interrogative pronoun in this sentence: “Who has been appointed to supervise the laboratory?”",
     "o": [
       "whose",
       "what",
@@ -1993,7 +1993,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the interrogative used in this sentence."
   },
   {
-    "q": "Which option is the interrogative pronoun used here? “whom has been appointed to supervise the laboratory?”",
+    "q": "Which option is the interrogative pronoun used here? “Whom did the panel select for the final interview?”",
     "o": [
       "who",
       "whose",
@@ -2004,7 +2004,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the interrogative used in this sentence."
   },
   {
-    "q": "Read the example and select its interrogative pronoun: “whose has been appointed to supervise the laboratory?”",
+    "q": "Read the example and select its interrogative pronoun: “Whose equipment was moved from the storage room?”",
     "o": [
       "whose",
       "who",
@@ -2015,7 +2015,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the interrogative used in this sentence."
   },
   {
-    "q": "Choose the interrogative pronoun appearing in the sentence: “what has been appointed to supervise the laboratory?”",
+    "q": "Choose the interrogative pronoun appearing in the sentence: “What caused the interruption during the broadcast?”",
     "o": [
       "whose",
       "what",
@@ -2026,7 +2026,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“what” is the interrogative used in this sentence."
   },
   {
-    "q": "Find the interrogative pronoun in the following example: “which has been appointed to supervise the laboratory?”",
+    "q": "Find the interrogative pronoun in the following example: “Which of these designs meets the safety standard?”",
     "o": [
       "whom",
       "whose",
@@ -2037,7 +2037,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the interrogative used in this sentence."
   },
   {
-    "q": "Which answer correctly identifies the interrogative pronoun? “who did the panel select for the final interview?”",
+    "q": "Which answer correctly identifies the interrogative pronoun? “Who will present the annual report?”",
     "o": [
       "whom",
       "whose",
@@ -2048,7 +2048,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the interrogative used in this sentence."
   },
   {
-    "q": "Select the interrogative pronoun from this sentence: “whom did the panel select for the final interview?”",
+    "q": "Select the interrogative pronoun from this sentence: “To whom should I address this application?”",
     "o": [
       "whom",
       "who",
@@ -2059,7 +2059,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the interrogative used in this sentence."
   },
   {
-    "q": "In this example, which word is the interrogative pronoun? “whose did the panel select for the final interview?”",
+    "q": "In this example, which word is the interrogative pronoun? “Whose signature is missing from the form?”",
     "o": [
       "what",
       "whose",
@@ -2070,7 +2070,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the interrogative used in this sentence."
   },
   {
-    "q": "Point out the interrogative pronoun in the sentence below: “what did the panel select for the final interview?”",
+    "q": "Point out the interrogative pronoun in the sentence below: “What explains the sudden change in temperature?”",
     "o": [
       "whom",
       "whose",
@@ -2081,7 +2081,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“what” is the interrogative used in this sentence."
   },
   {
-    "q": "Which choice names the interrogative pronoun in this example? “which did the panel select for the final interview?”",
+    "q": "Which choice names the interrogative pronoun in this example? “Which of the two routes is shorter?”",
     "o": [
       "who",
       "whom",
@@ -2092,7 +2092,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the interrogative used in this sentence."
   },
   {
-    "q": "Examine the sentence and identify its interrogative pronoun: “who equipment was moved from the storage room?”",
+    "q": "Examine the sentence and identify its interrogative pronoun: “Who left the package at reception?”",
     "o": [
       "who",
       "whom",
@@ -2103,7 +2103,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the interrogative used in this sentence."
   },
   {
-    "q": "Select the word functioning as a interrogative pronoun: “whom equipment was moved from the storage room?”",
+    "q": "Select the word functioning as a interrogative pronoun: “Whom are you expecting at the station?”",
     "o": [
       "what",
       "whom",
@@ -2114,7 +2114,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the interrogative used in this sentence."
   },
   {
-    "q": "Which of these options is the interrogative pronoun in context? “whose equipment was moved from the storage room?”",
+    "q": "Which of these options is the interrogative pronoun in context? “Whose bicycle is parked beside the gate?”",
     "o": [
       "whom",
       "what",
@@ -2125,7 +2125,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the interrogative used in this sentence."
   },
   {
-    "q": "Choose the word that serves as the interrogative pronoun: “what equipment was moved from the storage room?”",
+    "q": "Choose the word that serves as the interrogative pronoun: “What remains to be completed today?”",
     "o": [
       "who",
       "whom",
@@ -2136,7 +2136,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“what” is the interrogative used in this sentence."
   },
   {
-    "q": "From the sentence below, identify the interrogative pronoun: “which equipment was moved from the storage room?”",
+    "q": "From the sentence below, identify the interrogative pronoun: “Which of these keys opens the cabinet?”",
     "o": [
       "which",
       "who",
@@ -2147,7 +2147,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the interrogative used in this sentence."
   },
   {
-    "q": "Which listed word functions as a interrogative pronoun here? “who caused the sudden interruption during the broadcast?”",
+    "q": "Which listed word functions as a interrogative pronoun here? “Who organised the science exhibition?”",
     "o": [
       "what",
       "who",
@@ -2158,7 +2158,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the interrogative used in this sentence."
   },
   {
-    "q": "Locate the interrogative pronoun used in this example: “whom caused the sudden interruption during the broadcast?”",
+    "q": "Locate the interrogative pronoun used in this example: “For whom was the award originally intended?”",
     "o": [
       "whose",
       "what",
@@ -2169,7 +2169,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the interrogative used in this sentence."
   },
   {
-    "q": "Which option contains the interrogative pronoun from the sentence? “whose caused the sudden interruption during the broadcast?”",
+    "q": "Which option contains the interrogative pronoun from the sentence? “Whose idea was adopted by the committee?”",
     "o": [
       "who",
       "whom",
@@ -2180,7 +2180,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the interrogative used in this sentence."
   },
   {
-    "q": "Read carefully: which word is the interrogative pronoun? “what caused the sudden interruption during the broadcast?”",
+    "q": "Read carefully: which word is the interrogative pronoun? “What happened after the lights went out?”",
     "o": [
       "what",
       "who",
@@ -2191,7 +2191,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“what” is the interrogative used in this sentence."
   },
   {
-    "q": "Choose the correct interrogative pronoun identified in this sentence: “which caused the sudden interruption during the broadcast?”",
+    "q": "Choose the correct interrogative pronoun identified in this sentence: “Which candidate received the highest score?”",
     "o": [
       "whose",
       "which",
@@ -2202,7 +2202,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the interrogative used in this sentence."
   },
   {
-    "q": "Which word in the example is acting as a interrogative pronoun? “who of these three designs meets the safety standard?”",
+    "q": "Which word in the example is acting as a interrogative pronoun? “Who is responsible for checking the accounts?”",
     "o": [
       "whose",
       "what",
@@ -2213,7 +2213,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the interrogative used in this sentence."
   },
   {
-    "q": "Select the correct identification of the interrogative pronoun: “whom of these three designs meets the safety standard?”",
+    "q": "Select the correct identification of the interrogative pronoun: “Whom did the manager appoint as team leader?”",
     "o": [
       "who",
       "whose",
@@ -2224,7 +2224,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the interrogative used in this sentence."
   },
   {
-    "q": "Find the word that functions as a interrogative pronoun in context: “whose of these three designs meets the safety standard?”",
+    "q": "Find the word that functions as a interrogative pronoun in context: “Whose notes were found in the conference room?”",
     "o": [
       "whose",
       "who",
@@ -2235,7 +2235,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the interrogative used in this sentence."
   },
   {
-    "q": "Which option points to the interrogative pronoun in the sentence? “what of these three designs meets the safety standard?”",
+    "q": "Which option points to the interrogative pronoun in the sentence? “What should we investigate first?”",
     "o": [
       "whose",
       "what",
@@ -2246,7 +2246,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“what” is the interrogative used in this sentence."
   },
   {
-    "q": "Identify the word used as a interrogative pronoun below: “which of these three designs meets the safety standard?”",
+    "q": "Identify the word used as a interrogative pronoun below: “Which proposal offers the clearest solution?”",
     "o": [
       "whom",
       "whose",
@@ -2257,7 +2257,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the interrogative used in this sentence."
   },
   {
-    "q": "Which answer selects the interrogative pronoun correctly? “who has been appointed to supervise the laboratory?”",
+    "q": "Which answer selects the interrogative pronoun correctly? “Who has been appointed to supervise the laboratory?”",
     "o": [
       "whom",
       "whose",
@@ -2268,7 +2268,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“who” is the interrogative used in this sentence."
   },
   {
-    "q": "Study the sentence and choose its interrogative pronoun: “whom has been appointed to supervise the laboratory?”",
+    "q": "Study the sentence and choose its interrogative pronoun: “Whom did the panel select for the final interview?”",
     "o": [
       "whom",
       "who",
@@ -2279,7 +2279,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whom” is the interrogative used in this sentence."
   },
   {
-    "q": "Pick out the interrogative pronoun from the example: “whose has been appointed to supervise the laboratory?”",
+    "q": "Pick out the interrogative pronoun from the example: “Whose equipment was moved from the storage room?”",
     "o": [
       "what",
       "whose",
@@ -2290,7 +2290,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“whose” is the interrogative used in this sentence."
   },
   {
-    "q": "Which word should be classified as the interrogative pronoun here? “what has been appointed to supervise the laboratory?”",
+    "q": "Which word should be classified as the interrogative pronoun here? “What caused the interruption during the broadcast?”",
     "o": [
       "whom",
       "whose",
@@ -2301,7 +2301,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“what” is the interrogative used in this sentence."
   },
   {
-    "q": "Choose the interrogative pronoun that appears in this sentence: “which has been appointed to supervise the laboratory?”",
+    "q": "Choose the interrogative pronoun that appears in this sentence: “Which of these designs meets the safety standard?”",
     "o": [
       "who",
       "whom",
@@ -2312,7 +2312,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“which” is the interrogative used in this sentence."
   },
   {
-    "q": "Identify the indefinite pronoun in this sentence: “someone has left a sealed envelope on the reception desk.”",
+    "q": "Identify the indefinite pronoun in this sentence: “Someone has left a sealed envelope at reception.”",
     "o": [
       "no one",
       "someone",
@@ -2323,7 +2323,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“someone” is the indefinite used in this sentence."
   },
   {
-    "q": "Which option is the indefinite pronoun used here? “anyone has left a sealed envelope on the reception desk.”",
+    "q": "Which option is the indefinite pronoun used here? “Has anyone seen the missing reference file?”",
     "o": [
       "everyone",
       "no one",
@@ -2334,7 +2334,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“anyone” is the indefinite used in this sentence."
   },
   {
-    "q": "Read the example and select its indefinite pronoun: “everyone has left a sealed envelope on the reception desk.”",
+    "q": "Read the example and select its indefinite pronoun: “Everyone has received the revised timetable.”",
     "o": [
       "someone",
       "anyone",
@@ -2345,7 +2345,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“everyone” is the indefinite used in this sentence."
   },
   {
-    "q": "Choose the indefinite pronoun appearing in the sentence: “no one has left a sealed envelope on the reception desk.”",
+    "q": "Choose the indefinite pronoun appearing in the sentence: “No one was permitted to enter the archive.”",
     "o": [
       "no one",
       "someone",
@@ -2356,7 +2356,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“no one” is the indefinite used in this sentence."
   },
   {
-    "q": "Find the indefinite pronoun in the following example: “something has left a sealed envelope on the reception desk.”",
+    "q": "Find the indefinite pronoun in the following example: “Something has changed in the final report.”",
     "o": [
       "everyone",
       "something",
@@ -2367,7 +2367,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“something” is the indefinite used in this sentence."
   },
   {
-    "q": "Which answer correctly identifies the indefinite pronoun? “anything has left a sealed envelope on the reception desk.”",
+    "q": "Which answer correctly identifies the indefinite pronoun? “Did anything unusual happen during the inspection?”",
     "o": [
       "anyone",
       "everyone",
@@ -2378,7 +2378,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“anything” is the indefinite used in this sentence."
   },
   {
-    "q": "Select the indefinite pronoun from this sentence: “The announcement surprised someone in the crowded auditorium.”",
+    "q": "Select the indefinite pronoun from this sentence: “Someone is waiting outside the director's office.”",
     "o": [
       "anyone",
       "everyone",
@@ -2389,7 +2389,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“someone” is the indefinite used in this sentence."
   },
   {
-    "q": "In this example, which word is the indefinite pronoun? “The announcement surprised anyone in the crowded auditorium.”",
+    "q": "In this example, which word is the indefinite pronoun? “Can anyone explain this unusual result?”",
     "o": [
       "anyone",
       "someone",
@@ -2400,7 +2400,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“anyone” is the indefinite used in this sentence."
   },
   {
-    "q": "Point out the indefinite pronoun in the sentence below: “The announcement surprised everyone in the crowded auditorium.”",
+    "q": "Point out the indefinite pronoun in the sentence below: “Everyone was invited to the closing ceremony.”",
     "o": [
       "no one",
       "everyone",
@@ -2411,7 +2411,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“everyone” is the indefinite used in this sentence."
   },
   {
-    "q": "Which choice names the indefinite pronoun in this example? “The announcement surprised no one in the crowded auditorium.”",
+    "q": "Which choice names the indefinite pronoun in this example? “No one knows the exact location of the key.”",
     "o": [
       "anyone",
       "everyone",
@@ -2422,7 +2422,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“no one” is the indefinite used in this sentence."
   },
   {
-    "q": "Examine the sentence and identify its indefinite pronoun: “The announcement surprised something in the crowded auditorium.”",
+    "q": "Examine the sentence and identify its indefinite pronoun: “Something seems to be blocking the main entrance.”",
     "o": [
       "someone",
       "anyone",
@@ -2433,7 +2433,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“something” is the indefinite used in this sentence."
   },
   {
-    "q": "Select the word functioning as a indefinite pronoun: “The announcement surprised anything in the crowded auditorium.”",
+    "q": "Select the word functioning as a indefinite pronoun: “Has anything been decided about the new schedule?”",
     "o": [
       "anything",
       "someone",
@@ -2444,7 +2444,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“anything” is the indefinite used in this sentence."
   },
   {
-    "q": "Which of these options is the indefinite pronoun in context? “someone was permitted to enter the restricted archive without approval.”",
+    "q": "Which of these options is the indefinite pronoun in context? “Someone has already checked the laboratory equipment.”",
     "o": [
       "no one",
       "someone",
@@ -2455,7 +2455,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“someone” is the indefinite used in this sentence."
   },
   {
-    "q": "Choose the word that serves as the indefinite pronoun: “anyone was permitted to enter the restricted archive without approval.”",
+    "q": "Choose the word that serves as the indefinite pronoun: “Does anyone remember the original instruction?”",
     "o": [
       "everyone",
       "no one",
@@ -2466,7 +2466,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“anyone” is the indefinite used in this sentence."
   },
   {
-    "q": "From the sentence below, identify the indefinite pronoun: “everyone was permitted to enter the restricted archive without approval.”",
+    "q": "From the sentence below, identify the indefinite pronoun: “Everyone agrees that the evidence is important.”",
     "o": [
       "someone",
       "anyone",
@@ -2477,7 +2477,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“everyone” is the indefinite used in this sentence."
   },
   {
-    "q": "Which listed word functions as a indefinite pronoun here? “no one was permitted to enter the restricted archive without approval.”",
+    "q": "Which listed word functions as a indefinite pronoun here? “No one has claimed the unlabelled suitcase.”",
     "o": [
       "no one",
       "someone",
@@ -2488,7 +2488,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“no one” is the indefinite used in this sentence."
   },
   {
-    "q": "Locate the indefinite pronoun used in this example: “something was permitted to enter the restricted archive without approval.”",
+    "q": "Locate the indefinite pronoun used in this example: “Something important was omitted from the summary.”",
     "o": [
       "everyone",
       "something",
@@ -2499,7 +2499,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“something” is the indefinite used in this sentence."
   },
   {
-    "q": "Which option contains the indefinite pronoun from the sentence? “anything was permitted to enter the restricted archive without approval.”",
+    "q": "Which option contains the indefinite pronoun from the sentence? “Is anything available for the visiting researchers?”",
     "o": [
       "anyone",
       "everyone",
@@ -2510,7 +2510,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“anything” is the indefinite used in this sentence."
   },
   {
-    "q": "Read carefully: which word is the indefinite pronoun? “The caretaker could not find someone in the locked storeroom.”",
+    "q": "Read carefully: which word is the indefinite pronoun? “Someone will contact the shortlisted applicants tomorrow.”",
     "o": [
       "anyone",
       "everyone",
@@ -2521,7 +2521,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“someone” is the indefinite used in this sentence."
   },
   {
-    "q": "Choose the correct indefinite pronoun identified in this sentence: “The caretaker could not find anyone in the locked storeroom.”",
+    "q": "Choose the correct indefinite pronoun identified in this sentence: “Would anyone like to ask a question?”",
     "o": [
       "anyone",
       "someone",
@@ -2532,7 +2532,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“anyone” is the indefinite used in this sentence."
   },
   {
-    "q": "Which word in the example is acting as a indefinite pronoun? “The caretaker could not find everyone in the locked storeroom.”",
+    "q": "Which word in the example is acting as a indefinite pronoun? “Everyone should read the safety notice carefully.”",
     "o": [
       "no one",
       "everyone",
@@ -2543,7 +2543,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“everyone” is the indefinite used in this sentence."
   },
   {
-    "q": "Select the correct identification of the indefinite pronoun: “The caretaker could not find no one in the locked storeroom.”",
+    "q": "Select the correct identification of the indefinite pronoun: “No one could identify the unfamiliar symbol.”",
     "o": [
       "anyone",
       "everyone",
@@ -2554,7 +2554,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“no one” is the indefinite used in this sentence."
   },
   {
-    "q": "Find the word that functions as a indefinite pronoun in context: “The caretaker could not find something in the locked storeroom.”",
+    "q": "Find the word that functions as a indefinite pronoun in context: “Something unusual appeared on the monitor.”",
     "o": [
       "someone",
       "anyone",
@@ -2565,7 +2565,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“something” is the indefinite used in this sentence."
   },
   {
-    "q": "Which option points to the indefinite pronoun in the sentence? “The caretaker could not find anything in the locked storeroom.”",
+    "q": "Which option points to the indefinite pronoun in the sentence? “Did anything prevent the team from finishing?”",
     "o": [
       "anything",
       "someone",
@@ -2576,7 +2576,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“anything” is the indefinite used in this sentence."
   },
   {
-    "q": "Identify the word used as a indefinite pronoun below: “If someone needs further information, the help desk is open until six.”",
+    "q": "Identify the word used as a indefinite pronoun below: “Someone has offered to guide the visitors.”",
     "o": [
       "no one",
       "someone",
@@ -2587,7 +2587,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“someone” is the indefinite used in this sentence."
   },
   {
-    "q": "Which answer selects the indefinite pronoun correctly? “If anyone needs further information, the help desk is open until six.”",
+    "q": "Which answer selects the indefinite pronoun correctly? “Has anyone reported the damaged window?”",
     "o": [
       "everyone",
       "no one",
@@ -2598,7 +2598,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“anyone” is the indefinite used in this sentence."
   },
   {
-    "q": "Study the sentence and choose its indefinite pronoun: “If everyone needs further information, the help desk is open until six.”",
+    "q": "Study the sentence and choose its indefinite pronoun: “Everyone enjoyed the demonstration.”",
     "o": [
       "someone",
       "anyone",
@@ -2609,7 +2609,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“everyone” is the indefinite used in this sentence."
   },
   {
-    "q": "Pick out the indefinite pronoun from the example: “If no one needs further information, the help desk is open until six.”",
+    "q": "Pick out the indefinite pronoun from the example: “No one was aware of the hidden passage.”",
     "o": [
       "no one",
       "someone",
@@ -2620,7 +2620,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“no one” is the indefinite used in this sentence."
   },
   {
-    "q": "Which word should be classified as the indefinite pronoun here? “If something needs further information, the help desk is open until six.”",
+    "q": "Which word should be classified as the indefinite pronoun here? “Something valuable was discovered in the old box.”",
     "o": [
       "everyone",
       "something",
@@ -2631,7 +2631,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“something” is the indefinite used in this sentence."
   },
   {
-    "q": "Choose the indefinite pronoun that appears in this sentence: “If anything needs further information, the help desk is open until six.”",
+    "q": "Choose the indefinite pronoun that appears in this sentence: “Can anything improve the accuracy of this method?”",
     "o": [
       "anyone",
       "everyone",
@@ -2972,7 +2972,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“one another” is the reciprocal used in this sentence."
   },
   {
-    "q": "Identify the pronoun form pronoun in this sentence: “Between you and I, the original estimate seems unrealistic.”",
+    "q": "Identify the pronoun form pronoun in this sentence: “The supervisor and I will inspect the new equipment tomorrow.”",
     "o": [
       "me",
       "he",
@@ -2983,7 +2983,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“I” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which option is the pronoun form pronoun used here? “Between you and me, the original estimate seems unrealistic.”",
+    "q": "Which option is the pronoun form pronoun used here? “The award was presented to the visiting scientist and me.”",
     "o": [
       "me",
       "I",
@@ -2994,7 +2994,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“me” is the pronoun form used in this sentence."
   },
   {
-    "q": "Read the example and select its pronoun form pronoun: “Between you and he, the original estimate seems unrealistic.”",
+    "q": "Read the example and select its pronoun form pronoun: “The supervisor and he will inspect the new equipment tomorrow.”",
     "o": [
       "him",
       "he",
@@ -3005,7 +3005,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“he” is the pronoun form used in this sentence."
   },
   {
-    "q": "Choose the pronoun form pronoun appearing in the sentence: “Between you and him, the original estimate seems unrealistic.”",
+    "q": "Choose the pronoun form pronoun appearing in the sentence: “The award was presented to the visiting scientist and him.”",
     "o": [
       "me",
       "he",
@@ -3016,7 +3016,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“him” is the pronoun form used in this sentence."
   },
   {
-    "q": "Find the pronoun form pronoun in the following example: “Between you and she, the original estimate seems unrealistic.”",
+    "q": "Find the pronoun form pronoun in the following example: “The supervisor and she will inspect the new equipment tomorrow.”",
     "o": [
       "I",
       "me",
@@ -3027,7 +3027,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“she” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which answer correctly identifies the pronoun form pronoun? “Between you and her, the original estimate seems unrealistic.”",
+    "q": "Which answer correctly identifies the pronoun form pronoun? “The award was presented to the visiting scientist and her.”",
     "o": [
       "her",
       "I",
@@ -3038,7 +3038,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“her” is the pronoun form used in this sentence."
   },
   {
-    "q": "Select the pronoun form pronoun from this sentence: “Between you and we, the original estimate seems unrealistic.”",
+    "q": "Select the pronoun form pronoun from this sentence: “The supervisor and we will inspect the new equipment tomorrow.”",
     "o": [
       "he",
       "we",
@@ -3049,7 +3049,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“we” is the pronoun form used in this sentence."
   },
   {
-    "q": "In this example, which word is the pronoun form pronoun? “Between you and us, the original estimate seems unrealistic.”",
+    "q": "In this example, which word is the pronoun form pronoun? “The award was presented to the visiting scientist and us.”",
     "o": [
       "me",
       "he",
@@ -3060,7 +3060,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“us” is the pronoun form used in this sentence."
   },
   {
-    "q": "Point out the pronoun form pronoun in the sentence below: “Between you and they, the original estimate seems unrealistic.”",
+    "q": "Point out the pronoun form pronoun in the sentence below: “The supervisor and they will inspect the new equipment tomorrow.”",
     "o": [
       "I",
       "me",
@@ -3071,7 +3071,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“they” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which choice names the pronoun form pronoun in this example? “Between you and them, the original estimate seems unrealistic.”",
+    "q": "Which choice names the pronoun form pronoun in this example? “The award was presented to the visiting scientist and them.”",
     "o": [
       "them",
       "I",
@@ -3082,7 +3082,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“them” is the pronoun form used in this sentence."
   },
   {
-    "q": "Examine the sentence and identify its pronoun form pronoun: “The supervisor and I will inspect the new equipment tomorrow.”",
+    "q": "Examine the sentence and identify its pronoun form pronoun: “I will explain the revised procedure to the committee.”",
     "o": [
       "him",
       "I",
@@ -3093,7 +3093,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“I” is the pronoun form used in this sentence."
   },
   {
-    "q": "Select the word functioning as a pronoun form pronoun: “The supervisor and me will inspect the new equipment tomorrow.”",
+    "q": "Select the word functioning as a pronoun form pronoun: “The director asked me to explain the revised procedure.”",
     "o": [
       "he",
       "him",
@@ -3104,7 +3104,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“me” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which of these options is the pronoun form pronoun in context? “The supervisor and he will inspect the new equipment tomorrow.”",
+    "q": "Which of these options is the pronoun form pronoun in context? “he will explain the revised procedure to the committee.”",
     "o": [
       "I",
       "me",
@@ -3115,7 +3115,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“he” is the pronoun form used in this sentence."
   },
   {
-    "q": "Choose the word that serves as the pronoun form pronoun: “The supervisor and him will inspect the new equipment tomorrow.”",
+    "q": "Choose the word that serves as the pronoun form pronoun: “The director asked him to explain the revised procedure.”",
     "o": [
       "him",
       "I",
@@ -3126,7 +3126,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“him” is the pronoun form used in this sentence."
   },
   {
-    "q": "From the sentence below, identify the pronoun form pronoun: “The supervisor and she will inspect the new equipment tomorrow.”",
+    "q": "From the sentence below, identify the pronoun form pronoun: “she will explain the revised procedure to the committee.”",
     "o": [
       "he",
       "she",
@@ -3137,7 +3137,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“she” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which listed word functions as a pronoun form pronoun here? “The supervisor and her will inspect the new equipment tomorrow.”",
+    "q": "Which listed word functions as a pronoun form pronoun here? “The director asked her to explain the revised procedure.”",
     "o": [
       "me",
       "he",
@@ -3148,7 +3148,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“her” is the pronoun form used in this sentence."
   },
   {
-    "q": "Locate the pronoun form pronoun used in this example: “The supervisor and we will inspect the new equipment tomorrow.”",
+    "q": "Locate the pronoun form pronoun used in this example: “we will explain the revised procedure to the committee.”",
     "o": [
       "I",
       "me",
@@ -3159,7 +3159,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“we” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which option contains the pronoun form pronoun from the sentence? “The supervisor and us will inspect the new equipment tomorrow.”",
+    "q": "Which option contains the pronoun form pronoun from the sentence? “The director asked us to explain the revised procedure.”",
     "o": [
       "us",
       "I",
@@ -3170,7 +3170,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“us” is the pronoun form used in this sentence."
   },
   {
-    "q": "Read carefully: which word is the pronoun form pronoun? “The supervisor and they will inspect the new equipment tomorrow.”",
+    "q": "Read carefully: which word is the pronoun form pronoun? “they will explain the revised procedure to the committee.”",
     "o": [
       "he",
       "they",
@@ -3181,7 +3181,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“they” is the pronoun form used in this sentence."
   },
   {
-    "q": "Choose the correct pronoun form pronoun identified in this sentence: “The supervisor and them will inspect the new equipment tomorrow.”",
+    "q": "Choose the correct pronoun form pronoun identified in this sentence: “The director asked them to explain the revised procedure.”",
     "o": [
       "me",
       "he",
@@ -3192,7 +3192,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“them” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which word in the example is acting as a pronoun form pronoun? “The award was presented to the visiting scientist and I.”",
+    "q": "Which word in the example is acting as a pronoun form pronoun? “The final responsibility rests with I and the project leader.”",
     "o": [
       "me",
       "he",
@@ -3203,7 +3203,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“I” is the pronoun form used in this sentence."
   },
   {
-    "q": "Select the correct identification of the pronoun form pronoun: “The award was presented to the visiting scientist and me.”",
+    "q": "Select the correct identification of the pronoun form pronoun: “The final responsibility was assigned to me and the project leader.”",
     "o": [
       "me",
       "I",
@@ -3214,7 +3214,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“me” is the pronoun form used in this sentence."
   },
   {
-    "q": "Find the word that functions as a pronoun form pronoun in context: “The award was presented to the visiting scientist and he.”",
+    "q": "Find the word that functions as a pronoun form pronoun in context: “The final responsibility rests with he and the project leader.”",
     "o": [
       "him",
       "he",
@@ -3225,7 +3225,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“he” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which option points to the pronoun form pronoun in the sentence? “The award was presented to the visiting scientist and him.”",
+    "q": "Which option points to the pronoun form pronoun in the sentence? “The final responsibility was assigned to him and the project leader.”",
     "o": [
       "me",
       "he",
@@ -3236,7 +3236,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“him” is the pronoun form used in this sentence."
   },
   {
-    "q": "Identify the word used as a pronoun form pronoun below: “The award was presented to the visiting scientist and she.”",
+    "q": "Identify the word used as a pronoun form pronoun below: “The final responsibility rests with she and the project leader.”",
     "o": [
       "I",
       "me",
@@ -3247,7 +3247,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“she” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which answer selects the pronoun form pronoun correctly? “The award was presented to the visiting scientist and her.”",
+    "q": "Which answer selects the pronoun form pronoun correctly? “The final responsibility was assigned to her and the project leader.”",
     "o": [
       "her",
       "I",
@@ -3258,7 +3258,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“her” is the pronoun form used in this sentence."
   },
   {
-    "q": "Study the sentence and choose its pronoun form pronoun: “The award was presented to the visiting scientist and we.”",
+    "q": "Study the sentence and choose its pronoun form pronoun: “The final responsibility rests with we and the project leader.”",
     "o": [
       "he",
       "we",
@@ -3269,7 +3269,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“we” is the pronoun form used in this sentence."
   },
   {
-    "q": "Pick out the pronoun form pronoun from the example: “The award was presented to the visiting scientist and us.”",
+    "q": "Pick out the pronoun form pronoun from the example: “The final responsibility was assigned to us and the project leader.”",
     "o": [
       "me",
       "he",
@@ -3280,7 +3280,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“us” is the pronoun form used in this sentence."
   },
   {
-    "q": "Which word should be classified as the pronoun form pronoun here? “The award was presented to the visiting scientist and they.”",
+    "q": "Which word should be classified as the pronoun form pronoun here? “The final responsibility rests with they and the project leader.”",
     "o": [
       "I",
       "me",
@@ -3291,7 +3291,7 @@ export const PRONOUN_QUESTION_BANK:PronounQuestion[]=[
     "e": "“they” is the pronoun form used in this sentence."
   },
   {
-    "q": "Choose the pronoun form pronoun that appears in this sentence: “The award was presented to the visiting scientist and them.”",
+    "q": "Choose the pronoun form pronoun that appears in this sentence: “The final responsibility was assigned to them and the project leader.”",
     "o": [
       "them",
       "I",
