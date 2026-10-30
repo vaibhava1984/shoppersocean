@@ -31,7 +31,7 @@ async function handle(req:Request,consume:boolean){
   if(consume){
    let body:any={};try{body=await req.json()}catch{}
    const topic=String(body.topicId??""),questionId=String(body.questionId??"").slice(0,180),action=String(body.action??"answer");
-   if(!TOPICS.includes(topic)||!questionId)return NextResponse.json({error:"Choose a valid English grammar topic and question."},{status:400,headers});
+   if(!TOPICS.includes(topic)||(action!=="check"&&!questionId))return NextResponse.json({error:"Choose a valid English grammar topic and question."},{status:400,headers});
    if(action==="check"){
     const paid=admin||subscribed;
     const row=paid
