@@ -660,7 +660,7 @@ export const HELPING_VERB_QUESTION_BANK = [
     "e": "were forms the past continuous with the -ing form of the main verb."
   },
   {
-    "q": "Maya ___ designed the task already.",
+    "q": "Maya ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -668,10 +668,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "Daniel ___ written the task already.",
+    "q": "Daniel ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -679,10 +679,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The children ___ tested the task already.",
+    "q": "The children ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -690,10 +690,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "Our neighbours ___ arranged the task already.",
+    "q": "Our neighbours ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -701,10 +701,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The manager ___ solved the task already.",
+    "q": "The manager ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -712,10 +712,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "My cousins ___ recorded the task already.",
+    "q": "My cousins ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -723,10 +723,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "Aisha ___ built the task already.",
+    "q": "Aisha ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -734,10 +734,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The players ___ packed the task already.",
+    "q": "The players ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -745,10 +745,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The mechanic ___ translated the task already.",
+    "q": "The mechanic ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -756,10 +756,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "Those birds ___ discussed the task already.",
+    "q": "Those birds ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -767,10 +767,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The students ___ washed the task already.",
+    "q": "The students ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -778,10 +778,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "My uncle ___ updated the task already.",
+    "q": "My uncle ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -789,10 +789,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The nurses ___ planted the task already.",
+    "q": "The nurses ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -800,10 +800,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The committee ___ served the task already.",
+    "q": "The committee ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -811,10 +811,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "Ravi ___ measured the task already.",
+    "q": "Ravi ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -822,10 +822,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The workers ___ checked the task already.",
+    "q": "The workers ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -833,10 +833,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The guests ___ trained the task already.",
+    "q": "The guests ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -844,10 +844,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "Her sister ___ photographed the task already.",
+    "q": "Her sister ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -855,10 +855,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The scientists ___ collected the task already.",
+    "q": "The scientists ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -866,10 +866,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "Our team ___ prepared the task already.",
+    "q": "Our team ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -877,10 +877,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The tourists ___ repaired the task already.",
+    "q": "The tourists ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -888,10 +888,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The baby ___ painted the task already.",
+    "q": "The baby ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -899,10 +899,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The twins ___ organised the task already.",
+    "q": "The twins ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -910,10 +910,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The driver ___ practised the task already.",
+    "q": "The driver ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -921,10 +921,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The musicians ___ cleaned the task already.",
+    "q": "The musicians ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -932,10 +932,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The farmer ___ decorated the task already.",
+    "q": "The farmer ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -943,10 +943,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The candidates ___ inspected the task already.",
+    "q": "The candidates ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -954,10 +954,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The shopkeeper ___ delivered the task already.",
+    "q": "The shopkeeper ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -965,10 +965,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 0,
-    "e": "has agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "The passengers ___ watered the task already.",
+    "q": "The passengers ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -976,10 +976,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "My friends ___ reviewed the task already.",
+    "q": "My friends ___ completed the assignment already.",
     "o": [
       "has",
       "have",
@@ -987,10 +987,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "are"
     ],
     "a": 1,
-    "e": "have agrees with the subject and forms the present perfect."
+    "e": "Have or has agrees with the subject and combines with the past participle completed to form the present perfect."
   },
   {
-    "q": "Before the inspection began, maya ___ built the work.",
+    "q": "Before the inspection began, maya ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -998,10 +998,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, daniel ___ packed the work.",
+    "q": "Before the inspection began, daniel ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1009,10 +1009,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the children ___ translated the work.",
+    "q": "Before the inspection began, the children ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1020,10 +1020,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, our neighbours ___ discussed the work.",
+    "q": "Before the inspection began, our neighbours ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1031,10 +1031,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the manager ___ washed the work.",
+    "q": "Before the inspection began, the manager ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1042,10 +1042,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, my cousins ___ updated the work.",
+    "q": "Before the inspection began, my cousins ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1053,10 +1053,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, aisha ___ planted the work.",
+    "q": "Before the inspection began, aisha ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1064,10 +1064,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the players ___ served the work.",
+    "q": "Before the inspection began, the players ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1075,10 +1075,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the mechanic ___ measured the work.",
+    "q": "Before the inspection began, the mechanic ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1086,10 +1086,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, those birds ___ checked the work.",
+    "q": "Before the inspection began, those birds ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1097,10 +1097,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the students ___ trained the work.",
+    "q": "Before the inspection began, the students ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1108,10 +1108,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, my uncle ___ photographed the work.",
+    "q": "Before the inspection began, my uncle ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1119,10 +1119,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the nurses ___ collected the work.",
+    "q": "Before the inspection began, the nurses ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1130,10 +1130,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the committee ___ prepared the work.",
+    "q": "Before the inspection began, the committee ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1141,10 +1141,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, ravi ___ repaired the work.",
+    "q": "Before the inspection began, ravi ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1152,10 +1152,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the workers ___ painted the work.",
+    "q": "Before the inspection began, the workers ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1163,10 +1163,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the guests ___ organised the work.",
+    "q": "Before the inspection began, the guests ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1174,10 +1174,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, her sister ___ practised the work.",
+    "q": "Before the inspection began, her sister ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1185,10 +1185,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the scientists ___ cleaned the work.",
+    "q": "Before the inspection began, the scientists ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1196,10 +1196,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, our team ___ decorated the work.",
+    "q": "Before the inspection began, our team ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1207,10 +1207,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the tourists ___ inspected the work.",
+    "q": "Before the inspection began, the tourists ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1218,10 +1218,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the baby ___ delivered the work.",
+    "q": "Before the inspection began, the baby ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1229,10 +1229,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the twins ___ watered the work.",
+    "q": "Before the inspection began, the twins ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1240,10 +1240,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the driver ___ reviewed the work.",
+    "q": "Before the inspection began, the driver ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1251,10 +1251,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the musicians ___ designed the work.",
+    "q": "Before the inspection began, the musicians ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1262,10 +1262,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the farmer ___ written the work.",
+    "q": "Before the inspection began, the farmer ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1273,10 +1273,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the candidates ___ tested the work.",
+    "q": "Before the inspection began, the candidates ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1284,10 +1284,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the shopkeeper ___ arranged the work.",
+    "q": "Before the inspection began, the shopkeeper ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1295,10 +1295,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, the passengers ___ solved the work.",
+    "q": "Before the inspection began, the passengers ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1306,10 +1306,10 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
-    "q": "Before the inspection began, my friends ___ recorded the work.",
+    "q": "Before the inspection began, my friends ___ finished the assigned task.",
     "o": [
       "has",
       "have",
@@ -1317,7 +1317,7 @@ export const HELPING_VERB_QUESTION_BANK = [
       "was"
     ],
     "a": 2,
-    "e": "Had forms the past perfect for an earlier past action."
+    "e": "Had forms the past perfect and shows that the task was finished before another past event."
   },
   {
     "q": "___ maya organise the files every week?",
@@ -2719,7 +2719,7 @@ export const HELPING_VERB_QUESTION_BANK = [
   {
     "q": "The players is forbidden to enter the restricted room; The players ___ enter.",
     "o": [
-      "must",
+      "must not",
       "might",
       "could",
       "would"
@@ -2829,7 +2829,7 @@ export const HELPING_VERB_QUESTION_BANK = [
   {
     "q": "Her sister is forbidden to enter the restricted room; Her sister ___ enter.",
     "o": [
-      "must",
+      "must not",
       "might",
       "could",
       "would"
@@ -2939,7 +2939,7 @@ export const HELPING_VERB_QUESTION_BANK = [
   {
     "q": "The shopkeeper is forbidden to enter the restricted room; The shopkeeper ___ enter.",
     "o": [
-      "must",
+      "must not",
       "might",
       "could",
       "would"
