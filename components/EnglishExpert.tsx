@@ -8,6 +8,7 @@ import {ARTICLE_QUESTION_BANK} from "@/data/english-expert-article-bank";
 import {INTERJECTION_QUESTION_BANK} from "@/data/english-expert-interjection-bank";
 import {HELPING_VERB_QUESTION_BANK} from "@/data/english-expert-helping-verbs-bank";
 import {CONJUNCTION_QUESTION_BANK} from "@/data/english-expert-conjunctions-bank";
+import {CONDITIONALS_QUESTION_BANK} from "@/data/english-expert-conditionals-bank";
 import {PAST_TENSE_QUESTION_BANK} from "@/data/english-expert-past-tense-bank";
 import {PRESENT_TENSE_QUESTION_BANK} from "@/data/english-expert-present-tense-bank";
 import {FUTURE_TENSE_QUESTION_BANK} from "@/data/english-expert-future-tense-bank";
@@ -31,12 +32,7 @@ const TOPICS:Topic[]=[
 {id:"present-tense",name:"Present Tense",definition:"This 300-question bank covers simple present habits and facts, negatives, questions, present continuous, present perfect, present perfect continuous, subject-verb agreement, and time expressions.",bank:PRESENT_TENSE_QUESTION_BANK},
 {id:"future-tense",name:"Future Tense",definition:"Future-time meaning can be expressed with will, be going to, the present continuous, and other constructions. The choice depends on intention, prediction, arrangement, and context.",bank:FUTURE_TENSE_QUESTION_BANK},
  {id:"conjunctions",name:"Conjunctions",definition:"A conjunction connects words, phrases, or clauses. Coordinating, subordinating, and correlative conjunctions express relationships such as addition, contrast, cause, condition, time, purpose, comparison, and choice. This 300-question bank tests their correct use in context.",bank:CONJUNCTION_QUESTION_BANK},
-{id:"conditionals",name:"Conditionals",definition:"Conditional sentences express a condition and its result. Common patterns include zero conditional (general truths), first (real future possibility), second (hypothetical present/future), and third (unreal past).",bank:[
-{q:"Choose the zero conditional: “If you heat ice, it ___.”",o:["melted","melts","will melting","would melt"],a:1,e:"Zero conditional uses the present simple in both clauses for general truths."},
-{q:"Complete the first conditional: “If it rains, we ___ at home.”",o:["stay yesterday","will stay","would stayed","had stayed"],a:1,e:"First conditional uses present simple in the if-clause and will + base verb in the result."},
-{q:"Choose the correct second conditional: “If I ___ more time, I would learn Italian.”",o:["have","had","will have","had had"],a:1,e:"Second conditional uses a past form in the if-clause for an unreal or hypothetical situation."},
-{q:"Complete the third conditional: “If she had left earlier, she ___ the train.”",o:["would catch","will catch","would have caught","caught"],a:2,e:"Third conditional uses would have + past participle for an unreal past result."},
-{q:"Which conditional expresses a general scientific fact?",o:["Zero","First","Second","Third"],a:0,e:"The zero conditional is used for general truths and predictable results."},{q:"Choose the correct completion: “If I had known about the delay, I ___ earlier.”",o:["would leave","will leave","would have left","had left"],a:2,e:"The third conditional uses would have plus the past participle for an unreal past result."}]},
+{id:"conditionals",name:"Conditionals",definition:"Conditional sentences express a condition and its result. This question bank covers all four standard types: zero (general truths), first (real future possibilities), second (hypothetical present or future), and third (unreal past situations).",bank:CONDITIONALS_QUESTION_BANK},
 {id:"causative-verbs",name:"Causative Verbs",definition:"Causative structures show that someone causes, arranges, allows, or persuades another person to do something. Common patterns include have/get something done, make, let, and help.",bank:[
 {q:"Choose the correct causative form: “I ___ my car repaired yesterday.”",o:["had","made","let","did"],a:0,e:"Had + object + past participle means arranged for someone to repair it."},
 {q:"Complete the sentence: “The teacher made the students ___ the exercise again.”",o:["to do","doing","do","done"],a:2,e:"Make + object + bare infinitive is the standard active pattern."},
