@@ -1,6 +1,7 @@
 "use client";
 import {NOUN_QUESTION_BANK} from "@/data/english-expert-noun-bank";
 import {PRONOUN_QUESTION_BANK} from "@/data/english-expert-pronoun-bank";
+import {ADJECTIVE_QUESTION_BANK} from "@/data/english-expert-adjective-bank";
 import {Component,useEffect,useMemo,useRef,useState} from "react";
 import {createPortal} from "react-dom";
 
@@ -8,14 +9,7 @@ type Q={q:string;o:string[];a:number;e:string};
 type Topic={id:string;name:string;definition:string;bank:Q[]};
 const TOPICS:Topic[]=[
 {id:"noun",name:"Noun",definition:"A noun is a word that names a person, place, animal, thing, substance, or idea. Nouns may be common, proper, collective, abstract, or material.",bank:NOUN_QUESTION_BANK},
-{id:"pronoun",name:"Pronoun",definition:"A pronoun is a word used instead of a noun or noun phrase. Topics include personal, possessive, reflexive, demonstrative, relative, interrogative, indefinite, and reciprocal pronouns, as well as pronoun case.",bank:PRONOUN_QUESTION_BANK},{id:"adjective",name:"Adjective",definition:"An adjective describes or gives more information about a noun or pronoun. It can express quality, quantity, number, or comparison.",bank:[
-{q:"Identify the adjective: “A brilliant scientist solved the puzzle.”",o:["scientist","solved","brilliant","puzzle"],a:2,e:"Brilliant describes the noun scientist."},
-{q:"Choose the adjective that completes the sentence: “It was a ___ evening.”",o:["peacefully","peace","peaceful","pacify"],a:2,e:"Peaceful describes the noun evening."},
-{q:"Which sentence uses a comparative adjective correctly?",o:["This road is narrow than that one.","This road is narrower than that one.","This road is narrowest than that one.","This road is more narrower than that one."],a:1,e:"Narrower is the comparative form of narrow."},
-{q:"Which word is an adjective of quantity?",o:["several","blue","honest","wooden"],a:0,e:"Several indicates an imprecise number or quantity."},
-{q:"Choose the superlative form of “good”.",o:["gooder","more good","best","better"],a:2,e:"Best is the irregular superlative form of good."},{q:"Choose the correct completion: “Of the three proposals, this is the ___ practical.”",o:["more","most","much","very"],a:1,e:"The superlative most practical is used when comparing three or more proposals."}]},
-{id:"verb",name:"Verb",definition:"A verb expresses an action, occurrence, or state of being. It is central to the predicate and may be finite or non-finite, transitive or intransitive.",bank:[
-{q:"Which word is the verb in “The children laughed loudly”?",o:["children","laughed","loudly","the"],a:1,e:"Laughed expresses the action."},
+{id:"pronoun",name:"Pronoun",definition:"A pronoun is a word used instead of a noun or noun phrase. Topics include personal, possessive, reflexive, demonstrative, relative, interrogative, indefinite, and reciprocal pronouns, as well as pronoun case.",bank:PRONOUN_QUESTION_BANK},{id:"adjective",name:"Adjective",definition:"An adjective describes or gives more information about a noun or pronoun. Topics include quality, quantity, number, demonstrative, possessive, interrogative, proper, compound, comparative, and superlative adjectives.",bank:ADJECTIVE_QUESTION_BANK},
 {q:"Choose the verb: “The soup tastes delicious.”",o:["soup","tastes","delicious","the"],a:1,e:"Tastes is a linking verb connecting the subject to a description."},
 {q:"Which sentence contains a transitive verb?",o:["The baby slept.","The guests arrived.","Rina opened the window.","The sun rose."],a:2,e:"Opened takes the direct object the window."},
 {q:"Choose the correct verb: “Neither answer ___ correct.”",o:["are","were","is","have"],a:2,e:"Neither is singular here, so it takes is."},
