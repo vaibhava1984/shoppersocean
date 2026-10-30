@@ -43,7 +43,7 @@ async function handle(req:Request,consume:boolean){
    }
    if(action==="reserve"){
     const cutoff=new Date(Date.now()-365*86400000).toISOString(),now=new Date().toISOString();
-    const seen=await db.prepare("INSERT INTO english_expert_question_history(user_id,topic_id,question_id,first_seen_at) VALUES(?,?,?,?) ON CONFLICT(user_id,question_id) DO UPDATE SET topic_id=excluded.topic_id,first_seen_at=excluded.first_seen_at WHERE english_expert_question_history.first_seen_at<=? RETURNING question_id").bind(user.id,topic,questionId,now,cutoff).first<any>();
+    const seen=await db.prepare("INSERT INTO english_expert_question_history(user_id,topic_id,question_id,first_seen_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id,question_id) DO UPDATE SET first_seen_at=excluded.first_seen_at WHERE english_expert_question_history.first_seen_at<=? RETURNING question_id").bind(user.id,topic,questionId,now,cutoff).first<any>();
     if(!seen)return NextResponse.json({repeated:true,skipQuestion:true},{status:409,headers});
     return NextResponse.json({reserved:true},{headers});
    }
