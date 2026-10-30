@@ -1,18 +1,12 @@
 "use client";
+import {NOUN_QUESTION_BANK} from "@/data/english-expert-noun-bank";
 import {Component,useEffect,useMemo,useRef,useState} from "react";
 import {createPortal} from "react-dom";
 
 type Q={q:string;o:string[];a:number;e:string};
 type Topic={id:string;name:string;definition:string;bank:Q[]};
 const TOPICS:Topic[]=[
-{id:"noun",name:"Noun",definition:"A noun is a word that names a person, place, animal, thing, substance, or idea. Nouns may be common, proper, collective, abstract, or material.",bank:[
-{q:"Which word is the noun in “The curious child opened the box”?",o:["curious","child","opened","the"],a:1,e:"Child names a person, so it is a noun."},
-{q:"Choose the noun that completes the sentence: “The ___ is shining brightly.”",o:["beautiful","sun","shine","brightly"],a:1,e:"Sun names a thing in nature."},
-{q:"Which option is an abstract noun?",o:["honesty","pencil","village","teacher"],a:0,e:"Honesty names a quality or idea, not a physical object."},
-{q:"Identify the proper noun.",o:["river","country","Kavya","mountain"],a:2,e:"Kavya is the specific name of a person and begins with a capital letter."},
-{q:"Which is a collective noun?",o:["flock","bird","feather","fly"],a:0,e:"Flock names a group of birds."},
-{q:"In “The committee reached a unanimous decision,” which word is a collective noun?",o:["reached","unanimous","committee","decision"],a:2,e:"Committee names a group acting as a unit, so it is a collective noun."}
-]},
+{id:"noun",name:"Noun",definition:"A noun is a word that names a person, place, animal, thing, substance, or idea. Nouns may be common, proper, collective, abstract, or material.",bank:NOUN_QUESTION_BANK},
 {id:"pronoun",name:"Pronoun",definition:"A pronoun is a word used instead of a noun or noun phrase. Common types include personal, possessive, reflexive, demonstrative, relative, and interrogative pronouns.",bank:[
 {q:"Choose the pronoun: “Maya said that she would arrive early.”",o:["Maya","said","she","early"],a:2,e:"She replaces the noun Maya."},
 {q:"Complete the sentence: “This book belongs to ___.”",o:["I","me","mine's","myself"],a:1,e:"Me is the object pronoun after the preposition to."},
