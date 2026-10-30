@@ -3197,8 +3197,8 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "looked",
       "will look"
     ],
-    "a": 0,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "a": 1,
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   },
   {
     "q": "Choose the correct verb: \"Do the players ___ ready for the inspection.\"",
@@ -3209,7 +3209,7 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "will look"
     ],
     "a": 1,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   },
   {
     "q": "Choose the correct verb: \"Does each of the rooms ___ ready for the inspection.\"",
@@ -3219,8 +3219,8 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "looked",
       "will look"
     ],
-    "a": 0,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "a": 1,
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   },
   {
     "q": "Choose the correct verb: \"Do the two machines ___ ready for the inspection.\"",
@@ -3231,7 +3231,7 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "will look"
     ],
     "a": 1,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   },
   {
     "q": "Choose the correct verb: \"Does the news ___ ready for the inspection.\"",
@@ -3241,8 +3241,8 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "looked",
       "will look"
     ],
-    "a": 0,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "a": 1,
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   },
   {
     "q": "Choose the correct verb: \"Do the children ___ ready for the inspection.\"",
@@ -3253,7 +3253,7 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "will look"
     ],
     "a": 1,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   },
   {
     "q": "Choose the correct verb: \"Does your brother ___ ready for the inspection.\"",
@@ -3263,8 +3263,8 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "looked",
       "will look"
     ],
-    "a": 0,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "a": 1,
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   },
   {
     "q": "Choose the correct verb: \"Do either of the answers ___ ready for the inspection.\"",
@@ -3275,7 +3275,7 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "will look"
     ],
     "a": 1,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   },
   {
     "q": "Choose the correct verb: \"Do the keys ___ ready for the inspection.\"",
@@ -3285,8 +3285,8 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "looked",
       "will look"
     ],
-    "a": 0,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "a": 1,
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   },
   {
     "q": "Choose the correct verb: \"Does the price of these items ___ ready for the inspection.\"",
@@ -3297,6 +3297,6 @@ export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK = [
       "will look"
     ],
     "a": 1,
-    "e": "In questions, the verb agrees with the subject that follows it."
+    "e": "After do or does, the main verb stays in its base form, regardless of whether the subject is singular or plural."
   }
 ] as const;
