@@ -32,6 +32,15 @@ async function handle(req:Request,consume:boolean){
    let body:any={};try{body=await req.json()}catch{}
    const topic=String(body.topicId??""),questionId=String(body.questionId??"").slice(0,180),action=String(body.action??"answer");
    if(!TOPICS.includes(topic)||!questionId)return NextResponse.json({error:"Choose a valid English grammar topic and question."},{status:400,headers});
+   if(action==="check"){
+    const paid=admin||subscribed;
+    const row=paid
+     ?await db.prepare("SELECT attempts_used FROM english_expert_daily_usage WHERE user_id=? AND topic_id=? AND usage_date=?").bind(user.id,topic,date).first<any>()
+     :await db.prepare("SELECT attempts_used FROM english_expert_free_usage WHERE user_id=? AND topic_id=?").bind(user.id,topic).first<any>();
+    const used=Number(row?.attempts_used??0),limit=paid?DAILY_LIMIT:FREE_LIMIT;
+    const exhausted=used>=limit;
+    return NextResponse.json({ok:!exhausted,topicId:topic,used,limit,remaining:Math.max(0,limit-used),quotaExhausted:exhausted&&paid,freeQuotaExhausted:exhausted&&!paid,usage:await readUsage(db,user.id,date,paid)},{status:exhausted?403:200,headers});
+   }
    if(action==="reserve"){
     const cutoff=new Date(Date.now()-365*86400000).toISOString(),now=new Date().toISOString();
     const seen=await db.prepare("INSERT INTO english_expert_question_history(user_id,topic_id,question_id,first_seen_at) VALUES(?,?,?,?) ON CONFLICT(user_id,question_id) DO UPDATE SET topic_id=excluded.topic_id,first_seen_at=excluded.first_seen_at WHERE english_expert_question_history.first_seen_at<=? RETURNING question_id").bind(user.id,topic,questionId,now,cutoff).first<any>();
