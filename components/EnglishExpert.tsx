@@ -3,6 +3,7 @@ import {NOUN_QUESTION_BANK} from "@/data/english-expert-noun-bank";
 import {PRONOUN_QUESTION_BANK} from "@/data/english-expert-pronoun-bank";
 import {ADJECTIVE_QUESTION_BANK} from "@/data/english-expert-adjective-bank";
 import {VERB_QUESTION_BANK} from "@/data/english-expert-verb-bank";
+import {ADVERB_QUESTION_BANK} from "@/data/english-expert-adverb-bank";
 import {Component,useEffect,useMemo,useRef,useState} from "react";
 import {createPortal} from "react-dom";
 
@@ -11,12 +12,7 @@ type Topic={id:string;name:string;definition:string;bank:Q[]};
 const TOPICS:Topic[]=[
 {id:"noun",name:"Noun",definition:"A noun is a word that names a person, place, animal, thing, substance, or idea. Nouns may be common, proper, collective, abstract, or material.",bank:NOUN_QUESTION_BANK},
 {id:"pronoun",name:"Pronoun",definition:"A pronoun is a word used instead of a noun or noun phrase. Topics include personal, possessive, reflexive, demonstrative, relative, interrogative, indefinite, and reciprocal pronouns, as well as pronoun case.",bank:PRONOUN_QUESTION_BANK},{id:"adjective",name:"Adjective",definition:"An adjective describes or gives more information about a noun or pronoun. Topics include quality, quantity, number, demonstrative, possessive, interrogative, proper, compound, comparative, and superlative adjectives.",bank:ADJECTIVE_QUESTION_BANK},{id:"verb",name:"Verb",definition:"A verb expresses an action, occurrence, or state of being. This 300-question bank covers irregular forms, participles, subject–verb agreement, auxiliaries, modals, gerunds and infinitives, phrasal verbs, and perfect and passive constructions.",bank:VERB_QUESTION_BANK},
-{id:"adverb",name:"Adverb",definition:"An adverb modifies a verb, an adjective, another adverb, or sometimes a whole clause. It can express manner, time, place, frequency, or degree.",bank:[
-{q:"Identify the adverb: “The athlete ran swiftly.”",o:["athlete","ran","swiftly","the"],a:2,e:"Swiftly tells how the athlete ran."},
-{q:"Choose the correct adverb: “She speaks English ___.”",o:["fluent","fluency","fluently","more fluent"],a:2,e:"Fluently modifies the verb speaks."},
-{q:"Which word modifies the adjective in “The water is extremely cold”?",o:["water","is","extremely","cold"],a:2,e:"Extremely modifies the adjective cold."},
-{q:"Which is an adverb of frequency?",o:["outside","yesterday","often","carefully"],a:2,e:"Often tells how frequently something happens."},
-{q:"Choose the correct sentence.",o:["He drives careful.","He drives carefully.","He careful drives.","He drives more careful."],a:1,e:"Carefully is the adverb modifying drives."},{q:"Choose the correct position for the adverb of frequency: “She ___ forgets an appointment.”",o:["never","forgets never","never does forgets","does never forgets"],a:0,e:"Never normally comes before the main verb forgets."}]},
+{id:"adverb",name:"Adverb",definition:"An adverb modifies a verb, adjective, another adverb, or a whole clause. This 300-question bank covers identification and functions, manner, frequency, degree, time and place, comparison, position, adjective–adverb distinctions, interrogative and relative adverbs, and sentence adverbs.",bank:ADVERB_QUESTION_BANK},
 {id:"articles",name:"Articles",definition:"Articles are determiners used before nouns. A and an are indefinite articles; the is the definite article. Choice depends on meaning, countability, and sound—not simply spelling.",bank:[
 {q:"Choose the correct article: “She waited for ___ hour.”",o:["a","an","the","no article"],a:1,e:"Hour begins with a vowel sound, so an is used."},
 {q:"Complete the sentence: “He is ___ university student.”",o:["a","an","the","no article"],a:0,e:"University begins with the consonant sound /juː/, so a is correct."},
