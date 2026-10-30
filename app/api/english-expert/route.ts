@@ -10,6 +10,8 @@ async function setup(db:D1Database){
  await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_daily_usage(user_id TEXT NOT NULL,topic_id TEXT NOT NULL,usage_date TEXT NOT NULL,attempts_used INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(user_id,topic_id,usage_date))").run();
  await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_attempts(user_id TEXT NOT NULL,topic_id TEXT NOT NULL,question_id TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(user_id,question_id))").run();
  await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_question_history(user_id TEXT NOT NULL,topic_id TEXT NOT NULL,question_id TEXT NOT NULL,first_seen_at TEXT NOT NULL,PRIMARY KEY(user_id,question_id))").run();
+ await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_question_history_v2(user_id TEXT NOT NULL,question_id TEXT NOT NULL,first_seen_at TEXT NOT NULL,PRIMARY KEY(user_id,question_id))").run();
+ await db.prepare("INSERT OR IGNORE INTO english_expert_question_history_v2(user_id,question_id,first_seen_at) SELECT user_id,question_id,MIN(first_seen_at) FROM english_expert_question_history GROUP BY user_id,question_id").run();
  await db.prepare("CREATE TABLE IF NOT EXISTS user_subscriptions(user_id TEXT PRIMARY KEY,status TEXT NOT NULL DEFAULT 'inactive',started_at TEXT,expires_at TEXT,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
 }
 export async function GET(req:Request){return handle(req,false)}
@@ -42,8 +44,8 @@ async function handle(req:Request,consume:boolean){
     return NextResponse.json({ok:!exhausted,topicId:topic,used,limit,remaining:Math.max(0,limit-used),quotaExhausted:exhausted&&paid,freeQuotaExhausted:exhausted&&!paid,usage:await readUsage(db,user.id,date,paid)},{status:exhausted?403:200,headers});
    }
    if(action==="reserve"){
-    const cutoff=new Date(Date.now()-365*86400000).toISOString(),now=new Date().toISOString();
-    const seen=await db.prepare("INSERT INTO english_expert_question_history(user_id,topic_id,question_id,first_seen_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id,question_id) DO UPDATE SET first_seen_at=excluded.first_seen_at WHERE english_expert_question_history.first_seen_at<=? RETURNING question_id").bind(user.id,topic,questionId,now,cutoff).first<any>();
+    const cutoff=new Date(Date.now()-90*86400000).toISOString(),now=new Date().toISOString();
+    const seen=await db.prepare("INSERT INTO english_expert_question_history_v2(user_id,question_id,first_seen_at) VALUES(?,?,?) ON CONFLICT(user_id,question_id) DO UPDATE SET first_seen_at=excluded.first_seen_at WHERE english_expert_question_history_v2.first_seen_at<=? RETURNING question_id").bind(user.id,questionId,now,cutoff).first<any>();
     if(!seen)return NextResponse.json({repeated:true,skipQuestion:true},{status:409,headers});
     return NextResponse.json({reserved:true},{headers});
    }
