@@ -4,6 +4,7 @@ import {PRONOUN_QUESTION_BANK} from "@/data/english-expert-pronoun-bank";
 import {ADJECTIVE_QUESTION_BANK} from "@/data/english-expert-adjective-bank";
 import {VERB_QUESTION_BANK} from "@/data/english-expert-verb-bank";
 import {ADVERB_QUESTION_BANK} from "@/data/english-expert-adverb-bank";
+import {ARTICLE_QUESTION_BANK} from "@/data/english-expert-article-bank";
 import {Component,useEffect,useMemo,useRef,useState} from "react";
 import {createPortal} from "react-dom";
 
@@ -13,12 +14,7 @@ const TOPICS:Topic[]=[
 {id:"noun",name:"Noun",definition:"A noun is a word that names a person, place, animal, thing, substance, or idea. Nouns may be common, proper, collective, abstract, or material.",bank:NOUN_QUESTION_BANK},
 {id:"pronoun",name:"Pronoun",definition:"A pronoun is a word used instead of a noun or noun phrase. Topics include personal, possessive, reflexive, demonstrative, relative, interrogative, indefinite, and reciprocal pronouns, as well as pronoun case.",bank:PRONOUN_QUESTION_BANK},{id:"adjective",name:"Adjective",definition:"An adjective describes or gives more information about a noun or pronoun. Topics include quality, quantity, number, demonstrative, possessive, interrogative, proper, compound, comparative, and superlative adjectives.",bank:ADJECTIVE_QUESTION_BANK},{id:"verb",name:"Verb",definition:"A verb expresses an action, occurrence, or state of being. This 300-question bank covers irregular forms, participles, subject–verb agreement, auxiliaries, modals, gerunds and infinitives, phrasal verbs, and perfect and passive constructions.",bank:VERB_QUESTION_BANK},
 {id:"adverb",name:"Adverb",definition:"An adverb modifies a verb, adjective, another adverb, or a whole clause. This 300-question bank covers identification and functions, manner, frequency, degree, time and place, comparison, position, adjective–adverb distinctions, interrogative and relative adverbs, and sentence adverbs.",bank:ADVERB_QUESTION_BANK},
-{id:"articles",name:"Articles",definition:"Articles are determiners used before nouns. A and an are indefinite articles; the is the definite article. Choice depends on meaning, countability, and sound—not simply spelling.",bank:[
-{q:"Choose the correct article: “She waited for ___ hour.”",o:["a","an","the","no article"],a:1,e:"Hour begins with a vowel sound, so an is used."},
-{q:"Complete the sentence: “He is ___ university student.”",o:["a","an","the","no article"],a:0,e:"University begins with the consonant sound /juː/, so a is correct."},
-{q:"Choose the correct article: “___ moon looks bright tonight.”",o:["A","An","The","No article"],a:2,e:"The refers to the unique moon in this context."},
-{q:"Which sentence uses an article correctly?",o:["She is an European citizen.","She is a European citizen.","She is the European citizen (any one).","She is a honest citizen."],a:1,e:"European begins with /j/, a consonant sound; a is correct."},
-{q:"Choose the natural option: “Water is essential for life.”",o:["A water is essential for life.","An water is essential for life.","The water is essential for life (general meaning).","No article is needed for water used generally."],a:3,e:"Uncountable water takes no article when discussed generally."},{q:"Choose the correct completion: “She hopes to become ___ honest journalist.”",o:["a","an","the","no article"],a:1,e:"Honest begins with a silent h, so its first sound is a vowel sound; use an."}]},
+{id:"articles",name:"Articles",definition:"Articles are determiners used before nouns. A and an are indefinite articles; the is the definite article. Choice depends on meaning, countability, and sound—not simply spelling. This 300-question bank covers sound-based a/an choices, definite reference, unique nouns, geographical names, and zero article.",bank:ARTICLE_QUESTION_BANK},
 {id:"interjection",name:"Interjection",definition:"An interjection is a word or short expression that conveys a sudden feeling, reaction, greeting, or response. It is often followed by an exclamation mark, depending on tone.",bank:[
 {q:"Which word is the interjection in “Wow! That was an amazing performance.”?",o:["that","amazing","Wow","performance"],a:2,e:"Wow expresses sudden admiration."},
 {q:"Choose the interjection expressing pain.",o:["Alas!","Ouch!","Hurray!","Bravo!"],a:1,e:"Ouch expresses pain."},
