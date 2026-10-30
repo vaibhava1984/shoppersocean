@@ -33,7 +33,9 @@ const verbs:V[]=[
 {s:"The scientist",v:"study",third:"studies",ing:"studying",pp:"studied",sub:"she",aux:"does",have:"has",be:"is"}
 ];
 const bank:Q[]=[];
-const add=(q:string,correct:string,wrong:string[],e:string)=>{const opts=[...new Set([correct,...wrong.filter(w=>w!==correct)])];\n while(opts.length<4) opts.push(["is "+correct,"has "+correct,"did "+correct][opts.length-1]);\n opts.length=4;const shift=bank.length%4;const o=opts.map((_,i)=>opts[(i+shift)%4]);bank.push({q,o,a:o.indexOf(correct),e});};
+const add=(q:string,correct:string,wrong:string[],e:string)=>{const opts=[...new Set([correct,...wrong.filter(w=>w!==correct)])];
+ while(opts.length<4) opts.push(["is "+correct,"has "+correct,"did "+correct][opts.length-1]);
+ opts.length=4;const shift=bank.length%4;const o=opts.map((_,i)=>opts[(i+shift)%4]);bank.push({q,o,a:o.indexOf(correct),e});};
 for(const x of verbs){
  add(`Every weekday, ${x.s.toLowerCase()} ___ before lunch.`,x.third,[x.v,x.ing,x.pp], "The simple present expresses a regular habit. A third-person singular subject takes the -s or -es form; plural subjects and I/you use the base form.");
  add(`Choose the correct negative: “${x.s} ___ ${x.v} the task on Sundays.”`,`${x.aux} not ${x.v}`,[`${x.have} not ${x.pp}`,`${x.be} not ${x.ing}`,`not ${x.third}`],"The simple present negative uses do not or does not followed by the base form of the verb.");
