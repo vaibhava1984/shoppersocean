@@ -8,7 +8,7 @@ const NO_MORE_TODAY="Your today's quota on this section is exhausted. Please vis
 const headers={"Cache-Control":"no-store"};
 const typeLimit=(type:string)=>type==="daily"?DAILY_QUESTION_LIMIT:type==="jigsaw"?3:DAILY_LIMIT;
 const today=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10); // India day boundary: 08:00 IST (02:30 UTC).
-const sectionDailyRemaining=(section:string,used:Record<string,number>)=>{if(section==="memory-observation"){const legacy=["memory","recall","spot"].reduce((n,t)=>n+Math.max(0,DAILY_LIMIT-(used[t]??0)),0);return Math.min(legacy,Math.max(0,DAILY_QUESTION_LIMIT-(used.jigsaw??0)));}return section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(used.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(used[t]??0)),0);};
+const sectionDailyRemaining=(section:string,used:Record<string,number>)=>{if(section==="memory-observation"){return Math.max(0,3-(used.jigsaw??0));}return section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(used.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(used[t]??0)),0);};
 async function claimChallenge(db:D1Database,userId:string,type:string,challenge:string,playedAt:string){
  if(!challenge)return true;
  const cutoff=new Date(Date.now()-365*86400000).toISOString();
@@ -27,7 +27,7 @@ async function handle(req:Request,consume:boolean){
   await db.prepare("CREATE TABLE IF NOT EXISTS game_subscriber_usage_by_type(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,usage_date TEXT NOT NULL,plays_used INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(user_id,game_type_id,usage_date))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_challenge_history(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,challenge_id TEXT NOT NULL,played_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id,challenge_id))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_question_reservations(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,challenge_id TEXT NOT NULL,question_text TEXT NOT NULL,session_id TEXT NOT NULL,reserved_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id,challenge_id))").run();
-  await db.prepare("CREATE TABLE IF NOT EXISTS game_picture_pair_quota_reset(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
+  await db.prepare("CREATE TABLE IF NOT EXISTS game_picture_pair_quota_reset_v2(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS user_subscriptions(user_id TEXT PRIMARY KEY,status TEXT NOT NULL DEFAULT 'inactive',started_at TEXT,expires_at TEXT,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
   const acct=await db.prepare("SELECT role,email,full_name FROM users WHERE id=? LIMIT 1").bind(user.id).first<any>();
   const admin=String(acct?.role??"").toLowerCase()==="admin"||String(acct?.email??user.email).trim().toLowerCase()===ADMIN_EMAIL;
@@ -41,7 +41,7 @@ async function handle(req:Request,consume:boolean){
   // One-time correction for the site owner only: the old Picture Pair build allowed one attempt.
   // Reset only this account's jigsaw usage for today; no other account or game quota is touched.
   if(String(acct?.email??user.email).trim().toLowerCase()===ADMIN_EMAIL){
-   const reset=await db.prepare("INSERT OR IGNORE INTO game_picture_pair_quota_reset(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
+   const reset=await db.prepare("INSERT OR IGNORE INTO game_picture_pair_quota_reset_v2(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
    if(reset){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND game_type_id='jigsaw' AND usage_date=?").bind(user.id,date).run();
     await db.prepare("UPDATE game_free_trials_by_section SET trials_used=0,updated_at=? WHERE user_id=? AND section_id='memory-observation'").bind(new Date().toISOString(),user.id).run();
