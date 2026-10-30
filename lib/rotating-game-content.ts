@@ -214,9 +214,11 @@ const extendedQuizBank:ExtendedQuizItem[]=[
 ];
 export function getQuizPuzzle(date:string,slot:number):Puzzle & {options:string[];correctIndex:number;topic:string}{
  const seed=seedFor(date,slot),scienceQuestions=DAILY_GK_QUESTIONS.filter(item=>item.id.startsWith("science-"));
- const total=scienceQuestions.length+extendedQuizBank.length,index=((seed%total)+total)%total;
+ const scienceTopics=new Set(["Nature","Earth Science","Weather","Ecology","Human Body","Biology","Environment","Food Science","Everyday Science","Climate","Astronomy"]);
+ const scienceExtendedQuizBank=extendedQuizBank.filter(item=>scienceTopics.has(item.topic));
+ const total=scienceQuestions.length+scienceExtendedQuizBank.length,index=((seed%total)+total)%total;
  if(index>=scienceQuestions.length){
-  const item=extendedQuizBank[index-scienceQuestions.length],options=shuffled(item.o,seed+211);
+  const item=scienceExtendedQuizBank[index-scienceQuestions.length],options=shuffled(item.o,seed+211);
   return {id:"quiz:"+item.id,question:item.q,answer:item.a,options,correctIndex:options.indexOf(item.a),topic:item.topic};
  }
  const item=scienceQuestions[index],pool=scienceQuestions.map(x=>x.answer).filter(x=>x!==item.answer);
