@@ -31,6 +31,13 @@ async function handle(req:Request,consume:boolean){
   await db.prepare("CREATE TABLE IF NOT EXISTS user_subscriptions(user_id TEXT PRIMARY KEY,status TEXT NOT NULL DEFAULT 'inactive',started_at TEXT,expires_at TEXT,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
   const acct=await db.prepare("SELECT role,email,full_name FROM users WHERE id=? LIMIT 1").bind(user.id).first<any>();
   const admin=String(acct?.role??"").toLowerCase()==="admin"||String(acct?.email??user.email).trim().toLowerCase()===ADMIN_EMAIL;
+  const sub=await db.prepare("SELECT status,expires_at FROM user_subscriptions WHERE user_id=? LIMIT 1").bind(user.id).first<any>();
+  const expiryTime=sub?.expires_at?Date.parse(String(sub.expires_at)):0;
+  const subscribed=!admin&&String(sub?.status??"").toLowerCase()==="active"&&Boolean(sub?.expires_at)&&Number.isFinite(expiryTime)&&expiryTime>Date.now();
+  if(!admin&&String(sub?.status??"").toLowerCase()==="active"&&(!sub?.expires_at||!Number.isFinite(expiryTime)||expiryTime<=Date.now())){
+   await db.prepare("UPDATE user_subscriptions SET status='expired',updated_at=? WHERE user_id=? AND status='active'").bind(new Date().toISOString(),user.id).run();
+  }
+  const date=today();
   // One-time correction for the site owner only: the old Picture Pair build allowed one attempt.
   // Reset only this account's jigsaw usage for today; no other account or game quota is touched.
   if(String(acct?.email??user.email).trim().toLowerCase()===ADMIN_EMAIL){
@@ -40,13 +47,6 @@ async function handle(req:Request,consume:boolean){
     await db.prepare("UPDATE game_free_trials_by_section SET trials_used=0,updated_at=? WHERE user_id=? AND section_id='memory-observation'").bind(new Date().toISOString(),user.id).run();
    }
   }
-  const sub=await db.prepare("SELECT status,expires_at FROM user_subscriptions WHERE user_id=? LIMIT 1").bind(user.id).first<any>();
-  const expiryTime=sub?.expires_at?Date.parse(String(sub.expires_at)):0;
-  const subscribed=!admin&&String(sub?.status??"").toLowerCase()==="active"&&Boolean(sub?.expires_at)&&Number.isFinite(expiryTime)&&expiryTime>Date.now();
-  if(!admin&&String(sub?.status??"").toLowerCase()==="active"&&(!sub?.expires_at||!Number.isFinite(expiryTime)||expiryTime<=Date.now())){
-   await db.prepare("UPDATE user_subscriptions SET status='expired',updated_at=? WHERE user_id=? AND status='active'").bind(new Date().toISOString(),user.id).run();
-  }
-  const date=today();
   if(consume){
    let body:any={};try{body=await req.json()}catch{}
    const section=body.sectionId,type=body.gameTypeId,challenge=typeof body.challengeId==="string"?body.challengeId.slice(0,160):"",questionText=typeof body.challengeQuestion==="string"?body.challengeQuestion.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300):"";
