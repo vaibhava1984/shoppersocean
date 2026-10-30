@@ -128,32 +128,20 @@ const TOPICS:Topic[]=[
 {q:"What does “under the weather” mean?",o:["Feeling unwell","Standing outside","Feeling excited","Being late"],a:0,e:"Under the weather means slightly ill or unwell."},
 {q:"Choose the meaning of “hit the nail on the head”.",o:["Make a mistake","Describe exactly what is causing a situation","Do carpentry","Avoid a question"],a:1,e:"It means identify or express something exactly right."},{q:"What does “to add fuel to the fire” mean?",o:["To solve a disagreement","To make a bad situation worse","To avoid taking sides","To end a discussion"],a:1,e:"The idiom means to intensify an already difficult or tense situation."}]}
 ];
-const questionOpeners=[
-"Read the sentence and identify the correct answer: ",
-"Apply the relevant grammar rule to this example: ",
-"Which option is correct in the following context? ",
-"Examine the construction carefully. Choose the correct answer: ",
-"Select the option that completes the task accurately: ",
-"Which choice follows standard English usage here? ",
-"Consider the meaning and structure, then answer: ",
-"Choose the grammatically sound option for this example: ",
-"Identify the correct form in the sentence below: ",
-"Use the rule being tested to select the best answer: ",
-"Which response is accurate for the given example? ",
-"Read the example closely and make your selection: ",
-"Select the answer that preserves the intended meaning: ",
-"Which option would a careful editor accept here? ",
-"Find the form that is correct in this grammatical context: ",
-"Choose the best analysis of the example: ",
-"Which answer completes the statement correctly? ",
-"Apply your knowledge of English grammar to this item: ",
-"Select the one option that is both meaningful and correct: ",
-"Determine the most accurate answer from the choices: "
-];
-const questionClosers=["","","","","","","","",""];
 const dayKey=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10);
 const hash=(s:string)=>Array.from(s).reduce((n,c)=>((n*31+c.charCodeAt(0))>>>0),7);
-function dailyQuestions(topic:Topic,key:string):Q[]{const seed=hash(topic.id+key);const bank=topic.bank;const pool:Q[]=[];for(let i=0;i<900;i++){const base=bank[Math.floor(i/180)%bank.length];const opener=questionOpeners[Math.floor((i%180)/9)];const closer=questionClosers[i%9];const q={...base,q:opener+base.q+closer,o:[...base.o]};const shift=(hash(topic.id+":"+i)*13+i)%q.o.length;q.o=q.o.map((_,j)=>base.o[(j+shift)%base.o.length]);q.a=(base.a-shift+base.o.length)%base.o.length;pool.push(q);}const start=seed%pool.length;return Array.from({length:10},(_,i)=>pool[(start+i)%pool.length]);}
+// Select only authored questions. The previous generator created 900 cosmetic
+// copies from six questions, causing the same grammar items to recur.
+function dailyQuestions(topic:Topic,key:string):Q[]{
+ const pool=topic.bank.map(q=>({...q,o:[...q.o]}));
+ let state=hash(topic.id+":"+key)||1;
+ for(let i=pool.length-1;i>0;i--){
+  state=(state*1664525+1013904223)>>>0;
+  const j=state%(i+1);
+  [pool[i],pool[j]]=[pool[j],pool[i]];
+ }
+ return pool;
+}
 function EnglishExpertContent({userId,isAdmin,isSubscribed,playSound,soundOn,onTopicQuotaChange,onFreeQuotaExhausted}:{userId:string|null;isAdmin:boolean;isSubscribed:boolean;playSound:(kind:"tap"|"correct"|"lose",enabled?:boolean)=>void;soundOn:boolean;onTopicQuotaChange?:(topic:string|null,remaining:number|null)=>void;onFreeQuotaExhausted?:()=>void}){
  const [topicId,setTopicId]=useState("");const [started,setStarted]=useState(false);const [index,setIndex]=useState(0);const [selected,setSelected]=useState<number|null>(null);const [feedback,setFeedback]=useState("");const [usage,setUsage]=useState<Record<string,number>>({});const [serverAdmin,setServerAdmin]=useState(isAdmin);const [serverSubscribed,setServerSubscribed]=useState(isSubscribed);const [loading,setLoading]=useState(true);const [saving,setSaving]=useState(false);const [error,setError]=useState("");const [quotaEnded,setQuotaEnded]=useState(false);const [showQuotaPopup,setShowQuotaPopup]=useState(false);const [reservedQuestionId,setReservedQuestionId]=useState("");const [day,setDay]=useState(dayKey());const [quizSession,setQuizSession]=useState("initial");const quizBoxRef=useRef<HTMLDivElement|null>(null);
  const active=TOPICS.find(t=>t.id===topicId);const questions=useMemo(()=>active?dailyQuestions(active,day):[],[active,day]);const current=questions[Math.min(Math.max(index,0),Math.max(0,questions.length-1))];const stableQuestionId=active&&current?active.id+":"+hash(active.id+"|"+current.q+"|"+current.o.join("|")+"|"+current.a).toString(36)+":"+hash((active.id+"|"+current.q+"|"+current.o.join("|")+"|"+current.a).split("").reverse().join("")).toString(36):"";
