@@ -128,8 +128,29 @@ const TOPICS:Topic[]=[
 {q:"What does “under the weather” mean?",o:["Feeling unwell","Standing outside","Feeling excited","Being late"],a:0,e:"Under the weather means slightly ill or unwell."},
 {q:"Choose the meaning of “hit the nail on the head”.",o:["Make a mistake","Describe exactly what is causing a situation","Do carpentry","Avoid a question"],a:1,e:"It means identify or express something exactly right."},{q:"What does “to add fuel to the fire” mean?",o:["To solve a disagreement","To make a bad situation worse","To avoid taking sides","To end a discussion"],a:1,e:"The idiom means to intensify an already difficult or tense situation."}]}
 ];
-const questionOpeners=["Choose the best answer: ","Select the grammatically correct answer: ","Test your understanding: ","Which option correctly answers this question? ","For the sentence below, identify the correct choice: ","Read carefully and select the right answer: ","In standard English, which option is correct? ","Check the grammar and choose the best response: ","Select the option that follows the rule: ","Which answer completes this grammar task correctly? ","Consider the wording and choose the correct option: ","Find the answer that is grammatically accurate: ","Which of the following is the best answer? ","Apply the grammar rule and select one answer: ","Choose the most accurate grammatical option: ","Read the example and identify the right answer: ","Select the answer that makes the sentence correct: ","Which choice demonstrates correct English usage? ","Decide which option is correct in this context: ","Choose the only grammatically suitable answer: "];
-const questionClosers=[""," (Choose one answer.)"," (Select the most accurate option.)"," (Use standard written English.)"," (Pay attention to the grammar rule.)"," (Only one option is correct.)"," (Consider the complete sentence.)"," (Choose the best grammatical fit.)"," (Check the meaning as well as the form.)"];
+const questionOpeners=[
+"Read the sentence and identify the correct answer: ",
+"Apply the relevant grammar rule to this example: ",
+"Which option is correct in the following context? ",
+"Examine the construction carefully. Choose the correct answer: ",
+"Select the option that completes the task accurately: ",
+"Which choice follows standard English usage here? ",
+"Consider the meaning and structure, then answer: ",
+"Choose the grammatically sound option for this example: ",
+"Identify the correct form in the sentence below: ",
+"Use the rule being tested to select the best answer: ",
+"Which response is accurate for the given example? ",
+"Read the example closely and make your selection: ",
+"Select the answer that preserves the intended meaning: ",
+"Which option would a careful editor accept here? ",
+"Find the form that is correct in this grammatical context: ",
+"Choose the best analysis of the example: ",
+"Which answer completes the statement correctly? ",
+"Apply your knowledge of English grammar to this item: ",
+"Select the one option that is both meaningful and correct: ",
+"Determine the most accurate answer from the choices: "
+];
+const questionClosers=["","","","","","","","",""];
 const dayKey=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10);
 const hash=(s:string)=>Array.from(s).reduce((n,c)=>((n*31+c.charCodeAt(0))>>>0),7);
 function dailyQuestions(topic:Topic,key:string):Q[]{const seed=hash(topic.id+key);const bank=topic.bank;const pool:Q[]=[];for(let i=0;i<900;i++){const base=bank[Math.floor(i/180)%bank.length];const opener=questionOpeners[Math.floor((i%180)/9)];const closer=questionClosers[i%9];const q={...base,q:opener+base.q+closer,o:[...base.o]};const shift=(hash(topic.id+":"+i)*13+i)%q.o.length;q.o=q.o.map((_,j)=>base.o[(j+shift)%base.o.length]);q.a=(base.a-shift+base.o.length)%base.o.length;pool.push(q);}const start=seed%pool.length;return Array.from({length:10},(_,i)=>pool[(start+i)%pool.length]);}
