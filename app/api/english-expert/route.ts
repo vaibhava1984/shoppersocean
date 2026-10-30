@@ -9,7 +9,7 @@ async function setup(db:D1Database){
  await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_free_usage(user_id TEXT NOT NULL,topic_id TEXT NOT NULL,attempts_used INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL,PRIMARY KEY(user_id,topic_id))").run();
  await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_daily_usage(user_id TEXT NOT NULL,topic_id TEXT NOT NULL,usage_date TEXT NOT NULL,attempts_used INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(user_id,topic_id,usage_date))").run();
  await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_attempts(user_id TEXT NOT NULL,topic_id TEXT NOT NULL,question_id TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(user_id,question_id))").run();
- await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_question_history(user_id TEXT NOT NULL,topic_id TEXT NOT NULL,question_id TEXT NOT NULL,first_seen_at TEXT NOT NULL,PRIMARY KEY(user_id,topic_id,question_id))").run();
+ await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_question_history(user_id TEXT NOT NULL,topic_id TEXT NOT NULL,question_id TEXT NOT NULL,first_seen_at TEXT NOT NULL,PRIMARY KEY(user_id,question_id))").run();
  await db.prepare("CREATE TABLE IF NOT EXISTS user_subscriptions(user_id TEXT PRIMARY KEY,status TEXT NOT NULL DEFAULT 'inactive',started_at TEXT,expires_at TEXT,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
 }
 export async function GET(req:Request){return handle(req,false)}
