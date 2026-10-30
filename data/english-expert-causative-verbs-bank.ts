@@ -1540,7 +1540,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "Help can be followed by an object and either a bare infinitive or a to-infinitive."
   },
   {
-    "q": "passive causative: be + past participle: Choose the correct completion. “The documents ___ translated by a certified expert.”",
+    "q": "passive causative: be + past participle: Choose the correct completion. “The document ___ translated by a certified expert.”",
     "o": [
       "was",
       "did",
@@ -1551,7 +1551,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The thing receiving the service can be the subject of a passive sentence."
   },
   {
-    "q": "passive causative: be + past participle: Choose the correct completion. “The windows ___ cleaned before the guests arrived.”",
+    "q": "passive causative: be + past participle: Choose the correct completion. “The window ___ cleaned before the guests arrived.”",
     "o": [
       "was",
       "did",
@@ -1573,7 +1573,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The thing receiving the service can be the subject of a passive sentence."
   },
   {
-    "q": "passive causative: be + past participle: Choose the correct completion. “The invitations ___ printed in two colours.”",
+    "q": "passive causative: be + past participle: Choose the correct completion. “The invitation ___ printed in two colours.”",
     "o": [
       "was",
       "did",
@@ -1595,7 +1595,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The thing receiving the service can be the subject of a passive sentence."
   },
   {
-    "q": "passive causative: be + past participle: Choose the correct completion. “The uniforms ___ stitched by a local tailor.”",
+    "q": "passive causative: be + past participle: Choose the correct completion. “The uniform ___ stitched by a local tailor.”",
     "o": [
       "was",
       "did",
@@ -1628,7 +1628,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The thing receiving the service can be the subject of a passive sentence."
   },
   {
-    "q": "passive causative: be + past participle: Choose the correct completion. “The portraits ___ restored by specialists.”",
+    "q": "passive causative: be + past participle: Choose the correct completion. “The portrait ___ restored by a specialist.”",
     "o": [
       "was",
       "did",
@@ -1639,7 +1639,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The thing receiving the service can be the subject of a passive sentence."
   },
   {
-    "q": "passive causative: be + past participle: Choose the correct completion. “The equipment ___ tested before use.”",
+    "q": "passive causative: be + past participle: Choose the correct completion. “The machine ___ tested before use.”",
     "o": [
       "was",
       "did",
@@ -1683,7 +1683,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The thing receiving the service can be the subject of a passive sentence."
   },
   {
-    "q": "passive causative: be + past participle: Choose the correct completion. “The files ___ backed up overnight.”",
+    "q": "passive causative: be + past participle: Choose the correct completion. “The file ___ backed up overnight.”",
     "o": [
       "was",
       "did",
@@ -1694,7 +1694,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The thing receiving the service can be the subject of a passive sentence."
   },
   {
-    "q": "passive causative: be + past participle: Choose the correct completion. “The statue ___ cleaned by conservationists.”",
+    "q": "passive causative: be + past participle: Choose the correct completion. “The statue ___ cleaned by a conservationist.”",
     "o": [
       "was",
       "did",
@@ -1727,7 +1727,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The thing receiving the service can be the subject of a passive sentence."
   },
   {
-    "q": "passive causative: be + past participle: Choose the correct completion. “The samples ___ examined in the laboratory.”",
+    "q": "passive causative: be + past participle: Choose the correct completion. “The sample ___ examined in the laboratory.”",
     "o": [
       "was",
       "did",
@@ -2871,7 +2871,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The workers ___ attend a safety briefing.”",
+    "q": "passive make: Choose the correct completion. “The worker ___ attend a safety briefing.”",
     "o": [
       "was made to",
       "was made",
@@ -2893,7 +2893,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The passengers ___ wait outside the terminal.”",
+    "q": "passive make: Choose the correct completion. “The passenger ___ wait outside the terminal.”",
     "o": [
       "was made to",
       "was made",
@@ -2904,7 +2904,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The students ___ rewrite the entire essay.”",
+    "q": "passive make: Choose the correct completion. “The student ___ rewrite the entire essay.”",
     "o": [
       "was made to",
       "was made",
@@ -2926,7 +2926,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The staff ___ wear protective clothing.”",
+    "q": "passive make: Choose the correct completion. “The staff member ___ wear protective clothing.”",
     "o": [
       "was made to",
       "was made",
@@ -2937,7 +2937,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The players ___ practise in the rain.”",
+    "q": "passive make: Choose the correct completion. “The player ___ practise in the rain.”",
     "o": [
       "was made to",
       "was made",
@@ -2948,7 +2948,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The visitors ___ leave their bags at reception.”",
+    "q": "passive make: Choose the correct completion. “The visitor ___ leave a bag at reception.”",
     "o": [
       "was made to",
       "was made",
@@ -2970,7 +2970,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The audience ___ remain silent during the recording.”",
+    "q": "passive make: Choose the correct completion. “The audience member ___ remain silent during the recording.”",
     "o": [
       "was made to",
       "was made",
@@ -2992,7 +2992,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The team ___ follow the revised procedure.”",
+    "q": "passive make: Choose the correct completion. “The team captain ___ follow the revised procedure.”",
     "o": [
       "was made to",
       "was made",
@@ -3003,7 +3003,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The tenants ___ pay for the broken window.”",
+    "q": "passive make: Choose the correct completion. “The tenant ___ pay for the broken window.”",
     "o": [
       "was made to",
       "was made",
@@ -3025,7 +3025,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The children ___ finish their meals.”",
+    "q": "passive make: Choose the correct completion. “The child ___ finish the meal.”",
     "o": [
       "was made to",
       "was made",
@@ -3036,7 +3036,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The crowd ___ move behind the barrier.”",
+    "q": "passive make: Choose the correct completion. “The spectator ___ move behind the barrier.”",
     "o": [
       "was made to",
       "was made",
@@ -3058,7 +3058,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The soldiers ___ march through the gate.”",
+    "q": "passive make: Choose the correct completion. “The soldier ___ march through the gate.”",
     "o": [
       "was made to",
       "was made",
@@ -3069,7 +3069,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive make: Choose the correct completion. “The guests ___ show their invitations.”",
+    "q": "passive make: Choose the correct completion. “The guest ___ show an invitation.”",
     "o": [
       "was made to",
       "was made",
@@ -3080,7 +3080,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "In passive structures, make becomes be made to + infinitive."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “Visitors ___ enter the laboratory after signing in.”",
+    "q": "passive let equivalent: Choose the correct completion. “The visitor ___ enter the laboratory after signing in.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3102,7 +3102,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “Employees ___ work from home on Fridays.”",
+    "q": "passive let equivalent: Choose the correct completion. “The employee ___ work from home on Friday.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3113,7 +3113,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “The students ___ use calculators during the test.”",
+    "q": "passive let equivalent: Choose the correct completion. “The student ___ use a calculator during the test.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3135,7 +3135,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “Guests ___ bring one companion.”",
+    "q": "passive let equivalent: Choose the correct completion. “The guest ___ bring one companion.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3168,7 +3168,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “Passengers ___ board after the announcement.”",
+    "q": "passive let equivalent: Choose the correct completion. “The passenger ___ board after the announcement.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3179,7 +3179,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “The team ___ take a short break.”",
+    "q": "passive let equivalent: Choose the correct completion. “The player ___ take a short break.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3201,7 +3201,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “The residents ___ return after the inspection.”",
+    "q": "passive let equivalent: Choose the correct completion. “The resident ___ return after the inspection.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3212,7 +3212,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “The children ___ play in the courtyard.”",
+    "q": "passive let equivalent: Choose the correct completion. “The child ___ play in the courtyard.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3223,7 +3223,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “The staff ___ wear casual clothes on Saturday.”",
+    "q": "passive let equivalent: Choose the correct completion. “The staff member ___ wear casual clothes on Saturday.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3234,7 +3234,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “The photographer ___ take pictures inside the hall.”",
+    "q": "passive let equivalent: Choose the correct completion. “The photographer ___ take a picture inside the hall.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3256,7 +3256,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “The members ___ vote on the proposal.”",
+    "q": "passive let equivalent: Choose the correct completion. “The member ___ vote on the proposal.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3278,7 +3278,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “The trainees ___ ask questions at any time.”",
+    "q": "passive let equivalent: Choose the correct completion. “The trainee ___ ask questions at any time.”",
     "o": [
       "was allowed to",
       "was let to",
@@ -3289,7 +3289,7 @@ export const CAUSATIVE_VERBS_QUESTION_BANK = [
     "e": "The usual passive equivalent of let someone do something is be allowed to do something."
   },
   {
-    "q": "passive let equivalent: Choose the correct completion. “The audience ___ leave between performances.”",
+    "q": "passive let equivalent: Choose the correct completion. “The audience member ___ leave between performances.”",
     "o": [
       "was allowed to",
       "was let to",
