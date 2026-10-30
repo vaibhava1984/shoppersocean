@@ -7,6 +7,7 @@ import {ADVERB_QUESTION_BANK} from "@/data/english-expert-adverb-bank";
 import {ARTICLE_QUESTION_BANK} from "@/data/english-expert-article-bank";
 import {INTERJECTION_QUESTION_BANK} from "@/data/english-expert-interjection-bank";
 import {HELPING_VERB_QUESTION_BANK} from "@/data/english-expert-helping-verbs-bank";
+import {CONJUNCTION_QUESTION_BANK} from "@/data/english-expert-conjunctions-bank";
 import {PAST_TENSE_QUESTION_BANK} from "@/data/english-expert-past-tense-bank";
 import {PRESENT_TENSE_QUESTION_BANK} from "@/data/english-expert-present-tense-bank";
 import {FUTURE_TENSE_QUESTION_BANK} from "@/data/english-expert-future-tense-bank";
@@ -29,12 +30,7 @@ const TOPICS:Topic[]=[
 {id:"past-tense",name:"Past Tense",definition:"This 300-question bank covers simple past, past continuous, past perfect, past perfect continuous, negatives, questions, irregular verbs, used to, and would for past habits.",bank:PAST_TENSE_QUESTION_BANK},
 {id:"present-tense",name:"Present Tense",definition:"This 300-question bank covers simple present habits and facts, negatives, questions, present continuous, present perfect, present perfect continuous, subject-verb agreement, and time expressions.",bank:PRESENT_TENSE_QUESTION_BANK},
 {id:"future-tense",name:"Future Tense",definition:"Future-time meaning can be expressed with will, be going to, the present continuous, and other constructions. The choice depends on intention, prediction, arrangement, and context.",bank:FUTURE_TENSE_QUESTION_BANK},
-{id:"conjunctions",name:"Conjunctions",definition:"A conjunction connects words, phrases, or clauses. Coordinating, subordinating, and correlative conjunctions express relationships such as addition, contrast, cause, condition, and choice.",bank:[
-{q:"Choose the conjunction showing contrast: “I was tired, ___ I finished the work.”",o:["because","but","so","unless"],a:1,e:"But introduces a contrast."},
-{q:"Which word is a subordinating conjunction?",o:["and","or","although","nor"],a:2,e:"Although introduces a dependent clause."},
-{q:"Complete the pair: “___ you study, ___ you practise, you will improve.”",o:["Both / and","Neither / nor","Either / or","Whether / but"],a:0,e:"Both…and connects two coordinated elements."},
-{q:"Choose the conjunction showing cause: “We stayed indoors ___ it was raining.”",o:["because","yet","or","although"],a:0,e:"Because introduces the reason."},
-{q:"Which sentence uses a conjunction correctly?",o:["She is kind but helpful.","She is kind and helpful.","She is kind because helpful.","She is kind although helpful."],a:1,e:"And correctly joins two coordinated adjectives."},{q:"Choose the correct correlative conjunction: “Hardly had the show begun ___ the lights went out.”",o:["than","when","then","while"],a:1,e:"The standard paired construction is hardly…when."}]},
+ {id:"conjunctions",name:"Conjunctions",definition:"A conjunction connects words, phrases, or clauses. Coordinating, subordinating, and correlative conjunctions express relationships such as addition, contrast, cause, condition, time, purpose, comparison, and choice. This 300-question bank tests their correct use in context.",bank:CONJUNCTION_QUESTION_BANK},
 {id:"conditionals",name:"Conditionals",definition:"Conditional sentences express a condition and its result. Common patterns include zero conditional (general truths), first (real future possibility), second (hypothetical present/future), and third (unreal past).",bank:[
 {q:"Choose the zero conditional: “If you heat ice, it ___.”",o:["melted","melts","will melting","would melt"],a:1,e:"Zero conditional uses the present simple in both clauses for general truths."},
 {q:"Complete the first conditional: “If it rains, we ___ at home.”",o:["stay yesterday","will stay","would stayed","had stayed"],a:1,e:"First conditional uses present simple in the if-clause and will + base verb in the result."},
