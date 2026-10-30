@@ -56,6 +56,28 @@ export const DAILY_GK_QUESTIONS=[...capitalQuestions,...elementQuestions,...scie
 export function getDailyGKQuestion(date=new Date(),offset=0){
  const start=Date.UTC(date.getUTCFullYear(),0,1);
  const dayIndex=Math.floor((Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate())-start)/86400000);
- const index=((dayIndex*10+Math.max(0,Math.floor(offset)))%DAILY_GK_QUESTIONS.length+DAILY_GK_QUESTIONS.length)%DAILY_GK_QUESTIONS.length;
+ const index=((dayIndex+Math.max(0,Math.floor(offset)))%DAILY_GK_QUESTIONS.length+DAILY_GK_QUESTIONS.length)%DAILY_GK_QUESTIONS.length;
  return DAILY_GK_QUESTIONS[index];
+}
+
+export function getDailyGKOptions(question:DailyGKQuestion,seed=0):string[]{
+ const pool=question.id.startsWith("capital-")?capitalQuestions.map(x=>x.answer)
+  :question.id.startsWith("element-")?elementQuestions.map(x=>x.answer)
+  :question.id.startsWith("geography-")?geographyQuestions.map(x=>x.answer)
+  :scienceQuestions.map(x=>x.answer);
+ const answer=question.answer;
+ const norm=(v:string)=>v.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+ const target=norm(answer),targetWords=target.split(" ").length;
+ const related=pool.filter(v=>norm(v)!==target);
+ const sameShape=related.filter(v=>{
+  const value=norm(v),words=value.split(" ").length;
+  return words===targetWords&&Math.abs(value.length-target.length)<=Math.max(12,Math.ceil(target.length*.8));
+ });
+ const candidates=sameShape.length>=3?sameShape:related;
+ let state=(Math.imul(seed+question.id.length+target.length+17,2654435761)>>>0)||1;
+ const shuffled=[...candidates];
+ for(let i=shuffled.length-1;i>0;i--){state=(Math.imul(state,1664525)+1013904223)>>>0;const j=state%(i+1);[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+ const choices=[answer,...shuffled.slice(0,3)];
+ for(let i=choices.length-1;i>0;i--){state=(Math.imul(state,1664525)+1013904223)>>>0;const j=state%(i+1);[choices[i],choices[j]]=[choices[j],choices[i]];}
+ return choices;
 }
