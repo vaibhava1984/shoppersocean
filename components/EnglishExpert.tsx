@@ -1,5 +1,6 @@
 "use client";
 import {NOUN_QUESTION_BANK} from "@/data/english-expert-noun-bank";
+import {PRONOUN_QUESTION_BANK} from "@/data/english-expert-pronoun-bank";
 import {Component,useEffect,useMemo,useRef,useState} from "react";
 import {createPortal} from "react-dom";
 
@@ -7,13 +8,7 @@ type Q={q:string;o:string[];a:number;e:string};
 type Topic={id:string;name:string;definition:string;bank:Q[]};
 const TOPICS:Topic[]=[
 {id:"noun",name:"Noun",definition:"A noun is a word that names a person, place, animal, thing, substance, or idea. Nouns may be common, proper, collective, abstract, or material.",bank:NOUN_QUESTION_BANK},
-{id:"pronoun",name:"Pronoun",definition:"A pronoun is a word used instead of a noun or noun phrase. Common types include personal, possessive, reflexive, demonstrative, relative, and interrogative pronouns.",bank:[
-{q:"Choose the pronoun: “Maya said that she would arrive early.”",o:["Maya","said","she","early"],a:2,e:"She replaces the noun Maya."},
-{q:"Complete the sentence: “This book belongs to ___.”",o:["I","me","mine's","myself"],a:1,e:"Me is the object pronoun after the preposition to."},
-{q:"Which is a reflexive pronoun?",o:["them","herself","their","who"],a:1,e:"Herself is a reflexive pronoun."},
-{q:"Choose the correct pronoun: “The students have brought ___ notebooks.”",o:["his","her","their","its"],a:2,e:"Their agrees with the plural noun students."},
-{q:"Which word is an interrogative pronoun?",o:["someone","which","those","ours"],a:1,e:"Which can function as an interrogative pronoun when asking a question."},{q:"Choose the correct relative pronoun: “The engineer ___ designed the bridge received an award.”",o:["whose","who","which","whom"],a:1,e:"Who refers to the person performing the action in the relative clause."}]},
-{id:"adjective",name:"Adjective",definition:"An adjective describes or gives more information about a noun or pronoun. It can express quality, quantity, number, or comparison.",bank:[
+{id:"pronoun",name:"Pronoun",definition:"A pronoun is a word used instead of a noun or noun phrase. Topics include personal, possessive, reflexive, demonstrative, relative, interrogative, indefinite, and reciprocal pronouns, as well as pronoun case.",bank:PRONOUN_QUESTION_BANK},{id:"adjective",name:"Adjective",definition:"An adjective describes or gives more information about a noun or pronoun. It can express quality, quantity, number, or comparison.",bank:[
 {q:"Identify the adjective: “A brilliant scientist solved the puzzle.”",o:["scientist","solved","brilliant","puzzle"],a:2,e:"Brilliant describes the noun scientist."},
 {q:"Choose the adjective that completes the sentence: “It was a ___ evening.”",o:["peacefully","peace","peaceful","pacify"],a:2,e:"Peaceful describes the noun evening."},
 {q:"Which sentence uses a comparative adjective correctly?",o:["This road is narrow than that one.","This road is narrower than that one.","This road is narrowest than that one.","This road is more narrower than that one."],a:1,e:"Narrower is the comparative form of narrow."},
