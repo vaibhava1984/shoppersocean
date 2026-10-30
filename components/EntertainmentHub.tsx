@@ -7,13 +7,13 @@ import { getWordPuzzle, getHiddenPuzzle, getMissingPuzzle, getSequencePuzzle, ge
 
 type Game = "tic"|"connect"|"jigsaw"|"worldquiz"|"memory"|"word"|"hidden"|"missing"|"sequence"|"odd"|"quiz"|"riddle"|"daily"|"recall"|"spot"|"books"|"english";
 const groups: {id:string;icon:string;title:string;desc:string;games:[string,string][]}[] = [
+{id:"english-expert",icon:"📘",title:"English Expert",desc:"Build strong English grammar skills through clear lessons and smart daily quizzes across 20 topics",games:[["english","English Expert"]]},
 {id:"word-playground",icon:"🔤",title:"Word Playground",desc:"Play with letters and words",games:[["hidden","Word Quiz"],["missing","Missing Word"]]},
 {id:"brain-logic",icon:"🧠",title:"Brain & Logic Lab",desc:"Think deeply, reason carefully and solve",games:[["sequence","Logical Riddle"],["odd","Odd One Out"]]},
 {id:"quiz-arena",icon:"🔬",title:"Science Quiz",desc:"Explore fascinating questions from every branch of science",games:[["quiz","Science Quiz"]]},
 {id:"world-knowledge-quiz",icon:"🌍",title:"World Knowledge Quiz",desc:"Discover remarkable facts, places and knowledge from every corner of the world",games:[["worldquiz","World Knowledge Quiz"]]},
 {id:"riddle-corner",icon:"💡",title:"Riddle Corner",desc:"Clues, riddles and brain teasers",games:[["riddle","Solve a Riddle"]]},
 {id:"daily-challenge",icon:"🏆",title:"Daily Challenge",desc:"One more puzzle to crack",games:[["daily","Today's Brain Teaser"]]},
-{id:"english-expert",icon:"📘",title:"English Expert",desc:"Build strong English grammar skills through clear lessons and smart daily quizzes across 20 topics",games:[["english","English Expert"]]},
 {id:"classic-games",icon:"🎮",title:"Classic Games Arena",desc:"Enjoy timeless games of skill and strategy",games:[["tic","Tic-Tac-Toe"],["connect","Connect Four"]]},
 {id:"read-ebooks",icon:"📚",title:"Read E-books",desc:"Discover books by genre, author, language and trending collections",games:[["books","Browse E-books"]]}
  ];
@@ -62,7 +62,7 @@ export default function EntertainmentHub({userId}:{userId:string|null}){
  const cardsRef=useRef<HTMLDivElement|null>(null); const sectionTopRef=useRef<HTMLElement|null>(null); const [cardsVisible,setCardsVisible]=useState(false); const [soundOn,setSoundOn]=useState(true); const challengeConsumed=useRef(""); const [isSubscribed,setIsSubscribed]=useState(false),[isAdmin,setIsAdmin]=useState(false),[remainingByType,setRemainingByType]=useState<Record<string,number>>({});
  const [remaining,setRemaining]=useState<number|null>(userId?null:0),[remainingBySection,setRemainingBySection]=useState<Record<string,number>>({}),[accessError,setAccessError]=useState(false),[quotaLoaded,setQuotaLoaded]=useState(!userId),[visitorPopup,setVisitorPopup]=useState(false),[subscribePopup,setSubscribePopup]=useState(false),[notice,setNotice]=useState(""),[todayKey,setTodayKey]=useState(()=>getGameDayKey()),[dailyAnswered,setDailyAnswered]=useState(false);
  const [section,S]=useState(""),[game,G]=useState<Game>("tic"),[started,START]=useState(false),[board,B]=useState<(string|null)[]>(Array(9).fill(null)),[result,R]=useState(""),[wordIndex,WI]=useState(0),[guess,GU]=useState(""),[idx,I]=useState(0),[hint,H]=useState(false),[reveal,REV]=useState(false),[deck,D]=useState<string[]>([]),[open,O]=useState<number[]>([]),[matched,M]=useState<number[]>([]),[qi,QI]=useState(0),[score,SC]=useState(0),[choice,CH]=useState<number|null>(null),[recall,RC]=useState<number[]>([]),[recallGuess,RG]=useState<number[]>([]),[recallVisible,RV]=useState(true),[spot,SP]=useState<number|null>(null);
- const [dailyOffset,setDailyOffset]=useState(0),[worldQi,setWorldQi]=useState(0),[jigsawRound,setJigsawRound]=useState(0);
+ const [dailyOffset,setDailyOffset]=useState(0),[worldQi,setWorldQi]=useState(0),[jigsawRound,setJigsawRound]=useState(0); const [englishTopicQuota,setEnglishTopicQuota]=useState<{topic:string;remaining:number}|null>(null);
  const sessionRunId=useRef("game-session:"+Date.now()+":"+Math.random()); const [reservedQuestionKey,setReservedQuestionKey]=useState(""); const [questionReservationError,setQuestionReservationError]=useState(""); const repeatedQuestionSkips=useRef(0);
  const dailyGK=getDailyGKQuestion(new Date(todayKey+"T00:00:00Z"),dailyOffset),worldQuizChallenge=getWorldKnowledgeQuiz(todayKey,worldQi);
  const wordChallenge=getWordPuzzle(todayKey,wordIndex),hiddenChallenge=getHiddenPuzzle(todayKey,idx),missingChallenge=getMissingPuzzle(todayKey,idx),sequenceChallenge=getSequencePuzzle(todayKey,idx),oddChallenge=getOddPuzzle(todayKey,idx),quizChallenge=getQuizPuzzle(todayKey,qi),riddleChallenge=getRiddlePuzzle(todayKey,idx);
