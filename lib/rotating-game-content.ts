@@ -273,21 +273,23 @@ export function getLogicRiddlePuzzle(date:string,slot:number):Puzzle & {options:
  const seed=seedFor(date,slot),index=((seed%logicRiddleBank.length)+logicRiddleBank.length)%logicRiddleBank.length,item=logicRiddleBank[index],options=shuffled(item.o,seed+71);
  return {id:"logic-riddle:"+index,question:item.q,answer:item.a,options,correctIndex:options.indexOf(item.a),explanation:item.e,topic:"Logic"};
 }
-const riddleBank=[
- {q:"I have keys but no locks, a space but no room, and you can enter but never go inside. What am I?",a:"keyboard",e:"A keyboard has keys, a space bar, and an Enter key."},
- {q:"What gets wetter while it dries something else?",a:"towel",e:"A towel becomes wet as it dries you."},
- {q:"I have a face and hands but no arms or legs. What am I?",a:"clock",e:"A clock has a face and hands."},
- {q:"I can show you roads, rivers, and cities, but I contain no cars, water, or people. What am I?",a:"map",e:"A map represents places without containing them."},
- {q:"The more you take away from me, the bigger I become. What am I?",a:"hole",e:"Removing more material makes a hole bigger."},
- {q:"I speak without a mouth and answer without ears. I have no body, but I come alive when sound travels. What am I?",a:"echo",e:"An echo repeats sound."},
- {q:"What word becomes shorter when you add two letters to it?",a:"short",e:"Adding E and R makes SHORT into SHORTER."},
- {q:"I have a neck but no head, and I can hold something without hands. What am I?",a:"bottle",e:"A bottle has a neck and can hold liquid."},
- {q:"What has many teeth but cannot bite?",a:"comb",e:"A comb has teeth used to arrange hair."},
- {q:"Look at this picture clue: rain and sunshine appear together. What colourful arc can appear in the sky?",a:"rainbow",e:"Sunlight and rain can produce a rainbow."}
+const riddleBank:Array<{q:string;a:string;e:string;o:string[]}>= [
+{q:"A prisoner is told: “If you speak a true sentence, you will be hanged; if you speak a false sentence, you will be shot.” What sentence can he say to make either punishment impossible under the rule?",a:"You will shoot me",e:"If shot, the sentence was true and he should be hanged; if hanged, it was false and he should be shot. The rule contradicts itself.",o:["You will shoot me","I will be hanged","I will be shot","You will release me"]},
+{q:"A clock loses exactly 6 minutes every hour. It is set correctly at noon. When the faulty clock shows 3:00, what is the actual time?",a:"3:18 PM",e:"The clock runs at 54 minutes per real hour. It needs 3 hours 20 minutes of real time to show 3 hours elapsed.",o:["3:18 PM","3:20 PM","3:24 PM","3:30 PM"]},
+{q:"You have 8 identical-looking balls; one is heavier. Using a balance scale only twice, how can you guarantee finding it?",a:"Weigh 3 against 3, then compare one from the heavier group or the remaining pair",e:"If the first weighing balances, the heavy ball is among the two left; otherwise it is in the heavier group of three. A second weighing resolves either case.",o:["Weigh 3 against 3, then compare one from the heavier group or the remaining pair","Weigh 4 against 4, then weigh 2 against 2","Weigh 2 against 2, then weigh the four remaining balls","Weigh 5 against 3, then compare the two heaviest"]},
+{q:"A man leaves home, makes three left turns, and returns home. Two masked figures are waiting there. What is happening?",a:"He is a baseball player returning to home plate",e:"The route describes a baseball diamond; the masked figures are the catcher and umpire.",o:["He is a baseball player returning to home plate","He is lost in a one-way street system","He is circling a roundabout","He is returning from a three-sided maze"]},
+{q:"A woman has two coins that total 30 cents. One of them is not a nickel. What are the coins?",a:"A quarter and a nickel",e:"One coin is not a nickel—the quarter. The other can be a nickel.",o:["A quarter and a nickel","Three dimes","Two quarters","A twenty-cent coin and a dime"]},
+{q:"A room has no windows or doors. Inside are a table and a mirror. How do you get out?",a:"Stop imagining the room",e:"It is a wordplay riddle: the room exists only in the imagined scenario.",o:["Stop imagining the room","Break the mirror and use a shard","Move the table to reveal a trapdoor","Wait until the room becomes visible"]},
+{q:"A number has two digits. Its digits add to 9. Reversing the digits makes the number 27 greater. What is the number?",a:"36",e:"63 − 36 = 27 and 3 + 6 = 9.",o:["36","45","27","54"]},
+{q:"You see a boat filled with people. It has not sunk, but when you look again you cannot see a single person aboard. Why?",a:"Everyone aboard is married",e:"There is not a single person because everyone is part of a couple.",o:["Everyone aboard is married","The passengers went below deck","The boat reached a fog bank","The people are reflected in the water"]},
+{q:"A farmer must cross a river with a fox, a chicken, and grain. The boat carries the farmer and one item. What is the minimum number of one-way crossings?",a:"Seven",e:"Take chicken across, return alone, take fox across, bring chicken back, take grain across, return alone, then take chicken across: seven crossings.",o:["Seven","Five","Six","Nine"]},
+{q:"Three boxes are labelled APPLES, ORANGES, and MIXED. Every label is wrong. You may take one fruit from one box. Which box should you choose to identify all three?",a:"The box labelled MIXED",e:"Since every label is wrong, that box cannot be mixed. Its single fruit identifies it, and the other labels follow by elimination.",o:["The box labelled MIXED","The box labelled APPLES","The box labelled ORANGES","Any box, but take two fruits"]},
+{q:"A 5-litre jug and a 3-litre jug have no markings. How can you measure exactly 4 litres?",a:"Fill 5, pour into 3, empty 3, transfer the remaining 2, then refill 5 and top up the 3",e:"After transferring 2 litres into the 3-litre jug, fill the 5-litre jug and pour 1 litre into the 3-litre jug; 4 litres remain.",o:["Fill 5, pour into 3, empty 3, transfer the remaining 2, then refill 5 and top up the 3","Fill 3 twice and pour into the 5-litre jug","Fill 5 and pour half into the 3-litre jug","Fill both jugs and subtract their volumes"]},
+{q:"A father is four times as old as his son. In 20 years, he will be twice as old as his son. How old is the son now?",a:"10",e:"Let the son's age be x. Father is 4x; 4x+20=2(x+20), so x=10.",o:["10","12","15","20"]}
 ];
 export function getRiddlePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
  const seed=seedFor(date,slot),item=riddleBank[((seed%riddleBank.length)+riddleBank.length)%riddleBank.length];
- return {id:"riddle:"+item.a+":"+item.q,question:item.q,answer:item.a,explanation:item.e};
+ return {id:"riddle:"+item.a+":"+item.q,question:item.q,answer:item.a,explanation:item.e,options:shuffled(item.o,seed+41)};
 }
 export function getSpotPuzzle(date:string,slot:number):{id:string;size:number;target:number;targetIcon:number;baseIcon:number}{
  const seed=seedFor(date,slot),size=seed%3===0?36:25,target=(hash(seed+77)%(size));
