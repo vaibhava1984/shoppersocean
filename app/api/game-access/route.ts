@@ -110,7 +110,7 @@ async function handle(req:Request,consume:boolean){
    const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
    const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
    const dailyRemaining=Math.max(0,limit-Number(changed.plays_used??0));
-   const dailySectionRemaining=section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedTypes[t]??0)),0);
+   const dailySectionRemaining=section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedTypes.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(usedTypes[t]??0)),0);
    const sectionRemaining=admin||subscribed||section==="daily-challenge"?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    const remaining=admin||subscribed||section==="daily-challenge"?dailyRemaining:Math.min(dailyRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    return NextResponse.json({sectionId:section,gameTypeId:type,remaining,sectionRemaining,isAdmin:admin,isSubscribed:subscribed,freeTrialsRemaining:freeTrialsUsed===null?undefined:Math.max(0,FREE_LIMIT-freeTrialsUsed)},{headers});
@@ -120,9 +120,9 @@ async function handle(req:Request,consume:boolean){
   const freeUsed:Record<string,number>={},usedByType:Record<string,number>={},remainingBySection:Record<string,number>={},remainingByType:Record<string,number>={};
   for(const s of SECTIONS)freeUsed[s]=0;for(const x of free.results??[])freeUsed[x.section_id]=Number(x.trials_used??0);for(const x of usage.results??[])usedByType[x.game_type_id]=Number(x.plays_used??0);
   for(const s of SECTIONS){
-   const dailySection=s==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedByType.daily??0)):TYPES[s].reduce((n,t)=>n+Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedByType[t]??0)),0);
+   const dailySection=s==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(usedByType.daily??0)):TYPES[s].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(usedByType[t]??0)),0);
    remainingBySection[s]=admin||s==="daily-challenge"||subscribed?dailySection:Math.min(dailySection,Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
-   for(const t of TYPES[s])remainingByType[t]=Math.min(Math.max(0,(t==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT)-(usedByType[t]??0)),admin||subscribed||s==="daily-challenge"?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
+   for(const t of TYPES[s])remainingByType[t]=Math.min(Math.max(0,typeLimit(t)-(usedByType[t]??0)),admin||subscribed||s==="daily-challenge"?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
   }
   return NextResponse.json({isAdmin:admin,isSubscribed:subscribed,role:admin?"admin":subscribed?"subscriber":"free",remainingBySection,remainingByType,freeUsedBySection:freeUsed,usedByType,gameDay:date,resetTime:"08:00 Asia/Kolkata"},{headers});
  }catch(error){console.error("Game access check failed:",error);return NextResponse.json({error:"Game access could not be verified."},{status:503,headers})}
