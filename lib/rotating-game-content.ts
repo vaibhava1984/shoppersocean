@@ -1,4 +1,4 @@
-import { DAILY_GK_QUESTIONS, getDailyGKQuestion } from "@/lib/daily-knowledge";
+import { DAILY_GK_QUESTIONS, getDailyGKQuestion, getDailyGKOptions } from "@/lib/daily-knowledge";
 export { getDailyGKQuestion };
 export type Puzzle = { id:string; question:string; answer:string; clue?:string; pattern?:string; options?:string[]; correctIndex?:number; explanation?:string; topic?:string };
 const DAY_MS=86400000;
@@ -213,15 +213,19 @@ const extendedQuizBank:ExtendedQuizItem[]=[
 {id:"planetary-rings",q:"What are Saturn's prominent rings made mainly of?",a:"Numerous pieces of ice and rocky material",o:["Numerous pieces of ice and rocky material","A solid metal hoop","Clouds of burning gas only","A continuous ocean surrounding the planet"],topic:"Astronomy"}
 ];
 export function getQuizPuzzle(date:string,slot:number):Puzzle & {options:string[];correctIndex:number;topic:string}{
- const seed=seedFor(date,slot),combinedLength=DAILY_GK_QUESTIONS.length+extendedQuizBank.length,index=((seed%combinedLength)+combinedLength)%combinedLength;
- if(index>=DAILY_GK_QUESTIONS.length){
-  const item=extendedQuizBank[index-DAILY_GK_QUESTIONS.length],options=shuffled(item.o,seed+211);
+ const seed=seedFor(date,slot),scienceQuestions=DAILY_GK_QUESTIONS.filter(item=>item.id.startsWith("science-"));
+ const total=scienceQuestions.length+extendedQuizBank.length,index=((seed%total)+total)%total;
+ if(index>=scienceQuestions.length){
+  const item=extendedQuizBank[index-scienceQuestions.length],options=shuffled(item.o,seed+211);
   return {id:"quiz:"+item.id,question:item.q,answer:item.a,options,correctIndex:options.indexOf(item.a),topic:item.topic};
  }
- const item=DAILY_GK_QUESTIONS[index],cycle=Math.floor(seed/combinedLength),category=item.id.split("-")[0],pool=answerPools[category]??answers,correct=pool.indexOf(item.answer),distractors:string[]=[];
- for(let offset=1;distractors.length<3&&offset<pool.length*2;offset++){const candidate=pool[((correct+cycle*7+offset)%pool.length+pool.length)%pool.length];if(candidate!==item.answer&&!distractors.includes(candidate))distractors.push(candidate);}
- const options=shuffled([item.answer,...distractors],seed+211);
- return {id:"quiz:"+item.id,question:item.question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:category==="capital"?"World Capitals":category==="element"?"Chemical Elements":category==="science"?"Science":"World Geography"};
+ const item=scienceQuestions[index],pool=scienceQuestions.map(x=>x.answer).filter(x=>x!==item.answer);
+ const options=shuffled([item.answer,...shuffled([...new Set(pool)],seed+73).slice(0,3)],seed+211);
+ return {id:"quiz:"+item.id,question:item.question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:"Science"};
+}
+export function getWorldKnowledgeQuiz(date:string,slot:number):Puzzle & {options:string[];correctIndex:number;topic:string}{
+ const seed=seedFor(date,slot),question=getDailyGKQuestion(new Date(date+"T00:00:00Z"),slot),options=getDailyGKOptions(question,seed);
+ return {id:"world-quiz:"+question.id,question:question.question,answer:question.answer,options,correctIndex:options.indexOf(question.answer),topic:"World Knowledge"};
 }
 
 const logicRiddleBank:Array<{q:string;a:string;o:[string,string,string,string];e:string}>= [
