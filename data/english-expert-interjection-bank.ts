@@ -1,5 +1,3 @@
-// 300 varied English Expert interjection MCQs covering feelings, reactions, greetings, discourse use, and context.
-type InterjectionQuestion={q:string;o:string[];a:number;e:string};
 export const INTERJECTION_QUESTION_BANK:InterjectionQuestion[]=[
   {
     "q": "In the sentence “Wow! The entire orchestra began playing from the balcony.”, which expression functions as the interjection?",
@@ -2684,5 +2682,618 @@ export const INTERJECTION_QUESTION_BANK:InterjectionQuestion[]=[
     ],
     "a": 0,
     "e": "“Lo” fits because it expresses surprise in this context."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Astonished by the sudden appearance of the comet, Leena exclaimed, “___!”",
+    "o": [
+      "Wow",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Wow” is suitable because it expresses surprise."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: After checking the final clue, the detective said, “___! The key was hidden in the title.”",
+    "o": [
+      "Aha",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Aha” is suitable because it expresses realisation."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Learning that the museum offers free entry on Sundays, Ravi replied, “___! I never knew that.”",
+    "o": [
+      "Oh",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Oh” is suitable because it expresses surprise."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Seeing the enormous waterfall for the first time, the visitors cried, “___!”",
+    "o": [
+      "Goodness",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Goodness” is suitable because it expresses astonishment."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: When the scoreboard showed a record time, the coach exclaimed, “___!”",
+    "o": [
+      "Gosh",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Gosh” is suitable because it expresses astonishment."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Finding the entire garden covered in snow overnight, Mira gasped, “___!”",
+    "o": [
+      "Heavens",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Heavens” is suitable because it expresses shock."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Asked to decide immediately, Arun paused and said, “___, let me think.”",
+    "o": [
+      "Well",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Well” is suitable because it expresses hesitation."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Examining two possible answers, the student murmured, “___, I need to compare them.”",
+    "o": [
+      "Hmm",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Hmm” is suitable because it expresses thought."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Asked an unexpected question, the speaker began, “___, I am not certain.”",
+    "o": [
+      "Er",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Er” is suitable because it expresses hesitation."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Unsure of the room number, the visitor said, “___, could you check the list?”",
+    "o": [
+      "Um",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Um” is suitable because it expresses hesitation."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: After catching her finger in the drawer, Nita cried, “___!”",
+    "o": [
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Ouch” is suitable because it expresses pain."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Touching the icy metal railing, the child exclaimed, “___!”",
+    "o": [
+      "Ow",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Ow” is suitable because it expresses pain."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Finally finding a seat after a long journey, the traveller sighed, “___!”",
+    "o": [
+      "Ah",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Ah” is suitable because it expresses relief."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: When the lost child was safely returned, the parents said, “___!”",
+    "o": [
+      "Phew",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Phew” is suitable because it expresses relief."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Completing the steep climb without falling, the hikers exclaimed, “___!”",
+    "o": [
+      "Whew",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Whew” is suitable because it expresses relief."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Hearing that the historic lighthouse had been destroyed, the villagers sighed, “___!”",
+    "o": [
+      "Alas",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Alas” is suitable because it expresses sorrow."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Noticing that the parcel had been left in the rain, the receptionist said, “___!”",
+    "o": [
+      "Oh dear",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Oh dear” is suitable because it expresses concern."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Seeing the broken vase on the floor, the host exclaimed, “___!”",
+    "o": [
+      "Dear me",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Dear me” is suitable because it expresses concern."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: When their team qualified for the final, the players shouted, “___!”",
+    "o": [
+      "Hurray",
+      "Ouch",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Hurray” is suitable because it expresses joy."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: The crowd cheered, “___!” as the runner crossed the finish line first.",
+    "o": [
+      "Hurrah",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Hurrah” is suitable because it expresses celebration."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: On hearing that the school trip would include a boat ride, the children cried, “___!”",
+    "o": [
+      "Yippee",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Yippee” is suitable because it expresses excitement."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: After the pianist completed a flawless performance, the audience called, “___!”",
+    "o": [
+      "Bravo",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Bravo” is suitable because it expresses praise."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: When the chairperson said that every student deserved equal opportunity, the audience responded, “___!”",
+    "o": [
+      "Hear, hear",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Hear, hear” is suitable because it expresses agreement."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: After her colleague explained the correct calculation, Priya replied, “___! That is what I obtained.”",
+    "o": [
+      "Exactly",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Exactly” is suitable because it expresses agreement."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: When someone claimed that the moon produces its own light, the teacher responded, “___!”",
+    "o": [
+      "Nonsense",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Nonsense” is suitable because it expresses disbelief."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Seeing a passenger push ahead of an elderly person in the queue, the woman muttered, “___!”",
+    "o": [
+      "Tut",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Tut” is suitable because it expresses disapproval."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Opening a container that had been forgotten for weeks, Sam exclaimed, “___!”",
+    "o": [
+      "Ugh",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Ugh” is suitable because it expresses disgust."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Tasting the spoiled soup, the child cried, “___!”",
+    "o": [
+      "Yuck",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Yuck” is suitable because it expresses disgust."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: As the film began and the audience continued talking, the usher whispered, “___!”",
+    "o": [
+      "Shh",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Shh” is suitable because it expresses silence."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: When the newborn finally fell asleep, the nurse gently said, “___!”",
+    "o": [
+      "Hush",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Hush” is suitable because it expresses quiet."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Wanting to alert her friend without disturbing the class, Anya whispered, “___!”",
+    "o": [
+      "Psst",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Psst” is suitable because it expresses calling quietly."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Noticing that a cyclist had dropped a wallet, the passer-by called, “___!”",
+    "o": [
+      "Hey",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Hey” is suitable because it expresses calling."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Meeting the new neighbour at the gate, I smiled and said, “___!”",
+    "o": [
+      "Hello",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Hello” is suitable because it expresses greeting."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Seeing her classmate in the corridor, Rina waved and said, “___!”",
+    "o": [
+      "Hi",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Hi” is suitable because it expresses greeting."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: As the guests left the celebration, the host warmly called, “___!”",
+    "o": [
+      "Goodbye",
+      "Ouch",
+      "Hurray"
+    ],
+    "a": 0,
+    "e": "“Goodbye” is suitable because it expresses farewell."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Ending a short phone call with her sister, Meera said, “___!”",
+    "o": [
+      "Bye",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Bye” is suitable because it expresses farewell."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: As the exchange students entered the hall, the principal announced, “___!”",
+    "o": [
+      "Welcome",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Welcome” is suitable because it expresses greeting."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: After a friend carried the heavy boxes upstairs, I raised my cup and said, “___!”",
+    "o": [
+      "Cheers",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Cheers” is suitable because it expresses thanks."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Receiving help with the assignment, the student replied, “___!”",
+    "o": [
+      "Thanks",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Thanks” is suitable because it expresses gratitude."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Realising that he had interrupted the speaker, Dev said, “___!”",
+    "o": [
+      "Sorry",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Sorry” is suitable because it expresses apology."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Unable to hear the announcement clearly, the passenger asked, “___?”",
+    "o": [
+      "Pardon",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Pardon” is suitable because it expresses request to repeat."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Approaching two people who were discussing a route, the tourist began, “___, could you help me?”",
+    "o": [
+      "Excuse me",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Excuse me” is suitable because it expresses polite interruption."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Before making an announcement to the noisy room, the teacher cleared her throat: “___!”",
+    "o": [
+      "Ahem",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Ahem” is suitable because it expresses attention."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: As the clouds parted and the ancient castle appeared, the guide exclaimed, “___!”",
+    "o": [
+      "Lo",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Lo” is suitable because it expresses surprise."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: When the outdoor concert was cancelled because of rain, the organiser sighed, “___, we will reschedule it.”",
+    "o": [
+      "Ah well",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Ah well” is suitable because it expresses resignation."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Rejecting the boastful claim as worthless, the critic scoffed, “___!”",
+    "o": [
+      "Pah",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Pah” is suitable because it expresses disdain."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: The spectators shouted “___!” when the referee ignored the clear foul.",
+    "o": [
+      "Boo",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Boo” is suitable because it expresses disapproval."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: After receiving detailed directions from a stranger, the traveller said, “___!”",
+    "o": [
+      "Many thanks",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Many thanks” is suitable because it expresses gratitude."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: The examiner congratulated the candidate: “___! Your reasoning was precise.”",
+    "o": [
+      "Well done",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Well done” is suitable because it expresses praise."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: The school announced the winner of the national award: “___!”",
+    "o": [
+      "Congratulations",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Congratulations” is suitable because it expresses praise."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: The guide emphasised the importance of the site: “___, this monument is centuries old.”",
+    "o": [
+      "Indeed",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Indeed” is suitable because it expresses emphasis."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: When asked whether the incorrect sum was acceptable, the tutor replied firmly, “___!”",
+    "o": [
+      "No",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“No” is suitable because it expresses disagreement."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Realising that the group might be on the wrong path, the guide hesitated: “___…”",
+    "o": [
+      "Uh",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Uh” is suitable because it expresses uncertainty."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: After a student pointed out the safety risk, the instructor agreed, “___!”",
+    "o": [
+      "Quite right",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Quite right” is suitable because it expresses agreement."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: When the team proposed the sensible solution, the manager replied, “___!”",
+    "o": [
+      "Yes",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Yes” is suitable because it expresses approval."
+  },
+  {
+    "q": "Complete the dialogue with the most suitable interjection: Finding a mouldy sandwich in the lunchbox, the child exclaimed, “___!”",
+    "o": [
+      "Ew",
+      "Ouch",
+      "Hurray",
+      "Goodbye"
+    ],
+    "a": 0,
+    "e": "“Ew” is suitable because it expresses disgust."
   }
 ];
