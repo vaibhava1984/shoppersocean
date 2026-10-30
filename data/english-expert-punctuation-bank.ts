@@ -88,15 +88,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a ten-minute plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a ten-minute solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "ten-minute",
+      "ten minute",
+      "ten'minute",
+      "ten—minute"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -143,12 +143,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the teachers own the lounge.",
     "o": [
       "teachers'",
-      "teacher's",
+      "teachers's",
       "teachers",
-      "teacher s'"
+      "teacherss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -253,15 +253,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a full-time plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a full-time solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "full-time",
+      "full time",
+      "full'time",
+      "full—time"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -308,12 +308,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the players own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "players'",
+      "players's",
+      "players",
+      "playerss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -418,15 +418,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a long-term plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a long-term solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "long-term",
+      "long term",
+      "long'term",
+      "long—term"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -473,12 +473,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the students own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "students'",
+      "students's",
+      "students",
+      "studentss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -583,15 +583,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a second-hand plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a second-hand solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "second-hand",
+      "second hand",
+      "second'hand",
+      "second—hand"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -638,12 +638,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the doctors own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "doctors'",
+      "doctors's",
+      "doctors",
+      "doctorss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -748,15 +748,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a three-storey plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a three-storey solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "three-storey",
+      "three storey",
+      "three'storey",
+      "three—storey"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -803,12 +803,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the artists own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "artists'",
+      "artists's",
+      "artists",
+      "artistss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -913,15 +913,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a kind-hearted plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a kind-hearted solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "kind-hearted",
+      "kind hearted",
+      "kind'hearted",
+      "kind—hearted"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -968,12 +968,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the workers own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "workers'",
+      "workers's",
+      "workers",
+      "workerss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -1078,15 +1078,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a high-pressure plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a high-pressure solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "high-pressure",
+      "high pressure",
+      "high'pressure",
+      "high—pressure"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -1133,12 +1133,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the drivers own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "drivers'",
+      "drivers's",
+      "drivers",
+      "driverss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -1243,15 +1243,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a user-friendly plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a user-friendly solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "user-friendly",
+      "user friendly",
+      "user'friendly",
+      "user—friendly"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -1298,12 +1298,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the children own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "children'",
+      "children's",
+      "children",
+      "childrens'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -1408,15 +1408,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a record-breaking plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a record-breaking solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "record-breaking",
+      "record breaking",
+      "record'breaking",
+      "record—breaking"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -1463,12 +1463,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the musicians own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "musicians'",
+      "musicians's",
+      "musicians",
+      "musicianss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -1573,15 +1573,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a part-time plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a part-time solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "part-time",
+      "part time",
+      "part'time",
+      "part—time"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -1628,12 +1628,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the farmers own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "farmers'",
+      "farmers's",
+      "farmers",
+      "farmerss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -1738,15 +1738,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a step-by-step plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a step-by-step solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "step-by-step",
+      "step by step",
+      "step'by-step",
+      "step—by-step"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -1793,12 +1793,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the writers own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "writers'",
+      "writers's",
+      "writers",
+      "writerss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -1903,15 +1903,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a last-minute plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a last-minute solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "last-minute",
+      "last minute",
+      "last'minute",
+      "last—minute"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -1958,12 +1958,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the dancers own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "dancers'",
+      "dancers's",
+      "dancers",
+      "dancerss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -2068,15 +2068,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a city-wide plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a city-wide solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "city-wide",
+      "city wide",
+      "city'wide",
+      "city—wide"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -2123,12 +2123,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the nurses own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "nurses'",
+      "nurses's",
+      "nurses",
+      "nursess'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -2233,15 +2233,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a little-known plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a little-known solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "little-known",
+      "little known",
+      "little'known",
+      "little—known"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -2288,12 +2288,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the visitors own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "visitors'",
+      "visitors's",
+      "visitors",
+      "visitorss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -2398,15 +2398,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a well-fitting plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a well-fitting solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "well-fitting",
+      "well fitting",
+      "well'fitting",
+      "well—fitting"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -2453,12 +2453,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the members own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "members'",
+      "members's",
+      "members",
+      "memberss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -2563,15 +2563,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a first-class plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a first-class solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "first-class",
+      "first class",
+      "first'class",
+      "first—class"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -2618,12 +2618,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the guests own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "guests'",
+      "guests's",
+      "guests",
+      "guestss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -2728,15 +2728,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a two-year plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a two-year solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "two-year",
+      "two year",
+      "two'year",
+      "two—year"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -2783,12 +2783,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the pupils own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "pupils'",
+      "pupils's",
+      "pupils",
+      "pupilss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -2893,15 +2893,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a multi-purpose plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a multi-purpose solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "multi-purpose",
+      "multi purpose",
+      "multi'purpose",
+      "multi—purpose"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -2948,12 +2948,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the singers own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "singers'",
+      "singers's",
+      "singers",
+      "singerss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -3058,15 +3058,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a water-proof plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a waterproof solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "waterproof",
+      "waterproof",
+      "waterproof",
+      "waterproof"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -3113,12 +3113,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the neighbours own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "neighbours'",
+      "neighbours's",
+      "neighbours",
+      "neighbourss'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
@@ -3223,15 +3223,15 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "Quotation marks enclose the exact words spoken."
   },
   {
-    "q": "Hyphen: Choose the correctly joined compound modifier: “a up-to-date plan.”",
+    "q": "Hyphen: Choose the correctly punctuated compound modifier: “The company offers a up-to-date solution.”",
     "o": [
-      "hyphen",
-      "comma",
-      "apostrophe",
-      "colon"
+      "up-to-date",
+      "up to date",
+      "up'to-date",
+      "up—to-date"
     ],
     "a": 0,
-    "e": "A hyphen joins words that work together as a compound modifier."
+    "e": "A hyphen joins the words in this compound modifier."
   },
   {
     "q": "Parentheses: Which pair encloses extra information? “My uncle ___ a retired pilot ___ lives nearby.”",
@@ -3278,12 +3278,12 @@ export const PUNCTUATION_QUESTION_BANK = [
     "e": "A singular name normally takes apostrophe + s to show possession."
   },
   {
-    "q": "Plural possession: Choose the correct form for a group of teachers: “The ___ lounge is upstairs.”",
+    "q": "Plural possession: Choose the correct form showing that the athletes own the lounge.",
     "o": [
-      "teachers'",
-      "teacher's",
-      "teachers",
-      "teacher s'"
+      "athletes'",
+      "athletes's",
+      "athletes",
+      "athletess'"
     ],
     "a": 0,
     "e": "A regular plural noun ending in s takes an apostrophe after the s."
