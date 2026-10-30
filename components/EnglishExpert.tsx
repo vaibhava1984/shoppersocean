@@ -13,6 +13,7 @@ import {CAUSATIVE_VERBS_QUESTION_BANK} from "@/data/english-expert-causative-ver
 import {PUNCTUATION_QUESTION_BANK} from "@/data/english-expert-punctuation-bank";
 import {ACTIVE_PASSIVE_QUESTION_BANK} from "@/data/english-expert-active-passive-bank";
 import {DIRECT_INDIRECT_QUESTION_BANK} from "@/data/english-expert-direct-indirect-bank";
+import {IDIOMS_PHRASES_QUESTION_BANK} from "@/data/english-expert-idioms-phrases-bank";
 import {SUBJECT_VERB_AGREEMENT_QUESTION_BANK} from "@/data/english-expert-subject-verb-agreement-bank";
 import {PAST_TENSE_QUESTION_BANK} from "@/data/english-expert-past-tense-bank";
 import {PRESENT_TENSE_QUESTION_BANK} from "@/data/english-expert-present-tense-bank";
@@ -47,12 +48,7 @@ const TOPICS:Topic[]=[
 {q:"Choose the correct form: “The news ___ surprising.”",o:["are","were","is","have"],a:2,e:"News is singular in standard English."},
 {q:"Choose the correct verb: “Neither the manager nor the employees ___ available.”",o:["is","was","are","has"],a:2,e:"With neither…nor, the verb commonly agrees with the nearer subject, employees."},
 {q:"Complete the sentence: “Mathematics ___ my favourite subject.”",o:["are","is","were","have"],a:1,e:"Mathematics is the name of an academic subject and takes a singular verb."},{q:"Choose the correct verb: “A number of applicants ___ waiting outside.”",o:["is","was","are","has"],a:2,e:"A number of means several and takes a plural verb."}]},
-{id:"idioms-phrases",name:"Idioms and Phrases",definition:"An idiom is an established expression whose meaning is not always predictable from the literal meanings of its words. A phrase is a group of words that functions as a unit but may not form a complete clause.",bank:[
-{q:"What does the idiom “break the ice” mean?",o:["Damage frozen water","Make people feel more comfortable in a social situation","End a friendship","Work in cold weather"],a:1,e:"Break the ice means ease tension or begin friendly interaction."},
-{q:"What does “once in a blue moon” mean?",o:["Every evening","Very rarely","At the right moment","Twice a month"],a:1,e:"It describes something that happens very rarely."},
-{q:"Choose the meaning of “spill the beans”.",o:["Cook a meal","Reveal a secret","Make a mess","Waste money"],a:1,e:"Spill the beans means disclose information that was meant to be secret."},
-{q:"What does “under the weather” mean?",o:["Feeling unwell","Standing outside","Feeling excited","Being late"],a:0,e:"Under the weather means slightly ill or unwell."},
-{q:"Choose the meaning of “hit the nail on the head”.",o:["Make a mistake","Describe exactly what is causing a situation","Do carpentry","Avoid a question"],a:1,e:"It means identify or express something exactly right."},{q:"What does “to add fuel to the fire” mean?",o:["To solve a disagreement","To make a bad situation worse","To avoid taking sides","To end a discussion"],a:1,e:"The idiom means to intensify an already difficult or tense situation."}]}
+{id:"idioms-phrases",name:"Idioms and Phrases",definition:"An idiom is an established expression whose meaning is not always predictable from the literal meanings of its words. A phrase is a group of words that functions as a unit but may not form a complete clause.",bank:IDIOMS_PHRASES_QUESTION_BANK}
 ];
 const dayKey=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10);
 const hash=(s:string)=>Array.from(s).reduce((n,c)=>((n*31+c.charCodeAt(0))>>>0),7);
