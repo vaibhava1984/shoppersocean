@@ -67,7 +67,7 @@ async function handle(req:Request,consume:boolean){
     const priorQuestion=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,"__question__",questionText).first<any>();
     const rawQuestion=typeof body.challengeQuestion==="string"?body.challengeQuestion.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,240):"";
     const priorLegacyQuestion=rawQuestion.length>=8?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND played_at>? AND instr(lower(challenge_id),lower(?))>0 LIMIT 1").bind(user.id,cutoff,rawQuestion).first<any>():null;
-    if((prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)||(priorQuestion&&Date.now()-Date.parse(priorQuestion.played_at)<365*86400000)||priorLegacyQuestion){
+    if(type!=="daily"&&((prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)||(priorQuestion&&Date.now()-Date.parse(priorQuestion.played_at)<365*86400000)||priorLegacyQuestion)){
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
     await db.prepare("INSERT OR REPLACE INTO game_question_reservations(user_id,game_type_id,challenge_id,question_text,session_id,reserved_at) VALUES(?,?,?,?,?,?)").bind(user.id,type,challenge,questionText,reservationSessionId,playedAt).run();
@@ -98,7 +98,7 @@ async function handle(req:Request,consume:boolean){
     const priorQuestion=questionText?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,"__question__",questionText).first<any>():null;
     const rawQuestion=typeof body.challengeQuestion==="string"?body.challengeQuestion.trim().slice(0,240):"";
     const priorLegacyQuestion=rawQuestion.length>=8?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND played_at>? AND instr(lower(challenge_id),lower(?))>0 LIMIT 1").bind(user.id,new Date(Date.now()-365*86400000).toISOString(),rawQuestion).first<any>():null;
-    if((prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorQuestion&&Date.now()-Date.parse(priorQuestion.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorLegacyQuestion)){
+    if(type!=="daily"&&((prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorQuestion&&Date.now()-Date.parse(priorQuestion.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorLegacyQuestion))){
      await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
@@ -113,7 +113,7 @@ async function handle(req:Request,consume:boolean){
     freeTrialsUsed=Number(trial.trials_used??0);
    }
    const playedAt=new Date().toISOString();
-   if((challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt))||(questionText&&!await claimChallenge(db,user.id,"__question__",questionText,playedAt))){
+   if(type!=="daily"&&((challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt))||(questionText&&!await claimChallenge(db,user.id,"__question__",questionText,playedAt)))){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
     if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
     return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
