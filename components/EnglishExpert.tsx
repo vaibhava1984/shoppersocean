@@ -9,6 +9,7 @@ import {INTERJECTION_QUESTION_BANK} from "@/data/english-expert-interjection-ban
 import {HELPING_VERB_QUESTION_BANK} from "@/data/english-expert-helping-verbs-bank";
 import {PAST_TENSE_QUESTION_BANK} from "@/data/english-expert-past-tense-bank";
 import {PRESENT_TENSE_QUESTION_BANK} from "@/data/english-expert-present-tense-bank";
+import {FUTURE_TENSE_QUESTION_BANK} from "@/data/english-expert-future-tense-bank";
 import {Component,useEffect,useMemo,useRef,useState} from "react";
 import {createPortal} from "react-dom";
 
@@ -27,12 +28,7 @@ const TOPICS:Topic[]=[
 {id:"modal-verbs",name:"Modal Verbs",definition:"Modal verbs are auxiliary verbs such as can, could, may, might, must, shall, should, will, and would. They express ability, possibility, permission, obligation, advice, or willingness.",bank:buildModalQuestionBank()},
 {id:"past-tense",name:"Past Tense",definition:"This 300-question bank covers simple past, past continuous, past perfect, past perfect continuous, negatives, questions, irregular verbs, used to, and would for past habits.",bank:PAST_TENSE_QUESTION_BANK},
 {id:"present-tense",name:"Present Tense",definition:"This 300-question bank covers simple present habits and facts, negatives, questions, present continuous, present perfect, present perfect continuous, subject-verb agreement, and time expressions.",bank:PRESENT_TENSE_QUESTION_BANK},
-{id:"future-tense",name:"Future Tense",definition:"Future-time meaning can be expressed with will, be going to, the present continuous, and other constructions. The choice depends on intention, prediction, arrangement, and context.",bank:[
-{q:"Choose the natural prediction: “I think it ___ rain later.”",o:["rained","will","has","was"],a:1,e:"Will expresses a prediction about the future."},
-{q:"Complete the planned intention: “They have bought the paint; they ___ the room this weekend.”",o:["are going to paint","painted","have painted","were painting"],a:0,e:"Be going to commonly expresses an intention or plan."},
-{q:"Which sentence describes a fixed future arrangement?",o:["I meet him yesterday.","I am meeting the doctor at 4 p.m. tomorrow.","I had met him.","I met him tomorrow."],a:1,e:"Present continuous can describe a definite arrangement."},
-{q:"Choose the correct form: “By Friday, she ___ the report.”",o:["will complete","will have completed","completes yesterday","has completing"],a:1,e:"Future perfect describes completion before a future point."},
-{q:"Complete the offer: “I ___ you with those bags.”",o:["help","will help","helped","am helped"],a:1,e:"Will often expresses a spontaneous offer."},{q:"Choose the correct completion: “This time tomorrow, we ___ over the mountains.”",o:["fly","will be flying","have flown","flew"],a:1,e:"Future continuous describes an action that will be in progress at a particular future time."}]},
+{id:"future-tense",name:"Future Tense",definition:"Future-time meaning can be expressed with will, be going to, the present continuous, and other constructions. The choice depends on intention, prediction, arrangement, and context.",bank:FUTURE_TENSE_QUESTION_BANK},
 {id:"conjunctions",name:"Conjunctions",definition:"A conjunction connects words, phrases, or clauses. Coordinating, subordinating, and correlative conjunctions express relationships such as addition, contrast, cause, condition, and choice.",bank:[
 {q:"Choose the conjunction showing contrast: “I was tired, ___ I finished the work.”",o:["because","but","so","unless"],a:1,e:"But introduces a contrast."},
 {q:"Which word is a subordinating conjunction?",o:["and","or","although","nor"],a:2,e:"Although introduces a dependent clause."},
