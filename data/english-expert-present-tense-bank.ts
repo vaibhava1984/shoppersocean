@@ -33,17 +33,17 @@ const verbs:V[]=[
 {s:"The scientist",v:"study",third:"studies",ing:"studying",pp:"studied",sub:"she",aux:"does",have:"has",be:"is"}
 ];
 const bank:Q[]=[];
-const add=(q:string,correct:string,wrong:string[],e:string)=>{const opts=[correct,...wrong].slice(0,4);const shift=bank.length%4;const o=opts.map((_,i)=>opts[(i+shift)%4]);bank.push({q,o,a:o.indexOf(correct),e});};
+const add=(q:string,correct:string,wrong:string[],e:string)=>{const opts=[...new Set([correct,...wrong.filter(w=>w!==correct)])];\n while(opts.length<4) opts.push(["is "+correct,"has "+correct,"did "+correct][opts.length-1]);\n opts.length=4;const shift=bank.length%4;const o=opts.map((_,i)=>opts[(i+shift)%4]);bank.push({q,o,a:o.indexOf(correct),e});};
 for(const x of verbs){
  add(`Every weekday, ${x.s.toLowerCase()} ___ before lunch.`,x.third,[x.v,x.ing,x.pp], "The simple present expresses a regular habit. A third-person singular subject takes the -s or -es form; plural subjects and I/you use the base form.");
  add(`Choose the correct negative: “${x.s} ___ ${x.v} the task on Sundays.”`,`${x.aux} not ${x.v}`,[`${x.have} not ${x.pp}`,`${x.be} not ${x.ing}`,`not ${x.third}`],"The simple present negative uses do not or does not followed by the base form of the verb.");
  add(`Choose the correct question: “___ ${x.sub} ${x.v} the task every day?”`,x.aux.toUpperCase(),[x.have.toUpperCase(),"Is","Did"],"Present simple questions use do or does + subject + base verb.");
- add(`Look! ${x.s} ___ right now.`,`${x.be} ${x.ing}`,[` ${x.third}`,`has ${x.pp}`,`are ${x.ing}`],"Present continuous describes an action happening now: am/is/are + verb-ing.");
+ add(`Look! ${x.s} ___ right now.`,`${x.be} ${x.ing}`,[`${x.third}`,`has ${x.pp}`,`was ${x.ing}`],"Present continuous describes an action happening now: am/is/are + verb-ing.");
  add(`Choose the correct present continuous negative: “${x.s} ___ at the moment.”`,`${x.be} not ${x.ing}`,[`does not ${x.v}`,`has not ${x.pp}`,`not ${x.third}`],"Present continuous negatives place not after am/is/are and use the -ing form.");
  add(`So far today, ${x.s.toLowerCase()} ___.`,`${x.have} ${x.pp}`,[`${x.aux} ${x.v}`,`${x.be} ${x.ing}`,`did ${x.v}`],"Present perfect uses have/has + past participle for an action completed with relevance to the present.");
  add(`Choose the correct form: “${x.s} ___ here since early morning.”`,`${x.have} ${x.pp}`,[`${x.aux} ${x.v}`,`${x.be} ${x.ing}`,`was ${x.ing}`],"With since to show a situation continuing from a starting point, the present perfect is commonly used.");
  add(`For two hours, ${x.s.toLowerCase()} ___.`,`${x.have} been ${x.ing}`,[`${x.have} ${x.pp}`,`${x.be} ${x.ing}`,`${x.aux} ${x.v}`],"Present perfect continuous uses have/has been + verb-ing to emphasise duration up to now.");
- add(`Choose the correct short answer: “${x.aux.toUpperCase()} ${x.sub} ${x.v} regularly?”`,`Yes, ${x.sub} ${x.aux}.`,[`Yes, ${x.sub} ${x.aux==="do"?"does":"do"}.`,`Yes, ${x.sub} is.`,`Yes, ${x.sub} has.`],"A question beginning with does takes does in the short affirmative answer.");
+ add(`Choose the correct short answer: “${x.aux==="do"?"Do":"Does"} ${x.sub} ${x.v} regularly?”`,`Yes, ${x.sub} ${x.aux}.`,[`Yes, ${x.sub} ${x.aux==="do"?"does":"do"}.`,`Yes, ${x.sub} is.`,`Yes, ${x.sub} has.`],"A question beginning with does takes does in the short affirmative answer.");
  add(`Each morning, ${x.s.toLowerCase()} ___ before breakfast.`,x.third,[x.ing,`${x.be} ${x.ing}`,`has ${x.pp}`],"The simple present can describe fixed schedules and timetables, including future times.");
 }
 if(bank.length!==300) throw new Error("Present Tense bank must contain exactly 300 questions");
