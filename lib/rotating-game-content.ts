@@ -23,7 +23,7 @@ export function getWordPuzzle(date:string,slot:number):Puzzle & {pattern:string}
 }
 export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string;options:string[];correctIndex:number;explanation:string;topic:string}{
  const seed=seedFor(date,slot),index=((Math.floor(seed)%WORD_QUIZ_BANK.length)+WORD_QUIZ_BANK.length)%WORD_QUIZ_BANK.length,item=WORD_QUIZ_BANK[index];
- const options=shuffled([...item.options],seed+191);
+ const options=shuffled([...item.options],seed+419);
  return {id:item.id,question:item.question,clue:item.clue,answer:item.answer,options,correctIndex:options.indexOf(item.answer),explanation:item.explanation,topic:item.topic};
 }
 
