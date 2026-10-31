@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import dynamic from 'next/dynamic';
-import PayPalCheckoutButton from '@/components/PayPalCheckoutButton';
 const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
     ssr: false,
     loading: () => <div className="h-10 w-full" aria-hidden="true" />,
@@ -177,11 +176,6 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
     const formattedAmount = localCurrency ? new Intl.NumberFormat(userLocale, { style: 'currency', currency: localCurrency }).format(localAmount) : null;
     const isInitialFetching = isCurrencyFetching || isPurchaseChecking;
     if (hasPurchased) return <div className="w-full mt-6"><BookFlipbook bookId={productId} title={productTitle || 'Book'} onShareBook={handleShareBook} />{shareMenuPanel}</div>;
-    const handlePayPalSuccess = () => {
-        setPurchaseStatus(userId ?? '', productId, true);
-        setHasPurchased(true);
-        toast({ title: 'Payment successful', description: 'Your e-book is now available to read.' });
-    };
     const handleBuyClick = () => {
         if (!userId) {
             setIsLoginNeededDialogOpen(true);
@@ -202,7 +196,13 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
     </div>{showPaypalCheckout && localCurrency && localCurrency !== 'INR' && (
         <div className="mt-3 w-full rounded-xl border border-slate-200 bg-white p-3">
             <p className="mb-2 text-center text-sm font-semibold text-slate-700">Complete your international payment securely with PayPal</p>
-            {userId ? <PayPalCheckoutButton productId={productId} onSuccess={handlePayPalSuccess} /> : <p className="text-center text-sm">Please sign in to continue.</p>}
+            {userId ? (
+                <form action="https://www.paypal.com/ncp/payment/QQY8882SAQMRW" method="post" target="_blank" rel="noopener noreferrer" className="grid justify-items-center gap-2">
+                    <button type="submit" className="inline-flex min-w-[11.625rem] items-center justify-center rounded bg-[#FFD140] px-8 py-2.5 font-bold text-black hover:brightness-95">Buy Now — PayPal</button>
+                    <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="Cards accepted" className="h-auto max-w-full" />
+                    <p className="text-xs text-slate-500">Secure payment powered by PayPal. Fixed price: $3 USD.</p>
+                </form>
+            ) : <p className="text-center text-sm">Please sign in to continue.</p>}
         </div>
     )}{shareMenuPanel}<AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}><AlertDialogContent className='bg-white'><AlertDialogTitle className='hidden'></AlertDialogTitle><Card className="w-full max-w-md border-0"><CardHeader className="relative"><CardTitle className="text-rxl font-bold text-center">Login Required</CardTitle><Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsLoginNeededDialogOpen(false)} aria-label="Close popup"><X className="h-4 w-4" /></Button></CardHeader><CardContent><p className="text-center text-muted-foreground">You need to be logged in to make a purchase. Please sign up or sign in to continue.</p></CardContent><CardFooter className="flex justify-center space-x-4"><Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link><Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link></CardFooter></Card></AlertDialogContent></AlertDialog></>;
 }
