@@ -27,26 +27,3611 @@ export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string;o
  return {id:item.id,question:item.question,clue:item.clue,answer:item.answer,options,correctIndex:options.indexOf(item.answer),explanation:item.explanation,topic:item.topic};
 }
 
-const MISSING_WORD_CHALLENGES:Array<{sentence:string;answer:string;clue:string;options:string[]}>= [
- {sentence:"A stitch in time saves ____.",answer:"nine",clue:"A proverb about solving problems early.",options:["nine","fine","line","mine"]},
- {sentence:"Don't count your chickens before they ____.",answer:"hatch",clue:"Do not assume success before it happens.",options:["hatch","match","catch","patch"]},
- {sentence:"Every cloud has a silver ____.",answer:"lining",clue:"Look for the hopeful side of a difficult situation.",options:["lining","timing","mining","dining"]},
- {sentence:"Actions speak louder than ____.",answer:"words",clue:"What people do can matter more than what they say.",options:["words","world","works","worse"]},
- {sentence:"The early bird catches the ____.",answer:"worm",clue:"A proverb about being early and prepared.",options:["worm","warm","word","worn"]},
- {sentence:"When in Rome, do as the ____ do.",answer:"Romans",clue:"Adapt to the customs of the place you visit.",options:["Romans","rulers","roamers","robins"]},
- {sentence:"Practice makes ____.",answer:"perfect",clue:"Repeated effort improves a skill.",options:["perfect","present","patient","precious"]},
- {sentence:"Better late than ____.",answer:"never",clue:"Doing something late is better than not doing it.",options:["never","newer","nearer","clever"]},
- {sentence:"A picture is worth a thousand ____.",answer:"words",clue:"An image can communicate a great deal.",options:["words","worlds","works","wonders"]},
- {sentence:"Where there's a will, there's a ____.",answer:"way",clue:"Determination helps people find a solution.",options:["way","day","ray","say"]},
- {sentence:"Too many cooks spoil the ____.",answer:"broth",clue:"Too many people directing one task can harm it.",options:["broth","bread","broad","growth"]},
- {sentence:"The pen is mightier than the ____.",answer:"sword",clue:"Ideas and writing can be more powerful than force.",options:["sword","word","world","storm"]},
- {sentence:"Look before you ____.",answer:"leap",clue:"Think carefully before taking action.",options:["leap","heap","keep","deep"]},
- {sentence:"Honesty is the best ____.",answer:"policy",clue:"Truthfulness is generally the wisest approach.",options:["policy","poetry","police","polish"]},
- {sentence:"Two heads are better than ____.",answer:"one",clue:"Working together can improve problem-solving.",options:["one","once","only","own"]}
+const MISSING_WORD_CHALLENGES:Array<{id:string;sentence:string;answer:string;clue:string;options:string[]}>= [
+  {
+    "id": "missing-001-01",
+    "sentence": "the archivist's catalogue was ____ because every date, source, correction, and tiny annotation was recorded.",
+    "answer": "meticulous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "meticulous",
+      "methodical",
+      "thorough",
+      "precise"
+    ]
+  },
+  {
+    "id": "missing-001-02",
+    "sentence": "Because every date, source, correction, and tiny annotation was recorded, the archivist's catalogue seemed ____ to everyone involved.",
+    "answer": "meticulous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "meticulous",
+      "methodical",
+      "thorough",
+      "precise"
+    ]
+  },
+  {
+    "id": "missing-001-03",
+    "sentence": "The review described the archivist's catalogue as ____; every date, source, correction, and tiny annotation was recorded.",
+    "answer": "meticulous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "meticulous",
+      "methodical",
+      "thorough",
+      "precise"
+    ]
+  },
+  {
+    "id": "missing-001-04",
+    "sentence": "After considering the evidence, observers agreed that the archivist's catalogue remained ____, since every date, source, correction, and tiny annotation was recorded.",
+    "answer": "meticulous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "meticulous",
+      "methodical",
+      "thorough",
+      "precise"
+    ]
+  },
+  {
+    "id": "missing-001-05",
+    "sentence": "It became clear that the archivist's catalogue was ____ when every date, source, correction, and tiny annotation was recorded.",
+    "answer": "meticulous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "meticulous",
+      "methodical",
+      "thorough",
+      "precise"
+    ]
+  },
+  {
+    "id": "missing-001-06",
+    "sentence": "Throughout the discussion, the archivist's catalogue appeared ____: every date, source, correction, and tiny annotation was recorded.",
+    "answer": "meticulous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "meticulous",
+      "methodical",
+      "thorough",
+      "precise"
+    ]
+  },
+  {
+    "id": "missing-002-01",
+    "sentence": "the new recruit was ____ because she accepted the assignment only after several reminders.",
+    "answer": "reluctant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "reluctant",
+      "hesitant",
+      "unwilling",
+      "resistant"
+    ]
+  },
+  {
+    "id": "missing-002-02",
+    "sentence": "Because she accepted the assignment only after several reminders, the new recruit seemed ____ to everyone involved.",
+    "answer": "reluctant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "reluctant",
+      "hesitant",
+      "unwilling",
+      "resistant"
+    ]
+  },
+  {
+    "id": "missing-002-03",
+    "sentence": "The review described the new recruit as ____; she accepted the assignment only after several reminders.",
+    "answer": "reluctant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "reluctant",
+      "hesitant",
+      "unwilling",
+      "resistant"
+    ]
+  },
+  {
+    "id": "missing-002-04",
+    "sentence": "After considering the evidence, observers agreed that the new recruit remained ____, since she accepted the assignment only after several reminders.",
+    "answer": "reluctant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "reluctant",
+      "hesitant",
+      "unwilling",
+      "resistant"
+    ]
+  },
+  {
+    "id": "missing-002-05",
+    "sentence": "It became clear that the new recruit was ____ when she accepted the assignment only after several reminders.",
+    "answer": "reluctant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "reluctant",
+      "hesitant",
+      "unwilling",
+      "resistant"
+    ]
+  },
+  {
+    "id": "missing-002-06",
+    "sentence": "Throughout the discussion, the new recruit appeared ____: she accepted the assignment only after several reminders.",
+    "answer": "reluctant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "reluctant",
+      "hesitant",
+      "unwilling",
+      "resistant"
+    ]
+  },
+  {
+    "id": "missing-003-01",
+    "sentence": "the analyst was ____ because he demanded independent evidence before accepting the claim.",
+    "answer": "skeptical",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "skeptical",
+      "doubtful",
+      "suspicious",
+      "unconvinced"
+    ]
+  },
+  {
+    "id": "missing-003-02",
+    "sentence": "Because he demanded independent evidence before accepting the claim, the analyst seemed ____ to everyone involved.",
+    "answer": "skeptical",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "skeptical",
+      "doubtful",
+      "suspicious",
+      "unconvinced"
+    ]
+  },
+  {
+    "id": "missing-003-03",
+    "sentence": "The review described the analyst as ____; he demanded independent evidence before accepting the claim.",
+    "answer": "skeptical",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "skeptical",
+      "doubtful",
+      "suspicious",
+      "unconvinced"
+    ]
+  },
+  {
+    "id": "missing-003-04",
+    "sentence": "After considering the evidence, observers agreed that the analyst remained ____, since he demanded independent evidence before accepting the claim.",
+    "answer": "skeptical",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "skeptical",
+      "doubtful",
+      "suspicious",
+      "unconvinced"
+    ]
+  },
+  {
+    "id": "missing-003-05",
+    "sentence": "It became clear that the analyst was ____ when he demanded independent evidence before accepting the claim.",
+    "answer": "skeptical",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "skeptical",
+      "doubtful",
+      "suspicious",
+      "unconvinced"
+    ]
+  },
+  {
+    "id": "missing-003-06",
+    "sentence": "Throughout the discussion, the analyst appeared ____: he demanded independent evidence before accepting the claim.",
+    "answer": "skeptical",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "skeptical",
+      "doubtful",
+      "suspicious",
+      "unconvinced"
+    ]
+  },
+  {
+    "id": "missing-004-01",
+    "sentence": "the coastal village was ____ because it recovered quickly after repeated storms damaged the harbour.",
+    "answer": "resilient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "resilient",
+      "durable",
+      "flexible",
+      "hardy"
+    ]
+  },
+  {
+    "id": "missing-004-02",
+    "sentence": "Because it recovered quickly after repeated storms damaged the harbour, the coastal village seemed ____ to everyone involved.",
+    "answer": "resilient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "resilient",
+      "durable",
+      "flexible",
+      "hardy"
+    ]
+  },
+  {
+    "id": "missing-004-03",
+    "sentence": "The review described the coastal village as ____; it recovered quickly after repeated storms damaged the harbour.",
+    "answer": "resilient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "resilient",
+      "durable",
+      "flexible",
+      "hardy"
+    ]
+  },
+  {
+    "id": "missing-004-04",
+    "sentence": "After considering the evidence, observers agreed that the coastal village remained ____, since it recovered quickly after repeated storms damaged the harbour.",
+    "answer": "resilient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "resilient",
+      "durable",
+      "flexible",
+      "hardy"
+    ]
+  },
+  {
+    "id": "missing-004-05",
+    "sentence": "It became clear that the coastal village was ____ when it recovered quickly after repeated storms damaged the harbour.",
+    "answer": "resilient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "resilient",
+      "durable",
+      "flexible",
+      "hardy"
+    ]
+  },
+  {
+    "id": "missing-004-06",
+    "sentence": "Throughout the discussion, the coastal village appeared ____: it recovered quickly after repeated storms damaged the harbour.",
+    "answer": "resilient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "resilient",
+      "durable",
+      "flexible",
+      "hardy"
+    ]
+  },
+  {
+    "id": "missing-005-01",
+    "sentence": "the explanation was ____ because it fitted the evidence without relying on unlikely assumptions.",
+    "answer": "plausible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "plausible",
+      "credible",
+      "probable",
+      "convincing"
+    ]
+  },
+  {
+    "id": "missing-005-02",
+    "sentence": "Because it fitted the evidence without relying on unlikely assumptions, the explanation seemed ____ to everyone involved.",
+    "answer": "plausible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "plausible",
+      "credible",
+      "probable",
+      "convincing"
+    ]
+  },
+  {
+    "id": "missing-005-03",
+    "sentence": "The review described the explanation as ____; it fitted the evidence without relying on unlikely assumptions.",
+    "answer": "plausible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "plausible",
+      "credible",
+      "probable",
+      "convincing"
+    ]
+  },
+  {
+    "id": "missing-005-04",
+    "sentence": "After considering the evidence, observers agreed that the explanation remained ____, since it fitted the evidence without relying on unlikely assumptions.",
+    "answer": "plausible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "plausible",
+      "credible",
+      "probable",
+      "convincing"
+    ]
+  },
+  {
+    "id": "missing-005-05",
+    "sentence": "It became clear that the explanation was ____ when it fitted the evidence without relying on unlikely assumptions.",
+    "answer": "plausible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "plausible",
+      "credible",
+      "probable",
+      "convincing"
+    ]
+  },
+  {
+    "id": "missing-005-06",
+    "sentence": "Throughout the discussion, the explanation appeared ____: it fitted the evidence without relying on unlikely assumptions.",
+    "answer": "plausible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "plausible",
+      "credible",
+      "probable",
+      "convincing"
+    ]
+  },
+  {
+    "id": "missing-006-01",
+    "sentence": "the executive summary was ____ because it conveyed the findings in a few carefully chosen sentences.",
+    "answer": "concise",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "concise",
+      "succinct",
+      "brief",
+      "compact"
+    ]
+  },
+  {
+    "id": "missing-006-02",
+    "sentence": "Because it conveyed the findings in a few carefully chosen sentences, the executive summary seemed ____ to everyone involved.",
+    "answer": "concise",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "concise",
+      "succinct",
+      "brief",
+      "compact"
+    ]
+  },
+  {
+    "id": "missing-006-03",
+    "sentence": "The review described the executive summary as ____; it conveyed the findings in a few carefully chosen sentences.",
+    "answer": "concise",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "concise",
+      "succinct",
+      "brief",
+      "compact"
+    ]
+  },
+  {
+    "id": "missing-006-04",
+    "sentence": "After considering the evidence, observers agreed that the executive summary remained ____, since it conveyed the findings in a few carefully chosen sentences.",
+    "answer": "concise",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "concise",
+      "succinct",
+      "brief",
+      "compact"
+    ]
+  },
+  {
+    "id": "missing-006-05",
+    "sentence": "It became clear that the executive summary was ____ when it conveyed the findings in a few carefully chosen sentences.",
+    "answer": "concise",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "concise",
+      "succinct",
+      "brief",
+      "compact"
+    ]
+  },
+  {
+    "id": "missing-006-06",
+    "sentence": "Throughout the discussion, the executive summary appeared ____: it conveyed the findings in a few carefully chosen sentences.",
+    "answer": "concise",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "concise",
+      "succinct",
+      "brief",
+      "compact"
+    ]
+  },
+  {
+    "id": "missing-007-01",
+    "sentence": "the referee's decision was ____ because the official had no personal connection to either team.",
+    "answer": "impartial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "impartial",
+      "neutral",
+      "unbiased",
+      "objective"
+    ]
+  },
+  {
+    "id": "missing-007-02",
+    "sentence": "Because the official had no personal connection to either team, the referee's decision seemed ____ to everyone involved.",
+    "answer": "impartial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "impartial",
+      "neutral",
+      "unbiased",
+      "objective"
+    ]
+  },
+  {
+    "id": "missing-007-03",
+    "sentence": "The review described the referee's decision as ____; the official had no personal connection to either team.",
+    "answer": "impartial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "impartial",
+      "neutral",
+      "unbiased",
+      "objective"
+    ]
+  },
+  {
+    "id": "missing-007-04",
+    "sentence": "After considering the evidence, observers agreed that the referee's decision remained ____, since the official had no personal connection to either team.",
+    "answer": "impartial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "impartial",
+      "neutral",
+      "unbiased",
+      "objective"
+    ]
+  },
+  {
+    "id": "missing-007-05",
+    "sentence": "It became clear that the referee's decision was ____ when the official had no personal connection to either team.",
+    "answer": "impartial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "impartial",
+      "neutral",
+      "unbiased",
+      "objective"
+    ]
+  },
+  {
+    "id": "missing-007-06",
+    "sentence": "Throughout the discussion, the referee's decision appeared ____: the official had no personal connection to either team.",
+    "answer": "impartial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "impartial",
+      "neutral",
+      "unbiased",
+      "objective"
+    ]
+  },
+  {
+    "id": "missing-008-01",
+    "sentence": "the contract clause was ____ because its wording could reasonably support two different interpretations.",
+    "answer": "ambiguous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "ambiguous",
+      "vague",
+      "unclear",
+      "equivocal"
+    ]
+  },
+  {
+    "id": "missing-008-02",
+    "sentence": "Because its wording could reasonably support two different interpretations, the contract clause seemed ____ to everyone involved.",
+    "answer": "ambiguous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "ambiguous",
+      "vague",
+      "unclear",
+      "equivocal"
+    ]
+  },
+  {
+    "id": "missing-008-03",
+    "sentence": "The review described the contract clause as ____; its wording could reasonably support two different interpretations.",
+    "answer": "ambiguous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "ambiguous",
+      "vague",
+      "unclear",
+      "equivocal"
+    ]
+  },
+  {
+    "id": "missing-008-04",
+    "sentence": "After considering the evidence, observers agreed that the contract clause remained ____, since its wording could reasonably support two different interpretations.",
+    "answer": "ambiguous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "ambiguous",
+      "vague",
+      "unclear",
+      "equivocal"
+    ]
+  },
+  {
+    "id": "missing-008-05",
+    "sentence": "It became clear that the contract clause was ____ when its wording could reasonably support two different interpretations.",
+    "answer": "ambiguous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "ambiguous",
+      "vague",
+      "unclear",
+      "equivocal"
+    ]
+  },
+  {
+    "id": "missing-008-06",
+    "sentence": "Throughout the discussion, the contract clause appeared ____: its wording could reasonably support two different interpretations.",
+    "answer": "ambiguous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "ambiguous",
+      "vague",
+      "unclear",
+      "equivocal"
+    ]
+  },
+  {
+    "id": "missing-009-01",
+    "sentence": "the office software was ____ because the manufacturer had stopped supporting it many years earlier.",
+    "answer": "obsolete",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "obsolete",
+      "outdated",
+      "antiquated",
+      "archaic"
+    ]
+  },
+  {
+    "id": "missing-009-02",
+    "sentence": "Because the manufacturer had stopped supporting it many years earlier, the office software seemed ____ to everyone involved.",
+    "answer": "obsolete",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "obsolete",
+      "outdated",
+      "antiquated",
+      "archaic"
+    ]
+  },
+  {
+    "id": "missing-009-03",
+    "sentence": "The review described the office software as ____; the manufacturer had stopped supporting it many years earlier.",
+    "answer": "obsolete",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "obsolete",
+      "outdated",
+      "antiquated",
+      "archaic"
+    ]
+  },
+  {
+    "id": "missing-009-04",
+    "sentence": "After considering the evidence, observers agreed that the office software remained ____, since the manufacturer had stopped supporting it many years earlier.",
+    "answer": "obsolete",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "obsolete",
+      "outdated",
+      "antiquated",
+      "archaic"
+    ]
+  },
+  {
+    "id": "missing-009-05",
+    "sentence": "It became clear that the office software was ____ when the manufacturer had stopped supporting it many years earlier.",
+    "answer": "obsolete",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "obsolete",
+      "outdated",
+      "antiquated",
+      "archaic"
+    ]
+  },
+  {
+    "id": "missing-009-06",
+    "sentence": "Throughout the discussion, the office software appeared ____: the manufacturer had stopped supporting it many years earlier.",
+    "answer": "obsolete",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "obsolete",
+      "outdated",
+      "antiquated",
+      "archaic"
+    ]
+  },
+  {
+    "id": "missing-010-01",
+    "sentence": "the porcelain vase was ____ because even a slight impact could crack it.",
+    "answer": "fragile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "fragile",
+      "delicate",
+      "brittle",
+      "breakable"
+    ]
+  },
+  {
+    "id": "missing-010-02",
+    "sentence": "Because even a slight impact could crack it, the porcelain vase seemed ____ to everyone involved.",
+    "answer": "fragile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "fragile",
+      "delicate",
+      "brittle",
+      "breakable"
+    ]
+  },
+  {
+    "id": "missing-010-03",
+    "sentence": "The review described the porcelain vase as ____; even a slight impact could crack it.",
+    "answer": "fragile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "fragile",
+      "delicate",
+      "brittle",
+      "breakable"
+    ]
+  },
+  {
+    "id": "missing-010-04",
+    "sentence": "After considering the evidence, observers agreed that the porcelain vase remained ____, since even a slight impact could crack it.",
+    "answer": "fragile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "fragile",
+      "delicate",
+      "brittle",
+      "breakable"
+    ]
+  },
+  {
+    "id": "missing-010-05",
+    "sentence": "It became clear that the porcelain vase was ____ when even a slight impact could crack it.",
+    "answer": "fragile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "fragile",
+      "delicate",
+      "brittle",
+      "breakable"
+    ]
+  },
+  {
+    "id": "missing-010-06",
+    "sentence": "Throughout the discussion, the porcelain vase appeared ____: even a slight impact could crack it.",
+    "answer": "fragile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "fragile",
+      "delicate",
+      "brittle",
+      "breakable"
+    ]
+  },
+  {
+    "id": "missing-011-01",
+    "sentence": "the region's water supply was ____ because the reservoir held too little to meet the population's needs.",
+    "answer": "scarce",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "scarce",
+      "rare",
+      "limited",
+      "insufficient"
+    ]
+  },
+  {
+    "id": "missing-011-02",
+    "sentence": "Because the reservoir held too little to meet the population's needs, the region's water supply seemed ____ to everyone involved.",
+    "answer": "scarce",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "scarce",
+      "rare",
+      "limited",
+      "insufficient"
+    ]
+  },
+  {
+    "id": "missing-011-03",
+    "sentence": "The review described the region's water supply as ____; the reservoir held too little to meet the population's needs.",
+    "answer": "scarce",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "scarce",
+      "rare",
+      "limited",
+      "insufficient"
+    ]
+  },
+  {
+    "id": "missing-011-04",
+    "sentence": "After considering the evidence, observers agreed that the region's water supply remained ____, since the reservoir held too little to meet the population's needs.",
+    "answer": "scarce",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "scarce",
+      "rare",
+      "limited",
+      "insufficient"
+    ]
+  },
+  {
+    "id": "missing-011-05",
+    "sentence": "It became clear that the region's water supply was ____ when the reservoir held too little to meet the population's needs.",
+    "answer": "scarce",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "scarce",
+      "rare",
+      "limited",
+      "insufficient"
+    ]
+  },
+  {
+    "id": "missing-011-06",
+    "sentence": "Throughout the discussion, the region's water supply appeared ____: the reservoir held too little to meet the population's needs.",
+    "answer": "scarce",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "scarce",
+      "rare",
+      "limited",
+      "insufficient"
+    ]
+  },
+  {
+    "id": "missing-012-01",
+    "sentence": "the harvest was ____ because the fields produced far more grain than the village could store.",
+    "answer": "abundant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "abundant",
+      "plentiful",
+      "ample",
+      "copious"
+    ]
+  },
+  {
+    "id": "missing-012-02",
+    "sentence": "Because the fields produced far more grain than the village could store, the harvest seemed ____ to everyone involved.",
+    "answer": "abundant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "abundant",
+      "plentiful",
+      "ample",
+      "copious"
+    ]
+  },
+  {
+    "id": "missing-012-03",
+    "sentence": "The review described the harvest as ____; the fields produced far more grain than the village could store.",
+    "answer": "abundant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "abundant",
+      "plentiful",
+      "ample",
+      "copious"
+    ]
+  },
+  {
+    "id": "missing-012-04",
+    "sentence": "After considering the evidence, observers agreed that the harvest remained ____, since the fields produced far more grain than the village could store.",
+    "answer": "abundant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "abundant",
+      "plentiful",
+      "ample",
+      "copious"
+    ]
+  },
+  {
+    "id": "missing-012-05",
+    "sentence": "It became clear that the harvest was ____ when the fields produced far more grain than the village could store.",
+    "answer": "abundant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "abundant",
+      "plentiful",
+      "ample",
+      "copious"
+    ]
+  },
+  {
+    "id": "missing-012-06",
+    "sentence": "Throughout the discussion, the harvest appeared ____: the fields produced far more grain than the village could store.",
+    "answer": "abundant",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "abundant",
+      "plentiful",
+      "ample",
+      "copious"
+    ]
+  },
+  {
+    "id": "missing-013-01",
+    "sentence": "the argument was ____ because each point followed logically from the one before it.",
+    "answer": "coherent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "coherent",
+      "logical",
+      "consistent",
+      "orderly"
+    ]
+  },
+  {
+    "id": "missing-013-02",
+    "sentence": "Because each point followed logically from the one before it, the argument seemed ____ to everyone involved.",
+    "answer": "coherent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "coherent",
+      "logical",
+      "consistent",
+      "orderly"
+    ]
+  },
+  {
+    "id": "missing-013-03",
+    "sentence": "The review described the argument as ____; each point followed logically from the one before it.",
+    "answer": "coherent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "coherent",
+      "logical",
+      "consistent",
+      "orderly"
+    ]
+  },
+  {
+    "id": "missing-013-04",
+    "sentence": "After considering the evidence, observers agreed that the argument remained ____, since each point followed logically from the one before it.",
+    "answer": "coherent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "coherent",
+      "logical",
+      "consistent",
+      "orderly"
+    ]
+  },
+  {
+    "id": "missing-013-05",
+    "sentence": "It became clear that the argument was ____ when each point followed logically from the one before it.",
+    "answer": "coherent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "coherent",
+      "logical",
+      "consistent",
+      "orderly"
+    ]
+  },
+  {
+    "id": "missing-013-06",
+    "sentence": "Throughout the discussion, the argument appeared ____: each point followed logically from the one before it.",
+    "answer": "coherent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "coherent",
+      "logical",
+      "consistent",
+      "orderly"
+    ]
+  },
+  {
+    "id": "missing-014-01",
+    "sentence": "the apprentice was ____ because she practised daily and checked every task with care.",
+    "answer": "diligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "diligent",
+      "industrious",
+      "conscientious",
+      "hardworking"
+    ]
+  },
+  {
+    "id": "missing-014-02",
+    "sentence": "Because she practised daily and checked every task with care, the apprentice seemed ____ to everyone involved.",
+    "answer": "diligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "diligent",
+      "industrious",
+      "conscientious",
+      "hardworking"
+    ]
+  },
+  {
+    "id": "missing-014-03",
+    "sentence": "The review described the apprentice as ____; she practised daily and checked every task with care.",
+    "answer": "diligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "diligent",
+      "industrious",
+      "conscientious",
+      "hardworking"
+    ]
+  },
+  {
+    "id": "missing-014-04",
+    "sentence": "After considering the evidence, observers agreed that the apprentice remained ____, since she practised daily and checked every task with care.",
+    "answer": "diligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "diligent",
+      "industrious",
+      "conscientious",
+      "hardworking"
+    ]
+  },
+  {
+    "id": "missing-014-05",
+    "sentence": "It became clear that the apprentice was ____ when she practised daily and checked every task with care.",
+    "answer": "diligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "diligent",
+      "industrious",
+      "conscientious",
+      "hardworking"
+    ]
+  },
+  {
+    "id": "missing-014-06",
+    "sentence": "Throughout the discussion, the apprentice appeared ____: she practised daily and checked every task with care.",
+    "answer": "diligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "diligent",
+      "industrious",
+      "conscientious",
+      "hardworking"
+    ]
+  },
+  {
+    "id": "missing-015-01",
+    "sentence": "the mountain pass was ____ because its steep cliffs and violent weather discouraged even experienced climbers.",
+    "answer": "formidable",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "formidable",
+      "daunting",
+      "intimidating",
+      "imposing"
+    ]
+  },
+  {
+    "id": "missing-015-02",
+    "sentence": "Because its steep cliffs and violent weather discouraged even experienced climbers, the mountain pass seemed ____ to everyone involved.",
+    "answer": "formidable",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "formidable",
+      "daunting",
+      "intimidating",
+      "imposing"
+    ]
+  },
+  {
+    "id": "missing-015-03",
+    "sentence": "The review described the mountain pass as ____; its steep cliffs and violent weather discouraged even experienced climbers.",
+    "answer": "formidable",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "formidable",
+      "daunting",
+      "intimidating",
+      "imposing"
+    ]
+  },
+  {
+    "id": "missing-015-04",
+    "sentence": "After considering the evidence, observers agreed that the mountain pass remained ____, since its steep cliffs and violent weather discouraged even experienced climbers.",
+    "answer": "formidable",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "formidable",
+      "daunting",
+      "intimidating",
+      "imposing"
+    ]
+  },
+  {
+    "id": "missing-015-05",
+    "sentence": "It became clear that the mountain pass was ____ when its steep cliffs and violent weather discouraged even experienced climbers.",
+    "answer": "formidable",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "formidable",
+      "daunting",
+      "intimidating",
+      "imposing"
+    ]
+  },
+  {
+    "id": "missing-015-06",
+    "sentence": "Throughout the discussion, the mountain pass appeared ____: its steep cliffs and violent weather discouraged even experienced climbers.",
+    "answer": "formidable",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "formidable",
+      "daunting",
+      "intimidating",
+      "imposing"
+    ]
+  },
+  {
+    "id": "missing-016-01",
+    "sentence": "the investment decision was ____ because it protected the family's savings instead of chasing risky returns.",
+    "answer": "prudent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "prudent",
+      "cautious",
+      "judicious",
+      "sensible"
+    ]
+  },
+  {
+    "id": "missing-016-02",
+    "sentence": "Because it protected the family's savings instead of chasing risky returns, the investment decision seemed ____ to everyone involved.",
+    "answer": "prudent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "prudent",
+      "cautious",
+      "judicious",
+      "sensible"
+    ]
+  },
+  {
+    "id": "missing-016-03",
+    "sentence": "The review described the investment decision as ____; it protected the family's savings instead of chasing risky returns.",
+    "answer": "prudent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "prudent",
+      "cautious",
+      "judicious",
+      "sensible"
+    ]
+  },
+  {
+    "id": "missing-016-04",
+    "sentence": "After considering the evidence, observers agreed that the investment decision remained ____, since it protected the family's savings instead of chasing risky returns.",
+    "answer": "prudent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "prudent",
+      "cautious",
+      "judicious",
+      "sensible"
+    ]
+  },
+  {
+    "id": "missing-016-05",
+    "sentence": "It became clear that the investment decision was ____ when it protected the family's savings instead of chasing risky returns.",
+    "answer": "prudent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "prudent",
+      "cautious",
+      "judicious",
+      "sensible"
+    ]
+  },
+  {
+    "id": "missing-016-06",
+    "sentence": "Throughout the discussion, the investment decision appeared ____: it protected the family's savings instead of chasing risky returns.",
+    "answer": "prudent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "prudent",
+      "cautious",
+      "judicious",
+      "sensible"
+    ]
+  },
+  {
+    "id": "missing-017-01",
+    "sentence": "the correction was ____ because it concerned a formatting detail rather than the report's conclusions.",
+    "answer": "trivial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "trivial",
+      "minor",
+      "insignificant",
+      "petty"
+    ]
+  },
+  {
+    "id": "missing-017-02",
+    "sentence": "Because it concerned a formatting detail rather than the report's conclusions, the correction seemed ____ to everyone involved.",
+    "answer": "trivial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "trivial",
+      "minor",
+      "insignificant",
+      "petty"
+    ]
+  },
+  {
+    "id": "missing-017-03",
+    "sentence": "The review described the correction as ____; it concerned a formatting detail rather than the report's conclusions.",
+    "answer": "trivial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "trivial",
+      "minor",
+      "insignificant",
+      "petty"
+    ]
+  },
+  {
+    "id": "missing-017-04",
+    "sentence": "After considering the evidence, observers agreed that the correction remained ____, since it concerned a formatting detail rather than the report's conclusions.",
+    "answer": "trivial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "trivial",
+      "minor",
+      "insignificant",
+      "petty"
+    ]
+  },
+  {
+    "id": "missing-017-05",
+    "sentence": "It became clear that the correction was ____ when it concerned a formatting detail rather than the report's conclusions.",
+    "answer": "trivial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "trivial",
+      "minor",
+      "insignificant",
+      "petty"
+    ]
+  },
+  {
+    "id": "missing-017-06",
+    "sentence": "Throughout the discussion, the correction appeared ____: it concerned a formatting detail rather than the report's conclusions.",
+    "answer": "trivial",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "trivial",
+      "minor",
+      "insignificant",
+      "petty"
+    ]
+  },
+  {
+    "id": "missing-018-01",
+    "sentence": "the discovery was ____ because it changed how scientists understood the origin of the disease.",
+    "answer": "profound",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "profound",
+      "deep",
+      "meaningful",
+      "insightful"
+    ]
+  },
+  {
+    "id": "missing-018-02",
+    "sentence": "Because it changed how scientists understood the origin of the disease, the discovery seemed ____ to everyone involved.",
+    "answer": "profound",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "profound",
+      "deep",
+      "meaningful",
+      "insightful"
+    ]
+  },
+  {
+    "id": "missing-018-03",
+    "sentence": "The review described the discovery as ____; it changed how scientists understood the origin of the disease.",
+    "answer": "profound",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "profound",
+      "deep",
+      "meaningful",
+      "insightful"
+    ]
+  },
+  {
+    "id": "missing-018-04",
+    "sentence": "After considering the evidence, observers agreed that the discovery remained ____, since it changed how scientists understood the origin of the disease.",
+    "answer": "profound",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "profound",
+      "deep",
+      "meaningful",
+      "insightful"
+    ]
+  },
+  {
+    "id": "missing-018-05",
+    "sentence": "It became clear that the discovery was ____ when it changed how scientists understood the origin of the disease.",
+    "answer": "profound",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "profound",
+      "deep",
+      "meaningful",
+      "insightful"
+    ]
+  },
+  {
+    "id": "missing-018-06",
+    "sentence": "Throughout the discussion, the discovery appeared ____: it changed how scientists understood the origin of the disease.",
+    "answer": "profound",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "profound",
+      "deep",
+      "meaningful",
+      "insightful"
+    ]
+  },
+  {
+    "id": "missing-019-01",
+    "sentence": "the proposal was ____ because the available staff, budget, and timetable made it achievable.",
+    "answer": "feasible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "feasible",
+      "practical",
+      "workable",
+      "possible"
+    ]
+  },
+  {
+    "id": "missing-019-02",
+    "sentence": "Because the available staff, budget, and timetable made it achievable, the proposal seemed ____ to everyone involved.",
+    "answer": "feasible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "feasible",
+      "practical",
+      "workable",
+      "possible"
+    ]
+  },
+  {
+    "id": "missing-019-03",
+    "sentence": "The review described the proposal as ____; the available staff, budget, and timetable made it achievable.",
+    "answer": "feasible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "feasible",
+      "practical",
+      "workable",
+      "possible"
+    ]
+  },
+  {
+    "id": "missing-019-04",
+    "sentence": "After considering the evidence, observers agreed that the proposal remained ____, since the available staff, budget, and timetable made it achievable.",
+    "answer": "feasible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "feasible",
+      "practical",
+      "workable",
+      "possible"
+    ]
+  },
+  {
+    "id": "missing-019-05",
+    "sentence": "It became clear that the proposal was ____ when the available staff, budget, and timetable made it achievable.",
+    "answer": "feasible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "feasible",
+      "practical",
+      "workable",
+      "possible"
+    ]
+  },
+  {
+    "id": "missing-019-06",
+    "sentence": "Throughout the discussion, the proposal appeared ____: the available staff, budget, and timetable made it achievable.",
+    "answer": "feasible",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "feasible",
+      "practical",
+      "workable",
+      "possible"
+    ]
+  },
+  {
+    "id": "missing-020-01",
+    "sentence": "the politician was ____ because a series of public scandals had made his name widely disliked.",
+    "answer": "notorious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "notorious",
+      "infamous",
+      "disreputable",
+      "dishonoured"
+    ]
+  },
+  {
+    "id": "missing-020-02",
+    "sentence": "Because a series of public scandals had made his name widely disliked, the politician seemed ____ to everyone involved.",
+    "answer": "notorious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "notorious",
+      "infamous",
+      "disreputable",
+      "dishonoured"
+    ]
+  },
+  {
+    "id": "missing-020-03",
+    "sentence": "The review described the politician as ____; a series of public scandals had made his name widely disliked.",
+    "answer": "notorious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "notorious",
+      "infamous",
+      "disreputable",
+      "dishonoured"
+    ]
+  },
+  {
+    "id": "missing-020-04",
+    "sentence": "After considering the evidence, observers agreed that the politician remained ____, since a series of public scandals had made his name widely disliked.",
+    "answer": "notorious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "notorious",
+      "infamous",
+      "disreputable",
+      "dishonoured"
+    ]
+  },
+  {
+    "id": "missing-020-05",
+    "sentence": "It became clear that the politician was ____ when a series of public scandals had made his name widely disliked.",
+    "answer": "notorious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "notorious",
+      "infamous",
+      "disreputable",
+      "dishonoured"
+    ]
+  },
+  {
+    "id": "missing-020-06",
+    "sentence": "Throughout the discussion, the politician appeared ____: a series of public scandals had made his name widely disliked.",
+    "answer": "notorious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "notorious",
+      "infamous",
+      "disreputable",
+      "dishonoured"
+    ]
+  },
+  {
+    "id": "missing-021-01",
+    "sentence": "the workshop tool was ____ because it could perform several different tasks with equal ease.",
+    "answer": "versatile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "versatile",
+      "adaptable",
+      "flexible",
+      "multipurpose"
+    ]
+  },
+  {
+    "id": "missing-021-02",
+    "sentence": "Because it could perform several different tasks with equal ease, the workshop tool seemed ____ to everyone involved.",
+    "answer": "versatile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "versatile",
+      "adaptable",
+      "flexible",
+      "multipurpose"
+    ]
+  },
+  {
+    "id": "missing-021-03",
+    "sentence": "The review described the workshop tool as ____; it could perform several different tasks with equal ease.",
+    "answer": "versatile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "versatile",
+      "adaptable",
+      "flexible",
+      "multipurpose"
+    ]
+  },
+  {
+    "id": "missing-021-04",
+    "sentence": "After considering the evidence, observers agreed that the workshop tool remained ____, since it could perform several different tasks with equal ease.",
+    "answer": "versatile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "versatile",
+      "adaptable",
+      "flexible",
+      "multipurpose"
+    ]
+  },
+  {
+    "id": "missing-021-05",
+    "sentence": "It became clear that the workshop tool was ____ when it could perform several different tasks with equal ease.",
+    "answer": "versatile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "versatile",
+      "adaptable",
+      "flexible",
+      "multipurpose"
+    ]
+  },
+  {
+    "id": "missing-021-06",
+    "sentence": "Throughout the discussion, the workshop tool appeared ____: it could perform several different tasks with equal ease.",
+    "answer": "versatile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "versatile",
+      "adaptable",
+      "flexible",
+      "multipurpose"
+    ]
+  },
+  {
+    "id": "missing-022-01",
+    "sentence": "the description was ____ because readers could picture the colours, sounds, and movement clearly.",
+    "answer": "vivid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "vivid",
+      "graphic",
+      "striking",
+      "lifelike"
+    ]
+  },
+  {
+    "id": "missing-022-02",
+    "sentence": "Because readers could picture the colours, sounds, and movement clearly, the description seemed ____ to everyone involved.",
+    "answer": "vivid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "vivid",
+      "graphic",
+      "striking",
+      "lifelike"
+    ]
+  },
+  {
+    "id": "missing-022-03",
+    "sentence": "The review described the description as ____; readers could picture the colours, sounds, and movement clearly.",
+    "answer": "vivid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "vivid",
+      "graphic",
+      "striking",
+      "lifelike"
+    ]
+  },
+  {
+    "id": "missing-022-04",
+    "sentence": "After considering the evidence, observers agreed that the description remained ____, since readers could picture the colours, sounds, and movement clearly.",
+    "answer": "vivid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "vivid",
+      "graphic",
+      "striking",
+      "lifelike"
+    ]
+  },
+  {
+    "id": "missing-022-05",
+    "sentence": "It became clear that the description was ____ when readers could picture the colours, sounds, and movement clearly.",
+    "answer": "vivid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "vivid",
+      "graphic",
+      "striking",
+      "lifelike"
+    ]
+  },
+  {
+    "id": "missing-022-06",
+    "sentence": "Throughout the discussion, the description appeared ____: readers could picture the colours, sounds, and movement clearly.",
+    "answer": "vivid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "vivid",
+      "graphic",
+      "striking",
+      "lifelike"
+    ]
+  },
+  {
+    "id": "missing-023-01",
+    "sentence": "the judge was ____ because she enforced the rules firmly and allowed no special treatment.",
+    "answer": "stern",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "stern",
+      "strict",
+      "severe",
+      "harsh"
+    ]
+  },
+  {
+    "id": "missing-023-02",
+    "sentence": "Because she enforced the rules firmly and allowed no special treatment, the judge seemed ____ to everyone involved.",
+    "answer": "stern",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "stern",
+      "strict",
+      "severe",
+      "harsh"
+    ]
+  },
+  {
+    "id": "missing-023-03",
+    "sentence": "The review described the judge as ____; she enforced the rules firmly and allowed no special treatment.",
+    "answer": "stern",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "stern",
+      "strict",
+      "severe",
+      "harsh"
+    ]
+  },
+  {
+    "id": "missing-023-04",
+    "sentence": "After considering the evidence, observers agreed that the judge remained ____, since she enforced the rules firmly and allowed no special treatment.",
+    "answer": "stern",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "stern",
+      "strict",
+      "severe",
+      "harsh"
+    ]
+  },
+  {
+    "id": "missing-023-05",
+    "sentence": "It became clear that the judge was ____ when she enforced the rules firmly and allowed no special treatment.",
+    "answer": "stern",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "stern",
+      "strict",
+      "severe",
+      "harsh"
+    ]
+  },
+  {
+    "id": "missing-023-06",
+    "sentence": "Throughout the discussion, the judge appeared ____: she enforced the rules firmly and allowed no special treatment.",
+    "answer": "stern",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "stern",
+      "strict",
+      "severe",
+      "harsh"
+    ]
+  },
+  {
+    "id": "missing-024-01",
+    "sentence": "the warning was ____ because its meaning was suggested indirectly rather than stated outright.",
+    "answer": "subtle",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "subtle",
+      "faint",
+      "slight",
+      "delicate"
+    ]
+  },
+  {
+    "id": "missing-024-02",
+    "sentence": "Because its meaning was suggested indirectly rather than stated outright, the warning seemed ____ to everyone involved.",
+    "answer": "subtle",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "subtle",
+      "faint",
+      "slight",
+      "delicate"
+    ]
+  },
+  {
+    "id": "missing-024-03",
+    "sentence": "The review described the warning as ____; its meaning was suggested indirectly rather than stated outright.",
+    "answer": "subtle",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "subtle",
+      "faint",
+      "slight",
+      "delicate"
+    ]
+  },
+  {
+    "id": "missing-024-04",
+    "sentence": "After considering the evidence, observers agreed that the warning remained ____, since its meaning was suggested indirectly rather than stated outright.",
+    "answer": "subtle",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "subtle",
+      "faint",
+      "slight",
+      "delicate"
+    ]
+  },
+  {
+    "id": "missing-024-05",
+    "sentence": "It became clear that the warning was ____ when its meaning was suggested indirectly rather than stated outright.",
+    "answer": "subtle",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "subtle",
+      "faint",
+      "slight",
+      "delicate"
+    ]
+  },
+  {
+    "id": "missing-024-06",
+    "sentence": "Throughout the discussion, the warning appeared ____: its meaning was suggested indirectly rather than stated outright.",
+    "answer": "subtle",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "subtle",
+      "faint",
+      "slight",
+      "delicate"
+    ]
+  },
+  {
+    "id": "missing-025-01",
+    "sentence": "the investigator was ____ because she continued searching despite repeated setbacks.",
+    "answer": "persistent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "persistent",
+      "tenacious",
+      "steadfast",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-025-02",
+    "sentence": "Because she continued searching despite repeated setbacks, the investigator seemed ____ to everyone involved.",
+    "answer": "persistent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "persistent",
+      "tenacious",
+      "steadfast",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-025-03",
+    "sentence": "The review described the investigator as ____; she continued searching despite repeated setbacks.",
+    "answer": "persistent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "persistent",
+      "tenacious",
+      "steadfast",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-025-04",
+    "sentence": "After considering the evidence, observers agreed that the investigator remained ____, since she continued searching despite repeated setbacks.",
+    "answer": "persistent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "persistent",
+      "tenacious",
+      "steadfast",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-025-05",
+    "sentence": "It became clear that the investigator was ____ when she continued searching despite repeated setbacks.",
+    "answer": "persistent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "persistent",
+      "tenacious",
+      "steadfast",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-025-06",
+    "sentence": "Throughout the discussion, the investigator appeared ____: she continued searching despite repeated setbacks.",
+    "answer": "persistent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "persistent",
+      "tenacious",
+      "steadfast",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-026-01",
+    "sentence": "the rainfall was ____ because it lasted only a few minutes before the clouds cleared.",
+    "answer": "transient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transient",
+      "temporary",
+      "fleeting",
+      "brief"
+    ]
+  },
+  {
+    "id": "missing-026-02",
+    "sentence": "Because it lasted only a few minutes before the clouds cleared, the rainfall seemed ____ to everyone involved.",
+    "answer": "transient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transient",
+      "temporary",
+      "fleeting",
+      "brief"
+    ]
+  },
+  {
+    "id": "missing-026-03",
+    "sentence": "The review described the rainfall as ____; it lasted only a few minutes before the clouds cleared.",
+    "answer": "transient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transient",
+      "temporary",
+      "fleeting",
+      "brief"
+    ]
+  },
+  {
+    "id": "missing-026-04",
+    "sentence": "After considering the evidence, observers agreed that the rainfall remained ____, since it lasted only a few minutes before the clouds cleared.",
+    "answer": "transient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transient",
+      "temporary",
+      "fleeting",
+      "brief"
+    ]
+  },
+  {
+    "id": "missing-026-05",
+    "sentence": "It became clear that the rainfall was ____ when it lasted only a few minutes before the clouds cleared.",
+    "answer": "transient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transient",
+      "temporary",
+      "fleeting",
+      "brief"
+    ]
+  },
+  {
+    "id": "missing-026-06",
+    "sentence": "Throughout the discussion, the rainfall appeared ____: it lasted only a few minutes before the clouds cleared.",
+    "answer": "transient",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transient",
+      "temporary",
+      "fleeting",
+      "brief"
+    ]
+  },
+  {
+    "id": "missing-027-01",
+    "sentence": "the lakeside scene was ____ because the water remained still and the surrounding forest was quiet.",
+    "answer": "serene",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "serene",
+      "calm",
+      "peaceful",
+      "tranquil"
+    ]
+  },
+  {
+    "id": "missing-027-02",
+    "sentence": "Because the water remained still and the surrounding forest was quiet, the lakeside scene seemed ____ to everyone involved.",
+    "answer": "serene",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "serene",
+      "calm",
+      "peaceful",
+      "tranquil"
+    ]
+  },
+  {
+    "id": "missing-027-03",
+    "sentence": "The review described the lakeside scene as ____; the water remained still and the surrounding forest was quiet.",
+    "answer": "serene",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "serene",
+      "calm",
+      "peaceful",
+      "tranquil"
+    ]
+  },
+  {
+    "id": "missing-027-04",
+    "sentence": "After considering the evidence, observers agreed that the lakeside scene remained ____, since the water remained still and the surrounding forest was quiet.",
+    "answer": "serene",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "serene",
+      "calm",
+      "peaceful",
+      "tranquil"
+    ]
+  },
+  {
+    "id": "missing-027-05",
+    "sentence": "It became clear that the lakeside scene was ____ when the water remained still and the surrounding forest was quiet.",
+    "answer": "serene",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "serene",
+      "calm",
+      "peaceful",
+      "tranquil"
+    ]
+  },
+  {
+    "id": "missing-027-06",
+    "sentence": "Throughout the discussion, the lakeside scene appeared ____: the water remained still and the surrounding forest was quiet.",
+    "answer": "serene",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "serene",
+      "calm",
+      "peaceful",
+      "tranquil"
+    ]
+  },
+  {
+    "id": "missing-028-01",
+    "sentence": "the crowd was ____ because the group shouted threats at anyone who approached.",
+    "answer": "hostile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "hostile",
+      "antagonistic",
+      "aggressive",
+      "unfriendly"
+    ]
+  },
+  {
+    "id": "missing-028-02",
+    "sentence": "Because the group shouted threats at anyone who approached, the crowd seemed ____ to everyone involved.",
+    "answer": "hostile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "hostile",
+      "antagonistic",
+      "aggressive",
+      "unfriendly"
+    ]
+  },
+  {
+    "id": "missing-028-03",
+    "sentence": "The review described the crowd as ____; the group shouted threats at anyone who approached.",
+    "answer": "hostile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "hostile",
+      "antagonistic",
+      "aggressive",
+      "unfriendly"
+    ]
+  },
+  {
+    "id": "missing-028-04",
+    "sentence": "After considering the evidence, observers agreed that the crowd remained ____, since the group shouted threats at anyone who approached.",
+    "answer": "hostile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "hostile",
+      "antagonistic",
+      "aggressive",
+      "unfriendly"
+    ]
+  },
+  {
+    "id": "missing-028-05",
+    "sentence": "It became clear that the crowd was ____ when the group shouted threats at anyone who approached.",
+    "answer": "hostile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "hostile",
+      "antagonistic",
+      "aggressive",
+      "unfriendly"
+    ]
+  },
+  {
+    "id": "missing-028-06",
+    "sentence": "Throughout the discussion, the crowd appeared ____: the group shouted threats at anyone who approached.",
+    "answer": "hostile",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "hostile",
+      "antagonistic",
+      "aggressive",
+      "unfriendly"
+    ]
+  },
+  {
+    "id": "missing-029-01",
+    "sentence": "the receptionist was ____ because she greeted every visitor with patience and good manners.",
+    "answer": "courteous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "courteous",
+      "polite",
+      "respectful",
+      "civil"
+    ]
+  },
+  {
+    "id": "missing-029-02",
+    "sentence": "Because she greeted every visitor with patience and good manners, the receptionist seemed ____ to everyone involved.",
+    "answer": "courteous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "courteous",
+      "polite",
+      "respectful",
+      "civil"
+    ]
+  },
+  {
+    "id": "missing-029-03",
+    "sentence": "The review described the receptionist as ____; she greeted every visitor with patience and good manners.",
+    "answer": "courteous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "courteous",
+      "polite",
+      "respectful",
+      "civil"
+    ]
+  },
+  {
+    "id": "missing-029-04",
+    "sentence": "After considering the evidence, observers agreed that the receptionist remained ____, since she greeted every visitor with patience and good manners.",
+    "answer": "courteous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "courteous",
+      "polite",
+      "respectful",
+      "civil"
+    ]
+  },
+  {
+    "id": "missing-029-05",
+    "sentence": "It became clear that the receptionist was ____ when she greeted every visitor with patience and good manners.",
+    "answer": "courteous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "courteous",
+      "polite",
+      "respectful",
+      "civil"
+    ]
+  },
+  {
+    "id": "missing-029-06",
+    "sentence": "Throughout the discussion, the receptionist appeared ____: she greeted every visitor with patience and good manners.",
+    "answer": "courteous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "courteous",
+      "polite",
+      "respectful",
+      "civil"
+    ]
+  },
+  {
+    "id": "missing-030-01",
+    "sentence": "the glass panel was ____ because anyone could see through it without distortion.",
+    "answer": "transparent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transparent",
+      "clear",
+      "obvious",
+      "open"
+    ]
+  },
+  {
+    "id": "missing-030-02",
+    "sentence": "Because anyone could see through it without distortion, the glass panel seemed ____ to everyone involved.",
+    "answer": "transparent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transparent",
+      "clear",
+      "obvious",
+      "open"
+    ]
+  },
+  {
+    "id": "missing-030-03",
+    "sentence": "The review described the glass panel as ____; anyone could see through it without distortion.",
+    "answer": "transparent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transparent",
+      "clear",
+      "obvious",
+      "open"
+    ]
+  },
+  {
+    "id": "missing-030-04",
+    "sentence": "After considering the evidence, observers agreed that the glass panel remained ____, since anyone could see through it without distortion.",
+    "answer": "transparent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transparent",
+      "clear",
+      "obvious",
+      "open"
+    ]
+  },
+  {
+    "id": "missing-030-05",
+    "sentence": "It became clear that the glass panel was ____ when anyone could see through it without distortion.",
+    "answer": "transparent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transparent",
+      "clear",
+      "obvious",
+      "open"
+    ]
+  },
+  {
+    "id": "missing-030-06",
+    "sentence": "Throughout the discussion, the glass panel appeared ____: anyone could see through it without distortion.",
+    "answer": "transparent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "transparent",
+      "clear",
+      "obvious",
+      "open"
+    ]
+  },
+  {
+    "id": "missing-031-01",
+    "sentence": "the captain was ____ because she chose a course quickly and accepted responsibility for it.",
+    "answer": "decisive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "decisive",
+      "resolute",
+      "firm",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-031-02",
+    "sentence": "Because she chose a course quickly and accepted responsibility for it, the captain seemed ____ to everyone involved.",
+    "answer": "decisive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "decisive",
+      "resolute",
+      "firm",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-031-03",
+    "sentence": "The review described the captain as ____; she chose a course quickly and accepted responsibility for it.",
+    "answer": "decisive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "decisive",
+      "resolute",
+      "firm",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-031-04",
+    "sentence": "After considering the evidence, observers agreed that the captain remained ____, since she chose a course quickly and accepted responsibility for it.",
+    "answer": "decisive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "decisive",
+      "resolute",
+      "firm",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-031-05",
+    "sentence": "It became clear that the captain was ____ when she chose a course quickly and accepted responsibility for it.",
+    "answer": "decisive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "decisive",
+      "resolute",
+      "firm",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-031-06",
+    "sentence": "Throughout the discussion, the captain appeared ____: she chose a course quickly and accepted responsibility for it.",
+    "answer": "decisive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "decisive",
+      "resolute",
+      "firm",
+      "determined"
+    ]
+  },
+  {
+    "id": "missing-032-01",
+    "sentence": "the signature was ____ because experts confirmed it was not forged or copied.",
+    "answer": "authentic",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "authentic",
+      "genuine",
+      "real",
+      "legitimate"
+    ]
+  },
+  {
+    "id": "missing-032-02",
+    "sentence": "Because experts confirmed it was not forged or copied, the signature seemed ____ to everyone involved.",
+    "answer": "authentic",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "authentic",
+      "genuine",
+      "real",
+      "legitimate"
+    ]
+  },
+  {
+    "id": "missing-032-03",
+    "sentence": "The review described the signature as ____; experts confirmed it was not forged or copied.",
+    "answer": "authentic",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "authentic",
+      "genuine",
+      "real",
+      "legitimate"
+    ]
+  },
+  {
+    "id": "missing-032-04",
+    "sentence": "After considering the evidence, observers agreed that the signature remained ____, since experts confirmed it was not forged or copied.",
+    "answer": "authentic",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "authentic",
+      "genuine",
+      "real",
+      "legitimate"
+    ]
+  },
+  {
+    "id": "missing-032-05",
+    "sentence": "It became clear that the signature was ____ when experts confirmed it was not forged or copied.",
+    "answer": "authentic",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "authentic",
+      "genuine",
+      "real",
+      "legitimate"
+    ]
+  },
+  {
+    "id": "missing-032-06",
+    "sentence": "Throughout the discussion, the signature appeared ____: experts confirmed it was not forged or copied.",
+    "answer": "authentic",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "authentic",
+      "genuine",
+      "real",
+      "legitimate"
+    ]
+  },
+  {
+    "id": "missing-033-01",
+    "sentence": "the safety inspection was ____ because every employee had to complete it before entering the plant.",
+    "answer": "mandatory",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "mandatory",
+      "compulsory",
+      "obligatory",
+      "required"
+    ]
+  },
+  {
+    "id": "missing-033-02",
+    "sentence": "Because every employee had to complete it before entering the plant, the safety inspection seemed ____ to everyone involved.",
+    "answer": "mandatory",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "mandatory",
+      "compulsory",
+      "obligatory",
+      "required"
+    ]
+  },
+  {
+    "id": "missing-033-03",
+    "sentence": "The review described the safety inspection as ____; every employee had to complete it before entering the plant.",
+    "answer": "mandatory",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "mandatory",
+      "compulsory",
+      "obligatory",
+      "required"
+    ]
+  },
+  {
+    "id": "missing-033-04",
+    "sentence": "After considering the evidence, observers agreed that the safety inspection remained ____, since every employee had to complete it before entering the plant.",
+    "answer": "mandatory",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "mandatory",
+      "compulsory",
+      "obligatory",
+      "required"
+    ]
+  },
+  {
+    "id": "missing-033-05",
+    "sentence": "It became clear that the safety inspection was ____ when every employee had to complete it before entering the plant.",
+    "answer": "mandatory",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "mandatory",
+      "compulsory",
+      "obligatory",
+      "required"
+    ]
+  },
+  {
+    "id": "missing-033-06",
+    "sentence": "Throughout the discussion, the safety inspection appeared ____: every employee had to complete it before entering the plant.",
+    "answer": "mandatory",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "mandatory",
+      "compulsory",
+      "obligatory",
+      "required"
+    ]
+  },
+  {
+    "id": "missing-034-01",
+    "sentence": "the workshop was ____ because attendance was a personal choice rather than a requirement.",
+    "answer": "optional",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "optional",
+      "voluntary",
+      "elective",
+      "discretionary"
+    ]
+  },
+  {
+    "id": "missing-034-02",
+    "sentence": "Because attendance was a personal choice rather than a requirement, the workshop seemed ____ to everyone involved.",
+    "answer": "optional",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "optional",
+      "voluntary",
+      "elective",
+      "discretionary"
+    ]
+  },
+  {
+    "id": "missing-034-03",
+    "sentence": "The review described the workshop as ____; attendance was a personal choice rather than a requirement.",
+    "answer": "optional",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "optional",
+      "voluntary",
+      "elective",
+      "discretionary"
+    ]
+  },
+  {
+    "id": "missing-034-04",
+    "sentence": "After considering the evidence, observers agreed that the workshop remained ____, since attendance was a personal choice rather than a requirement.",
+    "answer": "optional",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "optional",
+      "voluntary",
+      "elective",
+      "discretionary"
+    ]
+  },
+  {
+    "id": "missing-034-05",
+    "sentence": "It became clear that the workshop was ____ when attendance was a personal choice rather than a requirement.",
+    "answer": "optional",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "optional",
+      "voluntary",
+      "elective",
+      "discretionary"
+    ]
+  },
+  {
+    "id": "missing-034-06",
+    "sentence": "Throughout the discussion, the workshop appeared ____: attendance was a personal choice rather than a requirement.",
+    "answer": "optional",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "optional",
+      "voluntary",
+      "elective",
+      "discretionary"
+    ]
+  },
+  {
+    "id": "missing-035-01",
+    "sentence": "the canyon was ____ because its scale stretched far beyond what visitors could see at once.",
+    "answer": "immense",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "immense",
+      "vast",
+      "enormous",
+      "colossal"
+    ]
+  },
+  {
+    "id": "missing-035-02",
+    "sentence": "Because its scale stretched far beyond what visitors could see at once, the canyon seemed ____ to everyone involved.",
+    "answer": "immense",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "immense",
+      "vast",
+      "enormous",
+      "colossal"
+    ]
+  },
+  {
+    "id": "missing-035-03",
+    "sentence": "The review described the canyon as ____; its scale stretched far beyond what visitors could see at once.",
+    "answer": "immense",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "immense",
+      "vast",
+      "enormous",
+      "colossal"
+    ]
+  },
+  {
+    "id": "missing-035-04",
+    "sentence": "After considering the evidence, observers agreed that the canyon remained ____, since its scale stretched far beyond what visitors could see at once.",
+    "answer": "immense",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "immense",
+      "vast",
+      "enormous",
+      "colossal"
+    ]
+  },
+  {
+    "id": "missing-035-05",
+    "sentence": "It became clear that the canyon was ____ when its scale stretched far beyond what visitors could see at once.",
+    "answer": "immense",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "immense",
+      "vast",
+      "enormous",
+      "colossal"
+    ]
+  },
+  {
+    "id": "missing-035-06",
+    "sentence": "Throughout the discussion, the canyon appeared ____: its scale stretched far beyond what visitors could see at once.",
+    "answer": "immense",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "immense",
+      "vast",
+      "enormous",
+      "colossal"
+    ]
+  },
+  {
+    "id": "missing-036-01",
+    "sentence": "the insect was ____ because it was barely visible without a magnifying glass.",
+    "answer": "minuscule",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "minuscule",
+      "tiny",
+      "minute",
+      "microscopic"
+    ]
+  },
+  {
+    "id": "missing-036-02",
+    "sentence": "Because it was barely visible without a magnifying glass, the insect seemed ____ to everyone involved.",
+    "answer": "minuscule",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "minuscule",
+      "tiny",
+      "minute",
+      "microscopic"
+    ]
+  },
+  {
+    "id": "missing-036-03",
+    "sentence": "The review described the insect as ____; it was barely visible without a magnifying glass.",
+    "answer": "minuscule",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "minuscule",
+      "tiny",
+      "minute",
+      "microscopic"
+    ]
+  },
+  {
+    "id": "missing-036-04",
+    "sentence": "After considering the evidence, observers agreed that the insect remained ____, since it was barely visible without a magnifying glass.",
+    "answer": "minuscule",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "minuscule",
+      "tiny",
+      "minute",
+      "microscopic"
+    ]
+  },
+  {
+    "id": "missing-036-05",
+    "sentence": "It became clear that the insect was ____ when it was barely visible without a magnifying glass.",
+    "answer": "minuscule",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "minuscule",
+      "tiny",
+      "minute",
+      "microscopic"
+    ]
+  },
+  {
+    "id": "missing-036-06",
+    "sentence": "Throughout the discussion, the insect appeared ____: it was barely visible without a magnifying glass.",
+    "answer": "minuscule",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "minuscule",
+      "tiny",
+      "minute",
+      "microscopic"
+    ]
+  },
+  {
+    "id": "missing-037-01",
+    "sentence": "the driver was ____ because he slowed near the school and checked both mirrors.",
+    "answer": "cautious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "cautious",
+      "wary",
+      "vigilant",
+      "careful"
+    ]
+  },
+  {
+    "id": "missing-037-02",
+    "sentence": "Because he slowed near the school and checked both mirrors, the driver seemed ____ to everyone involved.",
+    "answer": "cautious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "cautious",
+      "wary",
+      "vigilant",
+      "careful"
+    ]
+  },
+  {
+    "id": "missing-037-03",
+    "sentence": "The review described the driver as ____; he slowed near the school and checked both mirrors.",
+    "answer": "cautious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "cautious",
+      "wary",
+      "vigilant",
+      "careful"
+    ]
+  },
+  {
+    "id": "missing-037-04",
+    "sentence": "After considering the evidence, observers agreed that the driver remained ____, since he slowed near the school and checked both mirrors.",
+    "answer": "cautious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "cautious",
+      "wary",
+      "vigilant",
+      "careful"
+    ]
+  },
+  {
+    "id": "missing-037-05",
+    "sentence": "It became clear that the driver was ____ when he slowed near the school and checked both mirrors.",
+    "answer": "cautious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "cautious",
+      "wary",
+      "vigilant",
+      "careful"
+    ]
+  },
+  {
+    "id": "missing-037-06",
+    "sentence": "Throughout the discussion, the driver appeared ____: he slowed near the school and checked both mirrors.",
+    "answer": "cautious",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "cautious",
+      "wary",
+      "vigilant",
+      "careful"
+    ]
+  },
+  {
+    "id": "missing-038-01",
+    "sentence": "the supervisor was ____ because he ignored repeated warnings about unsafe equipment.",
+    "answer": "negligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "negligent",
+      "careless",
+      "inattentive",
+      "remiss"
+    ]
+  },
+  {
+    "id": "missing-038-02",
+    "sentence": "Because he ignored repeated warnings about unsafe equipment, the supervisor seemed ____ to everyone involved.",
+    "answer": "negligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "negligent",
+      "careless",
+      "inattentive",
+      "remiss"
+    ]
+  },
+  {
+    "id": "missing-038-03",
+    "sentence": "The review described the supervisor as ____; he ignored repeated warnings about unsafe equipment.",
+    "answer": "negligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "negligent",
+      "careless",
+      "inattentive",
+      "remiss"
+    ]
+  },
+  {
+    "id": "missing-038-04",
+    "sentence": "After considering the evidence, observers agreed that the supervisor remained ____, since he ignored repeated warnings about unsafe equipment.",
+    "answer": "negligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "negligent",
+      "careless",
+      "inattentive",
+      "remiss"
+    ]
+  },
+  {
+    "id": "missing-038-05",
+    "sentence": "It became clear that the supervisor was ____ when he ignored repeated warnings about unsafe equipment.",
+    "answer": "negligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "negligent",
+      "careless",
+      "inattentive",
+      "remiss"
+    ]
+  },
+  {
+    "id": "missing-038-06",
+    "sentence": "Throughout the discussion, the supervisor appeared ____: he ignored repeated warnings about unsafe equipment.",
+    "answer": "negligent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "negligent",
+      "careless",
+      "inattentive",
+      "remiss"
+    ]
+  },
+  {
+    "id": "missing-039-01",
+    "sentence": "the donor was ____ because she gave a large portion of her savings to the relief fund.",
+    "answer": "generous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "generous",
+      "charitable",
+      "munificent",
+      "giving"
+    ]
+  },
+  {
+    "id": "missing-039-02",
+    "sentence": "Because she gave a large portion of her savings to the relief fund, the donor seemed ____ to everyone involved.",
+    "answer": "generous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "generous",
+      "charitable",
+      "munificent",
+      "giving"
+    ]
+  },
+  {
+    "id": "missing-039-03",
+    "sentence": "The review described the donor as ____; she gave a large portion of her savings to the relief fund.",
+    "answer": "generous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "generous",
+      "charitable",
+      "munificent",
+      "giving"
+    ]
+  },
+  {
+    "id": "missing-039-04",
+    "sentence": "After considering the evidence, observers agreed that the donor remained ____, since she gave a large portion of her savings to the relief fund.",
+    "answer": "generous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "generous",
+      "charitable",
+      "munificent",
+      "giving"
+    ]
+  },
+  {
+    "id": "missing-039-05",
+    "sentence": "It became clear that the donor was ____ when she gave a large portion of her savings to the relief fund.",
+    "answer": "generous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "generous",
+      "charitable",
+      "munificent",
+      "giving"
+    ]
+  },
+  {
+    "id": "missing-039-06",
+    "sentence": "Throughout the discussion, the donor appeared ____: she gave a large portion of her savings to the relief fund.",
+    "answer": "generous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "generous",
+      "charitable",
+      "munificent",
+      "giving"
+    ]
+  },
+  {
+    "id": "missing-040-01",
+    "sentence": "the household was ____ because they repaired old items and avoided unnecessary purchases.",
+    "answer": "frugal",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "frugal",
+      "thrifty",
+      "economical",
+      "sparing"
+    ]
+  },
+  {
+    "id": "missing-040-02",
+    "sentence": "Because they repaired old items and avoided unnecessary purchases, the household seemed ____ to everyone involved.",
+    "answer": "frugal",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "frugal",
+      "thrifty",
+      "economical",
+      "sparing"
+    ]
+  },
+  {
+    "id": "missing-040-03",
+    "sentence": "The review described the household as ____; they repaired old items and avoided unnecessary purchases.",
+    "answer": "frugal",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "frugal",
+      "thrifty",
+      "economical",
+      "sparing"
+    ]
+  },
+  {
+    "id": "missing-040-04",
+    "sentence": "After considering the evidence, observers agreed that the household remained ____, since they repaired old items and avoided unnecessary purchases.",
+    "answer": "frugal",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "frugal",
+      "thrifty",
+      "economical",
+      "sparing"
+    ]
+  },
+  {
+    "id": "missing-040-05",
+    "sentence": "It became clear that the household was ____ when they repaired old items and avoided unnecessary purchases.",
+    "answer": "frugal",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "frugal",
+      "thrifty",
+      "economical",
+      "sparing"
+    ]
+  },
+  {
+    "id": "missing-040-06",
+    "sentence": "Throughout the discussion, the household appeared ____: they repaired old items and avoided unnecessary purchases.",
+    "answer": "frugal",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "frugal",
+      "thrifty",
+      "economical",
+      "sparing"
+    ]
+  },
+  {
+    "id": "missing-041-01",
+    "sentence": "the banquet was ____ because the hosts decorated every table with costly flowers and fine silver.",
+    "answer": "lavish",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "lavish",
+      "extravagant",
+      "opulent",
+      "sumptuous"
+    ]
+  },
+  {
+    "id": "missing-041-02",
+    "sentence": "Because the hosts decorated every table with costly flowers and fine silver, the banquet seemed ____ to everyone involved.",
+    "answer": "lavish",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "lavish",
+      "extravagant",
+      "opulent",
+      "sumptuous"
+    ]
+  },
+  {
+    "id": "missing-041-03",
+    "sentence": "The review described the banquet as ____; the hosts decorated every table with costly flowers and fine silver.",
+    "answer": "lavish",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "lavish",
+      "extravagant",
+      "opulent",
+      "sumptuous"
+    ]
+  },
+  {
+    "id": "missing-041-04",
+    "sentence": "After considering the evidence, observers agreed that the banquet remained ____, since the hosts decorated every table with costly flowers and fine silver.",
+    "answer": "lavish",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "lavish",
+      "extravagant",
+      "opulent",
+      "sumptuous"
+    ]
+  },
+  {
+    "id": "missing-041-05",
+    "sentence": "It became clear that the banquet was ____ when the hosts decorated every table with costly flowers and fine silver.",
+    "answer": "lavish",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "lavish",
+      "extravagant",
+      "opulent",
+      "sumptuous"
+    ]
+  },
+  {
+    "id": "missing-041-06",
+    "sentence": "Throughout the discussion, the banquet appeared ____: the hosts decorated every table with costly flowers and fine silver.",
+    "answer": "lavish",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "lavish",
+      "extravagant",
+      "opulent",
+      "sumptuous"
+    ]
+  },
+  {
+    "id": "missing-042-01",
+    "sentence": "the speaker was ____ because she explained complicated ideas clearly and confidently.",
+    "answer": "articulate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "articulate",
+      "eloquent",
+      "expressive",
+      "fluent"
+    ]
+  },
+  {
+    "id": "missing-042-02",
+    "sentence": "Because she explained complicated ideas clearly and confidently, the speaker seemed ____ to everyone involved.",
+    "answer": "articulate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "articulate",
+      "eloquent",
+      "expressive",
+      "fluent"
+    ]
+  },
+  {
+    "id": "missing-042-03",
+    "sentence": "The review described the speaker as ____; she explained complicated ideas clearly and confidently.",
+    "answer": "articulate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "articulate",
+      "eloquent",
+      "expressive",
+      "fluent"
+    ]
+  },
+  {
+    "id": "missing-042-04",
+    "sentence": "After considering the evidence, observers agreed that the speaker remained ____, since she explained complicated ideas clearly and confidently.",
+    "answer": "articulate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "articulate",
+      "eloquent",
+      "expressive",
+      "fluent"
+    ]
+  },
+  {
+    "id": "missing-042-05",
+    "sentence": "It became clear that the speaker was ____ when she explained complicated ideas clearly and confidently.",
+    "answer": "articulate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "articulate",
+      "eloquent",
+      "expressive",
+      "fluent"
+    ]
+  },
+  {
+    "id": "missing-042-06",
+    "sentence": "Throughout the discussion, the speaker appeared ____: she explained complicated ideas clearly and confidently.",
+    "answer": "articulate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "articulate",
+      "eloquent",
+      "expressive",
+      "fluent"
+    ]
+  },
+  {
+    "id": "missing-043-01",
+    "sentence": "the defendant was ____ because he sincerely regretted the harm his actions had caused.",
+    "answer": "remorseful",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "remorseful",
+      "contrite",
+      "repentant",
+      "regretful"
+    ]
+  },
+  {
+    "id": "missing-043-02",
+    "sentence": "Because he sincerely regretted the harm his actions had caused, the defendant seemed ____ to everyone involved.",
+    "answer": "remorseful",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "remorseful",
+      "contrite",
+      "repentant",
+      "regretful"
+    ]
+  },
+  {
+    "id": "missing-043-03",
+    "sentence": "The review described the defendant as ____; he sincerely regretted the harm his actions had caused.",
+    "answer": "remorseful",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "remorseful",
+      "contrite",
+      "repentant",
+      "regretful"
+    ]
+  },
+  {
+    "id": "missing-043-04",
+    "sentence": "After considering the evidence, observers agreed that the defendant remained ____, since he sincerely regretted the harm his actions had caused.",
+    "answer": "remorseful",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "remorseful",
+      "contrite",
+      "repentant",
+      "regretful"
+    ]
+  },
+  {
+    "id": "missing-043-05",
+    "sentence": "It became clear that the defendant was ____ when he sincerely regretted the harm his actions had caused.",
+    "answer": "remorseful",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "remorseful",
+      "contrite",
+      "repentant",
+      "regretful"
+    ]
+  },
+  {
+    "id": "missing-043-06",
+    "sentence": "Throughout the discussion, the defendant appeared ____: he sincerely regretted the harm his actions had caused.",
+    "answer": "remorseful",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "remorseful",
+      "contrite",
+      "repentant",
+      "regretful"
+    ]
+  },
+  {
+    "id": "missing-044-01",
+    "sentence": "the audience was ____ because they showed no interest or concern when the announcement was made.",
+    "answer": "indifferent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "indifferent",
+      "apathetic",
+      "detached",
+      "unconcerned"
+    ]
+  },
+  {
+    "id": "missing-044-02",
+    "sentence": "Because they showed no interest or concern when the announcement was made, the audience seemed ____ to everyone involved.",
+    "answer": "indifferent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "indifferent",
+      "apathetic",
+      "detached",
+      "unconcerned"
+    ]
+  },
+  {
+    "id": "missing-044-03",
+    "sentence": "The review described the audience as ____; they showed no interest or concern when the announcement was made.",
+    "answer": "indifferent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "indifferent",
+      "apathetic",
+      "detached",
+      "unconcerned"
+    ]
+  },
+  {
+    "id": "missing-044-04",
+    "sentence": "After considering the evidence, observers agreed that the audience remained ____, since they showed no interest or concern when the announcement was made.",
+    "answer": "indifferent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "indifferent",
+      "apathetic",
+      "detached",
+      "unconcerned"
+    ]
+  },
+  {
+    "id": "missing-044-05",
+    "sentence": "It became clear that the audience was ____ when they showed no interest or concern when the announcement was made.",
+    "answer": "indifferent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "indifferent",
+      "apathetic",
+      "detached",
+      "unconcerned"
+    ]
+  },
+  {
+    "id": "missing-044-06",
+    "sentence": "Throughout the discussion, the audience appeared ____: they showed no interest or concern when the announcement was made.",
+    "answer": "indifferent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "indifferent",
+      "apathetic",
+      "detached",
+      "unconcerned"
+    ]
+  },
+  {
+    "id": "missing-045-01",
+    "sentence": "the necklace was ____ because its tiny links and carefully fitted stones required hours of work.",
+    "answer": "intricate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "intricate",
+      "elaborate",
+      "complex",
+      "detailed"
+    ]
+  },
+  {
+    "id": "missing-045-02",
+    "sentence": "Because its tiny links and carefully fitted stones required hours of work, the necklace seemed ____ to everyone involved.",
+    "answer": "intricate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "intricate",
+      "elaborate",
+      "complex",
+      "detailed"
+    ]
+  },
+  {
+    "id": "missing-045-03",
+    "sentence": "The review described the necklace as ____; its tiny links and carefully fitted stones required hours of work.",
+    "answer": "intricate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "intricate",
+      "elaborate",
+      "complex",
+      "detailed"
+    ]
+  },
+  {
+    "id": "missing-045-04",
+    "sentence": "After considering the evidence, observers agreed that the necklace remained ____, since its tiny links and carefully fitted stones required hours of work.",
+    "answer": "intricate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "intricate",
+      "elaborate",
+      "complex",
+      "detailed"
+    ]
+  },
+  {
+    "id": "missing-045-05",
+    "sentence": "It became clear that the necklace was ____ when its tiny links and carefully fitted stones required hours of work.",
+    "answer": "intricate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "intricate",
+      "elaborate",
+      "complex",
+      "detailed"
+    ]
+  },
+  {
+    "id": "missing-045-06",
+    "sentence": "Throughout the discussion, the necklace appeared ____: its tiny links and carefully fitted stones required hours of work.",
+    "answer": "intricate",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "intricate",
+      "elaborate",
+      "complex",
+      "detailed"
+    ]
+  },
+  {
+    "id": "missing-046-01",
+    "sentence": "the expedition was ____ because the team crossed steep terrain in extreme heat for several days.",
+    "answer": "arduous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "arduous",
+      "strenuous",
+      "demanding",
+      "difficult"
+    ]
+  },
+  {
+    "id": "missing-046-02",
+    "sentence": "Because the team crossed steep terrain in extreme heat for several days, the expedition seemed ____ to everyone involved.",
+    "answer": "arduous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "arduous",
+      "strenuous",
+      "demanding",
+      "difficult"
+    ]
+  },
+  {
+    "id": "missing-046-03",
+    "sentence": "The review described the expedition as ____; the team crossed steep terrain in extreme heat for several days.",
+    "answer": "arduous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "arduous",
+      "strenuous",
+      "demanding",
+      "difficult"
+    ]
+  },
+  {
+    "id": "missing-046-04",
+    "sentence": "After considering the evidence, observers agreed that the expedition remained ____, since the team crossed steep terrain in extreme heat for several days.",
+    "answer": "arduous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "arduous",
+      "strenuous",
+      "demanding",
+      "difficult"
+    ]
+  },
+  {
+    "id": "missing-046-05",
+    "sentence": "It became clear that the expedition was ____ when the team crossed steep terrain in extreme heat for several days.",
+    "answer": "arduous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "arduous",
+      "strenuous",
+      "demanding",
+      "difficult"
+    ]
+  },
+  {
+    "id": "missing-046-06",
+    "sentence": "Throughout the discussion, the expedition appeared ____: the team crossed steep terrain in extreme heat for several days.",
+    "answer": "arduous",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "arduous",
+      "strenuous",
+      "demanding",
+      "difficult"
+    ]
+  },
+  {
+    "id": "missing-047-01",
+    "sentence": "the witness was ____ because she told the investigator exactly what she had seen without softening it.",
+    "answer": "candid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "candid",
+      "frank",
+      "open",
+      "honest"
+    ]
+  },
+  {
+    "id": "missing-047-02",
+    "sentence": "Because she told the investigator exactly what she had seen without softening it, the witness seemed ____ to everyone involved.",
+    "answer": "candid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "candid",
+      "frank",
+      "open",
+      "honest"
+    ]
+  },
+  {
+    "id": "missing-047-03",
+    "sentence": "The review described the witness as ____; she told the investigator exactly what she had seen without softening it.",
+    "answer": "candid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "candid",
+      "frank",
+      "open",
+      "honest"
+    ]
+  },
+  {
+    "id": "missing-047-04",
+    "sentence": "After considering the evidence, observers agreed that the witness remained ____, since she told the investigator exactly what she had seen without softening it.",
+    "answer": "candid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "candid",
+      "frank",
+      "open",
+      "honest"
+    ]
+  },
+  {
+    "id": "missing-047-05",
+    "sentence": "It became clear that the witness was ____ when she told the investigator exactly what she had seen without softening it.",
+    "answer": "candid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "candid",
+      "frank",
+      "open",
+      "honest"
+    ]
+  },
+  {
+    "id": "missing-047-06",
+    "sentence": "Throughout the discussion, the witness appeared ____: she told the investigator exactly what she had seen without softening it.",
+    "answer": "candid",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "candid",
+      "frank",
+      "open",
+      "honest"
+    ]
+  },
+  {
+    "id": "missing-048-01",
+    "sentence": "the diplomat was ____ because she handled sensitive questions carefully without causing offence.",
+    "answer": "discreet",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "discreet",
+      "tactful",
+      "prudent",
+      "circumspect"
+    ]
+  },
+  {
+    "id": "missing-048-02",
+    "sentence": "Because she handled sensitive questions carefully without causing offence, the diplomat seemed ____ to everyone involved.",
+    "answer": "discreet",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "discreet",
+      "tactful",
+      "prudent",
+      "circumspect"
+    ]
+  },
+  {
+    "id": "missing-048-03",
+    "sentence": "The review described the diplomat as ____; she handled sensitive questions carefully without causing offence.",
+    "answer": "discreet",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "discreet",
+      "tactful",
+      "prudent",
+      "circumspect"
+    ]
+  },
+  {
+    "id": "missing-048-04",
+    "sentence": "After considering the evidence, observers agreed that the diplomat remained ____, since she handled sensitive questions carefully without causing offence.",
+    "answer": "discreet",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "discreet",
+      "tactful",
+      "prudent",
+      "circumspect"
+    ]
+  },
+  {
+    "id": "missing-048-05",
+    "sentence": "It became clear that the diplomat was ____ when she handled sensitive questions carefully without causing offence.",
+    "answer": "discreet",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "discreet",
+      "tactful",
+      "prudent",
+      "circumspect"
+    ]
+  },
+  {
+    "id": "missing-048-06",
+    "sentence": "Throughout the discussion, the diplomat appeared ____: she handled sensitive questions carefully without causing offence.",
+    "answer": "discreet",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "discreet",
+      "tactful",
+      "prudent",
+      "circumspect"
+    ]
+  },
+  {
+    "id": "missing-049-01",
+    "sentence": "the spokesperson was ____ because he avoided giving a direct answer when asked about the missing funds.",
+    "answer": "evasive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "evasive",
+      "indirect",
+      "elusive",
+      "noncommittal"
+    ]
+  },
+  {
+    "id": "missing-049-02",
+    "sentence": "Because he avoided giving a direct answer when asked about the missing funds, the spokesperson seemed ____ to everyone involved.",
+    "answer": "evasive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "evasive",
+      "indirect",
+      "elusive",
+      "noncommittal"
+    ]
+  },
+  {
+    "id": "missing-049-03",
+    "sentence": "The review described the spokesperson as ____; he avoided giving a direct answer when asked about the missing funds.",
+    "answer": "evasive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "evasive",
+      "indirect",
+      "elusive",
+      "noncommittal"
+    ]
+  },
+  {
+    "id": "missing-049-04",
+    "sentence": "After considering the evidence, observers agreed that the spokesperson remained ____, since he avoided giving a direct answer when asked about the missing funds.",
+    "answer": "evasive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "evasive",
+      "indirect",
+      "elusive",
+      "noncommittal"
+    ]
+  },
+  {
+    "id": "missing-049-05",
+    "sentence": "It became clear that the spokesperson was ____ when he avoided giving a direct answer when asked about the missing funds.",
+    "answer": "evasive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "evasive",
+      "indirect",
+      "elusive",
+      "noncommittal"
+    ]
+  },
+  {
+    "id": "missing-049-06",
+    "sentence": "Throughout the discussion, the spokesperson appeared ____: he avoided giving a direct answer when asked about the missing funds.",
+    "answer": "evasive",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "evasive",
+      "indirect",
+      "elusive",
+      "noncommittal"
+    ]
+  },
+  {
+    "id": "missing-050-01",
+    "sentence": "the storm was ____ because it was expected to arrive within the next few hours.",
+    "answer": "imminent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "imminent",
+      "impending",
+      "approaching",
+      "forthcoming"
+    ]
+  },
+  {
+    "id": "missing-050-02",
+    "sentence": "Because it was expected to arrive within the next few hours, the storm seemed ____ to everyone involved.",
+    "answer": "imminent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "imminent",
+      "impending",
+      "approaching",
+      "forthcoming"
+    ]
+  },
+  {
+    "id": "missing-050-03",
+    "sentence": "The review described the storm as ____; it was expected to arrive within the next few hours.",
+    "answer": "imminent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "imminent",
+      "impending",
+      "approaching",
+      "forthcoming"
+    ]
+  },
+  {
+    "id": "missing-050-04",
+    "sentence": "After considering the evidence, observers agreed that the storm remained ____, since it was expected to arrive within the next few hours.",
+    "answer": "imminent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "imminent",
+      "impending",
+      "approaching",
+      "forthcoming"
+    ]
+  },
+  {
+    "id": "missing-050-05",
+    "sentence": "It became clear that the storm was ____ when it was expected to arrive within the next few hours.",
+    "answer": "imminent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "imminent",
+      "impending",
+      "approaching",
+      "forthcoming"
+    ]
+  },
+  {
+    "id": "missing-050-06",
+    "sentence": "Throughout the discussion, the storm appeared ____: it was expected to arrive within the next few hours.",
+    "answer": "imminent",
+    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
+    "options": [
+      "imminent",
+      "impending",
+      "approaching",
+      "forthcoming"
+    ]
+  }
 ];
 export function getMissingPuzzle(date:string,slot:number):Puzzle & {clue:string;pattern:string}{
  const seed=seedFor(date,slot),index=((seed%MISSING_WORD_CHALLENGES.length)+MISSING_WORD_CHALLENGES.length)%MISSING_WORD_CHALLENGES.length,item=MISSING_WORD_CHALLENGES[index];
- return {id:"missing:"+index+":"+item.answer,question:item.sentence.replace("____","_____"),clue:item.clue,answer:item.answer,pattern:"_____",options:shuffled(item.options,seed+29)};
+ return {id:item.id,question:item.sentence.replace("____","_____"),clue:item.clue,answer:item.answer,pattern:"_____",options:shuffled(item.options,seed+29)};
 }
 export function getSequencePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
  const seed=seedFor(date,slot),a=2+(seed%1000),step=1+((seed*7)%23),curve=1+((seed*13)%17);
