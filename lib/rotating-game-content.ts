@@ -30,3602 +30,3602 @@ export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string;o
 const MISSING_WORD_CHALLENGES:Array<{id:string;sentence:string;answer:string;clue:string;options:string[]}>= [
   {
     "id": "missing-001",
-    "sentence": "Item 1: The word with the opposite meaning to “careless” is ____ .",
-    "answer": "meticulous",
-    "clue": "Choose the antonym of “careless”.",
+    "sentence": "The capital city of France is ____ .",
+    "answer": "Paris",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "meticulous",
-      "significant",
-      "arrive",
-      "honesty"
+      "Paris",
+      "Beijing",
+      "Dublin",
+      "Accra"
     ]
   },
   {
     "id": "missing-002",
-    "sentence": "Item 2: The word with the opposite meaning to “meticulous” is ____ .",
-    "answer": "careless",
-    "clue": "Choose the antonym of “meticulous”.",
+    "sentence": "The capital city of Japan is ____ .",
+    "answer": "Tokyo",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "complex",
-      "melt",
-      "tough",
-      "careless"
+      "Seoul",
+      "Reykjavik",
+      "Addis Ababa",
+      "Tokyo"
     ]
   },
   {
     "id": "missing-003",
-    "sentence": "Item 3: The word with the opposite meaning to “eager” is ____ .",
-    "answer": "reluctant",
-    "clue": "Choose the antonym of “eager”.",
+    "sentence": "The capital city of Canada is ____ .",
+    "answer": "Ottawa",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "ending",
-      "eloquent",
-      "reluctant",
-      "demolish"
+      "Madrid",
+      "Dodoma",
+      "Ottawa",
+      "Hanoi"
     ]
   },
   {
     "id": "missing-004",
-    "sentence": "Item 4: The word with the opposite meaning to “reluctant” is ____ .",
-    "answer": "eager",
-    "clue": "Choose the antonym of “reluctant”.",
+    "sentence": "The capital city of Australia is ____ .",
+    "answer": "Canberra",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "meticulous",
-      "eager",
-      "departure",
-      "calm"
+      "Wellington",
+      "Canberra",
+      "Phnom Penh",
+      "Rome"
     ]
   },
   {
     "id": "missing-005",
-    "sentence": "Item 5: The word with the opposite meaning to “gullible” is ____ .",
-    "answer": "skeptical",
-    "clue": "Choose the antonym of “gullible”.",
+    "sentence": "The capital city of Brazil is ____ .",
+    "answer": "Brasilia",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "skeptical",
-      "empty",
-      "indecisive",
-      "pessimistic"
+      "Brasilia",
+      "Vientiane",
+      "Berlin",
+      "Paris"
     ]
   },
   {
     "id": "missing-006",
-    "sentence": "Item 6: The word with the opposite meaning to “skeptical” is ____ .",
-    "answer": "gullible",
-    "clue": "Choose the antonym of “skeptical”.",
+    "sentence": "The capital city of Egypt is ____ .",
+    "answer": "Cairo",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "major",
-      "unequivocal",
-      "ascend",
-      "gullible"
+      "Ulaanbaatar",
+      "Havana",
+      "Tokyo",
+      "Cairo"
     ]
   },
   {
     "id": "missing-007",
-    "sentence": "Item 7: The word with the opposite meaning to “fragile” is ____ .",
-    "answer": "resilient",
-    "clue": "Choose the antonym of “fragile”.",
+    "sentence": "The capital city of Kenya is ____ .",
+    "answer": "Nairobi",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "courteous",
-      "preserve",
-      "resilient",
-      "optional"
+      "Mexico City",
+      "Ottawa",
+      "Nairobi",
+      "Moscow"
     ]
   },
   {
     "id": "missing-008",
-    "sentence": "Item 8: The word with the opposite meaning to “resilient” is ____ .",
-    "answer": "fragile",
-    "clue": "Choose the antonym of “resilient”.",
+    "sentence": "The capital city of Thailand is ____ .",
+    "answer": "Bangkok",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "deceit",
-      "fragile",
-      "profound",
-      "depart"
+      "Canberra",
+      "Bangkok",
+      "Kyiv",
+      "Lima"
     ]
   },
   {
     "id": "missing-009",
-    "sentence": "Item 9: The word with the opposite meaning to “implausible” is ____ .",
-    "answer": "plausible",
-    "clue": "Choose the antonym of “implausible”.",
+    "sentence": "The capital city of Norway is ____ .",
+    "answer": "Oslo",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "plausible",
-      "simple",
-      "freeze",
-      "mature"
+      "Oslo",
+      "Warsaw",
+      "Santiago",
+      "Brasilia"
     ]
   },
   {
     "id": "missing-010",
-    "sentence": "Item 10: The word with the opposite meaning to “plausible” is ____ .",
-    "answer": "implausible",
-    "clue": "Choose the antonym of “plausible”.",
+    "sentence": "The capital city of Sweden is ____ .",
+    "answer": "Stockholm",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "protect",
-      "entrance",
-      "inarticulate",
-      "implausible"
+      "Vienna",
+      "Buenos Aires",
+      "Cairo",
+      "Stockholm"
     ]
   },
   {
     "id": "missing-011",
-    "sentence": "Item 11: The word with the opposite meaning to “verbose” is ____ .",
-    "answer": "concise",
-    "clue": "Choose the antonym of “verbose”.",
+    "sentence": "The capital city of Finland is ____ .",
+    "answer": "Helsinki",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "agitated",
-      "careless",
-      "concise",
-      "maximum"
+      "Bogota",
+      "Nairobi",
+      "Helsinki",
+      "Bern"
     ]
   },
   {
     "id": "missing-012",
-    "sentence": "Item 12: The word with the opposite meaning to “concise” is ____ .",
-    "answer": "verbose",
-    "clue": "Choose the antonym of “concise”.",
+    "sentence": "The capital city of Denmark is ____ .",
+    "answer": "Copenhagen",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "transparent",
-      "verbose",
-      "full",
-      "economical"
+      "Bangkok",
+      "Copenhagen",
+      "Brussels",
+      "Rabat"
     ]
   },
   {
     "id": "missing-013",
-    "sentence": "Item 13: The word with the opposite meaning to “biased” is ____ .",
-    "answer": "impartial",
-    "clue": "Choose the antonym of “biased”.",
+    "sentence": "The capital city of Portugal is ____ .",
+    "answer": "Lisbon",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "impartial",
-      "interior",
-      "obsolete",
-      "descend"
+      "Lisbon",
+      "Amsterdam",
+      "Abuja",
+      "Oslo"
     ]
   },
   {
     "id": "missing-014",
-    "sentence": "Item 14: The word with the opposite meaning to “impartial” is ____ .",
-    "answer": "biased",
-    "clue": "Choose the antonym of “impartial”.",
+    "sentence": "The capital city of Greece is ____ .",
+    "answer": "Athens",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "mundane",
-      "rude",
-      "neglect",
-      "biased"
+      "Dublin",
+      "Accra",
+      "Stockholm",
+      "Athens"
     ]
   },
   {
     "id": "missing-015",
-    "sentence": "Item 15: The word with the opposite meaning to “unequivocal” is ____ .",
-    "answer": "ambiguous",
-    "clue": "Choose the antonym of “unequivocal”.",
+    "sentence": "The capital city of Turkey is ____ .",
+    "answer": "Ankara",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "increase",
-      "freedom",
-      "ambiguous",
-      "superficial"
+      "Addis Ababa",
+      "Helsinki",
+      "Ankara",
+      "Reykjavik"
     ]
   },
   {
     "id": "missing-016",
-    "sentence": "Item 16: The word with the opposite meaning to “ambiguous” is ____ .",
-    "answer": "unequivocal",
-    "clue": "Choose the antonym of “ambiguous”.",
+    "sentence": "The capital city of Nepal is ____ .",
+    "answer": "Kathmandu",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "immature",
-      "unequivocal",
-      "cautious",
-      "float"
+      "Copenhagen",
+      "Kathmandu",
+      "Madrid",
+      "Dodoma"
     ]
   },
   {
     "id": "missing-017",
-    "sentence": "Item 17: The word with the opposite meaning to “modern” is ____ .",
-    "answer": "obsolete",
-    "clue": "Choose the antonym of “modern”.",
+    "sentence": "The capital city of Bhutan is ____ .",
+    "answer": "Thimphu",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "obsolete",
-      "endanger",
-      "exit",
-      "benevolent"
+      "Thimphu",
+      "Rome",
+      "Wellington",
+      "Lisbon"
     ]
   },
   {
     "id": "missing-018",
-    "sentence": "Item 18: The word with the opposite meaning to “obsolete” is ____ .",
-    "answer": "modern",
-    "clue": "Choose the antonym of “obsolete”.",
+    "sentence": "The capital city of Bangladesh is ____ .",
+    "answer": "Dhaka",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "minimum",
-      "cheerful",
-      "reluctant",
-      "modern"
+      "Berlin",
+      "Paris",
+      "Athens",
+      "Dhaka"
     ]
   },
   {
     "id": "missing-019",
-    "sentence": "Item 19: The word with the opposite meaning to “abundant” is ____ .",
-    "answer": "scarce",
-    "clue": "Choose the antonym of “abundant”.",
+    "sentence": "The capital city of Pakistan is ____ .",
+    "answer": "Islamabad",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "wasteful",
-      "opaque",
-      "scarce",
-      "narrow"
+      "Tokyo",
+      "Ankara",
+      "Islamabad",
+      "Havana"
     ]
   },
   {
     "id": "missing-020",
-    "sentence": "Item 20: The word with the opposite meaning to “scarce” is ____ .",
-    "answer": "abundant",
-    "clue": "Choose the antonym of “scarce”.",
+    "sentence": "The capital city of Afghanistan is ____ .",
+    "answer": "Kabul",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "conceal",
-      "abundant",
-      "exterior",
-      "modern"
+      "Kathmandu",
+      "Kabul",
+      "Mexico City",
+      "Ottawa"
     ]
   },
   {
     "id": "missing-021",
-    "sentence": "Item 21: The word with the opposite meaning to “incoherent” is ____ .",
-    "answer": "coherent",
-    "clue": "Choose the antonym of “incoherent”.",
+    "sentence": "The capital city of China is ____ .",
+    "answer": "Beijing",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "coherent",
-      "extraordinary",
-      "ancient",
-      "praise"
+      "Beijing",
+      "Lima",
+      "Canberra",
+      "Thimphu"
     ]
   },
   {
     "id": "missing-022",
-    "sentence": "Item 22: The word with the opposite meaning to “coherent” is ____ .",
-    "answer": "incoherent",
-    "clue": "Choose the antonym of “coherent”.",
+    "sentence": "The capital city of South Korea is ____ .",
+    "answer": "Seoul",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "feasible",
-      "decrease",
-      "captivity",
-      "incoherent"
+      "Santiago",
+      "Brasilia",
+      "Dhaka",
+      "Seoul"
     ]
   },
   {
     "id": "missing-023",
-    "sentence": "Item 23: The word with the opposite meaning to “idle” is ____ .",
-    "answer": "diligent",
-    "clue": "Choose the antonym of “idle”.",
+    "sentence": "The capital city of Vietnam is ____ .",
+    "answer": "Hanoi",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "sink",
-      "fertile",
-      "diligent",
-      "rash"
+      "Cairo",
+      "Islamabad",
+      "Hanoi",
+      "Buenos Aires"
     ]
   },
   {
     "id": "missing-024",
-    "sentence": "Item 24: The word with the opposite meaning to “diligent” is ____ .",
-    "answer": "idle",
-    "clue": "Choose the antonym of “diligent”.",
+    "sentence": "The capital city of Cambodia is ____ .",
+    "answer": "Phnom Penh",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "malevolent",
-      "idle",
-      "unite",
-      "fiction"
+      "Kabul",
+      "Phnom Penh",
+      "Bogota",
+      "Nairobi"
     ]
   },
   {
     "id": "missing-025",
-    "sentence": "Item 25: The word with the opposite meaning to “manageable” is ____ .",
-    "answer": "formidable",
-    "clue": "Choose the antonym of “manageable”.",
+    "sentence": "The capital city of Laos is ____ .",
+    "answer": "Vientiane",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "formidable",
-      "optimism",
-      "miserable",
-      "eager"
+      "Vientiane",
+      "Rabat",
+      "Bangkok",
+      "Beijing"
     ]
   },
   {
     "id": "missing-026",
-    "sentence": "Item 26: The word with the opposite meaning to “formidable” is ____ .",
-    "answer": "manageable",
-    "clue": "Choose the antonym of “formidable”.",
+    "sentence": "The capital city of Mongolia is ____ .",
+    "answer": "Ulaanbaatar",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "broad",
-      "explicit",
-      "temporary",
-      "manageable"
+      "Abuja",
+      "Oslo",
+      "Seoul",
+      "Ulaanbaatar"
     ]
   },
   {
     "id": "missing-027",
-    "sentence": "Item 27: The word with the opposite meaning to “reckless” is ____ .",
-    "answer": "prudent",
-    "clue": "Choose the antonym of “reckless”.",
+    "sentence": "The capital city of Russia is ____ .",
+    "answer": "Moscow",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "scarce",
-      "reveal",
-      "prudent",
-      "superior"
+      "Stockholm",
+      "Hanoi",
+      "Moscow",
+      "Accra"
     ]
   },
   {
     "id": "missing-028",
-    "sentence": "Item 28: The word with the opposite meaning to “prudent” is ____ .",
-    "answer": "reckless",
-    "clue": "Choose the antonym of “prudent”.",
+    "sentence": "The capital city of Ukraine is ____ .",
+    "answer": "Kyiv",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "criticize",
-      "reckless",
-      "novice",
-      "recent"
+      "Phnom Penh",
+      "Kyiv",
+      "Addis Ababa",
+      "Helsinki"
     ]
   },
   {
     "id": "missing-029",
-    "sentence": "Item 29: The word with the opposite meaning to “significant” is ____ .",
-    "answer": "trivial",
-    "clue": "Choose the antonym of “significant”.",
+    "sentence": "The capital city of Poland is ____ .",
+    "answer": "Warsaw",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "trivial",
-      "impractical",
-      "encourage",
-      "harmony"
+      "Warsaw",
+      "Dodoma",
+      "Copenhagen",
+      "Vientiane"
     ]
   },
   {
     "id": "missing-030",
-    "sentence": "Item 30: The word with the opposite meaning to “trivial” is ____ .",
-    "answer": "significant",
-    "clue": "Choose the antonym of “trivial”.",
+    "sentence": "The capital city of Austria is ____ .",
+    "answer": "Vienna",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "modest",
-      "gather",
-      "barren",
-      "significant"
+      "Wellington",
+      "Lisbon",
+      "Ulaanbaatar",
+      "Vienna"
     ]
   },
   {
     "id": "missing-031",
-    "sentence": "Item 31: The word with the opposite meaning to “superficial” is ____ .",
-    "answer": "profound",
-    "clue": "Choose the antonym of “superficial”.",
+    "sentence": "The capital city of Switzerland is ____ .",
+    "answer": "Bern",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "fact",
-      "amiable",
-      "profound",
-      "divide"
+      "Athens",
+      "Moscow",
+      "Bern",
+      "Paris"
     ]
   },
   {
     "id": "missing-032",
-    "sentence": "Item 32: The word with the opposite meaning to “profound” is ____ .",
-    "answer": "superficial",
-    "clue": "Choose the antonym of “profound”.",
+    "sentence": "The capital city of Belgium is ____ .",
+    "answer": "Brussels",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "skeptical",
-      "superficial",
-      "despair",
-      "pleasant"
+      "Kyiv",
+      "Brussels",
+      "Tokyo",
+      "Ankara"
     ]
   },
   {
     "id": "missing-033",
-    "sentence": "Item 33: The word with the opposite meaning to “impractical” is ____ .",
-    "answer": "feasible",
-    "clue": "Choose the antonym of “impractical”.",
+    "sentence": "The capital city of Netherlands is ____ .",
+    "answer": "Amsterdam",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "feasible",
-      "shallow",
-      "implicit",
-      "permanent"
+      "Amsterdam",
+      "Ottawa",
+      "Kathmandu",
+      "Warsaw"
     ]
   },
   {
     "id": "missing-034",
-    "sentence": "Item 34: The word with the opposite meaning to “feasible” is ____ .",
-    "answer": "impractical",
-    "clue": "Choose the antonym of “feasible”.",
+    "sentence": "The capital city of Ireland is ____ .",
+    "answer": "Dublin",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "inferior",
-      "abundant",
-      "accelerate",
-      "impractical"
+      "Canberra",
+      "Thimphu",
+      "Vienna",
+      "Dublin"
     ]
   },
   {
     "id": "missing-035",
-    "sentence": "Item 35: The word with the opposite meaning to “respected” is ____ .",
-    "answer": "notorious",
-    "clue": "Choose the antonym of “respected”.",
+    "sentence": "The capital city of Iceland is ____ .",
+    "answer": "Reykjavik",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "genuine",
-      "reward",
-      "notorious",
-      "expert"
+      "Dhaka",
+      "Bern",
+      "Reykjavik",
+      "Brasilia"
     ]
   },
   {
     "id": "missing-036",
-    "sentence": "Item 36: The word with the opposite meaning to “notorious” is ____ .",
-    "answer": "respected",
-    "clue": "Choose the antonym of “notorious”.",
+    "sentence": "The capital city of Spain is ____ .",
+    "answer": "Madrid",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "discord",
-      "respected",
-      "notorious",
-      "discourage"
+      "Brussels",
+      "Madrid",
+      "Cairo",
+      "Islamabad"
     ]
   },
   {
     "id": "missing-037",
-    "sentence": "Item 37: The word with the opposite meaning to “inflexible” is ____ .",
-    "answer": "versatile",
-    "clue": "Choose the antonym of “inflexible”.",
+    "sentence": "The capital city of Italy is ____ .",
+    "answer": "Rome",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "versatile",
-      "boastful",
-      "scatter",
-      "innocent"
+      "Rome",
+      "Nairobi",
+      "Kabul",
+      "Amsterdam"
     ]
   },
   {
     "id": "missing-038",
-    "sentence": "Item 38: The word with the opposite meaning to “versatile” is ____ .",
-    "answer": "inflexible",
-    "clue": "Choose the antonym of “versatile”.",
+    "sentence": "The capital city of Germany is ____ .",
+    "answer": "Berlin",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "attract",
-      "virtue",
-      "abrasive",
-      "inflexible"
+      "Bangkok",
+      "Beijing",
+      "Dublin",
+      "Berlin"
     ]
   },
   {
     "id": "missing-039",
-    "sentence": "Item 39: The word with the opposite meaning to “stingy” is ____ .",
-    "answer": "generous",
-    "clue": "Choose the antonym of “stingy”.",
+    "sentence": "The capital city of Cuba is ____ .",
+    "answer": "Havana",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "unpleasant",
-      "gullible",
-      "generous",
-      "chaos"
+      "Seoul",
+      "Reykjavik",
+      "Havana",
+      "Oslo"
     ]
   },
   {
     "id": "missing-040",
-    "sentence": "Item 40: The word with the opposite meaning to “generous” is ____ .",
-    "answer": "stingy",
-    "clue": "Choose the antonym of “generous”.",
+    "sentence": "The capital city of Mexico is ____ .",
+    "answer": "Mexico City",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "frequent",
-      "stingy",
-      "deep",
-      "favorable"
+      "Madrid",
+      "Mexico City",
+      "Stockholm",
+      "Hanoi"
     ]
   },
   {
     "id": "missing-041",
-    "sentence": "Item 41: The word with the opposite meaning to “arrogant” is ____ .",
-    "answer": "humble",
-    "clue": "Choose the antonym of “arrogant”.",
+    "sentence": "The capital city of Peru is ____ .",
+    "answer": "Lima",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "humble",
-      "positive",
-      "coherent",
-      "decelerate"
+      "Lima",
+      "Helsinki",
+      "Phnom Penh",
+      "Rome"
     ]
   },
   {
     "id": "missing-042",
-    "sentence": "Item 42: The word with the opposite meaning to “humble” is ____ .",
-    "answer": "arrogant",
-    "clue": "Choose the antonym of “humble”.",
+    "sentence": "The capital city of Chile is ____ .",
+    "answer": "Santiago",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "perilous",
-      "counterfeit",
-      "punish",
-      "arrogant"
+      "Copenhagen",
+      "Vientiane",
+      "Berlin",
+      "Santiago"
     ]
   },
   {
     "id": "missing-043",
-    "sentence": "Item 43: The word with the opposite meaning to “pessimistic” is ____ .",
-    "answer": "optimistic",
-    "clue": "Choose the antonym of “pessimistic”.",
+    "sentence": "The capital city of Argentina is ____ .",
+    "answer": "Buenos Aires",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "permit",
-      "poverty",
-      "optimistic",
-      "respected"
+      "Ulaanbaatar",
+      "Havana",
+      "Buenos Aires",
+      "Lisbon"
     ]
   },
   {
     "id": "missing-044",
-    "sentence": "Item 44: The word with the opposite meaning to “optimistic” is ____ .",
-    "answer": "pessimistic",
-    "clue": "Choose the antonym of “optimistic”.",
+    "sentence": "The capital city of Colombia is ____ .",
+    "answer": "Bogota",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "guilty",
-      "pessimistic",
-      "artificial",
-      "tighten"
+      "Mexico City",
+      "Bogota",
+      "Athens",
+      "Moscow"
     ]
   },
   {
     "id": "missing-045",
-    "sentence": "Item 45: The word with the opposite meaning to “opaque” is ____ .",
-    "answer": "transparent",
-    "clue": "Choose the antonym of “opaque”.",
+    "sentence": "The capital city of Morocco is ____ .",
+    "answer": "Rabat",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "transparent",
-      "repel",
-      "vice",
-      "arduous"
+      "Rabat",
+      "Ankara",
+      "Kyiv",
+      "Lima"
     ]
   },
   {
     "id": "missing-046",
-    "sentence": "Item 46: The word with the opposite meaning to “transparent” is ____ .",
-    "answer": "opaque",
-    "clue": "Choose the antonym of “transparent”.",
+    "sentence": "The capital city of Nigeria is ____ .",
+    "answer": "Abuja",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "order",
-      "selfless",
-      "resilient",
-      "opaque"
+      "Kathmandu",
+      "Warsaw",
+      "Santiago",
+      "Abuja"
     ]
   },
   {
     "id": "missing-047",
-    "sentence": "Item 47: The word with the opposite meaning to “permanent” is ____ .",
-    "answer": "temporary",
-    "clue": "Choose the antonym of “permanent”.",
+    "sentence": "The capital city of Ghana is ____ .",
+    "answer": "Accra",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "adverse",
-      "occasional",
-      "temporary",
-      "loose"
+      "Vienna",
+      "Buenos Aires",
+      "Accra",
+      "Thimphu"
     ]
   },
   {
     "id": "missing-048",
-    "sentence": "Item 48: The word with the opposite meaning to “temporary” is ____ .",
-    "answer": "permanent",
-    "clue": "Choose the antonym of “temporary”.",
+    "sentence": "The capital city of Ethiopia is ____ .",
+    "answer": "Addis Ababa",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "strengthen",
-      "permanent",
-      "negative",
-      "incoherent"
+      "Bogota",
+      "Addis Ababa",
+      "Dhaka",
+      "Bern"
     ]
   },
   {
     "id": "missing-049",
-    "sentence": "Item 49: The word with the opposite meaning to “occasional” is ____ .",
-    "answer": "frequent",
-    "clue": "Choose the antonym of “occasional”.",
+    "sentence": "The capital city of Tanzania is ____ .",
+    "answer": "Dodoma",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "frequent",
-      "safe",
-      "loyal",
-      "repair"
+      "Dodoma",
+      "Islamabad",
+      "Brussels",
+      "Rabat"
     ]
   },
   {
     "id": "missing-050",
-    "sentence": "Item 50: The word with the opposite meaning to “frequent” is ____ .",
-    "answer": "occasional",
-    "clue": "Choose the antonym of “frequent”.",
+    "sentence": "The capital city of New Zealand is ____ .",
+    "answer": "Wellington",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "versatile",
-      "forbid",
-      "wealth",
-      "occasional"
+      "Kabul",
+      "Amsterdam",
+      "Abuja",
+      "Wellington"
     ]
   },
   {
     "id": "missing-051",
-    "sentence": "Item 51: The word with the opposite meaning to “friendly” is ____ .",
-    "answer": "hostile",
-    "clue": "Choose the antonym of “friendly”.",
+    "sentence": "The chemical element with the symbol H is ____ .",
+    "answer": "Hydrogen",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "loosen",
-      "legal",
-      "hostile",
-      "natural"
+      "Scandium",
+      "Selenium",
+      "Silver",
+      "Hydrogen"
     ]
   },
   {
     "id": "missing-052",
-    "sentence": "Item 52: The word with the opposite meaning to “hostile” is ____ .",
-    "answer": "friendly",
-    "clue": "Choose the antonym of “hostile”.",
+    "sentence": "The chemical element with the symbol He is ____ .",
+    "answer": "Helium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "effortless",
-      "friendly",
-      "borrow",
-      "dawn"
+      "Bromine",
+      "Cadmium",
+      "Helium",
+      "Titanium"
     ]
   },
   {
     "id": "missing-053",
-    "sentence": "Item 53: The word with the opposite meaning to “dull” is ____ .",
-    "answer": "vivid",
-    "clue": "Choose the antonym of “dull”.",
+    "sentence": "The chemical element with the symbol Li is ____ .",
+    "answer": "Lithium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "vivid",
-      "generosity",
-      "selfish",
-      "fragile"
+      "Indium",
+      "Lithium",
+      "Vanadium",
+      "Krypton"
     ]
   },
   {
     "id": "missing-054",
-    "sentence": "Item 54: The word with the opposite meaning to “vivid” is ____ .",
-    "answer": "dull",
-    "clue": "Choose the antonym of “vivid”.",
+    "sentence": "The chemical element with the symbol Be is ____ .",
+    "answer": "Beryllium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "tight",
-      "feigned",
-      "hostile",
-      "dull"
+      "Beryllium",
+      "Chromium",
+      "Rubidium",
+      "Tin"
     ]
   },
   {
     "id": "missing-055",
-    "sentence": "Item 55: The word with the opposite meaning to “flexible” is ____ .",
-    "answer": "rigid",
-    "clue": "Choose the antonym of “flexible”.",
+    "sentence": "The chemical element with the symbol B is ____ .",
+    "answer": "Boron",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "diligent",
-      "weaken",
-      "rigid",
-      "private"
+      "Manganese",
+      "Strontium",
+      "Hydrogen",
+      "Boron"
     ]
   },
   {
     "id": "missing-056",
-    "sentence": "Item 56: The word with the opposite meaning to “rigid” is ____ .",
-    "answer": "flexible",
-    "clue": "Choose the antonym of “rigid”.",
+    "sentence": "The chemical element with the symbol C is ____ .",
+    "answer": "Carbon",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "damage",
-      "flexible",
-      "plentiful",
-      "treacherous"
+      "Yttrium",
+      "Helium",
+      "Carbon",
+      "Iron"
     ]
   },
   {
     "id": "missing-057",
-    "sentence": "Item 57: The word with the opposite meaning to “bold” is ____ .",
-    "answer": "timid",
-    "clue": "Choose the antonym of “bold”.",
+    "sentence": "The chemical element with the symbol N is ____ .",
+    "answer": "Nitrogen",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "timid",
-      "inflexible",
-      "remember",
-      "strength"
+      "Lithium",
+      "Nitrogen",
+      "Cobalt",
+      "Zirconium"
     ]
   },
   {
     "id": "missing-058",
-    "sentence": "Item 58: The word with the opposite meaning to “timid” is ____ .",
-    "answer": "bold",
-    "clue": "Choose the antonym of “timid”.",
+    "sentence": "The chemical element with the symbol O is ____ .",
+    "answer": "Oxygen",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "expand",
-      "connect",
-      "illegal",
-      "bold"
+      "Oxygen",
+      "Nickel",
+      "Niobium",
+      "Beryllium"
     ]
   },
   {
     "id": "missing-059",
-    "sentence": "Item 59: The word with the opposite meaning to “rude” is ____ .",
-    "answer": "courteous",
-    "clue": "Choose the antonym of “rude”.",
+    "sentence": "The chemical element with the symbol F is ____ .",
+    "answer": "Fluorine",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "dusk",
-      "brisk",
-      "courteous",
-      "lend"
+      "Copper",
+      "Molybdenum",
+      "Boron",
+      "Fluorine"
     ]
   },
   {
     "id": "missing-060",
-    "sentence": "Item 60: The word with the opposite meaning to “courteous” is ____ .",
-    "answer": "rude",
-    "clue": "Choose the antonym of “courteous”.",
+    "sentence": "The chemical element with the symbol Ne is ____ .",
+    "answer": "Neon",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "plausible",
-      "rude",
-      "greed",
-      "active"
+      "Technetium",
+      "Carbon",
+      "Neon",
+      "Zinc"
     ]
   },
   {
     "id": "missing-061",
-    "sentence": "Item 61: The word with the opposite meaning to “recent” is ____ .",
-    "answer": "ancient",
-    "clue": "Choose the antonym of “recent”.",
+    "sentence": "The chemical element with the symbol Na is ____ .",
+    "answer": "Sodium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "ancient",
-      "smooth",
-      "imminent",
-      "friendly"
+      "Nitrogen",
+      "Sodium",
+      "Gallium",
+      "Ruthenium"
     ]
   },
   {
     "id": "missing-062",
-    "sentence": "Item 62: The word with the opposite meaning to “ancient” is ____ .",
-    "answer": "recent",
-    "clue": "Choose the antonym of “ancient”.",
+    "sentence": "The chemical element with the symbol Mg is ____ .",
+    "answer": "Magnesium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "public",
-      "idle",
-      "approve",
-      "recent"
+      "Magnesium",
+      "Germanium",
+      "Rhodium",
+      "Oxygen"
     ]
   },
   {
     "id": "missing-063",
-    "sentence": "Item 63: The word with the opposite meaning to “counterfeit” is ____ .",
-    "answer": "genuine",
-    "clue": "Choose the antonym of “counterfeit”.",
+    "sentence": "The chemical element with the symbol Al is ____ .",
+    "answer": "Aluminium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "patient",
-      "support",
-      "genuine",
-      "meagre"
+      "Arsenic",
+      "Palladium",
+      "Fluorine",
+      "Aluminium"
     ]
   },
   {
     "id": "missing-064",
-    "sentence": "Item 64: The word with the opposite meaning to “genuine” is ____ .",
-    "answer": "counterfeit",
-    "clue": "Choose the antonym of “genuine”.",
+    "sentence": "The chemical element with the symbol Si is ____ .",
+    "answer": "Silicon",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "weakness",
-      "counterfeit",
-      "generous",
-      "forget"
+      "Silver",
+      "Neon",
+      "Silicon",
+      "Selenium"
     ]
   },
   {
     "id": "missing-065",
-    "sentence": "Item 65: The word with the opposite meaning to “treacherous” is ____ .",
-    "answer": "loyal",
-    "clue": "Choose the antonym of “treacherous”.",
+    "sentence": "The chemical element with the symbol P is ____ .",
+    "answer": "Phosphorus",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "loyal",
-      "contract",
-      "disconnect",
-      "regular"
+      "Sodium",
+      "Phosphorus",
+      "Bromine",
+      "Cadmium"
     ]
   },
   {
     "id": "missing-066",
-    "sentence": "Item 66: The word with the opposite meaning to “loyal” is ____ .",
-    "answer": "treacherous",
-    "clue": "Choose the antonym of “loyal”.",
+    "sentence": "The chemical element with the symbol S is ____ .",
+    "answer": "Sulfur",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "omit",
-      "noisy",
-      "sluggish",
-      "treacherous"
+      "Sulfur",
+      "Krypton",
+      "Indium",
+      "Magnesium"
     ]
   },
   {
     "id": "missing-067",
-    "sentence": "Item 67: The word with the opposite meaning to “impatient” is ____ .",
-    "answer": "patient",
-    "clue": "Choose the antonym of “impatient”.",
+    "sentence": "The chemical element with the symbol Cl is ____ .",
+    "answer": "Chlorine",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "passive",
-      "implausible",
-      "patient",
-      "courage"
+      "Rubidium",
+      "Tin",
+      "Aluminium",
+      "Chlorine"
     ]
   },
   {
     "id": "missing-068",
-    "sentence": "Item 68: The word with the opposite meaning to “patient” is ____ .",
-    "answer": "impatient",
-    "clue": "Choose the antonym of “patient”.",
+    "sentence": "The chemical element with the symbol Ar is ____ .",
+    "answer": "Argon",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "vivid",
-      "impatient",
-      "rough",
-      "remote"
+      "Hydrogen",
+      "Silicon",
+      "Argon",
+      "Strontium"
     ]
   },
   {
     "id": "missing-069",
-    "sentence": "Item 69: The word with the opposite meaning to “inaccurate” is ____ .",
-    "answer": "accurate",
-    "clue": "Choose the antonym of “inaccurate”.",
+    "sentence": "The chemical element with the symbol K is ____ .",
+    "answer": "Potassium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "accurate",
-      "rigorous",
-      "formidable",
-      "disapprove"
+      "Phosphorus",
+      "Potassium",
+      "Yttrium",
+      "Helium"
     ]
   },
   {
     "id": "missing-070",
-    "sentence": "Item 70: The word with the opposite meaning to “accurate” is ____ .",
-    "answer": "inaccurate",
-    "clue": "Choose the antonym of “accurate”.",
+    "sentence": "The chemical element with the symbol Ca is ____ .",
+    "answer": "Calcium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "rational",
-      "impatient",
-      "oppose",
-      "inaccurate"
+      "Calcium",
+      "Zirconium",
+      "Lithium",
+      "Sulfur"
     ]
   },
   {
     "id": "missing-071",
-    "sentence": "Item 71: The word with the opposite meaning to “specific” is ____ .",
-    "answer": "vague",
-    "clue": "Choose the antonym of “specific”.",
+    "sentence": "The chemical element with the symbol Sc is ____ .",
+    "answer": "Scandium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "succeed",
-      "success",
-      "vague",
-      "stingy"
+      "Niobium",
+      "Beryllium",
+      "Chlorine",
+      "Scandium"
     ]
   },
   {
     "id": "missing-072",
-    "sentence": "Item 72: The word with the opposite meaning to “vague” is ____ .",
-    "answer": "specific",
-    "clue": "Choose the antonym of “vague”.",
+    "sentence": "The chemical element with the symbol Ti is ____ .",
+    "answer": "Titanium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "irregular",
-      "specific",
-      "accept",
-      "arrange"
+      "Boron",
+      "Argon",
+      "Titanium",
+      "Molybdenum"
     ]
   },
   {
     "id": "missing-073",
-    "sentence": "Item 73: The word with the opposite meaning to “simple” is ____ .",
-    "answer": "complex",
-    "clue": "Choose the antonym of “simple”.",
+    "sentence": "The chemical element with the symbol V is ____ .",
+    "answer": "Vanadium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "complex",
-      "expose",
-      "silent",
-      "candid"
+      "Potassium",
+      "Vanadium",
+      "Technetium",
+      "Carbon"
     ]
   },
   {
     "id": "missing-074",
-    "sentence": "Item 74: The word with the opposite meaning to “complex” is ____ .",
-    "answer": "simple",
-    "clue": "Choose the antonym of “complex”.",
+    "sentence": "The chemical element with the symbol Cr is ____ .",
+    "answer": "Chromium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "cowardice",
-      "vacant",
-      "concise",
-      "simple"
+      "Chromium",
+      "Ruthenium",
+      "Nitrogen",
+      "Calcium"
     ]
   },
   {
     "id": "missing-075",
-    "sentence": "Item 75: The word with the opposite meaning to “rash” is ____ .",
-    "answer": "cautious",
-    "clue": "Choose the antonym of “rash”.",
+    "sentence": "The chemical element with the symbol Mn is ____ .",
+    "answer": "Manganese",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "innovative",
-      "dull",
-      "cautious",
-      "bitter"
+      "Rhodium",
+      "Oxygen",
+      "Scandium",
+      "Manganese"
     ]
   },
   {
     "id": "missing-076",
-    "sentence": "Item 76: The word with the opposite meaning to “cautious” is ____ .",
-    "answer": "rash",
-    "clue": "Choose the antonym of “cautious”.",
+    "sentence": "The chemical element with the symbol Fe is ____ .",
+    "answer": "Iron",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "combine",
-      "rash",
-      "lenient",
-      "manageable"
+      "Fluorine",
+      "Titanium",
+      "Iron",
+      "Palladium"
     ]
   },
   {
     "id": "missing-077",
-    "sentence": "Item 77: The word with the opposite meaning to “boastful” is ____ .",
-    "answer": "modest",
-    "clue": "Choose the antonym of “boastful”.",
+    "sentence": "The chemical element with the symbol Co is ____ .",
+    "answer": "Cobalt",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "modest",
-      "irrational",
-      "accurate",
-      "whisper"
+      "Vanadium",
+      "Cobalt",
+      "Silver",
+      "Neon"
     ]
   },
   {
     "id": "missing-078",
-    "sentence": "Item 78: The word with the opposite meaning to “modest” is ____ .",
-    "answer": "boastful",
-    "clue": "Choose the antonym of “modest”.",
+    "sentence": "The chemical element with the symbol Ni is ____ .",
+    "answer": "Nickel",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "humble",
-      "fail",
-      "failure",
-      "boastful"
+      "Nickel",
+      "Cadmium",
+      "Sodium",
+      "Chromium"
     ]
   },
   {
     "id": "missing-079",
-    "sentence": "Item 79: The word with the opposite meaning to “natural” is ____ .",
-    "answer": "artificial",
-    "clue": "Choose the antonym of “natural”.",
+    "sentence": "The chemical element with the symbol Cu is ____ .",
+    "answer": "Copper",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "disorder",
-      "possible",
-      "artificial",
-      "reject"
+      "Indium",
+      "Magnesium",
+      "Manganese",
+      "Copper"
     ]
   },
   {
     "id": "missing-080",
-    "sentence": "Item 80: The word with the opposite meaning to “artificial” is ____ .",
-    "answer": "natural",
-    "clue": "Choose the antonym of “artificial”.",
+    "sentence": "The chemical element with the symbol Zn is ____ .",
+    "answer": "Zinc",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "evasive",
-      "natural",
-      "shield",
-      "visible"
+      "Aluminium",
+      "Iron",
+      "Zinc",
+      "Tin"
     ]
   },
   {
     "id": "missing-081",
-    "sentence": "Item 81: The word with the opposite meaning to “contract” is ____ .",
-    "answer": "expand",
-    "clue": "Choose the antonym of “contract”.",
+    "sentence": "The chemical element with the symbol Ga is ____ .",
+    "answer": "Gallium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "expand",
-      "wisdom",
-      "occupied",
-      "verbose"
+      "Cobalt",
+      "Gallium",
+      "Hydrogen",
+      "Silicon"
     ]
   },
   {
     "id": "missing-082",
-    "sentence": "Item 82: The word with the opposite meaning to “expand” is ____ .",
-    "answer": "contract",
-    "clue": "Choose the antonym of “expand”.",
+    "sentence": "The chemical element with the symbol Ge is ____ .",
+    "answer": "Germanium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "sweet",
-      "conventional",
-      "rigid",
-      "contract"
+      "Germanium",
+      "Helium",
+      "Phosphorus",
+      "Nickel"
     ]
   },
   {
     "id": "missing-083",
-    "sentence": "Item 83: The word with the opposite meaning to “reject” is ____ .",
-    "answer": "accept",
-    "clue": "Choose the antonym of “reject”.",
+    "sentence": "The chemical element with the symbol As is ____ .",
+    "answer": "Arsenic",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "prudent",
-      "separate",
-      "accept",
-      "authentic"
+      "Lithium",
+      "Sulfur",
+      "Copper",
+      "Arsenic"
     ]
   },
   {
     "id": "missing-084",
-    "sentence": "Item 84: The word with the opposite meaning to “accept” is ____ .",
-    "answer": "reject",
-    "clue": "Choose the antonym of “accept”.",
+    "sentence": "The chemical element with the symbol Se is ____ .",
+    "answer": "Selenium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "shout",
-      "reject",
-      "relentless",
-      "inaccurate"
+      "Chlorine",
+      "Zinc",
+      "Selenium",
+      "Beryllium"
     ]
   },
   {
     "id": "missing-085",
-    "sentence": "Item 85: The word with the opposite meaning to “exclude” is ____ .",
-    "answer": "include",
-    "clue": "Choose the antonym of “exclude”.",
+    "sentence": "The chemical element with the symbol Br is ____ .",
+    "answer": "Bromine",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "include",
-      "arrogant",
-      "advance",
-      "friend"
+      "Gallium",
+      "Bromine",
+      "Boron",
+      "Argon"
     ]
   },
   {
     "id": "missing-086",
-    "sentence": "Item 86: The word with the opposite meaning to “include” is ____ .",
-    "answer": "exclude",
-    "clue": "Choose the antonym of “include”.",
+    "sentence": "The chemical element with the symbol Kr is ____ .",
+    "answer": "Krypton",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "include",
-      "victory",
-      "impossible",
-      "exclude"
+      "Krypton",
+      "Carbon",
+      "Potassium",
+      "Germanium"
     ]
   },
   {
     "id": "missing-087",
-    "sentence": "Item 87: The word with the opposite meaning to “descend” is ____ .",
-    "answer": "ascend",
-    "clue": "Choose the antonym of “descend”.",
+    "sentence": "The chemical element with the symbol Rb is ____ .",
+    "answer": "Rubidium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "hidden",
-      "composed",
-      "ascend",
-      "complicate"
+      "Nitrogen",
+      "Calcium",
+      "Arsenic",
+      "Rubidium"
     ]
   },
   {
     "id": "missing-088",
-    "sentence": "Item 88: The word with the opposite meaning to “ascend” is ____ .",
-    "answer": "descend",
-    "clue": "Choose the antonym of “ascend”.",
+    "sentence": "The chemical element with the symbol Sr is ____ .",
+    "answer": "Strontium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "impartial",
-      "descend",
-      "foolishness",
-      "domestic"
+      "Scandium",
+      "Selenium",
+      "Strontium",
+      "Oxygen"
     ]
   },
   {
     "id": "missing-089",
-    "sentence": "Item 89: The word with the opposite meaning to “reveal” is ____ .",
-    "answer": "conceal",
-    "clue": "Choose the antonym of “reveal”.",
+    "sentence": "The chemical element with the symbol Y is ____ .",
+    "answer": "Yttrium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "conceal",
-      "tender",
-      "lucid",
-      "flexible"
+      "Bromine",
+      "Yttrium",
+      "Fluorine",
+      "Titanium"
     ]
   },
   {
     "id": "missing-090",
-    "sentence": "Item 90: The word with the opposite meaning to “conceal” is ____ .",
-    "answer": "reveal",
-    "clue": "Choose the antonym of “conceal”.",
+    "sentence": "The chemical element with the symbol Zr is ____ .",
+    "answer": "Zirconium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "spurious",
-      "reckless",
-      "create",
-      "reveal"
+      "Zirconium",
+      "Neon",
+      "Vanadium",
+      "Krypton"
     ]
   },
   {
     "id": "missing-091",
-    "sentence": "Item 91: The word with the opposite meaning to “decelerate” is ____ .",
-    "answer": "accelerate",
-    "clue": "Choose the antonym of “decelerate”.",
+    "sentence": "The chemical element with the symbol Nb is ____ .",
+    "answer": "Niobium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "vague",
-      "vanish",
-      "accelerate",
-      "merciful"
+      "Sodium",
+      "Chromium",
+      "Rubidium",
+      "Niobium"
     ]
   },
   {
     "id": "missing-092",
-    "sentence": "Item 92: The word with the opposite meaning to “accelerate” is ____ .",
-    "answer": "decelerate",
-    "clue": "Choose the antonym of “accelerate”.",
+    "sentence": "The chemical element with the symbol Mo is ____ .",
+    "answer": "Molybdenum",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "enemy",
-      "decelerate",
-      "optimistic",
-      "retreat"
+      "Manganese",
+      "Strontium",
+      "Molybdenum",
+      "Magnesium"
     ]
   },
   {
     "id": "missing-093",
-    "sentence": "Item 93: The word with the opposite meaning to “weaken” is ____ .",
-    "answer": "strengthen",
-    "clue": "Choose the antonym of “weaken”.",
+    "sentence": "The chemical element with the symbol Tc is ____ .",
+    "answer": "Technetium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "strengthen",
-      "exclude",
-      "defeat",
-      "logical"
+      "Yttrium",
+      "Technetium",
+      "Aluminium",
+      "Iron"
     ]
   },
   {
     "id": "missing-094",
-    "sentence": "Item 94: The word with the opposite meaning to “strengthen” is ____ .",
-    "answer": "weaken",
-    "clue": "Choose the antonym of “strengthen”.",
+    "sentence": "The chemical element with the symbol Ru is ____ .",
+    "answer": "Ruthenium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "simplify",
-      "asleep",
-      "flustered",
-      "weaken"
+      "Ruthenium",
+      "Silicon",
+      "Cobalt",
+      "Zirconium"
     ]
   },
   {
     "id": "missing-095",
-    "sentence": "Item 95: The word with the opposite meaning to “disapprove” is ____ .",
-    "answer": "approve",
-    "clue": "Choose the antonym of “disapprove”.",
+    "sentence": "The chemical element with the symbol Rh is ____ .",
+    "answer": "Rhodium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "foreign",
-      "biased",
-      "approve",
-      "honesty"
+      "Phosphorus",
+      "Nickel",
+      "Niobium",
+      "Rhodium"
     ]
   },
   {
     "id": "missing-096",
-    "sentence": "Item 96: The word with the opposite meaning to “approve” is ____ .",
-    "answer": "disapprove",
-    "clue": "Choose the antonym of “approve”.",
+    "sentence": "The chemical element with the symbol Pd is ____ .",
+    "answer": "Palladium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "timid",
-      "disapprove",
-      "tough",
-      "confusing"
+      "Copper",
+      "Molybdenum",
+      "Palladium",
+      "Sulfur"
     ]
   },
   {
     "id": "missing-097",
-    "sentence": "Item 97: The word with the opposite meaning to “separate” is ____ .",
-    "answer": "combine",
-    "clue": "Choose the antonym of “separate”.",
+    "sentence": "The chemical element with the symbol Ag is ____ .",
+    "answer": "Silver",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "combine",
-      "eloquent",
-      "trivial",
-      "destroy"
+      "Technetium",
+      "Silver",
+      "Chlorine",
+      "Zinc"
     ]
   },
   {
     "id": "missing-098",
-    "sentence": "Item 98: The word with the opposite meaning to “combine” is ____ .",
-    "answer": "separate",
-    "clue": "Choose the antonym of “combine”.",
+    "sentence": "The chemical element with the symbol Cd is ____ .",
+    "answer": "Cadmium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "meticulous",
-      "specific",
-      "appear",
-      "separate"
+      "Cadmium",
+      "Argon",
+      "Gallium",
+      "Ruthenium"
     ]
   },
   {
     "id": "missing-099",
-    "sentence": "Item 99: The word with the opposite meaning to “destroy” is ____ .",
-    "answer": "create",
-    "clue": "Choose the antonym of “destroy”.",
+    "sentence": "The chemical element with the symbol In is ____ .",
+    "answer": "Indium",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "construct",
-      "beginning",
-      "create",
-      "pessimistic"
+      "Potassium",
+      "Germanium",
+      "Rhodium",
+      "Indium"
     ]
   },
   {
     "id": "missing-100",
-    "sentence": "Item 100: The word with the opposite meaning to “create” is ____ .",
-    "answer": "destroy",
-    "clue": "Choose the antonym of “create”.",
+    "sentence": "The chemical element with the symbol Sn is ____ .",
+    "answer": "Tin",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "illogical",
-      "destroy",
-      "ascend",
-      "arrival"
+      "Arsenic",
+      "Palladium",
+      "Tin",
+      "Calcium"
     ]
   },
   {
     "id": "missing-101",
-    "sentence": "Item 101: The word with the opposite meaning to “depart” is ____ .",
-    "answer": "arrive",
-    "clue": "Choose the antonym of “depart”.",
+    "sentence": "The author of “Hamlet” is ____ .",
+    "answer": "Shakespeare",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "arrive",
-      "preserve",
-      "awake",
-      "decisive"
+      "John Steinbeck",
+      "Sun Tzu",
+      "Shakespeare",
+      "Munshi Premchand"
     ]
   },
   {
     "id": "missing-102",
-    "sentence": "Item 102: The word with the opposite meaning to “arrive” is ____ .",
-    "answer": "depart",
-    "clue": "Choose the antonym of “arrive”.",
+    "sentence": "The author of “Pride and Prejudice” is ____ .",
+    "answer": "Jane Austen",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "deceit",
-      "minor",
-      "ambiguous",
-      "depart"
+      "Anne Frank",
+      "Jane Austen",
+      "Kalidasa",
+      "Harper Lee"
     ]
   },
   {
     "id": "missing-103",
-    "sentence": "Item 103: The word with the opposite meaning to “decrease” is ____ .",
-    "answer": "increase",
-    "clue": "Choose the antonym of “decrease”.",
+    "sentence": "The author of “Oliver Twist” is ____ .",
+    "answer": "Charles Dickens",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "mandatory",
-      "bold",
-      "increase",
-      "mature"
+      "Charles Dickens",
+      "Homer",
+      "Toni Morrison",
+      "Alexandre Dumas"
     ]
   },
   {
     "id": "missing-104",
-    "sentence": "Item 104: The word with the opposite meaning to “increase” is ____ .",
-    "answer": "decrease",
-    "clue": "Choose the antonym of “increase”.",
+    "sentence": "The author of “Nineteen Eighty-Four” is ____ .",
+    "answer": "George Orwell",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "arrive",
-      "decrease",
-      "inarticulate",
-      "significant"
+      "Virgil",
+      "Agatha Christie",
+      "Homer",
+      "George Orwell"
     ]
   },
   {
     "id": "missing-105",
-    "sentence": "Item 105: The word with the opposite meaning to “discourage” is ____ .",
-    "answer": "encourage",
-    "clue": "Choose the antonym of “discourage”.",
+    "sentence": "The author of “Brave New World” is ____ .",
+    "answer": "Aldous Huxley",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "encourage",
-      "careless",
-      "complex",
-      "melt"
+      "Arthur Conan Doyle",
+      "Shakespeare",
+      "Aldous Huxley",
+      "Dante Alighieri"
     ]
   },
   {
     "id": "missing-106",
-    "sentence": "Item 106: The word with the opposite meaning to “encourage” is ____ .",
-    "answer": "discourage",
-    "clue": "Choose the antonym of “encourage”.",
+    "sentence": "The author of “The Hobbit” is ____ .",
+    "answer": "J R R Tolkien",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "transparent",
-      "demolish",
-      "ending",
-      "discourage"
+      "Jane Austen",
+      "J R R Tolkien",
+      "Geoffrey Chaucer",
+      "Bram Stoker"
     ]
   },
   {
     "id": "missing-107",
-    "sentence": "Item 107: The word with the opposite meaning to “forbid” is ____ .",
-    "answer": "permit",
-    "clue": "Choose the antonym of “forbid”.",
+    "sentence": "The author of “Harry Potter and the Philosopher's Stone” is ____ .",
+    "answer": "J K Rowling",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "departure",
-      "calm",
-      "permit",
-      "descend"
+      "J K Rowling",
+      "John Milton",
+      "Oscar Wilde",
+      "Charles Dickens"
     ]
   },
   {
     "id": "missing-108",
-    "sentence": "Item 108: The word with the opposite meaning to “permit” is ____ .",
-    "answer": "forbid",
-    "clue": "Choose the antonym of “permit”.",
+    "sentence": "The author of “Tom Sawyer” is ____ .",
+    "answer": "Mark Twain",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "indecisive",
-      "forbid",
-      "neglect",
-      "empty"
+      "Daniel Defoe",
+      "H G Wells",
+      "George Orwell",
+      "Mark Twain"
     ]
   },
   {
     "id": "missing-109",
-    "sentence": "Item 109: The word with the opposite meaning to “forget” is ____ .",
-    "answer": "remember",
-    "clue": "Choose the antonym of “forget”.",
+    "sentence": "The author of “Moby-Dick” is ____ .",
+    "answer": "Herman Melville",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "remember",
-      "freedom",
-      "major",
-      "unequivocal"
+      "Jules Verne",
+      "Aldous Huxley",
+      "Herman Melville",
+      "Jonathan Swift"
     ]
   },
   {
     "id": "missing-110",
-    "sentence": "Item 110: The word with the opposite meaning to “remember” is ____ .",
-    "answer": "forget",
-    "clue": "Choose the antonym of “remember”.",
+    "sentence": "The author of “Wuthering Heights” is ____ .",
+    "answer": "Emily Bronte",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "immature",
-      "optional",
-      "courteous",
-      "forget"
+      "J R R Tolkien",
+      "Emily Bronte",
+      "Frances Hodgson Burnett",
+      "Antoine de Saint-Exupery"
     ]
   },
   {
     "id": "missing-111",
-    "sentence": "Item 111: The word with the opposite meaning to “fail” is ____ .",
-    "answer": "succeed",
-    "clue": "Choose the antonym of “fail”.",
+    "sentence": "The author of “Jane Eyre” is ____ .",
+    "answer": "Charlotte Bronte",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "profound",
-      "depart",
-      "succeed",
-      "benevolent"
+      "Charlotte Bronte",
+      "Louisa May Alcott",
+      "Paulo Coelho",
+      "J K Rowling"
     ]
   },
   {
     "id": "missing-112",
-    "sentence": "Item 112: The word with the opposite meaning to “succeed” is ____ .",
-    "answer": "fail",
-    "clue": "Choose the antonym of “succeed”.",
+    "sentence": "The author of “Frankenstein” is ____ .",
+    "answer": "Mary Shelley",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "freeze",
-      "fail",
-      "reluctant",
-      "simple"
+      "F Scott Fitzgerald",
+      "Khaled Hosseini",
+      "Mark Twain",
+      "Mary Shelley"
     ]
   },
   {
     "id": "missing-113",
-    "sentence": "Item 113: The word with the opposite meaning to “retreat” is ____ .",
-    "answer": "advance",
-    "clue": "Choose the antonym of “retreat”.",
+    "sentence": "The author of “War and Peace” is ____ .",
+    "answer": "Leo Tolstoy",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "advance",
-      "opaque",
-      "protect",
-      "entrance"
+      "Isabel Allende",
+      "Herman Melville",
+      "Leo Tolstoy",
+      "Ernest Hemingway"
     ]
   },
   {
     "id": "missing-114",
-    "sentence": "Item 114: The word with the opposite meaning to “advance” is ____ .",
-    "answer": "retreat",
-    "clue": "Choose the antonym of “advance”.",
+    "sentence": "The author of “Crime and Punishment” is ____ .",
+    "answer": "Fyodor Dostoevsky",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "conceal",
-      "maximum",
-      "agitated",
-      "retreat"
+      "Emily Bronte",
+      "Fyodor Dostoevsky",
+      "John Steinbeck",
+      "Sun Tzu"
     ]
   },
   {
     "id": "missing-115",
-    "sentence": "Item 115: The word with the opposite meaning to “demolish” is ____ .",
-    "answer": "construct",
-    "clue": "Choose the antonym of “demolish”.",
+    "sentence": "The author of “Les Miserables” is ____ .",
+    "answer": "Victor Hugo",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "full",
-      "economical",
-      "construct",
-      "praise"
+      "Victor Hugo",
+      "Harper Lee",
+      "Anne Frank",
+      "Charlotte Bronte"
     ]
   },
   {
     "id": "missing-116",
-    "sentence": "Item 116: The word with the opposite meaning to “construct” is ____ .",
-    "answer": "demolish",
-    "clue": "Choose the antonym of “construct”.",
+    "sentence": "The author of “Don Quixote” is ____ .",
+    "answer": "Miguel de Cervantes",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "obsolete",
-      "demolish",
-      "captivity",
-      "interior"
+      "Toni Morrison",
+      "Alexandre Dumas",
+      "Mary Shelley",
+      "Miguel de Cervantes"
     ]
   },
   {
     "id": "missing-117",
-    "sentence": "Item 117: The word with the opposite meaning to “endanger” is ____ .",
-    "answer": "protect",
-    "clue": "Choose the antonym of “endanger”.",
+    "sentence": "The author of “One Hundred Years of Solitude” is ____ .",
+    "answer": "Gabriel Garcia Marquez",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "protect",
-      "fertile",
-      "mundane",
-      "rude"
+      "Homer",
+      "Leo Tolstoy",
+      "Gabriel Garcia Marquez",
+      "Agatha Christie"
     ]
   },
   {
     "id": "missing-118",
-    "sentence": "Item 118: The word with the opposite meaning to “protect” is ____ .",
-    "answer": "endanger",
-    "clue": "Choose the antonym of “protect”.",
+    "sentence": "The author of “Things Fall Apart” is ____ .",
+    "answer": "Chinua Achebe",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "malevolent",
-      "superficial",
-      "increase",
-      "endanger"
+      "Fyodor Dostoevsky",
+      "Chinua Achebe",
+      "Arthur Conan Doyle",
+      "Shakespeare"
     ]
   },
   {
     "id": "missing-119",
-    "sentence": "Item 119: The word with the opposite meaning to “divide” is ____ .",
-    "answer": "unite",
-    "clue": "Choose the antonym of “divide”.",
+    "sentence": "The author of “Gitanjali” is ____ .",
+    "answer": "Rabindranath Tagore",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "cautious",
-      "float",
-      "unite",
-      "eager"
+      "Rabindranath Tagore",
+      "Bram Stoker",
+      "Jane Austen",
+      "Victor Hugo"
     ]
   },
   {
     "id": "missing-120",
-    "sentence": "Item 120: The word with the opposite meaning to “unite” is ____ .",
-    "answer": "divide",
-    "clue": "Choose the antonym of “unite”.",
+    "sentence": "The author of “The Guide” is ____ .",
+    "answer": "R K Narayan",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "exit",
-      "divide",
-      "temporary",
-      "endanger"
+      "Oscar Wilde",
+      "Charles Dickens",
+      "Miguel de Cervantes",
+      "R K Narayan"
     ]
   },
   {
     "id": "missing-121",
-    "sentence": "Item 121: The word with the opposite meaning to “repel” is ____ .",
-    "answer": "attract",
-    "clue": "Choose the antonym of “repel”.",
+    "sentence": "The author of “Godaan” is ____ .",
+    "answer": "Munshi Premchand",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "attract",
-      "reveal",
-      "minimum",
-      "cheerful"
+      "George Orwell",
+      "Gabriel Garcia Marquez",
+      "Munshi Premchand",
+      "H G Wells"
     ]
   },
   {
     "id": "missing-122",
-    "sentence": "Item 122: The word with the opposite meaning to “attract” is ____ .",
-    "answer": "repel",
-    "clue": "Choose the antonym of “attract”.",
+    "sentence": "The author of “Shakuntala” is ____ .",
+    "answer": "Kalidasa",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "criticize",
-      "narrow",
-      "wasteful",
-      "repel"
+      "Chinua Achebe",
+      "Kalidasa",
+      "Jules Verne",
+      "Aldous Huxley"
     ]
   },
   {
     "id": "missing-123",
-    "sentence": "Item 123: The word with the opposite meaning to “lend” is ____ .",
-    "answer": "borrow",
-    "clue": "Choose the antonym of “lend”.",
+    "sentence": "The author of “The Odyssey” is ____ .",
+    "answer": "Homer",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "exterior",
-      "modern",
-      "borrow",
-      "harmony"
+      "Homer",
+      "Antoine de Saint-Exupery",
+      "J R R Tolkien",
+      "Rabindranath Tagore"
     ]
   },
   {
     "id": "missing-124",
-    "sentence": "Item 124: The word with the opposite meaning to “borrow” is ____ .",
-    "answer": "lend",
-    "clue": "Choose the antonym of “borrow”.",
+    "sentence": "The author of “The Aeneid” is ____ .",
+    "answer": "Virgil",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "ancient",
-      "lend",
-      "barren",
-      "extraordinary"
+      "Paulo Coelho",
+      "J K Rowling",
+      "R K Narayan",
+      "Virgil"
     ]
   },
   {
     "id": "missing-125",
-    "sentence": "Item 125: The word with the opposite meaning to “include” is ____ .",
-    "answer": "omit",
-    "clue": "Choose the antonym of “include”.",
+    "sentence": "The author of “The Divine Comedy” is ____ .",
+    "answer": "Dante Alighieri",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "omit",
-      "amiable",
-      "feasible",
-      "decrease"
+      "Mark Twain",
+      "Munshi Premchand",
+      "Dante Alighieri",
+      "Khaled Hosseini"
     ]
   },
   {
     "id": "missing-126",
-    "sentence": "Item 126: The word with the opposite meaning to “shield” is ____ .",
-    "answer": "expose",
-    "clue": "Choose the antonym of “shield”.",
+    "sentence": "The author of “The Canterbury Tales” is ____ .",
+    "answer": "Geoffrey Chaucer",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "skeptical",
-      "rash",
-      "sink",
-      "expose"
+      "Kalidasa",
+      "Geoffrey Chaucer",
+      "Isabel Allende",
+      "Herman Melville"
     ]
   },
   {
     "id": "missing-127",
-    "sentence": "Item 127: The word with the opposite meaning to “expose” is ____ .",
-    "answer": "shield",
-    "clue": "Choose the antonym of “expose”.",
+    "sentence": "The author of “Paradise Lost” is ____ .",
+    "answer": "John Milton",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "unite",
-      "fiction",
-      "shield",
-      "permanent"
+      "John Milton",
+      "Sun Tzu",
+      "Emily Bronte",
+      "Homer"
     ]
   },
   {
     "id": "missing-128",
-    "sentence": "Item 128: The word with the opposite meaning to “simplify” is ____ .",
-    "answer": "complicate",
-    "clue": "Choose the antonym of “simplify”.",
+    "sentence": "The author of “Robinson Crusoe” is ____ .",
+    "answer": "Daniel Defoe",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "miserable",
-      "complicate",
-      "accelerate",
-      "optimism"
+      "Anne Frank",
+      "Charlotte Bronte",
+      "Virgil",
+      "Daniel Defoe"
     ]
   },
   {
     "id": "missing-129",
-    "sentence": "Item 129: The word with the opposite meaning to “complicate” is ____ .",
-    "answer": "simplify",
-    "clue": "Choose the antonym of “complicate”.",
+    "sentence": "The author of “Gulliver's Travels” is ____ .",
+    "answer": "Jonathan Swift",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "simplify",
-      "reward",
-      "broad",
-      "explicit"
+      "Mary Shelley",
+      "Dante Alighieri",
+      "Jonathan Swift",
+      "Alexandre Dumas"
     ]
   },
   {
     "id": "missing-130",
-    "sentence": "Item 130: The word with the opposite meaning to “neglect” is ____ .",
-    "answer": "preserve",
-    "clue": "Choose the antonym of “neglect”.",
+    "sentence": "The author of “The Secret Garden” is ____ .",
+    "answer": "Frances Hodgson Burnett",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "discord",
-      "superior",
-      "scarce",
-      "preserve"
+      "Geoffrey Chaucer",
+      "Frances Hodgson Burnett",
+      "Homer",
+      "Leo Tolstoy"
     ]
   },
   {
     "id": "missing-131",
-    "sentence": "Item 131: The word with the opposite meaning to “preserve” is ____ .",
-    "answer": "neglect",
-    "clue": "Choose the antonym of “preserve”.",
+    "sentence": "The author of “Little Women” is ____ .",
+    "answer": "Louisa May Alcott",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "novice",
-      "recent",
-      "neglect",
-      "innocent"
+      "Louisa May Alcott",
+      "Shakespeare",
+      "Fyodor Dostoevsky",
+      "John Milton"
     ]
   },
   {
     "id": "missing-132",
-    "sentence": "Item 132: The word with the opposite meaning to “criticize” is ____ .",
-    "answer": "praise",
-    "clue": "Choose the antonym of “criticize”.",
+    "sentence": "The author of “The Great Gatsby” is ____ .",
+    "answer": "F Scott Fitzgerald",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "encourage",
-      "praise",
-      "abrasive",
-      "impractical"
+      "Jane Austen",
+      "Victor Hugo",
+      "Daniel Defoe",
+      "F Scott Fitzgerald"
     ]
   },
   {
     "id": "missing-133",
-    "sentence": "Item 133: The word with the opposite meaning to “praise” is ____ .",
-    "answer": "criticize",
-    "clue": "Choose the antonym of “praise”.",
+    "sentence": "The author of “The Old Man and the Sea” is ____ .",
+    "answer": "Ernest Hemingway",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "criticize",
-      "gullible",
-      "modest",
-      "gather"
+      "Miguel de Cervantes",
+      "Jonathan Swift",
+      "Ernest Hemingway",
+      "Charles Dickens"
     ]
   },
   {
     "id": "missing-134",
-    "sentence": "Item 134: The word with the opposite meaning to “punish” is ____ .",
-    "answer": "reward",
-    "clue": "Choose the antonym of “punish”.",
+    "sentence": "The author of “The Grapes of Wrath” is ____ .",
+    "answer": "John Steinbeck",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "frequent",
-      "divide",
-      "fact",
-      "reward"
+      "Frances Hodgson Burnett",
+      "John Steinbeck",
+      "George Orwell",
+      "Gabriel Garcia Marquez"
     ]
   },
   {
     "id": "missing-135",
-    "sentence": "Item 135: The word with the opposite meaning to “reward” is ____ .",
-    "answer": "punish",
-    "clue": "Choose the antonym of “reward”.",
+    "sentence": "The author of “To Kill a Mockingbird” is ____ .",
+    "answer": "Harper Lee",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "despair",
-      "pleasant",
-      "punish",
-      "decelerate"
+      "Harper Lee",
+      "Aldous Huxley",
+      "Chinua Achebe",
+      "Louisa May Alcott"
     ]
   },
   {
     "id": "missing-136",
-    "sentence": "Item 136: The word with the opposite meaning to “damage” is ____ .",
-    "answer": "repair",
-    "clue": "Choose the antonym of “damage”.",
+    "sentence": "The author of “Beloved” is ____ .",
+    "answer": "Toni Morrison",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "implicit",
-      "repair",
-      "punish",
-      "shallow"
+      "J R R Tolkien",
+      "Rabindranath Tagore",
+      "F Scott Fitzgerald",
+      "Toni Morrison"
     ]
   },
   {
     "id": "missing-137",
-    "sentence": "Item 137: The word with the opposite meaning to “repair” is ____ .",
-    "answer": "damage",
-    "clue": "Choose the antonym of “repair”.",
+    "sentence": "The author of “Murder on the Orient Express” is ____ .",
+    "answer": "Agatha Christie",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "damage",
-      "poverty",
-      "inferior",
-      "abundant"
+      "R K Narayan",
+      "Ernest Hemingway",
+      "Agatha Christie",
+      "J K Rowling"
     ]
   },
   {
     "id": "missing-138",
-    "sentence": "Item 138: The word with the opposite meaning to “oppose” is ____ .",
-    "answer": "support",
-    "clue": "Choose the antonym of “oppose”.",
+    "sentence": "The author of “The Hound of the Baskervilles” is ____ .",
+    "answer": "Arthur Conan Doyle",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "guilty",
-      "expert",
-      "genuine",
-      "support"
+      "John Steinbeck",
+      "Arthur Conan Doyle",
+      "Mark Twain",
+      "Munshi Premchand"
     ]
   },
   {
     "id": "missing-139",
-    "sentence": "Item 139: The word with the opposite meaning to “support” is ____ .",
-    "answer": "oppose",
-    "clue": "Choose the antonym of “support”.",
+    "sentence": "The author of “Dracula” is ____ .",
+    "answer": "Bram Stoker",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "notorious",
-      "discourage",
-      "oppose",
-      "arduous"
+      "Bram Stoker",
+      "Herman Melville",
+      "Kalidasa",
+      "Harper Lee"
     ]
   },
   {
     "id": "missing-140",
-    "sentence": "Item 140: The word with the opposite meaning to “shout” is ____ .",
-    "answer": "whisper",
-    "clue": "Choose the antonym of “shout”.",
+    "sentence": "The author of “The Picture of Dorian Gray” is ____ .",
+    "answer": "Oscar Wilde",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "scatter",
-      "whisper",
-      "resilient",
-      "boastful"
+      "Emily Bronte",
+      "Homer",
+      "Toni Morrison",
+      "Oscar Wilde"
     ]
   },
   {
     "id": "missing-141",
-    "sentence": "Item 141: The word with the opposite meaning to “whisper” is ____ .",
-    "answer": "shout",
-    "clue": "Choose the antonym of “whisper”.",
+    "sentence": "The author of “The Time Machine” is ____ .",
+    "answer": "H G Wells",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "shout",
-      "occasional",
-      "attract",
-      "virtue"
+      "Virgil",
+      "Agatha Christie",
+      "H G Wells",
+      "Charlotte Bronte"
     ]
   },
   {
     "id": "missing-142",
-    "sentence": "Item 142: The word with the opposite meaning to “appear” is ____ .",
-    "answer": "vanish",
-    "clue": "Choose the antonym of “appear”.",
+    "sentence": "The author of “Twenty Thousand Leagues Under the Seas” is ____ .",
+    "answer": "Jules Verne",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "strengthen",
-      "chaos",
-      "unpleasant",
-      "vanish"
+      "Arthur Conan Doyle",
+      "Jules Verne",
+      "Mary Shelley",
+      "Dante Alighieri"
     ]
   },
   {
     "id": "missing-143",
-    "sentence": "Item 143: The word with the opposite meaning to “vanish” is ____ .",
-    "answer": "appear",
-    "clue": "Choose the antonym of “vanish”.",
+    "sentence": "The author of “The Little Prince” is ____ .",
+    "answer": "Antoine de Saint-Exupery",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "deep",
-      "favorable",
-      "appear",
-      "repair"
+      "Antoine de Saint-Exupery",
+      "Leo Tolstoy",
+      "Geoffrey Chaucer",
+      "Bram Stoker"
     ]
   },
   {
     "id": "missing-144",
-    "sentence": "Item 144: The word with the opposite meaning to “freeze” is ____ .",
-    "answer": "melt",
-    "clue": "Choose the antonym of “freeze”.",
+    "sentence": "The author of “The Alchemist” is ____ .",
+    "answer": "Paulo Coelho",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "coherent",
-      "melt",
-      "wealth",
-      "positive"
+      "Fyodor Dostoevsky",
+      "John Milton",
+      "Oscar Wilde",
+      "Paulo Coelho"
     ]
   },
   {
     "id": "missing-145",
-    "sentence": "Item 145: The word with the opposite meaning to “melt” is ____ .",
-    "answer": "freeze",
-    "clue": "Choose the antonym of “melt”.",
+    "sentence": "The author of “The Kite Runner” is ____ .",
+    "answer": "Khaled Hosseini",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "freeze",
-      "legal",
-      "perilous",
-      "counterfeit"
+      "Daniel Defoe",
+      "H G Wells",
+      "Khaled Hosseini",
+      "Victor Hugo"
     ]
   },
   {
     "id": "missing-146",
-    "sentence": "Item 146: The word with the opposite meaning to “sink” is ____ .",
-    "answer": "float",
-    "clue": "Choose the antonym of “sink”.",
+    "sentence": "The author of “The House of the Spirits” is ____ .",
+    "answer": "Isabel Allende",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "effortless",
-      "respected",
-      "permit",
-      "float"
+      "Jules Verne",
+      "Isabel Allende",
+      "Miguel de Cervantes",
+      "Jonathan Swift"
     ]
   },
   {
     "id": "missing-147",
-    "sentence": "Item 147: The word with the opposite meaning to “float” is ____ .",
-    "answer": "sink",
-    "clue": "Choose the antonym of “float”.",
+    "sentence": "The author of “The Art of War” is ____ .",
+    "answer": "Sun Tzu",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "artificial",
-      "tighten",
-      "sink",
-      "fragile"
+      "Sun Tzu",
+      "Gabriel Garcia Marquez",
+      "Frances Hodgson Burnett",
+      "Antoine de Saint-Exupery"
     ]
   },
   {
     "id": "missing-148",
-    "sentence": "Item 148: The word with the opposite meaning to “scatter” is ____ .",
-    "answer": "gather",
-    "clue": "Choose the antonym of “scatter”.",
+    "sentence": "The author of “The Diary of a Young Girl” is ____ .",
+    "answer": "Anne Frank",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "vice",
-      "gather",
-      "hostile",
-      "repel"
+      "Chinua Achebe",
+      "Louisa May Alcott",
+      "Paulo Coelho",
+      "Anne Frank"
     ]
   },
   {
     "id": "missing-149",
-    "sentence": "Item 149: The word with the opposite meaning to “gather” is ____ .",
-    "answer": "scatter",
-    "clue": "Choose the antonym of “gather”.",
+    "sentence": "The author of “The Three Musketeers” is ____ .",
+    "answer": "Alexandre Dumas",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "scatter",
-      "weaken",
-      "order",
-      "selfless"
+      "F Scott Fitzgerald",
+      "Khaled Hosseini",
+      "Alexandre Dumas",
+      "Rabindranath Tagore"
     ]
   },
   {
     "id": "missing-150",
-    "sentence": "Item 150: The word with the opposite meaning to “loosen” is ____ .",
-    "answer": "tighten",
-    "clue": "Choose the antonym of “loosen”.",
+    "sentence": "The author of “The Iliad” is ____ .",
+    "answer": "Homer",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "damage",
-      "loose",
-      "adverse",
-      "tighten"
+      "Isabel Allende",
+      "Homer",
+      "R K Narayan",
+      "Ernest Hemingway"
     ]
   },
   {
     "id": "missing-151",
-    "sentence": "Item 151: The word with the opposite meaning to “tighten” is ____ .",
-    "answer": "loosen",
-    "clue": "Choose the antonym of “tighten”.",
+    "sentence": "Eiffel Tower, a famous landmark, is located in ____ .",
+    "answer": "Paris",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "negative",
-      "incoherent",
-      "loosen",
-      "strength"
+      "Kyoto",
+      "Paris",
+      "San Francisco",
+      "Zambia and Zimbabwe"
     ]
   },
   {
     "id": "missing-152",
-    "sentence": "Item 152: The word with the opposite meaning to “disconnect” is ____ .",
-    "answer": "connect",
-    "clue": "Choose the antonym of “disconnect”.",
+    "sentence": "Colosseum, a famous landmark, is located in ____ .",
+    "answer": "Rome",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "loyal",
-      "connect",
-      "illegal",
-      "safe"
+      "Rome",
+      "Toronto",
+      "Arizona",
+      "Beijing"
     ]
   },
   {
     "id": "missing-153",
-    "sentence": "Item 153: The word with the opposite meaning to “connect” is ____ .",
-    "answer": "disconnect",
-    "clue": "Choose the antonym of “connect”.",
+    "sentence": "Taj Mahal, a famous landmark, is located in ____ .",
+    "answer": "Agra",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "disconnect",
-      "brisk",
-      "versatile",
-      "forbid"
+      "Yucatan",
+      "Canada and United States",
+      "Egypt",
+      "Agra"
     ]
   },
   {
     "id": "missing-154",
-    "sentence": "Item 154: The word with the opposite meaning to “disorder” is ____ .",
-    "answer": "arrange",
-    "clue": "Choose the antonym of “disorder”.",
+    "sentence": "Great Wall, a famous landmark, is located in ____ .",
+    "answer": "China",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "plausible",
-      "natural",
-      "loosen",
-      "arrange"
+      "Australia",
+      "Alexandria",
+      "China",
+      "Easter Island"
     ]
   },
   {
     "id": "missing-155",
-    "sentence": "Item 155: The word with the opposite meaning to “arrange” is ____ .",
-    "answer": "disorder",
-    "clue": "Choose the antonym of “arrange”.",
+    "sentence": "Petra, a famous landmark, is located in ____ .",
+    "answer": "Jordan",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "borrow",
-      "dawn",
-      "disorder",
-      "friendly"
+      "Paris",
+      "Jordan",
+      "Granada",
+      "Tanzania"
     ]
   },
   {
     "id": "missing-156",
-    "sentence": "Item 156: The word with the opposite meaning to “defeat” is ____ .",
-    "answer": "victory",
-    "clue": "Choose the antonym of “defeat”.",
+    "sentence": "Machu Picchu, a famous landmark, is located in ____ .",
+    "answer": "Peru",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "selfish",
-      "victory",
-      "approve",
-      "generosity"
+      "Peru",
+      "Barcelona",
+      "Indonesia",
+      "Rome"
     ]
   },
   {
     "id": "missing-157",
-    "sentence": "Item 157: The word with the opposite meaning to “victory” is ____ .",
-    "answer": "defeat",
-    "clue": "Choose the antonym of “victory”.",
+    "sentence": "Christ the Redeemer, a famous landmark, is located in ____ .",
+    "answer": "Rio de Janeiro",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "defeat",
-      "support",
-      "tight",
-      "feigned"
+      "Pisa",
+      "Moscow",
+      "Agra",
+      "Rio de Janeiro"
     ]
   },
   {
     "id": "missing-158",
-    "sentence": "Item 158: The word with the opposite meaning to “departure” is ____ .",
-    "answer": "arrival",
-    "clue": "Choose the antonym of “departure”.",
+    "sentence": "Statue of Liberty, a famous landmark, is located in ____ .",
+    "answer": "New York",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "weakness",
-      "private",
-      "diligent",
-      "arrival"
+      "Istanbul",
+      "China",
+      "New York",
+      "London"
     ]
   },
   {
     "id": "missing-159",
-    "sentence": "Item 159: The word with the opposite meaning to “arrival” is ____ .",
-    "answer": "departure",
-    "clue": "Choose the antonym of “arrival”.",
+    "sentence": "Big Ben, a famous landmark, is located in ____ .",
+    "answer": "London",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "plentiful",
-      "treacherous",
-      "departure",
-      "regular"
+      "Jordan",
+      "London",
+      "Paris",
+      "Brussels"
     ]
   },
   {
     "id": "missing-160",
-    "sentence": "Item 160: The word with the opposite meaning to “minimum” is ____ .",
-    "answer": "maximum",
-    "clue": "Choose the antonym of “minimum”.",
+    "sentence": "Acropolis, a famous landmark, is located in ____ .",
+    "answer": "Athens",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "remember",
-      "maximum",
-      "sluggish",
-      "inflexible"
+      "Athens",
+      "Beijing",
+      "Romania",
+      "Peru"
     ]
   },
   {
     "id": "missing-161",
-    "sentence": "Item 161: The word with the opposite meaning to “maximum” is ____ .",
-    "answer": "minimum",
-    "clue": "Choose the antonym of “maximum”.",
+    "sentence": "Angkor Wat, a famous landmark, is located in ____ .",
+    "answer": "Cambodia",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "minimum",
-      "implausible",
-      "expand",
-      "connect"
+      "Lhasa",
+      "Edinburgh",
+      "Rio de Janeiro",
+      "Cambodia"
     ]
   },
   {
     "id": "missing-162",
-    "sentence": "Item 162: The word with the opposite meaning to “despair” is ____ .",
-    "answer": "optimism",
-    "clue": "Choose the antonym of “despair”.",
+    "sentence": "Pyramids of Giza, a famous landmark, is located in ____ .",
+    "answer": "Egypt",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "vivid",
-      "lend",
-      "dusk",
-      "optimism"
+      "San Francisco",
+      "New York",
+      "Egypt",
+      "Japan"
     ]
   },
   {
     "id": "missing-163",
-    "sentence": "Item 163: The word with the opposite meaning to “optimism” is ____ .",
-    "answer": "despair",
-    "clue": "Choose the antonym of “optimism”.",
+    "sentence": "Sphinx, a famous landmark, is located in ____ .",
+    "answer": "Giza",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "greed",
-      "active",
-      "despair",
-      "disapprove"
+      "London",
+      "Giza",
+      "Cape Town",
+      "New York"
     ]
   },
   {
     "id": "missing-164",
-    "sentence": "Item 164: The word with the opposite meaning to “order” is ____ .",
-    "answer": "chaos",
-    "clue": "Choose the antonym of “order”.",
+    "sentence": "Burj Khalifa, a famous landmark, is located in ____ .",
+    "answer": "Dubai",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "imminent",
-      "chaos",
-      "oppose",
-      "smooth"
+      "Dubai",
+      "Zambia and Zimbabwe",
+      "Kyoto",
+      "Athens"
     ]
   },
   {
     "id": "missing-165",
-    "sentence": "Item 165: The word with the opposite meaning to “chaos” is ____ .",
-    "answer": "order",
-    "clue": "Choose the antonym of “chaos”.",
+    "sentence": "Sydney Opera House, a famous landmark, is located in ____ .",
+    "answer": "Sydney",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "order",
-      "success",
-      "public",
-      "idle"
+      "Arizona",
+      "Beijing",
+      "Cambodia",
+      "Sydney"
     ]
   },
   {
     "id": "missing-166",
-    "sentence": "Item 166: The word with the opposite meaning to “greed” is ____ .",
-    "answer": "generosity",
-    "clue": "Choose the antonym of “greed”.",
+    "sentence": "Mount Rushmore, a famous landmark, is located in ____ .",
+    "answer": "South Dakota",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "irregular",
-      "meagre",
-      "patient",
-      "generosity"
+      "Egypt",
+      "Granada",
+      "South Dakota",
+      "Canada and United States"
     ]
   },
   {
     "id": "missing-167",
-    "sentence": "Item 167: The word with the opposite meaning to “generosity” is ____ .",
-    "answer": "greed",
-    "clue": "Choose the antonym of “generosity”.",
+    "sentence": "Stonehenge, a famous landmark, is located in ____ .",
+    "answer": "Wiltshire",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "generous",
-      "forget",
-      "greed",
-      "candid"
+      "Giza",
+      "Wiltshire",
+      "Australia",
+      "Alexandria"
     ]
   },
   {
     "id": "missing-168",
-    "sentence": "Item 168: The word with the opposite meaning to “cowardice” is ____ .",
-    "answer": "courage",
-    "clue": "Choose the antonym of “cowardice”.",
+    "sentence": "Neuschwanstein Castle, a famous landmark, is located in ____ .",
+    "answer": "Bavaria",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "disconnect",
-      "courage",
-      "concise",
-      "contract"
+      "Bavaria",
+      "Tanzania",
+      "Paris",
+      "Dubai"
     ]
   },
   {
     "id": "missing-169",
-    "sentence": "Item 169: The word with the opposite meaning to “courage” is ____ .",
-    "answer": "cowardice",
-    "clue": "Choose the antonym of “courage”.",
+    "sentence": "Hagia Sophia, a famous landmark, is located in ____ .",
+    "answer": "Istanbul",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "cowardice",
-      "dull",
-      "omit",
-      "noisy"
+      "Indonesia",
+      "Rome",
+      "Sydney",
+      "Istanbul"
     ]
   },
   {
     "id": "missing-170",
-    "sentence": "Item 170: The word with the opposite meaning to “foolishness” is ____ .",
-    "answer": "wisdom",
-    "clue": "Choose the antonym of “foolishness”.",
+    "sentence": "Brandenburg Gate, a famous landmark, is located in ____ .",
+    "answer": "Berlin",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "combine",
-      "courage",
-      "passive",
-      "wisdom"
+      "Agra",
+      "South Dakota",
+      "Berlin",
+      "Moscow"
     ]
   },
   {
     "id": "missing-171",
-    "sentence": "Item 171: The word with the opposite meaning to “wisdom” is ____ .",
-    "answer": "foolishness",
-    "clue": "Choose the antonym of “wisdom”.",
+    "sentence": "Golden Gate Bridge, a famous landmark, is located in ____ .",
+    "answer": "San Francisco",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "rough",
-      "remote",
-      "foolishness",
-      "whisper"
+      "Wiltshire",
+      "San Francisco",
+      "Istanbul",
+      "China"
     ]
   },
   {
     "id": "missing-172",
-    "sentence": "Item 172: The word with the opposite meaning to “deceit” is ____ .",
-    "answer": "honesty",
-    "clue": "Choose the antonym of “deceit”.",
+    "sentence": "CN Tower, a famous landmark, is located in ____ .",
+    "answer": "Toronto",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "formidable",
-      "honesty",
-      "failure",
-      "rigorous"
+      "Toronto",
+      "Brussels",
+      "Jordan",
+      "Bavaria"
     ]
   },
   {
     "id": "missing-173",
-    "sentence": "Item 173: The word with the opposite meaning to “honesty” is ____ .",
-    "answer": "deceit",
-    "clue": "Choose the antonym of “honesty”.",
+    "sentence": "Chichen Itza, a famous landmark, is located in ____ .",
+    "answer": "Yucatan",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "deceit",
-      "possible",
-      "rational",
-      "impatient"
+      "Romania",
+      "Peru",
+      "Istanbul",
+      "Yucatan"
     ]
   },
   {
     "id": "missing-174",
-    "sentence": "Item 174: The word with the opposite meaning to “captivity” is ____ .",
-    "answer": "freedom",
-    "clue": "Choose the antonym of “captivity”.",
+    "sentence": "Moai Statues, a famous landmark, is located in ____ .",
+    "answer": "Easter Island",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "evasive",
-      "stingy",
-      "succeed",
-      "freedom"
+      "Rio de Janeiro",
+      "Berlin",
+      "Easter Island",
+      "Edinburgh"
     ]
   },
   {
     "id": "missing-175",
-    "sentence": "Item 175: The word with the opposite meaning to “freedom” is ____ .",
-    "answer": "captivity",
-    "clue": "Choose the antonym of “freedom”.",
+    "sentence": "Alhambra, a famous landmark, is located in ____ .",
+    "answer": "Granada",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "accept",
-      "arrange",
-      "captivity",
-      "verbose"
+      "Zambia and Zimbabwe",
+      "Granada",
+      "San Francisco",
+      "New York"
     ]
   },
   {
     "id": "missing-176",
-    "sentence": "Item 176: The word with the opposite meaning to “discord” is ____ .",
-    "answer": "harmony",
-    "clue": "Choose the antonym of “discord”.",
+    "sentence": "Sagrada Familia, a famous landmark, is located in ____ .",
+    "answer": "Barcelona",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "silent",
-      "harmony",
-      "rigid",
-      "expose"
+      "Barcelona",
+      "New York",
+      "London",
+      "Toronto"
     ]
   },
   {
     "id": "missing-177",
-    "sentence": "Item 177: The word with the opposite meaning to “harmony” is ____ .",
-    "answer": "discord",
-    "clue": "Choose the antonym of “harmony”.",
+    "sentence": "Leaning Tower of Pisa, a famous landmark, is located in ____ .",
+    "answer": "Pisa",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "discord",
-      "separate",
-      "cowardice",
-      "vacant"
+      "Kyoto",
+      "Athens",
+      "Yucatan",
+      "Pisa"
     ]
   },
   {
     "id": "missing-178",
-    "sentence": "Item 178: The word with the opposite meaning to “wealth” is ____ .",
-    "answer": "poverty",
-    "clue": "Choose the antonym of “wealth”.",
+    "sentence": "Tower Bridge, a famous landmark, is located in ____ .",
+    "answer": "London",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "shout",
-      "bitter",
-      "innovative",
-      "poverty"
+      "Cambodia",
+      "Easter Island",
+      "London",
+      "Beijing"
     ]
   },
   {
     "id": "missing-179",
-    "sentence": "Item 179: The word with the opposite meaning to “poverty” is ____ .",
-    "answer": "wealth",
-    "clue": "Choose the antonym of “poverty”.",
+    "sentence": "Louvre Museum, a famous landmark, is located in ____ .",
+    "answer": "Paris",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "lenient",
-      "manageable",
-      "wealth",
-      "friend"
+      "Tanzania",
+      "Paris",
+      "Egypt",
+      "Granada"
     ]
   },
   {
     "id": "missing-180",
-    "sentence": "Item 180: The word with the opposite meaning to “weakness” is ____ .",
-    "answer": "strength",
-    "clue": "Choose the antonym of “weakness”.",
+    "sentence": "Forbidden City, a famous landmark, is located in ____ .",
+    "answer": "Beijing",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "accurate",
-      "strength",
-      "impossible",
-      "irrational"
+      "Beijing",
+      "Alexandria",
+      "Giza",
+      "Barcelona"
     ]
   },
   {
     "id": "missing-181",
-    "sentence": "Item 181: The word with the opposite meaning to “strength” is ____ .",
-    "answer": "weakness",
-    "clue": "Choose the antonym of “strength”.",
+    "sentence": "Potala Palace, a famous landmark, is located in ____ .",
+    "answer": "Lhasa",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "weakness",
-      "composed",
-      "humble",
-      "fail"
+      "Paris",
+      "Dubai",
+      "Pisa",
+      "Lhasa"
     ]
   },
   {
     "id": "missing-182",
-    "sentence": "Item 182: The word with the opposite meaning to “failure” is ____ .",
-    "answer": "success",
-    "clue": "Choose the antonym of “failure”.",
+    "sentence": "Mount Fuji, a famous landmark, is located in ____ .",
+    "answer": "Japan",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "impartial",
-      "reject",
-      "disorder",
-      "success"
+      "Sydney",
+      "London",
+      "Japan",
+      "Rome"
     ]
   },
   {
     "id": "missing-183",
-    "sentence": "Item 183: The word with the opposite meaning to “success” is ____ .",
-    "answer": "failure",
-    "clue": "Choose the antonym of “success”.",
+    "sentence": "Table Mountain, a famous landmark, is located in ____ .",
+    "answer": "Cape Town",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "shield",
-      "visible",
-      "failure",
-      "flexible"
+      "Paris",
+      "Cape Town",
+      "Agra",
+      "South Dakota"
     ]
   },
   {
     "id": "missing-184",
-    "sentence": "Item 184: The word with the opposite meaning to “enemy” is ____ .",
-    "answer": "friend",
-    "clue": "Choose the antonym of “enemy”.",
+    "sentence": "Victoria Falls, a famous landmark, is located in ____ .",
+    "answer": "Zambia and Zimbabwe",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "occupied",
-      "friend",
-      "create",
-      "wisdom"
+      "Zambia and Zimbabwe",
+      "China",
+      "Wiltshire",
+      "Beijing"
     ]
   },
   {
     "id": "missing-185",
-    "sentence": "Item 185: The word with the opposite meaning to “friend” is ____ .",
-    "answer": "enemy",
-    "clue": "Choose the antonym of “friend”.",
+    "sentence": "Grand Canyon, a famous landmark, is located in ____ .",
+    "answer": "Arizona",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "enemy",
-      "vanish",
-      "sweet",
-      "conventional"
+      "Jordan",
+      "Bavaria",
+      "Lhasa",
+      "Arizona"
     ]
   },
   {
     "id": "missing-186",
-    "sentence": "Item 186: The word with the opposite meaning to “ending” is ____ .",
-    "answer": "beginning",
-    "clue": "Choose the antonym of “ending”.",
+    "sentence": "Niagara Falls, a famous landmark, is located in ____ .",
+    "answer": "Canada and United States",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "enemy",
-      "authentic",
-      "prudent",
-      "beginning"
+      "Istanbul",
+      "Japan",
+      "Canada and United States",
+      "Peru"
     ]
   },
   {
     "id": "missing-187",
-    "sentence": "Item 187: The word with the opposite meaning to “beginning” is ____ .",
-    "answer": "ending",
-    "clue": "Choose the antonym of “beginning”.",
+    "sentence": "Uluru, a famous landmark, is located in ____ .",
+    "answer": "Australia",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "relentless",
-      "inaccurate",
-      "ending",
-      "logical"
+      "Cape Town",
+      "Australia",
+      "Rio de Janeiro",
+      "Berlin"
     ]
   },
   {
     "id": "missing-188",
-    "sentence": "Item 188: The word with the opposite meaning to “exit” is ____ .",
-    "answer": "entrance",
-    "clue": "Choose the antonym of “exit”.",
+    "sentence": "Mount Kilimanjaro, a famous landmark, is located in ____ .",
+    "answer": "Tanzania",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "advance",
-      "entrance",
-      "flustered",
-      "arrogant"
+      "Tanzania",
+      "New York",
+      "San Francisco",
+      "Zambia and Zimbabwe"
     ]
   },
   {
     "id": "missing-189",
-    "sentence": "Item 189: The word with the opposite meaning to “entrance” is ____ .",
-    "answer": "exit",
-    "clue": "Choose the antonym of “entrance”.",
+    "sentence": "Borobudur, a famous landmark, is located in ____ .",
+    "answer": "Indonesia",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "exit",
-      "biased",
-      "include",
-      "victory"
+      "London",
+      "Toronto",
+      "Arizona",
+      "Indonesia"
     ]
   },
   {
     "id": "missing-190",
-    "sentence": "Item 190: The word with the opposite meaning to “fact” is ____ .",
-    "answer": "fiction",
-    "clue": "Choose the antonym of “fact”.",
+    "sentence": "Kremlin, a famous landmark, is located in ____ .",
+    "answer": "Moscow",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "timid",
-      "complicate",
-      "hidden",
-      "fiction"
+      "Yucatan",
+      "Canada and United States",
+      "Moscow",
+      "Athens"
     ]
   },
   {
     "id": "missing-191",
-    "sentence": "Item 191: The word with the opposite meaning to “fiction” is ____ .",
-    "answer": "fact",
-    "clue": "Choose the antonym of “fiction”.",
+    "sentence": "Blue Mosque, a famous landmark, is located in ____ .",
+    "answer": "Istanbul",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "foolishness",
-      "domestic",
-      "fact",
-      "destroy"
+      "Australia",
+      "Istanbul",
+      "Cambodia",
+      "Easter Island"
     ]
   },
   {
     "id": "missing-192",
-    "sentence": "Item 192: The word with the opposite meaning to “vice” is ____ .",
-    "answer": "virtue",
-    "clue": "Choose the antonym of “vice”.",
+    "sentence": "Atomium, a famous landmark, is located in ____ .",
+    "answer": "Brussels",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "lucid",
-      "virtue",
-      "appear",
-      "tender"
+      "Brussels",
+      "Egypt",
+      "Granada",
+      "Tanzania"
     ]
   },
   {
     "id": "missing-193",
-    "sentence": "Item 193: The word with the opposite meaning to “virtue” is ____ .",
-    "answer": "vice",
-    "clue": "Choose the antonym of “virtue”.",
+    "sentence": "Bran Castle, a famous landmark, is located in ____ .",
+    "answer": "Romania",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "vice",
-      "beginning",
-      "spurious",
-      "reckless"
+      "Giza",
+      "Barcelona",
+      "Indonesia",
+      "Romania"
     ]
   },
   {
     "id": "missing-194",
-    "sentence": "Item 194: The word with the opposite meaning to “dusk” is ____ .",
-    "answer": "dawn",
-    "clue": "Choose the antonym of “dusk”.",
+    "sentence": "Edinburgh Castle, a famous landmark, is located in ____ .",
+    "answer": "Edinburgh",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "illogical",
-      "merciful",
-      "vague",
-      "dawn"
+      "Pisa",
+      "Moscow",
+      "Edinburgh",
+      "Dubai"
     ]
   },
   {
     "id": "missing-195",
-    "sentence": "Item 195: The word with the opposite meaning to “dawn” is ____ .",
-    "answer": "dusk",
-    "clue": "Choose the antonym of “dawn”.",
+    "sentence": "Alcatraz, a famous landmark, is located in ____ .",
+    "answer": "San Francisco",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "optimistic",
-      "retreat",
-      "dusk",
-      "decisive"
+      "Istanbul",
+      "San Francisco",
+      "Sydney",
+      "London"
     ]
   },
   {
     "id": "missing-196",
-    "sentence": "Item 196: The word with the opposite meaning to “silent” is ____ .",
-    "answer": "noisy",
-    "clue": "Choose the antonym of “silent”.",
+    "sentence": "Empire State Building, a famous landmark, is located in ____ .",
+    "answer": "New York",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "defeat",
-      "noisy",
-      "ambiguous",
-      "exclude"
+      "New York",
+      "South Dakota",
+      "Paris",
+      "Brussels"
     ]
   },
   {
     "id": "missing-197",
-    "sentence": "Item 197: The word with the opposite meaning to “noisy” is ____ .",
-    "answer": "silent",
-    "clue": "Choose the antonym of “noisy”.",
+    "sentence": "Kiyomizu-dera, a famous landmark, is located in ____ .",
+    "answer": "Kyoto",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "silent",
-      "bold",
-      "simplify",
-      "asleep"
+      "Wiltshire",
+      "Beijing",
+      "Romania",
+      "Kyoto"
     ]
   },
   {
     "id": "missing-198",
-    "sentence": "Item 198: The word with the opposite meaning to “hidden” is ____ .",
-    "answer": "visible",
-    "clue": "Choose the antonym of “hidden”.",
+    "sentence": "Temple of Heaven, a famous landmark, is located in ____ .",
+    "answer": "Beijing",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "arrive",
-      "honesty",
-      "foreign",
-      "visible"
+      "Lhasa",
+      "Edinburgh",
+      "Beijing",
+      "Bavaria"
     ]
   },
   {
     "id": "missing-199",
-    "sentence": "Item 199: The word with the opposite meaning to “visible” is ____ .",
-    "answer": "hidden",
-    "clue": "Choose the antonym of “visible”.",
+    "sentence": "Great Sphinx, a famous landmark, is located in ____ .",
+    "answer": "Egypt",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "tough",
-      "confusing",
-      "hidden",
-      "melt"
+      "San Francisco",
+      "Egypt",
+      "Istanbul",
+      "Japan"
     ]
   },
   {
     "id": "missing-200",
-    "sentence": "Item 200: The word with the opposite meaning to “awake” is ____ .",
-    "answer": "asleep",
-    "clue": "Choose the antonym of “awake”.",
+    "sentence": "Lighthouse of Alexandria, a famous landmark, is located in ____ .",
+    "answer": "Alexandria",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "trivial",
-      "asleep",
-      "ending",
-      "eloquent"
+      "Alexandria",
+      "Berlin",
+      "Cape Town",
+      "New York"
     ]
   },
   {
     "id": "missing-201",
-    "sentence": "Item 201: The word with the opposite meaning to “asleep” is ____ .",
-    "answer": "awake",
-    "clue": "Choose the antonym of “asleep”.",
+    "sentence": "The animal described as “fastest land animal” is ____ .",
+    "answer": "Cheetah",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "awake",
-      "calm",
-      "meticulous",
-      "specific"
+      "Cheetah",
+      "Meerkat",
+      "Honeybee",
+      "Cassowary"
     ]
   },
   {
     "id": "missing-202",
-    "sentence": "Item 202: The word with the opposite meaning to “full” is ____ .",
-    "answer": "empty",
-    "clue": "Choose the antonym of “full”.",
+    "sentence": "The animal described as “largest animal” is ____ .",
+    "answer": "Blue whale",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "indecisive",
-      "pessimistic",
-      "construct",
-      "empty"
+      "Peacock",
+      "Firefly",
+      "Albatross",
+      "Blue whale"
     ]
   },
   {
     "id": "missing-203",
-    "sentence": "Item 203: The word with the opposite meaning to “empty” is ____ .",
-    "answer": "full",
-    "clue": "Choose the antonym of “empty”.",
+    "sentence": "The animal described as “fastest bird in a dive” is ____ .",
+    "answer": "Peregrine falcon",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "ascend",
-      "arrival",
-      "full",
-      "unequivocal"
+      "Mantis shrimp",
+      "Orangutan",
+      "Peregrine falcon",
+      "Beaver"
     ]
   },
   {
     "id": "missing-204",
-    "sentence": "Item 204: The word with the opposite meaning to “broad” is ____ .",
-    "answer": "narrow",
-    "clue": "Choose the antonym of “broad”.",
+    "sentence": "The animal described as “largest living bird” is ____ .",
+    "answer": "Ostrich",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "awake",
-      "narrow",
-      "courteous",
-      "preserve"
+      "Bison",
+      "Ostrich",
+      "Camel",
+      "Fennec fox"
     ]
   },
   {
     "id": "missing-205",
-    "sentence": "Item 205: The word with the opposite meaning to “narrow” is ____ .",
-    "answer": "broad",
-    "clue": "Choose the antonym of “narrow”.",
+    "sentence": "The animal described as “tallest living land animal” is ____ .",
+    "answer": "Giraffe",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "broad",
-      "depart",
-      "deceit",
-      "minor"
+      "Giraffe",
+      "Yak",
+      "Red panda",
+      "Cheetah"
     ]
   },
   {
     "id": "missing-206",
-    "sentence": "Item 206: The word with the opposite meaning to “deep” is ____ .",
-    "answer": "shallow",
-    "clue": "Choose the antonym of “deep”.",
+    "sentence": "The animal described as “largest land mammal” is ____ .",
+    "answer": "African elephant",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "freeze",
-      "mature",
-      "mandatory",
-      "shallow"
+      "Lemur",
+      "Capybara",
+      "Blue whale",
+      "African elephant"
     ]
   },
   {
     "id": "missing-207",
-    "sentence": "Item 207: The word with the opposite meaning to “shallow” is ____ .",
-    "answer": "deep",
-    "clue": "Choose the antonym of “shallow”.",
+    "sentence": "The animal described as “largest living lizard” is ____ .",
+    "answer": "Komodo dragon",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "inarticulate",
-      "significant",
-      "deep",
-      "entrance"
+      "Manta ray",
+      "Peregrine falcon",
+      "Komodo dragon",
+      "Panda"
     ]
   },
   {
     "id": "missing-208",
-    "sentence": "Item 208: The word with the opposite meaning to “tight” is ____ .",
-    "answer": "loose",
-    "clue": "Choose the antonym of “tight”.",
+    "sentence": "The animal described as “one of the heaviest snakes” is ____ .",
+    "answer": "Green anaconda",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "complex",
-      "loose",
-      "agitated",
-      "careless"
+      "Ostrich",
+      "Green anaconda",
+      "Wombat",
+      "Seahorse"
     ]
   },
   {
     "id": "missing-209",
-    "sentence": "Item 209: The word with the opposite meaning to “loose” is ____ .",
-    "answer": "tight",
-    "clue": "Choose the antonym of “loose”.",
+    "sentence": "The animal described as “bird that can hover” is ____ .",
+    "answer": "Hummingbird",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "tight",
-      "economical",
-      "transparent",
-      "demolish"
+      "Hummingbird",
+      "Narwhal",
+      "Flying fish",
+      "Giraffe"
     ]
   },
   {
     "id": "missing-210",
-    "sentence": "Item 210: The word with the opposite meaning to “rough” is ____ .",
-    "answer": "smooth",
-    "clue": "Choose the antonym of “rough”.",
+    "sentence": "The animal described as “only mammal capable of sustained flight” is ____ .",
+    "answer": "Bat",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "obsolete",
-      "descend",
-      "departure",
-      "smooth"
+      "Walrus",
+      "Armadillo",
+      "African elephant",
+      "Bat"
     ]
   },
   {
     "id": "missing-211",
-    "sentence": "Item 211: The word with the opposite meaning to “smooth” is ____ .",
-    "answer": "rough",
-    "clue": "Choose the antonym of “smooth”.",
+    "sentence": "The animal described as “egg-laying mammal” is ____ .",
+    "answer": "Platypus",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "neglect",
-      "empty",
-      "rough",
-      "rude"
+      "Porcupine",
+      "Komodo dragon",
+      "Platypus",
+      "Flamingo"
     ]
   },
   {
     "id": "missing-212",
-    "sentence": "Item 212: The word with the opposite meaning to “sweet” is ____ .",
-    "answer": "bitter",
-    "clue": "Choose the antonym of “sweet”.",
+    "sentence": "The animal described as “marsupial known for hopping” is ____ .",
+    "answer": "Kangaroo",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "major",
-      "bitter",
-      "increase",
-      "freedom"
+      "Green anaconda",
+      "Kangaroo",
+      "Salamander",
+      "Tapir"
     ]
   },
   {
     "id": "missing-213",
-    "sentence": "Item 213: The word with the opposite meaning to “bitter” is ____ .",
-    "answer": "sweet",
-    "clue": "Choose the antonym of “bitter”.",
+    "sentence": "The animal described as “marine mammal known for echolocation” is ____ .",
+    "answer": "Dolphin",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "sweet",
-      "float",
-      "immature",
-      "optional"
+      "Dolphin",
+      "Axolotl",
+      "Okapi",
+      "Hummingbird"
     ]
   },
   {
     "id": "missing-214",
-    "sentence": "Item 214: The word with the opposite meaning to “tough” is ____ .",
-    "answer": "tender",
-    "clue": "Choose the antonym of “tough”.",
+    "sentence": "The animal described as “mollusc with eight arms” is ____ .",
+    "answer": "Octopus",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "exit",
-      "benevolent",
-      "profound",
-      "tender"
+      "Honeybee",
+      "Cassowary",
+      "Bat",
+      "Octopus"
     ]
   },
   {
     "id": "missing-215",
-    "sentence": "Item 215: The word with the opposite meaning to “tender” is ____ .",
-    "answer": "tough",
-    "clue": "Choose the antonym of “tender”.",
+    "sentence": "The animal described as “lizard known for changing colour” is ____ .",
+    "answer": "Chameleon",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "reluctant",
-      "simple",
-      "tough",
-      "cheerful"
+      "Albatross",
+      "Platypus",
+      "Chameleon",
+      "Firefly"
     ]
   },
   {
     "id": "missing-216",
-    "sentence": "Item 216: The word with the opposite meaning to “immature” is ____ .",
-    "answer": "mature",
-    "clue": "Choose the antonym of “immature”.",
+    "sentence": "The animal described as “largest living land carnivore” is ____ .",
+    "answer": "Polar bear",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "protect",
-      "mature",
-      "wasteful",
-      "opaque"
+      "Kangaroo",
+      "Polar bear",
+      "Mantis shrimp",
+      "Orangutan"
     ]
   },
   {
     "id": "missing-217",
-    "sentence": "Item 217: The word with the opposite meaning to “mature” is ____ .",
-    "answer": "immature",
-    "clue": "Choose the antonym of “mature”.",
+    "sentence": "The animal described as “largest penguin species” is ____ .",
+    "answer": "Emperor penguin",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "immature",
-      "modern",
-      "conceal",
-      "maximum"
+      "Emperor penguin",
+      "Fennec fox",
+      "Bison",
+      "Dolphin"
     ]
   },
   {
     "id": "missing-218",
-    "sentence": "Item 218: The word with the opposite meaning to “barren” is ____ .",
-    "answer": "fertile",
-    "clue": "Choose the antonym of “barren”.",
+    "sentence": "The animal described as “bird with an exceptionally long migration” is ____ .",
+    "answer": "Arctic tern",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "ancient",
-      "praise",
-      "full",
-      "fertile"
+      "Red panda",
+      "Cheetah",
+      "Octopus",
+      "Arctic tern"
     ]
   },
   {
     "id": "missing-219",
-    "sentence": "Item 219: The word with the opposite meaning to “fertile” is ____ .",
-    "answer": "barren",
-    "clue": "Choose the antonym of “fertile”.",
+    "sentence": "The animal described as “marsupial that mainly eats eucalyptus” is ____ .",
+    "answer": "Koala",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "captivity",
-      "interior",
-      "barren",
-      "decrease"
+      "Blue whale",
+      "Chameleon",
+      "Koala",
+      "Capybara"
     ]
   },
   {
     "id": "missing-220",
-    "sentence": "Item 220: The word with the opposite meaning to “guilty” is ____ .",
-    "answer": "innocent",
-    "clue": "Choose the antonym of “guilty”.",
+    "sentence": "The animal described as “mammal known for very slow movement” is ____ .",
+    "answer": "Sloth",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "mundane",
-      "innocent",
-      "sink",
-      "fertile"
+      "Polar bear",
+      "Sloth",
+      "Manta ray",
+      "Peregrine falcon"
     ]
   },
   {
     "id": "missing-221",
-    "sentence": "Item 221: The word with the opposite meaning to “innocent” is ____ .",
-    "answer": "guilty",
-    "clue": "Choose the antonym of “innocent”.",
+    "sentence": "The animal described as “mongoose relative that stands sentinel” is ____ .",
+    "answer": "Meerkat",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "guilty",
-      "fiction",
-      "malevolent",
-      "superficial"
+      "Meerkat",
+      "Seahorse",
+      "Ostrich",
+      "Emperor penguin"
     ]
   },
   {
     "id": "missing-222",
-    "sentence": "Item 222: The word with the opposite meaning to “illegal” is ____ .",
-    "answer": "legal",
-    "clue": "Choose the antonym of “illegal”.",
+    "sentence": "The animal described as “bird whose male displays a colourful train” is ____ .",
+    "answer": "Peacock",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "miserable",
-      "eager",
-      "cautious",
-      "legal"
+      "Flying fish",
+      "Giraffe",
+      "Arctic tern",
+      "Peacock"
     ]
   },
   {
     "id": "missing-223",
-    "sentence": "Item 223: The word with the opposite meaning to “legal” is ____ .",
-    "answer": "illegal",
-    "clue": "Choose the antonym of “legal”.",
+    "sentence": "The animal described as “rodent that builds dams” is ____ .",
+    "answer": "Beaver",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "temporary",
-      "endanger",
-      "illegal",
-      "explicit"
+      "African elephant",
+      "Koala",
+      "Beaver",
+      "Armadillo"
     ]
   },
   {
     "id": "missing-224",
-    "sentence": "Item 224: The word with the opposite meaning to “irregular” is ____ .",
-    "answer": "regular",
-    "clue": "Choose the antonym of “irregular”.",
+    "sentence": "The animal described as “mammal adapted to desert travel” is ____ .",
+    "answer": "Camel",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "minimum",
-      "regular",
-      "scarce",
-      "reveal"
+      "Sloth",
+      "Camel",
+      "Porcupine",
+      "Komodo dragon"
     ]
   },
   {
     "id": "missing-225",
-    "sentence": "Item 225: The word with the opposite meaning to “regular” is ____ .",
-    "answer": "irregular",
-    "clue": "Choose the antonym of “regular”.",
+    "sentence": "The animal described as “long-haired bovine of the Himalayas” is ____ .",
+    "answer": "Yak",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "irregular",
-      "recent",
-      "criticize",
-      "narrow"
+      "Yak",
+      "Tapir",
+      "Green anaconda",
+      "Meerkat"
     ]
   },
   {
     "id": "missing-226",
-    "sentence": "Item 226: The word with the opposite meaning to “impossible” is ____ .",
-    "answer": "possible",
-    "clue": "Choose the antonym of “impossible”.",
+    "sentence": "The animal described as “primate native to Madagascar” is ____ .",
+    "answer": "Lemur",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "encourage",
-      "harmony",
-      "exterior",
-      "possible"
+      "Okapi",
+      "Hummingbird",
+      "Peacock",
+      "Lemur"
     ]
   },
   {
     "id": "missing-227",
-    "sentence": "Item 227: The word with the opposite meaning to “possible” is ____ .",
-    "answer": "impossible",
-    "clue": "Choose the antonym of “possible”.",
+    "sentence": "The animal described as “bear that mainly eats bamboo” is ____ .",
+    "answer": "Panda",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "barren",
-      "extraordinary",
-      "impossible",
-      "gather"
+      "Bat",
+      "Beaver",
+      "Panda",
+      "Cassowary"
     ]
   },
   {
     "id": "missing-228",
-    "sentence": "Item 228: The word with the opposite meaning to “illogical” is ____ .",
-    "answer": "logical",
-    "clue": "Choose the antonym of “illogical”.",
+    "sentence": "The animal described as “Australian marsupial with cube-shaped droppings” is ____ .",
+    "answer": "Wombat",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "feasible",
-      "logical",
-      "fact",
-      "amiable"
+      "Camel",
+      "Wombat",
+      "Albatross",
+      "Platypus"
     ]
   },
   {
     "id": "missing-229",
-    "sentence": "Item 229: The word with the opposite meaning to “logical” is ____ .",
-    "answer": "illogical",
-    "clue": "Choose the antonym of “logical”.",
+    "sentence": "The animal described as “whale with a long spiral tusk” is ____ .",
+    "answer": "Narwhal",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "illogical",
-      "pleasant",
-      "skeptical",
-      "rash"
+      "Narwhal",
+      "Orangutan",
+      "Kangaroo",
+      "Yak"
     ]
   },
   {
     "id": "missing-230",
-    "sentence": "Item 230: The word with the opposite meaning to “agitated” is ____ .",
-    "answer": "calm",
-    "clue": "Choose the antonym of “agitated”.",
+    "sentence": "The animal described as “marine mammal with prominent tusks” is ____ .",
+    "answer": "Walrus",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "implicit",
-      "permanent",
-      "unite",
-      "calm"
+      "Bison",
+      "Dolphin",
+      "Lemur",
+      "Walrus"
     ]
   },
   {
     "id": "missing-231",
-    "sentence": "Item 231: The word with the opposite meaning to “calm” is ____ .",
-    "answer": "agitated",
-    "clue": "Choose the antonym of “calm”.",
+    "sentence": "The animal described as “bird known for standing on one leg” is ____ .",
+    "answer": "Flamingo",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "accelerate",
-      "optimism",
-      "agitated",
-      "abundant"
+      "Octopus",
+      "Panda",
+      "Flamingo",
+      "Cheetah"
     ]
   },
   {
     "id": "missing-232",
-    "sentence": "Item 232: The word with the opposite meaning to “miserable” is ____ .",
-    "answer": "cheerful",
-    "clue": "Choose the antonym of “miserable”.",
+    "sentence": "The animal described as “amphibian that can regenerate limbs” is ____ .",
+    "answer": "Salamander",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "broad",
-      "cheerful",
-      "genuine",
-      "reward"
+      "Wombat",
+      "Salamander",
+      "Blue whale",
+      "Chameleon"
     ]
   },
   {
     "id": "missing-233",
-    "sentence": "Item 233: The word with the opposite meaning to “cheerful” is ____ .",
-    "answer": "miserable",
-    "clue": "Choose the antonym of “cheerful”.",
+    "sentence": "The animal described as “salamander that retains juvenile features” is ____ .",
+    "answer": "Axolotl",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "miserable",
-      "discourage",
-      "discord",
-      "superior"
+      "Axolotl",
+      "Peregrine falcon",
+      "Polar bear",
+      "Narwhal"
     ]
   },
   {
     "id": "missing-234",
-    "sentence": "Item 234: The word with the opposite meaning to “unpleasant” is ____ .",
-    "answer": "pleasant",
-    "clue": "Choose the antonym of “unpleasant”.",
+    "sentence": "The animal described as “insect that communicates food location by dancing” is ____ .",
+    "answer": "Honeybee",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "scatter",
-      "innocent",
-      "novice",
-      "pleasant"
+      "Ostrich",
+      "Emperor penguin",
+      "Walrus",
+      "Honeybee"
     ]
   },
   {
     "id": "missing-235",
-    "sentence": "Item 235: The word with the opposite meaning to “pleasant” is ____ .",
-    "answer": "unpleasant",
-    "clue": "Choose the antonym of “pleasant”.",
+    "sentence": "The animal described as “beetle that produces light” is ____ .",
+    "answer": "Firefly",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "abrasive",
-      "impractical",
-      "unpleasant",
-      "virtue"
+      "Arctic tern",
+      "Flamingo",
+      "Firefly",
+      "Giraffe"
     ]
   },
   {
     "id": "missing-236",
-    "sentence": "Item 236: The word with the opposite meaning to “selfish” is ____ .",
-    "answer": "selfless",
-    "clue": "Choose the antonym of “selfish”.",
+    "sentence": "The animal described as “crustacean with powerful striking appendages” is ____ .",
+    "answer": "Mantis shrimp",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "modest",
-      "selfless",
-      "unpleasant",
-      "gullible"
+      "Salamander",
+      "Mantis shrimp",
+      "African elephant",
+      "Koala"
     ]
   },
   {
     "id": "missing-237",
-    "sentence": "Item 237: The word with the opposite meaning to “selfless” is ____ .",
-    "answer": "selfish",
-    "clue": "Choose the antonym of “selfless”.",
+    "sentence": "The animal described as “small fox with very large ears” is ____ .",
+    "answer": "Fennec fox",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "selfish",
-      "favorable",
-      "frequent",
-      "divide"
+      "Fennec fox",
+      "Komodo dragon",
+      "Sloth",
+      "Axolotl"
     ]
   },
   {
     "id": "missing-238",
-    "sentence": "Item 238: The word with the opposite meaning to “passive” is ____ .",
-    "answer": "active",
-    "clue": "Choose the antonym of “passive”.",
+    "sentence": "The animal described as “arboreal mammal native to the Himalayas” is ____ .",
+    "answer": "Red panda",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "coherent",
-      "decelerate",
-      "despair",
-      "active"
+      "Green anaconda",
+      "Meerkat",
+      "Honeybee",
+      "Red panda"
     ]
   },
   {
     "id": "missing-239",
-    "sentence": "Item 239: The word with the opposite meaning to “active” is ____ .",
-    "answer": "passive",
-    "clue": "Choose the antonym of “active”.",
+    "sentence": "The animal described as “world's largest living rodent” is ____ .",
+    "answer": "Capybara",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "punish",
-      "shallow",
-      "passive",
-      "counterfeit"
+      "Peacock",
+      "Firefly",
+      "Capybara",
+      "Hummingbird"
     ]
   },
   {
     "id": "missing-240",
-    "sentence": "Item 240: The word with the opposite meaning to “occupied” is ____ .",
-    "answer": "vacant",
-    "clue": "Choose the antonym of “occupied”.",
+    "sentence": "The animal described as “large ray known for wing-like fins” is ____ .",
+    "answer": "Manta ray",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "inferior",
-      "vacant",
-      "permit",
-      "poverty"
+      "Mantis shrimp",
+      "Manta ray",
+      "Bat",
+      "Beaver"
     ]
   },
   {
     "id": "missing-241",
-    "sentence": "Item 241: The word with the opposite meaning to “vacant” is ____ .",
-    "answer": "occupied",
-    "clue": "Choose the antonym of “vacant”.",
+    "sentence": "The animal described as “fish in which males carry developing young” is ____ .",
+    "answer": "Seahorse",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "occupied",
-      "tighten",
-      "guilty",
-      "expert"
+      "Seahorse",
+      "Platypus",
+      "Camel",
+      "Fennec fox"
     ]
   },
   {
     "id": "missing-242",
-    "sentence": "Item 242: The word with the opposite meaning to “foreign” is ____ .",
-    "answer": "domestic",
-    "clue": "Choose the antonym of “foreign”.",
+    "sentence": "The animal described as “fish capable of gliding above water” is ____ .",
+    "answer": "Flying fish",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "vice",
-      "arduous",
-      "notorious",
-      "domestic"
+      "Kangaroo",
+      "Yak",
+      "Red panda",
+      "Flying fish"
     ]
   },
   {
     "id": "missing-243",
-    "sentence": "Item 243: The word with the opposite meaning to “domestic” is ____ .",
-    "answer": "foreign",
-    "clue": "Choose the antonym of “domestic”.",
+    "sentence": "The animal described as “mammal with protective bony plates” is ____ .",
+    "answer": "Armadillo",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "resilient",
-      "boastful",
-      "foreign",
-      "selfless"
+      "Lemur",
+      "Capybara",
+      "Armadillo",
+      "Dolphin"
     ]
   },
   {
     "id": "missing-244",
-    "sentence": "Item 244: The word with the opposite meaning to “major” is ____ .",
-    "answer": "minor",
-    "clue": "Choose the antonym of “major”.",
+    "sentence": "The animal described as “rodent covered in quills” is ____ .",
+    "answer": "Porcupine",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "attract",
-      "minor",
-      "adverse",
-      "occasional"
+      "Manta ray",
+      "Porcupine",
+      "Octopus",
+      "Panda"
     ]
   },
   {
     "id": "missing-245",
-    "sentence": "Item 245: The word with the opposite meaning to “minor” is ____ .",
-    "answer": "major",
-    "clue": "Choose the antonym of “minor”.",
+    "sentence": "The animal described as “mammal with a short prehensile snout” is ____ .",
+    "answer": "Tapir",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "major",
-      "incoherent",
-      "strengthen",
-      "chaos"
+      "Tapir",
+      "Chameleon",
+      "Wombat",
+      "Seahorse"
     ]
   },
   {
     "id": "missing-246",
-    "sentence": "Item 246: The word with the opposite meaning to “exterior” is ____ .",
-    "answer": "interior",
-    "clue": "Choose the antonym of “exterior”.",
+    "sentence": "The animal described as “forest mammal related to giraffes” is ____ .",
+    "answer": "Okapi",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "loyal",
-      "repair",
-      "deep",
-      "interior"
+      "Polar bear",
+      "Narwhal",
+      "Flying fish",
+      "Okapi"
     ]
   },
   {
     "id": "missing-247",
-    "sentence": "Item 247: The word with the opposite meaning to “interior” is ____ .",
-    "answer": "exterior",
-    "clue": "Choose the antonym of “interior”.",
+    "sentence": "The animal described as “large flightless bird with a casque” is ____ .",
+    "answer": "Cassowary",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "wealth",
-      "positive",
-      "exterior",
-      "forbid"
+      "Walrus",
+      "Armadillo",
+      "Cassowary",
+      "Emperor penguin"
     ]
   },
   {
     "id": "missing-248",
-    "sentence": "Item 248: The word with the opposite meaning to “inferior” is ____ .",
-    "answer": "superior",
-    "clue": "Choose the antonym of “inferior”.",
+    "sentence": "The animal described as “seabird known for long-distance gliding” is ____ .",
+    "answer": "Albatross",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "perilous",
-      "superior",
-      "loosen",
-      "legal"
+      "Porcupine",
+      "Albatross",
+      "Arctic tern",
+      "Flamingo"
     ]
   },
   {
     "id": "missing-249",
-    "sentence": "Item 249: The word with the opposite meaning to “superior” is ____ .",
-    "answer": "inferior",
-    "clue": "Choose the antonym of “superior”.",
+    "sentence": "The animal described as “great ape native to Southeast Asian islands” is ____ .",
+    "answer": "Orangutan",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "inferior",
-      "dawn",
-      "effortless",
-      "respected"
+      "Orangutan",
+      "Koala",
+      "Salamander",
+      "Tapir"
     ]
   },
   {
     "id": "missing-250",
-    "sentence": "Item 250: The word with the opposite meaning to “negative” is ____ .",
-    "answer": "positive",
-    "clue": "Choose the antonym of “negative”.",
+    "sentence": "The animal described as “large grazing mammal of North America” is ____ .",
+    "answer": "Bison",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "selfish",
-      "fragile",
-      "artificial",
-      "positive"
+      "Sloth",
+      "Axolotl",
+      "Okapi",
+      "Bison"
     ]
   },
   {
     "id": "missing-251",
-    "sentence": "Item 251: The word with the opposite meaning to “positive” is ____ .",
-    "answer": "negative",
-    "clue": "Choose the antonym of “positive”.",
+    "sentence": "The scientist or inventor associated with discovery of penicillin is ____ .",
+    "answer": "Alexander Fleming",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "hostile",
-      "repel",
-      "negative",
-      "feigned"
+      "Johannes Gutenberg",
+      "Carl Linnaeus",
+      "Vera Rubin",
+      "Alexander Fleming"
     ]
   },
   {
     "id": "missing-252",
-    "sentence": "Item 252: The word with the opposite meaning to “public” is ____ .",
-    "answer": "private",
-    "clue": "Choose the antonym of “public”.",
+    "sentence": "The scientist or inventor associated with pioneering research on radioactivity is ____ .",
+    "answer": "Marie Curie",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "order",
-      "private",
-      "diligent",
-      "weaken"
+      "Alfred Nobel",
+      "Abdus Salam",
+      "Marie Curie",
+      "James Clerk Maxwell"
     ]
   },
   {
     "id": "missing-253",
-    "sentence": "Item 253: The word with the opposite meaning to “private” is ____ .",
-    "answer": "public",
-    "clue": "Choose the antonym of “private”.",
+    "sentence": "The scientist or inventor associated with law of universal gravitation is ____ .",
+    "answer": "Isaac Newton",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "public",
-      "treacherous",
-      "damage",
-      "loose"
+      "Kip Thorne",
+      "Isaac Newton",
+      "Niels Bohr",
+      "Robert Hooke"
     ]
   },
   {
     "id": "missing-254",
-    "sentence": "Item 254: The word with the opposite meaning to “lenient” is ____ .",
-    "answer": "rigorous",
-    "clue": "Choose the antonym of “lenient”.",
+    "sentence": "The scientist or inventor associated with theory of general relativity is ____ .",
+    "answer": "Albert Einstein",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "remember",
-      "strength",
-      "negative",
-      "rigorous"
+      "Albert Einstein",
+      "Srinivasa Ramanujan",
+      "Blaise Pascal",
+      "Max Planck"
     ]
   },
   {
     "id": "missing-255",
-    "sentence": "Item 255: The word with the opposite meaning to “rigorous” is ____ .",
-    "answer": "lenient",
-    "clue": "Choose the antonym of “rigorous”.",
+    "sentence": "The scientist or inventor associated with theory of evolution by natural selection is ____ .",
+    "answer": "Charles Darwin",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "illegal",
-      "safe",
-      "lenient",
-      "connect"
+      "C V Raman",
+      "Archimedes",
+      "Alexander Fleming",
+      "Charles Darwin"
     ]
   },
   {
     "id": "missing-256",
-    "sentence": "Item 256: The word with the opposite meaning to “spurious” is ____ .",
-    "answer": "authentic",
-    "clue": "Choose the antonym of “spurious”.",
+    "sentence": "The scientist or inventor associated with pasteurisation and germ theory is ____ .",
+    "answer": "Louis Pasteur",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "versatile",
-      "authentic",
-      "dusk",
-      "brisk"
+      "Evangelista Torricelli",
+      "Marie Curie",
+      "Louis Pasteur",
+      "Satyendra Nath Bose"
     ]
   },
   {
     "id": "missing-257",
-    "sentence": "Item 257: The word with the opposite meaning to “authentic” is ____ .",
-    "answer": "spurious",
-    "clue": "Choose the antonym of “authentic”.",
+    "sentence": "The scientist or inventor associated with alternating-current power systems is ____ .",
+    "answer": "Nikola Tesla",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "spurious",
-      "active",
-      "plausible",
-      "natural"
+      "Isaac Newton",
+      "Nikola Tesla",
+      "Subrahmanyan Chandrasekhar",
+      "Anders Celsius"
     ]
   },
   {
     "id": "missing-258",
-    "sentence": "Item 258: The word with the opposite meaning to “inarticulate” is ____ .",
-    "answer": "eloquent",
-    "clue": "Choose the antonym of “inarticulate”.",
+    "sentence": "The scientist or inventor associated with telescopic observations of Jupiter's moons is ____ .",
+    "answer": "Galileo Galilei",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "imminent",
-      "friendly",
-      "borrow",
-      "eloquent"
+      "Galileo Galilei",
+      "Hedy Lamarr",
+      "Andre-Marie Ampere",
+      "Albert Einstein"
     ]
   },
   {
     "id": "missing-259",
-    "sentence": "Item 259: The word with the opposite meaning to “eloquent” is ____ .",
-    "answer": "inarticulate",
-    "clue": "Choose the antonym of “eloquent”.",
+    "sentence": "The scientist or inventor associated with foundations of genetics is ____ .",
+    "answer": "Gregor Mendel",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "approve",
-      "generosity",
-      "inarticulate",
-      "idle"
+      "Grace Hopper",
+      "Georg Ohm",
+      "Charles Darwin",
+      "Gregor Mendel"
     ]
   },
   {
     "id": "missing-260",
-    "sentence": "Item 260: The word with the opposite meaning to “malevolent” is ____ .",
-    "answer": "benevolent",
-    "clue": "Choose the antonym of “malevolent”.",
+    "sentence": "The scientist or inventor associated with periodic table is ____ .",
+    "answer": "Dmitri Mendeleev",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "tight",
-      "benevolent",
-      "patient",
-      "support"
+      "Heinrich Hertz",
+      "Louis Pasteur",
+      "Dmitri Mendeleev",
+      "Tu Youyou"
     ]
   },
   {
     "id": "missing-261",
-    "sentence": "Item 261: The word with the opposite meaning to “benevolent” is ____ .",
-    "answer": "malevolent",
-    "clue": "Choose the antonym of “benevolent”.",
+    "sentence": "The scientist or inventor associated with electromagnetic induction is ____ .",
+    "answer": "Michael Faraday",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "malevolent",
-      "forget",
-      "weakness",
-      "private"
+      "Nikola Tesla",
+      "Michael Faraday",
+      "Jonas Salk",
+      "Enrico Fermi"
     ]
   },
   {
     "id": "missing-262",
-    "sentence": "Item 262: The word with the opposite meaning to “abrasive” is ____ .",
-    "answer": "amiable",
-    "clue": "Choose the antonym of “abrasive”.",
+    "sentence": "The scientist or inventor associated with major improvements to the steam engine is ____ .",
+    "answer": "James Watt",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "disconnect",
-      "regular",
-      "plentiful",
-      "amiable"
+      "James Watt",
+      "Edward Jenner",
+      "Lise Meitner",
+      "Galileo Galilei"
     ]
   },
   {
     "id": "missing-263",
-    "sentence": "Item 263: The word with the opposite meaning to “amiable” is ____ .",
-    "answer": "abrasive",
-    "clue": "Choose the antonym of “amiable”.",
+    "sentence": "The scientist or inventor associated with World Wide Web is ____ .",
+    "answer": "Tim Berners-Lee",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "sluggish",
-      "inflexible",
-      "abrasive",
-      "noisy"
+      "Antonie van Leeuwenhoek",
+      "Chien-Shiung Wu",
+      "Gregor Mendel",
+      "Tim Berners-Lee"
     ]
   },
   {
     "id": "missing-264",
-    "sentence": "Item 264: The word with the opposite meaning to “effortless” is ____ .",
-    "answer": "arduous",
-    "clue": "Choose the antonym of “effortless”.",
+    "sentence": "The scientist or inventor associated with NASA orbital calculations is ____ .",
+    "answer": "Katherine Johnson",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "expand",
-      "arduous",
-      "passive",
-      "implausible"
+      "Vera Rubin",
+      "Dmitri Mendeleev",
+      "Katherine Johnson",
+      "Carl Linnaeus"
     ]
   },
   {
     "id": "missing-265",
-    "sentence": "Item 265: The word with the opposite meaning to “arduous” is ____ .",
-    "answer": "effortless",
-    "clue": "Choose the antonym of “arduous”.",
+    "sentence": "The scientist or inventor associated with foundations of theoretical computer science is ____ .",
+    "answer": "Alan Turing",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "effortless",
-      "remote",
-      "vivid",
-      "lend"
+      "Michael Faraday",
+      "Alan Turing",
+      "Alfred Nobel",
+      "Abdus Salam"
     ]
   },
   {
     "id": "missing-266",
-    "sentence": "Item 266: The word with the opposite meaning to “sluggish” is ____ .",
-    "answer": "brisk",
-    "clue": "Choose the antonym of “sluggish”.",
+    "sentence": "The scientist or inventor associated with X-ray diffraction work on DNA is ____ .",
+    "answer": "Rosalind Franklin",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "formidable",
-      "disapprove",
-      "greed",
-      "brisk"
+      "Rosalind Franklin",
+      "Robert Hooke",
+      "Kip Thorne",
+      "James Watt"
     ]
   },
   {
     "id": "missing-267",
-    "sentence": "Item 267: The word with the opposite meaning to “brisk” is ____ .",
-    "answer": "sluggish",
-    "clue": "Choose the antonym of “brisk”.",
+    "sentence": "The scientist or inventor associated with evidence that galaxies exist beyond the Milky Way is ____ .",
+    "answer": "Edwin Hubble",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "oppose",
-      "smooth",
-      "sluggish",
-      "impatient"
+      "Blaise Pascal",
+      "Max Planck",
+      "Tim Berners-Lee",
+      "Edwin Hubble"
     ]
   },
   {
     "id": "missing-268",
-    "sentence": "Item 268: The word with the opposite meaning to “evasive” is ____ .",
-    "answer": "candid",
-    "clue": "Choose the antonym of “evasive”.",
+    "sentence": "The scientist or inventor associated with long-term study of wild chimpanzees is ____ .",
+    "answer": "Jane Goodall",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "public",
-      "candid",
-      "succeed",
-      "success"
+      "Alexander Fleming",
+      "Katherine Johnson",
+      "Jane Goodall",
+      "Archimedes"
     ]
   },
   {
     "id": "missing-269",
-    "sentence": "Item 269: The word with the opposite meaning to “candid” is ____ .",
-    "answer": "evasive",
-    "clue": "Choose the antonym of “candid”.",
+    "sentence": "The scientist or inventor associated with Silent Spring is ____ .",
+    "answer": "Rachel Carson",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "evasive",
-      "arrange",
-      "irregular",
-      "meagre"
+      "Alan Turing",
+      "Rachel Carson",
+      "Evangelista Torricelli",
+      "Marie Curie"
     ]
   },
   {
     "id": "missing-270",
-    "sentence": "Item 270: The word with the opposite meaning to “flustered” is ____ .",
-    "answer": "composed",
-    "clue": "Choose the antonym of “flustered”.",
+    "sentence": "The scientist or inventor associated with first successful powered airplane flight is ____ .",
+    "answer": "Wright brothers",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "silent",
-      "candid",
-      "generous",
-      "composed"
+      "Wright brothers",
+      "Anders Celsius",
+      "Isaac Newton",
+      "Rosalind Franklin"
     ]
   },
   {
     "id": "missing-271",
-    "sentence": "Item 271: The word with the opposite meaning to “composed” is ____ .",
-    "answer": "flustered",
-    "clue": "Choose the antonym of “composed”.",
+    "sentence": "The scientist or inventor associated with European movable-type printing press is ____ .",
+    "answer": "Johannes Gutenberg",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "concise",
-      "contract",
-      "flustered",
-      "vacant"
+      "Andre-Marie Ampere",
+      "Albert Einstein",
+      "Edwin Hubble",
+      "Johannes Gutenberg"
     ]
   },
   {
     "id": "missing-272",
-    "sentence": "Item 272: The word with the opposite meaning to “indecisive” is ____ .",
-    "answer": "decisive",
-    "clue": "Choose the antonym of “indecisive”.",
+    "sentence": "The scientist or inventor associated with classical theory of electromagnetic radiation is ____ .",
+    "answer": "James Clerk Maxwell",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "omit",
-      "decisive",
-      "innovative",
-      "dull"
+      "Charles Darwin",
+      "Jane Goodall",
+      "James Clerk Maxwell",
+      "Georg Ohm"
     ]
   },
   {
     "id": "missing-273",
-    "sentence": "Item 273: The word with the opposite meaning to “decisive” is ____ .",
-    "answer": "indecisive",
-    "clue": "Choose the antonym of “decisive”.",
+    "sentence": "The scientist or inventor associated with model of the atom with quantised electron orbits is ____ .",
+    "answer": "Niels Bohr",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "indecisive",
-      "manageable",
-      "combine",
-      "courage"
+      "Rachel Carson",
+      "Niels Bohr",
+      "Heinrich Hertz",
+      "Louis Pasteur"
     ]
   },
   {
     "id": "missing-274",
-    "sentence": "Item 274: The word with the opposite meaning to “wasteful” is ____ .",
-    "answer": "economical",
-    "clue": "Choose the antonym of “wasteful”.",
+    "sentence": "The scientist or inventor associated with contributions to number theory is ____ .",
+    "answer": "Srinivasa Ramanujan",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "accurate",
-      "whisper",
-      "rough",
-      "economical"
+      "Srinivasa Ramanujan",
+      "Enrico Fermi",
+      "Nikola Tesla",
+      "Wright brothers"
     ]
   },
   {
     "id": "missing-275",
-    "sentence": "Item 275: The word with the opposite meaning to “economical” is ____ .",
-    "answer": "wasteful",
-    "clue": "Choose the antonym of “economical”.",
+    "sentence": "The scientist or inventor associated with discovery of the Raman effect is ____ .",
+    "answer": "C V Raman",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "failure",
-      "rigorous",
-      "wasteful",
-      "fail"
+      "Lise Meitner",
+      "Galileo Galilei",
+      "Johannes Gutenberg",
+      "C V Raman"
     ]
   },
   {
     "id": "missing-276",
-    "sentence": "Item 276: The word with the opposite meaning to “implicit” is ____ .",
-    "answer": "explicit",
-    "clue": "Choose the antonym of “implicit”.",
+    "sentence": "The scientist or inventor associated with work behind Bose-Einstein statistics is ____ .",
+    "answer": "Satyendra Nath Bose",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "rational",
-      "explicit",
-      "disorder",
-      "possible"
+      "Gregor Mendel",
+      "James Clerk Maxwell",
+      "Satyendra Nath Bose",
+      "Chien-Shiung Wu"
     ]
   },
   {
     "id": "missing-277",
-    "sentence": "Item 277: The word with the opposite meaning to “explicit” is ____ .",
-    "answer": "implicit",
-    "clue": "Choose the antonym of “explicit”.",
+    "sentence": "The scientist or inventor associated with work on stellar structure is ____ .",
+    "answer": "Subrahmanyan Chandrasekhar",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "implicit",
-      "visible",
-      "evasive",
-      "stingy"
+      "Niels Bohr",
+      "Subrahmanyan Chandrasekhar",
+      "Vera Rubin",
+      "Dmitri Mendeleev"
     ]
   },
   {
     "id": "missing-278",
-    "sentence": "Item 278: The word with the opposite meaning to “adverse” is ____ .",
-    "answer": "favorable",
-    "clue": "Choose the antonym of “adverse”.",
+    "sentence": "The scientist or inventor associated with frequency-hopping spread-spectrum concept is ____ .",
+    "answer": "Hedy Lamarr",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "occupied",
-      "verbose",
-      "accept",
-      "favorable"
+      "Hedy Lamarr",
+      "Abdus Salam",
+      "Michael Faraday",
+      "Srinivasa Ramanujan"
     ]
   },
   {
     "id": "missing-279",
-    "sentence": "Item 279: The word with the opposite meaning to “favorable” is ____ .",
-    "answer": "adverse",
-    "clue": "Choose the antonym of “favorable”.",
+    "sentence": "The scientist or inventor associated with development of early compiler technology is ____ .",
+    "answer": "Grace Hopper",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "rigid",
-      "expose",
-      "adverse",
-      "conventional"
+      "Kip Thorne",
+      "James Watt",
+      "C V Raman",
+      "Grace Hopper"
     ]
   },
   {
     "id": "missing-280",
-    "sentence": "Item 280: The word with the opposite meaning to “genuine” is ____ .",
-    "answer": "feigned",
-    "clue": "Choose the antonym of “genuine”.",
+    "sentence": "The scientist or inventor associated with discovery of artemisinin is ____ .",
+    "answer": "Tu Youyou",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "cowardice",
-      "feigned",
-      "prudent",
-      "separate"
+      "Tim Berners-Lee",
+      "Satyendra Nath Bose",
+      "Tu Youyou",
+      "Max Planck"
     ]
   },
   {
     "id": "missing-281",
-    "sentence": "Item 281: The word with the opposite meaning to “remote” is ____ .",
-    "answer": "imminent",
-    "clue": "Choose the antonym of “remote”.",
+    "sentence": "The scientist or inventor associated with development of an inactivated polio vaccine is ____ .",
+    "answer": "Jonas Salk",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "imminent",
-      "inaccurate",
-      "shout",
-      "bitter"
+      "Subrahmanyan Chandrasekhar",
+      "Jonas Salk",
+      "Alexander Fleming",
+      "Katherine Johnson"
     ]
   },
   {
     "id": "missing-282",
-    "sentence": "Item 282: The word with the opposite meaning to “imminent” is ____ .",
-    "answer": "remote",
-    "clue": "Choose the antonym of “imminent”.",
+    "sentence": "The scientist or inventor associated with smallpox vaccination is ____ .",
+    "answer": "Edward Jenner",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "advance",
-      "friend",
-      "lenient",
-      "remote"
+      "Edward Jenner",
+      "Marie Curie",
+      "Alan Turing",
+      "Hedy Lamarr"
     ]
   },
   {
     "id": "missing-283",
-    "sentence": "Item 283: The word with the opposite meaning to “conventional” is ____ .",
-    "answer": "innovative",
-    "clue": "Choose the antonym of “conventional”.",
+    "sentence": "The scientist or inventor associated with microscopic observations of microorganisms is ____ .",
+    "answer": "Antonie van Leeuwenhoek",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "impossible",
-      "irrational",
-      "innovative",
-      "victory"
+      "Isaac Newton",
+      "Rosalind Franklin",
+      "Grace Hopper",
+      "Antonie van Leeuwenhoek"
     ]
   },
   {
     "id": "missing-284",
-    "sentence": "Item 284: The word with the opposite meaning to “innovative” is ____ .",
-    "answer": "conventional",
-    "clue": "Choose the antonym of “innovative”.",
+    "sentence": "The scientist or inventor associated with modern system of biological classification is ____ .",
+    "answer": "Carl Linnaeus",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "humble",
-      "conventional",
-      "hidden",
-      "composed"
+      "Edwin Hubble",
+      "Tu Youyou",
+      "Carl Linnaeus",
+      "Albert Einstein"
     ]
   },
   {
     "id": "missing-285",
-    "sentence": "Item 285: The word with the opposite meaning to “confusing” is ____ .",
-    "answer": "lucid",
-    "clue": "Choose the antonym of “confusing”.",
+    "sentence": "The scientist or inventor associated with invention of dynamite is ____ .",
+    "answer": "Alfred Nobel",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "lucid",
-      "domestic",
-      "impartial",
-      "reject"
+      "Jonas Salk",
+      "Alfred Nobel",
+      "Charles Darwin",
+      "Jane Goodall"
     ]
   },
   {
     "id": "missing-286",
-    "sentence": "Item 286: The word with the opposite meaning to “lucid” is ____ .",
-    "answer": "confusing",
-    "clue": "Choose the antonym of “lucid”.",
+    "sentence": "The scientist or inventor associated with coining the term cell after microscopy is ____ .",
+    "answer": "Robert Hooke",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "lucid",
-      "flexible",
-      "shield",
-      "confusing"
+      "Robert Hooke",
+      "Louis Pasteur",
+      "Rachel Carson",
+      "Edward Jenner"
     ]
   },
   {
     "id": "missing-287",
-    "sentence": "Item 287: The word with the opposite meaning to “optional” is ____ .",
-    "answer": "mandatory",
-    "clue": "Choose the antonym of “optional”.",
+    "sentence": "The scientist or inventor associated with Pascal's principle in fluid mechanics is ____ .",
+    "answer": "Blaise Pascal",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "create",
-      "wisdom",
-      "mandatory",
-      "reckless"
+      "Nikola Tesla",
+      "Wright brothers",
+      "Antonie van Leeuwenhoek",
+      "Blaise Pascal"
     ]
   },
   {
     "id": "missing-288",
-    "sentence": "Item 288: The word with the opposite meaning to “mandatory” is ____ .",
-    "answer": "optional",
-    "clue": "Choose the antonym of “mandatory”.",
+    "sentence": "The scientist or inventor associated with principle of buoyancy is ____ .",
+    "answer": "Archimedes",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "sweet",
-      "optional",
-      "vague",
-      "vanish"
+      "Johannes Gutenberg",
+      "Carl Linnaeus",
+      "Archimedes",
+      "Galileo Galilei"
     ]
   },
   {
     "id": "missing-289",
-    "sentence": "Item 289: The word with the opposite meaning to “extraordinary” is ____ .",
-    "answer": "mundane",
-    "clue": "Choose the antonym of “extraordinary”.",
+    "sentence": "The scientist or inventor associated with invention of the mercury barometer is ____ .",
+    "answer": "Evangelista Torricelli",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "mundane",
-      "retreat",
-      "enemy",
-      "authentic"
+      "Alfred Nobel",
+      "Evangelista Torricelli",
+      "Gregor Mendel",
+      "James Clerk Maxwell"
     ]
   },
   {
     "id": "missing-290",
-    "sentence": "Item 290: The word with the opposite meaning to “mundane” is ____ .",
-    "answer": "extraordinary",
-    "clue": "Choose the antonym of “mundane”.",
+    "sentence": "The scientist or inventor associated with temperature scale is ____ .",
+    "answer": "Anders Celsius",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "defeat",
-      "logical",
-      "relentless",
-      "extraordinary"
+      "Anders Celsius",
+      "Dmitri Mendeleev",
+      "Niels Bohr",
+      "Robert Hooke"
     ]
   },
   {
     "id": "missing-291",
-    "sentence": "Item 291: The word with the opposite meaning to “expert” is ____ .",
-    "answer": "novice",
-    "clue": "Choose the antonym of “expert”.",
+    "sentence": "The scientist or inventor associated with foundations of electrodynamics is ____ .",
+    "answer": "Andre-Marie Ampere",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "flustered",
-      "arrogant",
-      "novice",
-      "asleep"
+      "Michael Faraday",
+      "Srinivasa Ramanujan",
+      "Blaise Pascal",
+      "Andre-Marie Ampere"
     ]
   },
   {
     "id": "missing-292",
-    "sentence": "Item 292: The word with the opposite meaning to “novice” is ____ .",
-    "answer": "expert",
-    "clue": "Choose the antonym of “novice”.",
+    "sentence": "The scientist or inventor associated with Ohm's law is ____ .",
+    "answer": "Georg Ohm",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "include",
-      "expert",
-      "foreign",
-      "biased"
+      "C V Raman",
+      "Archimedes",
+      "Georg Ohm",
+      "James Watt"
     ]
   },
   {
     "id": "missing-293",
-    "sentence": "Item 293: The word with the opposite meaning to “safe” is ____ .",
-    "answer": "perilous",
-    "clue": "Choose the antonym of “safe”.",
+    "sentence": "The scientist or inventor associated with experimental confirmation of electromagnetic waves is ____ .",
+    "answer": "Heinrich Hertz",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "perilous",
-      "confusing",
-      "timid",
-      "complicate"
+      "Evangelista Torricelli",
+      "Heinrich Hertz",
+      "Tim Berners-Lee",
+      "Satyendra Nath Bose"
     ]
   },
   {
     "id": "missing-294",
-    "sentence": "Item 294: The word with the opposite meaning to “perilous” is ____ .",
-    "answer": "safe",
-    "clue": "Choose the antonym of “perilous”.",
+    "sentence": "The scientist or inventor associated with first controlled nuclear chain reaction is ____ .",
+    "answer": "Enrico Fermi",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "trivial",
-      "destroy",
-      "foolishness",
-      "safe"
+      "Enrico Fermi",
+      "Katherine Johnson",
+      "Subrahmanyan Chandrasekhar",
+      "Anders Celsius"
     ]
   },
   {
     "id": "missing-295",
-    "sentence": "Item 295: The word with the opposite meaning to “meagre” is ____ .",
-    "answer": "plentiful",
-    "clue": "Choose the antonym of “meagre”.",
+    "sentence": "The scientist or inventor associated with theoretical explanation of nuclear fission is ____ .",
+    "answer": "Lise Meitner",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "appear",
-      "tender",
-      "plentiful",
-      "specific"
+      "Alan Turing",
+      "Hedy Lamarr",
+      "Andre-Marie Ampere",
+      "Lise Meitner"
     ]
   },
   {
     "id": "missing-296",
-    "sentence": "Item 296: The word with the opposite meaning to “plentiful” is ____ .",
-    "answer": "meagre",
-    "clue": "Choose the antonym of “plentiful”.",
+    "sentence": "The scientist or inventor associated with experimental work on parity violation is ____ .",
+    "answer": "Chien-Shiung Wu",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "spurious",
-      "meagre",
-      "construct",
-      "beginning"
+      "Grace Hopper",
+      "Georg Ohm",
+      "Chien-Shiung Wu",
+      "Rosalind Franklin"
     ]
   },
   {
     "id": "missing-297",
-    "sentence": "Item 297: The word with the opposite meaning to “irrational” is ____ .",
-    "answer": "rational",
-    "clue": "Choose the antonym of “irrational”.",
+    "sentence": "The scientist or inventor associated with evidence for dark matter from galaxy rotation is ____ .",
+    "answer": "Vera Rubin",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "rational",
-      "arrival",
-      "illogical",
-      "merciful"
+      "Heinrich Hertz",
+      "Vera Rubin",
+      "Edwin Hubble",
+      "Tu Youyou"
     ]
   },
   {
     "id": "missing-298",
-    "sentence": "Item 298: The word with the opposite meaning to “rational” is ____ .",
-    "answer": "irrational",
-    "clue": "Choose the antonym of “rational”.",
+    "sentence": "The scientist or inventor associated with electroweak unification is ____ .",
+    "answer": "Abdus Salam",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "awake",
-      "decisive",
-      "optimistic",
-      "irrational"
+      "Abdus Salam",
+      "Jane Goodall",
+      "Jonas Salk",
+      "Enrico Fermi"
     ]
   },
   {
     "id": "missing-299",
-    "sentence": "Item 299: The word with the opposite meaning to “merciful” is ____ .",
-    "answer": "relentless",
-    "clue": "Choose the antonym of “merciful”.",
+    "sentence": "The scientist or inventor associated with contributions to gravitational-wave physics is ____ .",
+    "answer": "Kip Thorne",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "ambiguous",
-      "exclude",
-      "relentless",
-      "minor"
+      "Rachel Carson",
+      "Edward Jenner",
+      "Lise Meitner",
+      "Kip Thorne"
     ]
   },
   {
     "id": "missing-300",
-    "sentence": "Item 300: The word with the opposite meaning to “relentless” is ____ .",
-    "answer": "merciful",
-    "clue": "Choose the antonym of “relentless”.",
+    "sentence": "The scientist or inventor associated with foundations of quantum theory is ____ .",
+    "answer": "Max Planck",
+    "clue": "Use general knowledge to complete the fact.",
     "options": [
-      "simplify",
-      "merciful",
-      "mandatory",
-      "bold"
+      "Antonie van Leeuwenhoek",
+      "Chien-Shiung Wu",
+      "Max Planck",
+      "Wright brothers"
     ]
   }
 ];
