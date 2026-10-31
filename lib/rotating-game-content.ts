@@ -22,16 +22,11 @@ export function getWordPuzzle(date:string,slot:number):Puzzle & {pattern:string}
  return {id:"word:"+answer+":"+scrambled,question:"Rearrange these letters to make a capital city.",answer,pattern:scrambled};
 }
 export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string;options:string[];correctIndex:number;explanation:string;topic:string}{
- const seed=seedFor(date,slot),total=WORD_QUIZ_BANK.length*4,index=((seed%total)+total)%total,entry=WORD_QUIZ_BANK[Math.floor(index/4)],kind=index%4;
- const groupStart=Math.floor((Math.floor(index/4))/5)*5,group=WORD_QUIZ_BANK.slice(groupStart,Math.min(groupStart+5,WORD_QUIZ_BANK.length)),others=group.filter(x=>x.id!==entry.id);
- let question="",answer="",options:string[]=[],explanation="",clue="Choose the best answer from the four closely related options.";
- if(kind===0){question="Which meaning best matches the word “"+entry.word+"”?";answer=entry.definition;options=[answer,...others.map(x=>x.definition).slice(0,3)];explanation="“"+entry.word+"” means "+entry.definition.toLowerCase()+"."}
- else if(kind===1){question="Which word is closest in meaning to “"+entry.word+"”?";answer=entry.synonym;options=[answer,...others.map(x=>x.synonym).slice(0,3)];explanation="“"+entry.synonym+"” is the closest synonym of “"+entry.word+"” in this context."}
- else if(kind===2){question="Which word is most nearly opposite in meaning to “"+entry.word+"”?";answer=entry.antonym;options=[answer,...others.map(x=>x.antonym).slice(0,3)];explanation="“"+entry.antonym+"” expresses the opposite of “"+entry.word+"”."}
- else {question="Choose the word that best completes the sentence: “"+entry.sentence+"”";answer=entry.word;options=[answer,...others.map(x=>x.word).slice(0,3)];explanation="“"+entry.word+"” fits the sentence because it means "+entry.definition.toLowerCase()+"."}
- options=shuffled([...new Set(options)],seed+191);
- return {id:"wordquiz:"+entry.id+":"+kind,question,clue,answer,options,correctIndex:options.indexOf(answer),explanation,topic:"Vocabulary"};
+ const seed=seedFor(date,slot),index=((Math.floor(seed)%WORD_QUIZ_BANK.length)+WORD_QUIZ_BANK.length)%WORD_QUIZ_BANK.length,item=WORD_QUIZ_BANK[index];
+ const options=shuffled([...item.options],seed+191);
+ return {id:item.id,question:item.question,clue:item.clue,answer:item.answer,options,correctIndex:options.indexOf(item.answer),explanation:item.explanation,topic:item.topic};
 }
+
 const MISSING_WORD_CHALLENGES:Array<{sentence:string;answer:string;clue:string;options:string[]}>= [
  {sentence:"A stitch in time saves ____.",answer:"nine",clue:"A proverb about solving problems early.",options:["nine","fine","line","mine"]},
  {sentence:"Don't count your chickens before they ____.",answer:"hatch",clue:"Do not assume success before it happens.",options:["hatch","match","catch","patch"]},
