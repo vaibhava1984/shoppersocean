@@ -1,4038 +1,4206 @@
 export type WordQuizQuestion={id:string;question:string;answer:string;options:[string,string,string,string];explanation:string;clue:string;topic:string};
 
-// 300 curated vocabulary MCQs: synonym, antonym, definition and contextual usage.
+// 300 general-knowledge MCQs across geography, chemistry, physics, biology, astronomy and earth science.
 const questions:WordQuizQuestion[] = [
   {
     "id": "wordquiz-001",
-    "question": "Which word is closest in meaning to \"abundant\"?",
-    "answer": "plentiful",
+    "question": "What is the capital city of Afghanistan?",
+    "answer": "Kabul",
     "options": [
-      "plentiful",
-      "hardworking",
-      "thrifty",
-      "strict"
+      "Kabul",
+      "Tokyo",
+      "Santo Domingo",
+      "Algiers"
     ],
-    "explanation": "\"abundant\" means plentiful.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Kabul is the capital city of Afghanistan.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-002",
-    "question": "Which word is opposite in meaning to \"abundant\"?",
-    "answer": "scarce",
+    "question": "What is the capital city of Albania?",
+    "answer": "Tirana",
     "options": [
-      "inarticulate",
-      "protected",
-      "fake",
-      "scarce"
+      "Tirana",
+      "Budapest",
+      "Algiers",
+      "Nassau"
     ],
-    "explanation": "\"scarce\" is the opposite of \"abundant\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Tirana is the capital city of Albania.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-003",
-    "question": "What does \"abundant\" mean?",
-    "answer": "available in large quantities",
+    "question": "What is the capital city of Algeria?",
+    "answer": "Algiers",
     "options": [
-      "available in large quantities",
-      "accurate and exact in every detail",
-      "expecting good things to happen",
-      "correct and free from errors"
+      "Algiers",
+      "Conakry",
+      "Riga",
+      "Tripoli"
     ],
-    "explanation": "\"abundant\" means available in large quantities.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Algiers is the capital city of Algeria.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-004",
-    "question": "Choose the sentence that uses \"abundant\" correctly.",
-    "answer": "The region has abundant rainfall throughout the year.",
+    "question": "What is the capital city of Andorra?",
+    "answer": "Andorra la Vella",
     "options": [
-      "Residents remained wary of the unfamiliar offer.",
-      "We need a pragmatic solution to the transport problem.",
-      "The region has abundant rainfall throughout the year.",
-      "Young plants are vulnerable to frost."
+      "Andorra la Vella",
+      "Banjul",
+      "Prague",
+      "Thimphu"
     ],
-    "explanation": "The sentence uses \"abundant\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Andorra la Vella is the capital city of Andorra.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-005",
-    "question": "Which word is closest in meaning to \"accurate\"?",
-    "answer": "precise",
+    "question": "What is the capital city of Angola?",
+    "answer": "Luanda",
     "options": [
-      "unfriendly",
-      "shrewd",
-      "authentic",
-      "precise"
+      "Luanda",
+      "Asmara",
+      "Moroni",
+      "Nassau"
     ],
-    "explanation": "\"accurate\" means precise.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Luanda is the capital city of Angola.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-006",
-    "question": "Which word is opposite in meaning to \"accurate\"?",
-    "answer": "inaccurate",
+    "question": "What is the capital city of Argentina?",
+    "answer": "Buenos Aires",
     "options": [
-      "hostile",
-      "impractical",
-      "inaccurate",
-      "fragile"
+      "Buenos Aires",
+      "Yerevan",
+      "Accra",
+      "Bishkek"
     ],
-    "explanation": "\"inaccurate\" is the opposite of \"accurate\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Buenos Aires is the capital city of Argentina.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-007",
-    "question": "What does \"accurate\" mean?",
-    "answer": "correct and free from errors",
+    "question": "What is the capital city of Armenia?",
+    "answer": "Yerevan",
     "options": [
-      "clear, consistent and easy to understand",
-      "correct and free from errors",
-      "well-meaning and charitable",
-      "easily broken or damaged"
+      "Yerevan",
+      "Minsk",
+      "Amman",
+      "Saint George's"
     ],
-    "explanation": "\"accurate\" means correct and free from errors.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Yerevan is the capital city of Armenia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-008",
-    "question": "Choose the sentence that uses \"accurate\" correctly.",
-    "answer": "The report gives an accurate account of the incident.",
+    "question": "What is the capital city of Australia?",
+    "answer": "Canberra",
     "options": [
-      "Some delays are inevitable during road repairs.",
-      "She gave an articulate explanation of the proposal.",
-      "The report gives an accurate account of the incident.",
-      "An adaptable employee can handle changing priorities."
+      "Canberra",
+      "Cairo",
+      "Yaounde",
+      "Nairobi"
     ],
-    "explanation": "The sentence uses \"accurate\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Canberra is the capital city of Australia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-009",
-    "question": "Which word is closest in meaning to \"adaptable\"?",
-    "answer": "flexible",
+    "question": "What is the capital city of Austria?",
+    "answer": "Vienna",
     "options": [
-      "flexible",
-      "unwilling",
-      "flawless",
-      "plentiful"
+      "Vienna",
+      "Bogota",
+      "Manama",
+      "Quito"
     ],
-    "explanation": "\"adaptable\" means flexible.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Vienna is the capital city of Austria.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-010",
-    "question": "Which word is opposite in meaning to \"adaptable\"?",
-    "answer": "rigid",
+    "question": "What is the capital city of Azerbaijan?",
+    "answer": "Baku",
     "options": [
-      "deliberate",
-      "fragile",
-      "rigid",
-      "fake"
+      "Baku",
+      "Malabo",
+      "Jakarta",
+      "Minsk"
     ],
-    "explanation": "\"rigid\" is the opposite of \"adaptable\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Baku is the capital city of Azerbaijan.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-011",
-    "question": "What does \"adaptable\" mean?",
-    "answer": "able to adjust to new conditions",
+    "question": "What is the capital city of Bahamas?",
+    "answer": "Nassau",
     "options": [
-      "able to adjust to new conditions",
-      "giving information clearly in few words",
-      "clear, consistent and easy to understand",
-      "pleasant and friendly in manner"
+      "Nassau",
+      "Antananarivo",
+      "Beirut",
+      "Vienna"
     ],
-    "explanation": "\"adaptable\" means able to adjust to new conditions.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Nassau is the capital city of Bahamas.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-012",
-    "question": "Choose the sentence that uses \"adaptable\" correctly.",
-    "answer": "An adaptable employee can handle changing priorities.",
+    "question": "What is the capital city of Bahrain?",
+    "answer": "Manama",
     "options": [
-      "Residents remained wary of the unfamiliar offer.",
-      "They chose a conventional design for the office.",
-      "Their spontaneous visit delighted the family.",
-      "An adaptable employee can handle changing priorities."
+      "Manama",
+      "Maseru",
+      "Asmara",
+      "Mbabane"
     ],
-    "explanation": "The sentence uses \"adaptable\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Manama is the capital city of Bahrain.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-013",
-    "question": "Which word is closest in meaning to \"adverse\"?",
-    "answer": "unfavourable",
+    "question": "What is the capital city of Bangladesh?",
+    "answer": "Dhaka",
     "options": [
-      "original",
-      "unfavourable",
-      "friendly",
-      "unnecessary"
+      "Dhaka",
+      "Conakry",
+      "Beirut",
+      "Antananarivo"
     ],
-    "explanation": "\"adverse\" means unfavourable.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Dhaka is the capital city of Bangladesh.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-014",
-    "question": "Which word is opposite in meaning to \"adverse\"?",
-    "answer": "favourable",
+    "question": "What is the capital city of Barbados?",
+    "answer": "Bridgetown",
     "options": [
-      "wasteful",
-      "negligent",
-      "favourable",
-      "reckless"
+      "Bridgetown",
+      "Gaborone",
+      "Copenhagen",
+      "Praia"
     ],
-    "explanation": "\"favourable\" is the opposite of \"adverse\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Bridgetown is the capital city of Barbados.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-015",
-    "question": "What does \"adverse\" mean?",
-    "answer": "preventing success or causing difficulty",
+    "question": "What is the capital city of Belarus?",
+    "answer": "Minsk",
     "options": [
-      "requiring great effort or endurance",
-      "easy to see or attract attention",
-      "certain to happen and impossible to avoid",
-      "preventing success or causing difficulty"
+      "Minsk",
+      "Mbabane",
+      "Tirana",
+      "Santiago"
     ],
-    "explanation": "\"adverse\" means preventing success or causing difficulty.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Minsk is the capital city of Belarus.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-016",
-    "question": "Choose the sentence that uses \"adverse\" correctly.",
-    "answer": "The match was cancelled because of adverse weather.",
+    "question": "What is the capital city of Belgium?",
+    "answer": "Brussels",
     "options": [
-      "The match was cancelled because of adverse weather.",
-      "The witness provided a credible explanation.",
-      "The region has abundant rainfall throughout the year.",
-      "The workers stood on a precarious platform."
+      "Brussels",
+      "Conakry",
+      "Nairobi",
+      "South Tarawa"
     ],
-    "explanation": "The sentence uses \"adverse\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Brussels is the capital city of Belgium.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-017",
-    "question": "Which word is closest in meaning to \"amiable\"?",
-    "answer": "friendly",
+    "question": "What is the capital city of Belize?",
+    "answer": "Belmopan",
     "options": [
-      "friendly",
-      "crucial",
-      "genuine",
-      "unclear"
+      "Belmopan",
+      "Quito",
+      "Astana",
+      "Porto-Novo"
     ],
-    "explanation": "\"amiable\" means friendly.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Belmopan is the capital city of Belize.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-018",
-    "question": "Which word is opposite in meaning to \"amiable\"?",
-    "answer": "hostile",
+    "question": "What is the capital city of Benin?",
+    "answer": "Porto-Novo",
     "options": [
-      "scarce",
-      "definite",
-      "wordy",
-      "hostile"
+      "Porto-Novo",
+      "Roseau",
+      "Minsk",
+      "Ouagadougou"
     ],
-    "explanation": "\"hostile\" is the opposite of \"amiable\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Porto-Novo is the capital city of Benin.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-019",
-    "question": "What does \"amiable\" mean?",
-    "answer": "pleasant and friendly in manner",
+    "question": "What is the capital city of Bhutan?",
+    "answer": "Thimphu",
     "options": [
-      "pleasant and friendly in manner",
-      "no longer needed or useful",
-      "easy to understand or open and honest",
-      "showing careful judgement and good sense"
+      "Thimphu",
+      "Nairobi",
+      "Manama",
+      "Luanda"
     ],
-    "explanation": "\"amiable\" means pleasant and friendly in manner.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Thimphu is the capital city of Bhutan.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-020",
-    "question": "Choose the sentence that uses \"amiable\" correctly.",
-    "answer": "Our amiable neighbour greets everyone warmly.",
+    "question": "What is the capital city of Bolivia?",
+    "answer": "Sucre",
     "options": [
-      "A judge must remain impartial during a trial.",
-      "Our amiable neighbour greets everyone warmly.",
-      "The climbers faced an arduous journey.",
-      "The ambiguous instruction confused the new staff."
+      "Sucre",
+      "Helsinki",
+      "San Jose",
+      "Gaborone"
     ],
-    "explanation": "The sentence uses \"amiable\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Sucre is the capital city of Bolivia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-021",
-    "question": "Which word is closest in meaning to \"ambiguous\"?",
-    "answer": "unclear",
+    "question": "What is the capital city of Bosnia and Herzegovina?",
+    "answer": "Sarajevo",
     "options": [
-      "demanding",
-      "thrifty",
-      "outdated",
-      "unclear"
+      "Sarajevo",
+      "Santiago",
+      "Kabul",
+      "Praia"
     ],
-    "explanation": "\"ambiguous\" means unclear.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Sarajevo is the capital city of Bosnia and Herzegovina.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-022",
-    "question": "Which word is opposite in meaning to \"ambiguous\"?",
-    "answer": "definite",
+    "question": "What is the capital city of Botswana?",
+    "answer": "Gaborone",
     "options": [
-      "implausible",
-      "reckless",
-      "definite",
-      "robust"
+      "Gaborone",
+      "Vilnius",
+      "Accra",
+      "Paris"
     ],
-    "explanation": "\"definite\" is the opposite of \"ambiguous\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Gaborone is the capital city of Botswana.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-023",
-    "question": "What does \"ambiguous\" mean?",
-    "answer": "having more than one possible meaning",
+    "question": "What is the capital city of Brazil?",
+    "answer": "Brasilia",
     "options": [
-      "extremely careful about small details",
-      "having more than one possible meaning",
-      "correct and free from errors",
-      "easy to see or attract attention"
+      "Brasilia",
+      "Rome",
+      "Tegucigalpa",
+      "Port-au-Prince"
     ],
-    "explanation": "\"ambiguous\" means having more than one possible meaning.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Brasilia is the capital city of Brazil.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-024",
-    "question": "Choose the sentence that uses \"ambiguous\" correctly.",
-    "answer": "The ambiguous instruction confused the new staff.",
+    "question": "What is the capital city of Brunei?",
+    "answer": "Bandar Seri Begawan",
     "options": [
-      "The ambiguous instruction confused the new staff.",
-      "His eloquent speech moved the audience.",
-      "The match was cancelled because of adverse weather.",
-      "The editor made a meticulous check of every page."
+      "Bandar Seri Begawan",
+      "Vaduz",
+      "Canberra",
+      "Moroni"
     ],
-    "explanation": "The sentence uses \"ambiguous\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Bandar Seri Begawan is the capital city of Brunei.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-025",
-    "question": "Which word is closest in meaning to \"arduous\"?",
-    "answer": "demanding",
+    "question": "What is the capital city of Bulgaria?",
+    "answer": "Sofia",
     "options": [
-      "demanding",
-      "unwilling",
-      "plentiful",
-      "crucial"
+      "Sofia",
+      "Jerusalem",
+      "Helsinki",
+      "Addis Ababa"
     ],
-    "explanation": "\"arduous\" means demanding.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Sofia is the capital city of Bulgaria.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-026",
-    "question": "Which word is opposite in meaning to \"arduous\"?",
-    "answer": "effortless",
+    "question": "What is the capital city of Burkina Faso?",
+    "answer": "Ouagadougou",
     "options": [
-      "scarce",
-      "effortless",
-      "hostile",
-      "rigid"
+      "Ouagadougou",
+      "Tbilisi",
+      "Manama",
+      "Bandar Seri Begawan"
     ],
-    "explanation": "\"effortless\" is the opposite of \"arduous\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Ouagadougou is the capital city of Burkina Faso.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-027",
-    "question": "What does \"arduous\" mean?",
-    "answer": "requiring great effort or endurance",
+    "question": "What is the capital city of Burundi?",
+    "answer": "Gitega",
     "options": [
-      "requiring great effort or endurance",
-      "expecting good things to happen",
-      "clear, consistent and easy to understand",
-      "truly what it claims to be"
+      "Gitega",
+      "Mbabane",
+      "Djibouti",
+      "Nairobi"
     ],
-    "explanation": "\"arduous\" means requiring great effort or endurance.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Gitega is the capital city of Burundi.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-028",
-    "question": "Choose the sentence that uses \"arduous\" correctly.",
-    "answer": "The climbers faced an arduous journey.",
+    "question": "What is the capital city of Cambodia?",
+    "answer": "Phnom Penh",
     "options": [
-      "They chose a conventional design for the office.",
-      "We need a pragmatic solution to the transport problem.",
-      "She gave an articulate explanation of the proposal.",
-      "The climbers faced an arduous journey."
+      "Phnom Penh",
+      "Riga",
+      "Lilongwe",
+      "Kabul"
     ],
-    "explanation": "The sentence uses \"arduous\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Phnom Penh is the capital city of Cambodia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-029",
-    "question": "Which word is closest in meaning to \"articulate\"?",
-    "answer": "eloquent",
+    "question": "What is the capital city of Cameroon?",
+    "answer": "Yaounde",
     "options": [
-      "thrifty",
-      "eloquent",
-      "precise",
-      "detailed"
+      "Yaounde",
+      "Kuala Lumpur",
+      "Sofia",
+      "Port-au-Prince"
     ],
-    "explanation": "\"articulate\" means eloquent.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Yaounde is the capital city of Cameroon.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-030",
-    "question": "Which word is opposite in meaning to \"articulate\"?",
-    "answer": "inarticulate",
+    "question": "What is the capital city of Canada?",
+    "answer": "Ottawa",
     "options": [
-      "inarticulate",
-      "approximate",
-      "fake",
-      "inaccurate"
+      "Ottawa",
+      "Sofia",
+      "Roseau",
+      "Tallinn"
     ],
-    "explanation": "\"inarticulate\" is the opposite of \"articulate\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Ottawa is the capital city of Canada.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-031",
-    "question": "What does \"articulate\" mean?",
-    "answer": "able to express ideas clearly",
+    "question": "What is the capital city of Cape Verde?",
+    "answer": "Praia",
     "options": [
-      "happening naturally without prior planning",
-      "skilled at dealing with people without causing offence",
-      "having more than one possible meaning",
-      "able to express ideas clearly"
+      "Praia",
+      "New Delhi",
+      "Minsk",
+      "Moroni"
     ],
-    "explanation": "\"articulate\" means able to express ideas clearly.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Praia is the capital city of Cape Verde.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-032",
-    "question": "Choose the sentence that uses \"articulate\" correctly.",
-    "answer": "She gave an articulate explanation of the proposal.",
+    "question": "What is the capital city of Central African Republic?",
+    "answer": "Bangui",
     "options": [
-      "She gave an articulate explanation of the proposal.",
-      "Her argument was coherent from beginning to end.",
-      "Handle the fragile glass with care.",
-      "A cautious driver slows down near a school."
+      "Bangui",
+      "Algiers",
+      "Paris",
+      "Tripoli"
     ],
-    "explanation": "The sentence uses \"articulate\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Bangui is the capital city of Central African Republic.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-033",
-    "question": "Which word is closest in meaning to \"astute\"?",
-    "answer": "shrewd",
+    "question": "What is the capital city of Chad?",
+    "answer": "N'Djamena",
     "options": [
-      "shrewd",
-      "provisional",
-      "plentiful",
-      "sturdy"
+      "N'Djamena",
+      "Tallinn",
+      "Maseru",
+      "Nairobi"
     ],
-    "explanation": "\"astute\" means shrewd.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "N'Djamena is the capital city of Chad.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-034",
-    "question": "Which word is opposite in meaning to \"astute\"?",
-    "answer": "naive",
+    "question": "What is the capital city of Chile?",
+    "answer": "Santiago",
     "options": [
-      "scarce",
-      "deliberate",
-      "eager",
-      "naive"
+      "Santiago",
+      "Kabul",
+      "Ottawa",
+      "Helsinki"
     ],
-    "explanation": "\"naive\" is the opposite of \"astute\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Santiago is the capital city of Chile.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-035",
-    "question": "What does \"astute\" mean?",
-    "answer": "quick to understand situations and make sound judgements",
+    "question": "What is the capital city of China?",
+    "answer": "Beijing",
     "options": [
-      "concerned only with the surface or appearance",
-      "available in large quantities",
-      "quick to understand situations and make sound judgements",
-      "able to adjust to new conditions"
+      "Beijing",
+      "Vilnius",
+      "San Jose",
+      "Kuala Lumpur"
     ],
-    "explanation": "\"astute\" means quick to understand situations and make sound judgements.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Beijing is the capital city of China.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-036",
-    "question": "Choose the sentence that uses \"astute\" correctly.",
-    "answer": "An astute investor studies risks before buying.",
+    "question": "What is the capital city of Colombia?",
+    "answer": "Bogota",
     "options": [
-      "The museum displayed an authentic historical document.",
-      "An astute investor studies risks before buying.",
-      "The region has abundant rainfall throughout the year.",
-      "It is prudent to keep an emergency fund."
+      "Bogota",
+      "Vaduz",
+      "Lilongwe",
+      "N'Djamena"
     ],
-    "explanation": "The sentence uses \"astute\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Bogota is the capital city of Colombia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-037",
-    "question": "Which word is closest in meaning to \"authentic\"?",
-    "answer": "genuine",
+    "question": "What is the capital city of Comoros?",
+    "answer": "Moroni",
     "options": [
-      "noticeable",
-      "precise",
-      "eloquent",
-      "genuine"
+      "Moroni",
+      "Cairo",
+      "New Delhi",
+      "Georgetown"
     ],
-    "explanation": "\"authentic\" means genuine.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Moroni is the capital city of Comoros.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-038",
-    "question": "Which word is opposite in meaning to \"authentic\"?",
-    "answer": "fake",
+    "question": "What is the capital city of Costa Rica?",
+    "answer": "San Jose",
     "options": [
-      "fake",
-      "insensitive",
-      "eager",
-      "inaccurate"
+      "San Jose",
+      "San Salvador",
+      "Bissau",
+      "Baghdad"
     ],
-    "explanation": "\"fake\" is the opposite of \"authentic\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "San Jose is the capital city of Costa Rica.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-039",
-    "question": "What does \"authentic\" mean?",
-    "answer": "real and not copied or false",
+    "question": "What is the capital city of Croatia?",
+    "answer": "Zagreb",
     "options": [
-      "not boastful or excessively proud",
-      "able to perform many different functions",
-      "real and not copied or false",
-      "truthful and direct"
+      "Zagreb",
+      "Vaduz",
+      "Luxembourg",
+      "Kuwait City"
     ],
-    "explanation": "\"authentic\" means real and not copied or false.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Zagreb is the capital city of Croatia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-040",
-    "question": "Choose the sentence that uses \"authentic\" correctly.",
-    "answer": "The museum displayed an authentic historical document.",
+    "question": "What is the capital city of Cuba?",
+    "answer": "Havana",
     "options": [
-      "The museum displayed an authentic historical document.",
-      "A diligent student reviews lessons regularly.",
-      "Investors remained optimistic about the recovery.",
-      "The factory replaced its obsolete machinery."
+      "Havana",
+      "Belmopan",
+      "Addis Ababa",
+      "Accra"
     ],
-    "explanation": "The sentence uses \"authentic\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Havana is the capital city of Cuba.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-041",
-    "question": "Which word is closest in meaning to \"benevolent\"?",
-    "answer": "kind",
+    "question": "What is the capital city of Cyprus?",
+    "answer": "Nicosia",
     "options": [
-      "frank",
-      "provisional",
-      "kind",
-      "shrewd"
+      "Nicosia",
+      "Andorra la Vella",
+      "Tripoli",
+      "Gaborone"
     ],
-    "explanation": "\"benevolent\" means kind.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Nicosia is the capital city of Cyprus.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-042",
-    "question": "Which word is opposite in meaning to \"benevolent\"?",
-    "answer": "cruel",
+    "question": "What is the capital city of Czechia?",
+    "answer": "Prague",
     "options": [
-      "naive",
-      "cruel",
-      "rigid",
-      "wordy"
+      "Prague",
+      "Baku",
+      "Minsk",
+      "Addis Ababa"
     ],
-    "explanation": "\"cruel\" is the opposite of \"benevolent\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Prague is the capital city of Czechia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-043",
-    "question": "What does \"benevolent\" mean?",
-    "answer": "well-meaning and charitable",
+    "question": "What is the capital city of Democratic Republic of the Congo?",
+    "answer": "Kinshasa",
     "options": [
-      "greater than what is reasonable or necessary",
-      "requiring great effort or endurance",
-      "well-meaning and charitable",
-      "pleasant and friendly in manner"
+      "Kinshasa",
+      "Reykjavik",
+      "Belmopan",
+      "Algiers"
     ],
-    "explanation": "\"benevolent\" means well-meaning and charitable.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Kinshasa is the capital city of Democratic Republic of the Congo.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-044",
-    "question": "Choose the sentence that uses \"benevolent\" correctly.",
-    "answer": "A benevolent donor funded the village library.",
+    "question": "What is the capital city of Denmark?",
+    "answer": "Copenhagen",
     "options": [
-      "A cautious driver slows down near a school.",
-      "The region has abundant rainfall throughout the year.",
-      "Please provide the precise measurement.",
-      "A benevolent donor funded the village library."
+      "Copenhagen",
+      "South Tarawa",
+      "Gitega",
+      "Buenos Aires"
     ],
-    "explanation": "The sentence uses \"benevolent\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Copenhagen is the capital city of Denmark.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-045",
-    "question": "Which word is closest in meaning to \"candid\"?",
-    "answer": "frank",
+    "question": "What is the capital city of Djibouti?",
+    "answer": "Djibouti",
     "options": [
-      "unfavourable",
-      "unfriendly",
-      "frank",
-      "shrewd"
+      "Djibouti",
+      "Thimphu",
+      "Sofia",
+      "Zagreb"
     ],
-    "explanation": "\"candid\" means frank.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Djibouti is the capital city of Djibouti.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-046",
-    "question": "Which word is opposite in meaning to \"candid\"?",
-    "answer": "evasive",
+    "question": "What is the capital city of Dominica?",
+    "answer": "Roseau",
     "options": [
-      "evasive",
-      "favourable",
-      "inarticulate",
-      "unknown"
+      "Roseau",
+      "Sofia",
+      "Mbabane",
+      "Bangui"
     ],
-    "explanation": "\"evasive\" is the opposite of \"candid\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Roseau is the capital city of Dominica.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-047",
-    "question": "What does \"candid\" mean?",
-    "answer": "truthful and direct",
+    "question": "What is the capital city of Dominican Republic?",
+    "answer": "Santo Domingo",
     "options": [
-      "complete and careful",
-      "not obvious and therefore difficult to notice",
-      "available in large quantities",
-      "truthful and direct"
+      "Santo Domingo",
+      "Prague",
+      "Sofia",
+      "Vilnius"
     ],
-    "explanation": "\"candid\" means truthful and direct.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Santo Domingo is the capital city of Dominican Republic.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-048",
-    "question": "Choose the sentence that uses \"candid\" correctly.",
-    "answer": "He offered a candid assessment of the plan.",
+    "question": "What is the capital city of Ecuador?",
+    "answer": "Quito",
     "options": [
-      "He offered a candid assessment of the plan.",
-      "The tenacious reporter continued investigating.",
-      "The ambiguous instruction confused the new staff.",
-      "The report gives an accurate account of the incident."
+      "Quito",
+      "Amman",
+      "Bissau",
+      "Luxembourg"
     ],
-    "explanation": "The sentence uses \"candid\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Quito is the capital city of Ecuador.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-049",
-    "question": "Which word is closest in meaning to \"cautious\"?",
-    "answer": "careful",
+    "question": "What is the capital city of Egypt?",
+    "answer": "Cairo",
     "options": [
-      "complex",
-      "hardworking",
-      "careful",
-      "traditional"
+      "Cairo",
+      "Gaborone",
+      "Kinshasa",
+      "Malabo"
     ],
-    "explanation": "\"cautious\" means careful.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Cairo is the capital city of Egypt.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-050",
-    "question": "Which word is opposite in meaning to \"cautious\"?",
-    "answer": "reckless",
+    "question": "What is the capital city of El Salvador?",
+    "answer": "San Salvador",
     "options": [
-      "effortless",
-      "thorough",
-      "approximate",
-      "reckless"
+      "San Salvador",
+      "N'Djamena",
+      "Ottawa",
+      "San Jose"
     ],
-    "explanation": "\"reckless\" is the opposite of \"cautious\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "San Salvador is the capital city of El Salvador.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-051",
-    "question": "What does \"cautious\" mean?",
-    "answer": "taking care to avoid danger or mistakes",
+    "question": "What is the capital city of Equatorial Guinea?",
+    "answer": "Malabo",
     "options": [
-      "taking care to avoid danger or mistakes",
-      "containing many carefully arranged details",
-      "happening naturally without prior planning",
-      "showing careful judgement and good sense"
+      "Malabo",
+      "Roseau",
+      "Tallinn",
+      "Riga"
     ],
-    "explanation": "\"cautious\" means taking care to avoid danger or mistakes.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Malabo is the capital city of Equatorial Guinea.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-052",
-    "question": "Choose the sentence that uses \"cautious\" correctly.",
-    "answer": "A cautious driver slows down near a school.",
+    "question": "What is the capital city of Eritrea?",
+    "answer": "Asmara",
     "options": [
-      "The region has abundant rainfall throughout the year.",
-      "A cautious driver slows down near a school.",
-      "An adaptable employee can handle changing priorities.",
-      "An astute investor studies risks before buying."
+      "Asmara",
+      "Dublin",
+      "Georgetown",
+      "Guatemala City"
     ],
-    "explanation": "The sentence uses \"cautious\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Asmara is the capital city of Eritrea.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-053",
-    "question": "Which word is closest in meaning to \"coherent\"?",
-    "answer": "logical",
+    "question": "What is the capital city of Estonia?",
+    "answer": "Tallinn",
     "options": [
-      "expressive",
-      "unfavourable",
-      "lawful",
-      "logical"
+      "Tallinn",
+      "Reykjavik",
+      "Santo Domingo",
+      "Minsk"
     ],
-    "explanation": "\"coherent\" means logical.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Tallinn is the capital city of Estonia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-054",
-    "question": "Which word is opposite in meaning to \"coherent\"?",
-    "answer": "confused",
+    "question": "What is the capital city of Eswatini?",
+    "answer": "Mbabane",
     "options": [
-      "confused",
-      "favourable",
-      "biased",
-      "fake"
+      "Mbabane",
+      "Kabul",
+      "Nairobi",
+      "Baghdad"
     ],
-    "explanation": "\"confused\" is the opposite of \"coherent\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Mbabane is the capital city of Eswatini.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-055",
-    "question": "What does \"coherent\" mean?",
-    "answer": "clear, consistent and easy to understand",
+    "question": "What is the capital city of Ethiopia?",
+    "answer": "Addis Ababa",
     "options": [
-      "accurate and exact in every detail",
-      "clear, consistent and easy to understand",
-      "extremely thorough, careful or strict",
-      "allowed by law or reasonable and genuine"
+      "Addis Ababa",
+      "Minsk",
+      "Tirana",
+      "Ouagadougou"
     ],
-    "explanation": "\"coherent\" means clear, consistent and easy to understand.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Addis Ababa is the capital city of Ethiopia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-056",
-    "question": "Choose the sentence that uses \"coherent\" correctly.",
-    "answer": "Her argument was coherent from beginning to end.",
+    "question": "What is the capital city of Fiji?",
+    "answer": "Suva",
     "options": [
-      "The customer raised a legitimate concern.",
-      "The report gives an accurate account of the incident.",
-      "Her argument was coherent from beginning to end.",
-      "The match was cancelled because of adverse weather."
+      "Suva",
+      "South Tarawa",
+      "Vientiane",
+      "Kabul"
     ],
-    "explanation": "The sentence uses \"coherent\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Suva is the capital city of Fiji.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-057",
-    "question": "Which word is closest in meaning to \"compassionate\"?",
-    "answer": "sympathetic",
+    "question": "What is the capital city of Finland?",
+    "answer": "Helsinki",
     "options": [
-      "demanding",
-      "shrewd",
-      "sympathetic",
-      "wise"
+      "Helsinki",
+      "N'Djamena",
+      "Brasilia",
+      "Bissau"
     ],
-    "explanation": "\"compassionate\" means sympathetic.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Helsinki is the capital city of Finland.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-058",
-    "question": "Which word is opposite in meaning to \"compassionate\"?",
-    "answer": "uncaring",
+    "question": "What is the capital city of France?",
+    "answer": "Paris",
     "options": [
-      "inarticulate",
-      "uncaring",
-      "idealistic",
-      "cruel"
+      "Paris",
+      "Malabo",
+      "Beirut",
+      "Dhaka"
     ],
-    "explanation": "\"uncaring\" is the opposite of \"compassionate\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Paris is the capital city of France.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-059",
-    "question": "What does \"compassionate\" mean?",
-    "answer": "showing concern for another person's suffering",
+    "question": "What is the capital city of Gabon?",
+    "answer": "Libreville",
     "options": [
-      "showing concern for another person's suffering",
-      "well-meaning and charitable",
-      "requiring great effort or endurance",
-      "not easily convinced and inclined to question claims"
+      "Libreville",
+      "Banjul",
+      "Astana",
+      "Quito"
     ],
-    "explanation": "\"compassionate\" means showing concern for another person's suffering.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Libreville is the capital city of Gabon.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-060",
-    "question": "Choose the sentence that uses \"compassionate\" correctly.",
-    "answer": "The compassionate nurse stayed with the frightened child.",
+    "question": "What is the capital city of Gambia?",
+    "answer": "Banjul",
     "options": [
-      "The region has abundant rainfall throughout the year.",
-      "The teacher was lenient about the late submission.",
-      "The editor made a meticulous check of every page.",
-      "The compassionate nurse stayed with the frightened child."
+      "Banjul",
+      "Nairobi",
+      "Bishkek",
+      "Dhaka"
     ],
-    "explanation": "The sentence uses \"compassionate\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Banjul is the capital city of Gambia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-061",
-    "question": "Which word is closest in meaning to \"concise\"?",
-    "answer": "brief",
+    "question": "What is the capital city of Georgia?",
+    "answer": "Tbilisi",
     "options": [
-      "precise",
-      "unplanned",
-      "brief",
-      "tactful"
+      "Tbilisi",
+      "Baghdad",
+      "Manama",
+      "Jakarta"
     ],
-    "explanation": "\"concise\" means brief.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Tbilisi is the capital city of Georgia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-062",
-    "question": "Which word is opposite in meaning to \"concise\"?",
-    "answer": "wordy",
+    "question": "What is the capital city of Germany?",
+    "answer": "Berlin",
     "options": [
-      "wordy",
-      "definite",
-      "inaccurate",
-      "trusting"
+      "Berlin",
+      "Maseru",
+      "Nassau",
+      "Kuwait City"
     ],
-    "explanation": "\"wordy\" is the opposite of \"concise\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Berlin is the capital city of Germany.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-063",
-    "question": "What does \"concise\" mean?",
-    "answer": "giving information clearly in few words",
+    "question": "What is the capital city of Ghana?",
+    "answer": "Accra",
     "options": [
-      "having many connected and complicated details",
-      "very great or showing deep understanding",
-      "respected and famous in a particular field",
-      "giving information clearly in few words"
+      "Accra",
+      "Jakarta",
+      "Saint George's",
+      "Havana"
     ],
-    "explanation": "\"concise\" means giving information clearly in few words.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Accra is the capital city of Ghana.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-064",
-    "question": "Choose the sentence that uses \"concise\" correctly.",
-    "answer": "Please write a concise summary of the meeting.",
+    "question": "What is the capital city of Greece?",
+    "answer": "Athens",
     "options": [
-      "The chef maintained impeccable hygiene.",
-      "The discovery had a profound effect on medicine.",
-      "Please write a concise summary of the meeting.",
-      "A cautious driver slows down near a school."
+      "Athens",
+      "Santo Domingo",
+      "Saint George's",
+      "Amman"
     ],
-    "explanation": "The sentence uses \"concise\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Athens is the capital city of Greece.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-065",
-    "question": "Which word is closest in meaning to \"conspicuous\"?",
-    "answer": "noticeable",
+    "question": "What is the capital city of Grenada?",
+    "answer": "Saint George's",
     "options": [
-      "noticeable",
-      "sympathetic",
-      "sturdy",
-      "friendly"
+      "Saint George's",
+      "Baghdad",
+      "Malabo",
+      "Nicosia"
     ],
-    "explanation": "\"conspicuous\" means noticeable.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Saint George's is the capital city of Grenada.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-066",
-    "question": "Which word is opposite in meaning to \"conspicuous\"?",
-    "answer": "inconspicuous",
+    "question": "What is the capital city of Guatemala?",
+    "answer": "Guatemala City",
     "options": [
-      "effortless",
-      "definite",
-      "inarticulate",
-      "inconspicuous"
+      "Guatemala City",
+      "Roseau",
+      "Bangui",
+      "Djibouti"
     ],
-    "explanation": "\"inconspicuous\" is the opposite of \"conspicuous\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Guatemala City is the capital city of Guatemala.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-067",
-    "question": "What does \"conspicuous\" mean?",
-    "answer": "easy to see or attract attention",
+    "question": "What is the capital city of Guinea?",
+    "answer": "Conakry",
     "options": [
-      "easy to see or attract attention",
-      "following accepted customs or usual methods",
-      "treating all sides fairly",
-      "showing concern for another person's suffering"
+      "Conakry",
+      "Budapest",
+      "Lilongwe",
+      "Djibouti"
     ],
-    "explanation": "\"conspicuous\" means easy to see or attract attention.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Conakry is the capital city of Guinea.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-068",
-    "question": "Choose the sentence that uses \"conspicuous\" correctly.",
-    "answer": "The bright sign was conspicuous from the road.",
+    "question": "What is the capital city of Guinea-Bissau?",
+    "answer": "Bissau",
     "options": [
-      "The region has abundant rainfall throughout the year.",
-      "The report gives an accurate account of the incident.",
-      "The bright sign was conspicuous from the road.",
-      "An astute investor studies risks before buying."
+      "Bissau",
+      "Tallinn",
+      "Monrovia",
+      "Porto-Novo"
     ],
-    "explanation": "The sentence uses \"conspicuous\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Bissau is the capital city of Guinea-Bissau.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-069",
-    "question": "Which word is closest in meaning to \"conventional\"?",
-    "answer": "traditional",
+    "question": "What is the capital city of Guyana?",
+    "answer": "Georgetown",
     "options": [
-      "extreme",
-      "unfavourable",
-      "thrifty",
-      "traditional"
+      "Georgetown",
+      "Gaborone",
+      "San Salvador",
+      "Tbilisi"
     ],
-    "explanation": "\"conventional\" means traditional.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Georgetown is the capital city of Guyana.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-070",
-    "question": "Which word is opposite in meaning to \"conventional\"?",
-    "answer": "unorthodox",
+    "question": "What is the capital city of Haiti?",
+    "answer": "Port-au-Prince",
     "options": [
-      "far-fetched",
-      "definite",
-      "unorthodox",
-      "basic"
+      "Port-au-Prince",
+      "Dhaka",
+      "Accra",
+      "Amman"
     ],
-    "explanation": "\"unorthodox\" is the opposite of \"conventional\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Port-au-Prince is the capital city of Haiti.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-071",
-    "question": "What does \"conventional\" mean?",
-    "answer": "following accepted customs or usual methods",
+    "question": "What is the capital city of Honduras?",
+    "answer": "Tegucigalpa",
     "options": [
-      "concerned only with the surface or appearance",
-      "following accepted customs or usual methods",
-      "containing many carefully arranged details",
-      "preventing success or causing difficulty"
+      "Tegucigalpa",
+      "Buenos Aires",
+      "Copenhagen",
+      "Porto-Novo"
     ],
-    "explanation": "\"conventional\" means following accepted customs or usual methods.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Tegucigalpa is the capital city of Honduras.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-072",
-    "question": "Choose the sentence that uses \"conventional\" correctly.",
-    "answer": "They chose a conventional design for the office.",
+    "question": "What is the capital city of Hungary?",
+    "answer": "Budapest",
     "options": [
-      "The factory replaced its obsolete machinery.",
-      "The bright sign was conspicuous from the road.",
-      "They chose a conventional design for the office.",
-      "There was an implicit agreement to share the costs."
+      "Budapest",
+      "Monrovia",
+      "Dublin",
+      "Ottawa"
     ],
-    "explanation": "The sentence uses \"conventional\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Budapest is the capital city of Hungary.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-073",
-    "question": "Which word is closest in meaning to \"credible\"?",
-    "answer": "believable",
+    "question": "What is the capital city of Iceland?",
+    "answer": "Reykjavik",
     "options": [
-      "believable",
-      "shrewd",
-      "exposed",
-      "expressive"
+      "Reykjavik",
+      "Bandar Seri Begawan",
+      "Santiago",
+      "Maseru"
     ],
-    "explanation": "\"credible\" means believable.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Reykjavik is the capital city of Iceland.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-074",
-    "question": "Which word is opposite in meaning to \"credible\"?",
-    "answer": "implausible",
+    "question": "What is the capital city of India?",
+    "answer": "New Delhi",
     "options": [
-      "scarce",
-      "approximate",
-      "implausible",
-      "pessimistic"
+      "New Delhi",
+      "Kuwait City",
+      "Vilnius",
+      "Luanda"
     ],
-    "explanation": "\"implausible\" is the opposite of \"credible\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "New Delhi is the capital city of India.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-075",
-    "question": "What does \"credible\" mean?",
-    "answer": "able to be trusted or believed",
+    "question": "What is the capital city of Indonesia?",
+    "answer": "Jakarta",
     "options": [
-      "able to be trusted or believed",
-      "not willing or eager to do something",
-      "taking care to avoid danger or mistakes",
-      "able to adjust to new conditions"
+      "Jakarta",
+      "Antananarivo",
+      "Gitega",
+      "Minsk"
     ],
-    "explanation": "\"credible\" means able to be trusted or believed.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Jakarta is the capital city of Indonesia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-076",
-    "question": "Choose the sentence that uses \"credible\" correctly.",
-    "answer": "The witness provided a credible explanation.",
+    "question": "What is the capital city of Iran?",
+    "answer": "Tehran",
     "options": [
-      "The region has abundant rainfall throughout the year.",
-      "The teacher was lenient about the late submission.",
-      "The scientist was skeptical of the unsupported claim.",
-      "The witness provided a credible explanation."
+      "Tehran",
+      "Belmopan",
+      "Asmara",
+      "Luanda"
     ],
-    "explanation": "The sentence uses \"credible\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Tehran is the capital city of Iran.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-077",
-    "question": "Which word is closest in meaning to \"diligent\"?",
-    "answer": "hardworking",
+    "question": "What is the capital city of Iraq?",
+    "answer": "Baghdad",
     "options": [
-      "sturdy",
-      "hardworking",
-      "practical",
-      "unfavourable"
+      "Baghdad",
+      "Suva",
+      "Monrovia",
+      "Dhaka"
     ],
-    "explanation": "\"diligent\" means hardworking.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Baghdad is the capital city of Iraq.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-078",
-    "question": "Which word is opposite in meaning to \"diligent\"?",
-    "answer": "negligent",
+    "question": "What is the capital city of Ireland?",
+    "answer": "Dublin",
     "options": [
-      "robust",
-      "fake",
-      "negligent",
-      "reckless"
+      "Dublin",
+      "Yaounde",
+      "Conakry",
+      "Prague"
     ],
-    "explanation": "\"negligent\" is the opposite of \"diligent\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Dublin is the capital city of Ireland.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-079",
-    "question": "What does \"diligent\" mean?",
-    "answer": "showing careful and persistent effort",
+    "question": "What is the capital city of Israel?",
+    "answer": "Jerusalem",
     "options": [
-      "extremely important or necessary",
-      "having more than one possible meaning",
-      "correct and free from errors",
-      "showing careful and persistent effort"
+      "Jerusalem",
+      "Rome",
+      "New Delhi",
+      "Thimphu"
     ],
-    "explanation": "\"diligent\" means showing careful and persistent effort.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Jerusalem is the capital city of Israel.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-080",
-    "question": "Choose the sentence that uses \"diligent\" correctly.",
-    "answer": "A diligent student reviews lessons regularly.",
+    "question": "What is the capital city of Italy?",
+    "answer": "Rome",
     "options": [
-      "A diligent student reviews lessons regularly.",
-      "An astute investor studies risks before buying.",
-      "The company is known for its innovative products.",
-      "The team developed a feasible plan within the budget."
+      "Rome",
+      "Havana",
+      "Kuala Lumpur",
+      "Saint George's"
     ],
-    "explanation": "The sentence uses \"diligent\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Rome is the capital city of Italy.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-081",
-    "question": "Which word is closest in meaning to \"diplomatic\"?",
-    "answer": "tactful",
+    "question": "What is the capital city of Jamaica?",
+    "answer": "Kingston",
     "options": [
-      "tactful",
-      "unplanned",
-      "shrewd",
-      "sturdy"
+      "Kingston",
+      "Nassau",
+      "Vientiane",
+      "Addis Ababa"
     ],
-    "explanation": "\"diplomatic\" means tactful.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Kingston is the capital city of Jamaica.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-082",
-    "question": "Which word is opposite in meaning to \"diplomatic\"?",
-    "answer": "insensitive",
+    "question": "What is the capital city of Japan?",
+    "answer": "Tokyo",
     "options": [
-      "reckless",
-      "uncaring",
-      "favourable",
-      "insensitive"
+      "Tokyo",
+      "Paris",
+      "Dhaka",
+      "San Salvador"
     ],
-    "explanation": "\"insensitive\" is the opposite of \"diplomatic\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Tokyo is the capital city of Japan.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-083",
-    "question": "What does \"diplomatic\" mean?",
-    "answer": "skilled at dealing with people without causing offence",
+    "question": "What is the capital city of Jordan?",
+    "answer": "Amman",
     "options": [
-      "skilled at dealing with people without causing offence",
-      "careful because danger or problems are possible",
-      "able to be trusted or believed",
-      "available in large quantities"
+      "Amman",
+      "Quito",
+      "San Jose",
+      "Banjul"
     ],
-    "explanation": "\"diplomatic\" means skilled at dealing with people without causing offence.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Amman is the capital city of Jordan.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-084",
-    "question": "Choose the sentence that uses \"diplomatic\" correctly.",
-    "answer": "Her diplomatic reply prevented an argument.",
+    "question": "What is the capital city of Kazakhstan?",
+    "answer": "Astana",
     "options": [
-      "A cautious driver slows down near a school.",
-      "Her diplomatic reply prevented an argument.",
-      "The necklace has an intricate pattern.",
-      "We need a pragmatic solution to the transport problem."
+      "Astana",
+      "N'Djamena",
+      "Libreville",
+      "Monrovia"
     ],
-    "explanation": "The sentence uses \"diplomatic\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Astana is the capital city of Kazakhstan.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-085",
-    "question": "Which word is closest in meaning to \"durable\"?",
-    "answer": "sturdy",
+    "question": "What is the capital city of Kenya?",
+    "answer": "Nairobi",
     "options": [
-      "thrifty",
-      "frank",
-      "believable",
-      "sturdy"
+      "Nairobi",
+      "Canberra",
+      "Yaounde",
+      "Baghdad"
     ],
-    "explanation": "\"durable\" means sturdy.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Nairobi is the capital city of Kenya.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-086",
-    "question": "Which word is opposite in meaning to \"durable\"?",
-    "answer": "fragile",
+    "question": "What is the capital city of Kiribati?",
+    "answer": "South Tarawa",
     "options": [
-      "definite",
-      "wordy",
-      "fragile",
-      "preventable"
+      "South Tarawa",
+      "Bridgetown",
+      "Guatemala City",
+      "Algiers"
     ],
-    "explanation": "\"fragile\" is the opposite of \"durable\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "South Tarawa is the capital city of Kiribati.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-087",
-    "question": "What does \"durable\" mean?",
-    "answer": "able to last a long time without damage",
+    "question": "What is the capital city of Kuwait?",
+    "answer": "Kuwait City",
     "options": [
-      "not obvious and therefore difficult to notice",
-      "able to last a long time without damage",
-      "quick to understand situations and make sound judgements",
-      "complete and careful"
+      "Kuwait City",
+      "Tallinn",
+      "Asmara",
+      "Antananarivo"
     ],
-    "explanation": "\"durable\" means able to last a long time without damage.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Kuwait City is the capital city of Kuwait.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-088",
-    "question": "Choose the sentence that uses \"durable\" correctly.",
-    "answer": "These durable shoes are suitable for hiking.",
+    "question": "What is the capital city of Kyrgyzstan?",
+    "answer": "Bishkek",
     "options": [
-      "These durable shoes are suitable for hiking.",
-      "The report gives an accurate account of the incident.",
-      "The device uses sophisticated technology.",
-      "The customer raised a legitimate concern."
+      "Bishkek",
+      "Cairo",
+      "Roseau",
+      "Reykjavik"
     ],
-    "explanation": "The sentence uses \"durable\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Bishkek is the capital city of Kyrgyzstan.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-089",
-    "question": "Which word is closest in meaning to \"elaborate\"?",
-    "answer": "detailed",
+    "question": "What is the capital city of Laos?",
+    "answer": "Vientiane",
     "options": [
-      "detailed",
-      "friendly",
-      "sympathetic",
-      "plentiful"
+      "Vientiane",
+      "Budapest",
+      "Andorra la Vella",
+      "Baku"
     ],
-    "explanation": "\"elaborate\" means detailed.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Vientiane is the capital city of Laos.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-090",
-    "question": "Which word is opposite in meaning to \"elaborate\"?",
-    "answer": "simple",
+    "question": "What is the capital city of Latvia?",
+    "answer": "Riga",
     "options": [
-      "reckless",
-      "simple",
-      "opaque",
-      "essential"
+      "Riga",
+      "Conakry",
+      "Sofia",
+      "Bishkek"
     ],
-    "explanation": "\"simple\" is the opposite of \"elaborate\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Riga is the capital city of Latvia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-091",
-    "question": "What does \"elaborate\" mean?",
-    "answer": "containing many carefully arranged details",
+    "question": "What is the capital city of Lebanon?",
+    "answer": "Beirut",
     "options": [
-      "containing many carefully arranged details",
-      "giving information clearly in few words",
-      "fluent and persuasive in speaking or writing",
-      "available in large quantities"
+      "Beirut",
+      "Tegucigalpa",
+      "Havana",
+      "Ottawa"
     ],
-    "explanation": "\"elaborate\" means containing many carefully arranged details.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Beirut is the capital city of Lebanon.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-092",
-    "question": "Choose the sentence that uses \"elaborate\" correctly.",
-    "answer": "The architect presented an elaborate design.",
+    "question": "What is the capital city of Lesotho?",
+    "answer": "Maseru",
     "options": [
-      "Her diplomatic reply prevented an argument.",
-      "The teacher was lenient about the late submission.",
-      "The match was cancelled because of adverse weather.",
-      "The architect presented an elaborate design."
+      "Maseru",
+      "Rome",
+      "Phnom Penh",
+      "Andorra la Vella"
     ],
-    "explanation": "The sentence uses \"elaborate\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Maseru is the capital city of Lesotho.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-093",
-    "question": "Which word is closest in meaning to \"eloquent\"?",
-    "answer": "expressive",
+    "question": "What is the capital city of Liberia?",
+    "answer": "Monrovia",
     "options": [
-      "wise",
-      "expressive",
-      "delicate",
-      "traditional"
+      "Monrovia",
+      "Jerusalem",
+      "Paris",
+      "N'Djamena"
     ],
-    "explanation": "\"eloquent\" means expressive.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Monrovia is the capital city of Liberia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-094",
-    "question": "Which word is opposite in meaning to \"eloquent\"?",
-    "answer": "inarticulate",
+    "question": "What is the capital city of Libya?",
+    "answer": "Tripoli",
     "options": [
-      "inarticulate",
-      "inaccurate",
-      "wordy",
-      "careless"
+      "Tripoli",
+      "Monrovia",
+      "Tokyo",
+      "Banjul"
     ],
-    "explanation": "\"inarticulate\" is the opposite of \"eloquent\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Tripoli is the capital city of Libya.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-095",
-    "question": "What does \"eloquent\" mean?",
-    "answer": "fluent and persuasive in speaking or writing",
+    "question": "What is the capital city of Liechtenstein?",
+    "answer": "Vaduz",
     "options": [
-      "extremely thorough, careful or strict",
-      "able to recover quickly after difficulty",
-      "correct and free from errors",
-      "fluent and persuasive in speaking or writing"
+      "Vaduz",
+      "Beijing",
+      "Tirana",
+      "Tbilisi"
     ],
-    "explanation": "\"eloquent\" means fluent and persuasive in speaking or writing.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Vaduz is the capital city of Liechtenstein.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-096",
-    "question": "Choose the sentence that uses \"eloquent\" correctly.",
-    "answer": "His eloquent speech moved the audience.",
+    "question": "What is the capital city of Lithuania?",
+    "answer": "Vilnius",
     "options": [
-      "His eloquent speech moved the audience.",
-      "The inspection was superficial and missed major faults.",
-      "They chose a conventional design for the office.",
-      "The research followed a rigorous testing process."
+      "Vilnius",
+      "Helsinki",
+      "Thimphu",
+      "Sarajevo"
     ],
-    "explanation": "The sentence uses \"eloquent\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Vilnius is the capital city of Lithuania.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-097",
-    "question": "Which word is closest in meaning to \"eminent\"?",
-    "answer": "distinguished",
+    "question": "What is the capital city of Luxembourg?",
+    "answer": "Luxembourg",
     "options": [
-      "distinguished",
-      "flexible",
-      "plentiful",
-      "friendly"
+      "Luxembourg",
+      "Quito",
+      "Phnom Penh",
+      "Nairobi"
     ],
-    "explanation": "\"eminent\" means distinguished.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Luxembourg is the capital city of Luxembourg.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-098",
-    "question": "Which word is opposite in meaning to \"eminent\"?",
-    "answer": "unknown",
+    "question": "What is the capital city of Madagascar?",
+    "answer": "Antananarivo",
     "options": [
-      "reckless",
-      "counterfeit",
-      "pessimistic",
-      "unknown"
+      "Antananarivo",
+      "Bangui",
+      "Baku",
+      "Tbilisi"
     ],
-    "explanation": "\"unknown\" is the opposite of \"eminent\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Antananarivo is the capital city of Madagascar.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-099",
-    "question": "What does \"eminent\" mean?",
-    "answer": "respected and famous in a particular field",
+    "question": "What is the capital city of Malawi?",
+    "answer": "Lilongwe",
     "options": [
-      "easily harmed, attacked or affected",
-      "focused on practical results rather than theory",
-      "respected and famous in a particular field",
-      "careful because danger or problems are possible"
+      "Lilongwe",
+      "Beirut",
+      "San Salvador",
+      "Yerevan"
     ],
-    "explanation": "\"eminent\" means respected and famous in a particular field.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Lilongwe is the capital city of Malawi.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-100",
-    "question": "Choose the sentence that uses \"eminent\" correctly.",
-    "answer": "An eminent scientist delivered the lecture.",
+    "question": "What is the capital city of Malaysia?",
+    "answer": "Kuala Lumpur",
     "options": [
-      "The research followed a rigorous testing process.",
-      "An eminent scientist delivered the lecture.",
-      "The region has abundant rainfall throughout the year.",
-      "The organisation promised a transparent selection process."
+      "Kuala Lumpur",
+      "Nairobi",
+      "Accra",
+      "Luanda"
     ],
-    "explanation": "The sentence uses \"eminent\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Kuala Lumpur is the capital city of Malaysia.",
+    "clue": "Think of the country's seat of government.",
+    "topic": "Geography"
   },
   {
     "id": "wordquiz-101",
-    "question": "Which word is closest in meaning to \"ephemeral\"?",
-    "answer": "short-lived",
+    "question": "What is the chemical symbol for Hydrogen?",
+    "answer": "H",
     "options": [
-      "shrewd",
-      "precise",
-      "exact",
-      "short-lived"
+      "H",
+      "V",
+      "Tl",
+      "Lu"
     ],
-    "explanation": "\"ephemeral\" means short-lived.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Hydrogen is represented by the chemical symbol H.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-102",
-    "question": "Which word is opposite in meaning to \"ephemeral\"?",
-    "answer": "lasting",
+    "question": "What is the chemical symbol for Helium?",
+    "answer": "He",
     "options": [
-      "lasting",
-      "definite",
-      "negligent",
-      "deliberate"
+      "He",
+      "Lu",
+      "Cf",
+      "Pr"
     ],
-    "explanation": "\"lasting\" is the opposite of \"ephemeral\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Helium is represented by the chemical symbol He.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-103",
-    "question": "What does \"ephemeral\" mean?",
-    "answer": "lasting for only a brief time",
+    "question": "What is the chemical symbol for Lithium?",
+    "answer": "Li",
     "options": [
-      "requiring great effort or endurance",
-      "correct and free from errors",
-      "lasting for only a brief time",
-      "certain to happen and impossible to avoid"
+      "Li",
+      "Pr",
+      "Bi",
+      "B"
     ],
-    "explanation": "\"ephemeral\" means lasting for only a brief time.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Lithium is represented by the chemical symbol Li.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-104",
-    "question": "Choose the sentence that uses \"ephemeral\" correctly.",
-    "answer": "The beauty of the evening flowers was ephemeral.",
+    "question": "What is the chemical symbol for Beryllium?",
+    "answer": "Be",
     "options": [
-      "The beauty of the evening flowers was ephemeral.",
-      "The ambiguous instruction confused the new staff.",
-      "He offered a candid assessment of the plan.",
-      "The match was cancelled because of adverse weather."
+      "Be",
+      "Es",
+      "Ga",
+      "N"
     ],
-    "explanation": "The sentence uses \"ephemeral\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Beryllium is represented by the chemical symbol Be.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-105",
-    "question": "Which word is closest in meaning to \"essential\"?",
-    "answer": "necessary",
+    "question": "What is the chemical symbol for Boron?",
+    "answer": "B",
     "options": [
-      "necessary",
-      "unwilling",
-      "unplanned",
-      "plentiful"
+      "B",
+      "C",
+      "Es",
+      "K"
     ],
-    "explanation": "\"essential\" means necessary.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Boron is represented by the chemical symbol B.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-106",
-    "question": "Which word is opposite in meaning to \"essential\"?",
-    "answer": "optional",
+    "question": "What is the chemical symbol for Carbon?",
+    "answer": "C",
     "options": [
-      "rigid",
-      "optional",
-      "scarce",
-      "thorough"
+      "C",
+      "Ru",
+      "As",
+      "Pt"
     ],
-    "explanation": "\"optional\" is the opposite of \"essential\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Carbon is represented by the chemical symbol C.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-107",
-    "question": "What does \"essential\" mean?",
-    "answer": "absolutely needed or extremely important",
+    "question": "What is the chemical symbol for Nitrogen?",
+    "answer": "N",
     "options": [
-      "happening naturally without prior planning",
-      "careful because danger or problems are possible",
-      "absolutely needed or extremely important",
-      "easy to see or attract attention"
+      "N",
+      "Tm",
+      "At",
+      "S"
     ],
-    "explanation": "\"essential\" means absolutely needed or extremely important.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Nitrogen is represented by the chemical symbol N.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-108",
-    "question": "Choose the sentence that uses \"essential\" correctly.",
-    "answer": "Clean drinking water is essential for health.",
+    "question": "What is the chemical symbol for Oxygen?",
+    "answer": "O",
     "options": [
-      "The witness provided a credible explanation.",
-      "The region has abundant rainfall throughout the year.",
-      "The compassionate nurse stayed with the frightened child.",
-      "Clean drinking water is essential for health."
+      "O",
+      "Na",
+      "C",
+      "Xe"
     ],
-    "explanation": "The sentence uses \"essential\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Oxygen is represented by the chemical symbol O.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-109",
-    "question": "Which word is closest in meaning to \"excessive\"?",
-    "answer": "exorbitant",
+    "question": "What is the chemical symbol for Fluorine?",
+    "answer": "F",
     "options": [
-      "precise",
-      "hardworking",
-      "exorbitant",
-      "unwilling"
+      "F",
+      "Pa",
+      "Ag",
+      "U"
     ],
-    "explanation": "\"excessive\" means exorbitant.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Fluorine is represented by the chemical symbol F.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-110",
-    "question": "Which word is opposite in meaning to \"excessive\"?",
-    "answer": "moderate",
+    "question": "What is the chemical symbol for Neon?",
+    "answer": "Ne",
     "options": [
-      "moderate",
-      "arrogant",
-      "cruel",
-      "limited"
+      "Ne",
+      "Pt",
+      "Cm",
+      "O"
     ],
-    "explanation": "\"moderate\" is the opposite of \"excessive\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Neon is represented by the chemical symbol Ne.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-111",
-    "question": "What does \"excessive\" mean?",
-    "answer": "greater than what is reasonable or necessary",
+    "question": "What is the chemical symbol for Sodium?",
+    "answer": "Na",
     "options": [
-      "dangerously uncertain or likely to fail",
-      "available in large quantities",
-      "following accepted customs or usual methods",
-      "greater than what is reasonable or necessary"
+      "Na",
+      "Ce",
+      "U",
+      "Co"
     ],
-    "explanation": "\"excessive\" means greater than what is reasonable or necessary.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Sodium is represented by the chemical symbol Na.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-112",
-    "question": "Choose the sentence that uses \"excessive\" correctly.",
-    "answer": "The hotel charged an excessive fee for parking.",
+    "question": "What is the chemical symbol for Magnesium?",
+    "answer": "Mg",
     "options": [
-      "The hotel charged an excessive fee for parking.",
-      "Despite winning the award, she remained modest.",
-      "The museum displayed an authentic historical document.",
-      "Handle the fragile glass with care."
+      "Mg",
+      "Si",
+      "La",
+      "Rh"
     ],
-    "explanation": "The sentence uses \"excessive\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Magnesium is represented by the chemical symbol Mg.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-113",
-    "question": "Which word is closest in meaning to \"feasible\"?",
-    "answer": "practical",
+    "question": "What is the chemical symbol for Aluminium?",
+    "answer": "Al",
     "options": [
-      "sympathetic",
-      "shrewd",
-      "practical",
-      "flexible"
+      "Al",
+      "O",
+      "Tl",
+      "Nb"
     ],
-    "explanation": "\"feasible\" means practical.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Aluminium is represented by the chemical symbol Al.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-114",
-    "question": "Which word is opposite in meaning to \"feasible\"?",
-    "answer": "impractical",
+    "question": "What is the chemical symbol for Silicon?",
+    "answer": "Si",
     "options": [
-      "optional",
-      "hostile",
-      "effortless",
-      "impractical"
+      "Si",
+      "Bi",
+      "Xe",
+      "Fr"
     ],
-    "explanation": "\"impractical\" is the opposite of \"feasible\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Silicon is represented by the chemical symbol Si.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-115",
-    "question": "What does \"feasible\" mean?",
-    "answer": "possible and realistic to achieve",
+    "question": "What is the chemical symbol for Phosphorus?",
+    "answer": "P",
     "options": [
-      "pleasant and friendly in manner",
-      "having more than one possible meaning",
-      "possible and realistic to achieve",
-      "treating all sides fairly"
+      "P",
+      "Th",
+      "S",
+      "Ru"
     ],
-    "explanation": "\"feasible\" means possible and realistic to achieve.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Phosphorus is represented by the chemical symbol P.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-116",
-    "question": "Choose the sentence that uses \"feasible\" correctly.",
-    "answer": "The team developed a feasible plan within the budget.",
+    "question": "What is the chemical symbol for Sulfur?",
+    "answer": "S",
     "options": [
-      "An eminent scientist delivered the lecture.",
-      "The team developed a feasible plan within the budget.",
-      "The region has abundant rainfall throughout the year.",
-      "The climbers faced an arduous journey."
+      "S",
+      "Hf",
+      "Mn",
+      "Ce"
     ],
-    "explanation": "The sentence uses \"feasible\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Sulfur is represented by the chemical symbol S.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-117",
-    "question": "Which word is closest in meaning to \"fragile\"?",
-    "answer": "delicate",
+    "question": "What is the chemical symbol for Chlorine?",
+    "answer": "Cl",
     "options": [
-      "detailed",
-      "unfavourable",
-      "expressive",
-      "delicate"
+      "Cl",
+      "B",
+      "C",
+      "Po"
     ],
-    "explanation": "\"fragile\" means delicate.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Chlorine is represented by the chemical symbol Cl.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-118",
-    "question": "Which word is opposite in meaning to \"fragile\"?",
-    "answer": "robust",
+    "question": "What is the chemical symbol for Argon?",
+    "answer": "Ar",
     "options": [
-      "robust",
-      "obvious",
-      "scarce",
-      "superficial"
+      "Ar",
+      "Ne",
+      "At",
+      "Th"
     ],
-    "explanation": "\"robust\" is the opposite of \"fragile\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Argon is represented by the chemical symbol Ar.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-119",
-    "question": "What does \"fragile\" mean?",
-    "answer": "easily broken or damaged",
+    "question": "What is the chemical symbol for Potassium?",
+    "answer": "K",
     "options": [
-      "containing many carefully arranged details",
-      "easily broken or damaged",
-      "extremely careful about small details",
-      "preventing success or causing difficulty"
+      "K",
+      "Zr",
+      "Kr",
+      "V"
     ],
-    "explanation": "\"fragile\" means easily broken or damaged.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Potassium is represented by the chemical symbol K.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-120",
-    "question": "Choose the sentence that uses \"fragile\" correctly.",
-    "answer": "Handle the fragile glass with care.",
+    "question": "What is the chemical symbol for Calcium?",
+    "answer": "Ca",
     "options": [
-      "Handle the fragile glass with care.",
-      "The match was cancelled because of adverse weather.",
-      "An adaptable employee can handle changing priorities.",
-      "The climbers faced an arduous journey."
+      "Ca",
+      "Am",
+      "Mn",
+      "Ni"
     ],
-    "explanation": "The sentence uses \"fragile\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Calcium is represented by the chemical symbol Ca.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-121",
-    "question": "Which word is closest in meaning to \"frugal\"?",
-    "answer": "thrifty",
+    "question": "What is the chemical symbol for Scandium?",
+    "answer": "Sc",
     "options": [
-      "demanding",
-      "shallow",
-      "thrifty",
-      "exact"
+      "Sc",
+      "N",
+      "Zr",
+      "Po"
     ],
-    "explanation": "\"frugal\" means thrifty.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Scandium is represented by the chemical symbol Sc.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-122",
-    "question": "Which word is opposite in meaning to \"frugal\"?",
-    "answer": "wasteful",
+    "question": "What is the chemical symbol for Titanium?",
+    "answer": "Ti",
     "options": [
-      "fragile",
-      "wasteful",
-      "reckless",
-      "deliberate"
+      "Ti",
+      "Fe",
+      "U",
+      "Li"
     ],
-    "explanation": "\"wasteful\" is the opposite of \"frugal\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Titanium is represented by the chemical symbol Ti.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-123",
-    "question": "What does \"frugal\" mean?",
-    "answer": "careful about spending money or using resources",
+    "question": "What is the chemical symbol for Vanadium?",
+    "answer": "V",
     "options": [
-      "careful about spending money or using resources",
-      "easy to see or attract attention",
-      "requiring great effort or endurance",
-      "focused on practical results rather than theory"
+      "V",
+      "Sn",
+      "Co",
+      "Gd"
     ],
-    "explanation": "\"frugal\" means careful about spending money or using resources.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Vanadium is represented by the chemical symbol V.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-124",
-    "question": "Choose the sentence that uses \"frugal\" correctly.",
-    "answer": "Their frugal habits helped them save for a house.",
+    "question": "What is the chemical symbol for Chromium?",
+    "answer": "Cr",
     "options": [
-      "The team developed a feasible plan within the budget.",
-      "The organisation promised a transparent selection process.",
-      "A cautious driver slows down near a school.",
-      "Their frugal habits helped them save for a house."
+      "Cr",
+      "Yb",
+      "Zr",
+      "Br"
     ],
-    "explanation": "The sentence uses \"frugal\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Chromium is represented by the chemical symbol Cr.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-125",
-    "question": "Which word is closest in meaning to \"genuine\"?",
-    "answer": "authentic",
+    "question": "What is the chemical symbol for Manganese?",
+    "answer": "Mn",
     "options": [
-      "genuine",
-      "neutral",
-      "authentic",
-      "unfavourable"
+      "Mn",
+      "Yb",
+      "Ga",
+      "Au"
     ],
-    "explanation": "\"genuine\" means authentic.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Manganese is represented by the chemical symbol Mn.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-126",
-    "question": "Which word is opposite in meaning to \"genuine\"?",
-    "answer": "counterfeit",
+    "question": "What is the chemical symbol for Iron?",
+    "answer": "Fe",
     "options": [
-      "counterfeit",
-      "illicit",
-      "approximate",
-      "lenient"
+      "Fe",
+      "Ne",
+      "Es",
+      "V"
     ],
-    "explanation": "\"counterfeit\" is the opposite of \"genuine\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Iron is represented by the chemical symbol Fe.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-127",
-    "question": "What does \"genuine\" mean?",
-    "answer": "truly what it claims to be",
+    "question": "What is the chemical symbol for Cobalt?",
+    "answer": "Co",
     "options": [
-      "truthful and direct",
-      "taking care to avoid danger or mistakes",
-      "possible and realistic to achieve",
-      "truly what it claims to be"
+      "Co",
+      "Zr",
+      "Cm",
+      "Pt"
     ],
-    "explanation": "\"genuine\" means truly what it claims to be.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Cobalt is represented by the chemical symbol Co.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-128",
-    "question": "Choose the sentence that uses \"genuine\" correctly.",
-    "answer": "The shop guarantees that every product is genuine.",
+    "question": "What is the chemical symbol for Nickel?",
+    "answer": "Ni",
     "options": [
-      "The teacher was lenient about the late submission.",
-      "The report gives an accurate account of the incident.",
-      "The shop guarantees that every product is genuine.",
-      "Please write a concise summary of the meeting."
+      "Ni",
+      "U",
+      "Co",
+      "P"
     ],
-    "explanation": "The sentence uses \"genuine\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Nickel is represented by the chemical symbol Ni.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-129",
-    "question": "Which word is closest in meaning to \"hostile\"?",
-    "answer": "unfriendly",
+    "question": "What is the chemical symbol for Copper?",
+    "answer": "Cu",
     "options": [
-      "unfriendly",
-      "practical",
-      "kind",
-      "detailed"
+      "Cu",
+      "Fr",
+      "Ne",
+      "Ce"
     ],
-    "explanation": "\"hostile\" means unfriendly.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Copper is represented by the chemical symbol Cu.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-130",
-    "question": "Which word is opposite in meaning to \"hostile\"?",
-    "answer": "welcoming",
+    "question": "What is the chemical symbol for Zinc?",
+    "answer": "Zn",
     "options": [
-      "effortless",
-      "convinced",
-      "cruel",
-      "welcoming"
+      "Zn",
+      "Sr",
+      "Cs",
+      "Hf"
     ],
-    "explanation": "\"welcoming\" is the opposite of \"hostile\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Zinc is represented by the chemical symbol Zn.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-131",
-    "question": "What does \"hostile\" mean?",
-    "answer": "unfriendly or opposed",
+    "question": "What is the chemical symbol for Gallium?",
+    "answer": "Ga",
     "options": [
-      "unfriendly or opposed",
-      "quick to understand situations and make sound judgements",
-      "showing careful judgement and good sense",
-      "available in large quantities"
+      "Ga",
+      "Cd",
+      "P",
+      "Pd"
     ],
-    "explanation": "\"hostile\" means unfriendly or opposed.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Gallium is represented by the chemical symbol Ga.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-132",
-    "question": "Choose the sentence that uses \"hostile\" correctly.",
-    "answer": "The proposal received a hostile response.",
+    "question": "What is the chemical symbol for Germanium?",
+    "answer": "Ge",
     "options": [
-      "It is prudent to keep an emergency fund.",
-      "An adaptable employee can handle changing priorities.",
-      "The proposal received a hostile response.",
-      "Her insightful comments improved the discussion."
+      "Ge",
+      "P",
+      "Hf",
+      "Ar"
     ],
-    "explanation": "The sentence uses \"hostile\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Germanium is represented by the chemical symbol Ge.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-133",
-    "question": "Which word is closest in meaning to \"impartial\"?",
-    "answer": "neutral",
+    "question": "What is the chemical symbol for Arsenic?",
+    "answer": "As",
     "options": [
-      "precise",
-      "cautious",
-      "unclear",
-      "neutral"
+      "As",
+      "Xe",
+      "O",
+      "Sm"
     ],
-    "explanation": "\"impartial\" means neutral.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Arsenic is represented by the chemical symbol As.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-134",
-    "question": "Which word is opposite in meaning to \"impartial\"?",
-    "answer": "biased",
+    "question": "What is the chemical symbol for Selenium?",
+    "answer": "Se",
     "options": [
-      "biased",
-      "inarticulate",
-      "superficial",
-      "simple"
+      "Se",
+      "Kr",
+      "Cf",
+      "Ir"
     ],
-    "explanation": "\"biased\" is the opposite of \"impartial\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Selenium is represented by the chemical symbol Se.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-135",
-    "question": "What does \"impartial\" mean?",
-    "answer": "treating all sides fairly",
+    "question": "What is the chemical symbol for Bromine?",
+    "answer": "Br",
     "options": [
-      "expecting good things to happen",
-      "treating all sides fairly",
-      "no longer used because something newer exists",
-      "able to be trusted or believed"
+      "Br",
+      "Re",
+      "Fe",
+      "Nd"
     ],
-    "explanation": "\"impartial\" means treating all sides fairly.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Bromine is represented by the chemical symbol Br.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-136",
-    "question": "Choose the sentence that uses \"impartial\" correctly.",
-    "answer": "A judge must remain impartial during a trial.",
+    "question": "What is the chemical symbol for Krypton?",
+    "answer": "Kr",
     "options": [
-      "These durable shoes are suitable for hiking.",
-      "He offered a candid assessment of the plan.",
-      "A judge must remain impartial during a trial.",
-      "Accurate information is vital during an emergency."
+      "Kr",
+      "O",
+      "Sr",
+      "Bk"
     ],
-    "explanation": "The sentence uses \"impartial\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Krypton is represented by the chemical symbol Kr.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-137",
-    "question": "Which word is closest in meaning to \"impeccable\"?",
-    "answer": "flawless",
+    "question": "What is the chemical symbol for Rubidium?",
+    "answer": "Rb",
     "options": [
-      "flawless",
-      "provisional",
-      "demanding",
-      "detailed"
+      "Rb",
+      "Pr",
+      "Si",
+      "Sc"
     ],
-    "explanation": "\"impeccable\" means flawless.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Rubidium is represented by the chemical symbol Rb.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-138",
-    "question": "Which word is opposite in meaning to \"impeccable\"?",
-    "answer": "faulty",
+    "question": "What is the chemical symbol for Strontium?",
+    "answer": "Sr",
     "options": [
-      "uncaring",
-      "inconspicuous",
-      "faulty",
-      "welcoming"
+      "Sr",
+      "Tb",
+      "Ar",
+      "Rn"
     ],
-    "explanation": "\"faulty\" is the opposite of \"impeccable\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Strontium is represented by the chemical symbol Sr.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-139",
-    "question": "What does \"impeccable\" mean?",
-    "answer": "without mistakes or faults",
+    "question": "What is the chemical symbol for Yttrium?",
+    "answer": "Y",
     "options": [
-      "without mistakes or faults",
-      "accurate and exact in every detail",
-      "truthful and direct",
-      "available in large quantities"
+      "Y",
+      "Fr",
+      "Hg",
+      "Co"
     ],
-    "explanation": "\"impeccable\" means without mistakes or faults.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Yttrium is represented by the chemical symbol Y.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-140",
-    "question": "Choose the sentence that uses \"impeccable\" correctly.",
-    "answer": "The chef maintained impeccable hygiene.",
+    "question": "What is the chemical symbol for Zirconium?",
+    "answer": "Zr",
     "options": [
-      "The witness provided a credible explanation.",
-      "The committee made a tentative decision.",
-      "An astute investor studies risks before buying.",
-      "The chef maintained impeccable hygiene."
+      "Zr",
+      "Am",
+      "Tl",
+      "Mg"
     ],
-    "explanation": "The sentence uses \"impeccable\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Zirconium is represented by the chemical symbol Zr.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-141",
-    "question": "Which word is closest in meaning to \"implicit\"?",
-    "answer": "unspoken",
+    "question": "What is the chemical symbol for Niobium?",
+    "answer": "Nb",
     "options": [
-      "refined",
-      "unspoken",
-      "provisional",
-      "credible"
+      "Nb",
+      "Ti",
+      "As",
+      "Np"
     ],
-    "explanation": "\"implicit\" means unspoken.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Niobium is represented by the chemical symbol Nb.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-142",
-    "question": "Which word is opposite in meaning to \"implicit\"?",
-    "answer": "explicit",
+    "question": "What is the chemical symbol for Molybdenum?",
+    "answer": "Mo",
     "options": [
-      "favourable",
-      "thorough",
-      "explicit",
-      "fragile"
+      "Mo",
+      "Ga",
+      "Ar",
+      "Pa"
     ],
-    "explanation": "\"explicit\" is the opposite of \"implicit\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Molybdenum is represented by the chemical symbol Mo.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-143",
-    "question": "What does \"implicit\" mean?",
-    "answer": "suggested without being directly stated",
+    "question": "What is the chemical symbol for Technetium?",
+    "answer": "Tc",
     "options": [
-      "determined and unwilling to give up",
-      "having more than one possible meaning",
-      "correct and free from errors",
-      "suggested without being directly stated"
+      "Tc",
+      "P",
+      "Ag",
+      "U"
     ],
-    "explanation": "\"implicit\" means suggested without being directly stated.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Technetium is represented by the chemical symbol Tc.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-144",
-    "question": "Choose the sentence that uses \"implicit\" correctly.",
-    "answer": "There was an implicit agreement to share the costs.",
+    "question": "What is the chemical symbol for Ruthenium?",
+    "answer": "Ru",
     "options": [
-      "The inspection was superficial and missed major faults.",
-      "The engineer devised an ingenious solution.",
-      "There was an implicit agreement to share the costs.",
-      "A diligent student reviews lessons regularly."
+      "Ru",
+      "Am",
+      "Mo",
+      "W"
     ],
-    "explanation": "The sentence uses \"implicit\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Ruthenium is represented by the chemical symbol Ru.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-145",
-    "question": "Which word is closest in meaning to \"inevitable\"?",
-    "answer": "unavoidable",
+    "question": "What is the chemical symbol for Rhodium?",
+    "answer": "Rh",
     "options": [
-      "unavoidable",
-      "plentiful",
-      "hopeful",
-      "exact"
+      "Rh",
+      "Cl",
+      "Th",
+      "C"
     ],
-    "explanation": "\"inevitable\" means unavoidable.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Rhodium is represented by the chemical symbol Rh.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-146",
-    "question": "Which word is opposite in meaning to \"inevitable\"?",
-    "answer": "preventable",
+    "question": "What is the chemical symbol for Palladium?",
+    "answer": "Pd",
     "options": [
-      "reckless",
-      "eager",
-      "rigid",
-      "preventable"
+      "Pd",
+      "Sm",
+      "Ra",
+      "Pa"
     ],
-    "explanation": "\"preventable\" is the opposite of \"inevitable\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Palladium is represented by the chemical symbol Pd.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-147",
-    "question": "What does \"inevitable\" mean?",
-    "answer": "certain to happen and impossible to avoid",
+    "question": "What is the chemical symbol for Silver?",
+    "answer": "Ag",
     "options": [
-      "certain to happen and impossible to avoid",
-      "quick to understand situations and make sound judgements",
-      "available in large quantities",
-      "able to adjust to new conditions"
+      "Ag",
+      "Co",
+      "Ce",
+      "Tb"
     ],
-    "explanation": "\"inevitable\" means certain to happen and impossible to avoid.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Silver is represented by the chemical symbol Ag.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-148",
-    "question": "Choose the sentence that uses \"inevitable\" correctly.",
-    "answer": "Some delays are inevitable during road repairs.",
+    "question": "What is the chemical symbol for Cadmium?",
+    "answer": "Cd",
     "options": [
-      "An adaptable employee can handle changing priorities.",
-      "Some delays are inevitable during road repairs.",
-      "The region has abundant rainfall throughout the year.",
-      "There was a subtle change in her tone."
+      "Cd",
+      "S",
+      "Au",
+      "Y"
     ],
-    "explanation": "The sentence uses \"inevitable\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Cadmium is represented by the chemical symbol Cd.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-149",
-    "question": "Which word is closest in meaning to \"ingenious\"?",
-    "answer": "inventive",
+    "question": "What is the chemical symbol for Indium?",
+    "answer": "In",
     "options": [
-      "genuine",
-      "careful",
-      "practical",
-      "inventive"
+      "In",
+      "Dy",
+      "La",
+      "Mg"
     ],
-    "explanation": "\"ingenious\" means inventive.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Indium is represented by the chemical symbol In.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-150",
-    "question": "Which word is opposite in meaning to \"ingenious\"?",
-    "answer": "unimaginative",
+    "question": "What is the chemical symbol for Tin?",
+    "answer": "Sn",
     "options": [
-      "unimportant",
-      "definite",
-      "unimaginative",
-      "inaccurate"
+      "Sn",
+      "Sc",
+      "Te",
+      "Bi"
     ],
-    "explanation": "\"unimaginative\" is the opposite of \"ingenious\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Tin is represented by the chemical symbol Sn.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-151",
-    "question": "What does \"ingenious\" mean?",
-    "answer": "clever, original and inventive",
+    "question": "What is the chemical symbol for Antimony?",
+    "answer": "Sb",
     "options": [
-      "preventing success or causing difficulty",
-      "clever, original and inventive",
-      "correct and free from errors",
-      "allowed by law or reasonable and genuine"
+      "Sb",
+      "Pm",
+      "V",
+      "Pu"
     ],
-    "explanation": "\"ingenious\" means clever, original and inventive.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Antimony is represented by the chemical symbol Sb.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-152",
-    "question": "Choose the sentence that uses \"ingenious\" correctly.",
-    "answer": "The engineer devised an ingenious solution.",
+    "question": "What is the chemical symbol for Tellurium?",
+    "answer": "Te",
     "options": [
-      "The engineer devised an ingenious solution.",
-      "The report gives an accurate account of the incident.",
-      "The organisation promised a transparent selection process.",
-      "These durable shoes are suitable for hiking."
+      "Te",
+      "Yb",
+      "H",
+      "I"
     ],
-    "explanation": "The sentence uses \"ingenious\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Tellurium is represented by the chemical symbol Te.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-153",
-    "question": "Which word is closest in meaning to \"innovative\"?",
-    "answer": "original",
+    "question": "What is the chemical symbol for Iodine?",
+    "answer": "I",
     "options": [
-      "original",
-      "sympathetic",
-      "unfavourable",
-      "careful"
+      "I",
+      "Tl",
+      "Lu",
+      "Si"
     ],
-    "explanation": "\"innovative\" means original.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Iodine is represented by the chemical symbol I.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-154",
-    "question": "Which word is opposite in meaning to \"innovative\"?",
-    "answer": "conventional",
+    "question": "What is the chemical symbol for Xenon?",
+    "answer": "Xe",
     "options": [
-      "scarce",
-      "implausible",
-      "conventional",
-      "trusting"
+      "Xe",
+      "C",
+      "Hg",
+      "Ga"
     ],
-    "explanation": "\"conventional\" is the opposite of \"innovative\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Xenon is represented by the chemical symbol Xe.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-155",
-    "question": "What does \"innovative\" mean?",
-    "answer": "introducing new ideas or methods",
+    "question": "What is the chemical symbol for Caesium?",
+    "answer": "Cs",
     "options": [
-      "introducing new ideas or methods",
-      "not as strict or severe as expected",
-      "available in large quantities",
-      "extremely careful about small details"
+      "Cs",
+      "Co",
+      "Ir",
+      "Sb"
     ],
-    "explanation": "\"innovative\" means introducing new ideas or methods.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Caesium is represented by the chemical symbol Cs.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-156",
-    "question": "Choose the sentence that uses \"innovative\" correctly.",
-    "answer": "The company is known for its innovative products.",
+    "question": "What is the chemical symbol for Barium?",
+    "answer": "Ba",
     "options": [
-      "The architect presented an elaborate design.",
-      "The region has abundant rainfall throughout the year.",
-      "The beauty of the evening flowers was ephemeral.",
-      "The company is known for its innovative products."
+      "Ba",
+      "Cu",
+      "Rb",
+      "In"
     ],
-    "explanation": "The sentence uses \"innovative\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Barium is represented by the chemical symbol Ba.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-157",
-    "question": "Which word is closest in meaning to \"insightful\"?",
-    "answer": "perceptive",
+    "question": "What is the chemical symbol for Lanthanum?",
+    "answer": "La",
     "options": [
-      "brief",
-      "perceptive",
-      "unspoken",
-      "unclear"
+      "La",
+      "Ba",
+      "Am",
+      "Cs"
     ],
-    "explanation": "\"insightful\" means perceptive.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Lanthanum is represented by the chemical symbol La.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-158",
-    "question": "Which word is opposite in meaning to \"insightful\"?",
-    "answer": "shallow",
+    "question": "What is the chemical symbol for Cerium?",
+    "answer": "Ce",
     "options": [
-      "shallow",
-      "naive",
-      "superficial",
-      "obvious"
+      "Ce",
+      "Kr",
+      "Cf",
+      "Xe"
     ],
-    "explanation": "\"shallow\" is the opposite of \"insightful\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Cerium is represented by the chemical symbol Ce.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-159",
-    "question": "What does \"insightful\" mean?",
-    "answer": "showing a deep and accurate understanding",
+    "question": "What is the chemical symbol for Praseodymium?",
+    "answer": "Pr",
     "options": [
-      "treating all sides fairly",
-      "very great or showing deep understanding",
-      "taking care to avoid danger or mistakes",
-      "showing a deep and accurate understanding"
+      "Pr",
+      "Bk",
+      "W",
+      "Zn"
     ],
-    "explanation": "\"insightful\" means showing a deep and accurate understanding.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Praseodymium is represented by the chemical symbol Pr.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-160",
-    "question": "Choose the sentence that uses \"insightful\" correctly.",
-    "answer": "Her insightful comments improved the discussion.",
+    "question": "What is the chemical symbol for Neodymium?",
+    "answer": "Nd",
     "options": [
-      "Her insightful comments improved the discussion.",
-      "Her argument was coherent from beginning to end.",
-      "She gave an articulate explanation of the proposal.",
-      "The device uses sophisticated technology."
+      "Nd",
+      "Mg",
+      "Br",
+      "Ar"
     ],
-    "explanation": "The sentence uses \"insightful\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Neodymium is represented by the chemical symbol Nd.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-161",
-    "question": "Which word is closest in meaning to \"intense\"?",
-    "answer": "extreme",
+    "question": "What is the chemical symbol for Promethium?",
+    "answer": "Pm",
     "options": [
-      "extreme",
-      "unnecessary",
-      "wise",
-      "clear"
+      "Pm",
+      "Ga",
+      "Bi",
+      "Pa"
     ],
-    "explanation": "\"intense\" means extreme.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Promethium is represented by the chemical symbol Pm.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-162",
-    "question": "Which word is opposite in meaning to \"intense\"?",
-    "answer": "mild",
+    "question": "What is the chemical symbol for Samarium?",
+    "answer": "Sm",
     "options": [
-      "simple",
-      "scarce",
-      "wordy",
-      "mild"
+      "Sm",
+      "Bi",
+      "N",
+      "Be"
     ],
-    "explanation": "\"mild\" is the opposite of \"intense\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Samarium is represented by the chemical symbol Sm.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-163",
-    "question": "What does \"intense\" mean?",
-    "answer": "very strong or concentrated",
+    "question": "What is the chemical symbol for Europium?",
+    "answer": "Eu",
     "options": [
-      "quick to understand situations and make sound judgements",
-      "correct and free from errors",
-      "very strong or concentrated",
-      "available in large quantities"
+      "Eu",
+      "Li",
+      "Pr",
+      "Po"
     ],
-    "explanation": "\"intense\" means very strong or concentrated.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Europium is represented by the chemical symbol Eu.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-164",
-    "question": "Choose the sentence that uses \"intense\" correctly.",
-    "answer": "The region experienced intense heat in May.",
+    "question": "What is the chemical symbol for Gadolinium?",
+    "answer": "Gd",
     "options": [
-      "Clean drinking water is essential for health.",
-      "The region experienced intense heat in May.",
-      "The necklace has an intricate pattern.",
-      "The committee made a tentative decision."
+      "Gd",
+      "Cd",
+      "Ra",
+      "Rh"
     ],
-    "explanation": "The sentence uses \"intense\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Gadolinium is represented by the chemical symbol Gd.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-165",
-    "question": "Which word is closest in meaning to \"intricate\"?",
-    "answer": "complex",
+    "question": "What is the chemical symbol for Terbium?",
+    "answer": "Tb",
     "options": [
-      "brief",
-      "thorough",
-      "precise",
-      "complex"
+      "Tb",
+      "Rh",
+      "Lu",
+      "C"
     ],
-    "explanation": "\"intricate\" means complex.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Terbium is represented by the chemical symbol Tb.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-166",
-    "question": "Which word is opposite in meaning to \"intricate\"?",
-    "answer": "simple",
+    "question": "What is the chemical symbol for Dysprosium?",
+    "answer": "Dy",
     "options": [
-      "simple",
-      "fragile",
-      "lenient",
-      "inaccurate"
+      "Dy",
+      "P",
+      "Am",
+      "Pb"
     ],
-    "explanation": "\"simple\" is the opposite of \"intricate\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Dysprosium is represented by the chemical symbol Dy.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-167",
-    "question": "What does \"intricate\" mean?",
-    "answer": "having many connected and complicated details",
+    "question": "What is the chemical symbol for Holmium?",
+    "answer": "Ho",
     "options": [
-      "easy to see or attract attention",
-      "without mistakes or faults",
-      "having many connected and complicated details",
-      "no longer used because something newer exists"
+      "Ho",
+      "Tb",
+      "Al",
+      "C"
     ],
-    "explanation": "\"intricate\" means having many connected and complicated details.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Holmium is represented by the chemical symbol Ho.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-168",
-    "question": "Choose the sentence that uses \"intricate\" correctly.",
-    "answer": "The necklace has an intricate pattern.",
+    "question": "What is the chemical symbol for Erbium?",
+    "answer": "Er",
     "options": [
-      "The necklace has an intricate pattern.",
-      "The engineer devised an ingenious solution.",
-      "Her diplomatic reply prevented an argument.",
-      "They chose a conventional design for the office."
+      "Er",
+      "He",
+      "In",
+      "Pa"
     ],
-    "explanation": "The sentence uses \"intricate\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Erbium is represented by the chemical symbol Er.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-169",
-    "question": "Which word is closest in meaning to \"legitimate\"?",
-    "answer": "lawful",
+    "question": "What is the chemical symbol for Thulium?",
+    "answer": "Tm",
     "options": [
-      "lawful",
-      "hopeful",
-      "thrifty",
-      "careful"
+      "Tm",
+      "Fe",
+      "Ca",
+      "Xe"
     ],
-    "explanation": "\"legitimate\" means lawful.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Thulium is represented by the chemical symbol Tm.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-170",
-    "question": "Which word is opposite in meaning to \"legitimate\"?",
-    "answer": "illicit",
+    "question": "What is the chemical symbol for Ytterbium?",
+    "answer": "Yb",
     "options": [
-      "trusting",
-      "illicit",
-      "idealistic",
-      "protected"
+      "Yb",
+      "Er",
+      "Ir",
+      "Ag"
     ],
-    "explanation": "\"illicit\" is the opposite of \"legitimate\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Ytterbium is represented by the chemical symbol Yb.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-171",
-    "question": "What does \"legitimate\" mean?",
-    "answer": "allowed by law or reasonable and genuine",
+    "question": "What is the chemical symbol for Lutetium?",
+    "answer": "Lu",
     "options": [
-      "not as strict or severe as expected",
-      "available in large quantities",
-      "allowed by law or reasonable and genuine",
-      "not easily convinced and inclined to question claims"
+      "Lu",
+      "C",
+      "Os",
+      "Cf"
     ],
-    "explanation": "\"legitimate\" means allowed by law or reasonable and genuine.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Lutetium is represented by the chemical symbol Lu.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-172",
-    "question": "Choose the sentence that uses \"legitimate\" correctly.",
-    "answer": "The customer raised a legitimate concern.",
+    "question": "What is the chemical symbol for Hafnium?",
+    "answer": "Hf",
     "options": [
-      "An adaptable employee can handle changing priorities.",
-      "Their spontaneous visit delighted the family.",
-      "The region has abundant rainfall throughout the year.",
-      "The customer raised a legitimate concern."
+      "Hf",
+      "Ge",
+      "Al",
+      "Th"
     ],
-    "explanation": "The sentence uses \"legitimate\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Hafnium is represented by the chemical symbol Hf.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-173",
-    "question": "Which word is closest in meaning to \"lenient\"?",
-    "answer": "merciful",
+    "question": "What is the chemical symbol for Tantalum?",
+    "answer": "Ta",
     "options": [
-      "unclear",
-      "merciful",
-      "unplanned",
-      "hardworking"
+      "Ta",
+      "Gd",
+      "Hg",
+      "Fm"
     ],
-    "explanation": "\"lenient\" means merciful.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Tantalum is represented by the chemical symbol Ta.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-174",
-    "question": "Which word is opposite in meaning to \"lenient\"?",
-    "answer": "strict",
+    "question": "What is the chemical symbol for Tungsten?",
+    "answer": "W",
     "options": [
-      "strict",
-      "effortless",
-      "explicit",
-      "inaccurate"
+      "W",
+      "Gd",
+      "At",
+      "I"
     ],
-    "explanation": "\"strict\" is the opposite of \"lenient\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Tungsten is represented by the chemical symbol W.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-175",
-    "question": "What does \"lenient\" mean?",
-    "answer": "not as strict or severe as expected",
+    "question": "What is the chemical symbol for Rhenium?",
+    "answer": "Re",
     "options": [
-      "greater than what is reasonable or necessary",
-      "clever, original and inventive",
-      "quick to understand situations and make sound judgements",
-      "not as strict or severe as expected"
+      "Re",
+      "Ra",
+      "Cu",
+      "P"
     ],
-    "explanation": "\"lenient\" means not as strict or severe as expected.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Rhenium is represented by the chemical symbol Re.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-176",
-    "question": "Choose the sentence that uses \"lenient\" correctly.",
-    "answer": "The teacher was lenient about the late submission.",
+    "question": "What is the chemical symbol for Osmium?",
+    "answer": "Os",
     "options": [
-      "The teacher was lenient about the late submission.",
-      "Her argument was coherent from beginning to end.",
-      "The report gives an accurate account of the incident.",
-      "Our amiable neighbour greets everyone warmly."
+      "Os",
+      "O",
+      "Sc",
+      "Zr"
     ],
-    "explanation": "The sentence uses \"lenient\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Osmium is represented by the chemical symbol Os.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-177",
-    "question": "Which word is closest in meaning to \"meticulous\"?",
-    "answer": "thorough",
+    "question": "What is the chemical symbol for Iridium?",
+    "answer": "Ir",
     "options": [
-      "shallow",
-      "flexible",
-      "thorough",
-      "plentiful"
+      "Ir",
+      "Au",
+      "Ca",
+      "Hf"
     ],
-    "explanation": "\"meticulous\" means thorough.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Iridium is represented by the chemical symbol Ir.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-178",
-    "question": "Which word is opposite in meaning to \"meticulous\"?",
-    "answer": "careless",
+    "question": "What is the chemical symbol for Platinum?",
+    "answer": "Pt",
     "options": [
-      "trusting",
-      "inconspicuous",
-      "deliberate",
-      "careless"
+      "Pt",
+      "Cm",
+      "K",
+      "Zr"
     ],
-    "explanation": "\"careless\" is the opposite of \"meticulous\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Platinum is represented by the chemical symbol Pt.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-179",
-    "question": "What does \"meticulous\" mean?",
-    "answer": "extremely careful about small details",
+    "question": "What is the chemical symbol for Gold?",
+    "answer": "Au",
     "options": [
-      "focused on practical results rather than theory",
-      "very strong or concentrated",
-      "extremely careful about small details",
-      "taking care to avoid danger or mistakes"
+      "Au",
+      "Ac",
+      "Cm",
+      "Hg"
     ],
-    "explanation": "\"meticulous\" means extremely careful about small details.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Gold is represented by the chemical symbol Au.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-180",
-    "question": "Choose the sentence that uses \"meticulous\" correctly.",
-    "answer": "The editor made a meticulous check of every page.",
+    "question": "What is the chemical symbol for Mercury?",
+    "answer": "Hg",
     "options": [
-      "The committee made a tentative decision.",
-      "The editor made a meticulous check of every page.",
-      "The region has abundant rainfall throughout the year.",
-      "Their frugal habits helped them save for a house."
+      "Hg",
+      "Re",
+      "Bi",
+      "Cr"
     ],
-    "explanation": "The sentence uses \"meticulous\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Mercury is represented by the chemical symbol Hg.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-181",
-    "question": "Which word is closest in meaning to \"modest\"?",
-    "answer": "humble",
+    "question": "What is the chemical symbol for Thallium?",
+    "answer": "Tl",
     "options": [
-      "thorough",
-      "kind",
-      "adaptable",
-      "humble"
+      "Tl",
+      "Co",
+      "Ac",
+      "Ga"
     ],
-    "explanation": "\"modest\" means humble.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Thallium is represented by the chemical symbol Tl.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-182",
-    "question": "Which word is opposite in meaning to \"modest\"?",
-    "answer": "arrogant",
+    "question": "What is the chemical symbol for Lead?",
+    "answer": "Pb",
     "options": [
-      "arrogant",
-      "scarce",
-      "unorthodox",
-      "secure"
+      "Pb",
+      "Kr",
+      "Ir",
+      "Cu"
     ],
-    "explanation": "\"arrogant\" is the opposite of \"modest\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Lead is represented by the chemical symbol Pb.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-183",
-    "question": "What does \"modest\" mean?",
-    "answer": "not boastful or excessively proud",
+    "question": "What is the chemical symbol for Bismuth?",
+    "answer": "Bi",
     "options": [
-      "correct and free from errors",
-      "having many connected and complicated details",
-      "not boastful or excessively proud",
-      "advanced, complex or showing good judgement"
+      "Bi",
+      "Ag",
+      "Sn",
+      "In"
     ],
-    "explanation": "\"modest\" means not boastful or excessively proud.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Bismuth is represented by the chemical symbol Bi.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-184",
-    "question": "Choose the sentence that uses \"modest\" correctly.",
-    "answer": "Despite winning the award, she remained modest.",
+    "question": "What is the chemical symbol for Polonium?",
+    "answer": "Po",
     "options": [
-      "Despite winning the award, she remained modest.",
-      "The organisation promised a transparent selection process.",
-      "The report gives an accurate account of the incident.",
-      "He offered a candid assessment of the plan."
+      "Po",
+      "Pt",
+      "Ge",
+      "Fe"
     ],
-    "explanation": "The sentence uses \"modest\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Polonium is represented by the chemical symbol Po.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-185",
-    "question": "Which word is closest in meaning to \"obsolete\"?",
-    "answer": "outdated",
+    "question": "What is the chemical symbol for Astatine?",
+    "answer": "At",
     "options": [
-      "necessary",
-      "friendly",
-      "outdated",
-      "demanding"
+      "At",
+      "Ca",
+      "Ag",
+      "Y"
     ],
-    "explanation": "\"obsolete\" means outdated.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Astatine is represented by the chemical symbol At.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-186",
-    "question": "Which word is opposite in meaning to \"obsolete\"?",
-    "answer": "modern",
+    "question": "What is the chemical symbol for Radon?",
+    "answer": "Rn",
     "options": [
-      "definite",
-      "modern",
-      "welcoming",
-      "hostile"
+      "Rn",
+      "Gd",
+      "Ar",
+      "Bi"
     ],
-    "explanation": "\"modern\" is the opposite of \"obsolete\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Radon is represented by the chemical symbol Rn.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-187",
-    "question": "What does \"obsolete\" mean?",
-    "answer": "no longer used because something newer exists",
+    "question": "What is the chemical symbol for Francium?",
+    "answer": "Fr",
     "options": [
-      "no longer used because something newer exists",
-      "skilled at dealing with people without causing offence",
-      "preventing success or causing difficulty",
-      "allowed by law or reasonable and genuine"
+      "Fr",
+      "Kr",
+      "Hg",
+      "H"
     ],
-    "explanation": "\"obsolete\" means no longer used because something newer exists.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Francium is represented by the chemical symbol Fr.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-188",
-    "question": "Choose the sentence that uses \"obsolete\" correctly.",
-    "answer": "The factory replaced its obsolete machinery.",
+    "question": "What is the chemical symbol for Radium?",
+    "answer": "Ra",
     "options": [
-      "The tenacious reporter continued investigating.",
-      "The climbers faced an arduous journey.",
-      "The region has abundant rainfall throughout the year.",
-      "The factory replaced its obsolete machinery."
+      "Ra",
+      "Pa",
+      "I",
+      "Zn"
     ],
-    "explanation": "The sentence uses \"obsolete\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Radium is represented by the chemical symbol Ra.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-189",
-    "question": "Which word is closest in meaning to \"optimistic\"?",
-    "answer": "hopeful",
+    "question": "What is the chemical symbol for Actinium?",
+    "answer": "Ac",
     "options": [
-      "comprehensive",
-      "plentiful",
-      "hopeful",
-      "delicate"
+      "Ac",
+      "Rn",
+      "Zr",
+      "Lu"
     ],
-    "explanation": "\"optimistic\" means hopeful.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Actinium is represented by the chemical symbol Ac.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-190",
-    "question": "Which word is opposite in meaning to \"optimistic\"?",
-    "answer": "pessimistic",
+    "question": "What is the chemical symbol for Thorium?",
+    "answer": "Th",
     "options": [
-      "pessimistic",
-      "favourable",
-      "simple",
-      "strict"
+      "Th",
+      "I",
+      "Rh",
+      "Yb"
     ],
-    "explanation": "\"pessimistic\" is the opposite of \"optimistic\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Thorium is represented by the chemical symbol Th.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-191",
-    "question": "What does \"optimistic\" mean?",
-    "answer": "expecting good things to happen",
+    "question": "What is the chemical symbol for Protactinium?",
+    "answer": "Pa",
     "options": [
-      "extremely thorough, careful or strict",
-      "concerned only with the surface or appearance",
-      "following accepted customs or usual methods",
-      "expecting good things to happen"
+      "Pa",
+      "At",
+      "Kr",
+      "S"
     ],
-    "explanation": "\"optimistic\" means expecting good things to happen.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Protactinium is represented by the chemical symbol Pa.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-192",
-    "question": "Choose the sentence that uses \"optimistic\" correctly.",
-    "answer": "Investors remained optimistic about the recovery.",
+    "question": "What is the chemical symbol for Uranium?",
+    "answer": "U",
     "options": [
-      "We need a pragmatic solution to the transport problem.",
-      "The team developed a feasible plan within the budget.",
-      "Investors remained optimistic about the recovery.",
-      "The region experienced intense heat in May."
+      "U",
+      "Sn",
+      "Br",
+      "As"
     ],
-    "explanation": "The sentence uses \"optimistic\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Uranium is represented by the chemical symbol U.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-193",
-    "question": "Which word is closest in meaning to \"plausible\"?",
-    "answer": "credible",
+    "question": "What is the chemical symbol for Neptunium?",
+    "answer": "Np",
     "options": [
-      "unplanned",
-      "wise",
-      "credible",
-      "sturdy"
+      "Np",
+      "Pm",
+      "Ho",
+      "Co"
     ],
-    "explanation": "\"plausible\" means credible.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Neptunium is represented by the chemical symbol Np.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-194",
-    "question": "Which word is opposite in meaning to \"plausible\"?",
-    "answer": "far-fetched",
+    "question": "What is the chemical symbol for Plutonium?",
+    "answer": "Pu",
     "options": [
-      "effortless",
-      "idealistic",
-      "inconspicuous",
-      "far-fetched"
+      "Pu",
+      "Si",
+      "Sn",
+      "Lu"
     ],
-    "explanation": "\"far-fetched\" is the opposite of \"plausible\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Plutonium is represented by the chemical symbol Pu.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-195",
-    "question": "What does \"plausible\" mean?",
-    "answer": "seeming reasonable or likely to be true",
+    "question": "What is the chemical symbol for Americium?",
+    "answer": "Am",
     "options": [
-      "seeming reasonable or likely to be true",
-      "available in large quantities",
-      "easy to understand or open and honest",
-      "extremely thorough, careful or strict"
+      "Am",
+      "Al",
+      "B",
+      "Cr"
     ],
-    "explanation": "\"plausible\" means seeming reasonable or likely to be true.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Americium is represented by the chemical symbol Am.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-196",
-    "question": "Choose the sentence that uses \"plausible\" correctly.",
-    "answer": "He offered a plausible reason for the delay.",
+    "question": "What is the chemical symbol for Curium?",
+    "answer": "Cm",
     "options": [
-      "A benevolent donor funded the village library.",
-      "An adaptable employee can handle changing priorities.",
-      "He offered a plausible reason for the delay.",
-      "Her argument was coherent from beginning to end."
+      "Cm",
+      "Pt",
+      "Am",
+      "Be"
     ],
-    "explanation": "The sentence uses \"plausible\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Curium is represented by the chemical symbol Cm.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-197",
-    "question": "Which word is closest in meaning to \"pragmatic\"?",
-    "answer": "practical",
+    "question": "What is the chemical symbol for Berkelium?",
+    "answer": "Bk",
     "options": [
-      "exact",
-      "strict",
-      "complex",
-      "practical"
+      "Bk",
+      "Es",
+      "Ti",
+      "Cf"
     ],
-    "explanation": "\"pragmatic\" means practical.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "Berkelium is represented by the chemical symbol Bk.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-198",
-    "question": "Which word is opposite in meaning to \"pragmatic\"?",
-    "answer": "idealistic",
+    "question": "What is the chemical symbol for Californium?",
+    "answer": "Cf",
     "options": [
-      "idealistic",
-      "impractical",
-      "reckless",
-      "evasive"
+      "Cf",
+      "Au",
+      "Na",
+      "Es"
     ],
-    "explanation": "\"idealistic\" is the opposite of \"pragmatic\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "Californium is represented by the chemical symbol Cf.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-199",
-    "question": "What does \"pragmatic\" mean?",
-    "answer": "focused on practical results rather than theory",
+    "question": "What is the chemical symbol for Einsteinium?",
+    "answer": "Es",
     "options": [
-      "truthful and direct",
-      "focused on practical results rather than theory",
-      "preventing success or causing difficulty",
-      "having more than one possible meaning"
+      "Es",
+      "Lu",
+      "Li",
+      "Po"
     ],
-    "explanation": "\"pragmatic\" means focused on practical results rather than theory.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "Einsteinium is represented by the chemical symbol Es.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-200",
-    "question": "Choose the sentence that uses \"pragmatic\" correctly.",
-    "answer": "We need a pragmatic solution to the transport problem.",
+    "question": "What is the chemical symbol for Fermium?",
+    "answer": "Fm",
     "options": [
-      "The match was cancelled because of adverse weather.",
-      "The teacher was lenient about the late submission.",
-      "We need a pragmatic solution to the transport problem.",
-      "Please provide the precise measurement."
+      "Fm",
+      "Mn",
+      "Dy",
+      "Fe"
     ],
-    "explanation": "The sentence uses \"pragmatic\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "Fermium is represented by the chemical symbol Fm.",
+    "clue": "Recall the element's one- or two-letter symbol.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-201",
-    "question": "Which word is closest in meaning to \"precarious\"?",
-    "answer": "unstable",
+    "question": "What is the largest planet in our solar system?",
+    "answer": "Jupiter",
     "options": [
-      "unstable",
-      "doubtful",
-      "demanding",
-      "kind"
+      "Jupiter",
+      "Pb",
+      "Mycology",
+      "Barometer"
     ],
-    "explanation": "\"precarious\" means unstable.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Jupiter.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-202",
-    "question": "Which word is opposite in meaning to \"precarious\"?",
-    "answer": "secure",
+    "question": "Which planet is closest to the Sun?",
+    "answer": "Mercury",
     "options": [
-      "scarce",
-      "naive",
-      "secure",
-      "reckless"
+      "Mercury",
+      "Joule",
+      "Condensation",
+      "Telescope"
     ],
-    "explanation": "\"secure\" is the opposite of \"precarious\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Mercury.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-203",
-    "question": "What does \"precarious\" mean?",
-    "answer": "dangerously uncertain or likely to fail",
+    "question": "Which planet is hottest on average?",
+    "answer": "Venus",
     "options": [
-      "dangerously uncertain or likely to fail",
-      "showing concern for another person's suffering",
-      "able to be trusted or believed",
-      "available in large quantities"
+      "Venus",
+      "Newton",
+      "Baking soda",
+      "Glucose"
     ],
-    "explanation": "\"precarious\" means dangerously uncertain or likely to fail.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Venus.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-204",
-    "question": "Choose the sentence that uses \"precarious\" correctly.",
-    "answer": "The workers stood on a precarious platform.",
+    "question": "Which planet is known as the Red Planet?",
+    "answer": "Mars",
     "options": [
-      "An adaptable employee can handle changing priorities.",
-      "Some delays are inevitable during road repairs.",
-      "The region has abundant rainfall throughout the year.",
-      "The workers stood on a precarious platform."
+      "Mars",
+      "Hg",
+      "Jupiter",
+      "Mole"
     ],
-    "explanation": "The sentence uses \"precarious\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Mars.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-205",
-    "question": "Which word is closest in meaning to \"precise\"?",
-    "answer": "exact",
+    "question": "Which planet is famous for its prominent rings?",
+    "answer": "Saturn",
     "options": [
-      "extreme",
-      "exact",
-      "deep",
-      "expressive"
+      "Saturn",
+      "The femur",
+      "Electron",
+      "Au"
     ],
-    "explanation": "\"precise\" means exact.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Saturn.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-206",
-    "question": "Which word is opposite in meaning to \"precise\"?",
-    "answer": "approximate",
+    "question": "What is Earth's natural satellite?",
+    "answer": "The Moon",
     "options": [
-      "implausible",
-      "modern",
-      "approximate",
-      "arrogant"
+      "The Moon",
+      "Hg",
+      "300,000 kilometres per second",
+      "Lava"
     ],
-    "explanation": "\"approximate\" is the opposite of \"precise\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is The Moon.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-207",
-    "question": "What does \"precise\" mean?",
-    "answer": "accurate and exact in every detail",
+    "question": "Which galaxy contains our solar system?",
+    "answer": "The Milky Way",
     "options": [
-      "extremely careful about small details",
-      "real and not copied or false",
-      "possible and realistic to achieve",
-      "accurate and exact in every detail"
+      "The Milky Way",
+      "7",
+      "The aorta",
+      "Chemistry"
     ],
-    "explanation": "\"precise\" means accurate and exact in every detail.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is The Milky Way.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-208",
-    "question": "Choose the sentence that uses \"precise\" correctly.",
-    "answer": "Please provide the precise measurement.",
+    "question": "What is the closest star to Earth?",
+    "answer": "The Sun",
     "options": [
-      "We need a pragmatic solution to the transport problem.",
-      "There was a subtle change in her tone.",
-      "Please provide the precise measurement.",
-      "The hotel charged an excessive fee for parking."
+      "The Sun",
+      "Ampere",
+      "Mars",
+      "Pascal"
     ],
-    "explanation": "The sentence uses \"precise\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is The Sun.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-209",
-    "question": "Which word is closest in meaning to \"profound\"?",
-    "answer": "deep",
+    "question": "Which force keeps planets in orbit?",
+    "answer": "Gravity",
     "options": [
-      "deep",
-      "sympathetic",
-      "unfriendly",
-      "noticeable"
+      "Gravity",
+      "Diamond",
+      "Au",
+      "Entomology"
     ],
-    "explanation": "\"profound\" means deep.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Gravity.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-210",
-    "question": "Which word is opposite in meaning to \"profound\"?",
-    "answer": "superficial",
+    "question": "Which gas do plants absorb during photosynthesis?",
+    "answer": "Carbon dioxide",
     "options": [
-      "secure",
-      "evasive",
-      "scarce",
-      "superficial"
+      "Carbon dioxide",
+      "The Big Bang theory",
+      "DNA",
+      "Seismology"
     ],
-    "explanation": "\"superficial\" is the opposite of \"profound\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Carbon dioxide.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Biology"
   },
   {
     "id": "wordquiz-211",
-    "question": "What does \"profound\" mean?",
-    "answer": "very great or showing deep understanding",
+    "question": "Which gas do humans need for respiration?",
+    "answer": "Oxygen",
     "options": [
-      "very great or showing deep understanding",
-      "requiring great effort or endurance",
-      "respected and famous in a particular field",
-      "available in large quantities"
+      "Oxygen",
+      "Proton",
+      "0 degrees Celsius",
+      "300,000 kilometres per second"
     ],
-    "explanation": "\"profound\" means very great or showing deep understanding.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Oxygen.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-212",
-    "question": "Choose the sentence that uses \"profound\" correctly.",
-    "answer": "The discovery had a profound effect on medicine.",
+    "question": "What is the chemical formula for water?",
+    "answer": "H2O",
     "options": [
-      "Our amiable neighbour greets everyone warmly.",
-      "He offered a plausible reason for the delay.",
-      "The discovery had a profound effect on medicine.",
-      "The research followed a rigorous testing process."
+      "H2O",
+      "Nucleus",
+      "Convex mirror",
+      "Magma"
     ],
-    "explanation": "The sentence uses \"profound\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is H2O.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-213",
-    "question": "Which word is closest in meaning to \"prudent\"?",
-    "answer": "wise",
+    "question": "What is the pH of pure water at room temperature approximately?",
+    "answer": "7",
     "options": [
-      "shallow",
-      "sturdy",
-      "unfavourable",
-      "wise"
+      "7",
+      "K",
+      "Glucose",
+      "The aorta"
     ],
-    "explanation": "\"prudent\" means wise.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is 7.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-214",
-    "question": "Which word is opposite in meaning to \"prudent\"?",
-    "answer": "reckless",
+    "question": "What is the SI unit of force?",
+    "answer": "Newton",
     "options": [
-      "yielding",
-      "definite",
-      "reckless",
-      "inaccurate"
+      "Newton",
+      "Ohm",
+      "Proton",
+      "Ag"
     ],
-    "explanation": "\"reckless\" is the opposite of \"prudent\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Newton.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-215",
-    "question": "What does \"prudent\" mean?",
-    "answer": "showing careful judgement and good sense",
+    "question": "What is the SI unit of electric current?",
+    "answer": "Ampere",
     "options": [
-      "requiring great effort or endurance",
-      "showing careful judgement and good sense",
-      "able to adjust to new conditions",
-      "preventing success or causing difficulty"
+      "Ampere",
+      "Ag",
+      "Newton",
+      "Biology"
     ],
-    "explanation": "\"prudent\" means showing careful judgement and good sense.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Ampere.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-216",
-    "question": "Choose the sentence that uses \"prudent\" correctly.",
-    "answer": "It is prudent to keep an emergency fund.",
+    "question": "What is the SI unit of power?",
+    "answer": "Watt",
     "options": [
-      "It is prudent to keep an emergency fund.",
-      "She gave an articulate explanation of the proposal.",
-      "He offered a candid assessment of the plan.",
-      "He offered a plausible reason for the delay."
+      "Watt",
+      "Au",
+      "Baking soda",
+      "Telescope"
     ],
-    "explanation": "The sentence uses \"prudent\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Watt.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-217",
-    "question": "Which word is closest in meaning to \"redundant\"?",
-    "answer": "unnecessary",
+    "question": "What is the SI unit of energy?",
+    "answer": "Joule",
     "options": [
-      "unnecessary",
-      "flexible",
-      "unwilling",
-      "careful"
+      "Joule",
+      "Four",
+      "Watt",
+      "Mycology"
     ],
-    "explanation": "\"redundant\" means unnecessary.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Joule.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-218",
-    "question": "Which word is opposite in meaning to \"redundant\"?",
-    "answer": "essential",
+    "question": "What is the SI unit of frequency?",
+    "answer": "Hertz",
     "options": [
-      "rigid",
-      "scarce",
-      "essential",
-      "naive"
+      "Hertz",
+      "Mohs scale",
+      "The Moon",
+      "H2O"
     ],
-    "explanation": "\"essential\" is the opposite of \"redundant\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Hertz.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-219",
-    "question": "What does \"redundant\" mean?",
-    "answer": "no longer needed or useful",
+    "question": "What is the SI unit of pressure?",
+    "answer": "Pascal",
     "options": [
-      "no longer needed or useful",
-      "easy to understand or open and honest",
-      "possible and realistic to achieve",
-      "taking care to avoid danger or mistakes"
+      "Pascal",
+      "7",
+      "Hertz",
+      "Joule"
     ],
-    "explanation": "\"redundant\" means no longer needed or useful.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Pascal.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-220",
-    "question": "Choose the sentence that uses \"redundant\" correctly.",
-    "answer": "The update removed several redundant steps.",
+    "question": "Which instrument measures atmospheric pressure?",
+    "answer": "Barometer",
     "options": [
-      "The factory replaced its obsolete machinery.",
-      "An astute investor studies risks before buying.",
-      "The chef maintained impeccable hygiene.",
-      "The update removed several redundant steps."
+      "Barometer",
+      "Saturn",
+      "206",
+      "Haemoglobin"
     ],
-    "explanation": "The sentence uses \"redundant\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Barometer.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-221",
-    "question": "Which word is closest in meaning to \"reluctant\"?",
-    "answer": "unwilling",
+    "question": "Which instrument measures temperature?",
+    "answer": "Thermometer",
     "options": [
-      "unclear",
-      "unwilling",
-      "precise",
-      "crucial"
+      "Thermometer",
+      "Hg",
+      "Four",
+      "Entomology"
     ],
-    "explanation": "\"reluctant\" means unwilling.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Thermometer.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Science"
   },
   {
     "id": "wordquiz-222",
-    "question": "Which word is opposite in meaning to \"reluctant\"?",
-    "answer": "eager",
+    "question": "Which instrument records earthquake vibrations?",
+    "answer": "Seismograph",
     "options": [
-      "simple",
-      "inaccurate",
-      "eager",
-      "favourable"
+      "Seismograph",
+      "Chemistry",
+      "The pancreas",
+      "Oxygen"
     ],
-    "explanation": "\"eager\" is the opposite of \"reluctant\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Seismograph.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-223",
-    "question": "What does \"reluctant\" mean?",
-    "answer": "not willing or eager to do something",
+    "question": "Which particle has a negative electric charge?",
+    "answer": "Electron",
     "options": [
-      "allowed by law or reasonable and genuine",
-      "correct and free from errors",
-      "giving information clearly in few words",
-      "not willing or eager to do something"
+      "Electron",
+      "206",
+      "The Milky Way",
+      "The Big Bang theory"
     ],
-    "explanation": "\"reluctant\" means not willing or eager to do something.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Electron.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-224",
-    "question": "Choose the sentence that uses \"reluctant\" correctly.",
-    "answer": "He was reluctant to leave the familiar town.",
+    "question": "Which particle has a positive electric charge?",
+    "answer": "Proton",
     "options": [
-      "He was reluctant to leave the familiar town.",
-      "The report gives an accurate account of the incident.",
-      "Our amiable neighbour greets everyone warmly.",
-      "Their frugal habits helped them save for a house."
+      "Proton",
+      "Seismology",
+      "Photosynthesis",
+      "Watt"
     ],
-    "explanation": "The sentence uses \"reluctant\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Proton.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-225",
-    "question": "Which word is closest in meaning to \"resilient\"?",
-    "answer": "tough",
+    "question": "Which subatomic particle has no electric charge?",
+    "answer": "Neutron",
     "options": [
-      "tough",
-      "cautious",
-      "plentiful",
-      "believable"
+      "Neutron",
+      "Reflection",
+      "The Sun",
+      "Nucleus"
     ],
-    "explanation": "\"resilient\" means tough.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Neutron.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-226",
-    "question": "Which word is opposite in meaning to \"resilient\"?",
-    "answer": "fragile",
+    "question": "What is the central part of an atom called?",
+    "answer": "Nucleus",
     "options": [
-      "scarce",
-      "strict",
-      "illicit",
-      "fragile"
+      "Nucleus",
+      "Red blood cells",
+      "Hertz",
+      "O negative"
     ],
-    "explanation": "\"fragile\" is the opposite of \"resilient\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Nucleus.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-227",
-    "question": "What does \"resilient\" mean?",
-    "answer": "able to recover quickly after difficulty",
+    "question": "What is the approximate speed of light in a vacuum?",
+    "answer": "300,000 kilometres per second",
     "options": [
-      "able to recover quickly after difficulty",
-      "introducing new ideas or methods",
-      "able to adjust to new conditions",
-      "very great or showing deep understanding"
+      "300,000 kilometres per second",
+      "Thermometer",
+      "Biology",
+      "The ozone layer"
     ],
-    "explanation": "\"resilient\" means able to recover quickly after difficulty.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is 300,000 kilometres per second.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-228",
-    "question": "Choose the sentence that uses \"resilient\" correctly.",
-    "answer": "The resilient community rebuilt after the flood.",
+    "question": "What is the change from liquid to gas called?",
+    "answer": "Vaporisation",
     "options": [
-      "The region has abundant rainfall throughout the year.",
-      "The resilient community rebuilt after the flood.",
-      "Fresh water becomes scarce during a drought.",
-      "He offered a plausible reason for the delay."
+      "Vaporisation",
+      "Chemistry",
+      "206",
+      "Evolution"
     ],
-    "explanation": "The sentence uses \"resilient\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Vaporisation.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-229",
-    "question": "Which word is closest in meaning to \"rigorous\"?",
-    "answer": "strict",
+    "question": "What is the change from solid to liquid called?",
+    "answer": "Melting",
     "options": [
-      "comprehensive",
-      "delicate",
-      "shrewd",
-      "strict"
+      "Melting",
+      "Venus",
+      "The water cycle",
+      "The aorta"
     ],
-    "explanation": "\"rigorous\" means strict.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Melting.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Science"
   },
   {
     "id": "wordquiz-230",
-    "question": "Which word is opposite in meaning to \"rigorous\"?",
-    "answer": "lenient",
+    "question": "What is the change from gas to liquid called?",
+    "answer": "Condensation",
     "options": [
-      "lenient",
-      "approximate",
-      "biased",
-      "reckless"
+      "Condensation",
+      "Physics",
+      "The Moon",
+      "Mole"
     ],
-    "explanation": "\"lenient\" is the opposite of \"rigorous\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Condensation.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-231",
-    "question": "What does \"rigorous\" mean?",
-    "answer": "extremely thorough, careful or strict",
+    "question": "What is the study of living organisms called?",
+    "answer": "Biology",
     "options": [
-      "truthful and direct",
-      "extremely important or necessary",
-      "extremely thorough, careful or strict",
-      "able to last a long time without damage"
+      "Biology",
+      "Meteorology",
+      "H2O",
+      "Pascal"
     ],
-    "explanation": "\"rigorous\" means extremely thorough, careful or strict.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Biology.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-232",
-    "question": "Choose the sentence that uses \"rigorous\" correctly.",
-    "answer": "The research followed a rigorous testing process.",
+    "question": "What is the study of fungi called?",
+    "answer": "Mycology",
     "options": [
-      "The research followed a rigorous testing process.",
-      "A versatile tool is useful in many situations.",
-      "He offered a plausible reason for the delay.",
-      "The report gives an accurate account of the incident."
+      "Mycology",
+      "Haemoglobin",
+      "Hertz",
+      "Au"
     ],
-    "explanation": "The sentence uses \"rigorous\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Mycology.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Biology"
   },
   {
     "id": "wordquiz-233",
-    "question": "Which word is closest in meaning to \"scarce\"?",
-    "answer": "limited",
+    "question": "What is the study of insects called?",
+    "answer": "Entomology",
     "options": [
-      "limited",
-      "brief",
-      "plentiful",
-      "detailed"
+      "Entomology",
+      "Newton",
+      "Biology",
+      "Ohm"
     ],
-    "explanation": "\"scarce\" means limited.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Entomology.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Biology"
   },
   {
     "id": "wordquiz-234",
-    "question": "Which word is opposite in meaning to \"scarce\"?",
-    "answer": "abundant",
+    "question": "What is the study of birds called?",
+    "answer": "Ornithology",
     "options": [
-      "scarce",
-      "abundant",
-      "inaccurate",
-      "naive"
+      "Ornithology",
+      "Reflection",
+      "Convex mirror",
+      "Vitamin D"
     ],
-    "explanation": "\"abundant\" is the opposite of \"scarce\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Ornithology.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Biology"
   },
   {
     "id": "wordquiz-235",
-    "question": "What does \"scarce\" mean?",
-    "answer": "available in very small quantities",
+    "question": "What is the scientific study of weather called?",
+    "answer": "Meteorology",
     "options": [
-      "not yet certain or final",
-      "able to be trusted or believed",
-      "available in very small quantities",
-      "quick to understand situations and make sound judgements"
+      "Meteorology",
+      "Diamond",
+      "Mercury",
+      "Thermometer"
     ],
-    "explanation": "\"scarce\" means available in very small quantities.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Meteorology.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-236",
-    "question": "Choose the sentence that uses \"scarce\" correctly.",
-    "answer": "Fresh water becomes scarce during a drought.",
+    "question": "What is the study of earthquakes called?",
+    "answer": "Seismology",
     "options": [
-      "Their spontaneous visit delighted the family.",
-      "An eminent scientist delivered the lecture.",
-      "An astute investor studies risks before buying.",
-      "Fresh water becomes scarce during a drought."
+      "Seismology",
+      "Glucose",
+      "Diamond",
+      "Evolution"
     ],
-    "explanation": "The sentence uses \"scarce\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Seismology.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-237",
-    "question": "Which word is closest in meaning to \"skeptical\"?",
-    "answer": "doubtful",
+    "question": "What is the study of stars and space called?",
+    "answer": "Astronomy",
     "options": [
-      "unwilling",
-      "doubtful",
-      "precise",
-      "tough"
+      "Astronomy",
+      "Pascal",
+      "Refraction",
+      "Glucose"
     ],
-    "explanation": "\"skeptical\" means doubtful.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Astronomy.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-238",
-    "question": "Which word is opposite in meaning to \"skeptical\"?",
-    "answer": "convinced",
+    "question": "What is the scientific study of rocks called?",
+    "answer": "Geology",
     "options": [
-      "convinced",
-      "inconspicuous",
-      "arrogant",
-      "faulty"
+      "Geology",
+      "Vaporisation",
+      "Neutron",
+      "Convex mirror"
     ],
-    "explanation": "\"convinced\" is the opposite of \"skeptical\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Geology.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-239",
-    "question": "What does \"skeptical\" mean?",
-    "answer": "not easily convinced and inclined to question claims",
+    "question": "What is the basic structural unit of life?",
+    "answer": "The cell",
     "options": [
-      "showing careful and persistent effort",
-      "concerned only with the surface or appearance",
-      "certain to happen and impossible to avoid",
-      "not easily convinced and inclined to question claims"
+      "The cell",
+      "Neutron",
+      "Nucleus",
+      "Au"
     ],
-    "explanation": "\"skeptical\" means not easily convinced and inclined to question claims.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is The cell.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-240",
-    "question": "Choose the sentence that uses \"skeptical\" correctly.",
-    "answer": "The scientist was skeptical of the unsupported claim.",
+    "question": "Which molecule carries genetic information in living organisms?",
+    "answer": "DNA",
     "options": [
-      "The scientist was skeptical of the unsupported claim.",
-      "The discovery had a profound effect on medicine.",
-      "The inspection was superficial and missed major faults.",
-      "The hotel charged an excessive fee for parking."
+      "DNA",
+      "Geology",
+      "7",
+      "Nitrogen"
     ],
-    "explanation": "The sentence uses \"skeptical\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is DNA.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-241",
-    "question": "Which word is closest in meaning to \"sophisticated\"?",
-    "answer": "refined",
+    "question": "Which cell structure is often called the powerhouse of the cell?",
+    "answer": "Mitochondrion",
     "options": [
-      "exposed",
-      "cautious",
-      "refined",
-      "credible"
+      "Mitochondrion",
+      "Seismograph",
+      "The cell",
+      "Entomology"
     ],
-    "explanation": "\"sophisticated\" means refined.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Mitochondrion.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Biology"
   },
   {
     "id": "wordquiz-242",
-    "question": "Which word is opposite in meaning to \"sophisticated\"?",
-    "answer": "basic",
+    "question": "Which green pigment helps plants absorb light?",
+    "answer": "Chlorophyll",
     "options": [
-      "scarce",
-      "abundant",
-      "illicit",
-      "basic"
+      "Chlorophyll",
+      "K",
+      "Joule",
+      "C"
     ],
-    "explanation": "\"basic\" is the opposite of \"sophisticated\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Chlorophyll.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Biology"
   },
   {
     "id": "wordquiz-243",
-    "question": "What does \"sophisticated\" mean?",
-    "answer": "advanced, complex or showing good judgement",
+    "question": "What process do plants use to make food from light?",
+    "answer": "Photosynthesis",
     "options": [
-      "not obvious and therefore difficult to notice",
-      "available in large quantities",
-      "advanced, complex or showing good judgement",
-      "able to adjust to new conditions"
+      "Photosynthesis",
+      "Oxygen",
+      "Mitochondrion",
+      "Vinegar"
     ],
-    "explanation": "\"sophisticated\" means advanced, complex or showing good judgement.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Photosynthesis.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Biology"
   },
   {
     "id": "wordquiz-244",
-    "question": "Choose the sentence that uses \"sophisticated\" correctly.",
-    "answer": "The device uses sophisticated technology.",
+    "question": "Which organ pumps blood around the human body?",
+    "answer": "The heart",
     "options": [
-      "The update removed several redundant steps.",
-      "The device uses sophisticated technology.",
-      "The committee made a tentative decision.",
-      "A benevolent donor funded the village library."
+      "The heart",
+      "Hertz",
+      "Neutron",
+      "The pancreas"
     ],
-    "explanation": "The sentence uses \"sophisticated\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is The heart.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-245",
-    "question": "Which word is closest in meaning to \"spontaneous\"?",
-    "answer": "unplanned",
+    "question": "Which organs filter blood to produce urine?",
+    "answer": "The kidneys",
     "options": [
-      "demanding",
-      "unspoken",
-      "precise",
-      "unplanned"
+      "The kidneys",
+      "Nucleus",
+      "The femur",
+      "Microscope"
     ],
-    "explanation": "\"spontaneous\" means unplanned.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is The kidneys.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-246",
-    "question": "Which word is opposite in meaning to \"spontaneous\"?",
-    "answer": "deliberate",
+    "question": "What is the largest organ of the human body?",
+    "answer": "The skin",
     "options": [
-      "deliberate",
-      "unimaginative",
-      "naive",
-      "moderate"
+      "The skin",
+      "Reflection",
+      "Watt",
+      "The heart"
     ],
-    "explanation": "\"deliberate\" is the opposite of \"spontaneous\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is The skin.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-247",
-    "question": "What does \"spontaneous\" mean?",
-    "answer": "happening naturally without prior planning",
+    "question": "What is the largest internal organ of the human body?",
+    "answer": "The liver",
     "options": [
-      "correct and free from errors",
-      "able to last a long time without damage",
-      "happening naturally without prior planning",
-      "easy to understand or open and honest"
+      "The liver",
+      "Mycology",
+      "7",
+      "The pancreas"
     ],
-    "explanation": "\"spontaneous\" means happening naturally without prior planning.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is The liver.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-248",
-    "question": "Choose the sentence that uses \"spontaneous\" correctly.",
-    "answer": "Their spontaneous visit delighted the family.",
+    "question": "How many chambers does a human heart have?",
+    "answer": "Four",
     "options": [
-      "Their spontaneous visit delighted the family.",
-      "Fresh water becomes scarce during a drought.",
-      "The report gives an accurate account of the incident.",
-      "We need a pragmatic solution to the transport problem."
+      "Four",
+      "Telescope",
+      "Glucose",
+      "NaCl"
     ],
-    "explanation": "The sentence uses \"spontaneous\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Four.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-249",
-    "question": "Which word is closest in meaning to \"subtle\"?",
-    "answer": "delicate",
+    "question": "How many bones are typically in an adult human body?",
+    "answer": "206",
     "options": [
-      "refined",
-      "noticeable",
-      "delicate",
-      "cautious"
+      "206",
+      "Baking soda",
+      "Seismograph",
+      "Mercury"
     ],
-    "explanation": "\"subtle\" means delicate.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is 206.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-250",
-    "question": "Which word is opposite in meaning to \"subtle\"?",
-    "answer": "obvious",
+    "question": "What is the smallest bone in the human body?",
+    "answer": "The stapes",
     "options": [
-      "mild",
-      "obvious",
-      "reckless",
-      "far-fetched"
+      "The stapes",
+      "Methane",
+      "Chemistry",
+      "The Big Bang theory"
     ],
-    "explanation": "\"obvious\" is the opposite of \"subtle\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is The stapes.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-251",
-    "question": "What does \"subtle\" mean?",
-    "answer": "not obvious and therefore difficult to notice",
+    "question": "What is the longest bone in the human body?",
+    "answer": "The femur",
     "options": [
-      "lasting for only a brief time",
-      "containing many carefully arranged details",
-      "not obvious and therefore difficult to notice",
-      "available in large quantities"
+      "The femur",
+      "Vaporisation",
+      "NaCl",
+      "Telescope"
     ],
-    "explanation": "\"subtle\" means not obvious and therefore difficult to notice.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is The femur.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-252",
-    "question": "Choose the sentence that uses \"subtle\" correctly.",
-    "answer": "There was a subtle change in her tone.",
+    "question": "Which vitamin can the skin produce after sunlight exposure?",
+    "answer": "Vitamin D",
     "options": [
-      "The hotel charged an excessive fee for parking.",
-      "An astute investor studies risks before buying.",
-      "Our amiable neighbour greets everyone warmly.",
-      "There was a subtle change in her tone."
+      "Vitamin D",
+      "The skin",
+      "Barometer",
+      "Glucose"
     ],
-    "explanation": "The sentence uses \"subtle\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Vitamin D.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
   },
   {
     "id": "wordquiz-253",
-    "question": "Which word is closest in meaning to \"superficial\"?",
-    "answer": "shallow",
+    "question": "Which blood cells carry most oxygen?",
+    "answer": "Red blood cells",
     "options": [
-      "practical",
-      "traditional",
-      "shallow",
-      "plentiful"
+      "Red blood cells",
+      "Melting",
+      "The heart",
+      "Evolution"
     ],
-    "explanation": "\"superficial\" means shallow.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Red blood cells.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-254",
-    "question": "Which word is opposite in meaning to \"superficial\"?",
-    "answer": "thorough",
+    "question": "What is the oxygen-carrying pigment in blood called?",
+    "answer": "Haemoglobin",
     "options": [
-      "thorough",
-      "convinced",
-      "inaccurate",
-      "simple"
+      "Haemoglobin",
+      "Ornithology",
+      "Photosynthesis",
+      "Barometer"
     ],
-    "explanation": "\"thorough\" is the opposite of \"superficial\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Haemoglobin.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-255",
-    "question": "What does \"superficial\" mean?",
-    "answer": "concerned only with the surface or appearance",
+    "question": "What is the body's largest artery?",
+    "answer": "The aorta",
     "options": [
-      "not easily convinced and inclined to question claims",
-      "clear, consistent and easy to understand",
-      "able to express ideas clearly",
-      "concerned only with the surface or appearance"
+      "The aorta",
+      "Sn",
+      "Vitamin D",
+      "The femur"
     ],
-    "explanation": "\"superficial\" means concerned only with the surface or appearance.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is The aorta.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-256",
-    "question": "Choose the sentence that uses \"superficial\" correctly.",
-    "answer": "The inspection was superficial and missed major faults.",
+    "question": "What is the main sugar found in blood?",
+    "answer": "Glucose",
     "options": [
-      "The inspection was superficial and missed major faults.",
-      "He offered a plausible reason for the delay.",
-      "The ambiguous instruction confused the new staff.",
-      "The report gives an accurate account of the incident."
+      "Glucose",
+      "Pb",
+      "The kidneys",
+      "Nitrogen"
     ],
-    "explanation": "The sentence uses \"superficial\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Glucose.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-257",
-    "question": "Which word is closest in meaning to \"tenacious\"?",
-    "answer": "persistent",
+    "question": "What is the scientific name for modern humans?",
+    "answer": "Homo sapiens",
     "options": [
-      "friendly",
-      "unfriendly",
-      "persistent",
-      "unclear"
+      "Homo sapiens",
+      "The aorta",
+      "The cell",
+      "Reflection"
     ],
-    "explanation": "\"tenacious\" means persistent.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Homo sapiens.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
   },
   {
     "id": "wordquiz-258",
-    "question": "Which word is opposite in meaning to \"tenacious\"?",
-    "answer": "yielding",
+    "question": "What is the hardest naturally occurring substance?",
+    "answer": "Diamond",
     "options": [
-      "favourable",
-      "illicit",
-      "insensitive",
-      "yielding"
+      "Diamond",
+      "The Sun",
+      "Photosynthesis",
+      "The aorta"
     ],
-    "explanation": "\"yielding\" is the opposite of \"tenacious\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Diamond.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Science"
   },
   {
     "id": "wordquiz-259",
-    "question": "What does \"tenacious\" mean?",
-    "answer": "determined and unwilling to give up",
+    "question": "Which gas makes up most of Earth's atmosphere?",
+    "answer": "Nitrogen",
     "options": [
-      "determined and unwilling to give up",
-      "very strong or concentrated",
-      "not yet certain or final",
-      "absolutely needed or extremely important"
+      "Nitrogen",
+      "Reflection",
+      "The Moon",
+      "Chlorophyll"
     ],
-    "explanation": "\"tenacious\" means determined and unwilling to give up.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Nitrogen.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-260",
-    "question": "Choose the sentence that uses \"tenacious\" correctly.",
-    "answer": "The tenacious reporter continued investigating.",
+    "question": "Which atmospheric layer helps absorb harmful ultraviolet radiation?",
+    "answer": "The ozone layer",
     "options": [
-      "The climbers faced an arduous journey.",
-      "Clean drinking water is essential for health.",
-      "The tenacious reporter continued investigating.",
-      "Some delays are inevitable during road repairs."
+      "The ozone layer",
+      "DNA",
+      "Nitrogen",
+      "Reflection"
     ],
-    "explanation": "The sentence uses \"tenacious\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is The ozone layer.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Science"
   },
   {
     "id": "wordquiz-261",
-    "question": "Which word is closest in meaning to \"tentative\"?",
-    "answer": "provisional",
+    "question": "What is Earth's outermost solid layer called?",
+    "answer": "The crust",
     "options": [
-      "detailed",
-      "unfavourable",
-      "merciful",
-      "provisional"
+      "The crust",
+      "The Big Bang theory",
+      "The ozone layer",
+      "Mercury"
     ],
-    "explanation": "\"tentative\" means provisional.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is The crust.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-262",
-    "question": "Which word is opposite in meaning to \"tentative\"?",
-    "answer": "definite",
+    "question": "What is molten rock beneath Earth's surface called?",
+    "answer": "Magma",
     "options": [
-      "definite",
-      "unorthodox",
-      "obvious",
-      "fragile"
+      "Magma",
+      "Jupiter",
+      "Vinegar",
+      "Haemoglobin"
     ],
-    "explanation": "\"definite\" is the opposite of \"tentative\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Magma.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-263",
-    "question": "What does \"tentative\" mean?",
-    "answer": "not yet certain or final",
+    "question": "What is molten rock that reaches the surface called?",
+    "answer": "Lava",
     "options": [
-      "skilled at dealing with people without causing offence",
-      "not yet certain or final",
-      "following accepted customs or usual methods",
-      "clever, original and inventive"
+      "Lava",
+      "NaCl",
+      "Methane",
+      "Pascal"
     ],
-    "explanation": "\"tentative\" means not yet certain or final.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Lava.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-264",
-    "question": "Choose the sentence that uses \"tentative\" correctly.",
-    "answer": "The committee made a tentative decision.",
+    "question": "Which scale is commonly used to compare mineral hardness?",
+    "answer": "Mohs scale",
     "options": [
-      "The ambiguous instruction confused the new staff.",
-      "The research followed a rigorous testing process.",
-      "The committee made a tentative decision.",
-      "The shop guarantees that every product is genuine."
+      "Mohs scale",
+      "Ampere",
+      "DNA",
+      "Baking soda"
     ],
-    "explanation": "The sentence uses \"tentative\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Mohs scale.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Science"
   },
   {
     "id": "wordquiz-265",
-    "question": "Which word is closest in meaning to \"thorough\"?",
-    "answer": "comprehensive",
+    "question": "What is the continuous movement of water through Earth and atmosphere called?",
+    "answer": "The water cycle",
     "options": [
-      "comprehensive",
-      "credible",
-      "demanding",
-      "noticeable"
+      "The water cycle",
+      "O",
+      "The skin",
+      "Hg"
     ],
-    "explanation": "\"thorough\" means comprehensive.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is The water cycle.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-266",
-    "question": "Which word is opposite in meaning to \"thorough\"?",
-    "answer": "superficial",
+    "question": "At what Celsius temperature does water freeze at standard pressure?",
+    "answer": "0 degrees Celsius",
     "options": [
-      "scarce",
-      "superficial",
-      "fragile",
-      "opaque"
+      "0 degrees Celsius",
+      "Physics",
+      "Fe",
+      "Seismograph"
     ],
-    "explanation": "\"superficial\" is the opposite of \"thorough\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is 0 degrees Celsius.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-267",
-    "question": "What does \"thorough\" mean?",
-    "answer": "complete and careful",
+    "question": "At what Celsius temperature does water boil at standard pressure?",
+    "answer": "100 degrees Celsius",
     "options": [
-      "complete and careful",
-      "available in large quantities",
-      "able to adjust to new conditions",
-      "advanced, complex or showing good judgement"
+      "100 degrees Celsius",
+      "Chemical energy",
+      "Lava",
+      "Venus"
     ],
-    "explanation": "\"thorough\" means complete and careful.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is 100 degrees Celsius.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   },
   {
     "id": "wordquiz-268",
-    "question": "Choose the sentence that uses \"thorough\" correctly.",
-    "answer": "A thorough inspection revealed the defect.",
+    "question": "What is the chemical symbol for gold?",
+    "answer": "Au",
     "options": [
-      "An astute investor studies risks before buying.",
-      "The witness provided a credible explanation.",
-      "The chef maintained impeccable hygiene.",
-      "A thorough inspection revealed the defect."
+      "Au",
+      "Oxygen",
+      "Hg",
+      "Newton"
     ],
-    "explanation": "The sentence uses \"thorough\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Au.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-269",
-    "question": "Which word is closest in meaning to \"transparent\"?",
-    "answer": "clear",
+    "question": "What is the chemical symbol for silver?",
+    "answer": "Ag",
     "options": [
-      "frank",
-      "clear",
-      "careful",
-      "practical"
+      "Ag",
+      "Saturn",
+      "Homo sapiens",
+      "Barometer"
     ],
-    "explanation": "\"transparent\" means clear.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Ag.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-270",
-    "question": "Which word is opposite in meaning to \"transparent\"?",
-    "answer": "opaque",
+    "question": "What is the chemical symbol for iron?",
+    "answer": "Fe",
     "options": [
-      "definite",
-      "evasive",
-      "opaque",
-      "favourable"
+      "Fe",
+      "Electron",
+      "The kidneys",
+      "Oxygen"
     ],
-    "explanation": "\"opaque\" is the opposite of \"transparent\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Fe.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-271",
-    "question": "What does \"transparent\" mean?",
-    "answer": "easy to understand or open and honest",
+    "question": "What is the chemical symbol for sodium?",
+    "answer": "Na",
     "options": [
-      "pleasant and friendly in manner",
-      "correct and free from errors",
-      "clear, consistent and easy to understand",
-      "easy to understand or open and honest"
+      "Na",
+      "Sn",
+      "Chemical energy",
+      "The cell"
     ],
-    "explanation": "\"transparent\" means easy to understand or open and honest.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Na.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-272",
-    "question": "Choose the sentence that uses \"transparent\" correctly.",
-    "answer": "The organisation promised a transparent selection process.",
+    "question": "What is the chemical symbol for potassium?",
+    "answer": "K",
     "options": [
-      "We need a pragmatic solution to the transport problem.",
-      "There was an implicit agreement to share the costs.",
-      "The organisation promised a transparent selection process.",
-      "The engineer devised an ingenious solution."
+      "K",
+      "Evolution",
+      "DNA",
+      "7"
     ],
-    "explanation": "The sentence uses \"transparent\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is K.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-273",
-    "question": "Which word is closest in meaning to \"versatile\"?",
-    "answer": "adaptable",
+    "question": "What is the chemical symbol for oxygen?",
+    "answer": "O",
     "options": [
-      "adaptable",
-      "plentiful",
-      "deep",
-      "shrewd"
+      "O",
+      "Chemical energy",
+      "Mercury",
+      "Methane"
     ],
-    "explanation": "\"versatile\" means adaptable.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is O.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-274",
-    "question": "Which word is opposite in meaning to \"versatile\"?",
-    "answer": "limited",
+    "question": "What is the chemical symbol for carbon?",
+    "answer": "C",
     "options": [
-      "uncaring",
-      "implausible",
-      "scarce",
-      "limited"
+      "C",
+      "Chemistry",
+      "Evolution",
+      "Microscope"
     ],
-    "explanation": "\"limited\" is the opposite of \"versatile\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is C.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-275",
-    "question": "What does \"versatile\" mean?",
-    "answer": "able to perform many different functions",
+    "question": "What is the chemical symbol for lead?",
+    "answer": "Pb",
     "options": [
-      "able to perform many different functions",
-      "careful about spending money or using resources",
-      "determined and unwilling to give up",
-      "available in large quantities"
+      "Pb",
+      "Watt",
+      "Newton",
+      "Microscope"
     ],
-    "explanation": "\"versatile\" means able to perform many different functions.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Pb.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-276",
-    "question": "Choose the sentence that uses \"versatile\" correctly.",
-    "answer": "A versatile tool is useful in many situations.",
+    "question": "What is the chemical symbol for tin?",
+    "answer": "Sn",
     "options": [
-      "Our amiable neighbour greets everyone warmly.",
-      "The climbers faced an arduous journey.",
-      "A versatile tool is useful in many situations.",
-      "There was a subtle change in her tone."
+      "Sn",
+      "Au",
+      "The liver",
+      "Mole"
     ],
-    "explanation": "The sentence uses \"versatile\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Sn.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-277",
-    "question": "Which word is closest in meaning to \"vital\"?",
-    "answer": "crucial",
+    "question": "What is the chemical symbol for mercury?",
+    "answer": "Hg",
     "options": [
-      "outdated",
-      "humble",
-      "believable",
-      "crucial"
+      "Hg",
+      "The Moon",
+      "Vinegar",
+      "Red blood cells"
     ],
-    "explanation": "\"vital\" means crucial.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Hg.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-278",
-    "question": "Which word is opposite in meaning to \"vital\"?",
-    "answer": "unimportant",
+    "question": "What is the main component of natural gas?",
+    "answer": "Methane",
     "options": [
-      "careless",
-      "fake",
-      "unimportant",
-      "impractical"
+      "Methane",
+      "NaCl",
+      "Carbon dioxide",
+      "The water cycle"
     ],
-    "explanation": "\"unimportant\" is the opposite of \"vital\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Methane.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-279",
-    "question": "What does \"vital\" mean?",
-    "answer": "extremely important or necessary",
+    "question": "What is the chemical formula for table salt?",
+    "answer": "NaCl",
     "options": [
-      "truthful and direct",
-      "extremely important or necessary",
-      "correct and free from errors",
-      "complete and careful"
+      "NaCl",
+      "Pb",
+      "Mercury",
+      "Hertz"
     ],
-    "explanation": "\"vital\" means extremely important or necessary.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is NaCl.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-280",
-    "question": "Choose the sentence that uses \"vital\" correctly.",
-    "answer": "Accurate information is vital during an emergency.",
+    "question": "What is the common name for sodium bicarbonate?",
+    "answer": "Baking soda",
     "options": [
-      "Accurate information is vital during an emergency.",
-      "The witness provided a credible explanation.",
-      "Their spontaneous visit delighted the family.",
-      "The necklace has an intricate pattern."
+      "Baking soda",
+      "Ag",
+      "Saturn",
+      "7"
     ],
-    "explanation": "The sentence uses \"vital\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Baking soda.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-281",
-    "question": "Which word is closest in meaning to \"vulnerable\"?",
-    "answer": "exposed",
+    "question": "What is the common kitchen name for dilute acetic acid?",
+    "answer": "Vinegar",
     "options": [
-      "exposed",
-      "plentiful",
-      "frank",
-      "unstable"
+      "Vinegar",
+      "Nucleus",
+      "Seismology",
+      "Geology"
     ],
-    "explanation": "\"vulnerable\" means exposed.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Vinegar.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Chemistry"
   },
   {
     "id": "wordquiz-282",
-    "question": "Which word is opposite in meaning to \"vulnerable\"?",
-    "answer": "protected",
+    "question": "What type of energy is stored in food molecules?",
+    "answer": "Chemical energy",
     "options": [
-      "scarce",
-      "unknown",
-      "protected",
-      "effortless"
+      "Chemical energy",
+      "The stapes",
+      "The water cycle",
+      "The aorta"
     ],
-    "explanation": "\"protected\" is the opposite of \"vulnerable\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Chemical energy.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-283",
-    "question": "What does \"vulnerable\" mean?",
-    "answer": "easily harmed, attacked or affected",
+    "question": "Which lens is thicker at the centre than at the edges?",
+    "answer": "Convex lens",
     "options": [
-      "easily harmed, attacked or affected",
-      "concerned only with the surface or appearance",
-      "available in large quantities",
-      "requiring great effort or endurance"
+      "Convex lens",
+      "Jupiter",
+      "Mars",
+      "Coulomb"
     ],
-    "explanation": "\"vulnerable\" means easily harmed, attacked or affected.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Convex lens.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-284",
-    "question": "Choose the sentence that uses \"vulnerable\" correctly.",
-    "answer": "Young plants are vulnerable to frost.",
+    "question": "Which type of mirror is commonly used for a wide rear view?",
+    "answer": "Convex mirror",
     "options": [
-      "The company is known for its innovative products.",
-      "The hotel charged an excessive fee for parking.",
-      "An astute investor studies risks before buying.",
-      "Young plants are vulnerable to frost."
+      "Convex mirror",
+      "Microscope",
+      "Four",
+      "The skin"
     ],
-    "explanation": "The sentence uses \"vulnerable\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Convex mirror.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-285",
-    "question": "Which word is closest in meaning to \"wary\"?",
-    "answer": "cautious",
+    "question": "What is the bending of light as it changes medium called?",
+    "answer": "Refraction",
     "options": [
-      "precise",
-      "cautious",
-      "unclear",
-      "shallow"
+      "Refraction",
+      "Watt",
+      "Vitamin D",
+      "Mohs scale"
     ],
-    "explanation": "\"wary\" means cautious.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Synonyms"
+    "explanation": "The correct answer is Refraction.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-286",
-    "question": "Which word is opposite in meaning to \"wary\"?",
-    "answer": "trusting",
+    "question": "What is light bouncing from a surface called?",
+    "answer": "Reflection",
     "options": [
-      "favourable",
-      "rigid",
-      "trusting",
-      "effortless"
+      "Reflection",
+      "The ozone layer",
+      "Glucose",
+      "The skin"
     ],
-    "explanation": "\"trusting\" is the opposite of \"wary\".",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Antonyms"
+    "explanation": "The correct answer is Reflection.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-287",
-    "question": "What does \"wary\" mean?",
-    "answer": "careful because danger or problems are possible",
+    "question": "What is the SI unit of electrical resistance?",
+    "answer": "Ohm",
     "options": [
-      "seeming reasonable or likely to be true",
-      "possible and realistic to achieve",
-      "very strong or concentrated",
-      "careful because danger or problems are possible"
+      "Ohm",
+      "Pascal",
+      "Reflection",
+      "Hg"
     ],
-    "explanation": "\"wary\" means careful because danger or problems are possible.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Word meanings"
+    "explanation": "The correct answer is Ohm.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
   },
   {
     "id": "wordquiz-288",
-    "question": "Choose the sentence that uses \"wary\" correctly.",
-    "answer": "Residents remained wary of the unfamiliar offer.",
+    "question": "What is the SI unit of electric charge?",
+    "answer": "Coulomb",
     "options": [
-      "Residents remained wary of the unfamiliar offer.",
-      "Her diplomatic reply prevented an argument.",
-      "A benevolent donor funded the village library.",
-      "He offered a plausible reason for the delay."
+      "Coulomb",
+      "Convex lens",
+      "Au",
+      "Mohs scale"
     ],
-    "explanation": "The sentence uses \"wary\" in its correct meaning and context.",
-    "clue": "Consider the meaning and context of the word before choosing.",
-    "topic": "Usage in context"
+    "explanation": "The correct answer is Coulomb.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
+  },
+  {
+    "id": "wordquiz-289",
+    "question": "What is the SI unit of amount of substance?",
+    "answer": "Mole",
+    "options": [
+      "Mole",
+      "Seismology",
+      "Jupiter",
+      "Neutron"
+    ],
+    "explanation": "The correct answer is Mole.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
+  },
+  {
+    "id": "wordquiz-290",
+    "question": "Which instrument is used to magnify very small objects?",
+    "answer": "Microscope",
+    "options": [
+      "Microscope",
+      "Diamond",
+      "Mohs scale",
+      "DNA"
+    ],
+    "explanation": "The correct answer is Microscope.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Science"
+  },
+  {
+    "id": "wordquiz-291",
+    "question": "Which instrument helps observe distant celestial objects?",
+    "answer": "Telescope",
+    "options": [
+      "Telescope",
+      "Red blood cells",
+      "Carbon dioxide",
+      "Barometer"
+    ],
+    "explanation": "The correct answer is Telescope.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Science"
+  },
+  {
+    "id": "wordquiz-292",
+    "question": "Which branch of science studies matter and energy?",
+    "answer": "Physics",
+    "options": [
+      "Physics",
+      "Red blood cells",
+      "NaCl",
+      "The water cycle"
+    ],
+    "explanation": "The correct answer is Physics.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Physics"
+  },
+  {
+    "id": "wordquiz-293",
+    "question": "Which branch of science studies substances and their reactions?",
+    "answer": "Chemistry",
+    "options": [
+      "Chemistry",
+      "Microscope",
+      "Baking soda",
+      "Coulomb"
+    ],
+    "explanation": "The correct answer is Chemistry.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Science"
+  },
+  {
+    "id": "wordquiz-294",
+    "question": "What theory describes the universe expanding from an early hot, dense state?",
+    "answer": "The Big Bang theory",
+    "options": [
+      "The Big Bang theory",
+      "NaCl",
+      "The stapes",
+      "The Sun"
+    ],
+    "explanation": "The correct answer is The Big Bang theory.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Space & Astronomy"
+  },
+  {
+    "id": "wordquiz-295",
+    "question": "What is the process of biological change across generations called?",
+    "answer": "Evolution",
+    "options": [
+      "Evolution",
+      "Baking soda",
+      "C",
+      "Refraction"
+    ],
+    "explanation": "The correct answer is Evolution.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Science"
+  },
+  {
+    "id": "wordquiz-296",
+    "question": "Which blood type is commonly called the universal red-cell donor?",
+    "answer": "O negative",
+    "options": [
+      "O negative",
+      "Joule",
+      "Homo sapiens",
+      "Physics"
+    ],
+    "explanation": "The correct answer is O negative.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
+  },
+  {
+    "id": "wordquiz-297",
+    "question": "Which part of the brain helps coordinate balance and movement?",
+    "answer": "The cerebellum",
+    "options": [
+      "The cerebellum",
+      "DNA",
+      "Haemoglobin",
+      "Photosynthesis"
+    ],
+    "explanation": "The correct answer is The cerebellum.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
+  },
+  {
+    "id": "wordquiz-298",
+    "question": "Which organ produces insulin?",
+    "answer": "The pancreas",
+    "options": [
+      "The pancreas",
+      "Jupiter",
+      "Nitrogen",
+      "Chemical energy"
+    ],
+    "explanation": "The correct answer is The pancreas.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Human Body"
+  },
+  {
+    "id": "wordquiz-299",
+    "question": "Which gas do plants release during photosynthesis?",
+    "answer": "Oxygen",
+    "options": [
+      "Oxygen",
+      "Jupiter",
+      "Methane",
+      "Red blood cells"
+    ],
+    "explanation": "The correct answer is Oxygen.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Biology"
+  },
+  {
+    "id": "wordquiz-300",
+    "question": "What is the nearest large natural source of energy for Earth?",
+    "answer": "The Sun",
+    "options": [
+      "The Sun",
+      "The skin",
+      "Newton",
+      "Reflection"
+    ],
+    "explanation": "The correct answer is The Sun.",
+    "clue": "Use the scientific fact or principle described in the question.",
+    "topic": "Earth & Nature"
   }
 ] as WordQuizQuestion[];
 
