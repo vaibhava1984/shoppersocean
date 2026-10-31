@@ -1,4 +1,5 @@
 import { DAILY_GK_QUESTIONS, getDailyGKQuestion, getDailyGKOptions } from "@/lib/daily-knowledge";
+import { WORD_QUIZ_BANK } from "@/data/word-quiz-bank";
 export { getDailyGKQuestion };
 export type Puzzle = { id:string; question:string; answer:string; clue?:string; pattern?:string; options?:string[]; correctIndex?:number; explanation?:string; topic?:string };
 const DAY_MS=86400000;
@@ -20,11 +21,16 @@ export function getWordPuzzle(date:string,slot:number):Puzzle & {pattern:string}
  const scrambled=unrankPermutation(letters,safeRank%permutations);
  return {id:"word:"+answer+":"+scrambled,question:"Rearrange these letters to make a capital city.",answer,pattern:scrambled};
 }
-export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string}{
- const seed=seedFor(date,slot),item=DAILY_GK_QUESTIONS[seed%DAILY_GK_QUESTIONS.length];
- const styles=["Knowledge clue:","Think carefully:","General knowledge challenge:","Read the clue:","Identify the answer:","Use what you know:","Here is your next challenge:","Reason it out:","Choose your knowledge carefully:","Solve this challenge:"];
- const category=item.id.split("-")[0],pool=DAILY_GK_QUESTIONS.filter(entry=>entry.id.split("-")[0]===category).map(entry=>entry.answer).filter(answer=>answer!==item.answer),options=[item.answer,...shuffled([...new Set(pool)],seed+91).slice(0,3)];
- return {id:"hidden:"+item.id,question:item.question,clue:styles[Math.floor(seed/DAILY_GK_QUESTIONS.length)%styles.length]+" "+item.question,answer:item.answer,options:shuffled(options,seed+19)};
+export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string;options:string[];correctIndex:number;explanation:string;topic:string}{
+ const seed=seedFor(date,slot),total=WORD_QUIZ_BANK.length*4,index=((seed%total)+total)%total,entry=WORD_QUIZ_BANK[Math.floor(index/4)],kind=index%4;
+ const groupStart=Math.floor((Math.floor(index/4))/5)*5,group=WORD_QUIZ_BANK.slice(groupStart,Math.min(groupStart+5,WORD_QUIZ_BANK.length)),others=group.filter(x=>x.id!==entry.id);
+ let question="",answer="",options:string[]=[],explanation="",clue="Choose the best answer from the four closely related options.";
+ if(kind===0){question="Which meaning best matches the word “"+entry.word+"”?";answer=entry.definition;options=[answer,...others.map(x=>x.definition).slice(0,3)];explanation="“"+entry.word+"” means "+entry.definition.toLowerCase()+"."}
+ else if(kind===1){question="Which word is closest in meaning to “"+entry.word+"”?";answer=entry.synonym;options=[answer,...others.map(x=>x.synonym).slice(0,3)];explanation="“"+entry.synonym+"” is the closest synonym of “"+entry.word+"” in this context."}
+ else if(kind===2){question="Which word is most nearly opposite in meaning to “"+entry.word+"”?";answer=entry.antonym;options=[answer,...others.map(x=>x.antonym).slice(0,3)];explanation="“"+entry.antonym+"” expresses the opposite of “"+entry.word+"”."}
+ else {question="Choose the word that best completes the sentence: “"+entry.sentence+"”";answer=entry.word;options=[answer,...others.map(x=>x.word).slice(0,3)];explanation="“"+entry.word+"” fits the sentence because it means "+entry.definition.toLowerCase()+"."}
+ options=shuffled([...new Set(options)],seed+191);
+ return {id:"wordquiz:"+entry.id+":"+kind,question,clue,answer,options,correctIndex:options.indexOf(answer),explanation,topic:"Vocabulary"};
 }
 const MISSING_WORD_CHALLENGES:Array<{sentence:string;answer:string;clue:string;options:string[]}>= [
  {sentence:"A stitch in time saves ____.",answer:"nine",clue:"A proverb about solving problems early.",options:["nine","fine","line","mine"]},
