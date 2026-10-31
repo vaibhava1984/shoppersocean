@@ -2522,421 +2522,421 @@ export const WORD_QUIZ_BANK:WordQuizQuestion[]=[
   },
   {
     "id": "wordquiz-181",
-    "question": "Choose the word that naturally completes the common English expression: “make ___”",
-    "answer": "a decision",
+    "question": "Choose the verb that naturally completes the common English expression: “___ a decision”",
+    "answer": "make",
     "options": [
-      "a decision",
+      "make",
       "do",
       "take",
       "build"
     ],
-    "explanation": "The natural collocation is “make a decision”.",
+    "explanation": "“make a decision” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-182",
-    "question": "Choose the word that naturally completes the common English expression: “heavy ___”",
-    "answer": "rain",
+    "question": "Choose the verb that naturally completes the common English expression: “___ rain”",
+    "answer": "heavy",
     "options": [
-      "rain",
+      "heavy",
       "strong",
       "thick",
       "hard"
     ],
-    "explanation": "The natural collocation is “heavy rain”.",
+    "explanation": "“heavy rain” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-183",
-    "question": "Choose the word that naturally completes the common English expression: “deep ___”",
-    "answer": "sleep",
+    "question": "Choose the verb that naturally completes the common English expression: “___ sleep”",
+    "answer": "deep",
     "options": [
-      "sleep",
+      "deep",
       "strong",
       "large",
       "high"
     ],
-    "explanation": "The natural collocation is “deep sleep”.",
+    "explanation": "“deep sleep” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-184",
-    "question": "Choose the word that naturally completes the common English expression: “commit ___”",
-    "answer": "a crime",
+    "question": "Choose the verb that naturally completes the common English expression: “___ a crime”",
+    "answer": "commit",
     "options": [
-      "a crime",
+      "commit",
       "do",
       "make",
       "perform"
     ],
-    "explanation": "The natural collocation is “commit a crime”.",
+    "explanation": "“commit a crime” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-185",
-    "question": "Choose the word that naturally completes the common English expression: “pay ___”",
-    "answer": "attention",
+    "question": "Choose the verb that naturally completes the common English expression: “___ attention”",
+    "answer": "pay",
     "options": [
-      "attention",
+      "pay",
       "give",
       "make",
       "take"
     ],
-    "explanation": "The natural collocation is “pay attention”.",
+    "explanation": "“pay attention” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-186",
-    "question": "Choose the word that naturally completes the common English expression: “catch ___”",
-    "answer": "a cold",
+    "question": "Choose the verb that naturally completes the common English expression: “___ a cold”",
+    "answer": "catch",
     "options": [
-      "a cold",
+      "catch",
       "take",
       "hold",
       "make"
     ],
-    "explanation": "The natural collocation is “catch a cold”.",
+    "explanation": "“catch a cold” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-187",
-    "question": "Choose the word that naturally completes the common English expression: “keep ___”",
-    "answer": "a promise",
+    "question": "Choose the verb that naturally completes the common English expression: “___ a promise”",
+    "answer": "keep",
     "options": [
-      "a promise",
+      "keep",
       "do",
       "make",
       "save"
     ],
-    "explanation": "The natural collocation is “keep a promise”.",
+    "explanation": "“keep a promise” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-188",
-    "question": "Choose the word that naturally completes the common English expression: “break ___”",
-    "answer": "the news",
+    "question": "Choose the verb that naturally completes the common English expression: “___ the news”",
+    "answer": "break",
     "options": [
-      "the news",
+      "break",
       "cut",
       "crash",
       "tear"
     ],
-    "explanation": "The natural collocation is “break the news”.",
+    "explanation": "“break the news” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-189",
-    "question": "Choose the word that naturally completes the common English expression: “high ___”",
-    "answer": "expectations",
+    "question": "Choose the verb that naturally completes the common English expression: “___ expectations”",
+    "answer": "high",
     "options": [
-      "expectations",
+      "high",
       "tall",
       "large",
       "deep"
     ],
-    "explanation": "The natural collocation is “high expectations”.",
+    "explanation": "“high expectations” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-190",
-    "question": "Choose the word that naturally completes the common English expression: “strong ___”",
-    "answer": "argument",
+    "question": "Choose the verb that naturally completes the common English expression: “___ argument”",
+    "answer": "strong",
     "options": [
-      "argument",
+      "strong",
       "heavy",
       "hard",
       "thick"
     ],
-    "explanation": "The natural collocation is “strong argument”.",
+    "explanation": "“strong argument” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-191",
-    "question": "Choose the word that naturally completes the common English expression: “raise ___”",
-    "answer": "awareness",
+    "question": "Choose the verb that naturally completes the common English expression: “___ awareness”",
+    "answer": "raise",
     "options": [
-      "awareness",
+      "raise",
       "lift",
       "grow",
       "rise"
     ],
-    "explanation": "The natural collocation is “raise awareness”.",
+    "explanation": "“raise awareness” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-192",
-    "question": "Choose the word that naturally completes the common English expression: “draw ___”",
-    "answer": "a conclusion",
+    "question": "Choose the verb that naturally completes the common English expression: “___ a conclusion”",
+    "answer": "draw",
     "options": [
-      "a conclusion",
+      "draw",
       "make",
       "take",
       "do"
     ],
-    "explanation": "The natural collocation is “draw a conclusion”.",
+    "explanation": "“draw a conclusion” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-193",
-    "question": "Choose the word that naturally completes the common English expression: “meet ___”",
-    "answer": "a deadline",
+    "question": "Choose the verb that naturally completes the common English expression: “___ a deadline”",
+    "answer": "meet",
     "options": [
-      "a deadline",
+      "meet",
       "reach",
       "touch",
       "arrive"
     ],
-    "explanation": "The natural collocation is “meet a deadline”.",
+    "explanation": "“meet a deadline” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-194",
-    "question": "Choose the word that naturally completes the common English expression: “take ___”",
-    "answer": "responsibility",
+    "question": "Choose the verb that naturally completes the common English expression: “___ responsibility”",
+    "answer": "take",
     "options": [
-      "responsibility",
+      "take",
       "make",
       "hold",
       "do"
     ],
-    "explanation": "The natural collocation is “take responsibility”.",
+    "explanation": "“take responsibility” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-195",
-    "question": "Choose the word that naturally completes the common English expression: “pose ___”",
-    "answer": "a question",
+    "question": "Choose the verb that naturally completes the common English expression: “___ a question”",
+    "answer": "pose",
     "options": [
-      "a question",
+      "pose",
       "put",
       "set",
       "raise"
     ],
-    "explanation": "The natural collocation is “pose a question”.",
+    "explanation": "“pose a question” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-196",
-    "question": "Choose the word that naturally completes the common English expression: “run ___”",
-    "answer": "a business",
+    "question": "Choose the verb that naturally completes the common English expression: “___ a business”",
+    "answer": "run",
     "options": [
-      "a business",
+      "run",
       "make",
       "do",
       "drive"
     ],
-    "explanation": "The natural collocation is “run a business”.",
+    "explanation": "“run a business” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-197",
-    "question": "Choose the word that naturally completes the common English expression: “save ___”",
-    "answer": "time",
+    "question": "Choose the verb that naturally completes the common English expression: “___ time”",
+    "answer": "save",
     "options": [
-      "time",
+      "save",
       "keep",
       "hold",
       "store"
     ],
-    "explanation": "The natural collocation is “save time”.",
+    "explanation": "“save time” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-198",
-    "question": "Choose the word that naturally completes the common English expression: “waste ___”",
-    "answer": "an opportunity",
+    "question": "Choose the verb that naturally completes the common English expression: “___ an opportunity”",
+    "answer": "waste",
     "options": [
-      "an opportunity",
+      "waste",
       "lose",
       "spend",
       "miss"
     ],
-    "explanation": "The natural collocation is “waste an opportunity”.",
+    "explanation": "“waste an opportunity” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-199",
-    "question": "Choose the word that naturally completes the common English expression: “close ___”",
-    "answer": "relationship",
+    "question": "Choose the verb that naturally completes the common English expression: “___ relationship”",
+    "answer": "close",
     "options": [
-      "relationship",
+      "close",
       "tight",
       "near",
       "shut"
     ],
-    "explanation": "The natural collocation is “close relationship”.",
+    "explanation": "“close relationship” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-200",
-    "question": "Choose the word that naturally completes the common English expression: “bitter ___”",
-    "answer": "disappointment",
+    "question": "Choose the verb that naturally completes the common English expression: “___ disappointment”",
+    "answer": "bitter",
     "options": [
-      "disappointment",
+      "bitter",
       "sour",
       "sharp",
       "rough"
     ],
-    "explanation": "The natural collocation is “bitter disappointment”.",
+    "explanation": "“bitter disappointment” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-201",
-    "question": "Choose the word that naturally completes the common English expression: “mutual ___”",
-    "answer": "respect",
+    "question": "Choose the verb that naturally completes the common English expression: “___ respect”",
+    "answer": "mutual",
     "options": [
-      "respect",
+      "mutual",
       "common",
       "shared",
       "joint"
     ],
-    "explanation": "The natural collocation is “mutual respect”.",
+    "explanation": "“mutual respect” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-202",
-    "question": "Choose the word that naturally completes the common English expression: “valid ___”",
-    "answer": "reason",
+    "question": "Choose the verb that naturally completes the common English expression: “___ reason”",
+    "answer": "valid",
     "options": [
-      "reason",
+      "valid",
       "legal",
       "true",
       "right"
     ],
-    "explanation": "The natural collocation is “valid reason”.",
+    "explanation": "“valid reason” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-203",
-    "question": "Choose the word that naturally completes the common English expression: “rough ___”",
-    "answer": "estimate",
+    "question": "Choose the verb that naturally completes the common English expression: “___ estimate”",
+    "answer": "rough",
     "options": [
-      "estimate",
+      "rough",
       "coarse",
       "hard",
       "uneven"
     ],
-    "explanation": "The natural collocation is “rough estimate”.",
+    "explanation": "“rough estimate” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-204",
-    "question": "Choose the word that naturally completes the common English expression: “considerable ___”",
-    "answer": "progress",
+    "question": "Choose the verb that naturally completes the common English expression: “___ progress”",
+    "answer": "considerable",
     "options": [
-      "progress",
+      "considerable",
       "large",
       "big",
       "heavy"
     ],
-    "explanation": "The natural collocation is “considerable progress”.",
+    "explanation": "“considerable progress” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-205",
-    "question": "Choose the word that naturally completes the common English expression: “fully ___”",
-    "answer": "aware",
+    "question": "Choose the verb that naturally completes the common English expression: “___ aware”",
+    "answer": "fully",
     "options": [
-      "aware",
+      "fully",
       "complete",
       "entire",
       "totally"
     ],
-    "explanation": "The natural collocation is “fully aware”.",
+    "explanation": "“fully aware” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-206",
-    "question": "Choose the word that naturally completes the common English expression: “widely ___”",
-    "answer": "available",
+    "question": "Choose the verb that naturally completes the common English expression: “___ available”",
+    "answer": "widely",
     "options": [
-      "available",
+      "widely",
       "broadly",
       "largely",
       "openly"
     ],
-    "explanation": "The natural collocation is “widely available”.",
+    "explanation": "“widely available” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-207",
-    "question": "Choose the word that naturally completes the common English expression: “seriously ___”",
-    "answer": "injured",
+    "question": "Choose the verb that naturally completes the common English expression: “___ injured”",
+    "answer": "seriously",
     "options": [
-      "injured",
+      "seriously",
       "strongly",
       "deeply",
       "heavily"
     ],
-    "explanation": "The natural collocation is “seriously injured”.",
+    "explanation": "“seriously injured” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-208",
-    "question": "Choose the word that naturally completes the common English expression: “readily ___”",
-    "answer": "available",
+    "question": "Choose the verb that naturally completes the common English expression: “___ available”",
+    "answer": "readily",
     "options": [
-      "available",
+      "readily",
       "easily",
       "quickly",
       "freely"
     ],
-    "explanation": "The natural collocation is “readily available”.",
+    "explanation": "“readily available” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-209",
-    "question": "Choose the word that naturally completes the common English expression: “strict ___”",
-    "answer": "rules",
+    "question": "Choose the verb that naturally completes the common English expression: “___ rules”",
+    "answer": "strict",
     "options": [
-      "rules",
+      "strict",
       "hard",
       "tight",
       "severe"
     ],
-    "explanation": "The natural collocation is “strict rules”.",
+    "explanation": "“strict rules” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
   {
     "id": "wordquiz-210",
-    "question": "Choose the word that naturally completes the common English expression: “warm ___”",
-    "answer": "welcome",
+    "question": "Choose the verb that naturally completes the common English expression: “___ welcome”",
+    "answer": "warm",
     "options": [
-      "welcome",
+      "warm",
       "hot",
       "friendly",
       "kind"
     ],
-    "explanation": "The natural collocation is “warm welcome”.",
+    "explanation": "“warm welcome” is the natural English collocation.",
     "clue": "Read the wording carefully and compare all four choices.",
     "topic": "Collocations"
   },
