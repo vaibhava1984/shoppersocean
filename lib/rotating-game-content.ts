@@ -29,2104 +29,3604 @@ export function getHiddenPuzzle(date:string,slot:number):Puzzle & {clue:string;o
 
 const MISSING_WORD_CHALLENGES:Array<{id:string;sentence:string;answer:string;clue:string;options:string[]}>= [
   {
-    "id": "missing-001-01",
-    "sentence": "the archivist's catalogue was ____ because every date, source, correction, and tiny annotation was recorded.",
+    "id": "missing-001",
+    "sentence": "Item 1: The word with the opposite meaning to “careless” is ____ .",
     "answer": "meticulous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","skeptical","resilient"]
+    "clue": "Choose the antonym of “careless”.",
+    "options": [
+      "meticulous",
+      "significant",
+      "arrive",
+      "honesty"
+    ]
   },
   {
-    "id": "missing-001-02",
-    "sentence": "Because every date, source, correction, and tiny annotation was recorded, the archivist's catalogue seemed ____ to everyone involved.",
-    "answer": "meticulous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","plausible","meticulous"]
+    "id": "missing-002",
+    "sentence": "Item 2: The word with the opposite meaning to “meticulous” is ____ .",
+    "answer": "careless",
+    "clue": "Choose the antonym of “meticulous”.",
+    "options": [
+      "complex",
+      "melt",
+      "tough",
+      "careless"
+    ]
   },
   {
-    "id": "missing-001-03",
-    "sentence": "The review described the archivist's catalogue as ____; every date, source, correction, and tiny annotation was recorded.",
-    "answer": "meticulous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["skeptical","concise","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-001-04",
-    "sentence": "After considering the evidence, observers agreed that the archivist's catalogue remained ____, since every date, source, correction, and tiny annotation was recorded.",
-    "answer": "meticulous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["impartial","meticulous","reluctant","skeptical"]
-  },
-  {
-    "id": "missing-001-05",
-    "sentence": "It became clear that the archivist's catalogue was ____ when every date, source, correction, and tiny annotation was recorded.",
-    "answer": "meticulous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","skeptical","ambiguous"]
-  },
-  {
-    "id": "missing-001-06",
-    "sentence": "Throughout the discussion, the archivist's catalogue appeared ____: every date, source, correction, and tiny annotation was recorded.",
-    "answer": "meticulous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","obsolete","meticulous"]
-  },
-  {
-    "id": "missing-002-01",
-    "sentence": "the new recruit was ____ because she accepted the assignment only after several reminders.",
+    "id": "missing-003",
+    "sentence": "Item 3: The word with the opposite meaning to “eager” is ____ .",
     "answer": "reluctant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["skeptical","fragile","reluctant","meticulous"]
+    "clue": "Choose the antonym of “eager”.",
+    "options": [
+      "ending",
+      "eloquent",
+      "reluctant",
+      "demolish"
+    ]
   },
   {
-    "id": "missing-002-02",
-    "sentence": "Because she accepted the assignment only after several reminders, the new recruit seemed ____ to everyone involved.",
-    "answer": "reluctant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["scarce","reluctant","meticulous","skeptical"]
+    "id": "missing-004",
+    "sentence": "Item 4: The word with the opposite meaning to “reluctant” is ____ .",
+    "answer": "eager",
+    "clue": "Choose the antonym of “reluctant”.",
+    "options": [
+      "meticulous",
+      "eager",
+      "departure",
+      "calm"
+    ]
   },
   {
-    "id": "missing-002-03",
-    "sentence": "The review described the new recruit as ____; she accepted the assignment only after several reminders.",
-    "answer": "reluctant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","meticulous","skeptical","abundant"]
-  },
-  {
-    "id": "missing-002-04",
-    "sentence": "After considering the evidence, observers agreed that the new recruit remained ____, since she accepted the assignment only after several reminders.",
-    "answer": "reluctant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","skeptical","coherent","reluctant"]
-  },
-  {
-    "id": "missing-002-05",
-    "sentence": "It became clear that the new recruit was ____ when she accepted the assignment only after several reminders.",
-    "answer": "reluctant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["skeptical","diligent","reluctant","meticulous"]
-  },
-  {
-    "id": "missing-002-06",
-    "sentence": "Throughout the discussion, the new recruit appeared ____: she accepted the assignment only after several reminders.",
-    "answer": "reluctant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["formidable","reluctant","meticulous","skeptical"]
-  },
-  {
-    "id": "missing-003-01",
-    "sentence": "the analyst was ____ because he demanded independent evidence before accepting the claim.",
+    "id": "missing-005",
+    "sentence": "Item 5: The word with the opposite meaning to “gullible” is ____ .",
     "answer": "skeptical",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["skeptical","meticulous","reluctant","prudent"]
+    "clue": "Choose the antonym of “gullible”.",
+    "options": [
+      "skeptical",
+      "empty",
+      "indecisive",
+      "pessimistic"
+    ]
   },
   {
-    "id": "missing-003-02",
-    "sentence": "Because he demanded independent evidence before accepting the claim, the analyst seemed ____ to everyone involved.",
-    "answer": "skeptical",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","trivial","skeptical"]
+    "id": "missing-006",
+    "sentence": "Item 6: The word with the opposite meaning to “skeptical” is ____ .",
+    "answer": "gullible",
+    "clue": "Choose the antonym of “skeptical”.",
+    "options": [
+      "major",
+      "unequivocal",
+      "ascend",
+      "gullible"
+    ]
   },
   {
-    "id": "missing-003-03",
-    "sentence": "The review described the analyst as ____; he demanded independent evidence before accepting the claim.",
-    "answer": "skeptical",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","profound","skeptical","meticulous"]
-  },
-  {
-    "id": "missing-003-04",
-    "sentence": "After considering the evidence, observers agreed that the analyst remained ____, since he demanded independent evidence before accepting the claim.",
-    "answer": "skeptical",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["feasible","skeptical","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-003-05",
-    "sentence": "It became clear that the analyst was ____ when he demanded independent evidence before accepting the claim.",
-    "answer": "skeptical",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["skeptical","meticulous","reluctant","notorious"]
-  },
-  {
-    "id": "missing-003-06",
-    "sentence": "Throughout the discussion, the analyst appeared ____: he demanded independent evidence before accepting the claim.",
-    "answer": "skeptical",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","versatile","skeptical"]
-  },
-  {
-    "id": "missing-004-01",
-    "sentence": "the coastal village was ____ because it recovered quickly after repeated storms damaged the harbour.",
+    "id": "missing-007",
+    "sentence": "Item 7: The word with the opposite meaning to “fragile” is ____ .",
     "answer": "resilient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","resilient","meticulous"]
+    "clue": "Choose the antonym of “fragile”.",
+    "options": [
+      "courteous",
+      "preserve",
+      "resilient",
+      "optional"
+    ]
   },
   {
-    "id": "missing-004-02",
-    "sentence": "Because it recovered quickly after repeated storms damaged the harbour, the coastal village seemed ____ to everyone involved.",
-    "answer": "resilient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","resilient","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-004-03",
-    "sentence": "The review described the coastal village as ____; it recovered quickly after repeated storms damaged the harbour.",
-    "answer": "resilient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-004-04",
-    "sentence": "After considering the evidence, observers agreed that the coastal village remained ____, since it recovered quickly after repeated storms damaged the harbour.",
-    "answer": "resilient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","resilient"]
-  },
-  {
-    "id": "missing-004-05",
-    "sentence": "It became clear that the coastal village was ____ when it recovered quickly after repeated storms damaged the harbour.",
-    "answer": "resilient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","obsolete","resilient","meticulous"]
-  },
-  {
-    "id": "missing-004-06",
-    "sentence": "Throughout the discussion, the coastal village appeared ____: it recovered quickly after repeated storms damaged the harbour.",
-    "answer": "resilient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["fragile","resilient","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-005-01",
-    "sentence": "the explanation was ____ because it fitted the evidence without relying on unlikely assumptions.",
-    "answer": "plausible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["plausible","meticulous","reluctant","concise"]
-  },
-  {
-    "id": "missing-005-02",
-    "sentence": "Because it fitted the evidence without relying on unlikely assumptions, the explanation seemed ____ to everyone involved.",
-    "answer": "plausible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","impartial","plausible"]
-  },
-  {
-    "id": "missing-005-03",
-    "sentence": "The review described the explanation as ____; it fitted the evidence without relying on unlikely assumptions.",
-    "answer": "plausible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","ambiguous","plausible","meticulous"]
-  },
-  {
-    "id": "missing-005-04",
-    "sentence": "After considering the evidence, observers agreed that the explanation remained ____, since it fitted the evidence without relying on unlikely assumptions.",
-    "answer": "plausible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["obsolete","plausible","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-005-05",
-    "sentence": "It became clear that the explanation was ____ when it fitted the evidence without relying on unlikely assumptions.",
-    "answer": "plausible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["plausible","meticulous","reluctant","fragile"]
-  },
-  {
-    "id": "missing-005-06",
-    "sentence": "Throughout the discussion, the explanation appeared ____: it fitted the evidence without relying on unlikely assumptions.",
-    "answer": "plausible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","scarce","plausible"]
-  },
-  {
-    "id": "missing-006-01",
-    "sentence": "the executive summary was ____ because it conveyed the findings in a few carefully chosen sentences.",
-    "answer": "concise",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","concise","meticulous"]
-  },
-  {
-    "id": "missing-006-02",
-    "sentence": "Because it conveyed the findings in a few carefully chosen sentences, the executive summary seemed ____ to everyone involved.",
-    "answer": "concise",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","concise","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-006-03",
-    "sentence": "The review described the executive summary as ____; it conveyed the findings in a few carefully chosen sentences.",
-    "answer": "concise",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","meticulous","reluctant","obsolete"]
-  },
-  {
-    "id": "missing-006-04",
-    "sentence": "After considering the evidence, observers agreed that the executive summary remained ____, since it conveyed the findings in a few carefully chosen sentences.",
-    "answer": "concise",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","fragile","concise"]
-  },
-  {
-    "id": "missing-006-05",
-    "sentence": "It became clear that the executive summary was ____ when it conveyed the findings in a few carefully chosen sentences.",
-    "answer": "concise",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","scarce","concise","meticulous"]
-  },
-  {
-    "id": "missing-006-06",
-    "sentence": "Throughout the discussion, the executive summary appeared ____: it conveyed the findings in a few carefully chosen sentences.",
-    "answer": "concise",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["abundant","concise","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-007-01",
-    "sentence": "the referee's decision was ____ because the official had no personal connection to either team.",
-    "answer": "impartial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["impartial","meticulous","reluctant","ambiguous"]
-  },
-  {
-    "id": "missing-007-02",
-    "sentence": "Because the official had no personal connection to either team, the referee's decision seemed ____ to everyone involved.",
-    "answer": "impartial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","obsolete","impartial"]
-  },
-  {
-    "id": "missing-007-03",
-    "sentence": "The review described the referee's decision as ____; the official had no personal connection to either team.",
-    "answer": "impartial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","fragile","impartial","meticulous"]
-  },
-  {
-    "id": "missing-007-04",
-    "sentence": "After considering the evidence, observers agreed that the referee's decision remained ____, since the official had no personal connection to either team.",
-    "answer": "impartial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["scarce","impartial","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-007-05",
-    "sentence": "It became clear that the referee's decision was ____ when the official had no personal connection to either team.",
-    "answer": "impartial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["impartial","meticulous","reluctant","abundant"]
-  },
-  {
-    "id": "missing-007-06",
-    "sentence": "Throughout the discussion, the referee's decision appeared ____: the official had no personal connection to either team.",
-    "answer": "impartial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","coherent","impartial"]
-  },
-  {
-    "id": "missing-008-01",
-    "sentence": "the contract clause was ____ because its wording could reasonably support two different interpretations.",
-    "answer": "ambiguous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","obsolete","ambiguous","meticulous"]
-  },
-  {
-    "id": "missing-008-02",
-    "sentence": "Because its wording could reasonably support two different interpretations, the contract clause seemed ____ to everyone involved.",
-    "answer": "ambiguous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["fragile","ambiguous","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-008-03",
-    "sentence": "The review described the contract clause as ____; its wording could reasonably support two different interpretations.",
-    "answer": "ambiguous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","meticulous","reluctant","scarce"]
-  },
-  {
-    "id": "missing-008-04",
-    "sentence": "After considering the evidence, observers agreed that the contract clause remained ____, since its wording could reasonably support two different interpretations.",
-    "answer": "ambiguous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","abundant","ambiguous"]
-  },
-  {
-    "id": "missing-008-05",
-    "sentence": "It became clear that the contract clause was ____ when its wording could reasonably support two different interpretations.",
-    "answer": "ambiguous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","coherent","ambiguous","meticulous"]
-  },
-  {
-    "id": "missing-008-06",
-    "sentence": "Throughout the discussion, the contract clause appeared ____: its wording could reasonably support two different interpretations.",
-    "answer": "ambiguous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["diligent","ambiguous","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-009-01",
-    "sentence": "the office software was ____ because the manufacturer had stopped supporting it many years earlier.",
-    "answer": "obsolete",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["obsolete","meticulous","reluctant","fragile"]
-  },
-  {
-    "id": "missing-009-02",
-    "sentence": "Because the manufacturer had stopped supporting it many years earlier, the office software seemed ____ to everyone involved.",
-    "answer": "obsolete",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","scarce","obsolete"]
-  },
-  {
-    "id": "missing-009-03",
-    "sentence": "The review described the office software as ____; the manufacturer had stopped supporting it many years earlier.",
-    "answer": "obsolete",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","abundant","obsolete","meticulous"]
-  },
-  {
-    "id": "missing-009-04",
-    "sentence": "After considering the evidence, observers agreed that the office software remained ____, since the manufacturer had stopped supporting it many years earlier.",
-    "answer": "obsolete",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["coherent","obsolete","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-009-05",
-    "sentence": "It became clear that the office software was ____ when the manufacturer had stopped supporting it many years earlier.",
-    "answer": "obsolete",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["obsolete","meticulous","reluctant","diligent"]
-  },
-  {
-    "id": "missing-009-06",
-    "sentence": "Throughout the discussion, the office software appeared ____: the manufacturer had stopped supporting it many years earlier.",
-    "answer": "obsolete",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","formidable","obsolete"]
-  },
-  {
-    "id": "missing-010-01",
-    "sentence": "the porcelain vase was ____ because even a slight impact could crack it.",
+    "id": "missing-008",
+    "sentence": "Item 8: The word with the opposite meaning to “resilient” is ____ .",
     "answer": "fragile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","scarce","fragile","meticulous"]
+    "clue": "Choose the antonym of “resilient”.",
+    "options": [
+      "deceit",
+      "fragile",
+      "profound",
+      "depart"
+    ]
   },
   {
-    "id": "missing-010-02",
-    "sentence": "Because even a slight impact could crack it, the porcelain vase seemed ____ to everyone involved.",
-    "answer": "fragile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["abundant","fragile","meticulous","reluctant"]
+    "id": "missing-009",
+    "sentence": "Item 9: The word with the opposite meaning to “implausible” is ____ .",
+    "answer": "plausible",
+    "clue": "Choose the antonym of “implausible”.",
+    "options": [
+      "plausible",
+      "simple",
+      "freeze",
+      "mature"
+    ]
   },
   {
-    "id": "missing-010-03",
-    "sentence": "The review described the porcelain vase as ____; even a slight impact could crack it.",
-    "answer": "fragile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["fragile","meticulous","reluctant","coherent"]
+    "id": "missing-010",
+    "sentence": "Item 10: The word with the opposite meaning to “plausible” is ____ .",
+    "answer": "implausible",
+    "clue": "Choose the antonym of “plausible”.",
+    "options": [
+      "protect",
+      "entrance",
+      "inarticulate",
+      "implausible"
+    ]
   },
   {
-    "id": "missing-010-04",
-    "sentence": "After considering the evidence, observers agreed that the porcelain vase remained ____, since even a slight impact could crack it.",
-    "answer": "fragile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","diligent","fragile"]
+    "id": "missing-011",
+    "sentence": "Item 11: The word with the opposite meaning to “verbose” is ____ .",
+    "answer": "concise",
+    "clue": "Choose the antonym of “verbose”.",
+    "options": [
+      "agitated",
+      "careless",
+      "concise",
+      "maximum"
+    ]
   },
   {
-    "id": "missing-010-05",
-    "sentence": "It became clear that the porcelain vase was ____ when even a slight impact could crack it.",
-    "answer": "fragile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","formidable","fragile","meticulous"]
+    "id": "missing-012",
+    "sentence": "Item 12: The word with the opposite meaning to “concise” is ____ .",
+    "answer": "verbose",
+    "clue": "Choose the antonym of “concise”.",
+    "options": [
+      "transparent",
+      "verbose",
+      "full",
+      "economical"
+    ]
   },
   {
-    "id": "missing-010-06",
-    "sentence": "Throughout the discussion, the porcelain vase appeared ____: even a slight impact could crack it.",
-    "answer": "fragile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["prudent","fragile","meticulous","reluctant"]
+    "id": "missing-013",
+    "sentence": "Item 13: The word with the opposite meaning to “biased” is ____ .",
+    "answer": "impartial",
+    "clue": "Choose the antonym of “biased”.",
+    "options": [
+      "impartial",
+      "interior",
+      "obsolete",
+      "descend"
+    ]
   },
   {
-    "id": "missing-011-01",
-    "sentence": "the region's water supply was ____ because the reservoir held too little to meet the population's needs.",
+    "id": "missing-014",
+    "sentence": "Item 14: The word with the opposite meaning to “impartial” is ____ .",
+    "answer": "biased",
+    "clue": "Choose the antonym of “impartial”.",
+    "options": [
+      "mundane",
+      "rude",
+      "neglect",
+      "biased"
+    ]
+  },
+  {
+    "id": "missing-015",
+    "sentence": "Item 15: The word with the opposite meaning to “unequivocal” is ____ .",
+    "answer": "ambiguous",
+    "clue": "Choose the antonym of “unequivocal”.",
+    "options": [
+      "increase",
+      "freedom",
+      "ambiguous",
+      "superficial"
+    ]
+  },
+  {
+    "id": "missing-016",
+    "sentence": "Item 16: The word with the opposite meaning to “ambiguous” is ____ .",
+    "answer": "unequivocal",
+    "clue": "Choose the antonym of “ambiguous”.",
+    "options": [
+      "immature",
+      "unequivocal",
+      "cautious",
+      "float"
+    ]
+  },
+  {
+    "id": "missing-017",
+    "sentence": "Item 17: The word with the opposite meaning to “modern” is ____ .",
+    "answer": "obsolete",
+    "clue": "Choose the antonym of “modern”.",
+    "options": [
+      "obsolete",
+      "endanger",
+      "exit",
+      "benevolent"
+    ]
+  },
+  {
+    "id": "missing-018",
+    "sentence": "Item 18: The word with the opposite meaning to “obsolete” is ____ .",
+    "answer": "modern",
+    "clue": "Choose the antonym of “obsolete”.",
+    "options": [
+      "minimum",
+      "cheerful",
+      "reluctant",
+      "modern"
+    ]
+  },
+  {
+    "id": "missing-019",
+    "sentence": "Item 19: The word with the opposite meaning to “abundant” is ____ .",
     "answer": "scarce",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["scarce","meticulous","reluctant","resilient"]
+    "clue": "Choose the antonym of “abundant”.",
+    "options": [
+      "wasteful",
+      "opaque",
+      "scarce",
+      "narrow"
+    ]
   },
   {
-    "id": "missing-011-02",
-    "sentence": "Because the reservoir held too little to meet the population's needs, the region's water supply seemed ____ to everyone involved.",
-    "answer": "scarce",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","abundant","scarce"]
-  },
-  {
-    "id": "missing-011-03",
-    "sentence": "The review described the region's water supply as ____; the reservoir held too little to meet the population's needs.",
-    "answer": "scarce",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","coherent","scarce","meticulous"]
-  },
-  {
-    "id": "missing-011-04",
-    "sentence": "After considering the evidence, observers agreed that the region's water supply remained ____, since the reservoir held too little to meet the population's needs.",
-    "answer": "scarce",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["diligent","scarce","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-011-05",
-    "sentence": "It became clear that the region's water supply was ____ when the reservoir held too little to meet the population's needs.",
-    "answer": "scarce",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["scarce","meticulous","reluctant","formidable"]
-  },
-  {
-    "id": "missing-011-06",
-    "sentence": "Throughout the discussion, the region's water supply appeared ____: the reservoir held too little to meet the population's needs.",
-    "answer": "scarce",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","prudent","scarce"]
-  },
-  {
-    "id": "missing-012-01",
-    "sentence": "the harvest was ____ because the fields produced far more grain than the village could store.",
+    "id": "missing-020",
+    "sentence": "Item 20: The word with the opposite meaning to “scarce” is ____ .",
     "answer": "abundant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","resilient","abundant","meticulous"]
+    "clue": "Choose the antonym of “scarce”.",
+    "options": [
+      "conceal",
+      "abundant",
+      "exterior",
+      "modern"
+    ]
   },
   {
-    "id": "missing-012-02",
-    "sentence": "Because the fields produced far more grain than the village could store, the harvest seemed ____ to everyone involved.",
-    "answer": "abundant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["plausible","abundant","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-012-03",
-    "sentence": "The review described the harvest as ____; the fields produced far more grain than the village could store.",
-    "answer": "abundant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["abundant","meticulous","reluctant","coherent"]
-  },
-  {
-    "id": "missing-012-04",
-    "sentence": "After considering the evidence, observers agreed that the harvest remained ____, since the fields produced far more grain than the village could store.",
-    "answer": "abundant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","diligent","abundant"]
-  },
-  {
-    "id": "missing-012-05",
-    "sentence": "It became clear that the harvest was ____ when the fields produced far more grain than the village could store.",
-    "answer": "abundant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","formidable","abundant","meticulous"]
-  },
-  {
-    "id": "missing-012-06",
-    "sentence": "Throughout the discussion, the harvest appeared ____: the fields produced far more grain than the village could store.",
-    "answer": "abundant",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["prudent","abundant","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-013-01",
-    "sentence": "the argument was ____ because each point followed logically from the one before it.",
+    "id": "missing-021",
+    "sentence": "Item 21: The word with the opposite meaning to “incoherent” is ____ .",
     "answer": "coherent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["coherent","meticulous","reluctant","resilient"]
+    "clue": "Choose the antonym of “incoherent”.",
+    "options": [
+      "coherent",
+      "extraordinary",
+      "ancient",
+      "praise"
+    ]
   },
   {
-    "id": "missing-013-02",
-    "sentence": "Because each point followed logically from the one before it, the argument seemed ____ to everyone involved.",
-    "answer": "coherent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","plausible","coherent"]
+    "id": "missing-022",
+    "sentence": "Item 22: The word with the opposite meaning to “coherent” is ____ .",
+    "answer": "incoherent",
+    "clue": "Choose the antonym of “coherent”.",
+    "options": [
+      "feasible",
+      "decrease",
+      "captivity",
+      "incoherent"
+    ]
   },
   {
-    "id": "missing-013-03",
-    "sentence": "The review described the argument as ____; each point followed logically from the one before it.",
-    "answer": "coherent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","concise","coherent","meticulous"]
-  },
-  {
-    "id": "missing-013-04",
-    "sentence": "After considering the evidence, observers agreed that the argument remained ____, since each point followed logically from the one before it.",
-    "answer": "coherent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["diligent","coherent","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-013-05",
-    "sentence": "It became clear that the argument was ____ when each point followed logically from the one before it.",
-    "answer": "coherent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["coherent","meticulous","reluctant","formidable"]
-  },
-  {
-    "id": "missing-013-06",
-    "sentence": "Throughout the discussion, the argument appeared ____: each point followed logically from the one before it.",
-    "answer": "coherent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","prudent","coherent"]
-  },
-  {
-    "id": "missing-014-01",
-    "sentence": "the apprentice was ____ because she practised daily and checked every task with care.",
+    "id": "missing-023",
+    "sentence": "Item 23: The word with the opposite meaning to “idle” is ____ .",
     "answer": "diligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","resilient","diligent","meticulous"]
+    "clue": "Choose the antonym of “idle”.",
+    "options": [
+      "sink",
+      "fertile",
+      "diligent",
+      "rash"
+    ]
   },
   {
-    "id": "missing-014-02",
-    "sentence": "Because she practised daily and checked every task with care, the apprentice seemed ____ to everyone involved.",
-    "answer": "diligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["plausible","diligent","meticulous","reluctant"]
+    "id": "missing-024",
+    "sentence": "Item 24: The word with the opposite meaning to “diligent” is ____ .",
+    "answer": "idle",
+    "clue": "Choose the antonym of “diligent”.",
+    "options": [
+      "malevolent",
+      "idle",
+      "unite",
+      "fiction"
+    ]
   },
   {
-    "id": "missing-014-03",
-    "sentence": "The review described the apprentice as ____; she practised daily and checked every task with care.",
-    "answer": "diligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["diligent","meticulous","reluctant","concise"]
-  },
-  {
-    "id": "missing-014-04",
-    "sentence": "After considering the evidence, observers agreed that the apprentice remained ____, since she practised daily and checked every task with care.",
-    "answer": "diligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","impartial","diligent"]
-  },
-  {
-    "id": "missing-014-05",
-    "sentence": "It became clear that the apprentice was ____ when she practised daily and checked every task with care.",
-    "answer": "diligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","formidable","diligent","meticulous"]
-  },
-  {
-    "id": "missing-014-06",
-    "sentence": "Throughout the discussion, the apprentice appeared ____: she practised daily and checked every task with care.",
-    "answer": "diligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["prudent","diligent","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-015-01",
-    "sentence": "the mountain pass was ____ because its steep cliffs and violent weather discouraged even experienced climbers.",
+    "id": "missing-025",
+    "sentence": "Item 25: The word with the opposite meaning to “manageable” is ____ .",
     "answer": "formidable",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["formidable","meticulous","reluctant","resilient"]
+    "clue": "Choose the antonym of “manageable”.",
+    "options": [
+      "formidable",
+      "optimism",
+      "miserable",
+      "eager"
+    ]
   },
   {
-    "id": "missing-015-02",
-    "sentence": "Because its steep cliffs and violent weather discouraged even experienced climbers, the mountain pass seemed ____ to everyone involved.",
-    "answer": "formidable",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","plausible","formidable"]
+    "id": "missing-026",
+    "sentence": "Item 26: The word with the opposite meaning to “formidable” is ____ .",
+    "answer": "manageable",
+    "clue": "Choose the antonym of “formidable”.",
+    "options": [
+      "broad",
+      "explicit",
+      "temporary",
+      "manageable"
+    ]
   },
   {
-    "id": "missing-015-03",
-    "sentence": "The review described the mountain pass as ____; its steep cliffs and violent weather discouraged even experienced climbers.",
-    "answer": "formidable",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","concise","formidable","meticulous"]
-  },
-  {
-    "id": "missing-015-04",
-    "sentence": "After considering the evidence, observers agreed that the mountain pass remained ____, since its steep cliffs and violent weather discouraged even experienced climbers.",
-    "answer": "formidable",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["impartial","formidable","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-015-05",
-    "sentence": "It became clear that the mountain pass was ____ when its steep cliffs and violent weather discouraged even experienced climbers.",
-    "answer": "formidable",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["formidable","meticulous","reluctant","ambiguous"]
-  },
-  {
-    "id": "missing-015-06",
-    "sentence": "Throughout the discussion, the mountain pass appeared ____: its steep cliffs and violent weather discouraged even experienced climbers.",
-    "answer": "formidable",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","prudent","formidable"]
-  },
-  {
-    "id": "missing-016-01",
-    "sentence": "the investment decision was ____ because it protected the family's savings instead of chasing risky returns.",
+    "id": "missing-027",
+    "sentence": "Item 27: The word with the opposite meaning to “reckless” is ____ .",
     "answer": "prudent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","resilient","prudent","meticulous"]
+    "clue": "Choose the antonym of “reckless”.",
+    "options": [
+      "scarce",
+      "reveal",
+      "prudent",
+      "superior"
+    ]
   },
   {
-    "id": "missing-016-02",
-    "sentence": "Because it protected the family's savings instead of chasing risky returns, the investment decision seemed ____ to everyone involved.",
-    "answer": "prudent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["plausible","prudent","meticulous","reluctant"]
+    "id": "missing-028",
+    "sentence": "Item 28: The word with the opposite meaning to “prudent” is ____ .",
+    "answer": "reckless",
+    "clue": "Choose the antonym of “prudent”.",
+    "options": [
+      "criticize",
+      "reckless",
+      "novice",
+      "recent"
+    ]
   },
   {
-    "id": "missing-016-03",
-    "sentence": "The review described the investment decision as ____; it protected the family's savings instead of chasing risky returns.",
-    "answer": "prudent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["prudent","meticulous","reluctant","concise"]
-  },
-  {
-    "id": "missing-016-04",
-    "sentence": "After considering the evidence, observers agreed that the investment decision remained ____, since it protected the family's savings instead of chasing risky returns.",
-    "answer": "prudent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","impartial","prudent"]
-  },
-  {
-    "id": "missing-016-05",
-    "sentence": "It became clear that the investment decision was ____ when it protected the family's savings instead of chasing risky returns.",
-    "answer": "prudent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","ambiguous","prudent","meticulous"]
-  },
-  {
-    "id": "missing-016-06",
-    "sentence": "Throughout the discussion, the investment decision appeared ____: it protected the family's savings instead of chasing risky returns.",
-    "answer": "prudent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["obsolete","prudent","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-017-01",
-    "sentence": "the correction was ____ because it concerned a formatting detail rather than the report's conclusions.",
+    "id": "missing-029",
+    "sentence": "Item 29: The word with the opposite meaning to “significant” is ____ .",
     "answer": "trivial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["trivial","meticulous","reluctant","resilient"]
+    "clue": "Choose the antonym of “significant”.",
+    "options": [
+      "trivial",
+      "impractical",
+      "encourage",
+      "harmony"
+    ]
   },
   {
-    "id": "missing-017-02",
-    "sentence": "Because it concerned a formatting detail rather than the report's conclusions, the correction seemed ____ to everyone involved.",
-    "answer": "trivial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","plausible","trivial"]
+    "id": "missing-030",
+    "sentence": "Item 30: The word with the opposite meaning to “trivial” is ____ .",
+    "answer": "significant",
+    "clue": "Choose the antonym of “trivial”.",
+    "options": [
+      "modest",
+      "gather",
+      "barren",
+      "significant"
+    ]
   },
   {
-    "id": "missing-017-03",
-    "sentence": "The review described the correction as ____; it concerned a formatting detail rather than the report's conclusions.",
-    "answer": "trivial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","concise","trivial","meticulous"]
-  },
-  {
-    "id": "missing-017-04",
-    "sentence": "After considering the evidence, observers agreed that the correction remained ____, since it concerned a formatting detail rather than the report's conclusions.",
-    "answer": "trivial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["impartial","trivial","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-017-05",
-    "sentence": "It became clear that the correction was ____ when it concerned a formatting detail rather than the report's conclusions.",
-    "answer": "trivial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["trivial","meticulous","reluctant","ambiguous"]
-  },
-  {
-    "id": "missing-017-06",
-    "sentence": "Throughout the discussion, the correction appeared ____: it concerned a formatting detail rather than the report's conclusions.",
-    "answer": "trivial",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","obsolete","trivial"]
-  },
-  {
-    "id": "missing-018-01",
-    "sentence": "the discovery was ____ because it changed how scientists understood the origin of the disease.",
+    "id": "missing-031",
+    "sentence": "Item 31: The word with the opposite meaning to “superficial” is ____ .",
     "answer": "profound",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","resilient","profound","meticulous"]
+    "clue": "Choose the antonym of “superficial”.",
+    "options": [
+      "fact",
+      "amiable",
+      "profound",
+      "divide"
+    ]
   },
   {
-    "id": "missing-018-02",
-    "sentence": "Because it changed how scientists understood the origin of the disease, the discovery seemed ____ to everyone involved.",
-    "answer": "profound",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["plausible","profound","meticulous","reluctant"]
+    "id": "missing-032",
+    "sentence": "Item 32: The word with the opposite meaning to “profound” is ____ .",
+    "answer": "superficial",
+    "clue": "Choose the antonym of “profound”.",
+    "options": [
+      "skeptical",
+      "superficial",
+      "despair",
+      "pleasant"
+    ]
   },
   {
-    "id": "missing-018-03",
-    "sentence": "The review described the discovery as ____; it changed how scientists understood the origin of the disease.",
-    "answer": "profound",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["profound","meticulous","reluctant","concise"]
-  },
-  {
-    "id": "missing-018-04",
-    "sentence": "After considering the evidence, observers agreed that the discovery remained ____, since it changed how scientists understood the origin of the disease.",
-    "answer": "profound",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","impartial","profound"]
-  },
-  {
-    "id": "missing-018-05",
-    "sentence": "It became clear that the discovery was ____ when it changed how scientists understood the origin of the disease.",
-    "answer": "profound",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","ambiguous","profound","meticulous"]
-  },
-  {
-    "id": "missing-018-06",
-    "sentence": "Throughout the discussion, the discovery appeared ____: it changed how scientists understood the origin of the disease.",
-    "answer": "profound",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["obsolete","profound","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-019-01",
-    "sentence": "the proposal was ____ because the available staff, budget, and timetable made it achievable.",
+    "id": "missing-033",
+    "sentence": "Item 33: The word with the opposite meaning to “impractical” is ____ .",
     "answer": "feasible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["feasible","meticulous","reluctant","resilient"]
+    "clue": "Choose the antonym of “impractical”.",
+    "options": [
+      "feasible",
+      "shallow",
+      "implicit",
+      "permanent"
+    ]
   },
   {
-    "id": "missing-019-02",
-    "sentence": "Because the available staff, budget, and timetable made it achievable, the proposal seemed ____ to everyone involved.",
-    "answer": "feasible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","plausible","feasible"]
+    "id": "missing-034",
+    "sentence": "Item 34: The word with the opposite meaning to “feasible” is ____ .",
+    "answer": "impractical",
+    "clue": "Choose the antonym of “feasible”.",
+    "options": [
+      "inferior",
+      "abundant",
+      "accelerate",
+      "impractical"
+    ]
   },
   {
-    "id": "missing-019-03",
-    "sentence": "The review described the proposal as ____; the available staff, budget, and timetable made it achievable.",
-    "answer": "feasible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","concise","feasible","meticulous"]
-  },
-  {
-    "id": "missing-019-04",
-    "sentence": "After considering the evidence, observers agreed that the proposal remained ____, since the available staff, budget, and timetable made it achievable.",
-    "answer": "feasible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["impartial","feasible","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-019-05",
-    "sentence": "It became clear that the proposal was ____ when the available staff, budget, and timetable made it achievable.",
-    "answer": "feasible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["feasible","meticulous","reluctant","ambiguous"]
-  },
-  {
-    "id": "missing-019-06",
-    "sentence": "Throughout the discussion, the proposal appeared ____: the available staff, budget, and timetable made it achievable.",
-    "answer": "feasible",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","obsolete","feasible"]
-  },
-  {
-    "id": "missing-020-01",
-    "sentence": "the politician was ____ because a series of public scandals had made his name widely disliked.",
+    "id": "missing-035",
+    "sentence": "Item 35: The word with the opposite meaning to “respected” is ____ .",
     "answer": "notorious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","resilient","notorious","meticulous"]
+    "clue": "Choose the antonym of “respected”.",
+    "options": [
+      "genuine",
+      "reward",
+      "notorious",
+      "expert"
+    ]
   },
   {
-    "id": "missing-020-02",
-    "sentence": "Because a series of public scandals had made his name widely disliked, the politician seemed ____ to everyone involved.",
-    "answer": "notorious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["plausible","notorious","meticulous","reluctant"]
+    "id": "missing-036",
+    "sentence": "Item 36: The word with the opposite meaning to “notorious” is ____ .",
+    "answer": "respected",
+    "clue": "Choose the antonym of “notorious”.",
+    "options": [
+      "discord",
+      "respected",
+      "notorious",
+      "discourage"
+    ]
   },
   {
-    "id": "missing-020-03",
-    "sentence": "The review described the politician as ____; a series of public scandals had made his name widely disliked.",
-    "answer": "notorious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["notorious","meticulous","reluctant","concise"]
-  },
-  {
-    "id": "missing-020-04",
-    "sentence": "After considering the evidence, observers agreed that the politician remained ____, since a series of public scandals had made his name widely disliked.",
-    "answer": "notorious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","impartial","notorious"]
-  },
-  {
-    "id": "missing-020-05",
-    "sentence": "It became clear that the politician was ____ when a series of public scandals had made his name widely disliked.",
-    "answer": "notorious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","ambiguous","notorious","meticulous"]
-  },
-  {
-    "id": "missing-020-06",
-    "sentence": "Throughout the discussion, the politician appeared ____: a series of public scandals had made his name widely disliked.",
-    "answer": "notorious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["obsolete","notorious","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-021-01",
-    "sentence": "the workshop tool was ____ because it could perform several different tasks with equal ease.",
+    "id": "missing-037",
+    "sentence": "Item 37: The word with the opposite meaning to “inflexible” is ____ .",
     "answer": "versatile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["versatile","meticulous","reluctant","resilient"]
-  },
-  {
-    "id": "missing-021-02",
-    "sentence": "Because it could perform several different tasks with equal ease, the workshop tool seemed ____ to everyone involved.",
-    "answer": "versatile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","plausible","versatile"]
-  },
-  {
-    "id": "missing-021-03",
-    "sentence": "The review described the workshop tool as ____; it could perform several different tasks with equal ease.",
-    "answer": "versatile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","concise","versatile","meticulous"]
-  },
-  {
-    "id": "missing-021-04",
-    "sentence": "After considering the evidence, observers agreed that the workshop tool remained ____, since it could perform several different tasks with equal ease.",
-    "answer": "versatile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["impartial","versatile","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-021-05",
-    "sentence": "It became clear that the workshop tool was ____ when it could perform several different tasks with equal ease.",
-    "answer": "versatile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["versatile","meticulous","reluctant","ambiguous"]
-  },
-  {
-    "id": "missing-021-06",
-    "sentence": "Throughout the discussion, the workshop tool appeared ____: it could perform several different tasks with equal ease.",
-    "answer": "versatile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","obsolete","versatile"]
-  },
-  {
-    "id": "missing-022-01",
-    "sentence": "the description was ____ because readers could picture the colours, sounds, and movement clearly.",
-    "answer": "vivid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","vivid","meticulous"]
-  },
-  {
-    "id": "missing-022-02",
-    "sentence": "Because readers could picture the colours, sounds, and movement clearly, the description seemed ____ to everyone involved.",
-    "answer": "vivid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","vivid","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-022-03",
-    "sentence": "The review described the description as ____; readers could picture the colours, sounds, and movement clearly.",
-    "answer": "vivid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["vivid","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-022-04",
-    "sentence": "After considering the evidence, observers agreed that the description remained ____, since readers could picture the colours, sounds, and movement clearly.",
-    "answer": "vivid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","vivid"]
-  },
-  {
-    "id": "missing-022-05",
-    "sentence": "It became clear that the description was ____ when readers could picture the colours, sounds, and movement clearly.",
-    "answer": "vivid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","vivid","meticulous"]
-  },
-  {
-    "id": "missing-022-06",
-    "sentence": "Throughout the discussion, the description appeared ____: readers could picture the colours, sounds, and movement clearly.",
-    "answer": "vivid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","vivid","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-023-01",
-    "sentence": "the judge was ____ because she enforced the rules firmly and allowed no special treatment.",
-    "answer": "stern",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["stern","meticulous","reluctant","skeptical"]
-  },
-  {
-    "id": "missing-023-02",
-    "sentence": "Because she enforced the rules firmly and allowed no special treatment, the judge seemed ____ to everyone involved.",
-    "answer": "stern",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","stern"]
-  },
-  {
-    "id": "missing-023-03",
-    "sentence": "The review described the judge as ____; she enforced the rules firmly and allowed no special treatment.",
-    "answer": "stern",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","stern","meticulous"]
-  },
-  {
-    "id": "missing-023-04",
-    "sentence": "After considering the evidence, observers agreed that the judge remained ____, since she enforced the rules firmly and allowed no special treatment.",
-    "answer": "stern",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","stern","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-023-05",
-    "sentence": "It became clear that the judge was ____ when she enforced the rules firmly and allowed no special treatment.",
-    "answer": "stern",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["stern","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-023-06",
-    "sentence": "Throughout the discussion, the judge appeared ____: she enforced the rules firmly and allowed no special treatment.",
-    "answer": "stern",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","stern"]
-  },
-  {
-    "id": "missing-024-01",
-    "sentence": "the warning was ____ because its meaning was suggested indirectly rather than stated outright.",
-    "answer": "subtle",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","subtle","meticulous"]
-  },
-  {
-    "id": "missing-024-02",
-    "sentence": "Because its meaning was suggested indirectly rather than stated outright, the warning seemed ____ to everyone involved.",
-    "answer": "subtle",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","subtle","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-024-03",
-    "sentence": "The review described the warning as ____; its meaning was suggested indirectly rather than stated outright.",
-    "answer": "subtle",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["subtle","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-024-04",
-    "sentence": "After considering the evidence, observers agreed that the warning remained ____, since its meaning was suggested indirectly rather than stated outright.",
-    "answer": "subtle",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","subtle"]
-  },
-  {
-    "id": "missing-024-05",
-    "sentence": "It became clear that the warning was ____ when its meaning was suggested indirectly rather than stated outright.",
-    "answer": "subtle",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","subtle","meticulous"]
-  },
-  {
-    "id": "missing-024-06",
-    "sentence": "Throughout the discussion, the warning appeared ____: its meaning was suggested indirectly rather than stated outright.",
-    "answer": "subtle",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","subtle","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-025-01",
-    "sentence": "the investigator was ____ because she continued searching despite repeated setbacks.",
-    "answer": "persistent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["persistent","meticulous","reluctant","skeptical"]
-  },
-  {
-    "id": "missing-025-02",
-    "sentence": "Because she continued searching despite repeated setbacks, the investigator seemed ____ to everyone involved.",
-    "answer": "persistent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","persistent"]
-  },
-  {
-    "id": "missing-025-03",
-    "sentence": "The review described the investigator as ____; she continued searching despite repeated setbacks.",
-    "answer": "persistent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","persistent","meticulous"]
-  },
-  {
-    "id": "missing-025-04",
-    "sentence": "After considering the evidence, observers agreed that the investigator remained ____, since she continued searching despite repeated setbacks.",
-    "answer": "persistent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","persistent","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-025-05",
-    "sentence": "It became clear that the investigator was ____ when she continued searching despite repeated setbacks.",
-    "answer": "persistent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["persistent","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-025-06",
-    "sentence": "Throughout the discussion, the investigator appeared ____: she continued searching despite repeated setbacks.",
-    "answer": "persistent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","persistent"]
-  },
-  {
-    "id": "missing-026-01",
-    "sentence": "the rainfall was ____ because it lasted only a few minutes before the clouds cleared.",
-    "answer": "transient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","transient","meticulous"]
-  },
-  {
-    "id": "missing-026-02",
-    "sentence": "Because it lasted only a few minutes before the clouds cleared, the rainfall seemed ____ to everyone involved.",
-    "answer": "transient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","transient","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-026-03",
-    "sentence": "The review described the rainfall as ____; it lasted only a few minutes before the clouds cleared.",
-    "answer": "transient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["transient","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-026-04",
-    "sentence": "After considering the evidence, observers agreed that the rainfall remained ____, since it lasted only a few minutes before the clouds cleared.",
-    "answer": "transient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","transient"]
-  },
-  {
-    "id": "missing-026-05",
-    "sentence": "It became clear that the rainfall was ____ when it lasted only a few minutes before the clouds cleared.",
-    "answer": "transient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","transient","meticulous"]
-  },
-  {
-    "id": "missing-026-06",
-    "sentence": "Throughout the discussion, the rainfall appeared ____: it lasted only a few minutes before the clouds cleared.",
-    "answer": "transient",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","transient","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-027-01",
-    "sentence": "the lakeside scene was ____ because the water remained still and the surrounding forest was quiet.",
-    "answer": "serene",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["serene","meticulous","reluctant","skeptical"]
-  },
-  {
-    "id": "missing-027-02",
-    "sentence": "Because the water remained still and the surrounding forest was quiet, the lakeside scene seemed ____ to everyone involved.",
-    "answer": "serene",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","serene"]
-  },
-  {
-    "id": "missing-027-03",
-    "sentence": "The review described the lakeside scene as ____; the water remained still and the surrounding forest was quiet.",
-    "answer": "serene",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","serene","meticulous"]
-  },
-  {
-    "id": "missing-027-04",
-    "sentence": "After considering the evidence, observers agreed that the lakeside scene remained ____, since the water remained still and the surrounding forest was quiet.",
-    "answer": "serene",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","serene","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-027-05",
-    "sentence": "It became clear that the lakeside scene was ____ when the water remained still and the surrounding forest was quiet.",
-    "answer": "serene",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["serene","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-027-06",
-    "sentence": "Throughout the discussion, the lakeside scene appeared ____: the water remained still and the surrounding forest was quiet.",
-    "answer": "serene",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","serene"]
-  },
-  {
-    "id": "missing-028-01",
-    "sentence": "the crowd was ____ because the group shouted threats at anyone who approached.",
-    "answer": "hostile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","hostile","meticulous"]
-  },
-  {
-    "id": "missing-028-02",
-    "sentence": "Because the group shouted threats at anyone who approached, the crowd seemed ____ to everyone involved.",
-    "answer": "hostile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","hostile","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-028-03",
-    "sentence": "The review described the crowd as ____; the group shouted threats at anyone who approached.",
-    "answer": "hostile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["hostile","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-028-04",
-    "sentence": "After considering the evidence, observers agreed that the crowd remained ____, since the group shouted threats at anyone who approached.",
-    "answer": "hostile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","hostile"]
-  },
-  {
-    "id": "missing-028-05",
-    "sentence": "It became clear that the crowd was ____ when the group shouted threats at anyone who approached.",
-    "answer": "hostile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","hostile","meticulous"]
-  },
-  {
-    "id": "missing-028-06",
-    "sentence": "Throughout the discussion, the crowd appeared ____: the group shouted threats at anyone who approached.",
-    "answer": "hostile",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","hostile","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-029-01",
-    "sentence": "the receptionist was ____ because she greeted every visitor with patience and good manners.",
-    "answer": "courteous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["courteous","meticulous","reluctant","skeptical"]
-  },
-  {
-    "id": "missing-029-02",
-    "sentence": "Because she greeted every visitor with patience and good manners, the receptionist seemed ____ to everyone involved.",
-    "answer": "courteous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","courteous"]
-  },
-  {
-    "id": "missing-029-03",
-    "sentence": "The review described the receptionist as ____; she greeted every visitor with patience and good manners.",
-    "answer": "courteous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","courteous","meticulous"]
-  },
-  {
-    "id": "missing-029-04",
-    "sentence": "After considering the evidence, observers agreed that the receptionist remained ____, since she greeted every visitor with patience and good manners.",
-    "answer": "courteous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","courteous","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-029-05",
-    "sentence": "It became clear that the receptionist was ____ when she greeted every visitor with patience and good manners.",
-    "answer": "courteous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["courteous","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-029-06",
-    "sentence": "Throughout the discussion, the receptionist appeared ____: she greeted every visitor with patience and good manners.",
-    "answer": "courteous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","courteous"]
-  },
-  {
-    "id": "missing-030-01",
-    "sentence": "the glass panel was ____ because anyone could see through it without distortion.",
-    "answer": "transparent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","transparent","meticulous"]
-  },
-  {
-    "id": "missing-030-02",
-    "sentence": "Because anyone could see through it without distortion, the glass panel seemed ____ to everyone involved.",
-    "answer": "transparent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","transparent","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-030-03",
-    "sentence": "The review described the glass panel as ____; anyone could see through it without distortion.",
-    "answer": "transparent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["transparent","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-030-04",
-    "sentence": "After considering the evidence, observers agreed that the glass panel remained ____, since anyone could see through it without distortion.",
-    "answer": "transparent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","transparent"]
-  },
-  {
-    "id": "missing-030-05",
-    "sentence": "It became clear that the glass panel was ____ when anyone could see through it without distortion.",
-    "answer": "transparent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","transparent","meticulous"]
-  },
-  {
-    "id": "missing-030-06",
-    "sentence": "Throughout the discussion, the glass panel appeared ____: anyone could see through it without distortion.",
-    "answer": "transparent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","transparent","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-031-01",
-    "sentence": "the captain was ____ because she chose a course quickly and accepted responsibility for it.",
-    "answer": "decisive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["decisive","meticulous","reluctant","skeptical"]
-  },
-  {
-    "id": "missing-031-02",
-    "sentence": "Because she chose a course quickly and accepted responsibility for it, the captain seemed ____ to everyone involved.",
-    "answer": "decisive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","decisive"]
-  },
-  {
-    "id": "missing-031-03",
-    "sentence": "The review described the captain as ____; she chose a course quickly and accepted responsibility for it.",
-    "answer": "decisive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","decisive","meticulous"]
-  },
-  {
-    "id": "missing-031-04",
-    "sentence": "After considering the evidence, observers agreed that the captain remained ____, since she chose a course quickly and accepted responsibility for it.",
-    "answer": "decisive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","decisive","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-031-05",
-    "sentence": "It became clear that the captain was ____ when she chose a course quickly and accepted responsibility for it.",
-    "answer": "decisive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["decisive","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-031-06",
-    "sentence": "Throughout the discussion, the captain appeared ____: she chose a course quickly and accepted responsibility for it.",
-    "answer": "decisive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","decisive"]
-  },
-  {
-    "id": "missing-032-01",
-    "sentence": "the signature was ____ because experts confirmed it was not forged or copied.",
-    "answer": "authentic",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","authentic","meticulous"]
-  },
-  {
-    "id": "missing-032-02",
-    "sentence": "Because experts confirmed it was not forged or copied, the signature seemed ____ to everyone involved.",
-    "answer": "authentic",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","authentic","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-032-03",
-    "sentence": "The review described the signature as ____; experts confirmed it was not forged or copied.",
-    "answer": "authentic",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["authentic","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-032-04",
-    "sentence": "After considering the evidence, observers agreed that the signature remained ____, since experts confirmed it was not forged or copied.",
-    "answer": "authentic",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","authentic"]
-  },
-  {
-    "id": "missing-032-05",
-    "sentence": "It became clear that the signature was ____ when experts confirmed it was not forged or copied.",
-    "answer": "authentic",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","authentic","meticulous"]
-  },
-  {
-    "id": "missing-032-06",
-    "sentence": "Throughout the discussion, the signature appeared ____: experts confirmed it was not forged or copied.",
-    "answer": "authentic",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","authentic","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-033-01",
-    "sentence": "the safety inspection was ____ because every employee had to complete it before entering the plant.",
-    "answer": "mandatory",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["mandatory","meticulous","reluctant","skeptical"]
-  },
-  {
-    "id": "missing-033-02",
-    "sentence": "Because every employee had to complete it before entering the plant, the safety inspection seemed ____ to everyone involved.",
-    "answer": "mandatory",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","mandatory"]
-  },
-  {
-    "id": "missing-033-03",
-    "sentence": "The review described the safety inspection as ____; every employee had to complete it before entering the plant.",
-    "answer": "mandatory",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","mandatory","meticulous"]
-  },
-  {
-    "id": "missing-033-04",
-    "sentence": "After considering the evidence, observers agreed that the safety inspection remained ____, since every employee had to complete it before entering the plant.",
-    "answer": "mandatory",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","mandatory","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-033-05",
-    "sentence": "It became clear that the safety inspection was ____ when every employee had to complete it before entering the plant.",
-    "answer": "mandatory",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["mandatory","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-033-06",
-    "sentence": "Throughout the discussion, the safety inspection appeared ____: every employee had to complete it before entering the plant.",
-    "answer": "mandatory",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","mandatory"]
-  },
-  {
-    "id": "missing-034-01",
-    "sentence": "the workshop was ____ because attendance was a personal choice rather than a requirement.",
-    "answer": "optional",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","optional","meticulous"]
-  },
-  {
-    "id": "missing-034-02",
-    "sentence": "Because attendance was a personal choice rather than a requirement, the workshop seemed ____ to everyone involved.",
-    "answer": "optional",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","optional","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-034-03",
-    "sentence": "The review described the workshop as ____; attendance was a personal choice rather than a requirement.",
-    "answer": "optional",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["optional","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-034-04",
-    "sentence": "After considering the evidence, observers agreed that the workshop remained ____, since attendance was a personal choice rather than a requirement.",
-    "answer": "optional",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","optional"]
-  },
-  {
-    "id": "missing-034-05",
-    "sentence": "It became clear that the workshop was ____ when attendance was a personal choice rather than a requirement.",
-    "answer": "optional",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","optional","meticulous"]
-  },
-  {
-    "id": "missing-034-06",
-    "sentence": "Throughout the discussion, the workshop appeared ____: attendance was a personal choice rather than a requirement.",
-    "answer": "optional",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","optional","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-035-01",
-    "sentence": "the canyon was ____ because its scale stretched far beyond what visitors could see at once.",
-    "answer": "immense",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["immense","meticulous","reluctant","skeptical"]
-  },
-  {
-    "id": "missing-035-02",
-    "sentence": "Because its scale stretched far beyond what visitors could see at once, the canyon seemed ____ to everyone involved.",
-    "answer": "immense",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","immense"]
-  },
-  {
-    "id": "missing-035-03",
-    "sentence": "The review described the canyon as ____; its scale stretched far beyond what visitors could see at once.",
-    "answer": "immense",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","immense","meticulous"]
-  },
-  {
-    "id": "missing-035-04",
-    "sentence": "After considering the evidence, observers agreed that the canyon remained ____, since its scale stretched far beyond what visitors could see at once.",
-    "answer": "immense",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","immense","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-035-05",
-    "sentence": "It became clear that the canyon was ____ when its scale stretched far beyond what visitors could see at once.",
-    "answer": "immense",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["immense","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-035-06",
-    "sentence": "Throughout the discussion, the canyon appeared ____: its scale stretched far beyond what visitors could see at once.",
-    "answer": "immense",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","immense"]
-  },
-  {
-    "id": "missing-036-01",
-    "sentence": "the insect was ____ because it was barely visible without a magnifying glass.",
-    "answer": "minuscule",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","minuscule","meticulous"]
-  },
-  {
-    "id": "missing-036-02",
-    "sentence": "Because it was barely visible without a magnifying glass, the insect seemed ____ to everyone involved.",
-    "answer": "minuscule",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","minuscule","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-036-03",
-    "sentence": "The review described the insect as ____; it was barely visible without a magnifying glass.",
-    "answer": "minuscule",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["minuscule","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-036-04",
-    "sentence": "After considering the evidence, observers agreed that the insect remained ____, since it was barely visible without a magnifying glass.",
-    "answer": "minuscule",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","minuscule"]
-  },
-  {
-    "id": "missing-036-05",
-    "sentence": "It became clear that the insect was ____ when it was barely visible without a magnifying glass.",
-    "answer": "minuscule",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","minuscule","meticulous"]
-  },
-  {
-    "id": "missing-036-06",
-    "sentence": "Throughout the discussion, the insect appeared ____: it was barely visible without a magnifying glass.",
-    "answer": "minuscule",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","minuscule","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-037-01",
-    "sentence": "the driver was ____ because he slowed near the school and checked both mirrors.",
-    "answer": "cautious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["cautious","meticulous","reluctant","skeptical"]
-  },
-  {
-    "id": "missing-037-02",
-    "sentence": "Because he slowed near the school and checked both mirrors, the driver seemed ____ to everyone involved.",
-    "answer": "cautious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","cautious"]
-  },
-  {
-    "id": "missing-037-03",
-    "sentence": "The review described the driver as ____; he slowed near the school and checked both mirrors.",
-    "answer": "cautious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","cautious","meticulous"]
-  },
-  {
-    "id": "missing-037-04",
-    "sentence": "After considering the evidence, observers agreed that the driver remained ____, since he slowed near the school and checked both mirrors.",
-    "answer": "cautious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","cautious","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-037-05",
-    "sentence": "It became clear that the driver was ____ when he slowed near the school and checked both mirrors.",
-    "answer": "cautious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["cautious","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-037-06",
-    "sentence": "Throughout the discussion, the driver appeared ____: he slowed near the school and checked both mirrors.",
-    "answer": "cautious",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","cautious"]
-  },
-  {
-    "id": "missing-038-01",
-    "sentence": "the supervisor was ____ because he ignored repeated warnings about unsafe equipment.",
-    "answer": "negligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","negligent","meticulous"]
-  },
-  {
-    "id": "missing-038-02",
-    "sentence": "Because he ignored repeated warnings about unsafe equipment, the supervisor seemed ____ to everyone involved.",
-    "answer": "negligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","negligent","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-038-03",
-    "sentence": "The review described the supervisor as ____; he ignored repeated warnings about unsafe equipment.",
-    "answer": "negligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["negligent","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-038-04",
-    "sentence": "After considering the evidence, observers agreed that the supervisor remained ____, since he ignored repeated warnings about unsafe equipment.",
-    "answer": "negligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","negligent"]
-  },
-  {
-    "id": "missing-038-05",
-    "sentence": "It became clear that the supervisor was ____ when he ignored repeated warnings about unsafe equipment.",
-    "answer": "negligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","negligent","meticulous"]
-  },
-  {
-    "id": "missing-038-06",
-    "sentence": "Throughout the discussion, the supervisor appeared ____: he ignored repeated warnings about unsafe equipment.",
-    "answer": "negligent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","negligent","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-039-01",
-    "sentence": "the donor was ____ because she gave a large portion of her savings to the relief fund.",
+    "clue": "Choose the antonym of “inflexible”.",
+    "options": [
+      "versatile",
+      "boastful",
+      "scatter",
+      "innocent"
+    ]
+  },
+  {
+    "id": "missing-038",
+    "sentence": "Item 38: The word with the opposite meaning to “versatile” is ____ .",
+    "answer": "inflexible",
+    "clue": "Choose the antonym of “versatile”.",
+    "options": [
+      "attract",
+      "virtue",
+      "abrasive",
+      "inflexible"
+    ]
+  },
+  {
+    "id": "missing-039",
+    "sentence": "Item 39: The word with the opposite meaning to “stingy” is ____ .",
     "answer": "generous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["generous","meticulous","reluctant","skeptical"]
+    "clue": "Choose the antonym of “stingy”.",
+    "options": [
+      "unpleasant",
+      "gullible",
+      "generous",
+      "chaos"
+    ]
   },
   {
-    "id": "missing-039-02",
-    "sentence": "Because she gave a large portion of her savings to the relief fund, the donor seemed ____ to everyone involved.",
-    "answer": "generous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","generous"]
+    "id": "missing-040",
+    "sentence": "Item 40: The word with the opposite meaning to “generous” is ____ .",
+    "answer": "stingy",
+    "clue": "Choose the antonym of “generous”.",
+    "options": [
+      "frequent",
+      "stingy",
+      "deep",
+      "favorable"
+    ]
   },
   {
-    "id": "missing-039-03",
-    "sentence": "The review described the donor as ____; she gave a large portion of her savings to the relief fund.",
-    "answer": "generous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","generous","meticulous"]
+    "id": "missing-041",
+    "sentence": "Item 41: The word with the opposite meaning to “arrogant” is ____ .",
+    "answer": "humble",
+    "clue": "Choose the antonym of “arrogant”.",
+    "options": [
+      "humble",
+      "positive",
+      "coherent",
+      "decelerate"
+    ]
   },
   {
-    "id": "missing-039-04",
-    "sentence": "After considering the evidence, observers agreed that the donor remained ____, since she gave a large portion of her savings to the relief fund.",
-    "answer": "generous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","generous","meticulous","reluctant"]
+    "id": "missing-042",
+    "sentence": "Item 42: The word with the opposite meaning to “humble” is ____ .",
+    "answer": "arrogant",
+    "clue": "Choose the antonym of “humble”.",
+    "options": [
+      "perilous",
+      "counterfeit",
+      "punish",
+      "arrogant"
+    ]
   },
   {
-    "id": "missing-039-05",
-    "sentence": "It became clear that the donor was ____ when she gave a large portion of her savings to the relief fund.",
-    "answer": "generous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["generous","meticulous","reluctant","impartial"]
+    "id": "missing-043",
+    "sentence": "Item 43: The word with the opposite meaning to “pessimistic” is ____ .",
+    "answer": "optimistic",
+    "clue": "Choose the antonym of “pessimistic”.",
+    "options": [
+      "permit",
+      "poverty",
+      "optimistic",
+      "respected"
+    ]
   },
   {
-    "id": "missing-039-06",
-    "sentence": "Throughout the discussion, the donor appeared ____: she gave a large portion of her savings to the relief fund.",
-    "answer": "generous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","generous"]
+    "id": "missing-044",
+    "sentence": "Item 44: The word with the opposite meaning to “optimistic” is ____ .",
+    "answer": "pessimistic",
+    "clue": "Choose the antonym of “optimistic”.",
+    "options": [
+      "guilty",
+      "pessimistic",
+      "artificial",
+      "tighten"
+    ]
   },
   {
-    "id": "missing-040-01",
-    "sentence": "the household was ____ because they repaired old items and avoided unnecessary purchases.",
-    "answer": "frugal",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","frugal","meticulous"]
+    "id": "missing-045",
+    "sentence": "Item 45: The word with the opposite meaning to “opaque” is ____ .",
+    "answer": "transparent",
+    "clue": "Choose the antonym of “opaque”.",
+    "options": [
+      "transparent",
+      "repel",
+      "vice",
+      "arduous"
+    ]
   },
   {
-    "id": "missing-040-02",
-    "sentence": "Because they repaired old items and avoided unnecessary purchases, the household seemed ____ to everyone involved.",
-    "answer": "frugal",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","frugal","meticulous","reluctant"]
+    "id": "missing-046",
+    "sentence": "Item 46: The word with the opposite meaning to “transparent” is ____ .",
+    "answer": "opaque",
+    "clue": "Choose the antonym of “transparent”.",
+    "options": [
+      "order",
+      "selfless",
+      "resilient",
+      "opaque"
+    ]
   },
   {
-    "id": "missing-040-03",
-    "sentence": "The review described the household as ____; they repaired old items and avoided unnecessary purchases.",
-    "answer": "frugal",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["frugal","meticulous","reluctant","plausible"]
+    "id": "missing-047",
+    "sentence": "Item 47: The word with the opposite meaning to “permanent” is ____ .",
+    "answer": "temporary",
+    "clue": "Choose the antonym of “permanent”.",
+    "options": [
+      "adverse",
+      "occasional",
+      "temporary",
+      "loose"
+    ]
   },
   {
-    "id": "missing-040-04",
-    "sentence": "After considering the evidence, observers agreed that the household remained ____, since they repaired old items and avoided unnecessary purchases.",
-    "answer": "frugal",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","frugal"]
+    "id": "missing-048",
+    "sentence": "Item 48: The word with the opposite meaning to “temporary” is ____ .",
+    "answer": "permanent",
+    "clue": "Choose the antonym of “temporary”.",
+    "options": [
+      "strengthen",
+      "permanent",
+      "negative",
+      "incoherent"
+    ]
   },
   {
-    "id": "missing-040-05",
-    "sentence": "It became clear that the household was ____ when they repaired old items and avoided unnecessary purchases.",
-    "answer": "frugal",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","frugal","meticulous"]
+    "id": "missing-049",
+    "sentence": "Item 49: The word with the opposite meaning to “occasional” is ____ .",
+    "answer": "frequent",
+    "clue": "Choose the antonym of “occasional”.",
+    "options": [
+      "frequent",
+      "safe",
+      "loyal",
+      "repair"
+    ]
   },
   {
-    "id": "missing-040-06",
-    "sentence": "Throughout the discussion, the household appeared ____: they repaired old items and avoided unnecessary purchases.",
-    "answer": "frugal",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","frugal","meticulous","reluctant"]
+    "id": "missing-050",
+    "sentence": "Item 50: The word with the opposite meaning to “frequent” is ____ .",
+    "answer": "occasional",
+    "clue": "Choose the antonym of “frequent”.",
+    "options": [
+      "versatile",
+      "forbid",
+      "wealth",
+      "occasional"
+    ]
   },
   {
-    "id": "missing-041-01",
-    "sentence": "the banquet was ____ because the hosts decorated every table with costly flowers and fine silver.",
-    "answer": "lavish",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["lavish","meticulous","reluctant","skeptical"]
+    "id": "missing-051",
+    "sentence": "Item 51: The word with the opposite meaning to “friendly” is ____ .",
+    "answer": "hostile",
+    "clue": "Choose the antonym of “friendly”.",
+    "options": [
+      "loosen",
+      "legal",
+      "hostile",
+      "natural"
+    ]
   },
   {
-    "id": "missing-041-02",
-    "sentence": "Because the hosts decorated every table with costly flowers and fine silver, the banquet seemed ____ to everyone involved.",
-    "answer": "lavish",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","lavish"]
+    "id": "missing-052",
+    "sentence": "Item 52: The word with the opposite meaning to “hostile” is ____ .",
+    "answer": "friendly",
+    "clue": "Choose the antonym of “hostile”.",
+    "options": [
+      "effortless",
+      "friendly",
+      "borrow",
+      "dawn"
+    ]
   },
   {
-    "id": "missing-041-03",
-    "sentence": "The review described the banquet as ____; the hosts decorated every table with costly flowers and fine silver.",
-    "answer": "lavish",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","lavish","meticulous"]
+    "id": "missing-053",
+    "sentence": "Item 53: The word with the opposite meaning to “dull” is ____ .",
+    "answer": "vivid",
+    "clue": "Choose the antonym of “dull”.",
+    "options": [
+      "vivid",
+      "generosity",
+      "selfish",
+      "fragile"
+    ]
   },
   {
-    "id": "missing-041-04",
-    "sentence": "After considering the evidence, observers agreed that the banquet remained ____, since the hosts decorated every table with costly flowers and fine silver.",
-    "answer": "lavish",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","lavish","meticulous","reluctant"]
+    "id": "missing-054",
+    "sentence": "Item 54: The word with the opposite meaning to “vivid” is ____ .",
+    "answer": "dull",
+    "clue": "Choose the antonym of “vivid”.",
+    "options": [
+      "tight",
+      "feigned",
+      "hostile",
+      "dull"
+    ]
   },
   {
-    "id": "missing-041-05",
-    "sentence": "It became clear that the banquet was ____ when the hosts decorated every table with costly flowers and fine silver.",
-    "answer": "lavish",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["lavish","meticulous","reluctant","impartial"]
+    "id": "missing-055",
+    "sentence": "Item 55: The word with the opposite meaning to “flexible” is ____ .",
+    "answer": "rigid",
+    "clue": "Choose the antonym of “flexible”.",
+    "options": [
+      "diligent",
+      "weaken",
+      "rigid",
+      "private"
+    ]
   },
   {
-    "id": "missing-041-06",
-    "sentence": "Throughout the discussion, the banquet appeared ____: the hosts decorated every table with costly flowers and fine silver.",
-    "answer": "lavish",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","lavish"]
+    "id": "missing-056",
+    "sentence": "Item 56: The word with the opposite meaning to “rigid” is ____ .",
+    "answer": "flexible",
+    "clue": "Choose the antonym of “rigid”.",
+    "options": [
+      "damage",
+      "flexible",
+      "plentiful",
+      "treacherous"
+    ]
   },
   {
-    "id": "missing-042-01",
-    "sentence": "the speaker was ____ because she explained complicated ideas clearly and confidently.",
-    "answer": "articulate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","articulate","meticulous"]
+    "id": "missing-057",
+    "sentence": "Item 57: The word with the opposite meaning to “bold” is ____ .",
+    "answer": "timid",
+    "clue": "Choose the antonym of “bold”.",
+    "options": [
+      "timid",
+      "inflexible",
+      "remember",
+      "strength"
+    ]
   },
   {
-    "id": "missing-042-02",
-    "sentence": "Because she explained complicated ideas clearly and confidently, the speaker seemed ____ to everyone involved.",
-    "answer": "articulate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","articulate","meticulous","reluctant"]
+    "id": "missing-058",
+    "sentence": "Item 58: The word with the opposite meaning to “timid” is ____ .",
+    "answer": "bold",
+    "clue": "Choose the antonym of “timid”.",
+    "options": [
+      "expand",
+      "connect",
+      "illegal",
+      "bold"
+    ]
   },
   {
-    "id": "missing-042-03",
-    "sentence": "The review described the speaker as ____; she explained complicated ideas clearly and confidently.",
-    "answer": "articulate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["articulate","meticulous","reluctant","plausible"]
+    "id": "missing-059",
+    "sentence": "Item 59: The word with the opposite meaning to “rude” is ____ .",
+    "answer": "courteous",
+    "clue": "Choose the antonym of “rude”.",
+    "options": [
+      "dusk",
+      "brisk",
+      "courteous",
+      "lend"
+    ]
   },
   {
-    "id": "missing-042-04",
-    "sentence": "After considering the evidence, observers agreed that the speaker remained ____, since she explained complicated ideas clearly and confidently.",
-    "answer": "articulate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","articulate"]
+    "id": "missing-060",
+    "sentence": "Item 60: The word with the opposite meaning to “courteous” is ____ .",
+    "answer": "rude",
+    "clue": "Choose the antonym of “courteous”.",
+    "options": [
+      "plausible",
+      "rude",
+      "greed",
+      "active"
+    ]
   },
   {
-    "id": "missing-042-05",
-    "sentence": "It became clear that the speaker was ____ when she explained complicated ideas clearly and confidently.",
-    "answer": "articulate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","articulate","meticulous"]
+    "id": "missing-061",
+    "sentence": "Item 61: The word with the opposite meaning to “recent” is ____ .",
+    "answer": "ancient",
+    "clue": "Choose the antonym of “recent”.",
+    "options": [
+      "ancient",
+      "smooth",
+      "imminent",
+      "friendly"
+    ]
   },
   {
-    "id": "missing-042-06",
-    "sentence": "Throughout the discussion, the speaker appeared ____: she explained complicated ideas clearly and confidently.",
-    "answer": "articulate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","articulate","meticulous","reluctant"]
+    "id": "missing-062",
+    "sentence": "Item 62: The word with the opposite meaning to “ancient” is ____ .",
+    "answer": "recent",
+    "clue": "Choose the antonym of “ancient”.",
+    "options": [
+      "public",
+      "idle",
+      "approve",
+      "recent"
+    ]
   },
   {
-    "id": "missing-043-01",
-    "sentence": "the defendant was ____ because he sincerely regretted the harm his actions had caused.",
-    "answer": "remorseful",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["remorseful","meticulous","reluctant","skeptical"]
+    "id": "missing-063",
+    "sentence": "Item 63: The word with the opposite meaning to “counterfeit” is ____ .",
+    "answer": "genuine",
+    "clue": "Choose the antonym of “counterfeit”.",
+    "options": [
+      "patient",
+      "support",
+      "genuine",
+      "meagre"
+    ]
   },
   {
-    "id": "missing-043-02",
-    "sentence": "Because he sincerely regretted the harm his actions had caused, the defendant seemed ____ to everyone involved.",
-    "answer": "remorseful",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","remorseful"]
+    "id": "missing-064",
+    "sentence": "Item 64: The word with the opposite meaning to “genuine” is ____ .",
+    "answer": "counterfeit",
+    "clue": "Choose the antonym of “genuine”.",
+    "options": [
+      "weakness",
+      "counterfeit",
+      "generous",
+      "forget"
+    ]
   },
   {
-    "id": "missing-043-03",
-    "sentence": "The review described the defendant as ____; he sincerely regretted the harm his actions had caused.",
-    "answer": "remorseful",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","remorseful","meticulous"]
+    "id": "missing-065",
+    "sentence": "Item 65: The word with the opposite meaning to “treacherous” is ____ .",
+    "answer": "loyal",
+    "clue": "Choose the antonym of “treacherous”.",
+    "options": [
+      "loyal",
+      "contract",
+      "disconnect",
+      "regular"
+    ]
   },
   {
-    "id": "missing-043-04",
-    "sentence": "After considering the evidence, observers agreed that the defendant remained ____, since he sincerely regretted the harm his actions had caused.",
-    "answer": "remorseful",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","remorseful","meticulous","reluctant"]
+    "id": "missing-066",
+    "sentence": "Item 66: The word with the opposite meaning to “loyal” is ____ .",
+    "answer": "treacherous",
+    "clue": "Choose the antonym of “loyal”.",
+    "options": [
+      "omit",
+      "noisy",
+      "sluggish",
+      "treacherous"
+    ]
   },
   {
-    "id": "missing-043-05",
-    "sentence": "It became clear that the defendant was ____ when he sincerely regretted the harm his actions had caused.",
-    "answer": "remorseful",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["remorseful","meticulous","reluctant","impartial"]
+    "id": "missing-067",
+    "sentence": "Item 67: The word with the opposite meaning to “impatient” is ____ .",
+    "answer": "patient",
+    "clue": "Choose the antonym of “impatient”.",
+    "options": [
+      "passive",
+      "implausible",
+      "patient",
+      "courage"
+    ]
   },
   {
-    "id": "missing-043-06",
-    "sentence": "Throughout the discussion, the defendant appeared ____: he sincerely regretted the harm his actions had caused.",
-    "answer": "remorseful",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","remorseful"]
+    "id": "missing-068",
+    "sentence": "Item 68: The word with the opposite meaning to “patient” is ____ .",
+    "answer": "impatient",
+    "clue": "Choose the antonym of “patient”.",
+    "options": [
+      "vivid",
+      "impatient",
+      "rough",
+      "remote"
+    ]
   },
   {
-    "id": "missing-044-01",
-    "sentence": "the audience was ____ because they showed no interest or concern when the announcement was made.",
-    "answer": "indifferent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","indifferent","meticulous"]
+    "id": "missing-069",
+    "sentence": "Item 69: The word with the opposite meaning to “inaccurate” is ____ .",
+    "answer": "accurate",
+    "clue": "Choose the antonym of “inaccurate”.",
+    "options": [
+      "accurate",
+      "rigorous",
+      "formidable",
+      "disapprove"
+    ]
   },
   {
-    "id": "missing-044-02",
-    "sentence": "Because they showed no interest or concern when the announcement was made, the audience seemed ____ to everyone involved.",
-    "answer": "indifferent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","indifferent","meticulous","reluctant"]
+    "id": "missing-070",
+    "sentence": "Item 70: The word with the opposite meaning to “accurate” is ____ .",
+    "answer": "inaccurate",
+    "clue": "Choose the antonym of “accurate”.",
+    "options": [
+      "rational",
+      "impatient",
+      "oppose",
+      "inaccurate"
+    ]
   },
   {
-    "id": "missing-044-03",
-    "sentence": "The review described the audience as ____; they showed no interest or concern when the announcement was made.",
-    "answer": "indifferent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["indifferent","meticulous","reluctant","plausible"]
+    "id": "missing-071",
+    "sentence": "Item 71: The word with the opposite meaning to “specific” is ____ .",
+    "answer": "vague",
+    "clue": "Choose the antonym of “specific”.",
+    "options": [
+      "succeed",
+      "success",
+      "vague",
+      "stingy"
+    ]
   },
   {
-    "id": "missing-044-04",
-    "sentence": "After considering the evidence, observers agreed that the audience remained ____, since they showed no interest or concern when the announcement was made.",
-    "answer": "indifferent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","indifferent"]
+    "id": "missing-072",
+    "sentence": "Item 72: The word with the opposite meaning to “vague” is ____ .",
+    "answer": "specific",
+    "clue": "Choose the antonym of “vague”.",
+    "options": [
+      "irregular",
+      "specific",
+      "accept",
+      "arrange"
+    ]
   },
   {
-    "id": "missing-044-05",
-    "sentence": "It became clear that the audience was ____ when they showed no interest or concern when the announcement was made.",
-    "answer": "indifferent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","indifferent","meticulous"]
+    "id": "missing-073",
+    "sentence": "Item 73: The word with the opposite meaning to “simple” is ____ .",
+    "answer": "complex",
+    "clue": "Choose the antonym of “simple”.",
+    "options": [
+      "complex",
+      "expose",
+      "silent",
+      "candid"
+    ]
   },
   {
-    "id": "missing-044-06",
-    "sentence": "Throughout the discussion, the audience appeared ____: they showed no interest or concern when the announcement was made.",
-    "answer": "indifferent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","indifferent","meticulous","reluctant"]
+    "id": "missing-074",
+    "sentence": "Item 74: The word with the opposite meaning to “complex” is ____ .",
+    "answer": "simple",
+    "clue": "Choose the antonym of “complex”.",
+    "options": [
+      "cowardice",
+      "vacant",
+      "concise",
+      "simple"
+    ]
   },
   {
-    "id": "missing-045-01",
-    "sentence": "the necklace was ____ because its tiny links and carefully fitted stones required hours of work.",
-    "answer": "intricate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["intricate","meticulous","reluctant","skeptical"]
+    "id": "missing-075",
+    "sentence": "Item 75: The word with the opposite meaning to “rash” is ____ .",
+    "answer": "cautious",
+    "clue": "Choose the antonym of “rash”.",
+    "options": [
+      "innovative",
+      "dull",
+      "cautious",
+      "bitter"
+    ]
   },
   {
-    "id": "missing-045-02",
-    "sentence": "Because its tiny links and carefully fitted stones required hours of work, the necklace seemed ____ to everyone involved.",
-    "answer": "intricate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","intricate"]
+    "id": "missing-076",
+    "sentence": "Item 76: The word with the opposite meaning to “cautious” is ____ .",
+    "answer": "rash",
+    "clue": "Choose the antonym of “cautious”.",
+    "options": [
+      "combine",
+      "rash",
+      "lenient",
+      "manageable"
+    ]
   },
   {
-    "id": "missing-045-03",
-    "sentence": "The review described the necklace as ____; its tiny links and carefully fitted stones required hours of work.",
-    "answer": "intricate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","intricate","meticulous"]
+    "id": "missing-077",
+    "sentence": "Item 77: The word with the opposite meaning to “boastful” is ____ .",
+    "answer": "modest",
+    "clue": "Choose the antonym of “boastful”.",
+    "options": [
+      "modest",
+      "irrational",
+      "accurate",
+      "whisper"
+    ]
   },
   {
-    "id": "missing-045-04",
-    "sentence": "After considering the evidence, observers agreed that the necklace remained ____, since its tiny links and carefully fitted stones required hours of work.",
-    "answer": "intricate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","intricate","meticulous","reluctant"]
+    "id": "missing-078",
+    "sentence": "Item 78: The word with the opposite meaning to “modest” is ____ .",
+    "answer": "boastful",
+    "clue": "Choose the antonym of “modest”.",
+    "options": [
+      "humble",
+      "fail",
+      "failure",
+      "boastful"
+    ]
   },
   {
-    "id": "missing-045-05",
-    "sentence": "It became clear that the necklace was ____ when its tiny links and carefully fitted stones required hours of work.",
-    "answer": "intricate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["intricate","meticulous","reluctant","impartial"]
+    "id": "missing-079",
+    "sentence": "Item 79: The word with the opposite meaning to “natural” is ____ .",
+    "answer": "artificial",
+    "clue": "Choose the antonym of “natural”.",
+    "options": [
+      "disorder",
+      "possible",
+      "artificial",
+      "reject"
+    ]
   },
   {
-    "id": "missing-045-06",
-    "sentence": "Throughout the discussion, the necklace appeared ____: its tiny links and carefully fitted stones required hours of work.",
-    "answer": "intricate",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","intricate"]
+    "id": "missing-080",
+    "sentence": "Item 80: The word with the opposite meaning to “artificial” is ____ .",
+    "answer": "natural",
+    "clue": "Choose the antonym of “artificial”.",
+    "options": [
+      "evasive",
+      "natural",
+      "shield",
+      "visible"
+    ]
   },
   {
-    "id": "missing-046-01",
-    "sentence": "the expedition was ____ because the team crossed steep terrain in extreme heat for several days.",
+    "id": "missing-081",
+    "sentence": "Item 81: The word with the opposite meaning to “contract” is ____ .",
+    "answer": "expand",
+    "clue": "Choose the antonym of “contract”.",
+    "options": [
+      "expand",
+      "wisdom",
+      "occupied",
+      "verbose"
+    ]
+  },
+  {
+    "id": "missing-082",
+    "sentence": "Item 82: The word with the opposite meaning to “expand” is ____ .",
+    "answer": "contract",
+    "clue": "Choose the antonym of “expand”.",
+    "options": [
+      "sweet",
+      "conventional",
+      "rigid",
+      "contract"
+    ]
+  },
+  {
+    "id": "missing-083",
+    "sentence": "Item 83: The word with the opposite meaning to “reject” is ____ .",
+    "answer": "accept",
+    "clue": "Choose the antonym of “reject”.",
+    "options": [
+      "prudent",
+      "separate",
+      "accept",
+      "authentic"
+    ]
+  },
+  {
+    "id": "missing-084",
+    "sentence": "Item 84: The word with the opposite meaning to “accept” is ____ .",
+    "answer": "reject",
+    "clue": "Choose the antonym of “accept”.",
+    "options": [
+      "shout",
+      "reject",
+      "relentless",
+      "inaccurate"
+    ]
+  },
+  {
+    "id": "missing-085",
+    "sentence": "Item 85: The word with the opposite meaning to “exclude” is ____ .",
+    "answer": "include",
+    "clue": "Choose the antonym of “exclude”.",
+    "options": [
+      "include",
+      "arrogant",
+      "advance",
+      "friend"
+    ]
+  },
+  {
+    "id": "missing-086",
+    "sentence": "Item 86: The word with the opposite meaning to “include” is ____ .",
+    "answer": "exclude",
+    "clue": "Choose the antonym of “include”.",
+    "options": [
+      "include",
+      "victory",
+      "impossible",
+      "exclude"
+    ]
+  },
+  {
+    "id": "missing-087",
+    "sentence": "Item 87: The word with the opposite meaning to “descend” is ____ .",
+    "answer": "ascend",
+    "clue": "Choose the antonym of “descend”.",
+    "options": [
+      "hidden",
+      "composed",
+      "ascend",
+      "complicate"
+    ]
+  },
+  {
+    "id": "missing-088",
+    "sentence": "Item 88: The word with the opposite meaning to “ascend” is ____ .",
+    "answer": "descend",
+    "clue": "Choose the antonym of “ascend”.",
+    "options": [
+      "impartial",
+      "descend",
+      "foolishness",
+      "domestic"
+    ]
+  },
+  {
+    "id": "missing-089",
+    "sentence": "Item 89: The word with the opposite meaning to “reveal” is ____ .",
+    "answer": "conceal",
+    "clue": "Choose the antonym of “reveal”.",
+    "options": [
+      "conceal",
+      "tender",
+      "lucid",
+      "flexible"
+    ]
+  },
+  {
+    "id": "missing-090",
+    "sentence": "Item 90: The word with the opposite meaning to “conceal” is ____ .",
+    "answer": "reveal",
+    "clue": "Choose the antonym of “conceal”.",
+    "options": [
+      "spurious",
+      "reckless",
+      "create",
+      "reveal"
+    ]
+  },
+  {
+    "id": "missing-091",
+    "sentence": "Item 91: The word with the opposite meaning to “decelerate” is ____ .",
+    "answer": "accelerate",
+    "clue": "Choose the antonym of “decelerate”.",
+    "options": [
+      "vague",
+      "vanish",
+      "accelerate",
+      "merciful"
+    ]
+  },
+  {
+    "id": "missing-092",
+    "sentence": "Item 92: The word with the opposite meaning to “accelerate” is ____ .",
+    "answer": "decelerate",
+    "clue": "Choose the antonym of “accelerate”.",
+    "options": [
+      "enemy",
+      "decelerate",
+      "optimistic",
+      "retreat"
+    ]
+  },
+  {
+    "id": "missing-093",
+    "sentence": "Item 93: The word with the opposite meaning to “weaken” is ____ .",
+    "answer": "strengthen",
+    "clue": "Choose the antonym of “weaken”.",
+    "options": [
+      "strengthen",
+      "exclude",
+      "defeat",
+      "logical"
+    ]
+  },
+  {
+    "id": "missing-094",
+    "sentence": "Item 94: The word with the opposite meaning to “strengthen” is ____ .",
+    "answer": "weaken",
+    "clue": "Choose the antonym of “strengthen”.",
+    "options": [
+      "simplify",
+      "asleep",
+      "flustered",
+      "weaken"
+    ]
+  },
+  {
+    "id": "missing-095",
+    "sentence": "Item 95: The word with the opposite meaning to “disapprove” is ____ .",
+    "answer": "approve",
+    "clue": "Choose the antonym of “disapprove”.",
+    "options": [
+      "foreign",
+      "biased",
+      "approve",
+      "honesty"
+    ]
+  },
+  {
+    "id": "missing-096",
+    "sentence": "Item 96: The word with the opposite meaning to “approve” is ____ .",
+    "answer": "disapprove",
+    "clue": "Choose the antonym of “approve”.",
+    "options": [
+      "timid",
+      "disapprove",
+      "tough",
+      "confusing"
+    ]
+  },
+  {
+    "id": "missing-097",
+    "sentence": "Item 97: The word with the opposite meaning to “separate” is ____ .",
+    "answer": "combine",
+    "clue": "Choose the antonym of “separate”.",
+    "options": [
+      "combine",
+      "eloquent",
+      "trivial",
+      "destroy"
+    ]
+  },
+  {
+    "id": "missing-098",
+    "sentence": "Item 98: The word with the opposite meaning to “combine” is ____ .",
+    "answer": "separate",
+    "clue": "Choose the antonym of “combine”.",
+    "options": [
+      "meticulous",
+      "specific",
+      "appear",
+      "separate"
+    ]
+  },
+  {
+    "id": "missing-099",
+    "sentence": "Item 99: The word with the opposite meaning to “destroy” is ____ .",
+    "answer": "create",
+    "clue": "Choose the antonym of “destroy”.",
+    "options": [
+      "construct",
+      "beginning",
+      "create",
+      "pessimistic"
+    ]
+  },
+  {
+    "id": "missing-100",
+    "sentence": "Item 100: The word with the opposite meaning to “create” is ____ .",
+    "answer": "destroy",
+    "clue": "Choose the antonym of “create”.",
+    "options": [
+      "illogical",
+      "destroy",
+      "ascend",
+      "arrival"
+    ]
+  },
+  {
+    "id": "missing-101",
+    "sentence": "Item 101: The word with the opposite meaning to “depart” is ____ .",
+    "answer": "arrive",
+    "clue": "Choose the antonym of “depart”.",
+    "options": [
+      "arrive",
+      "preserve",
+      "awake",
+      "decisive"
+    ]
+  },
+  {
+    "id": "missing-102",
+    "sentence": "Item 102: The word with the opposite meaning to “arrive” is ____ .",
+    "answer": "depart",
+    "clue": "Choose the antonym of “arrive”.",
+    "options": [
+      "deceit",
+      "minor",
+      "ambiguous",
+      "depart"
+    ]
+  },
+  {
+    "id": "missing-103",
+    "sentence": "Item 103: The word with the opposite meaning to “decrease” is ____ .",
+    "answer": "increase",
+    "clue": "Choose the antonym of “decrease”.",
+    "options": [
+      "mandatory",
+      "bold",
+      "increase",
+      "mature"
+    ]
+  },
+  {
+    "id": "missing-104",
+    "sentence": "Item 104: The word with the opposite meaning to “increase” is ____ .",
+    "answer": "decrease",
+    "clue": "Choose the antonym of “increase”.",
+    "options": [
+      "arrive",
+      "decrease",
+      "inarticulate",
+      "significant"
+    ]
+  },
+  {
+    "id": "missing-105",
+    "sentence": "Item 105: The word with the opposite meaning to “discourage” is ____ .",
+    "answer": "encourage",
+    "clue": "Choose the antonym of “discourage”.",
+    "options": [
+      "encourage",
+      "careless",
+      "complex",
+      "melt"
+    ]
+  },
+  {
+    "id": "missing-106",
+    "sentence": "Item 106: The word with the opposite meaning to “encourage” is ____ .",
+    "answer": "discourage",
+    "clue": "Choose the antonym of “encourage”.",
+    "options": [
+      "transparent",
+      "demolish",
+      "ending",
+      "discourage"
+    ]
+  },
+  {
+    "id": "missing-107",
+    "sentence": "Item 107: The word with the opposite meaning to “forbid” is ____ .",
+    "answer": "permit",
+    "clue": "Choose the antonym of “forbid”.",
+    "options": [
+      "departure",
+      "calm",
+      "permit",
+      "descend"
+    ]
+  },
+  {
+    "id": "missing-108",
+    "sentence": "Item 108: The word with the opposite meaning to “permit” is ____ .",
+    "answer": "forbid",
+    "clue": "Choose the antonym of “permit”.",
+    "options": [
+      "indecisive",
+      "forbid",
+      "neglect",
+      "empty"
+    ]
+  },
+  {
+    "id": "missing-109",
+    "sentence": "Item 109: The word with the opposite meaning to “forget” is ____ .",
+    "answer": "remember",
+    "clue": "Choose the antonym of “forget”.",
+    "options": [
+      "remember",
+      "freedom",
+      "major",
+      "unequivocal"
+    ]
+  },
+  {
+    "id": "missing-110",
+    "sentence": "Item 110: The word with the opposite meaning to “remember” is ____ .",
+    "answer": "forget",
+    "clue": "Choose the antonym of “remember”.",
+    "options": [
+      "immature",
+      "optional",
+      "courteous",
+      "forget"
+    ]
+  },
+  {
+    "id": "missing-111",
+    "sentence": "Item 111: The word with the opposite meaning to “fail” is ____ .",
+    "answer": "succeed",
+    "clue": "Choose the antonym of “fail”.",
+    "options": [
+      "profound",
+      "depart",
+      "succeed",
+      "benevolent"
+    ]
+  },
+  {
+    "id": "missing-112",
+    "sentence": "Item 112: The word with the opposite meaning to “succeed” is ____ .",
+    "answer": "fail",
+    "clue": "Choose the antonym of “succeed”.",
+    "options": [
+      "freeze",
+      "fail",
+      "reluctant",
+      "simple"
+    ]
+  },
+  {
+    "id": "missing-113",
+    "sentence": "Item 113: The word with the opposite meaning to “retreat” is ____ .",
+    "answer": "advance",
+    "clue": "Choose the antonym of “retreat”.",
+    "options": [
+      "advance",
+      "opaque",
+      "protect",
+      "entrance"
+    ]
+  },
+  {
+    "id": "missing-114",
+    "sentence": "Item 114: The word with the opposite meaning to “advance” is ____ .",
+    "answer": "retreat",
+    "clue": "Choose the antonym of “advance”.",
+    "options": [
+      "conceal",
+      "maximum",
+      "agitated",
+      "retreat"
+    ]
+  },
+  {
+    "id": "missing-115",
+    "sentence": "Item 115: The word with the opposite meaning to “demolish” is ____ .",
+    "answer": "construct",
+    "clue": "Choose the antonym of “demolish”.",
+    "options": [
+      "full",
+      "economical",
+      "construct",
+      "praise"
+    ]
+  },
+  {
+    "id": "missing-116",
+    "sentence": "Item 116: The word with the opposite meaning to “construct” is ____ .",
+    "answer": "demolish",
+    "clue": "Choose the antonym of “construct”.",
+    "options": [
+      "obsolete",
+      "demolish",
+      "captivity",
+      "interior"
+    ]
+  },
+  {
+    "id": "missing-117",
+    "sentence": "Item 117: The word with the opposite meaning to “endanger” is ____ .",
+    "answer": "protect",
+    "clue": "Choose the antonym of “endanger”.",
+    "options": [
+      "protect",
+      "fertile",
+      "mundane",
+      "rude"
+    ]
+  },
+  {
+    "id": "missing-118",
+    "sentence": "Item 118: The word with the opposite meaning to “protect” is ____ .",
+    "answer": "endanger",
+    "clue": "Choose the antonym of “protect”.",
+    "options": [
+      "malevolent",
+      "superficial",
+      "increase",
+      "endanger"
+    ]
+  },
+  {
+    "id": "missing-119",
+    "sentence": "Item 119: The word with the opposite meaning to “divide” is ____ .",
+    "answer": "unite",
+    "clue": "Choose the antonym of “divide”.",
+    "options": [
+      "cautious",
+      "float",
+      "unite",
+      "eager"
+    ]
+  },
+  {
+    "id": "missing-120",
+    "sentence": "Item 120: The word with the opposite meaning to “unite” is ____ .",
+    "answer": "divide",
+    "clue": "Choose the antonym of “unite”.",
+    "options": [
+      "exit",
+      "divide",
+      "temporary",
+      "endanger"
+    ]
+  },
+  {
+    "id": "missing-121",
+    "sentence": "Item 121: The word with the opposite meaning to “repel” is ____ .",
+    "answer": "attract",
+    "clue": "Choose the antonym of “repel”.",
+    "options": [
+      "attract",
+      "reveal",
+      "minimum",
+      "cheerful"
+    ]
+  },
+  {
+    "id": "missing-122",
+    "sentence": "Item 122: The word with the opposite meaning to “attract” is ____ .",
+    "answer": "repel",
+    "clue": "Choose the antonym of “attract”.",
+    "options": [
+      "criticize",
+      "narrow",
+      "wasteful",
+      "repel"
+    ]
+  },
+  {
+    "id": "missing-123",
+    "sentence": "Item 123: The word with the opposite meaning to “lend” is ____ .",
+    "answer": "borrow",
+    "clue": "Choose the antonym of “lend”.",
+    "options": [
+      "exterior",
+      "modern",
+      "borrow",
+      "harmony"
+    ]
+  },
+  {
+    "id": "missing-124",
+    "sentence": "Item 124: The word with the opposite meaning to “borrow” is ____ .",
+    "answer": "lend",
+    "clue": "Choose the antonym of “borrow”.",
+    "options": [
+      "ancient",
+      "lend",
+      "barren",
+      "extraordinary"
+    ]
+  },
+  {
+    "id": "missing-125",
+    "sentence": "Item 125: The word with the opposite meaning to “include” is ____ .",
+    "answer": "omit",
+    "clue": "Choose the antonym of “include”.",
+    "options": [
+      "omit",
+      "amiable",
+      "feasible",
+      "decrease"
+    ]
+  },
+  {
+    "id": "missing-126",
+    "sentence": "Item 126: The word with the opposite meaning to “shield” is ____ .",
+    "answer": "expose",
+    "clue": "Choose the antonym of “shield”.",
+    "options": [
+      "skeptical",
+      "rash",
+      "sink",
+      "expose"
+    ]
+  },
+  {
+    "id": "missing-127",
+    "sentence": "Item 127: The word with the opposite meaning to “expose” is ____ .",
+    "answer": "shield",
+    "clue": "Choose the antonym of “expose”.",
+    "options": [
+      "unite",
+      "fiction",
+      "shield",
+      "permanent"
+    ]
+  },
+  {
+    "id": "missing-128",
+    "sentence": "Item 128: The word with the opposite meaning to “simplify” is ____ .",
+    "answer": "complicate",
+    "clue": "Choose the antonym of “simplify”.",
+    "options": [
+      "miserable",
+      "complicate",
+      "accelerate",
+      "optimism"
+    ]
+  },
+  {
+    "id": "missing-129",
+    "sentence": "Item 129: The word with the opposite meaning to “complicate” is ____ .",
+    "answer": "simplify",
+    "clue": "Choose the antonym of “complicate”.",
+    "options": [
+      "simplify",
+      "reward",
+      "broad",
+      "explicit"
+    ]
+  },
+  {
+    "id": "missing-130",
+    "sentence": "Item 130: The word with the opposite meaning to “neglect” is ____ .",
+    "answer": "preserve",
+    "clue": "Choose the antonym of “neglect”.",
+    "options": [
+      "discord",
+      "superior",
+      "scarce",
+      "preserve"
+    ]
+  },
+  {
+    "id": "missing-131",
+    "sentence": "Item 131: The word with the opposite meaning to “preserve” is ____ .",
+    "answer": "neglect",
+    "clue": "Choose the antonym of “preserve”.",
+    "options": [
+      "novice",
+      "recent",
+      "neglect",
+      "innocent"
+    ]
+  },
+  {
+    "id": "missing-132",
+    "sentence": "Item 132: The word with the opposite meaning to “criticize” is ____ .",
+    "answer": "praise",
+    "clue": "Choose the antonym of “criticize”.",
+    "options": [
+      "encourage",
+      "praise",
+      "abrasive",
+      "impractical"
+    ]
+  },
+  {
+    "id": "missing-133",
+    "sentence": "Item 133: The word with the opposite meaning to “praise” is ____ .",
+    "answer": "criticize",
+    "clue": "Choose the antonym of “praise”.",
+    "options": [
+      "criticize",
+      "gullible",
+      "modest",
+      "gather"
+    ]
+  },
+  {
+    "id": "missing-134",
+    "sentence": "Item 134: The word with the opposite meaning to “punish” is ____ .",
+    "answer": "reward",
+    "clue": "Choose the antonym of “punish”.",
+    "options": [
+      "frequent",
+      "divide",
+      "fact",
+      "reward"
+    ]
+  },
+  {
+    "id": "missing-135",
+    "sentence": "Item 135: The word with the opposite meaning to “reward” is ____ .",
+    "answer": "punish",
+    "clue": "Choose the antonym of “reward”.",
+    "options": [
+      "despair",
+      "pleasant",
+      "punish",
+      "decelerate"
+    ]
+  },
+  {
+    "id": "missing-136",
+    "sentence": "Item 136: The word with the opposite meaning to “damage” is ____ .",
+    "answer": "repair",
+    "clue": "Choose the antonym of “damage”.",
+    "options": [
+      "implicit",
+      "repair",
+      "punish",
+      "shallow"
+    ]
+  },
+  {
+    "id": "missing-137",
+    "sentence": "Item 137: The word with the opposite meaning to “repair” is ____ .",
+    "answer": "damage",
+    "clue": "Choose the antonym of “repair”.",
+    "options": [
+      "damage",
+      "poverty",
+      "inferior",
+      "abundant"
+    ]
+  },
+  {
+    "id": "missing-138",
+    "sentence": "Item 138: The word with the opposite meaning to “oppose” is ____ .",
+    "answer": "support",
+    "clue": "Choose the antonym of “oppose”.",
+    "options": [
+      "guilty",
+      "expert",
+      "genuine",
+      "support"
+    ]
+  },
+  {
+    "id": "missing-139",
+    "sentence": "Item 139: The word with the opposite meaning to “support” is ____ .",
+    "answer": "oppose",
+    "clue": "Choose the antonym of “support”.",
+    "options": [
+      "notorious",
+      "discourage",
+      "oppose",
+      "arduous"
+    ]
+  },
+  {
+    "id": "missing-140",
+    "sentence": "Item 140: The word with the opposite meaning to “shout” is ____ .",
+    "answer": "whisper",
+    "clue": "Choose the antonym of “shout”.",
+    "options": [
+      "scatter",
+      "whisper",
+      "resilient",
+      "boastful"
+    ]
+  },
+  {
+    "id": "missing-141",
+    "sentence": "Item 141: The word with the opposite meaning to “whisper” is ____ .",
+    "answer": "shout",
+    "clue": "Choose the antonym of “whisper”.",
+    "options": [
+      "shout",
+      "occasional",
+      "attract",
+      "virtue"
+    ]
+  },
+  {
+    "id": "missing-142",
+    "sentence": "Item 142: The word with the opposite meaning to “appear” is ____ .",
+    "answer": "vanish",
+    "clue": "Choose the antonym of “appear”.",
+    "options": [
+      "strengthen",
+      "chaos",
+      "unpleasant",
+      "vanish"
+    ]
+  },
+  {
+    "id": "missing-143",
+    "sentence": "Item 143: The word with the opposite meaning to “vanish” is ____ .",
+    "answer": "appear",
+    "clue": "Choose the antonym of “vanish”.",
+    "options": [
+      "deep",
+      "favorable",
+      "appear",
+      "repair"
+    ]
+  },
+  {
+    "id": "missing-144",
+    "sentence": "Item 144: The word with the opposite meaning to “freeze” is ____ .",
+    "answer": "melt",
+    "clue": "Choose the antonym of “freeze”.",
+    "options": [
+      "coherent",
+      "melt",
+      "wealth",
+      "positive"
+    ]
+  },
+  {
+    "id": "missing-145",
+    "sentence": "Item 145: The word with the opposite meaning to “melt” is ____ .",
+    "answer": "freeze",
+    "clue": "Choose the antonym of “melt”.",
+    "options": [
+      "freeze",
+      "legal",
+      "perilous",
+      "counterfeit"
+    ]
+  },
+  {
+    "id": "missing-146",
+    "sentence": "Item 146: The word with the opposite meaning to “sink” is ____ .",
+    "answer": "float",
+    "clue": "Choose the antonym of “sink”.",
+    "options": [
+      "effortless",
+      "respected",
+      "permit",
+      "float"
+    ]
+  },
+  {
+    "id": "missing-147",
+    "sentence": "Item 147: The word with the opposite meaning to “float” is ____ .",
+    "answer": "sink",
+    "clue": "Choose the antonym of “float”.",
+    "options": [
+      "artificial",
+      "tighten",
+      "sink",
+      "fragile"
+    ]
+  },
+  {
+    "id": "missing-148",
+    "sentence": "Item 148: The word with the opposite meaning to “scatter” is ____ .",
+    "answer": "gather",
+    "clue": "Choose the antonym of “scatter”.",
+    "options": [
+      "vice",
+      "gather",
+      "hostile",
+      "repel"
+    ]
+  },
+  {
+    "id": "missing-149",
+    "sentence": "Item 149: The word with the opposite meaning to “gather” is ____ .",
+    "answer": "scatter",
+    "clue": "Choose the antonym of “gather”.",
+    "options": [
+      "scatter",
+      "weaken",
+      "order",
+      "selfless"
+    ]
+  },
+  {
+    "id": "missing-150",
+    "sentence": "Item 150: The word with the opposite meaning to “loosen” is ____ .",
+    "answer": "tighten",
+    "clue": "Choose the antonym of “loosen”.",
+    "options": [
+      "damage",
+      "loose",
+      "adverse",
+      "tighten"
+    ]
+  },
+  {
+    "id": "missing-151",
+    "sentence": "Item 151: The word with the opposite meaning to “tighten” is ____ .",
+    "answer": "loosen",
+    "clue": "Choose the antonym of “tighten”.",
+    "options": [
+      "negative",
+      "incoherent",
+      "loosen",
+      "strength"
+    ]
+  },
+  {
+    "id": "missing-152",
+    "sentence": "Item 152: The word with the opposite meaning to “disconnect” is ____ .",
+    "answer": "connect",
+    "clue": "Choose the antonym of “disconnect”.",
+    "options": [
+      "loyal",
+      "connect",
+      "illegal",
+      "safe"
+    ]
+  },
+  {
+    "id": "missing-153",
+    "sentence": "Item 153: The word with the opposite meaning to “connect” is ____ .",
+    "answer": "disconnect",
+    "clue": "Choose the antonym of “connect”.",
+    "options": [
+      "disconnect",
+      "brisk",
+      "versatile",
+      "forbid"
+    ]
+  },
+  {
+    "id": "missing-154",
+    "sentence": "Item 154: The word with the opposite meaning to “disorder” is ____ .",
+    "answer": "arrange",
+    "clue": "Choose the antonym of “disorder”.",
+    "options": [
+      "plausible",
+      "natural",
+      "loosen",
+      "arrange"
+    ]
+  },
+  {
+    "id": "missing-155",
+    "sentence": "Item 155: The word with the opposite meaning to “arrange” is ____ .",
+    "answer": "disorder",
+    "clue": "Choose the antonym of “arrange”.",
+    "options": [
+      "borrow",
+      "dawn",
+      "disorder",
+      "friendly"
+    ]
+  },
+  {
+    "id": "missing-156",
+    "sentence": "Item 156: The word with the opposite meaning to “defeat” is ____ .",
+    "answer": "victory",
+    "clue": "Choose the antonym of “defeat”.",
+    "options": [
+      "selfish",
+      "victory",
+      "approve",
+      "generosity"
+    ]
+  },
+  {
+    "id": "missing-157",
+    "sentence": "Item 157: The word with the opposite meaning to “victory” is ____ .",
+    "answer": "defeat",
+    "clue": "Choose the antonym of “victory”.",
+    "options": [
+      "defeat",
+      "support",
+      "tight",
+      "feigned"
+    ]
+  },
+  {
+    "id": "missing-158",
+    "sentence": "Item 158: The word with the opposite meaning to “departure” is ____ .",
+    "answer": "arrival",
+    "clue": "Choose the antonym of “departure”.",
+    "options": [
+      "weakness",
+      "private",
+      "diligent",
+      "arrival"
+    ]
+  },
+  {
+    "id": "missing-159",
+    "sentence": "Item 159: The word with the opposite meaning to “arrival” is ____ .",
+    "answer": "departure",
+    "clue": "Choose the antonym of “arrival”.",
+    "options": [
+      "plentiful",
+      "treacherous",
+      "departure",
+      "regular"
+    ]
+  },
+  {
+    "id": "missing-160",
+    "sentence": "Item 160: The word with the opposite meaning to “minimum” is ____ .",
+    "answer": "maximum",
+    "clue": "Choose the antonym of “minimum”.",
+    "options": [
+      "remember",
+      "maximum",
+      "sluggish",
+      "inflexible"
+    ]
+  },
+  {
+    "id": "missing-161",
+    "sentence": "Item 161: The word with the opposite meaning to “maximum” is ____ .",
+    "answer": "minimum",
+    "clue": "Choose the antonym of “maximum”.",
+    "options": [
+      "minimum",
+      "implausible",
+      "expand",
+      "connect"
+    ]
+  },
+  {
+    "id": "missing-162",
+    "sentence": "Item 162: The word with the opposite meaning to “despair” is ____ .",
+    "answer": "optimism",
+    "clue": "Choose the antonym of “despair”.",
+    "options": [
+      "vivid",
+      "lend",
+      "dusk",
+      "optimism"
+    ]
+  },
+  {
+    "id": "missing-163",
+    "sentence": "Item 163: The word with the opposite meaning to “optimism” is ____ .",
+    "answer": "despair",
+    "clue": "Choose the antonym of “optimism”.",
+    "options": [
+      "greed",
+      "active",
+      "despair",
+      "disapprove"
+    ]
+  },
+  {
+    "id": "missing-164",
+    "sentence": "Item 164: The word with the opposite meaning to “order” is ____ .",
+    "answer": "chaos",
+    "clue": "Choose the antonym of “order”.",
+    "options": [
+      "imminent",
+      "chaos",
+      "oppose",
+      "smooth"
+    ]
+  },
+  {
+    "id": "missing-165",
+    "sentence": "Item 165: The word with the opposite meaning to “chaos” is ____ .",
+    "answer": "order",
+    "clue": "Choose the antonym of “chaos”.",
+    "options": [
+      "order",
+      "success",
+      "public",
+      "idle"
+    ]
+  },
+  {
+    "id": "missing-166",
+    "sentence": "Item 166: The word with the opposite meaning to “greed” is ____ .",
+    "answer": "generosity",
+    "clue": "Choose the antonym of “greed”.",
+    "options": [
+      "irregular",
+      "meagre",
+      "patient",
+      "generosity"
+    ]
+  },
+  {
+    "id": "missing-167",
+    "sentence": "Item 167: The word with the opposite meaning to “generosity” is ____ .",
+    "answer": "greed",
+    "clue": "Choose the antonym of “generosity”.",
+    "options": [
+      "generous",
+      "forget",
+      "greed",
+      "candid"
+    ]
+  },
+  {
+    "id": "missing-168",
+    "sentence": "Item 168: The word with the opposite meaning to “cowardice” is ____ .",
+    "answer": "courage",
+    "clue": "Choose the antonym of “cowardice”.",
+    "options": [
+      "disconnect",
+      "courage",
+      "concise",
+      "contract"
+    ]
+  },
+  {
+    "id": "missing-169",
+    "sentence": "Item 169: The word with the opposite meaning to “courage” is ____ .",
+    "answer": "cowardice",
+    "clue": "Choose the antonym of “courage”.",
+    "options": [
+      "cowardice",
+      "dull",
+      "omit",
+      "noisy"
+    ]
+  },
+  {
+    "id": "missing-170",
+    "sentence": "Item 170: The word with the opposite meaning to “foolishness” is ____ .",
+    "answer": "wisdom",
+    "clue": "Choose the antonym of “foolishness”.",
+    "options": [
+      "combine",
+      "courage",
+      "passive",
+      "wisdom"
+    ]
+  },
+  {
+    "id": "missing-171",
+    "sentence": "Item 171: The word with the opposite meaning to “wisdom” is ____ .",
+    "answer": "foolishness",
+    "clue": "Choose the antonym of “wisdom”.",
+    "options": [
+      "rough",
+      "remote",
+      "foolishness",
+      "whisper"
+    ]
+  },
+  {
+    "id": "missing-172",
+    "sentence": "Item 172: The word with the opposite meaning to “deceit” is ____ .",
+    "answer": "honesty",
+    "clue": "Choose the antonym of “deceit”.",
+    "options": [
+      "formidable",
+      "honesty",
+      "failure",
+      "rigorous"
+    ]
+  },
+  {
+    "id": "missing-173",
+    "sentence": "Item 173: The word with the opposite meaning to “honesty” is ____ .",
+    "answer": "deceit",
+    "clue": "Choose the antonym of “honesty”.",
+    "options": [
+      "deceit",
+      "possible",
+      "rational",
+      "impatient"
+    ]
+  },
+  {
+    "id": "missing-174",
+    "sentence": "Item 174: The word with the opposite meaning to “captivity” is ____ .",
+    "answer": "freedom",
+    "clue": "Choose the antonym of “captivity”.",
+    "options": [
+      "evasive",
+      "stingy",
+      "succeed",
+      "freedom"
+    ]
+  },
+  {
+    "id": "missing-175",
+    "sentence": "Item 175: The word with the opposite meaning to “freedom” is ____ .",
+    "answer": "captivity",
+    "clue": "Choose the antonym of “freedom”.",
+    "options": [
+      "accept",
+      "arrange",
+      "captivity",
+      "verbose"
+    ]
+  },
+  {
+    "id": "missing-176",
+    "sentence": "Item 176: The word with the opposite meaning to “discord” is ____ .",
+    "answer": "harmony",
+    "clue": "Choose the antonym of “discord”.",
+    "options": [
+      "silent",
+      "harmony",
+      "rigid",
+      "expose"
+    ]
+  },
+  {
+    "id": "missing-177",
+    "sentence": "Item 177: The word with the opposite meaning to “harmony” is ____ .",
+    "answer": "discord",
+    "clue": "Choose the antonym of “harmony”.",
+    "options": [
+      "discord",
+      "separate",
+      "cowardice",
+      "vacant"
+    ]
+  },
+  {
+    "id": "missing-178",
+    "sentence": "Item 178: The word with the opposite meaning to “wealth” is ____ .",
+    "answer": "poverty",
+    "clue": "Choose the antonym of “wealth”.",
+    "options": [
+      "shout",
+      "bitter",
+      "innovative",
+      "poverty"
+    ]
+  },
+  {
+    "id": "missing-179",
+    "sentence": "Item 179: The word with the opposite meaning to “poverty” is ____ .",
+    "answer": "wealth",
+    "clue": "Choose the antonym of “poverty”.",
+    "options": [
+      "lenient",
+      "manageable",
+      "wealth",
+      "friend"
+    ]
+  },
+  {
+    "id": "missing-180",
+    "sentence": "Item 180: The word with the opposite meaning to “weakness” is ____ .",
+    "answer": "strength",
+    "clue": "Choose the antonym of “weakness”.",
+    "options": [
+      "accurate",
+      "strength",
+      "impossible",
+      "irrational"
+    ]
+  },
+  {
+    "id": "missing-181",
+    "sentence": "Item 181: The word with the opposite meaning to “strength” is ____ .",
+    "answer": "weakness",
+    "clue": "Choose the antonym of “strength”.",
+    "options": [
+      "weakness",
+      "composed",
+      "humble",
+      "fail"
+    ]
+  },
+  {
+    "id": "missing-182",
+    "sentence": "Item 182: The word with the opposite meaning to “failure” is ____ .",
+    "answer": "success",
+    "clue": "Choose the antonym of “failure”.",
+    "options": [
+      "impartial",
+      "reject",
+      "disorder",
+      "success"
+    ]
+  },
+  {
+    "id": "missing-183",
+    "sentence": "Item 183: The word with the opposite meaning to “success” is ____ .",
+    "answer": "failure",
+    "clue": "Choose the antonym of “success”.",
+    "options": [
+      "shield",
+      "visible",
+      "failure",
+      "flexible"
+    ]
+  },
+  {
+    "id": "missing-184",
+    "sentence": "Item 184: The word with the opposite meaning to “enemy” is ____ .",
+    "answer": "friend",
+    "clue": "Choose the antonym of “enemy”.",
+    "options": [
+      "occupied",
+      "friend",
+      "create",
+      "wisdom"
+    ]
+  },
+  {
+    "id": "missing-185",
+    "sentence": "Item 185: The word with the opposite meaning to “friend” is ____ .",
+    "answer": "enemy",
+    "clue": "Choose the antonym of “friend”.",
+    "options": [
+      "enemy",
+      "vanish",
+      "sweet",
+      "conventional"
+    ]
+  },
+  {
+    "id": "missing-186",
+    "sentence": "Item 186: The word with the opposite meaning to “ending” is ____ .",
+    "answer": "beginning",
+    "clue": "Choose the antonym of “ending”.",
+    "options": [
+      "enemy",
+      "authentic",
+      "prudent",
+      "beginning"
+    ]
+  },
+  {
+    "id": "missing-187",
+    "sentence": "Item 187: The word with the opposite meaning to “beginning” is ____ .",
+    "answer": "ending",
+    "clue": "Choose the antonym of “beginning”.",
+    "options": [
+      "relentless",
+      "inaccurate",
+      "ending",
+      "logical"
+    ]
+  },
+  {
+    "id": "missing-188",
+    "sentence": "Item 188: The word with the opposite meaning to “exit” is ____ .",
+    "answer": "entrance",
+    "clue": "Choose the antonym of “exit”.",
+    "options": [
+      "advance",
+      "entrance",
+      "flustered",
+      "arrogant"
+    ]
+  },
+  {
+    "id": "missing-189",
+    "sentence": "Item 189: The word with the opposite meaning to “entrance” is ____ .",
+    "answer": "exit",
+    "clue": "Choose the antonym of “entrance”.",
+    "options": [
+      "exit",
+      "biased",
+      "include",
+      "victory"
+    ]
+  },
+  {
+    "id": "missing-190",
+    "sentence": "Item 190: The word with the opposite meaning to “fact” is ____ .",
+    "answer": "fiction",
+    "clue": "Choose the antonym of “fact”.",
+    "options": [
+      "timid",
+      "complicate",
+      "hidden",
+      "fiction"
+    ]
+  },
+  {
+    "id": "missing-191",
+    "sentence": "Item 191: The word with the opposite meaning to “fiction” is ____ .",
+    "answer": "fact",
+    "clue": "Choose the antonym of “fiction”.",
+    "options": [
+      "foolishness",
+      "domestic",
+      "fact",
+      "destroy"
+    ]
+  },
+  {
+    "id": "missing-192",
+    "sentence": "Item 192: The word with the opposite meaning to “vice” is ____ .",
+    "answer": "virtue",
+    "clue": "Choose the antonym of “vice”.",
+    "options": [
+      "lucid",
+      "virtue",
+      "appear",
+      "tender"
+    ]
+  },
+  {
+    "id": "missing-193",
+    "sentence": "Item 193: The word with the opposite meaning to “virtue” is ____ .",
+    "answer": "vice",
+    "clue": "Choose the antonym of “virtue”.",
+    "options": [
+      "vice",
+      "beginning",
+      "spurious",
+      "reckless"
+    ]
+  },
+  {
+    "id": "missing-194",
+    "sentence": "Item 194: The word with the opposite meaning to “dusk” is ____ .",
+    "answer": "dawn",
+    "clue": "Choose the antonym of “dusk”.",
+    "options": [
+      "illogical",
+      "merciful",
+      "vague",
+      "dawn"
+    ]
+  },
+  {
+    "id": "missing-195",
+    "sentence": "Item 195: The word with the opposite meaning to “dawn” is ____ .",
+    "answer": "dusk",
+    "clue": "Choose the antonym of “dawn”.",
+    "options": [
+      "optimistic",
+      "retreat",
+      "dusk",
+      "decisive"
+    ]
+  },
+  {
+    "id": "missing-196",
+    "sentence": "Item 196: The word with the opposite meaning to “silent” is ____ .",
+    "answer": "noisy",
+    "clue": "Choose the antonym of “silent”.",
+    "options": [
+      "defeat",
+      "noisy",
+      "ambiguous",
+      "exclude"
+    ]
+  },
+  {
+    "id": "missing-197",
+    "sentence": "Item 197: The word with the opposite meaning to “noisy” is ____ .",
+    "answer": "silent",
+    "clue": "Choose the antonym of “noisy”.",
+    "options": [
+      "silent",
+      "bold",
+      "simplify",
+      "asleep"
+    ]
+  },
+  {
+    "id": "missing-198",
+    "sentence": "Item 198: The word with the opposite meaning to “hidden” is ____ .",
+    "answer": "visible",
+    "clue": "Choose the antonym of “hidden”.",
+    "options": [
+      "arrive",
+      "honesty",
+      "foreign",
+      "visible"
+    ]
+  },
+  {
+    "id": "missing-199",
+    "sentence": "Item 199: The word with the opposite meaning to “visible” is ____ .",
+    "answer": "hidden",
+    "clue": "Choose the antonym of “visible”.",
+    "options": [
+      "tough",
+      "confusing",
+      "hidden",
+      "melt"
+    ]
+  },
+  {
+    "id": "missing-200",
+    "sentence": "Item 200: The word with the opposite meaning to “awake” is ____ .",
+    "answer": "asleep",
+    "clue": "Choose the antonym of “awake”.",
+    "options": [
+      "trivial",
+      "asleep",
+      "ending",
+      "eloquent"
+    ]
+  },
+  {
+    "id": "missing-201",
+    "sentence": "Item 201: The word with the opposite meaning to “asleep” is ____ .",
+    "answer": "awake",
+    "clue": "Choose the antonym of “asleep”.",
+    "options": [
+      "awake",
+      "calm",
+      "meticulous",
+      "specific"
+    ]
+  },
+  {
+    "id": "missing-202",
+    "sentence": "Item 202: The word with the opposite meaning to “full” is ____ .",
+    "answer": "empty",
+    "clue": "Choose the antonym of “full”.",
+    "options": [
+      "indecisive",
+      "pessimistic",
+      "construct",
+      "empty"
+    ]
+  },
+  {
+    "id": "missing-203",
+    "sentence": "Item 203: The word with the opposite meaning to “empty” is ____ .",
+    "answer": "full",
+    "clue": "Choose the antonym of “empty”.",
+    "options": [
+      "ascend",
+      "arrival",
+      "full",
+      "unequivocal"
+    ]
+  },
+  {
+    "id": "missing-204",
+    "sentence": "Item 204: The word with the opposite meaning to “broad” is ____ .",
+    "answer": "narrow",
+    "clue": "Choose the antonym of “broad”.",
+    "options": [
+      "awake",
+      "narrow",
+      "courteous",
+      "preserve"
+    ]
+  },
+  {
+    "id": "missing-205",
+    "sentence": "Item 205: The word with the opposite meaning to “narrow” is ____ .",
+    "answer": "broad",
+    "clue": "Choose the antonym of “narrow”.",
+    "options": [
+      "broad",
+      "depart",
+      "deceit",
+      "minor"
+    ]
+  },
+  {
+    "id": "missing-206",
+    "sentence": "Item 206: The word with the opposite meaning to “deep” is ____ .",
+    "answer": "shallow",
+    "clue": "Choose the antonym of “deep”.",
+    "options": [
+      "freeze",
+      "mature",
+      "mandatory",
+      "shallow"
+    ]
+  },
+  {
+    "id": "missing-207",
+    "sentence": "Item 207: The word with the opposite meaning to “shallow” is ____ .",
+    "answer": "deep",
+    "clue": "Choose the antonym of “shallow”.",
+    "options": [
+      "inarticulate",
+      "significant",
+      "deep",
+      "entrance"
+    ]
+  },
+  {
+    "id": "missing-208",
+    "sentence": "Item 208: The word with the opposite meaning to “tight” is ____ .",
+    "answer": "loose",
+    "clue": "Choose the antonym of “tight”.",
+    "options": [
+      "complex",
+      "loose",
+      "agitated",
+      "careless"
+    ]
+  },
+  {
+    "id": "missing-209",
+    "sentence": "Item 209: The word with the opposite meaning to “loose” is ____ .",
+    "answer": "tight",
+    "clue": "Choose the antonym of “loose”.",
+    "options": [
+      "tight",
+      "economical",
+      "transparent",
+      "demolish"
+    ]
+  },
+  {
+    "id": "missing-210",
+    "sentence": "Item 210: The word with the opposite meaning to “rough” is ____ .",
+    "answer": "smooth",
+    "clue": "Choose the antonym of “rough”.",
+    "options": [
+      "obsolete",
+      "descend",
+      "departure",
+      "smooth"
+    ]
+  },
+  {
+    "id": "missing-211",
+    "sentence": "Item 211: The word with the opposite meaning to “smooth” is ____ .",
+    "answer": "rough",
+    "clue": "Choose the antonym of “smooth”.",
+    "options": [
+      "neglect",
+      "empty",
+      "rough",
+      "rude"
+    ]
+  },
+  {
+    "id": "missing-212",
+    "sentence": "Item 212: The word with the opposite meaning to “sweet” is ____ .",
+    "answer": "bitter",
+    "clue": "Choose the antonym of “sweet”.",
+    "options": [
+      "major",
+      "bitter",
+      "increase",
+      "freedom"
+    ]
+  },
+  {
+    "id": "missing-213",
+    "sentence": "Item 213: The word with the opposite meaning to “bitter” is ____ .",
+    "answer": "sweet",
+    "clue": "Choose the antonym of “bitter”.",
+    "options": [
+      "sweet",
+      "float",
+      "immature",
+      "optional"
+    ]
+  },
+  {
+    "id": "missing-214",
+    "sentence": "Item 214: The word with the opposite meaning to “tough” is ____ .",
+    "answer": "tender",
+    "clue": "Choose the antonym of “tough”.",
+    "options": [
+      "exit",
+      "benevolent",
+      "profound",
+      "tender"
+    ]
+  },
+  {
+    "id": "missing-215",
+    "sentence": "Item 215: The word with the opposite meaning to “tender” is ____ .",
+    "answer": "tough",
+    "clue": "Choose the antonym of “tender”.",
+    "options": [
+      "reluctant",
+      "simple",
+      "tough",
+      "cheerful"
+    ]
+  },
+  {
+    "id": "missing-216",
+    "sentence": "Item 216: The word with the opposite meaning to “immature” is ____ .",
+    "answer": "mature",
+    "clue": "Choose the antonym of “immature”.",
+    "options": [
+      "protect",
+      "mature",
+      "wasteful",
+      "opaque"
+    ]
+  },
+  {
+    "id": "missing-217",
+    "sentence": "Item 217: The word with the opposite meaning to “mature” is ____ .",
+    "answer": "immature",
+    "clue": "Choose the antonym of “mature”.",
+    "options": [
+      "immature",
+      "modern",
+      "conceal",
+      "maximum"
+    ]
+  },
+  {
+    "id": "missing-218",
+    "sentence": "Item 218: The word with the opposite meaning to “barren” is ____ .",
+    "answer": "fertile",
+    "clue": "Choose the antonym of “barren”.",
+    "options": [
+      "ancient",
+      "praise",
+      "full",
+      "fertile"
+    ]
+  },
+  {
+    "id": "missing-219",
+    "sentence": "Item 219: The word with the opposite meaning to “fertile” is ____ .",
+    "answer": "barren",
+    "clue": "Choose the antonym of “fertile”.",
+    "options": [
+      "captivity",
+      "interior",
+      "barren",
+      "decrease"
+    ]
+  },
+  {
+    "id": "missing-220",
+    "sentence": "Item 220: The word with the opposite meaning to “guilty” is ____ .",
+    "answer": "innocent",
+    "clue": "Choose the antonym of “guilty”.",
+    "options": [
+      "mundane",
+      "innocent",
+      "sink",
+      "fertile"
+    ]
+  },
+  {
+    "id": "missing-221",
+    "sentence": "Item 221: The word with the opposite meaning to “innocent” is ____ .",
+    "answer": "guilty",
+    "clue": "Choose the antonym of “innocent”.",
+    "options": [
+      "guilty",
+      "fiction",
+      "malevolent",
+      "superficial"
+    ]
+  },
+  {
+    "id": "missing-222",
+    "sentence": "Item 222: The word with the opposite meaning to “illegal” is ____ .",
+    "answer": "legal",
+    "clue": "Choose the antonym of “illegal”.",
+    "options": [
+      "miserable",
+      "eager",
+      "cautious",
+      "legal"
+    ]
+  },
+  {
+    "id": "missing-223",
+    "sentence": "Item 223: The word with the opposite meaning to “legal” is ____ .",
+    "answer": "illegal",
+    "clue": "Choose the antonym of “legal”.",
+    "options": [
+      "temporary",
+      "endanger",
+      "illegal",
+      "explicit"
+    ]
+  },
+  {
+    "id": "missing-224",
+    "sentence": "Item 224: The word with the opposite meaning to “irregular” is ____ .",
+    "answer": "regular",
+    "clue": "Choose the antonym of “irregular”.",
+    "options": [
+      "minimum",
+      "regular",
+      "scarce",
+      "reveal"
+    ]
+  },
+  {
+    "id": "missing-225",
+    "sentence": "Item 225: The word with the opposite meaning to “regular” is ____ .",
+    "answer": "irregular",
+    "clue": "Choose the antonym of “regular”.",
+    "options": [
+      "irregular",
+      "recent",
+      "criticize",
+      "narrow"
+    ]
+  },
+  {
+    "id": "missing-226",
+    "sentence": "Item 226: The word with the opposite meaning to “impossible” is ____ .",
+    "answer": "possible",
+    "clue": "Choose the antonym of “impossible”.",
+    "options": [
+      "encourage",
+      "harmony",
+      "exterior",
+      "possible"
+    ]
+  },
+  {
+    "id": "missing-227",
+    "sentence": "Item 227: The word with the opposite meaning to “possible” is ____ .",
+    "answer": "impossible",
+    "clue": "Choose the antonym of “possible”.",
+    "options": [
+      "barren",
+      "extraordinary",
+      "impossible",
+      "gather"
+    ]
+  },
+  {
+    "id": "missing-228",
+    "sentence": "Item 228: The word with the opposite meaning to “illogical” is ____ .",
+    "answer": "logical",
+    "clue": "Choose the antonym of “illogical”.",
+    "options": [
+      "feasible",
+      "logical",
+      "fact",
+      "amiable"
+    ]
+  },
+  {
+    "id": "missing-229",
+    "sentence": "Item 229: The word with the opposite meaning to “logical” is ____ .",
+    "answer": "illogical",
+    "clue": "Choose the antonym of “logical”.",
+    "options": [
+      "illogical",
+      "pleasant",
+      "skeptical",
+      "rash"
+    ]
+  },
+  {
+    "id": "missing-230",
+    "sentence": "Item 230: The word with the opposite meaning to “agitated” is ____ .",
+    "answer": "calm",
+    "clue": "Choose the antonym of “agitated”.",
+    "options": [
+      "implicit",
+      "permanent",
+      "unite",
+      "calm"
+    ]
+  },
+  {
+    "id": "missing-231",
+    "sentence": "Item 231: The word with the opposite meaning to “calm” is ____ .",
+    "answer": "agitated",
+    "clue": "Choose the antonym of “calm”.",
+    "options": [
+      "accelerate",
+      "optimism",
+      "agitated",
+      "abundant"
+    ]
+  },
+  {
+    "id": "missing-232",
+    "sentence": "Item 232: The word with the opposite meaning to “miserable” is ____ .",
+    "answer": "cheerful",
+    "clue": "Choose the antonym of “miserable”.",
+    "options": [
+      "broad",
+      "cheerful",
+      "genuine",
+      "reward"
+    ]
+  },
+  {
+    "id": "missing-233",
+    "sentence": "Item 233: The word with the opposite meaning to “cheerful” is ____ .",
+    "answer": "miserable",
+    "clue": "Choose the antonym of “cheerful”.",
+    "options": [
+      "miserable",
+      "discourage",
+      "discord",
+      "superior"
+    ]
+  },
+  {
+    "id": "missing-234",
+    "sentence": "Item 234: The word with the opposite meaning to “unpleasant” is ____ .",
+    "answer": "pleasant",
+    "clue": "Choose the antonym of “unpleasant”.",
+    "options": [
+      "scatter",
+      "innocent",
+      "novice",
+      "pleasant"
+    ]
+  },
+  {
+    "id": "missing-235",
+    "sentence": "Item 235: The word with the opposite meaning to “pleasant” is ____ .",
+    "answer": "unpleasant",
+    "clue": "Choose the antonym of “pleasant”.",
+    "options": [
+      "abrasive",
+      "impractical",
+      "unpleasant",
+      "virtue"
+    ]
+  },
+  {
+    "id": "missing-236",
+    "sentence": "Item 236: The word with the opposite meaning to “selfish” is ____ .",
+    "answer": "selfless",
+    "clue": "Choose the antonym of “selfish”.",
+    "options": [
+      "modest",
+      "selfless",
+      "unpleasant",
+      "gullible"
+    ]
+  },
+  {
+    "id": "missing-237",
+    "sentence": "Item 237: The word with the opposite meaning to “selfless” is ____ .",
+    "answer": "selfish",
+    "clue": "Choose the antonym of “selfless”.",
+    "options": [
+      "selfish",
+      "favorable",
+      "frequent",
+      "divide"
+    ]
+  },
+  {
+    "id": "missing-238",
+    "sentence": "Item 238: The word with the opposite meaning to “passive” is ____ .",
+    "answer": "active",
+    "clue": "Choose the antonym of “passive”.",
+    "options": [
+      "coherent",
+      "decelerate",
+      "despair",
+      "active"
+    ]
+  },
+  {
+    "id": "missing-239",
+    "sentence": "Item 239: The word with the opposite meaning to “active” is ____ .",
+    "answer": "passive",
+    "clue": "Choose the antonym of “active”.",
+    "options": [
+      "punish",
+      "shallow",
+      "passive",
+      "counterfeit"
+    ]
+  },
+  {
+    "id": "missing-240",
+    "sentence": "Item 240: The word with the opposite meaning to “occupied” is ____ .",
+    "answer": "vacant",
+    "clue": "Choose the antonym of “occupied”.",
+    "options": [
+      "inferior",
+      "vacant",
+      "permit",
+      "poverty"
+    ]
+  },
+  {
+    "id": "missing-241",
+    "sentence": "Item 241: The word with the opposite meaning to “vacant” is ____ .",
+    "answer": "occupied",
+    "clue": "Choose the antonym of “vacant”.",
+    "options": [
+      "occupied",
+      "tighten",
+      "guilty",
+      "expert"
+    ]
+  },
+  {
+    "id": "missing-242",
+    "sentence": "Item 242: The word with the opposite meaning to “foreign” is ____ .",
+    "answer": "domestic",
+    "clue": "Choose the antonym of “foreign”.",
+    "options": [
+      "vice",
+      "arduous",
+      "notorious",
+      "domestic"
+    ]
+  },
+  {
+    "id": "missing-243",
+    "sentence": "Item 243: The word with the opposite meaning to “domestic” is ____ .",
+    "answer": "foreign",
+    "clue": "Choose the antonym of “domestic”.",
+    "options": [
+      "resilient",
+      "boastful",
+      "foreign",
+      "selfless"
+    ]
+  },
+  {
+    "id": "missing-244",
+    "sentence": "Item 244: The word with the opposite meaning to “major” is ____ .",
+    "answer": "minor",
+    "clue": "Choose the antonym of “major”.",
+    "options": [
+      "attract",
+      "minor",
+      "adverse",
+      "occasional"
+    ]
+  },
+  {
+    "id": "missing-245",
+    "sentence": "Item 245: The word with the opposite meaning to “minor” is ____ .",
+    "answer": "major",
+    "clue": "Choose the antonym of “minor”.",
+    "options": [
+      "major",
+      "incoherent",
+      "strengthen",
+      "chaos"
+    ]
+  },
+  {
+    "id": "missing-246",
+    "sentence": "Item 246: The word with the opposite meaning to “exterior” is ____ .",
+    "answer": "interior",
+    "clue": "Choose the antonym of “exterior”.",
+    "options": [
+      "loyal",
+      "repair",
+      "deep",
+      "interior"
+    ]
+  },
+  {
+    "id": "missing-247",
+    "sentence": "Item 247: The word with the opposite meaning to “interior” is ____ .",
+    "answer": "exterior",
+    "clue": "Choose the antonym of “interior”.",
+    "options": [
+      "wealth",
+      "positive",
+      "exterior",
+      "forbid"
+    ]
+  },
+  {
+    "id": "missing-248",
+    "sentence": "Item 248: The word with the opposite meaning to “inferior” is ____ .",
+    "answer": "superior",
+    "clue": "Choose the antonym of “inferior”.",
+    "options": [
+      "perilous",
+      "superior",
+      "loosen",
+      "legal"
+    ]
+  },
+  {
+    "id": "missing-249",
+    "sentence": "Item 249: The word with the opposite meaning to “superior” is ____ .",
+    "answer": "inferior",
+    "clue": "Choose the antonym of “superior”.",
+    "options": [
+      "inferior",
+      "dawn",
+      "effortless",
+      "respected"
+    ]
+  },
+  {
+    "id": "missing-250",
+    "sentence": "Item 250: The word with the opposite meaning to “negative” is ____ .",
+    "answer": "positive",
+    "clue": "Choose the antonym of “negative”.",
+    "options": [
+      "selfish",
+      "fragile",
+      "artificial",
+      "positive"
+    ]
+  },
+  {
+    "id": "missing-251",
+    "sentence": "Item 251: The word with the opposite meaning to “positive” is ____ .",
+    "answer": "negative",
+    "clue": "Choose the antonym of “positive”.",
+    "options": [
+      "hostile",
+      "repel",
+      "negative",
+      "feigned"
+    ]
+  },
+  {
+    "id": "missing-252",
+    "sentence": "Item 252: The word with the opposite meaning to “public” is ____ .",
+    "answer": "private",
+    "clue": "Choose the antonym of “public”.",
+    "options": [
+      "order",
+      "private",
+      "diligent",
+      "weaken"
+    ]
+  },
+  {
+    "id": "missing-253",
+    "sentence": "Item 253: The word with the opposite meaning to “private” is ____ .",
+    "answer": "public",
+    "clue": "Choose the antonym of “private”.",
+    "options": [
+      "public",
+      "treacherous",
+      "damage",
+      "loose"
+    ]
+  },
+  {
+    "id": "missing-254",
+    "sentence": "Item 254: The word with the opposite meaning to “lenient” is ____ .",
+    "answer": "rigorous",
+    "clue": "Choose the antonym of “lenient”.",
+    "options": [
+      "remember",
+      "strength",
+      "negative",
+      "rigorous"
+    ]
+  },
+  {
+    "id": "missing-255",
+    "sentence": "Item 255: The word with the opposite meaning to “rigorous” is ____ .",
+    "answer": "lenient",
+    "clue": "Choose the antonym of “rigorous”.",
+    "options": [
+      "illegal",
+      "safe",
+      "lenient",
+      "connect"
+    ]
+  },
+  {
+    "id": "missing-256",
+    "sentence": "Item 256: The word with the opposite meaning to “spurious” is ____ .",
+    "answer": "authentic",
+    "clue": "Choose the antonym of “spurious”.",
+    "options": [
+      "versatile",
+      "authentic",
+      "dusk",
+      "brisk"
+    ]
+  },
+  {
+    "id": "missing-257",
+    "sentence": "Item 257: The word with the opposite meaning to “authentic” is ____ .",
+    "answer": "spurious",
+    "clue": "Choose the antonym of “authentic”.",
+    "options": [
+      "spurious",
+      "active",
+      "plausible",
+      "natural"
+    ]
+  },
+  {
+    "id": "missing-258",
+    "sentence": "Item 258: The word with the opposite meaning to “inarticulate” is ____ .",
+    "answer": "eloquent",
+    "clue": "Choose the antonym of “inarticulate”.",
+    "options": [
+      "imminent",
+      "friendly",
+      "borrow",
+      "eloquent"
+    ]
+  },
+  {
+    "id": "missing-259",
+    "sentence": "Item 259: The word with the opposite meaning to “eloquent” is ____ .",
+    "answer": "inarticulate",
+    "clue": "Choose the antonym of “eloquent”.",
+    "options": [
+      "approve",
+      "generosity",
+      "inarticulate",
+      "idle"
+    ]
+  },
+  {
+    "id": "missing-260",
+    "sentence": "Item 260: The word with the opposite meaning to “malevolent” is ____ .",
+    "answer": "benevolent",
+    "clue": "Choose the antonym of “malevolent”.",
+    "options": [
+      "tight",
+      "benevolent",
+      "patient",
+      "support"
+    ]
+  },
+  {
+    "id": "missing-261",
+    "sentence": "Item 261: The word with the opposite meaning to “benevolent” is ____ .",
+    "answer": "malevolent",
+    "clue": "Choose the antonym of “benevolent”.",
+    "options": [
+      "malevolent",
+      "forget",
+      "weakness",
+      "private"
+    ]
+  },
+  {
+    "id": "missing-262",
+    "sentence": "Item 262: The word with the opposite meaning to “abrasive” is ____ .",
+    "answer": "amiable",
+    "clue": "Choose the antonym of “abrasive”.",
+    "options": [
+      "disconnect",
+      "regular",
+      "plentiful",
+      "amiable"
+    ]
+  },
+  {
+    "id": "missing-263",
+    "sentence": "Item 263: The word with the opposite meaning to “amiable” is ____ .",
+    "answer": "abrasive",
+    "clue": "Choose the antonym of “amiable”.",
+    "options": [
+      "sluggish",
+      "inflexible",
+      "abrasive",
+      "noisy"
+    ]
+  },
+  {
+    "id": "missing-264",
+    "sentence": "Item 264: The word with the opposite meaning to “effortless” is ____ .",
     "answer": "arduous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","arduous","meticulous"]
+    "clue": "Choose the antonym of “effortless”.",
+    "options": [
+      "expand",
+      "arduous",
+      "passive",
+      "implausible"
+    ]
   },
   {
-    "id": "missing-046-02",
-    "sentence": "Because the team crossed steep terrain in extreme heat for several days, the expedition seemed ____ to everyone involved.",
-    "answer": "arduous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","arduous","meticulous","reluctant"]
+    "id": "missing-265",
+    "sentence": "Item 265: The word with the opposite meaning to “arduous” is ____ .",
+    "answer": "effortless",
+    "clue": "Choose the antonym of “arduous”.",
+    "options": [
+      "effortless",
+      "remote",
+      "vivid",
+      "lend"
+    ]
   },
   {
-    "id": "missing-046-03",
-    "sentence": "The review described the expedition as ____; the team crossed steep terrain in extreme heat for several days.",
-    "answer": "arduous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["arduous","meticulous","reluctant","plausible"]
+    "id": "missing-266",
+    "sentence": "Item 266: The word with the opposite meaning to “sluggish” is ____ .",
+    "answer": "brisk",
+    "clue": "Choose the antonym of “sluggish”.",
+    "options": [
+      "formidable",
+      "disapprove",
+      "greed",
+      "brisk"
+    ]
   },
   {
-    "id": "missing-046-04",
-    "sentence": "After considering the evidence, observers agreed that the expedition remained ____, since the team crossed steep terrain in extreme heat for several days.",
-    "answer": "arduous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","arduous"]
+    "id": "missing-267",
+    "sentence": "Item 267: The word with the opposite meaning to “brisk” is ____ .",
+    "answer": "sluggish",
+    "clue": "Choose the antonym of “brisk”.",
+    "options": [
+      "oppose",
+      "smooth",
+      "sluggish",
+      "impatient"
+    ]
   },
   {
-    "id": "missing-046-05",
-    "sentence": "It became clear that the expedition was ____ when the team crossed steep terrain in extreme heat for several days.",
-    "answer": "arduous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","arduous","meticulous"]
-  },
-  {
-    "id": "missing-046-06",
-    "sentence": "Throughout the discussion, the expedition appeared ____: the team crossed steep terrain in extreme heat for several days.",
-    "answer": "arduous",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","arduous","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-047-01",
-    "sentence": "the witness was ____ because she told the investigator exactly what she had seen without softening it.",
+    "id": "missing-268",
+    "sentence": "Item 268: The word with the opposite meaning to “evasive” is ____ .",
     "answer": "candid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["candid","meticulous","reluctant","skeptical"]
+    "clue": "Choose the antonym of “evasive”.",
+    "options": [
+      "public",
+      "candid",
+      "succeed",
+      "success"
+    ]
   },
   {
-    "id": "missing-047-02",
-    "sentence": "Because she told the investigator exactly what she had seen without softening it, the witness seemed ____ to everyone involved.",
-    "answer": "candid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","candid"]
-  },
-  {
-    "id": "missing-047-03",
-    "sentence": "The review described the witness as ____; she told the investigator exactly what she had seen without softening it.",
-    "answer": "candid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","candid","meticulous"]
-  },
-  {
-    "id": "missing-047-04",
-    "sentence": "After considering the evidence, observers agreed that the witness remained ____, since she told the investigator exactly what she had seen without softening it.",
-    "answer": "candid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","candid","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-047-05",
-    "sentence": "It became clear that the witness was ____ when she told the investigator exactly what she had seen without softening it.",
-    "answer": "candid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["candid","meticulous","reluctant","impartial"]
-  },
-  {
-    "id": "missing-047-06",
-    "sentence": "Throughout the discussion, the witness appeared ____: she told the investigator exactly what she had seen without softening it.",
-    "answer": "candid",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","candid"]
-  },
-  {
-    "id": "missing-048-01",
-    "sentence": "the diplomat was ____ because she handled sensitive questions carefully without causing offence.",
-    "answer": "discreet",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","discreet","meticulous"]
-  },
-  {
-    "id": "missing-048-02",
-    "sentence": "Because she handled sensitive questions carefully without causing offence, the diplomat seemed ____ to everyone involved.",
-    "answer": "discreet",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","discreet","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-048-03",
-    "sentence": "The review described the diplomat as ____; she handled sensitive questions carefully without causing offence.",
-    "answer": "discreet",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["discreet","meticulous","reluctant","plausible"]
-  },
-  {
-    "id": "missing-048-04",
-    "sentence": "After considering the evidence, observers agreed that the diplomat remained ____, since she handled sensitive questions carefully without causing offence.",
-    "answer": "discreet",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","discreet"]
-  },
-  {
-    "id": "missing-048-05",
-    "sentence": "It became clear that the diplomat was ____ when she handled sensitive questions carefully without causing offence.",
-    "answer": "discreet",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","discreet","meticulous"]
-  },
-  {
-    "id": "missing-048-06",
-    "sentence": "Throughout the discussion, the diplomat appeared ____: she handled sensitive questions carefully without causing offence.",
-    "answer": "discreet",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","discreet","meticulous","reluctant"]
-  },
-  {
-    "id": "missing-049-01",
-    "sentence": "the spokesperson was ____ because he avoided giving a direct answer when asked about the missing funds.",
+    "id": "missing-269",
+    "sentence": "Item 269: The word with the opposite meaning to “candid” is ____ .",
     "answer": "evasive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["evasive","meticulous","reluctant","skeptical"]
+    "clue": "Choose the antonym of “candid”.",
+    "options": [
+      "evasive",
+      "arrange",
+      "irregular",
+      "meagre"
+    ]
   },
   {
-    "id": "missing-049-02",
-    "sentence": "Because he avoided giving a direct answer when asked about the missing funds, the spokesperson seemed ____ to everyone involved.",
-    "answer": "evasive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","resilient","evasive"]
+    "id": "missing-270",
+    "sentence": "Item 270: The word with the opposite meaning to “flustered” is ____ .",
+    "answer": "composed",
+    "clue": "Choose the antonym of “flustered”.",
+    "options": [
+      "silent",
+      "candid",
+      "generous",
+      "composed"
+    ]
   },
   {
-    "id": "missing-049-03",
-    "sentence": "The review described the spokesperson as ____; he avoided giving a direct answer when asked about the missing funds.",
-    "answer": "evasive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","plausible","evasive","meticulous"]
+    "id": "missing-271",
+    "sentence": "Item 271: The word with the opposite meaning to “composed” is ____ .",
+    "answer": "flustered",
+    "clue": "Choose the antonym of “composed”.",
+    "options": [
+      "concise",
+      "contract",
+      "flustered",
+      "vacant"
+    ]
   },
   {
-    "id": "missing-049-04",
-    "sentence": "After considering the evidence, observers agreed that the spokesperson remained ____, since he avoided giving a direct answer when asked about the missing funds.",
-    "answer": "evasive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["concise","evasive","meticulous","reluctant"]
+    "id": "missing-272",
+    "sentence": "Item 272: The word with the opposite meaning to “indecisive” is ____ .",
+    "answer": "decisive",
+    "clue": "Choose the antonym of “indecisive”.",
+    "options": [
+      "omit",
+      "decisive",
+      "innovative",
+      "dull"
+    ]
   },
   {
-    "id": "missing-049-05",
-    "sentence": "It became clear that the spokesperson was ____ when he avoided giving a direct answer when asked about the missing funds.",
-    "answer": "evasive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["evasive","meticulous","reluctant","impartial"]
+    "id": "missing-273",
+    "sentence": "Item 273: The word with the opposite meaning to “decisive” is ____ .",
+    "answer": "indecisive",
+    "clue": "Choose the antonym of “decisive”.",
+    "options": [
+      "indecisive",
+      "manageable",
+      "combine",
+      "courage"
+    ]
   },
   {
-    "id": "missing-049-06",
-    "sentence": "Throughout the discussion, the spokesperson appeared ____: he avoided giving a direct answer when asked about the missing funds.",
-    "answer": "evasive",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","ambiguous","evasive"]
+    "id": "missing-274",
+    "sentence": "Item 274: The word with the opposite meaning to “wasteful” is ____ .",
+    "answer": "economical",
+    "clue": "Choose the antonym of “wasteful”.",
+    "options": [
+      "accurate",
+      "whisper",
+      "rough",
+      "economical"
+    ]
   },
   {
-    "id": "missing-050-01",
-    "sentence": "the storm was ____ because it was expected to arrive within the next few hours.",
+    "id": "missing-275",
+    "sentence": "Item 275: The word with the opposite meaning to “economical” is ____ .",
+    "answer": "wasteful",
+    "clue": "Choose the antonym of “economical”.",
+    "options": [
+      "failure",
+      "rigorous",
+      "wasteful",
+      "fail"
+    ]
+  },
+  {
+    "id": "missing-276",
+    "sentence": "Item 276: The word with the opposite meaning to “implicit” is ____ .",
+    "answer": "explicit",
+    "clue": "Choose the antonym of “implicit”.",
+    "options": [
+      "rational",
+      "explicit",
+      "disorder",
+      "possible"
+    ]
+  },
+  {
+    "id": "missing-277",
+    "sentence": "Item 277: The word with the opposite meaning to “explicit” is ____ .",
+    "answer": "implicit",
+    "clue": "Choose the antonym of “explicit”.",
+    "options": [
+      "implicit",
+      "visible",
+      "evasive",
+      "stingy"
+    ]
+  },
+  {
+    "id": "missing-278",
+    "sentence": "Item 278: The word with the opposite meaning to “adverse” is ____ .",
+    "answer": "favorable",
+    "clue": "Choose the antonym of “adverse”.",
+    "options": [
+      "occupied",
+      "verbose",
+      "accept",
+      "favorable"
+    ]
+  },
+  {
+    "id": "missing-279",
+    "sentence": "Item 279: The word with the opposite meaning to “favorable” is ____ .",
+    "answer": "adverse",
+    "clue": "Choose the antonym of “favorable”.",
+    "options": [
+      "rigid",
+      "expose",
+      "adverse",
+      "conventional"
+    ]
+  },
+  {
+    "id": "missing-280",
+    "sentence": "Item 280: The word with the opposite meaning to “genuine” is ____ .",
+    "answer": "feigned",
+    "clue": "Choose the antonym of “genuine”.",
+    "options": [
+      "cowardice",
+      "feigned",
+      "prudent",
+      "separate"
+    ]
+  },
+  {
+    "id": "missing-281",
+    "sentence": "Item 281: The word with the opposite meaning to “remote” is ____ .",
     "answer": "imminent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","skeptical","imminent","meticulous"]
+    "clue": "Choose the antonym of “remote”.",
+    "options": [
+      "imminent",
+      "inaccurate",
+      "shout",
+      "bitter"
+    ]
   },
   {
-    "id": "missing-050-02",
-    "sentence": "Because it was expected to arrive within the next few hours, the storm seemed ____ to everyone involved.",
-    "answer": "imminent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["resilient","imminent","meticulous","reluctant"]
+    "id": "missing-282",
+    "sentence": "Item 282: The word with the opposite meaning to “imminent” is ____ .",
+    "answer": "remote",
+    "clue": "Choose the antonym of “imminent”.",
+    "options": [
+      "advance",
+      "friend",
+      "lenient",
+      "remote"
+    ]
   },
   {
-    "id": "missing-050-03",
-    "sentence": "The review described the storm as ____; it was expected to arrive within the next few hours.",
-    "answer": "imminent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["imminent","meticulous","reluctant","plausible"]
+    "id": "missing-283",
+    "sentence": "Item 283: The word with the opposite meaning to “conventional” is ____ .",
+    "answer": "innovative",
+    "clue": "Choose the antonym of “conventional”.",
+    "options": [
+      "impossible",
+      "irrational",
+      "innovative",
+      "victory"
+    ]
   },
   {
-    "id": "missing-050-04",
-    "sentence": "After considering the evidence, observers agreed that the storm remained ____, since it was expected to arrive within the next few hours.",
-    "answer": "imminent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["meticulous","reluctant","concise","imminent"]
+    "id": "missing-284",
+    "sentence": "Item 284: The word with the opposite meaning to “innovative” is ____ .",
+    "answer": "conventional",
+    "clue": "Choose the antonym of “innovative”.",
+    "options": [
+      "humble",
+      "conventional",
+      "hidden",
+      "composed"
+    ]
   },
   {
-    "id": "missing-050-05",
-    "sentence": "It became clear that the storm was ____ when it was expected to arrive within the next few hours.",
-    "answer": "imminent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["reluctant","impartial","imminent","meticulous"]
+    "id": "missing-285",
+    "sentence": "Item 285: The word with the opposite meaning to “confusing” is ____ .",
+    "answer": "lucid",
+    "clue": "Choose the antonym of “confusing”.",
+    "options": [
+      "lucid",
+      "domestic",
+      "impartial",
+      "reject"
+    ]
   },
   {
-    "id": "missing-050-06",
-    "sentence": "Throughout the discussion, the storm appeared ____: it was expected to arrive within the next few hours.",
-    "answer": "imminent",
-    "clue": "Read the whole sentence and choose the word that best matches its precise meaning.",
-    "options": ["ambiguous","imminent","meticulous","reluctant"]
+    "id": "missing-286",
+    "sentence": "Item 286: The word with the opposite meaning to “lucid” is ____ .",
+    "answer": "confusing",
+    "clue": "Choose the antonym of “lucid”.",
+    "options": [
+      "lucid",
+      "flexible",
+      "shield",
+      "confusing"
+    ]
+  },
+  {
+    "id": "missing-287",
+    "sentence": "Item 287: The word with the opposite meaning to “optional” is ____ .",
+    "answer": "mandatory",
+    "clue": "Choose the antonym of “optional”.",
+    "options": [
+      "create",
+      "wisdom",
+      "mandatory",
+      "reckless"
+    ]
+  },
+  {
+    "id": "missing-288",
+    "sentence": "Item 288: The word with the opposite meaning to “mandatory” is ____ .",
+    "answer": "optional",
+    "clue": "Choose the antonym of “mandatory”.",
+    "options": [
+      "sweet",
+      "optional",
+      "vague",
+      "vanish"
+    ]
+  },
+  {
+    "id": "missing-289",
+    "sentence": "Item 289: The word with the opposite meaning to “extraordinary” is ____ .",
+    "answer": "mundane",
+    "clue": "Choose the antonym of “extraordinary”.",
+    "options": [
+      "mundane",
+      "retreat",
+      "enemy",
+      "authentic"
+    ]
+  },
+  {
+    "id": "missing-290",
+    "sentence": "Item 290: The word with the opposite meaning to “mundane” is ____ .",
+    "answer": "extraordinary",
+    "clue": "Choose the antonym of “mundane”.",
+    "options": [
+      "defeat",
+      "logical",
+      "relentless",
+      "extraordinary"
+    ]
+  },
+  {
+    "id": "missing-291",
+    "sentence": "Item 291: The word with the opposite meaning to “expert” is ____ .",
+    "answer": "novice",
+    "clue": "Choose the antonym of “expert”.",
+    "options": [
+      "flustered",
+      "arrogant",
+      "novice",
+      "asleep"
+    ]
+  },
+  {
+    "id": "missing-292",
+    "sentence": "Item 292: The word with the opposite meaning to “novice” is ____ .",
+    "answer": "expert",
+    "clue": "Choose the antonym of “novice”.",
+    "options": [
+      "include",
+      "expert",
+      "foreign",
+      "biased"
+    ]
+  },
+  {
+    "id": "missing-293",
+    "sentence": "Item 293: The word with the opposite meaning to “safe” is ____ .",
+    "answer": "perilous",
+    "clue": "Choose the antonym of “safe”.",
+    "options": [
+      "perilous",
+      "confusing",
+      "timid",
+      "complicate"
+    ]
+  },
+  {
+    "id": "missing-294",
+    "sentence": "Item 294: The word with the opposite meaning to “perilous” is ____ .",
+    "answer": "safe",
+    "clue": "Choose the antonym of “perilous”.",
+    "options": [
+      "trivial",
+      "destroy",
+      "foolishness",
+      "safe"
+    ]
+  },
+  {
+    "id": "missing-295",
+    "sentence": "Item 295: The word with the opposite meaning to “meagre” is ____ .",
+    "answer": "plentiful",
+    "clue": "Choose the antonym of “meagre”.",
+    "options": [
+      "appear",
+      "tender",
+      "plentiful",
+      "specific"
+    ]
+  },
+  {
+    "id": "missing-296",
+    "sentence": "Item 296: The word with the opposite meaning to “plentiful” is ____ .",
+    "answer": "meagre",
+    "clue": "Choose the antonym of “plentiful”.",
+    "options": [
+      "spurious",
+      "meagre",
+      "construct",
+      "beginning"
+    ]
+  },
+  {
+    "id": "missing-297",
+    "sentence": "Item 297: The word with the opposite meaning to “irrational” is ____ .",
+    "answer": "rational",
+    "clue": "Choose the antonym of “irrational”.",
+    "options": [
+      "rational",
+      "arrival",
+      "illogical",
+      "merciful"
+    ]
+  },
+  {
+    "id": "missing-298",
+    "sentence": "Item 298: The word with the opposite meaning to “rational” is ____ .",
+    "answer": "irrational",
+    "clue": "Choose the antonym of “rational”.",
+    "options": [
+      "awake",
+      "decisive",
+      "optimistic",
+      "irrational"
+    ]
+  },
+  {
+    "id": "missing-299",
+    "sentence": "Item 299: The word with the opposite meaning to “merciful” is ____ .",
+    "answer": "relentless",
+    "clue": "Choose the antonym of “merciful”.",
+    "options": [
+      "ambiguous",
+      "exclude",
+      "relentless",
+      "minor"
+    ]
+  },
+  {
+    "id": "missing-300",
+    "sentence": "Item 300: The word with the opposite meaning to “relentless” is ____ .",
+    "answer": "merciful",
+    "clue": "Choose the antonym of “relentless”.",
+    "options": [
+      "simplify",
+      "merciful",
+      "mandatory",
+      "bold"
+    ]
   }
 ];
 export function getMissingPuzzle(date:string,slot:number):Puzzle & {clue:string;pattern:string}{
