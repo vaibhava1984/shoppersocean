@@ -3630,8 +3630,23 @@ const MISSING_WORD_CHALLENGES:Array<{id:string;sentence:string;answer:string;clu
   }
 ];
 export function getMissingPuzzle(date:string,slot:number):Puzzle & {clue:string;pattern:string}{
- const seed=seedFor(date,slot),index=((seed%MISSING_WORD_CHALLENGES.length)+MISSING_WORD_CHALLENGES.length)%MISSING_WORD_CHALLENGES.length,item=MISSING_WORD_CHALLENGES[index];
- return {id:item.id,question:item.sentence.replace("____","_____"),clue:item.clue,answer:item.answer,pattern:"_____",options:shuffled(item.options,seed+29)};
+ // The bank is stored in six 50-question subject groups. Deal one question
+ // from a different subject on every turn, cycling all 300 before repeating.
+ const seed=seedFor(date,slot),within=Math.floor(Math.max(0,slot)/6)%50;
+ const dayShift=((Math.floor(Date.parse(date+"T00:00:00Z")/DAY_MS)%6)+6)%6;
+ const category=((Math.max(0,slot)%6)+within+dayShift)%6;
+ const index=category*50+within,item=MISSING_WORD_CHALLENGES[index];
+ // Build varied distractors from three different subject areas, rather than
+ // presenting four capitals, four elements, etc. together every time.
+ const otherCategories=shuffled([0,1,2,3,4,5].filter(c=>c!==category),seed+829).slice(0,3);
+ const distractors:string[]=[];
+ for(const other of otherCategories){
+   const candidates=shuffled(MISSING_WORD_CHALLENGES.slice(other*50,(other+1)*50).map(x=>x.answer).filter(a=>a!==item.answer&&!distractors.includes(a)),seed+other*97+31);
+   const choice=candidates.find(a=>a!==item.answer&&!distractors.includes(a));
+   if(choice)distractors.push(choice);
+ }
+ const options=shuffled([item.answer,...distractors],seed+29);
+ return {id:item.id,question:item.sentence.replace("____","_____"),clue:item.clue,answer:item.answer,pattern:"_____",options};
 }
 export function getSequencePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
  const seed=seedFor(date,slot),a=2+(seed%1000),step=1+((seed*7)%23),curve=1+((seed*13)%17);
