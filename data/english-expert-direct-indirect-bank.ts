@@ -67,7 +67,7 @@ function buildBank(): Question[] {
     bank.push(makeQuestion(
       `Choose the correct reported form: ${n} said, “I ${past} ${c} yesterday.”`,
       `${n} said that ${p} had ${pp} ${c} the previous day.`,
-      [`${n} said that ${p} ${past} ${c} the previous day.`, `${n} said that ${p} was ${ing} ${c} the previous day.`, `${n} said that ${p} has ${pp} ${c} the previous day.`],
+      [`${n} said that ${p} ${past} ${c} the previous day.`, `${n} said that ${p} was ${ing} ${c} the previous day.`, `${n} said that ${p} had been ${ing} ${c} the previous day.`],
       "The simple past normally changes to the past perfect; yesterday changes to the previous day.", 90+i));
 
     bank.push(makeQuestion(
