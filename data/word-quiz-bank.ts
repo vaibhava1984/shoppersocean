@@ -24,7 +24,17 @@ export const WORD_QUIZ_BANK: WordQuizQuestion[] = selected.map((q, index) => {
   const topic = q.id.startsWith("geography-") ? "Geography & World Places"
     : q.id.startsWith("science-") ? "Science & Nature"
     : q.id.startsWith("capital-") ? "World Capitals" : "Chemistry";
-  const options = getDailyGKOptions(q, index + 37) as [string, string, string, string];
+  const rawOptions = getDailyGKOptions(q, index + 37);
+  const poolPrefix = q.id.startsWith("geography-") ? "geography-"
+    : q.id.startsWith("science-") ? "science-"
+    : q.id.startsWith("capital-") ? "capital-" : "element-";
+  const pool = [...new Set(DAILY_GK_QUESTIONS.filter(item => item.id.startsWith(poolPrefix)).map(item => item.answer))];
+  const uniqueOptions = [...new Set(rawOptions)];
+  for (let step = 0; uniqueOptions.length < 4 && step < pool.length; step++) {
+    const candidate = pool[(index * 7 + step) % pool.length];
+    if (!uniqueOptions.includes(candidate)) uniqueOptions.push(candidate);
+  }
+  const options = uniqueOptions.slice(0, 4) as [string, string, string, string];
   return {
     id: "wordquiz-" + String(index + 1).padStart(3, "0"),
     question: q.question,
