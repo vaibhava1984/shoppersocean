@@ -1,4203 +1,4039 @@
 export type WordQuizQuestion={id:string;question:string;answer:string;options:[string,string,string,string];explanation:string;clue:string;topic:string};
-export const WORD_QUIZ_BANK:WordQuizQuestion[]=[
+
+// 300 curated vocabulary MCQs: synonym, antonym, definition and contextual usage.
+const questions:WordQuizQuestion[] = [
   {
     "id": "wordquiz-001",
-    "question": "What does the idiom “break the ice” mean?",
-    "answer": "make people feel more comfortable",
+    "question": "Which word is closest in meaning to \"abundant\"?",
+    "answer": "plentiful",
     "options": [
-      "make people feel more comfortable",
-      "freeze a conversation",
-      "end a friendship",
-      "avoid a meeting"
+      "plentiful",
+      "hardworking",
+      "thrifty",
+      "strict"
     ],
-    "explanation": "The idiom “break the ice” is used to mean make people feel more comfortable.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"abundant\" means plentiful.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-002",
-    "question": "What does the idiom “spill the beans” mean?",
-    "answer": "reveal a secret",
+    "question": "Which word is opposite in meaning to \"abundant\"?",
+    "answer": "scarce",
     "options": [
-      "reveal a secret",
-      "waste food",
-      "make a careless mess",
-      "change the subject"
+      "inarticulate",
+      "protected",
+      "fake",
+      "scarce"
     ],
-    "explanation": "The idiom “spill the beans” is used to mean reveal a secret.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"scarce\" is the opposite of \"abundant\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-003",
-    "question": "What does the idiom “hit the nail on the head” mean?",
-    "answer": "describe exactly what is right",
+    "question": "What does \"abundant\" mean?",
+    "answer": "available in large quantities",
     "options": [
-      "describe exactly what is right",
-      "work as a carpenter",
-      "make a serious mistake",
-      "finish a task early"
+      "available in large quantities",
+      "accurate and exact in every detail",
+      "expecting good things to happen",
+      "correct and free from errors"
     ],
-    "explanation": "The idiom “hit the nail on the head” is used to mean describe exactly what is right.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"abundant\" means available in large quantities.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-004",
-    "question": "What does the idiom “once in a blue moon” mean?",
-    "answer": "very rarely",
+    "question": "Choose the sentence that uses \"abundant\" correctly.",
+    "answer": "The region has abundant rainfall throughout the year.",
     "options": [
-      "very rarely",
-      "every evening",
-      "at the right moment",
-      "without warning"
+      "Residents remained wary of the unfamiliar offer.",
+      "We need a pragmatic solution to the transport problem.",
+      "The region has abundant rainfall throughout the year.",
+      "Young plants are vulnerable to frost."
     ],
-    "explanation": "The idiom “once in a blue moon” is used to mean very rarely.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "The sentence uses \"abundant\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-005",
-    "question": "What does the idiom “under the weather” mean?",
-    "answer": "feeling unwell",
+    "question": "Which word is closest in meaning to \"accurate\"?",
+    "answer": "precise",
     "options": [
-      "feeling unwell",
-      "standing outdoors",
-      "feeling excited",
-      "working late"
+      "unfriendly",
+      "shrewd",
+      "authentic",
+      "precise"
     ],
-    "explanation": "The idiom “under the weather” is used to mean feeling unwell.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"accurate\" means precise.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-006",
-    "question": "What does the idiom “cost an arm and a leg” mean?",
-    "answer": "be extremely expensive",
+    "question": "Which word is opposite in meaning to \"accurate\"?",
+    "answer": "inaccurate",
     "options": [
-      "be extremely expensive",
-      "require physical effort",
-      "be very useful",
-      "cause an injury"
+      "hostile",
+      "impractical",
+      "inaccurate",
+      "fragile"
     ],
-    "explanation": "The idiom “cost an arm and a leg” is used to mean be extremely expensive.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"inaccurate\" is the opposite of \"accurate\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-007",
-    "question": "What does the idiom “the ball is in your court” mean?",
-    "answer": "it is your turn to act",
+    "question": "What does \"accurate\" mean?",
+    "answer": "correct and free from errors",
     "options": [
-      "it is your turn to act",
-      "the game has ended",
-      "you have made a mistake",
-      "someone has changed the rules"
+      "clear, consistent and easy to understand",
+      "correct and free from errors",
+      "well-meaning and charitable",
+      "easily broken or damaged"
     ],
-    "explanation": "The idiom “the ball is in your court” is used to mean it is your turn to act.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"accurate\" means correct and free from errors.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-008",
-    "question": "What does the idiom “burn the midnight oil” mean?",
-    "answer": "work late into the night",
+    "question": "Choose the sentence that uses \"accurate\" correctly.",
+    "answer": "The report gives an accurate account of the incident.",
     "options": [
-      "work late into the night",
-      "waste electricity",
-      "start work at dawn",
-      "celebrate until midnight"
+      "Some delays are inevitable during road repairs.",
+      "She gave an articulate explanation of the proposal.",
+      "The report gives an accurate account of the incident.",
+      "An adaptable employee can handle changing priorities."
     ],
-    "explanation": "The idiom “burn the midnight oil” is used to mean work late into the night.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "The sentence uses \"accurate\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-009",
-    "question": "What does the idiom “bite off more than you can chew” mean?",
-    "answer": "take on more than you can manage",
+    "question": "Which word is closest in meaning to \"adaptable\"?",
+    "answer": "flexible",
     "options": [
-      "take on more than you can manage",
-      "eat too quickly",
-      "refuse extra work",
-      "finish an easy task"
+      "flexible",
+      "unwilling",
+      "flawless",
+      "plentiful"
     ],
-    "explanation": "The idiom “bite off more than you can chew” is used to mean take on more than you can manage.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"adaptable\" means flexible.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-010",
-    "question": "What does the idiom “let the cat out of the bag” mean?",
-    "answer": "reveal something meant to be secret",
+    "question": "Which word is opposite in meaning to \"adaptable\"?",
+    "answer": "rigid",
     "options": [
-      "reveal something meant to be secret",
-      "adopt a pet",
-      "make a problem worse",
-      "avoid answering"
+      "deliberate",
+      "fragile",
+      "rigid",
+      "fake"
     ],
-    "explanation": "The idiom “let the cat out of the bag” is used to mean reveal something meant to be secret.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"rigid\" is the opposite of \"adaptable\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-011",
-    "question": "What does the idiom “a blessing in disguise” mean?",
-    "answer": "something good that first seemed bad",
+    "question": "What does \"adaptable\" mean?",
+    "answer": "able to adjust to new conditions",
     "options": [
-      "something good that first seemed bad",
-      "a public celebration",
-      "an unexpected expense",
-      "a hidden danger"
+      "able to adjust to new conditions",
+      "giving information clearly in few words",
+      "clear, consistent and easy to understand",
+      "pleasant and friendly in manner"
     ],
-    "explanation": "The idiom “a blessing in disguise” is used to mean something good that first seemed bad.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"adaptable\" means able to adjust to new conditions.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-012",
-    "question": "What does the idiom “cut corners” mean?",
-    "answer": "do something cheaply by sacrificing quality",
+    "question": "Choose the sentence that uses \"adaptable\" correctly.",
+    "answer": "An adaptable employee can handle changing priorities.",
     "options": [
-      "do something cheaply by sacrificing quality",
-      "take a shorter walking route",
-      "decorate an edge",
-      "divide work equally"
+      "Residents remained wary of the unfamiliar offer.",
+      "They chose a conventional design for the office.",
+      "Their spontaneous visit delighted the family.",
+      "An adaptable employee can handle changing priorities."
     ],
-    "explanation": "The idiom “cut corners” is used to mean do something cheaply by sacrificing quality.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "The sentence uses \"adaptable\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-013",
-    "question": "What does the idiom “call it a day” mean?",
-    "answer": "stop working for now",
+    "question": "Which word is closest in meaning to \"adverse\"?",
+    "answer": "unfavourable",
     "options": [
-      "stop working for now",
-      "make a phone call",
-      "plan tomorrow's work",
-      "begin a new project"
+      "original",
+      "unfavourable",
+      "friendly",
+      "unnecessary"
     ],
-    "explanation": "The idiom “call it a day” is used to mean stop working for now.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"adverse\" means unfavourable.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-014",
-    "question": "What does the idiom “get cold feet” mean?",
-    "answer": "become nervous before an action",
+    "question": "Which word is opposite in meaning to \"adverse\"?",
+    "answer": "favourable",
     "options": [
-      "become nervous before an action",
-      "feel physically cold",
-      "lose interest in food",
-      "recover from illness"
+      "wasteful",
+      "negligent",
+      "favourable",
+      "reckless"
     ],
-    "explanation": "The idiom “get cold feet” is used to mean become nervous before an action.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"favourable\" is the opposite of \"adverse\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-015",
-    "question": "What does the idiom “on the same page” mean?",
-    "answer": "share the same understanding",
+    "question": "What does \"adverse\" mean?",
+    "answer": "preventing success or causing difficulty",
     "options": [
-      "share the same understanding",
-      "read the same book",
-      "work in separate teams",
-      "agree to disagree"
+      "requiring great effort or endurance",
+      "easy to see or attract attention",
+      "certain to happen and impossible to avoid",
+      "preventing success or causing difficulty"
     ],
-    "explanation": "The idiom “on the same page” is used to mean share the same understanding.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"adverse\" means preventing success or causing difficulty.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-016",
-    "question": "What does the idiom “pull someone's leg” mean?",
-    "answer": "tease someone playfully",
+    "question": "Choose the sentence that uses \"adverse\" correctly.",
+    "answer": "The match was cancelled because of adverse weather.",
     "options": [
-      "tease someone playfully",
-      "help someone walk",
-      "ask for a favour",
-      "criticise someone harshly"
+      "The match was cancelled because of adverse weather.",
+      "The witness provided a credible explanation.",
+      "The region has abundant rainfall throughout the year.",
+      "The workers stood on a precarious platform."
     ],
-    "explanation": "The idiom “pull someone's leg” is used to mean tease someone playfully.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "The sentence uses \"adverse\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-017",
-    "question": "What does the idiom “in hot water” mean?",
-    "answer": "in trouble",
+    "question": "Which word is closest in meaning to \"amiable\"?",
+    "answer": "friendly",
     "options": [
-      "in trouble",
-      "feeling thirsty",
-      "working in a kitchen",
-      "enjoying a holiday"
+      "friendly",
+      "crucial",
+      "genuine",
+      "unclear"
     ],
-    "explanation": "The idiom “in hot water” is used to mean in trouble.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"amiable\" means friendly.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-018",
-    "question": "What does the idiom “keep an eye on” mean?",
-    "answer": "watch carefully",
+    "question": "Which word is opposite in meaning to \"amiable\"?",
+    "answer": "hostile",
     "options": [
-      "watch carefully",
-      "close your eyes",
-      "ignore a warning",
-      "look for a lost object"
+      "scarce",
+      "definite",
+      "wordy",
+      "hostile"
     ],
-    "explanation": "The idiom “keep an eye on” is used to mean watch carefully.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"hostile\" is the opposite of \"amiable\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-019",
-    "question": "What does the idiom “miss the boat” mean?",
-    "answer": "lose an opportunity",
+    "question": "What does \"amiable\" mean?",
+    "answer": "pleasant and friendly in manner",
     "options": [
-      "lose an opportunity",
-      "arrive at a harbour",
-      "forget a journey",
-      "choose the wrong vehicle"
+      "pleasant and friendly in manner",
+      "no longer needed or useful",
+      "easy to understand or open and honest",
+      "showing careful judgement and good sense"
     ],
-    "explanation": "The idiom “miss the boat” is used to mean lose an opportunity.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"amiable\" means pleasant and friendly in manner.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-020",
-    "question": "What does the idiom “back to square one” mean?",
-    "answer": "return to the starting point",
+    "question": "Choose the sentence that uses \"amiable\" correctly.",
+    "answer": "Our amiable neighbour greets everyone warmly.",
     "options": [
-      "return to the starting point",
-      "move to a new house",
-      "complete the final stage",
-      "change the subject"
+      "A judge must remain impartial during a trial.",
+      "Our amiable neighbour greets everyone warmly.",
+      "The climbers faced an arduous journey.",
+      "The ambiguous instruction confused the new staff."
     ],
-    "explanation": "The idiom “back to square one” is used to mean return to the starting point.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "The sentence uses \"amiable\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-021",
-    "question": "What does the idiom “through thick and thin” mean?",
-    "answer": "in good times and bad",
+    "question": "Which word is closest in meaning to \"ambiguous\"?",
+    "answer": "unclear",
     "options": [
-      "in good times and bad",
-      "through a crowded forest",
-      "with great difficulty",
-      "without any preparation"
+      "demanding",
+      "thrifty",
+      "outdated",
+      "unclear"
     ],
-    "explanation": "The idiom “through thick and thin” is used to mean in good times and bad.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"ambiguous\" means unclear.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-022",
-    "question": "What does the idiom “add fuel to the fire” mean?",
-    "answer": "make a bad situation worse",
+    "question": "Which word is opposite in meaning to \"ambiguous\"?",
+    "answer": "definite",
     "options": [
-      "make a bad situation worse",
-      "solve a disagreement",
-      "start cooking",
-      "give useful advice"
+      "implausible",
+      "reckless",
+      "definite",
+      "robust"
     ],
-    "explanation": "The idiom “add fuel to the fire” is used to mean make a bad situation worse.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"definite\" is the opposite of \"ambiguous\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-023",
-    "question": "What does the idiom “a piece of cake” mean?",
-    "answer": "something very easy",
+    "question": "What does \"ambiguous\" mean?",
+    "answer": "having more than one possible meaning",
     "options": [
-      "something very easy",
-      "a small dessert",
-      "a costly purchase",
-      "a difficult choice"
+      "extremely careful about small details",
+      "having more than one possible meaning",
+      "correct and free from errors",
+      "easy to see or attract attention"
     ],
-    "explanation": "The idiom “a piece of cake” is used to mean something very easy.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"ambiguous\" means having more than one possible meaning.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-024",
-    "question": "What does the idiom “throw in the towel” mean?",
-    "answer": "admit defeat and stop trying",
+    "question": "Choose the sentence that uses \"ambiguous\" correctly.",
+    "answer": "The ambiguous instruction confused the new staff.",
     "options": [
-      "admit defeat and stop trying",
-      "clean up a spill",
-      "offer help",
-      "start a competition"
+      "The ambiguous instruction confused the new staff.",
+      "His eloquent speech moved the audience.",
+      "The match was cancelled because of adverse weather.",
+      "The editor made a meticulous check of every page."
     ],
-    "explanation": "The idiom “throw in the towel” is used to mean admit defeat and stop trying.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "The sentence uses \"ambiguous\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-025",
-    "question": "What does the idiom “beat around the bush” mean?",
-    "answer": "avoid saying something directly",
+    "question": "Which word is closest in meaning to \"arduous\"?",
+    "answer": "demanding",
     "options": [
-      "avoid saying something directly",
-      "work in a garden",
-      "speak very quickly",
-      "repeat a clear instruction"
+      "demanding",
+      "unwilling",
+      "plentiful",
+      "crucial"
     ],
-    "explanation": "The idiom “beat around the bush” is used to mean avoid saying something directly.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"arduous\" means demanding.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-026",
-    "question": "What does the idiom “the last straw” mean?",
-    "answer": "the final problem that makes patience end",
+    "question": "Which word is opposite in meaning to \"arduous\"?",
+    "answer": "effortless",
     "options": [
-      "the final problem that makes patience end",
-      "a useful extra item",
-      "the first warning",
-      "a minor success"
+      "scarce",
+      "effortless",
+      "hostile",
+      "rigid"
     ],
-    "explanation": "The idiom “the last straw” is used to mean the final problem that makes patience end.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"effortless\" is the opposite of \"arduous\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-027",
-    "question": "What does the idiom “make ends meet” mean?",
-    "answer": "manage to pay for basic needs",
+    "question": "What does \"arduous\" mean?",
+    "answer": "requiring great effort or endurance",
     "options": [
-      "manage to pay for basic needs",
-      "join two loose ends",
-      "finish a long journey",
-      "balance two arguments"
+      "requiring great effort or endurance",
+      "expecting good things to happen",
+      "clear, consistent and easy to understand",
+      "truly what it claims to be"
     ],
-    "explanation": "The idiom “make ends meet” is used to mean manage to pay for basic needs.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"arduous\" means requiring great effort or endurance.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-028",
-    "question": "What does the idiom “by the book” mean?",
-    "answer": "according to the rules",
+    "question": "Choose the sentence that uses \"arduous\" correctly.",
+    "answer": "The climbers faced an arduous journey.",
     "options": [
-      "according to the rules",
-      "from memory",
-      "in alphabetical order",
-      "without reading"
+      "They chose a conventional design for the office.",
+      "We need a pragmatic solution to the transport problem.",
+      "She gave an articulate explanation of the proposal.",
+      "The climbers faced an arduous journey."
     ],
-    "explanation": "The idiom “by the book” is used to mean according to the rules.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "The sentence uses \"arduous\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-029",
-    "question": "What does the idiom “leave no stone unturned” mean?",
-    "answer": "search very thoroughly",
+    "question": "Which word is closest in meaning to \"articulate\"?",
+    "answer": "eloquent",
     "options": [
-      "search very thoroughly",
-      "avoid difficult questions",
-      "travel without a plan",
-      "finish a task carelessly"
+      "thrifty",
+      "eloquent",
+      "precise",
+      "detailed"
     ],
-    "explanation": "The idiom “leave no stone unturned” is used to mean search very thoroughly.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"articulate\" means eloquent.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-030",
-    "question": "What does the idiom “a storm in a teacup” mean?",
-    "answer": "great excitement over a small matter",
+    "question": "Which word is opposite in meaning to \"articulate\"?",
+    "answer": "inarticulate",
     "options": [
-      "great excitement over a small matter",
-      "a dangerous weather event",
-      "a sudden change of plan",
-      "a problem with a drink"
+      "inarticulate",
+      "approximate",
+      "fake",
+      "inaccurate"
     ],
-    "explanation": "The idiom “a storm in a teacup” is used to mean great excitement over a small matter.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Idioms"
+    "explanation": "\"inarticulate\" is the opposite of \"articulate\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-031",
-    "question": "In everyday English, what does the phrasal verb “put off” mean?",
-    "answer": "postpone",
+    "question": "What does \"articulate\" mean?",
+    "answer": "able to express ideas clearly",
     "options": [
-      "postpone",
-      "wear",
-      "display",
-      "remove"
+      "happening naturally without prior planning",
+      "skilled at dealing with people without causing offence",
+      "having more than one possible meaning",
+      "able to express ideas clearly"
     ],
-    "explanation": "“put off” means postpone in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"articulate\" means able to express ideas clearly.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-032",
-    "question": "In everyday English, what does the phrasal verb “look into” mean?",
-    "answer": "investigate",
+    "question": "Choose the sentence that uses \"articulate\" correctly.",
+    "answer": "She gave an articulate explanation of the proposal.",
     "options": [
-      "investigate",
-      "admire",
-      "avoid",
-      "summarise"
+      "She gave an articulate explanation of the proposal.",
+      "Her argument was coherent from beginning to end.",
+      "Handle the fragile glass with care.",
+      "A cautious driver slows down near a school."
     ],
-    "explanation": "“look into” means investigate in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "The sentence uses \"articulate\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-033",
-    "question": "In everyday English, what does the phrasal verb “carry on” mean?",
-    "answer": "continue",
+    "question": "Which word is closest in meaning to \"astute\"?",
+    "answer": "shrewd",
     "options": [
-      "continue",
-      "transport",
-      "cancel",
-      "return"
+      "shrewd",
+      "provisional",
+      "plentiful",
+      "sturdy"
     ],
-    "explanation": "“carry on” means continue in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"astute\" means shrewd.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-034",
-    "question": "In everyday English, what does the phrasal verb “run out of” mean?",
-    "answer": "have none left",
+    "question": "Which word is opposite in meaning to \"astute\"?",
+    "answer": "naive",
     "options": [
-      "have none left",
-      "escape from",
-      "discover",
-      "move quickly"
+      "scarce",
+      "deliberate",
+      "eager",
+      "naive"
     ],
-    "explanation": "“run out of” means have none left in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"naive\" is the opposite of \"astute\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-035",
-    "question": "In everyday English, what does the phrasal verb “come across” mean?",
-    "answer": "find by chance",
+    "question": "What does \"astute\" mean?",
+    "answer": "quick to understand situations and make sound judgements",
     "options": [
-      "find by chance",
-      "argue with",
-      "travel beyond",
-      "imitate"
+      "concerned only with the surface or appearance",
+      "available in large quantities",
+      "quick to understand situations and make sound judgements",
+      "able to adjust to new conditions"
     ],
-    "explanation": "“come across” means find by chance in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"astute\" means quick to understand situations and make sound judgements.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-036",
-    "question": "In everyday English, what does the phrasal verb “turn down” mean?",
-    "answer": "reject",
+    "question": "Choose the sentence that uses \"astute\" correctly.",
+    "answer": "An astute investor studies risks before buying.",
     "options": [
-      "reject",
-      "increase",
-      "repair",
-      "invite"
+      "The museum displayed an authentic historical document.",
+      "An astute investor studies risks before buying.",
+      "The region has abundant rainfall throughout the year.",
+      "It is prudent to keep an emergency fund."
     ],
-    "explanation": "“turn down” means reject in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "The sentence uses \"astute\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-037",
-    "question": "In everyday English, what does the phrasal verb “bring up” mean?",
-    "answer": "mention a topic",
+    "question": "Which word is closest in meaning to \"authentic\"?",
+    "answer": "genuine",
     "options": [
-      "mention a topic",
-      "lower a price",
-      "complete a task",
-      "hide evidence"
+      "noticeable",
+      "precise",
+      "eloquent",
+      "genuine"
     ],
-    "explanation": "“bring up” means mention a topic in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"authentic\" means genuine.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-038",
-    "question": "In everyday English, what does the phrasal verb “look after” mean?",
-    "answer": "take care of",
+    "question": "Which word is opposite in meaning to \"authentic\"?",
+    "answer": "fake",
     "options": [
-      "take care of",
-      "search for",
-      "resemble",
-      "wait for"
+      "fake",
+      "insensitive",
+      "eager",
+      "inaccurate"
     ],
-    "explanation": "“look after” means take care of in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"fake\" is the opposite of \"authentic\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-039",
-    "question": "In everyday English, what does the phrasal verb “give up” mean?",
-    "answer": "stop trying",
+    "question": "What does \"authentic\" mean?",
+    "answer": "real and not copied or false",
     "options": [
-      "stop trying",
-      "donate",
-      "distribute",
-      "begin again"
+      "not boastful or excessively proud",
+      "able to perform many different functions",
+      "real and not copied or false",
+      "truthful and direct"
     ],
-    "explanation": "“give up” means stop trying in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"authentic\" means real and not copied or false.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-040",
-    "question": "In everyday English, what does the phrasal verb “work out” mean?",
-    "answer": "solve",
+    "question": "Choose the sentence that uses \"authentic\" correctly.",
+    "answer": "The museum displayed an authentic historical document.",
     "options": [
-      "solve",
-      "exercise only",
-      "avoid",
-      "memorise without thought"
+      "The museum displayed an authentic historical document.",
+      "A diligent student reviews lessons regularly.",
+      "Investors remained optimistic about the recovery.",
+      "The factory replaced its obsolete machinery."
     ],
-    "explanation": "“work out” means solve in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "The sentence uses \"authentic\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-041",
-    "question": "In everyday English, what does the phrasal verb “set up” mean?",
-    "answer": "establish",
+    "question": "Which word is closest in meaning to \"benevolent\"?",
+    "answer": "kind",
     "options": [
-      "establish",
-      "dismantle",
-      "postpone",
-      "borrow"
+      "frank",
+      "provisional",
+      "kind",
+      "shrewd"
     ],
-    "explanation": "“set up” means establish in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"benevolent\" means kind.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-042",
-    "question": "In everyday English, what does the phrasal verb “take over” mean?",
-    "answer": "assume control",
+    "question": "Which word is opposite in meaning to \"benevolent\"?",
+    "answer": "cruel",
     "options": [
-      "assume control",
-      "hand back",
-      "reduce",
-      "investigate"
+      "naive",
+      "cruel",
+      "rigid",
+      "wordy"
     ],
-    "explanation": "“take over” means assume control in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"cruel\" is the opposite of \"benevolent\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-043",
-    "question": "In everyday English, what does the phrasal verb “get along with” mean?",
-    "answer": "have a friendly relationship with",
+    "question": "What does \"benevolent\" mean?",
+    "answer": "well-meaning and charitable",
     "options": [
-      "have a friendly relationship with",
-      "travel beside",
-      "compete against",
-      "depend entirely on"
+      "greater than what is reasonable or necessary",
+      "requiring great effort or endurance",
+      "well-meaning and charitable",
+      "pleasant and friendly in manner"
     ],
-    "explanation": "“get along with” means have a friendly relationship with in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"benevolent\" means well-meaning and charitable.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-044",
-    "question": "In everyday English, what does the phrasal verb “break down” mean?",
-    "answer": "stop functioning",
+    "question": "Choose the sentence that uses \"benevolent\" correctly.",
+    "answer": "A benevolent donor funded the village library.",
     "options": [
-      "stop functioning",
-      "improve rapidly",
-      "divide fairly",
-      "begin operating"
+      "A cautious driver slows down near a school.",
+      "The region has abundant rainfall throughout the year.",
+      "Please provide the precise measurement.",
+      "A benevolent donor funded the village library."
     ],
-    "explanation": "“break down” means stop functioning in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "The sentence uses \"benevolent\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-045",
-    "question": "In everyday English, what does the phrasal verb “fill in” mean?",
-    "answer": "complete missing information",
+    "question": "Which word is closest in meaning to \"candid\"?",
+    "answer": "frank",
     "options": [
-      "complete missing information",
-      "empty a container",
-      "replace a worker",
-      "erase a record"
+      "unfavourable",
+      "unfriendly",
+      "frank",
+      "shrewd"
     ],
-    "explanation": "“fill in” means complete missing information in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"candid\" means frank.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-046",
-    "question": "In everyday English, what does the phrasal verb “find out” mean?",
-    "answer": "discover information",
+    "question": "Which word is opposite in meaning to \"candid\"?",
+    "answer": "evasive",
     "options": [
-      "discover information",
-      "hide a fact",
-      "invent a story",
-      "forget a detail"
+      "evasive",
+      "favourable",
+      "inarticulate",
+      "unknown"
     ],
-    "explanation": "“find out” means discover information in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"evasive\" is the opposite of \"candid\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-047",
-    "question": "In everyday English, what does the phrasal verb “go through” mean?",
-    "answer": "experience",
+    "question": "What does \"candid\" mean?",
+    "answer": "truthful and direct",
     "options": [
-      "experience",
-      "avoid completely",
-      "look forward to",
-      "cancel"
+      "complete and careful",
+      "not obvious and therefore difficult to notice",
+      "available in large quantities",
+      "truthful and direct"
     ],
-    "explanation": "“go through” means experience in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"candid\" means truthful and direct.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-048",
-    "question": "In everyday English, what does the phrasal verb “hold on” mean?",
-    "answer": "wait",
+    "question": "Choose the sentence that uses \"candid\" correctly.",
+    "answer": "He offered a candid assessment of the plan.",
     "options": [
-      "wait",
-      "release",
-      "celebrate",
-      "move away"
+      "He offered a candid assessment of the plan.",
+      "The tenacious reporter continued investigating.",
+      "The ambiguous instruction confused the new staff.",
+      "The report gives an accurate account of the incident."
     ],
-    "explanation": "“hold on” means wait in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "The sentence uses \"candid\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-049",
-    "question": "In everyday English, what does the phrasal verb “keep up with” mean?",
-    "answer": "stay at the same pace as",
+    "question": "Which word is closest in meaning to \"cautious\"?",
+    "answer": "careful",
     "options": [
-      "stay at the same pace as",
-      "fall behind deliberately",
-      "take care of",
-      "disagree with"
+      "complex",
+      "hardworking",
+      "careful",
+      "traditional"
     ],
-    "explanation": "“keep up with” means stay at the same pace as in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"cautious\" means careful.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-050",
-    "question": "In everyday English, what does the phrasal verb “make up” mean?",
-    "answer": "invent",
+    "question": "Which word is opposite in meaning to \"cautious\"?",
+    "answer": "reckless",
     "options": [
-      "invent",
-      "destroy",
-      "postpone",
-      "translate"
+      "effortless",
+      "thorough",
+      "approximate",
+      "reckless"
     ],
-    "explanation": "“make up” means invent in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"reckless\" is the opposite of \"cautious\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-051",
-    "question": "In everyday English, what does the phrasal verb “pick up” mean?",
-    "answer": "collect",
+    "question": "What does \"cautious\" mean?",
+    "answer": "taking care to avoid danger or mistakes",
     "options": [
-      "collect",
-      "put down",
-      "turn away",
-      "give permission"
+      "taking care to avoid danger or mistakes",
+      "containing many carefully arranged details",
+      "happening naturally without prior planning",
+      "showing careful judgement and good sense"
     ],
-    "explanation": "“pick up” means collect in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"cautious\" means taking care to avoid danger or mistakes.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-052",
-    "question": "In everyday English, what does the phrasal verb “point out” mean?",
-    "answer": "draw attention to",
+    "question": "Choose the sentence that uses \"cautious\" correctly.",
+    "answer": "A cautious driver slows down near a school.",
     "options": [
-      "draw attention to",
-      "conceal",
-      "disprove completely",
-      "take responsibility"
+      "The region has abundant rainfall throughout the year.",
+      "A cautious driver slows down near a school.",
+      "An adaptable employee can handle changing priorities.",
+      "An astute investor studies risks before buying."
     ],
-    "explanation": "“point out” means draw attention to in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "The sentence uses \"cautious\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-053",
-    "question": "In everyday English, what does the phrasal verb “put up with” mean?",
-    "answer": "tolerate",
+    "question": "Which word is closest in meaning to \"coherent\"?",
+    "answer": "logical",
     "options": [
-      "tolerate",
-      "decorate",
-      "construct",
-      "prevent"
+      "expressive",
+      "unfavourable",
+      "lawful",
+      "logical"
     ],
-    "explanation": "“put up with” means tolerate in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"coherent\" means logical.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-054",
-    "question": "In everyday English, what does the phrasal verb “sort out” mean?",
-    "answer": "resolve",
+    "question": "Which word is opposite in meaning to \"coherent\"?",
+    "answer": "confused",
     "options": [
-      "resolve",
-      "confuse",
-      "postpone",
-      "repeat"
+      "confused",
+      "favourable",
+      "biased",
+      "fake"
     ],
-    "explanation": "“sort out” means resolve in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"confused\" is the opposite of \"coherent\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-055",
-    "question": "In everyday English, what does the phrasal verb “take after” mean?",
-    "answer": "resemble",
+    "question": "What does \"coherent\" mean?",
+    "answer": "clear, consistent and easy to understand",
     "options": [
-      "resemble",
-      "look for",
-      "care for",
-      "criticise"
+      "accurate and exact in every detail",
+      "clear, consistent and easy to understand",
+      "extremely thorough, careful or strict",
+      "allowed by law or reasonable and genuine"
     ],
-    "explanation": "“take after” means resemble in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"coherent\" means clear, consistent and easy to understand.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-056",
-    "question": "In everyday English, what does the phrasal verb “think over” mean?",
-    "answer": "consider carefully",
+    "question": "Choose the sentence that uses \"coherent\" correctly.",
+    "answer": "Her argument was coherent from beginning to end.",
     "options": [
-      "consider carefully",
-      "forget immediately",
-      "announce publicly",
-      "write down"
+      "The customer raised a legitimate concern.",
+      "The report gives an accurate account of the incident.",
+      "Her argument was coherent from beginning to end.",
+      "The match was cancelled because of adverse weather."
     ],
-    "explanation": "“think over” means consider carefully in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "The sentence uses \"coherent\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-057",
-    "question": "In everyday English, what does the phrasal verb “try on” mean?",
-    "answer": "test clothing by wearing it",
+    "question": "Which word is closest in meaning to \"compassionate\"?",
+    "answer": "sympathetic",
     "options": [
-      "test clothing by wearing it",
-      "repair clothing",
-      "remove a label",
-      "buy online"
+      "demanding",
+      "shrewd",
+      "sympathetic",
+      "wise"
     ],
-    "explanation": "“try on” means test clothing by wearing it in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"compassionate\" means sympathetic.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-058",
-    "question": "In everyday English, what does the phrasal verb “use up” mean?",
-    "answer": "consume completely",
+    "question": "Which word is opposite in meaning to \"compassionate\"?",
+    "answer": "uncaring",
     "options": [
-      "consume completely",
-      "save for later",
-      "replace",
-      "share equally"
+      "inarticulate",
+      "uncaring",
+      "idealistic",
+      "cruel"
     ],
-    "explanation": "“use up” means consume completely in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"uncaring\" is the opposite of \"compassionate\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-059",
-    "question": "In everyday English, what does the phrasal verb “watch out” mean?",
-    "answer": "be careful",
+    "question": "What does \"compassionate\" mean?",
+    "answer": "showing concern for another person's suffering",
     "options": [
-      "be careful",
-      "look away",
-      "keep a secret",
-      "wait patiently"
+      "showing concern for another person's suffering",
+      "well-meaning and charitable",
+      "requiring great effort or endurance",
+      "not easily convinced and inclined to question claims"
     ],
-    "explanation": "“watch out” means be careful in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "\"compassionate\" means showing concern for another person's suffering.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-060",
-    "question": "In everyday English, what does the phrasal verb “call off” mean?",
-    "answer": "cancel",
+    "question": "Choose the sentence that uses \"compassionate\" correctly.",
+    "answer": "The compassionate nurse stayed with the frightened child.",
     "options": [
-      "cancel",
-      "announce",
-      "continue",
-      "delay slightly"
+      "The region has abundant rainfall throughout the year.",
+      "The teacher was lenient about the late submission.",
+      "The editor made a meticulous check of every page.",
+      "The compassionate nurse stayed with the frightened child."
     ],
-    "explanation": "“call off” means cancel in this use.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Phrasal verbs"
+    "explanation": "The sentence uses \"compassionate\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-061",
-    "question": "Choose the word that correctly completes this sentence: “Your advice had a positive ___ on the team.”",
-    "answer": "effect",
+    "question": "Which word is closest in meaning to \"concise\"?",
+    "answer": "brief",
     "options": [
-      "effect",
-      "affect",
-      "effort",
-      "offer"
+      "precise",
+      "unplanned",
+      "brief",
+      "tactful"
     ],
-    "explanation": "“effect” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"concise\" means brief.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-062",
-    "question": "Choose the word that correctly completes this sentence: “The new rule will ___ everyone in the building.”",
-    "answer": "affect",
+    "question": "Which word is opposite in meaning to \"concise\"?",
+    "answer": "wordy",
     "options": [
-      "affect",
-      "effect",
-      "infect",
-      "reflect"
+      "wordy",
+      "definite",
+      "inaccurate",
+      "trusting"
     ],
-    "explanation": "“affect” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"wordy\" is the opposite of \"concise\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-063",
-    "question": "Choose the word that correctly completes this sentence: “Please ___ that you received the parcel.”",
-    "answer": "accept",
+    "question": "What does \"concise\" mean?",
+    "answer": "giving information clearly in few words",
     "options": [
-      "accept",
-      "except",
-      "expect",
-      "aspect"
+      "having many connected and complicated details",
+      "very great or showing deep understanding",
+      "respected and famous in a particular field",
+      "giving information clearly in few words"
     ],
-    "explanation": "“accept” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"concise\" means giving information clearly in few words.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-064",
-    "question": "Choose the word that correctly completes this sentence: “Everyone ___ Maya was invited.”",
-    "answer": "except",
+    "question": "Choose the sentence that uses \"concise\" correctly.",
+    "answer": "Please write a concise summary of the meeting.",
     "options": [
-      "except",
-      "accept",
-      "expect",
-      "aspect"
+      "The chef maintained impeccable hygiene.",
+      "The discovery had a profound effect on medicine.",
+      "Please write a concise summary of the meeting.",
+      "A cautious driver slows down near a school."
     ],
-    "explanation": "“except” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "The sentence uses \"concise\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-065",
-    "question": "Choose the word that correctly completes this sentence: “The school ___ addressed the parents.”",
-    "answer": "principal",
+    "question": "Which word is closest in meaning to \"conspicuous\"?",
+    "answer": "noticeable",
     "options": [
-      "principal",
-      "principle",
-      "principle's",
-      "principality"
+      "noticeable",
+      "sympathetic",
+      "sturdy",
+      "friendly"
     ],
-    "explanation": "“principal” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"conspicuous\" means noticeable.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-066",
-    "question": "Choose the word that correctly completes this sentence: “Honesty is an important ___.”",
-    "answer": "principle",
+    "question": "Which word is opposite in meaning to \"conspicuous\"?",
+    "answer": "inconspicuous",
     "options": [
-      "principle",
-      "principal",
-      "principality",
-      "principled"
+      "effortless",
+      "definite",
+      "inarticulate",
+      "inconspicuous"
     ],
-    "explanation": "“principle” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"inconspicuous\" is the opposite of \"conspicuous\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-067",
-    "question": "Choose the word that correctly completes this sentence: “The rain did not ___ our plans.”",
-    "answer": "affect",
+    "question": "What does \"conspicuous\" mean?",
+    "answer": "easy to see or attract attention",
     "options": [
-      "affect",
-      "effect",
-      "affection",
-      "effective"
+      "easy to see or attract attention",
+      "following accepted customs or usual methods",
+      "treating all sides fairly",
+      "showing concern for another person's suffering"
     ],
-    "explanation": "“affect” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"conspicuous\" means easy to see or attract attention.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-068",
-    "question": "Choose the word that correctly completes this sentence: “She gave me useful ___ about the interview.”",
-    "answer": "advice",
+    "question": "Choose the sentence that uses \"conspicuous\" correctly.",
+    "answer": "The bright sign was conspicuous from the road.",
     "options": [
-      "advice",
-      "advise",
-      "device",
-      "advertise"
+      "The region has abundant rainfall throughout the year.",
+      "The report gives an accurate account of the incident.",
+      "The bright sign was conspicuous from the road.",
+      "An astute investor studies risks before buying."
     ],
-    "explanation": "“advice” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "The sentence uses \"conspicuous\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-069",
-    "question": "Choose the word that correctly completes this sentence: “The mechanic will ___ the machine tomorrow.”",
-    "answer": "repair",
+    "question": "Which word is closest in meaning to \"conventional\"?",
+    "answer": "traditional",
     "options": [
-      "repair",
-      "repay",
-      "repeat",
-      "replace"
+      "extreme",
+      "unfavourable",
+      "thrifty",
+      "traditional"
     ],
-    "explanation": "“repair” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"conventional\" means traditional.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-070",
-    "question": "Choose the word that correctly completes this sentence: “Please do not ___ your password with anyone.”",
-    "answer": "lose",
+    "question": "Which word is opposite in meaning to \"conventional\"?",
+    "answer": "unorthodox",
     "options": [
-      "lose",
-      "loose",
-      "loss",
-      "loosen"
+      "far-fetched",
+      "definite",
+      "unorthodox",
+      "basic"
     ],
-    "explanation": "“lose” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"unorthodox\" is the opposite of \"conventional\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-071",
-    "question": "Choose the word that correctly completes this sentence: “The dog broke its ___ and ran outside.”",
-    "answer": "leash",
+    "question": "What does \"conventional\" mean?",
+    "answer": "following accepted customs or usual methods",
     "options": [
-      "leash",
-      "leech",
-      "lease",
-      "least"
+      "concerned only with the surface or appearance",
+      "following accepted customs or usual methods",
+      "containing many carefully arranged details",
+      "preventing success or causing difficulty"
     ],
-    "explanation": "“leash” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"conventional\" means following accepted customs or usual methods.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-072",
-    "question": "Choose the word that correctly completes this sentence: “We need to ___ the meeting until Friday.”",
-    "answer": "postpone",
+    "question": "Choose the sentence that uses \"conventional\" correctly.",
+    "answer": "They chose a conventional design for the office.",
     "options": [
-      "postpone",
-      "propose",
-      "compose",
-      "oppose"
+      "The factory replaced its obsolete machinery.",
+      "The bright sign was conspicuous from the road.",
+      "They chose a conventional design for the office.",
+      "There was an implicit agreement to share the costs."
     ],
-    "explanation": "“postpone” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "The sentence uses \"conventional\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-073",
-    "question": "Choose the word that correctly completes this sentence: “The hikers reached the mountain's ___ before noon.”",
-    "answer": "summit",
+    "question": "Which word is closest in meaning to \"credible\"?",
+    "answer": "believable",
     "options": [
-      "summit",
-      "somewhat",
-      "summary",
-      "summon"
+      "believable",
+      "shrewd",
+      "exposed",
+      "expressive"
     ],
-    "explanation": "“summit” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"credible\" means believable.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-074",
-    "question": "Choose the word that correctly completes this sentence: “The company will ___ a new policy next month.”",
-    "answer": "adopt",
+    "question": "Which word is opposite in meaning to \"credible\"?",
+    "answer": "implausible",
     "options": [
-      "adopt",
-      "adapt",
-      "adept",
-      "addict"
+      "scarce",
+      "approximate",
+      "implausible",
+      "pessimistic"
     ],
-    "explanation": "“adopt” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"implausible\" is the opposite of \"credible\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-075",
-    "question": "Choose the word that correctly completes this sentence: “You must ___ to the new timetable.”",
-    "answer": "adapt",
+    "question": "What does \"credible\" mean?",
+    "answer": "able to be trusted or believed",
     "options": [
-      "adapt",
-      "adopt",
-      "adept",
-      "addict"
+      "able to be trusted or believed",
+      "not willing or eager to do something",
+      "taking care to avoid danger or mistakes",
+      "able to adjust to new conditions"
     ],
-    "explanation": "“adapt” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"credible\" means able to be trusted or believed.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-076",
-    "question": "Choose the word that correctly completes this sentence: “The medicine had no harmful ___.”",
-    "answer": "effects",
+    "question": "Choose the sentence that uses \"credible\" correctly.",
+    "answer": "The witness provided a credible explanation.",
     "options": [
-      "effects",
-      "affects",
-      "efforts",
-      "offers"
+      "The region has abundant rainfall throughout the year.",
+      "The teacher was lenient about the late submission.",
+      "The scientist was skeptical of the unsupported claim.",
+      "The witness provided a credible explanation."
     ],
-    "explanation": "“effects” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "The sentence uses \"credible\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-077",
-    "question": "Choose the word that correctly completes this sentence: “I would rather walk ___ take a taxi.”",
-    "answer": "than",
+    "question": "Which word is closest in meaning to \"diligent\"?",
+    "answer": "hardworking",
     "options": [
-      "than",
-      "then",
-      "that",
-      "when"
+      "sturdy",
+      "hardworking",
+      "practical",
+      "unfavourable"
     ],
-    "explanation": "“than” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"diligent\" means hardworking.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-078",
-    "question": "Choose the word that correctly completes this sentence: “Finish your homework, and ___ you may play.”",
-    "answer": "then",
+    "question": "Which word is opposite in meaning to \"diligent\"?",
+    "answer": "negligent",
     "options": [
-      "then",
-      "than",
-      "them",
-      "there"
+      "robust",
+      "fake",
+      "negligent",
+      "reckless"
     ],
-    "explanation": "“then” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"negligent\" is the opposite of \"diligent\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-079",
-    "question": "Choose the word that correctly completes this sentence: “The shop is ___ the bank and the post office.”",
-    "answer": "beside",
+    "question": "What does \"diligent\" mean?",
+    "answer": "showing careful and persistent effort",
     "options": [
-      "beside",
-      "besides",
-      "between",
-      "beyond"
+      "extremely important or necessary",
+      "having more than one possible meaning",
+      "correct and free from errors",
+      "showing careful and persistent effort"
     ],
-    "explanation": "“beside” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"diligent\" means showing careful and persistent effort.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-080",
-    "question": "Choose the word that correctly completes this sentence: “___ the rain, the match continued.”",
-    "answer": "Despite",
+    "question": "Choose the sentence that uses \"diligent\" correctly.",
+    "answer": "A diligent student reviews lessons regularly.",
     "options": [
-      "Despite",
-      "Although",
-      "Because",
-      "Unless"
+      "A diligent student reviews lessons regularly.",
+      "An astute investor studies risks before buying.",
+      "The company is known for its innovative products.",
+      "The team developed a feasible plan within the budget."
     ],
-    "explanation": "“Despite” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "The sentence uses \"diligent\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-081",
-    "question": "Choose the word that correctly completes this sentence: “The ___ of the story was unexpected.”",
-    "answer": "ending",
+    "question": "Which word is closest in meaning to \"diplomatic\"?",
+    "answer": "tactful",
     "options": [
-      "ending",
-      "enduring",
-      "edition",
-      "endless"
+      "tactful",
+      "unplanned",
+      "shrewd",
+      "sturdy"
     ],
-    "explanation": "“ending” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"diplomatic\" means tactful.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-082",
-    "question": "Choose the word that correctly completes this sentence: “Please ___ the book to the library.”",
-    "answer": "return",
+    "question": "Which word is opposite in meaning to \"diplomatic\"?",
+    "answer": "insensitive",
     "options": [
-      "return",
-      "retain",
-      "retire",
-      "restore"
+      "reckless",
+      "uncaring",
+      "favourable",
+      "insensitive"
     ],
-    "explanation": "“return” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"insensitive\" is the opposite of \"diplomatic\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-083",
-    "question": "Choose the word that correctly completes this sentence: “The witness gave a ___ description.”",
-    "answer": "credible",
+    "question": "What does \"diplomatic\" mean?",
+    "answer": "skilled at dealing with people without causing offence",
     "options": [
-      "credible",
-      "creditable",
-      "credulous",
-      "credit"
+      "skilled at dealing with people without causing offence",
+      "careful because danger or problems are possible",
+      "able to be trusted or believed",
+      "available in large quantities"
     ],
-    "explanation": "“credible” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"diplomatic\" means skilled at dealing with people without causing offence.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-084",
-    "question": "Choose the word that correctly completes this sentence: “The child was ___ to hear the good news.”",
-    "answer": "eager",
+    "question": "Choose the sentence that uses \"diplomatic\" correctly.",
+    "answer": "Her diplomatic reply prevented an argument.",
     "options": [
-      "eager",
-      "eerie",
-      "equal",
-      "elegant"
+      "A cautious driver slows down near a school.",
+      "Her diplomatic reply prevented an argument.",
+      "The necklace has an intricate pattern.",
+      "We need a pragmatic solution to the transport problem."
     ],
-    "explanation": "“eager” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "The sentence uses \"diplomatic\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-085",
-    "question": "Choose the word that correctly completes this sentence: “The company needs to ___ its expenses.”",
-    "answer": "reduce",
+    "question": "Which word is closest in meaning to \"durable\"?",
+    "answer": "sturdy",
     "options": [
-      "reduce",
-      "deduce",
-      "produce",
-      "induce"
+      "thrifty",
+      "frank",
+      "believable",
+      "sturdy"
     ],
-    "explanation": "“reduce” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"durable\" means sturdy.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-086",
-    "question": "Choose the word that correctly completes this sentence: “The two proposals are quite ___.”",
-    "answer": "different",
+    "question": "Which word is opposite in meaning to \"durable\"?",
+    "answer": "fragile",
     "options": [
-      "different",
-      "difference",
-      "differently",
-      "differ"
+      "definite",
+      "wordy",
+      "fragile",
+      "preventable"
     ],
-    "explanation": "“different” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"fragile\" is the opposite of \"durable\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-087",
-    "question": "Choose the word that correctly completes this sentence: “The teacher asked us to ___ the poem aloud.”",
-    "answer": "read",
+    "question": "What does \"durable\" mean?",
+    "answer": "able to last a long time without damage",
     "options": [
-      "read",
-      "reed",
-      "red",
-      "rid"
+      "not obvious and therefore difficult to notice",
+      "able to last a long time without damage",
+      "quick to understand situations and make sound judgements",
+      "complete and careful"
     ],
-    "explanation": "“read” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"durable\" means able to last a long time without damage.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-088",
-    "question": "Choose the word that correctly completes this sentence: “The road was too ___ for two buses to pass.”",
-    "answer": "narrow",
+    "question": "Choose the sentence that uses \"durable\" correctly.",
+    "answer": "These durable shoes are suitable for hiking.",
     "options": [
-      "narrow",
-      "shallow",
-      "nearly",
-      "neat"
+      "These durable shoes are suitable for hiking.",
+      "The report gives an accurate account of the incident.",
+      "The device uses sophisticated technology.",
+      "The customer raised a legitimate concern."
     ],
-    "explanation": "“narrow” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "The sentence uses \"durable\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-089",
-    "question": "Choose the word that correctly completes this sentence: “The guests arrived ___ the scheduled time.”",
-    "answer": "before",
+    "question": "Which word is closest in meaning to \"elaborate\"?",
+    "answer": "detailed",
     "options": [
-      "before",
-      "beside",
-      "between",
-      "behind"
+      "detailed",
+      "friendly",
+      "sympathetic",
+      "plentiful"
     ],
-    "explanation": "“before” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"elaborate\" means detailed.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-090",
-    "question": "Choose the word that correctly completes this sentence: “The ___ of the building is made of stone.”",
-    "answer": "site",
+    "question": "Which word is opposite in meaning to \"elaborate\"?",
+    "answer": "simple",
     "options": [
-      "site",
-      "sight",
-      "cite",
-      "side"
+      "reckless",
+      "simple",
+      "opaque",
+      "essential"
     ],
-    "explanation": "“site” is the correct choice because it fits the meaning and grammar of the sentence.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word choice"
+    "explanation": "\"simple\" is the opposite of \"elaborate\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-091",
-    "question": "Which option gives the standard spelling of “accommodation”?",
-    "answer": "accommodation",
+    "question": "What does \"elaborate\" mean?",
+    "answer": "containing many carefully arranged details",
     "options": [
-      "accommodation",
-      "acommodation",
-      "accomodation",
-      "accommadation"
+      "containing many carefully arranged details",
+      "giving information clearly in few words",
+      "fluent and persuasive in speaking or writing",
+      "available in large quantities"
     ],
-    "explanation": "The standard spelling is “accommodation”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"elaborate\" means containing many carefully arranged details.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-092",
-    "question": "Which option gives the standard spelling of “embarrass”?",
-    "answer": "embarrass",
+    "question": "Choose the sentence that uses \"elaborate\" correctly.",
+    "answer": "The architect presented an elaborate design.",
     "options": [
-      "embarrass",
-      "embarass",
-      "embarras",
-      "embarrasse"
+      "Her diplomatic reply prevented an argument.",
+      "The teacher was lenient about the late submission.",
+      "The match was cancelled because of adverse weather.",
+      "The architect presented an elaborate design."
     ],
-    "explanation": "The standard spelling is “embarrass”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "The sentence uses \"elaborate\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-093",
-    "question": "Which option gives the standard spelling of “necessary”?",
-    "answer": "necessary",
+    "question": "Which word is closest in meaning to \"eloquent\"?",
+    "answer": "expressive",
     "options": [
-      "necessary",
-      "neccessary",
-      "necesary",
-      "necessery"
+      "wise",
+      "expressive",
+      "delicate",
+      "traditional"
     ],
-    "explanation": "The standard spelling is “necessary”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"eloquent\" means expressive.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-094",
-    "question": "Which option gives the standard spelling of “privilege”?",
-    "answer": "privilege",
+    "question": "Which word is opposite in meaning to \"eloquent\"?",
+    "answer": "inarticulate",
     "options": [
-      "privilege",
-      "privelege",
-      "priviledge",
-      "privillage"
+      "inarticulate",
+      "inaccurate",
+      "wordy",
+      "careless"
     ],
-    "explanation": "The standard spelling is “privilege”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"inarticulate\" is the opposite of \"eloquent\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-095",
-    "question": "Which option gives the standard spelling of “maintenance”?",
-    "answer": "maintenance",
+    "question": "What does \"eloquent\" mean?",
+    "answer": "fluent and persuasive in speaking or writing",
     "options": [
-      "maintenance",
-      "maintainance",
-      "maintenence",
-      "maintanance"
+      "extremely thorough, careful or strict",
+      "able to recover quickly after difficulty",
+      "correct and free from errors",
+      "fluent and persuasive in speaking or writing"
     ],
-    "explanation": "The standard spelling is “maintenance”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"eloquent\" means fluent and persuasive in speaking or writing.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-096",
-    "question": "Which option gives the standard spelling of “occasionally”?",
-    "answer": "occasionally",
+    "question": "Choose the sentence that uses \"eloquent\" correctly.",
+    "answer": "His eloquent speech moved the audience.",
     "options": [
-      "occasionally",
-      "ocasionally",
-      "occassionally",
-      "occasionaly"
+      "His eloquent speech moved the audience.",
+      "The inspection was superficial and missed major faults.",
+      "They chose a conventional design for the office.",
+      "The research followed a rigorous testing process."
     ],
-    "explanation": "The standard spelling is “occasionally”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "The sentence uses \"eloquent\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-097",
-    "question": "Which option gives the standard spelling of “recommend”?",
-    "answer": "recommend",
+    "question": "Which word is closest in meaning to \"eminent\"?",
+    "answer": "distinguished",
     "options": [
-      "recommend",
-      "reccomend",
-      "recomend",
-      "recommmend"
+      "distinguished",
+      "flexible",
+      "plentiful",
+      "friendly"
     ],
-    "explanation": "The standard spelling is “recommend”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"eminent\" means distinguished.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-098",
-    "question": "Which option gives the standard spelling of “separate”?",
-    "answer": "separate",
+    "question": "Which word is opposite in meaning to \"eminent\"?",
+    "answer": "unknown",
     "options": [
-      "separate",
-      "seperate",
-      "separrate",
-      "separete"
+      "reckless",
+      "counterfeit",
+      "pessimistic",
+      "unknown"
     ],
-    "explanation": "The standard spelling is “separate”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"unknown\" is the opposite of \"eminent\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-099",
-    "question": "Which option gives the standard spelling of “conscience”?",
-    "answer": "conscience",
+    "question": "What does \"eminent\" mean?",
+    "answer": "respected and famous in a particular field",
     "options": [
-      "conscience",
-      "concience",
-      "consciense",
-      "conscince"
+      "easily harmed, attacked or affected",
+      "focused on practical results rather than theory",
+      "respected and famous in a particular field",
+      "careful because danger or problems are possible"
     ],
-    "explanation": "The standard spelling is “conscience”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"eminent\" means respected and famous in a particular field.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-100",
-    "question": "Which option gives the standard spelling of “definitely”?",
-    "answer": "definitely",
+    "question": "Choose the sentence that uses \"eminent\" correctly.",
+    "answer": "An eminent scientist delivered the lecture.",
     "options": [
-      "definitely",
-      "definately",
-      "definitly",
-      "definetely"
+      "The research followed a rigorous testing process.",
+      "An eminent scientist delivered the lecture.",
+      "The region has abundant rainfall throughout the year.",
+      "The organisation promised a transparent selection process."
     ],
-    "explanation": "The standard spelling is “definitely”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "The sentence uses \"eminent\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-101",
-    "question": "Which option gives the standard spelling of “rhythm”?",
-    "answer": "rhythm",
+    "question": "Which word is closest in meaning to \"ephemeral\"?",
+    "answer": "short-lived",
     "options": [
-      "rhythm",
-      "rythm",
-      "rhythym",
-      "rithm"
+      "shrewd",
+      "precise",
+      "exact",
+      "short-lived"
     ],
-    "explanation": "The standard spelling is “rhythm”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"ephemeral\" means short-lived.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-102",
-    "question": "Which option gives the standard spelling of “questionnaire”?",
-    "answer": "questionnaire",
+    "question": "Which word is opposite in meaning to \"ephemeral\"?",
+    "answer": "lasting",
     "options": [
-      "questionnaire",
-      "questionaire",
-      "questionnairre",
-      "questionnare"
+      "lasting",
+      "definite",
+      "negligent",
+      "deliberate"
     ],
-    "explanation": "The standard spelling is “questionnaire”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"lasting\" is the opposite of \"ephemeral\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-103",
-    "question": "Which option gives the standard spelling of “liaison”?",
-    "answer": "liaison",
+    "question": "What does \"ephemeral\" mean?",
+    "answer": "lasting for only a brief time",
     "options": [
-      "liaison",
-      "liason",
-      "liaisson",
-      "leaison"
+      "requiring great effort or endurance",
+      "correct and free from errors",
+      "lasting for only a brief time",
+      "certain to happen and impossible to avoid"
     ],
-    "explanation": "The standard spelling is “liaison”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"ephemeral\" means lasting for only a brief time.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-104",
-    "question": "Which option gives the standard spelling of “miscellaneous”?",
-    "answer": "miscellaneous",
+    "question": "Choose the sentence that uses \"ephemeral\" correctly.",
+    "answer": "The beauty of the evening flowers was ephemeral.",
     "options": [
-      "miscellaneous",
-      "miscelaneous",
-      "miscellanous",
-      "miscelleneous"
+      "The beauty of the evening flowers was ephemeral.",
+      "The ambiguous instruction confused the new staff.",
+      "He offered a candid assessment of the plan.",
+      "The match was cancelled because of adverse weather."
     ],
-    "explanation": "The standard spelling is “miscellaneous”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "The sentence uses \"ephemeral\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-105",
-    "question": "Which option gives the standard spelling of “millennium”?",
-    "answer": "millennium",
+    "question": "Which word is closest in meaning to \"essential\"?",
+    "answer": "necessary",
     "options": [
-      "millennium",
-      "millenium",
-      "millenniam",
-      "millenniumm"
+      "necessary",
+      "unwilling",
+      "unplanned",
+      "plentiful"
     ],
-    "explanation": "The standard spelling is “millennium”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"essential\" means necessary.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-106",
-    "question": "Which option gives the standard spelling of “occurrence”?",
-    "answer": "occurrence",
+    "question": "Which word is opposite in meaning to \"essential\"?",
+    "answer": "optional",
     "options": [
-      "occurrence",
-      "occurence",
-      "ocurrance",
-      "occurrance"
+      "rigid",
+      "optional",
+      "scarce",
+      "thorough"
     ],
-    "explanation": "The standard spelling is “occurrence”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"optional\" is the opposite of \"essential\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-107",
-    "question": "Which option gives the standard spelling of “supersede”?",
-    "answer": "supersede",
+    "question": "What does \"essential\" mean?",
+    "answer": "absolutely needed or extremely important",
     "options": [
-      "supersede",
-      "supercede",
-      "supersceed",
-      "superseed"
+      "happening naturally without prior planning",
+      "careful because danger or problems are possible",
+      "absolutely needed or extremely important",
+      "easy to see or attract attention"
     ],
-    "explanation": "The standard spelling is “supersede”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"essential\" means absolutely needed or extremely important.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-108",
-    "question": "Which option gives the standard spelling of “entrepreneur”?",
-    "answer": "entrepreneur",
+    "question": "Choose the sentence that uses \"essential\" correctly.",
+    "answer": "Clean drinking water is essential for health.",
     "options": [
-      "entrepreneur",
-      "enterpreneur",
-      "entreprenur",
-      "entreprenuer"
+      "The witness provided a credible explanation.",
+      "The region has abundant rainfall throughout the year.",
+      "The compassionate nurse stayed with the frightened child.",
+      "Clean drinking water is essential for health."
     ],
-    "explanation": "The standard spelling is “entrepreneur”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "The sentence uses \"essential\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-109",
-    "question": "Which option gives the standard spelling of “perseverance”?",
-    "answer": "perseverance",
+    "question": "Which word is closest in meaning to \"excessive\"?",
+    "answer": "exorbitant",
     "options": [
-      "perseverance",
-      "perserverance",
-      "perseverence",
-      "perseveranse"
+      "precise",
+      "hardworking",
+      "exorbitant",
+      "unwilling"
     ],
-    "explanation": "The standard spelling is “perseverance”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"excessive\" means exorbitant.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-110",
-    "question": "Which option gives the standard spelling of “cemetery”?",
-    "answer": "cemetery",
+    "question": "Which word is opposite in meaning to \"excessive\"?",
+    "answer": "moderate",
     "options": [
-      "cemetery",
-      "cemetary",
-      "cemetrey",
-      "cemetry"
+      "moderate",
+      "arrogant",
+      "cruel",
+      "limited"
     ],
-    "explanation": "The standard spelling is “cemetery”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"moderate\" is the opposite of \"excessive\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-111",
-    "question": "Which option gives the standard spelling of “privately”?",
-    "answer": "privately",
+    "question": "What does \"excessive\" mean?",
+    "answer": "greater than what is reasonable or necessary",
     "options": [
-      "privately",
-      "privetly",
-      "privatly",
-      "privatley"
+      "dangerously uncertain or likely to fail",
+      "available in large quantities",
+      "following accepted customs or usual methods",
+      "greater than what is reasonable or necessary"
     ],
-    "explanation": "The standard spelling is “privately”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"excessive\" means greater than what is reasonable or necessary.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-112",
-    "question": "Which option gives the standard spelling of “calendar”?",
-    "answer": "calendar",
+    "question": "Choose the sentence that uses \"excessive\" correctly.",
+    "answer": "The hotel charged an excessive fee for parking.",
     "options": [
-      "calendar",
-      "calender",
-      "callendar",
-      "calandar"
+      "The hotel charged an excessive fee for parking.",
+      "Despite winning the award, she remained modest.",
+      "The museum displayed an authentic historical document.",
+      "Handle the fragile glass with care."
     ],
-    "explanation": "The standard spelling is “calendar”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "The sentence uses \"excessive\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-113",
-    "question": "Which option gives the standard spelling of “exaggerate”?",
-    "answer": "exaggerate",
+    "question": "Which word is closest in meaning to \"feasible\"?",
+    "answer": "practical",
     "options": [
-      "exaggerate",
-      "exagerate",
-      "exaggerrate",
-      "exagerrate"
+      "sympathetic",
+      "shrewd",
+      "practical",
+      "flexible"
     ],
-    "explanation": "The standard spelling is “exaggerate”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"feasible\" means practical.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-114",
-    "question": "Which option gives the standard spelling of “existence”?",
-    "answer": "existence",
+    "question": "Which word is opposite in meaning to \"feasible\"?",
+    "answer": "impractical",
     "options": [
-      "existence",
-      "existance",
-      "exsistence",
-      "exsistance"
+      "optional",
+      "hostile",
+      "effortless",
+      "impractical"
     ],
-    "explanation": "The standard spelling is “existence”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"impractical\" is the opposite of \"feasible\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-115",
-    "question": "Which option gives the standard spelling of “foreign”?",
-    "answer": "foreign",
+    "question": "What does \"feasible\" mean?",
+    "answer": "possible and realistic to achieve",
     "options": [
-      "foreign",
-      "foriegn",
-      "forein",
-      "forieen"
+      "pleasant and friendly in manner",
+      "having more than one possible meaning",
+      "possible and realistic to achieve",
+      "treating all sides fairly"
     ],
-    "explanation": "The standard spelling is “foreign”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"feasible\" means possible and realistic to achieve.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-116",
-    "question": "Which option gives the standard spelling of “guarantee”?",
-    "answer": "guarantee",
+    "question": "Choose the sentence that uses \"feasible\" correctly.",
+    "answer": "The team developed a feasible plan within the budget.",
     "options": [
-      "guarantee",
-      "garantee",
-      "guarentee",
-      "guarrantee"
+      "An eminent scientist delivered the lecture.",
+      "The team developed a feasible plan within the budget.",
+      "The region has abundant rainfall throughout the year.",
+      "The climbers faced an arduous journey."
     ],
-    "explanation": "The standard spelling is “guarantee”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "The sentence uses \"feasible\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-117",
-    "question": "Which option gives the standard spelling of “harass”?",
-    "answer": "harass",
+    "question": "Which word is closest in meaning to \"fragile\"?",
+    "answer": "delicate",
     "options": [
-      "harass",
-      "harrass",
-      "haras",
-      "harrasss"
+      "detailed",
+      "unfavourable",
+      "expressive",
+      "delicate"
     ],
-    "explanation": "The standard spelling is “harass”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"fragile\" means delicate.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-118",
-    "question": "Which option gives the standard spelling of “independent”?",
-    "answer": "independent",
+    "question": "Which word is opposite in meaning to \"fragile\"?",
+    "answer": "robust",
     "options": [
-      "independent",
-      "independant",
-      "independet",
-      "independantt"
+      "robust",
+      "obvious",
+      "scarce",
+      "superficial"
     ],
-    "explanation": "The standard spelling is “independent”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"robust\" is the opposite of \"fragile\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-119",
-    "question": "Which option gives the standard spelling of “leisure”?",
-    "answer": "leisure",
+    "question": "What does \"fragile\" mean?",
+    "answer": "easily broken or damaged",
     "options": [
-      "leisure",
-      "liesure",
-      "lesiure",
-      "leasure"
+      "containing many carefully arranged details",
+      "easily broken or damaged",
+      "extremely careful about small details",
+      "preventing success or causing difficulty"
     ],
-    "explanation": "The standard spelling is “leisure”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "\"fragile\" means easily broken or damaged.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-120",
-    "question": "Which option gives the standard spelling of “vacuum”?",
-    "answer": "vacuum",
+    "question": "Choose the sentence that uses \"fragile\" correctly.",
+    "answer": "Handle the fragile glass with care.",
     "options": [
-      "vacuum",
-      "vaccum",
-      "vacume",
-      "vacumm"
+      "Handle the fragile glass with care.",
+      "The match was cancelled because of adverse weather.",
+      "An adaptable employee can handle changing priorities.",
+      "The climbers faced an arduous journey."
     ],
-    "explanation": "The standard spelling is “vacuum”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Spelling"
+    "explanation": "The sentence uses \"fragile\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-121",
-    "question": "Which word is closest in meaning to “abate”?",
-    "answer": "lessen",
+    "question": "Which word is closest in meaning to \"frugal\"?",
+    "answer": "thrifty",
     "options": [
-      "lessen",
-      "increase",
-      "decorate",
-      "announce"
+      "demanding",
+      "shallow",
+      "thrifty",
+      "exact"
     ],
-    "explanation": "“lessen” is a close synonym of “abate”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"frugal\" means thrifty.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Synonyms"
   },
   {
     "id": "wordquiz-122",
-    "question": "Which word is closest in meaning to “benevolent”?",
-    "answer": "kind",
+    "question": "Which word is opposite in meaning to \"frugal\"?",
+    "answer": "wasteful",
     "options": [
-      "kind",
-      "hostile",
-      "careless",
-      "ordinary"
+      "fragile",
+      "wasteful",
+      "reckless",
+      "deliberate"
     ],
-    "explanation": "“kind” is a close synonym of “benevolent”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"wasteful\" is the opposite of \"frugal\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-123",
-    "question": "Which word is closest in meaning to “candid”?",
-    "answer": "frank",
+    "question": "What does \"frugal\" mean?",
+    "answer": "careful about spending money or using resources",
     "options": [
-      "frank",
-      "evasive",
-      "formal",
-      "timid"
+      "careful about spending money or using resources",
+      "easy to see or attract attention",
+      "requiring great effort or endurance",
+      "focused on practical results rather than theory"
     ],
-    "explanation": "“frank” is a close synonym of “candid”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"frugal\" means careful about spending money or using resources.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-124",
-    "question": "Which word is closest in meaning to “diligent”?",
-    "answer": "hardworking",
+    "question": "Choose the sentence that uses \"frugal\" correctly.",
+    "answer": "Their frugal habits helped them save for a house.",
     "options": [
-      "hardworking",
-      "idle",
-      "reckless",
-      "uncertain"
+      "The team developed a feasible plan within the budget.",
+      "The organisation promised a transparent selection process.",
+      "A cautious driver slows down near a school.",
+      "Their frugal habits helped them save for a house."
     ],
-    "explanation": "“hardworking” is a close synonym of “diligent”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "The sentence uses \"frugal\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-125",
-    "question": "Which word is closest in meaning to “elated”?",
-    "answer": "overjoyed",
+    "question": "Which word is closest in meaning to \"genuine\"?",
+    "answer": "authentic",
     "options": [
-      "overjoyed",
-      "miserable",
-      "anxious",
-      "indifferent"
+      "genuine",
+      "neutral",
+      "authentic",
+      "unfavourable"
     ],
-    "explanation": "“overjoyed” is a close synonym of “elated”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"genuine\" means authentic.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Synonyms"
   },
   {
     "id": "wordquiz-126",
-    "question": "Which word is closest in meaning to “frugal”?",
-    "answer": "thrifty",
+    "question": "Which word is opposite in meaning to \"genuine\"?",
+    "answer": "counterfeit",
     "options": [
-      "thrifty",
-      "wasteful",
-      "lavish",
-      "careless"
+      "counterfeit",
+      "illicit",
+      "approximate",
+      "lenient"
     ],
-    "explanation": "“thrifty” is a close synonym of “frugal”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"counterfeit\" is the opposite of \"genuine\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-127",
-    "question": "Which word is closest in meaning to “gregarious”?",
-    "answer": "sociable",
+    "question": "What does \"genuine\" mean?",
+    "answer": "truly what it claims to be",
     "options": [
-      "sociable",
-      "solitary",
-      "silent",
-      "rigid"
+      "truthful and direct",
+      "taking care to avoid danger or mistakes",
+      "possible and realistic to achieve",
+      "truly what it claims to be"
     ],
-    "explanation": "“sociable” is a close synonym of “gregarious”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"genuine\" means truly what it claims to be.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-128",
-    "question": "Which word is closest in meaning to “imminent”?",
-    "answer": "impending",
+    "question": "Choose the sentence that uses \"genuine\" correctly.",
+    "answer": "The shop guarantees that every product is genuine.",
     "options": [
-      "impending",
-      "distant",
-      "unlikely",
-      "ancient"
+      "The teacher was lenient about the late submission.",
+      "The report gives an accurate account of the incident.",
+      "The shop guarantees that every product is genuine.",
+      "Please write a concise summary of the meeting."
     ],
-    "explanation": "“impending” is a close synonym of “imminent”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "The sentence uses \"genuine\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-129",
-    "question": "Which word is closest in meaning to “lucid”?",
-    "answer": "clear",
+    "question": "Which word is closest in meaning to \"hostile\"?",
+    "answer": "unfriendly",
     "options": [
-      "clear",
-      "confusing",
-      "lengthy",
-      "fragile"
+      "unfriendly",
+      "practical",
+      "kind",
+      "detailed"
     ],
-    "explanation": "“clear” is a close synonym of “lucid”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"hostile\" means unfriendly.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Synonyms"
   },
   {
     "id": "wordquiz-130",
-    "question": "Which word is closest in meaning to “meticulous”?",
-    "answer": "thorough",
+    "question": "Which word is opposite in meaning to \"hostile\"?",
+    "answer": "welcoming",
     "options": [
-      "thorough",
-      "careless",
-      "hurried",
-      "unclear"
+      "effortless",
+      "convinced",
+      "cruel",
+      "welcoming"
     ],
-    "explanation": "“thorough” is a close synonym of “meticulous”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"welcoming\" is the opposite of \"hostile\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-131",
-    "question": "Which word is closest in meaning to “novice”?",
-    "answer": "beginner",
+    "question": "What does \"hostile\" mean?",
+    "answer": "unfriendly or opposed",
     "options": [
-      "beginner",
-      "expert",
-      "leader",
-      "critic"
+      "unfriendly or opposed",
+      "quick to understand situations and make sound judgements",
+      "showing careful judgement and good sense",
+      "available in large quantities"
     ],
-    "explanation": "“beginner” is a close synonym of “novice”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"hostile\" means unfriendly or opposed.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-132",
-    "question": "Which word is closest in meaning to “obsolete”?",
-    "answer": "outdated",
+    "question": "Choose the sentence that uses \"hostile\" correctly.",
+    "answer": "The proposal received a hostile response.",
     "options": [
-      "outdated",
-      "modern",
-      "useful",
-      "popular"
+      "It is prudent to keep an emergency fund.",
+      "An adaptable employee can handle changing priorities.",
+      "The proposal received a hostile response.",
+      "Her insightful comments improved the discussion."
     ],
-    "explanation": "“outdated” is a close synonym of “obsolete”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "The sentence uses \"hostile\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-133",
-    "question": "Which word is closest in meaning to “prudent”?",
-    "answer": "wise",
+    "question": "Which word is closest in meaning to \"impartial\"?",
+    "answer": "neutral",
     "options": [
-      "wise",
-      "rash",
-      "generous",
-      "cheerful"
+      "precise",
+      "cautious",
+      "unclear",
+      "neutral"
     ],
-    "explanation": "“wise” is a close synonym of “prudent”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"impartial\" means neutral.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Synonyms"
   },
   {
     "id": "wordquiz-134",
-    "question": "Which word is closest in meaning to “resilient”?",
-    "answer": "adaptable",
+    "question": "Which word is opposite in meaning to \"impartial\"?",
+    "answer": "biased",
     "options": [
-      "adaptable",
-      "fragile",
-      "stubborn",
-      "passive"
+      "biased",
+      "inarticulate",
+      "superficial",
+      "simple"
     ],
-    "explanation": "“adaptable” is a close synonym of “resilient”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"biased\" is the opposite of \"impartial\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-135",
-    "question": "Which word is closest in meaning to “scarce”?",
-    "answer": "rare",
+    "question": "What does \"impartial\" mean?",
+    "answer": "treating all sides fairly",
     "options": [
-      "rare",
-      "plentiful",
-      "common",
-      "regular"
+      "expecting good things to happen",
+      "treating all sides fairly",
+      "no longer used because something newer exists",
+      "able to be trusted or believed"
     ],
-    "explanation": "“rare” is a close synonym of “scarce”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"impartial\" means treating all sides fairly.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-136",
-    "question": "Which word is closest in meaning to “tedious”?",
-    "answer": "boring",
+    "question": "Choose the sentence that uses \"impartial\" correctly.",
+    "answer": "A judge must remain impartial during a trial.",
     "options": [
-      "boring",
-      "exciting",
-      "brief",
-      "simple"
+      "These durable shoes are suitable for hiking.",
+      "He offered a candid assessment of the plan.",
+      "A judge must remain impartial during a trial.",
+      "Accurate information is vital during an emergency."
     ],
-    "explanation": "“boring” is a close synonym of “tedious”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "The sentence uses \"impartial\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-137",
-    "question": "Which word is closest in meaning to “vivid”?",
-    "answer": "bright",
+    "question": "Which word is closest in meaning to \"impeccable\"?",
+    "answer": "flawless",
     "options": [
-      "bright",
-      "dull",
-      "vague",
-      "muted"
+      "flawless",
+      "provisional",
+      "demanding",
+      "detailed"
     ],
-    "explanation": "“bright” is a close synonym of “vivid”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"impeccable\" means flawless.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Synonyms"
   },
   {
     "id": "wordquiz-138",
-    "question": "Which word is closest in meaning to “weary”?",
-    "answer": "tired",
+    "question": "Which word is opposite in meaning to \"impeccable\"?",
+    "answer": "faulty",
     "options": [
-      "tired",
-      "energetic",
-      "alert",
-      "eager"
+      "uncaring",
+      "inconspicuous",
+      "faulty",
+      "welcoming"
     ],
-    "explanation": "“tired” is a close synonym of “weary”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"faulty\" is the opposite of \"impeccable\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-139",
-    "question": "Which word is closest in meaning to “amiable”?",
-    "answer": "friendly",
+    "question": "What does \"impeccable\" mean?",
+    "answer": "without mistakes or faults",
     "options": [
-      "friendly",
-      "unfriendly",
-      "formal",
-      "distant"
+      "without mistakes or faults",
+      "accurate and exact in every detail",
+      "truthful and direct",
+      "available in large quantities"
     ],
-    "explanation": "“friendly” is a close synonym of “amiable”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"impeccable\" means without mistakes or faults.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-140",
-    "question": "Which word is closest in meaning to “arduous”?",
-    "answer": "difficult",
+    "question": "Choose the sentence that uses \"impeccable\" correctly.",
+    "answer": "The chef maintained impeccable hygiene.",
     "options": [
-      "difficult",
-      "effortless",
-      "pleasant",
-      "brief"
+      "The witness provided a credible explanation.",
+      "The committee made a tentative decision.",
+      "An astute investor studies risks before buying.",
+      "The chef maintained impeccable hygiene."
     ],
-    "explanation": "“difficult” is a close synonym of “arduous”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "The sentence uses \"impeccable\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-141",
-    "question": "Which word is closest in meaning to “concise”?",
-    "answer": "brief",
+    "question": "Which word is closest in meaning to \"implicit\"?",
+    "answer": "unspoken",
     "options": [
-      "brief",
-      "wordy",
-      "unclear",
-      "repetitive"
+      "refined",
+      "unspoken",
+      "provisional",
+      "credible"
     ],
-    "explanation": "“brief” is a close synonym of “concise”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"implicit\" means unspoken.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Synonyms"
   },
   {
     "id": "wordquiz-142",
-    "question": "Which word is closest in meaning to “deceive”?",
-    "answer": "mislead",
+    "question": "Which word is opposite in meaning to \"implicit\"?",
+    "answer": "explicit",
     "options": [
-      "mislead",
-      "inform",
-      "assist",
-      "protect"
+      "favourable",
+      "thorough",
+      "explicit",
+      "fragile"
     ],
-    "explanation": "“mislead” is a close synonym of “deceive”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"explicit\" is the opposite of \"implicit\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-143",
-    "question": "Which word is closest in meaning to “enormous”?",
-    "answer": "huge",
+    "question": "What does \"implicit\" mean?",
+    "answer": "suggested without being directly stated",
     "options": [
-      "huge",
-      "tiny",
-      "narrow",
-      "average"
+      "determined and unwilling to give up",
+      "having more than one possible meaning",
+      "correct and free from errors",
+      "suggested without being directly stated"
     ],
-    "explanation": "“huge” is a close synonym of “enormous”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"implicit\" means suggested without being directly stated.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-144",
-    "question": "Which word is closest in meaning to “feasible”?",
-    "answer": "practical",
+    "question": "Choose the sentence that uses \"implicit\" correctly.",
+    "answer": "There was an implicit agreement to share the costs.",
     "options": [
-      "practical",
-      "impossible",
-      "uncertain",
-      "unusual"
+      "The inspection was superficial and missed major faults.",
+      "The engineer devised an ingenious solution.",
+      "There was an implicit agreement to share the costs.",
+      "A diligent student reviews lessons regularly."
     ],
-    "explanation": "“practical” is a close synonym of “feasible”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "The sentence uses \"implicit\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-145",
-    "question": "Which word is closest in meaning to “hostile”?",
-    "answer": "unfriendly",
+    "question": "Which word is closest in meaning to \"inevitable\"?",
+    "answer": "unavoidable",
     "options": [
-      "unfriendly",
-      "welcoming",
-      "peaceful",
-      "helpful"
+      "unavoidable",
+      "plentiful",
+      "hopeful",
+      "exact"
     ],
-    "explanation": "“unfriendly” is a close synonym of “hostile”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"inevitable\" means unavoidable.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Synonyms"
   },
   {
     "id": "wordquiz-146",
-    "question": "Which word is closest in meaning to “inquisitive”?",
-    "answer": "curious",
+    "question": "Which word is opposite in meaning to \"inevitable\"?",
+    "answer": "preventable",
     "options": [
-      "curious",
-      "indifferent",
-      "secretive",
-      "impatient"
+      "reckless",
+      "eager",
+      "rigid",
+      "preventable"
     ],
-    "explanation": "“curious” is a close synonym of “inquisitive”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"preventable\" is the opposite of \"inevitable\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-147",
-    "question": "Which word is closest in meaning to “jeopardy”?",
-    "answer": "danger",
+    "question": "What does \"inevitable\" mean?",
+    "answer": "certain to happen and impossible to avoid",
     "options": [
-      "danger",
-      "safety",
-      "comfort",
-      "success"
+      "certain to happen and impossible to avoid",
+      "quick to understand situations and make sound judgements",
+      "available in large quantities",
+      "able to adjust to new conditions"
     ],
-    "explanation": "“danger” is a close synonym of “jeopardy”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"inevitable\" means certain to happen and impossible to avoid.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-148",
-    "question": "Which word is closest in meaning to “keen”?",
-    "answer": "eager",
+    "question": "Choose the sentence that uses \"inevitable\" correctly.",
+    "answer": "Some delays are inevitable during road repairs.",
     "options": [
-      "eager",
-      "reluctant",
-      "uncertain",
-      "weary"
+      "An adaptable employee can handle changing priorities.",
+      "Some delays are inevitable during road repairs.",
+      "The region has abundant rainfall throughout the year.",
+      "There was a subtle change in her tone."
     ],
-    "explanation": "“eager” is a close synonym of “keen”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "The sentence uses \"inevitable\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-149",
-    "question": "Which word is closest in meaning to “modify”?",
-    "answer": "alter",
+    "question": "Which word is closest in meaning to \"ingenious\"?",
+    "answer": "inventive",
     "options": [
-      "alter",
-      "preserve",
-      "repeat",
-      "ignore"
+      "genuine",
+      "careful",
+      "practical",
+      "inventive"
     ],
-    "explanation": "“alter” is a close synonym of “modify”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"ingenious\" means inventive.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Synonyms"
   },
   {
     "id": "wordquiz-150",
-    "question": "Which word is closest in meaning to “tranquil”?",
-    "answer": "peaceful",
+    "question": "Which word is opposite in meaning to \"ingenious\"?",
+    "answer": "unimaginative",
     "options": [
-      "peaceful",
-      "chaotic",
-      "noisy",
-      "crowded"
+      "unimportant",
+      "definite",
+      "unimaginative",
+      "inaccurate"
     ],
-    "explanation": "“peaceful” is a close synonym of “tranquil”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Synonyms"
+    "explanation": "\"unimaginative\" is the opposite of \"ingenious\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-151",
-    "question": "Which word is the opposite of “expand”?",
-    "answer": "contract",
+    "question": "What does \"ingenious\" mean?",
+    "answer": "clever, original and inventive",
     "options": [
-      "contract",
-      "enlarge",
-      "extend",
-      "multiply"
+      "preventing success or causing difficulty",
+      "clever, original and inventive",
+      "correct and free from errors",
+      "allowed by law or reasonable and genuine"
     ],
-    "explanation": "“contract” expresses the opposite meaning of “expand”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"ingenious\" means clever, original and inventive.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-152",
-    "question": "Which word is the opposite of “transparent”?",
-    "answer": "opaque",
+    "question": "Choose the sentence that uses \"ingenious\" correctly.",
+    "answer": "The engineer devised an ingenious solution.",
     "options": [
-      "opaque",
-      "clear",
-      "visible",
-      "obvious"
+      "The engineer devised an ingenious solution.",
+      "The report gives an accurate account of the incident.",
+      "The organisation promised a transparent selection process.",
+      "These durable shoes are suitable for hiking."
     ],
-    "explanation": "“opaque” expresses the opposite meaning of “transparent”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "The sentence uses \"ingenious\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-153",
-    "question": "Which word is the opposite of “generous”?",
-    "answer": "stingy",
+    "question": "Which word is closest in meaning to \"innovative\"?",
+    "answer": "original",
     "options": [
-      "stingy",
-      "giving",
-      "charitable",
-      "kind"
+      "original",
+      "sympathetic",
+      "unfavourable",
+      "careful"
     ],
-    "explanation": "“stingy” expresses the opposite meaning of “generous”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"innovative\" means original.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-154",
-    "question": "Which word is the opposite of “temporary”?",
-    "answer": "permanent",
+    "question": "Which word is opposite in meaning to \"innovative\"?",
+    "answer": "conventional",
     "options": [
-      "permanent",
-      "brief",
-      "passing",
-      "short-lived"
+      "scarce",
+      "implausible",
+      "conventional",
+      "trusting"
     ],
-    "explanation": "“permanent” expresses the opposite meaning of “temporary”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"conventional\" is the opposite of \"innovative\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Antonyms"
   },
   {
     "id": "wordquiz-155",
-    "question": "Which word is the opposite of “optimistic”?",
-    "answer": "pessimistic",
+    "question": "What does \"innovative\" mean?",
+    "answer": "introducing new ideas or methods",
     "options": [
-      "pessimistic",
-      "hopeful",
-      "confident",
-      "positive"
+      "introducing new ideas or methods",
+      "not as strict or severe as expected",
+      "available in large quantities",
+      "extremely careful about small details"
     ],
-    "explanation": "“pessimistic” expresses the opposite meaning of “optimistic”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"innovative\" means introducing new ideas or methods.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-156",
-    "question": "Which word is the opposite of “victory”?",
-    "answer": "defeat",
+    "question": "Choose the sentence that uses \"innovative\" correctly.",
+    "answer": "The company is known for its innovative products.",
     "options": [
-      "defeat",
-      "success",
-      "triumph",
-      "achievement"
+      "The architect presented an elaborate design.",
+      "The region has abundant rainfall throughout the year.",
+      "The beauty of the evening flowers was ephemeral.",
+      "The company is known for its innovative products."
     ],
-    "explanation": "“defeat” expresses the opposite meaning of “victory”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "The sentence uses \"innovative\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-157",
-    "question": "Which word is the opposite of “ancient”?",
-    "answer": "modern",
+    "question": "Which word is closest in meaning to \"insightful\"?",
+    "answer": "perceptive",
     "options": [
-      "modern",
-      "old",
-      "historic",
-      "antique"
+      "brief",
+      "perceptive",
+      "unspoken",
+      "unclear"
     ],
-    "explanation": "“modern” expresses the opposite meaning of “ancient”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"insightful\" means perceptive.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-158",
-    "question": "Which word is the opposite of “include”?",
-    "answer": "exclude",
+    "question": "Which word is opposite in meaning to \"insightful\"?",
+    "answer": "shallow",
     "options": [
-      "exclude",
-      "contain",
-      "involve",
-      "admit"
+      "shallow",
+      "naive",
+      "superficial",
+      "obvious"
     ],
-    "explanation": "“exclude” expresses the opposite meaning of “include”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"shallow\" is the opposite of \"insightful\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Antonyms"
   },
   {
     "id": "wordquiz-159",
-    "question": "Which word is the opposite of “rigid”?",
-    "answer": "flexible",
+    "question": "What does \"insightful\" mean?",
+    "answer": "showing a deep and accurate understanding",
     "options": [
-      "flexible",
-      "stiff",
-      "fixed",
-      "firm"
+      "treating all sides fairly",
+      "very great or showing deep understanding",
+      "taking care to avoid danger or mistakes",
+      "showing a deep and accurate understanding"
     ],
-    "explanation": "“flexible” expresses the opposite meaning of “rigid”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"insightful\" means showing a deep and accurate understanding.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-160",
-    "question": "Which word is the opposite of “humble”?",
-    "answer": "arrogant",
+    "question": "Choose the sentence that uses \"insightful\" correctly.",
+    "answer": "Her insightful comments improved the discussion.",
     "options": [
-      "arrogant",
-      "modest",
-      "reserved",
-      "unassuming"
+      "Her insightful comments improved the discussion.",
+      "Her argument was coherent from beginning to end.",
+      "She gave an articulate explanation of the proposal.",
+      "The device uses sophisticated technology."
     ],
-    "explanation": "“arrogant” expresses the opposite meaning of “humble”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "The sentence uses \"insightful\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-161",
-    "question": "Which word is the opposite of “artificial”?",
-    "answer": "natural",
+    "question": "Which word is closest in meaning to \"intense\"?",
+    "answer": "extreme",
     "options": [
-      "natural",
-      "synthetic",
-      "imitation",
-      "manufactured"
+      "extreme",
+      "unnecessary",
+      "wise",
+      "clear"
     ],
-    "explanation": "“natural” expresses the opposite meaning of “artificial”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"intense\" means extreme.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-162",
-    "question": "Which word is the opposite of “frequent”?",
-    "answer": "rare",
+    "question": "Which word is opposite in meaning to \"intense\"?",
+    "answer": "mild",
     "options": [
-      "rare",
-      "regular",
-      "common",
-      "repeated"
+      "simple",
+      "scarce",
+      "wordy",
+      "mild"
     ],
-    "explanation": "“rare” expresses the opposite meaning of “frequent”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"mild\" is the opposite of \"intense\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Antonyms"
   },
   {
     "id": "wordquiz-163",
-    "question": "Which word is the opposite of “accept”?",
-    "answer": "reject",
+    "question": "What does \"intense\" mean?",
+    "answer": "very strong or concentrated",
     "options": [
-      "reject",
-      "receive",
-      "approve",
-      "welcome"
+      "quick to understand situations and make sound judgements",
+      "correct and free from errors",
+      "very strong or concentrated",
+      "available in large quantities"
     ],
-    "explanation": "“reject” expresses the opposite meaning of “accept”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"intense\" means very strong or concentrated.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-164",
-    "question": "Which word is the opposite of “ascend”?",
-    "answer": "descend",
+    "question": "Choose the sentence that uses \"intense\" correctly.",
+    "answer": "The region experienced intense heat in May.",
     "options": [
-      "descend",
-      "climb",
-      "rise",
-      "mount"
+      "Clean drinking water is essential for health.",
+      "The region experienced intense heat in May.",
+      "The necklace has an intricate pattern.",
+      "The committee made a tentative decision."
     ],
-    "explanation": "“descend” expresses the opposite meaning of “ascend”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "The sentence uses \"intense\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-165",
-    "question": "Which word is the opposite of “compulsory”?",
-    "answer": "optional",
+    "question": "Which word is closest in meaning to \"intricate\"?",
+    "answer": "complex",
     "options": [
-      "optional",
-      "required",
-      "mandatory",
-      "essential"
+      "brief",
+      "thorough",
+      "precise",
+      "complex"
     ],
-    "explanation": "“optional” expresses the opposite meaning of “compulsory”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"intricate\" means complex.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-166",
-    "question": "Which word is the opposite of “complex”?",
+    "question": "Which word is opposite in meaning to \"intricate\"?",
     "answer": "simple",
     "options": [
       "simple",
-      "complicated",
-      "intricate",
-      "detailed"
+      "fragile",
+      "lenient",
+      "inaccurate"
     ],
-    "explanation": "“simple” expresses the opposite meaning of “complex”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"simple\" is the opposite of \"intricate\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Antonyms"
   },
   {
     "id": "wordquiz-167",
-    "question": "Which word is the opposite of “optimise”?",
-    "answer": "worsen",
+    "question": "What does \"intricate\" mean?",
+    "answer": "having many connected and complicated details",
     "options": [
-      "worsen",
-      "improve",
-      "refine",
-      "enhance"
+      "easy to see or attract attention",
+      "without mistakes or faults",
+      "having many connected and complicated details",
+      "no longer used because something newer exists"
     ],
-    "explanation": "“worsen” expresses the opposite meaning of “optimise”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"intricate\" means having many connected and complicated details.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-168",
-    "question": "Which word is the opposite of “maximum”?",
-    "answer": "minimum",
+    "question": "Choose the sentence that uses \"intricate\" correctly.",
+    "answer": "The necklace has an intricate pattern.",
     "options": [
-      "minimum",
-      "highest",
-      "greatest",
-      "uppermost"
+      "The necklace has an intricate pattern.",
+      "The engineer devised an ingenious solution.",
+      "Her diplomatic reply prevented an argument.",
+      "They chose a conventional design for the office."
     ],
-    "explanation": "“minimum” expresses the opposite meaning of “maximum”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "The sentence uses \"intricate\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-169",
-    "question": "Which word is the opposite of “arrival”?",
-    "answer": "departure",
+    "question": "Which word is closest in meaning to \"legitimate\"?",
+    "answer": "lawful",
     "options": [
-      "departure",
-      "entrance",
-      "coming",
-      "appearance"
+      "lawful",
+      "hopeful",
+      "thrifty",
+      "careful"
     ],
-    "explanation": "“departure” expresses the opposite meaning of “arrival”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"legitimate\" means lawful.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-170",
-    "question": "Which word is the opposite of “barren”?",
-    "answer": "fertile",
+    "question": "Which word is opposite in meaning to \"legitimate\"?",
+    "answer": "illicit",
     "options": [
-      "fertile",
-      "dry",
-      "unproductive",
-      "empty"
+      "trusting",
+      "illicit",
+      "idealistic",
+      "protected"
     ],
-    "explanation": "“fertile” expresses the opposite meaning of “barren”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"illicit\" is the opposite of \"legitimate\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Antonyms"
   },
   {
     "id": "wordquiz-171",
-    "question": "Which word is the opposite of “bold”?",
-    "answer": "timid",
+    "question": "What does \"legitimate\" mean?",
+    "answer": "allowed by law or reasonable and genuine",
     "options": [
-      "timid",
-      "brave",
-      "daring",
-      "confident"
+      "not as strict or severe as expected",
+      "available in large quantities",
+      "allowed by law or reasonable and genuine",
+      "not easily convinced and inclined to question claims"
     ],
-    "explanation": "“timid” expresses the opposite meaning of “bold”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"legitimate\" means allowed by law or reasonable and genuine.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-172",
-    "question": "Which word is the opposite of “capture”?",
-    "answer": "release",
+    "question": "Choose the sentence that uses \"legitimate\" correctly.",
+    "answer": "The customer raised a legitimate concern.",
     "options": [
-      "release",
-      "seize",
-      "detain",
-      "arrest"
+      "An adaptable employee can handle changing priorities.",
+      "Their spontaneous visit delighted the family.",
+      "The region has abundant rainfall throughout the year.",
+      "The customer raised a legitimate concern."
     ],
-    "explanation": "“release” expresses the opposite meaning of “capture”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "The sentence uses \"legitimate\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-173",
-    "question": "Which word is the opposite of “dawn”?",
-    "answer": "dusk",
+    "question": "Which word is closest in meaning to \"lenient\"?",
+    "answer": "merciful",
     "options": [
-      "dusk",
-      "sunrise",
-      "morning",
-      "daybreak"
+      "unclear",
+      "merciful",
+      "unplanned",
+      "hardworking"
     ],
-    "explanation": "“dusk” expresses the opposite meaning of “dawn”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"lenient\" means merciful.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-174",
-    "question": "Which word is the opposite of “elevate”?",
-    "answer": "lower",
+    "question": "Which word is opposite in meaning to \"lenient\"?",
+    "answer": "strict",
     "options": [
-      "lower",
-      "raise",
-      "lift",
-      "promote"
+      "strict",
+      "effortless",
+      "explicit",
+      "inaccurate"
     ],
-    "explanation": "“lower” expresses the opposite meaning of “elevate”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"strict\" is the opposite of \"lenient\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Antonyms"
   },
   {
     "id": "wordquiz-175",
-    "question": "Which word is the opposite of “genuine”?",
-    "answer": "fake",
+    "question": "What does \"lenient\" mean?",
+    "answer": "not as strict or severe as expected",
     "options": [
-      "fake",
-      "authentic",
-      "real",
-      "original"
+      "greater than what is reasonable or necessary",
+      "clever, original and inventive",
+      "quick to understand situations and make sound judgements",
+      "not as strict or severe as expected"
     ],
-    "explanation": "“fake” expresses the opposite meaning of “genuine”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"lenient\" means not as strict or severe as expected.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-176",
-    "question": "Which word is the opposite of “innocent”?",
-    "answer": "guilty",
+    "question": "Choose the sentence that uses \"lenient\" correctly.",
+    "answer": "The teacher was lenient about the late submission.",
     "options": [
-      "guilty",
-      "blameless",
-      "harmless",
-      "pure"
+      "The teacher was lenient about the late submission.",
+      "Her argument was coherent from beginning to end.",
+      "The report gives an accurate account of the incident.",
+      "Our amiable neighbour greets everyone warmly."
     ],
-    "explanation": "“guilty” expresses the opposite meaning of “innocent”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "The sentence uses \"lenient\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
   },
   {
     "id": "wordquiz-177",
-    "question": "Which word is the opposite of “major”?",
-    "answer": "minor",
+    "question": "Which word is closest in meaning to \"meticulous\"?",
+    "answer": "thorough",
     "options": [
-      "minor",
-      "important",
-      "significant",
-      "serious"
+      "shallow",
+      "flexible",
+      "thorough",
+      "plentiful"
     ],
-    "explanation": "“minor” expresses the opposite meaning of “major”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"meticulous\" means thorough.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-178",
-    "question": "Which word is the opposite of “noisy”?",
-    "answer": "quiet",
+    "question": "Which word is opposite in meaning to \"meticulous\"?",
+    "answer": "careless",
     "options": [
-      "quiet",
-      "loud",
-      "boisterous",
-      "clamorous"
+      "trusting",
+      "inconspicuous",
+      "deliberate",
+      "careless"
     ],
-    "explanation": "“quiet” expresses the opposite meaning of “noisy”.",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"careless\" is the opposite of \"meticulous\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Antonyms"
   },
   {
     "id": "wordquiz-179",
-    "question": "Which word is the opposite of “scarcity”?",
-    "answer": "abundance",
+    "question": "What does \"meticulous\" mean?",
+    "answer": "extremely careful about small details",
     "options": [
-      "abundance",
-      "shortage",
-      "lack",
-      "deficiency"
+      "focused on practical results rather than theory",
+      "very strong or concentrated",
+      "extremely careful about small details",
+      "taking care to avoid danger or mistakes"
     ],
-    "explanation": "“abundance” expresses the opposite meaning of “scarcity”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
+    "explanation": "\"meticulous\" means extremely careful about small details.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-180",
-    "question": "Which word is the opposite of “strengthen”?",
-    "answer": "weaken",
-    "options": [
-      "weaken",
-      "reinforce",
-      "fortify",
-      "support"
-    ],
-    "explanation": "“weaken” expresses the opposite meaning of “strengthen”.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Antonyms"
-  },
-  {
-    "id": "wordquiz-181",
-    "question": "Choose the verb that naturally completes the common English expression: “___ a decision”",
-    "answer": "make",
-    "options": [
-      "make",
-      "do",
-      "take",
-      "build"
-    ],
-    "explanation": "“make a decision” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-182",
-    "question": "Choose the verb that naturally completes the common English expression: “___ rain”",
-    "answer": "heavy",
-    "options": [
-      "heavy",
-      "strong",
-      "thick",
-      "hard"
-    ],
-    "explanation": "“heavy rain” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-183",
-    "question": "Choose the verb that naturally completes the common English expression: “___ sleep”",
-    "answer": "deep",
-    "options": [
-      "deep",
-      "strong",
-      "large",
-      "high"
-    ],
-    "explanation": "“deep sleep” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-184",
-    "question": "Choose the verb that naturally completes the common English expression: “___ a crime”",
-    "answer": "commit",
-    "options": [
-      "commit",
-      "do",
-      "make",
-      "perform"
-    ],
-    "explanation": "“commit a crime” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-185",
-    "question": "Choose the verb that naturally completes the common English expression: “___ attention”",
-    "answer": "pay",
-    "options": [
-      "pay",
-      "give",
-      "make",
-      "take"
-    ],
-    "explanation": "“pay attention” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-186",
-    "question": "Choose the verb that naturally completes the common English expression: “___ a cold”",
-    "answer": "catch",
-    "options": [
-      "catch",
-      "take",
-      "hold",
-      "make"
-    ],
-    "explanation": "“catch a cold” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-187",
-    "question": "Choose the verb that naturally completes the common English expression: “___ a promise”",
-    "answer": "keep",
-    "options": [
-      "keep",
-      "do",
-      "make",
-      "save"
-    ],
-    "explanation": "“keep a promise” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-188",
-    "question": "Choose the verb that naturally completes the common English expression: “___ the news”",
-    "answer": "break",
-    "options": [
-      "break",
-      "cut",
-      "crash",
-      "tear"
-    ],
-    "explanation": "“break the news” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-189",
-    "question": "Choose the verb that naturally completes the common English expression: “___ expectations”",
-    "answer": "high",
-    "options": [
-      "high",
-      "tall",
-      "large",
-      "deep"
-    ],
-    "explanation": "“high expectations” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-190",
-    "question": "Choose the verb that naturally completes the common English expression: “___ argument”",
-    "answer": "strong",
-    "options": [
-      "strong",
-      "heavy",
-      "hard",
-      "thick"
-    ],
-    "explanation": "“strong argument” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-191",
-    "question": "Choose the verb that naturally completes the common English expression: “___ awareness”",
-    "answer": "raise",
-    "options": [
-      "raise",
-      "lift",
-      "grow",
-      "rise"
-    ],
-    "explanation": "“raise awareness” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-192",
-    "question": "Choose the verb that naturally completes the common English expression: “___ a conclusion”",
-    "answer": "draw",
-    "options": [
-      "draw",
-      "make",
-      "take",
-      "do"
-    ],
-    "explanation": "“draw a conclusion” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-193",
-    "question": "Choose the verb that naturally completes the common English expression: “___ a deadline”",
-    "answer": "meet",
-    "options": [
-      "meet",
-      "reach",
-      "touch",
-      "arrive"
-    ],
-    "explanation": "“meet a deadline” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-194",
-    "question": "Choose the verb that naturally completes the common English expression: “___ responsibility”",
-    "answer": "take",
-    "options": [
-      "take",
-      "make",
-      "hold",
-      "do"
-    ],
-    "explanation": "“take responsibility” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-195",
-    "question": "Choose the verb that naturally completes the common English expression: “___ a question”",
-    "answer": "pose",
-    "options": [
-      "pose",
-      "put",
-      "set",
-      "raise"
-    ],
-    "explanation": "“pose a question” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-196",
-    "question": "Choose the verb that naturally completes the common English expression: “___ a business”",
-    "answer": "run",
-    "options": [
-      "run",
-      "make",
-      "do",
-      "drive"
-    ],
-    "explanation": "“run a business” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-197",
-    "question": "Choose the verb that naturally completes the common English expression: “___ time”",
-    "answer": "save",
-    "options": [
-      "save",
-      "keep",
-      "hold",
-      "store"
-    ],
-    "explanation": "“save time” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-198",
-    "question": "Choose the verb that naturally completes the common English expression: “___ an opportunity”",
-    "answer": "waste",
-    "options": [
-      "waste",
-      "lose",
-      "spend",
-      "miss"
-    ],
-    "explanation": "“waste an opportunity” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-199",
-    "question": "Choose the verb that naturally completes the common English expression: “___ relationship”",
-    "answer": "close",
-    "options": [
-      "close",
-      "tight",
-      "near",
-      "shut"
-    ],
-    "explanation": "“close relationship” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-200",
-    "question": "Choose the verb that naturally completes the common English expression: “___ disappointment”",
-    "answer": "bitter",
-    "options": [
-      "bitter",
-      "sour",
-      "sharp",
-      "rough"
-    ],
-    "explanation": "“bitter disappointment” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-201",
-    "question": "Choose the verb that naturally completes the common English expression: “___ respect”",
-    "answer": "mutual",
-    "options": [
-      "mutual",
-      "common",
-      "shared",
-      "joint"
-    ],
-    "explanation": "“mutual respect” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-202",
-    "question": "Choose the verb that naturally completes the common English expression: “___ reason”",
-    "answer": "valid",
-    "options": [
-      "valid",
-      "legal",
-      "true",
-      "right"
-    ],
-    "explanation": "“valid reason” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-203",
-    "question": "Choose the verb that naturally completes the common English expression: “___ estimate”",
-    "answer": "rough",
-    "options": [
-      "rough",
-      "coarse",
-      "hard",
-      "uneven"
-    ],
-    "explanation": "“rough estimate” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-204",
-    "question": "Choose the verb that naturally completes the common English expression: “___ progress”",
-    "answer": "considerable",
-    "options": [
-      "considerable",
-      "large",
-      "big",
-      "heavy"
-    ],
-    "explanation": "“considerable progress” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-205",
-    "question": "Choose the verb that naturally completes the common English expression: “___ aware”",
-    "answer": "fully",
-    "options": [
-      "fully",
-      "complete",
-      "entire",
-      "totally"
-    ],
-    "explanation": "“fully aware” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-206",
-    "question": "Choose the verb that naturally completes the common English expression: “___ available”",
-    "answer": "widely",
-    "options": [
-      "widely",
-      "broadly",
-      "largely",
-      "openly"
-    ],
-    "explanation": "“widely available” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-207",
-    "question": "Choose the verb that naturally completes the common English expression: “___ injured”",
-    "answer": "seriously",
-    "options": [
-      "seriously",
-      "strongly",
-      "deeply",
-      "heavily"
-    ],
-    "explanation": "“seriously injured” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-208",
-    "question": "Choose the verb that naturally completes the common English expression: “___ available”",
-    "answer": "readily",
-    "options": [
-      "readily",
-      "easily",
-      "quickly",
-      "freely"
-    ],
-    "explanation": "“readily available” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-209",
-    "question": "Choose the verb that naturally completes the common English expression: “___ rules”",
-    "answer": "strict",
-    "options": [
-      "strict",
-      "hard",
-      "tight",
-      "severe"
-    ],
-    "explanation": "“strict rules” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-210",
-    "question": "Choose the verb that naturally completes the common English expression: “___ welcome”",
-    "answer": "warm",
-    "options": [
-      "warm",
-      "hot",
-      "friendly",
-      "kind"
-    ],
-    "explanation": "“warm welcome” is the natural English collocation.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Collocations"
-  },
-  {
-    "id": "wordquiz-211",
-    "question": "Complete the relationship: Bird is to nest as bee is to ___",
-    "answer": "hive",
-    "options": [
-      "hive",
-      "web",
-      "den",
-      "stable"
-    ],
-    "explanation": "The relationship is based on the same connection: hive.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-212",
-    "question": "Complete the relationship: Author is to novel as composer is to ___",
-    "answer": "symphony",
-    "options": [
-      "symphony",
-      "gallery",
-      "theatre",
-      "poem"
-    ],
-    "explanation": "The relationship is based on the same connection: symphony.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-213",
-    "question": "Complete the relationship: Thermometer is to temperature as barometer is to ___",
-    "answer": "air pressure",
-    "options": [
-      "air pressure",
-      "speed",
-      "distance",
-      "weight"
-    ],
-    "explanation": "The relationship is based on the same connection: air pressure.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-214",
-    "question": "Complete the relationship: Puppy is to dog as kitten is to ___",
-    "answer": "cat",
-    "options": [
-      "cat",
-      "rabbit",
-      "horse",
-      "sheep"
-    ],
-    "explanation": "The relationship is based on the same connection: cat.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-215",
-    "question": "Complete the relationship: Pen is to writing as brush is to ___",
-    "answer": "painting",
-    "options": [
-      "painting",
-      "cutting",
-      "measuring",
-      "sewing"
-    ],
-    "explanation": "The relationship is based on the same connection: painting.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-216",
-    "question": "Complete the relationship: Seed is to plant as egg is to ___",
-    "answer": "bird",
-    "options": [
-      "bird",
-      "nest",
-      "feather",
-      "wing"
-    ],
-    "explanation": "The relationship is based on the same connection: bird.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-217",
-    "question": "Complete the relationship: Chapter is to book as scene is to ___",
-    "answer": "play",
-    "options": [
-      "play",
-      "library",
-      "author",
-      "paper"
-    ],
-    "explanation": "The relationship is based on the same connection: play.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-218",
-    "question": "Complete the relationship: Chef is to kitchen as pilot is to ___",
-    "answer": "cockpit",
-    "options": [
-      "cockpit",
-      "harbour",
-      "garage",
-      "studio"
-    ],
-    "explanation": "The relationship is based on the same connection: cockpit.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-219",
-    "question": "Complete the relationship: Glove is to hand as sock is to ___",
-    "answer": "foot",
-    "options": [
-      "foot",
-      "shoe",
-      "leg",
-      "knee"
-    ],
-    "explanation": "The relationship is based on the same connection: foot.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-220",
-    "question": "Complete the relationship: Paw is to cat as hoof is to ___",
-    "answer": "horse",
-    "options": [
-      "horse",
-      "eagle",
-      "fish",
-      "snake"
-    ],
-    "explanation": "The relationship is based on the same connection: horse.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-221",
-    "question": "Complete the relationship: Oasis is to desert as island is to ___",
-    "answer": "ocean",
-    "options": [
-      "ocean",
-      "mountain",
-      "forest",
-      "river"
-    ],
-    "explanation": "The relationship is based on the same connection: ocean.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-222",
-    "question": "Complete the relationship: Minute is to hour as centimetre is to ___",
-    "answer": "metre",
-    "options": [
-      "metre",
-      "kilogram",
-      "litre",
-      "second"
-    ],
-    "explanation": "The relationship is based on the same connection: metre.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-223",
-    "question": "Complete the relationship: Pupil is to school as patient is to ___",
-    "answer": "hospital",
-    "options": [
-      "hospital",
-      "market",
-      "court",
-      "museum"
-    ],
-    "explanation": "The relationship is based on the same connection: hospital.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-224",
-    "question": "Complete the relationship: Key is to lock as password is to ___",
-    "answer": "account",
-    "options": [
-      "account",
-      "keyboard",
-      "screen",
-      "letter"
-    ],
-    "explanation": "The relationship is based on the same connection: account.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-225",
-    "question": "Complete the relationship: Author is to book as architect is to ___",
-    "answer": "building",
-    "options": [
-      "building",
-      "bridge",
-      "blueprint",
-      "brick"
-    ],
-    "explanation": "The relationship is based on the same connection: building.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-226",
-    "question": "Complete the relationship: Bark is to dog as roar is to ___",
-    "answer": "lion",
-    "options": [
-      "lion",
-      "mouse",
-      "deer",
-      "parrot"
-    ],
-    "explanation": "The relationship is based on the same connection: lion.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-227",
-    "question": "Complete the relationship: Wheel is to car as wing is to ___",
-    "answer": "aircraft",
-    "options": [
-      "aircraft",
-      "train",
-      "bicycle",
-      "boat"
-    ],
-    "explanation": "The relationship is based on the same connection: aircraft.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-228",
-    "question": "Complete the relationship: Dictionary is to words as atlas is to ___",
-    "answer": "maps",
-    "options": [
-      "maps",
-      "numbers",
-      "paintings",
-      "recipes"
-    ],
-    "explanation": "The relationship is based on the same connection: maps.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-229",
-    "question": "Complete the relationship: Finger is to hand as toe is to ___",
-    "answer": "foot",
-    "options": [
-      "foot",
-      "ankle",
-      "shoe",
-      "heel"
-    ],
-    "explanation": "The relationship is based on the same connection: foot.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-230",
-    "question": "Complete the relationship: Calf is to cow as foal is to ___",
-    "answer": "horse",
-    "options": [
-      "horse",
-      "goat",
-      "sheep",
-      "deer"
-    ],
-    "explanation": "The relationship is based on the same connection: horse.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-231",
-    "question": "Complete the relationship: Lid is to jar as cap is to ___",
-    "answer": "bottle",
-    "options": [
-      "bottle",
-      "plate",
-      "basket",
-      "drawer"
-    ],
-    "explanation": "The relationship is based on the same connection: bottle.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-232",
-    "question": "Complete the relationship: Silence is to noise as darkness is to ___",
-    "answer": "light",
-    "options": [
-      "light",
-      "night",
-      "shadow",
-      "cloud"
-    ],
-    "explanation": "The relationship is based on the same connection: light.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-233",
-    "question": "Complete the relationship: Monday is to week as January is to ___",
-    "answer": "year",
-    "options": [
-      "year",
-      "month",
-      "season",
-      "day"
-    ],
-    "explanation": "The relationship is based on the same connection: year.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-234",
-    "question": "Complete the relationship: Scale is to fish as feather is to ___",
-    "answer": "bird",
-    "options": [
-      "bird",
-      "fur",
-      "wing",
-      "nest"
-    ],
-    "explanation": "The relationship is based on the same connection: bird.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-235",
-    "question": "Complete the relationship: Sculptor is to statue as potter is to ___",
-    "answer": "pot",
-    "options": [
-      "pot",
-      "paint",
-      "canvas",
-      "stone"
-    ],
-    "explanation": "The relationship is based on the same connection: pot.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-236",
-    "question": "Complete the relationship: Carpenter is to wood as blacksmith is to ___",
-    "answer": "metal",
-    "options": [
-      "metal",
-      "glass",
-      "cloth",
-      "paper"
-    ],
-    "explanation": "The relationship is based on the same connection: metal.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-237",
-    "question": "Complete the relationship: Compass is to direction as clock is to ___",
-    "answer": "time",
-    "options": [
-      "time",
-      "distance",
-      "weather",
-      "weight"
-    ],
-    "explanation": "The relationship is based on the same connection: time.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-238",
-    "question": "Complete the relationship: Root is to tree as foundation is to ___",
-    "answer": "building",
-    "options": [
-      "building",
-      "roof",
-      "window",
-      "garden"
-    ],
-    "explanation": "The relationship is based on the same connection: building.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-239",
-    "question": "Complete the relationship: Whisper is to speak as stroll is to ___",
-    "answer": "walk",
-    "options": [
-      "walk",
-      "run",
-      "jump",
-      "stand"
-    ],
-    "explanation": "The relationship is based on the same connection: walk.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-240",
-    "question": "Complete the relationship: Sail is to boat as pedal is to ___",
-    "answer": "bicycle",
-    "options": [
-      "bicycle",
-      "car",
-      "train",
-      "aircraft"
-    ],
-    "explanation": "The relationship is based on the same connection: bicycle.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Analogies"
-  },
-  {
-    "id": "wordquiz-241",
-    "question": "What is the plural of 'analysis'?",
-    "answer": "analyses",
-    "options": [
-      "analyses",
-      "analysises",
-      "analysis",
-      "analysi"
-    ],
-    "explanation": "“analyses” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-242",
-    "question": "What is the plural of 'criterion'?",
-    "answer": "criteria",
-    "options": [
-      "criteria",
-      "criterions",
-      "criterias",
-      "criterium"
-    ],
-    "explanation": "“criteria” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-243",
-    "question": "What is the plural of 'phenomenon'?",
-    "answer": "phenomena",
-    "options": [
-      "phenomena",
-      "phenomenons",
-      "phenomenas",
-      "phenomenae"
-    ],
-    "explanation": "“phenomena” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-244",
-    "question": "What is the plural of 'cactus'?",
-    "answer": "cacti",
-    "options": [
-      "cacti",
-      "cactuseses",
-      "cactis",
-      "cactus'"
-    ],
-    "explanation": "“cacti” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-245",
-    "question": "What is the past tense of 'seek'?",
-    "answer": "sought",
-    "options": [
-      "sought",
-      "seeked",
-      "saked",
-      "seeken"
-    ],
-    "explanation": "“sought” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-246",
-    "question": "What is the past tense of 'cling'?",
-    "answer": "clung",
-    "options": [
-      "clung",
-      "clinged",
-      "clang",
-      "clunged"
-    ],
-    "explanation": "“clung” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-247",
-    "question": "What is the past participle of 'write'?",
-    "answer": "written",
-    "options": [
-      "written",
-      "wrote",
-      "writed",
-      "writing"
-    ],
-    "explanation": "“written” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-248",
-    "question": "What is the past tense of 'overcome'?",
-    "answer": "overcame",
-    "options": [
-      "overcame",
-      "overcomed",
-      "overcome",
-      "overcoming"
-    ],
-    "explanation": "“overcame” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-249",
-    "question": "Which adjective means 'able to be read'?",
-    "answer": "readable",
-    "options": [
-      "readable",
-      "readful",
-      "reading",
-      "readed"
-    ],
-    "explanation": "“readable” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-250",
-    "question": "Which noun is formed from 'decide'?",
-    "answer": "decision",
-    "options": [
-      "decision",
-      "decidement",
-      "decidance",
-      "decidation"
-    ],
-    "explanation": "“decision” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-251",
-    "question": "Which adjective comes from 'courage'?",
-    "answer": "courageous",
-    "options": [
-      "courageous",
-      "couragely",
-      "couragement",
-      "couragable"
-    ],
-    "explanation": "“courageous” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-252",
-    "question": "Which adverb is formed from 'careful'?",
-    "answer": "carefully",
-    "options": [
-      "carefully",
-      "carefuly",
-      "carefulling",
-      "carefulness"
-    ],
-    "explanation": "“carefully” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-253",
-    "question": "What is the comparative form of 'little' (amount)?",
-    "answer": "less",
-    "options": [
-      "less",
-      "littler",
-      "least",
-      "more little"
-    ],
-    "explanation": "“less” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-254",
-    "question": "What is the superlative form of 'bad'?",
-    "answer": "worst",
-    "options": [
-      "worst",
-      "badder",
-      "baddest",
-      "more bad"
-    ],
-    "explanation": "“worst” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-255",
-    "question": "Which is the correct past tense of 'lie' (recline)?",
-    "answer": "lay",
-    "options": [
-      "lay",
-      "lied",
-      "lain",
-      "lieed"
-    ],
-    "explanation": "“lay” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-256",
-    "question": "Which is the past participle of 'choose'?",
-    "answer": "chosen",
-    "options": [
-      "chosen",
-      "chose",
-      "choosed",
-      "choosen"
-    ],
-    "explanation": "“chosen” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-257",
-    "question": "Which noun names the state of being accurate?",
-    "answer": "accuracy",
-    "options": [
-      "accuracy",
-      "accuratenessful",
-      "accuration",
-      "accurism"
-    ],
-    "explanation": "“accuracy” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-258",
-    "question": "Which adjective means 'without a home'?",
-    "answer": "homeless",
-    "options": [
-      "homeless",
-      "homeful",
-      "homelyless",
-      "unhome"
-    ],
-    "explanation": "“homeless” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-259",
-    "question": "Which noun is formed from 'strong'?",
-    "answer": "strength",
-    "options": [
-      "strength",
-      "strongnessity",
-      "strongment",
-      "strongance"
-    ],
-    "explanation": "“strength” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-260",
-    "question": "Which adjective means 'full of hope'?",
-    "answer": "hopeful",
-    "options": [
-      "hopeful",
-      "hopeless",
-      "hopingful",
-      "hopeable"
-    ],
-    "explanation": "“hopeful” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-261",
-    "question": "What is the plural of 'thesis'?",
-    "answer": "theses",
-    "options": [
-      "theses",
-      "thesises",
-      "thesis",
-      "thesae"
-    ],
-    "explanation": "“theses” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-262",
-    "question": "What is the plural of 'index'?",
-    "answer": "indices",
-    "options": [
-      "indices",
-      "indexs",
-      "indexies",
-      "indeces"
-    ],
-    "explanation": "“indices” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-263",
-    "question": "What is the past tense of 'forbid'?",
-    "answer": "forbade",
-    "options": [
-      "forbade",
-      "forbidded",
-      "forbid",
-      "forbided"
-    ],
-    "explanation": "“forbade” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-264",
-    "question": "Which is the past participle of 'break'?",
-    "answer": "broken",
-    "options": [
-      "broken",
-      "broke",
-      "breaked",
-      "broked"
-    ],
-    "explanation": "“broken” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-265",
-    "question": "Which adjective means 'that cannot be avoided'?",
-    "answer": "inevitable",
-    "options": [
-      "inevitable",
-      "unavoidablely",
-      "inevitably",
-      "evitable"
-    ],
-    "explanation": "“inevitable” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-266",
-    "question": "Which noun is formed from 'permit'?",
-    "answer": "permission",
-    "options": [
-      "permission",
-      "permitance",
-      "permittal",
-      "permisment"
-    ],
-    "explanation": "“permission” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-267",
-    "question": "What is the comparative form of 'far' for distance?",
-    "answer": "farther",
-    "options": [
-      "farther",
-      "farest",
-      "more far",
-      "furtherest"
-    ],
-    "explanation": "“farther” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-268",
-    "question": "What is the plural of 'mouse'?",
-    "answer": "mice",
-    "options": [
-      "mice",
-      "mouses",
-      "meese",
-      "mouse"
-    ],
-    "explanation": "“mice” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-269",
-    "question": "Which is the past tense of 'teach'?",
-    "answer": "taught",
-    "options": [
-      "taught",
-      "teached",
-      "teacheded",
-      "teachen"
-    ],
-    "explanation": "“taught” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-270",
-    "question": "Which adverb means 'in a confident manner'?",
-    "answer": "confidently",
-    "options": [
-      "confidently",
-      "confidentful",
-      "confidentlyness",
-      "confidential"
-    ],
-    "explanation": "“confidently” is the standard form used in this grammatical context.",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Word relationships"
-  },
-  {
-    "id": "wordquiz-271",
-    "question": "Choose the sentence in which 'affluent' is used correctly.",
-    "answer": "The affluent neighbourhood had several elegant homes.",
-    "options": [
-      "The affluent neighbourhood had several elegant homes.",
-      "The affluent soup needed more salt.",
-      "She affluent the report yesterday.",
-      "The road became affluent after rain."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The affluent neighbourhood had several elegant homes.”",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "question": "Choose the sentence that uses \"meticulous\" correctly.",
+    "answer": "The editor made a meticulous check of every page.",
+    "options": [
+      "The committee made a tentative decision.",
+      "The editor made a meticulous check of every page.",
+      "The region has abundant rainfall throughout the year.",
+      "Their frugal habits helped them save for a house."
+    ],
+    "explanation": "The sentence uses \"meticulous\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Usage in context"
   },
   {
-    "id": "wordquiz-272",
-    "question": "Choose the sentence in which 'reluctant' is used correctly.",
-    "answer": "He was reluctant to speak before the large audience.",
+    "id": "wordquiz-181",
+    "question": "Which word is closest in meaning to \"modest\"?",
+    "answer": "humble",
     "options": [
-      "He was reluctant to speak before the large audience.",
-      "The reluctant suitcase was made of leather.",
-      "She reluctant the door carefully.",
-      "The cake tasted reluctant."
+      "thorough",
+      "kind",
+      "adaptable",
+      "humble"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “He was reluctant to speak before the large audience.”",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "\"modest\" means humble.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-182",
+    "question": "Which word is opposite in meaning to \"modest\"?",
+    "answer": "arrogant",
+    "options": [
+      "arrogant",
+      "scarce",
+      "unorthodox",
+      "secure"
+    ],
+    "explanation": "\"arrogant\" is the opposite of \"modest\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-183",
+    "question": "What does \"modest\" mean?",
+    "answer": "not boastful or excessively proud",
+    "options": [
+      "correct and free from errors",
+      "having many connected and complicated details",
+      "not boastful or excessively proud",
+      "advanced, complex or showing good judgement"
+    ],
+    "explanation": "\"modest\" means not boastful or excessively proud.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-184",
+    "question": "Choose the sentence that uses \"modest\" correctly.",
+    "answer": "Despite winning the award, she remained modest.",
+    "options": [
+      "Despite winning the award, she remained modest.",
+      "The organisation promised a transparent selection process.",
+      "The report gives an accurate account of the incident.",
+      "He offered a candid assessment of the plan."
+    ],
+    "explanation": "The sentence uses \"modest\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-185",
+    "question": "Which word is closest in meaning to \"obsolete\"?",
+    "answer": "outdated",
+    "options": [
+      "necessary",
+      "friendly",
+      "outdated",
+      "demanding"
+    ],
+    "explanation": "\"obsolete\" means outdated.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-186",
+    "question": "Which word is opposite in meaning to \"obsolete\"?",
+    "answer": "modern",
+    "options": [
+      "definite",
+      "modern",
+      "welcoming",
+      "hostile"
+    ],
+    "explanation": "\"modern\" is the opposite of \"obsolete\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-187",
+    "question": "What does \"obsolete\" mean?",
+    "answer": "no longer used because something newer exists",
+    "options": [
+      "no longer used because something newer exists",
+      "skilled at dealing with people without causing offence",
+      "preventing success or causing difficulty",
+      "allowed by law or reasonable and genuine"
+    ],
+    "explanation": "\"obsolete\" means no longer used because something newer exists.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-188",
+    "question": "Choose the sentence that uses \"obsolete\" correctly.",
+    "answer": "The factory replaced its obsolete machinery.",
+    "options": [
+      "The tenacious reporter continued investigating.",
+      "The climbers faced an arduous journey.",
+      "The region has abundant rainfall throughout the year.",
+      "The factory replaced its obsolete machinery."
+    ],
+    "explanation": "The sentence uses \"obsolete\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-189",
+    "question": "Which word is closest in meaning to \"optimistic\"?",
+    "answer": "hopeful",
+    "options": [
+      "comprehensive",
+      "plentiful",
+      "hopeful",
+      "delicate"
+    ],
+    "explanation": "\"optimistic\" means hopeful.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-190",
+    "question": "Which word is opposite in meaning to \"optimistic\"?",
+    "answer": "pessimistic",
+    "options": [
+      "pessimistic",
+      "favourable",
+      "simple",
+      "strict"
+    ],
+    "explanation": "\"pessimistic\" is the opposite of \"optimistic\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-191",
+    "question": "What does \"optimistic\" mean?",
+    "answer": "expecting good things to happen",
+    "options": [
+      "extremely thorough, careful or strict",
+      "concerned only with the surface or appearance",
+      "following accepted customs or usual methods",
+      "expecting good things to happen"
+    ],
+    "explanation": "\"optimistic\" means expecting good things to happen.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-192",
+    "question": "Choose the sentence that uses \"optimistic\" correctly.",
+    "answer": "Investors remained optimistic about the recovery.",
+    "options": [
+      "We need a pragmatic solution to the transport problem.",
+      "The team developed a feasible plan within the budget.",
+      "Investors remained optimistic about the recovery.",
+      "The region experienced intense heat in May."
+    ],
+    "explanation": "The sentence uses \"optimistic\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-193",
+    "question": "Which word is closest in meaning to \"plausible\"?",
+    "answer": "credible",
+    "options": [
+      "unplanned",
+      "wise",
+      "credible",
+      "sturdy"
+    ],
+    "explanation": "\"plausible\" means credible.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-194",
+    "question": "Which word is opposite in meaning to \"plausible\"?",
+    "answer": "far-fetched",
+    "options": [
+      "effortless",
+      "idealistic",
+      "inconspicuous",
+      "far-fetched"
+    ],
+    "explanation": "\"far-fetched\" is the opposite of \"plausible\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-195",
+    "question": "What does \"plausible\" mean?",
+    "answer": "seeming reasonable or likely to be true",
+    "options": [
+      "seeming reasonable or likely to be true",
+      "available in large quantities",
+      "easy to understand or open and honest",
+      "extremely thorough, careful or strict"
+    ],
+    "explanation": "\"plausible\" means seeming reasonable or likely to be true.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-196",
+    "question": "Choose the sentence that uses \"plausible\" correctly.",
+    "answer": "He offered a plausible reason for the delay.",
+    "options": [
+      "A benevolent donor funded the village library.",
+      "An adaptable employee can handle changing priorities.",
+      "He offered a plausible reason for the delay.",
+      "Her argument was coherent from beginning to end."
+    ],
+    "explanation": "The sentence uses \"plausible\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-197",
+    "question": "Which word is closest in meaning to \"pragmatic\"?",
+    "answer": "practical",
+    "options": [
+      "exact",
+      "strict",
+      "complex",
+      "practical"
+    ],
+    "explanation": "\"pragmatic\" means practical.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-198",
+    "question": "Which word is opposite in meaning to \"pragmatic\"?",
+    "answer": "idealistic",
+    "options": [
+      "idealistic",
+      "impractical",
+      "reckless",
+      "evasive"
+    ],
+    "explanation": "\"idealistic\" is the opposite of \"pragmatic\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-199",
+    "question": "What does \"pragmatic\" mean?",
+    "answer": "focused on practical results rather than theory",
+    "options": [
+      "truthful and direct",
+      "focused on practical results rather than theory",
+      "preventing success or causing difficulty",
+      "having more than one possible meaning"
+    ],
+    "explanation": "\"pragmatic\" means focused on practical results rather than theory.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-200",
+    "question": "Choose the sentence that uses \"pragmatic\" correctly.",
+    "answer": "We need a pragmatic solution to the transport problem.",
+    "options": [
+      "The match was cancelled because of adverse weather.",
+      "The teacher was lenient about the late submission.",
+      "We need a pragmatic solution to the transport problem.",
+      "Please provide the precise measurement."
+    ],
+    "explanation": "The sentence uses \"pragmatic\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-201",
+    "question": "Which word is closest in meaning to \"precarious\"?",
+    "answer": "unstable",
+    "options": [
+      "unstable",
+      "doubtful",
+      "demanding",
+      "kind"
+    ],
+    "explanation": "\"precarious\" means unstable.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-202",
+    "question": "Which word is opposite in meaning to \"precarious\"?",
+    "answer": "secure",
+    "options": [
+      "scarce",
+      "naive",
+      "secure",
+      "reckless"
+    ],
+    "explanation": "\"secure\" is the opposite of \"precarious\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-203",
+    "question": "What does \"precarious\" mean?",
+    "answer": "dangerously uncertain or likely to fail",
+    "options": [
+      "dangerously uncertain or likely to fail",
+      "showing concern for another person's suffering",
+      "able to be trusted or believed",
+      "available in large quantities"
+    ],
+    "explanation": "\"precarious\" means dangerously uncertain or likely to fail.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-204",
+    "question": "Choose the sentence that uses \"precarious\" correctly.",
+    "answer": "The workers stood on a precarious platform.",
+    "options": [
+      "An adaptable employee can handle changing priorities.",
+      "Some delays are inevitable during road repairs.",
+      "The region has abundant rainfall throughout the year.",
+      "The workers stood on a precarious platform."
+    ],
+    "explanation": "The sentence uses \"precarious\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-205",
+    "question": "Which word is closest in meaning to \"precise\"?",
+    "answer": "exact",
+    "options": [
+      "extreme",
+      "exact",
+      "deep",
+      "expressive"
+    ],
+    "explanation": "\"precise\" means exact.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-206",
+    "question": "Which word is opposite in meaning to \"precise\"?",
+    "answer": "approximate",
+    "options": [
+      "implausible",
+      "modern",
+      "approximate",
+      "arrogant"
+    ],
+    "explanation": "\"approximate\" is the opposite of \"precise\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-207",
+    "question": "What does \"precise\" mean?",
+    "answer": "accurate and exact in every detail",
+    "options": [
+      "extremely careful about small details",
+      "real and not copied or false",
+      "possible and realistic to achieve",
+      "accurate and exact in every detail"
+    ],
+    "explanation": "\"precise\" means accurate and exact in every detail.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-208",
+    "question": "Choose the sentence that uses \"precise\" correctly.",
+    "answer": "Please provide the precise measurement.",
+    "options": [
+      "We need a pragmatic solution to the transport problem.",
+      "There was a subtle change in her tone.",
+      "Please provide the precise measurement.",
+      "The hotel charged an excessive fee for parking."
+    ],
+    "explanation": "The sentence uses \"precise\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-209",
+    "question": "Which word is closest in meaning to \"profound\"?",
+    "answer": "deep",
+    "options": [
+      "deep",
+      "sympathetic",
+      "unfriendly",
+      "noticeable"
+    ],
+    "explanation": "\"profound\" means deep.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-210",
+    "question": "Which word is opposite in meaning to \"profound\"?",
+    "answer": "superficial",
+    "options": [
+      "secure",
+      "evasive",
+      "scarce",
+      "superficial"
+    ],
+    "explanation": "\"superficial\" is the opposite of \"profound\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-211",
+    "question": "What does \"profound\" mean?",
+    "answer": "very great or showing deep understanding",
+    "options": [
+      "very great or showing deep understanding",
+      "requiring great effort or endurance",
+      "respected and famous in a particular field",
+      "available in large quantities"
+    ],
+    "explanation": "\"profound\" means very great or showing deep understanding.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-212",
+    "question": "Choose the sentence that uses \"profound\" correctly.",
+    "answer": "The discovery had a profound effect on medicine.",
+    "options": [
+      "Our amiable neighbour greets everyone warmly.",
+      "He offered a plausible reason for the delay.",
+      "The discovery had a profound effect on medicine.",
+      "The research followed a rigorous testing process."
+    ],
+    "explanation": "The sentence uses \"profound\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-213",
+    "question": "Which word is closest in meaning to \"prudent\"?",
+    "answer": "wise",
+    "options": [
+      "shallow",
+      "sturdy",
+      "unfavourable",
+      "wise"
+    ],
+    "explanation": "\"prudent\" means wise.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-214",
+    "question": "Which word is opposite in meaning to \"prudent\"?",
+    "answer": "reckless",
+    "options": [
+      "yielding",
+      "definite",
+      "reckless",
+      "inaccurate"
+    ],
+    "explanation": "\"reckless\" is the opposite of \"prudent\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-215",
+    "question": "What does \"prudent\" mean?",
+    "answer": "showing careful judgement and good sense",
+    "options": [
+      "requiring great effort or endurance",
+      "showing careful judgement and good sense",
+      "able to adjust to new conditions",
+      "preventing success or causing difficulty"
+    ],
+    "explanation": "\"prudent\" means showing careful judgement and good sense.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-216",
+    "question": "Choose the sentence that uses \"prudent\" correctly.",
+    "answer": "It is prudent to keep an emergency fund.",
+    "options": [
+      "It is prudent to keep an emergency fund.",
+      "She gave an articulate explanation of the proposal.",
+      "He offered a candid assessment of the plan.",
+      "He offered a plausible reason for the delay."
+    ],
+    "explanation": "The sentence uses \"prudent\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-217",
+    "question": "Which word is closest in meaning to \"redundant\"?",
+    "answer": "unnecessary",
+    "options": [
+      "unnecessary",
+      "flexible",
+      "unwilling",
+      "careful"
+    ],
+    "explanation": "\"redundant\" means unnecessary.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-218",
+    "question": "Which word is opposite in meaning to \"redundant\"?",
+    "answer": "essential",
+    "options": [
+      "rigid",
+      "scarce",
+      "essential",
+      "naive"
+    ],
+    "explanation": "\"essential\" is the opposite of \"redundant\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-219",
+    "question": "What does \"redundant\" mean?",
+    "answer": "no longer needed or useful",
+    "options": [
+      "no longer needed or useful",
+      "easy to understand or open and honest",
+      "possible and realistic to achieve",
+      "taking care to avoid danger or mistakes"
+    ],
+    "explanation": "\"redundant\" means no longer needed or useful.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-220",
+    "question": "Choose the sentence that uses \"redundant\" correctly.",
+    "answer": "The update removed several redundant steps.",
+    "options": [
+      "The factory replaced its obsolete machinery.",
+      "An astute investor studies risks before buying.",
+      "The chef maintained impeccable hygiene.",
+      "The update removed several redundant steps."
+    ],
+    "explanation": "The sentence uses \"redundant\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-221",
+    "question": "Which word is closest in meaning to \"reluctant\"?",
+    "answer": "unwilling",
+    "options": [
+      "unclear",
+      "unwilling",
+      "precise",
+      "crucial"
+    ],
+    "explanation": "\"reluctant\" means unwilling.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-222",
+    "question": "Which word is opposite in meaning to \"reluctant\"?",
+    "answer": "eager",
+    "options": [
+      "simple",
+      "inaccurate",
+      "eager",
+      "favourable"
+    ],
+    "explanation": "\"eager\" is the opposite of \"reluctant\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-223",
+    "question": "What does \"reluctant\" mean?",
+    "answer": "not willing or eager to do something",
+    "options": [
+      "allowed by law or reasonable and genuine",
+      "correct and free from errors",
+      "giving information clearly in few words",
+      "not willing or eager to do something"
+    ],
+    "explanation": "\"reluctant\" means not willing or eager to do something.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-224",
+    "question": "Choose the sentence that uses \"reluctant\" correctly.",
+    "answer": "He was reluctant to leave the familiar town.",
+    "options": [
+      "He was reluctant to leave the familiar town.",
+      "The report gives an accurate account of the incident.",
+      "Our amiable neighbour greets everyone warmly.",
+      "Their frugal habits helped them save for a house."
+    ],
+    "explanation": "The sentence uses \"reluctant\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-225",
+    "question": "Which word is closest in meaning to \"resilient\"?",
+    "answer": "tough",
+    "options": [
+      "tough",
+      "cautious",
+      "plentiful",
+      "believable"
+    ],
+    "explanation": "\"resilient\" means tough.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-226",
+    "question": "Which word is opposite in meaning to \"resilient\"?",
+    "answer": "fragile",
+    "options": [
+      "scarce",
+      "strict",
+      "illicit",
+      "fragile"
+    ],
+    "explanation": "\"fragile\" is the opposite of \"resilient\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-227",
+    "question": "What does \"resilient\" mean?",
+    "answer": "able to recover quickly after difficulty",
+    "options": [
+      "able to recover quickly after difficulty",
+      "introducing new ideas or methods",
+      "able to adjust to new conditions",
+      "very great or showing deep understanding"
+    ],
+    "explanation": "\"resilient\" means able to recover quickly after difficulty.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-228",
+    "question": "Choose the sentence that uses \"resilient\" correctly.",
+    "answer": "The resilient community rebuilt after the flood.",
+    "options": [
+      "The region has abundant rainfall throughout the year.",
+      "The resilient community rebuilt after the flood.",
+      "Fresh water becomes scarce during a drought.",
+      "He offered a plausible reason for the delay."
+    ],
+    "explanation": "The sentence uses \"resilient\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-229",
+    "question": "Which word is closest in meaning to \"rigorous\"?",
+    "answer": "strict",
+    "options": [
+      "comprehensive",
+      "delicate",
+      "shrewd",
+      "strict"
+    ],
+    "explanation": "\"rigorous\" means strict.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-230",
+    "question": "Which word is opposite in meaning to \"rigorous\"?",
+    "answer": "lenient",
+    "options": [
+      "lenient",
+      "approximate",
+      "biased",
+      "reckless"
+    ],
+    "explanation": "\"lenient\" is the opposite of \"rigorous\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-231",
+    "question": "What does \"rigorous\" mean?",
+    "answer": "extremely thorough, careful or strict",
+    "options": [
+      "truthful and direct",
+      "extremely important or necessary",
+      "extremely thorough, careful or strict",
+      "able to last a long time without damage"
+    ],
+    "explanation": "\"rigorous\" means extremely thorough, careful or strict.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-232",
+    "question": "Choose the sentence that uses \"rigorous\" correctly.",
+    "answer": "The research followed a rigorous testing process.",
+    "options": [
+      "The research followed a rigorous testing process.",
+      "A versatile tool is useful in many situations.",
+      "He offered a plausible reason for the delay.",
+      "The report gives an accurate account of the incident."
+    ],
+    "explanation": "The sentence uses \"rigorous\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-233",
+    "question": "Which word is closest in meaning to \"scarce\"?",
+    "answer": "limited",
+    "options": [
+      "limited",
+      "brief",
+      "plentiful",
+      "detailed"
+    ],
+    "explanation": "\"scarce\" means limited.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-234",
+    "question": "Which word is opposite in meaning to \"scarce\"?",
+    "answer": "abundant",
+    "options": [
+      "scarce",
+      "abundant",
+      "inaccurate",
+      "naive"
+    ],
+    "explanation": "\"abundant\" is the opposite of \"scarce\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-235",
+    "question": "What does \"scarce\" mean?",
+    "answer": "available in very small quantities",
+    "options": [
+      "not yet certain or final",
+      "able to be trusted or believed",
+      "available in very small quantities",
+      "quick to understand situations and make sound judgements"
+    ],
+    "explanation": "\"scarce\" means available in very small quantities.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-236",
+    "question": "Choose the sentence that uses \"scarce\" correctly.",
+    "answer": "Fresh water becomes scarce during a drought.",
+    "options": [
+      "Their spontaneous visit delighted the family.",
+      "An eminent scientist delivered the lecture.",
+      "An astute investor studies risks before buying.",
+      "Fresh water becomes scarce during a drought."
+    ],
+    "explanation": "The sentence uses \"scarce\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-237",
+    "question": "Which word is closest in meaning to \"skeptical\"?",
+    "answer": "doubtful",
+    "options": [
+      "unwilling",
+      "doubtful",
+      "precise",
+      "tough"
+    ],
+    "explanation": "\"skeptical\" means doubtful.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-238",
+    "question": "Which word is opposite in meaning to \"skeptical\"?",
+    "answer": "convinced",
+    "options": [
+      "convinced",
+      "inconspicuous",
+      "arrogant",
+      "faulty"
+    ],
+    "explanation": "\"convinced\" is the opposite of \"skeptical\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-239",
+    "question": "What does \"skeptical\" mean?",
+    "answer": "not easily convinced and inclined to question claims",
+    "options": [
+      "showing careful and persistent effort",
+      "concerned only with the surface or appearance",
+      "certain to happen and impossible to avoid",
+      "not easily convinced and inclined to question claims"
+    ],
+    "explanation": "\"skeptical\" means not easily convinced and inclined to question claims.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-240",
+    "question": "Choose the sentence that uses \"skeptical\" correctly.",
+    "answer": "The scientist was skeptical of the unsupported claim.",
+    "options": [
+      "The scientist was skeptical of the unsupported claim.",
+      "The discovery had a profound effect on medicine.",
+      "The inspection was superficial and missed major faults.",
+      "The hotel charged an excessive fee for parking."
+    ],
+    "explanation": "The sentence uses \"skeptical\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-241",
+    "question": "Which word is closest in meaning to \"sophisticated\"?",
+    "answer": "refined",
+    "options": [
+      "exposed",
+      "cautious",
+      "refined",
+      "credible"
+    ],
+    "explanation": "\"sophisticated\" means refined.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-242",
+    "question": "Which word is opposite in meaning to \"sophisticated\"?",
+    "answer": "basic",
+    "options": [
+      "scarce",
+      "abundant",
+      "illicit",
+      "basic"
+    ],
+    "explanation": "\"basic\" is the opposite of \"sophisticated\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-243",
+    "question": "What does \"sophisticated\" mean?",
+    "answer": "advanced, complex or showing good judgement",
+    "options": [
+      "not obvious and therefore difficult to notice",
+      "available in large quantities",
+      "advanced, complex or showing good judgement",
+      "able to adjust to new conditions"
+    ],
+    "explanation": "\"sophisticated\" means advanced, complex or showing good judgement.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-244",
+    "question": "Choose the sentence that uses \"sophisticated\" correctly.",
+    "answer": "The device uses sophisticated technology.",
+    "options": [
+      "The update removed several redundant steps.",
+      "The device uses sophisticated technology.",
+      "The committee made a tentative decision.",
+      "A benevolent donor funded the village library."
+    ],
+    "explanation": "The sentence uses \"sophisticated\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-245",
+    "question": "Which word is closest in meaning to \"spontaneous\"?",
+    "answer": "unplanned",
+    "options": [
+      "demanding",
+      "unspoken",
+      "precise",
+      "unplanned"
+    ],
+    "explanation": "\"spontaneous\" means unplanned.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-246",
+    "question": "Which word is opposite in meaning to \"spontaneous\"?",
+    "answer": "deliberate",
+    "options": [
+      "deliberate",
+      "unimaginative",
+      "naive",
+      "moderate"
+    ],
+    "explanation": "\"deliberate\" is the opposite of \"spontaneous\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-247",
+    "question": "What does \"spontaneous\" mean?",
+    "answer": "happening naturally without prior planning",
+    "options": [
+      "correct and free from errors",
+      "able to last a long time without damage",
+      "happening naturally without prior planning",
+      "easy to understand or open and honest"
+    ],
+    "explanation": "\"spontaneous\" means happening naturally without prior planning.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-248",
+    "question": "Choose the sentence that uses \"spontaneous\" correctly.",
+    "answer": "Their spontaneous visit delighted the family.",
+    "options": [
+      "Their spontaneous visit delighted the family.",
+      "Fresh water becomes scarce during a drought.",
+      "The report gives an accurate account of the incident.",
+      "We need a pragmatic solution to the transport problem."
+    ],
+    "explanation": "The sentence uses \"spontaneous\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-249",
+    "question": "Which word is closest in meaning to \"subtle\"?",
+    "answer": "delicate",
+    "options": [
+      "refined",
+      "noticeable",
+      "delicate",
+      "cautious"
+    ],
+    "explanation": "\"subtle\" means delicate.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-250",
+    "question": "Which word is opposite in meaning to \"subtle\"?",
+    "answer": "obvious",
+    "options": [
+      "mild",
+      "obvious",
+      "reckless",
+      "far-fetched"
+    ],
+    "explanation": "\"obvious\" is the opposite of \"subtle\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-251",
+    "question": "What does \"subtle\" mean?",
+    "answer": "not obvious and therefore difficult to notice",
+    "options": [
+      "lasting for only a brief time",
+      "containing many carefully arranged details",
+      "not obvious and therefore difficult to notice",
+      "available in large quantities"
+    ],
+    "explanation": "\"subtle\" means not obvious and therefore difficult to notice.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-252",
+    "question": "Choose the sentence that uses \"subtle\" correctly.",
+    "answer": "There was a subtle change in her tone.",
+    "options": [
+      "The hotel charged an excessive fee for parking.",
+      "An astute investor studies risks before buying.",
+      "Our amiable neighbour greets everyone warmly.",
+      "There was a subtle change in her tone."
+    ],
+    "explanation": "The sentence uses \"subtle\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-253",
+    "question": "Which word is closest in meaning to \"superficial\"?",
+    "answer": "shallow",
+    "options": [
+      "practical",
+      "traditional",
+      "shallow",
+      "plentiful"
+    ],
+    "explanation": "\"superficial\" means shallow.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-254",
+    "question": "Which word is opposite in meaning to \"superficial\"?",
+    "answer": "thorough",
+    "options": [
+      "thorough",
+      "convinced",
+      "inaccurate",
+      "simple"
+    ],
+    "explanation": "\"thorough\" is the opposite of \"superficial\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-255",
+    "question": "What does \"superficial\" mean?",
+    "answer": "concerned only with the surface or appearance",
+    "options": [
+      "not easily convinced and inclined to question claims",
+      "clear, consistent and easy to understand",
+      "able to express ideas clearly",
+      "concerned only with the surface or appearance"
+    ],
+    "explanation": "\"superficial\" means concerned only with the surface or appearance.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-256",
+    "question": "Choose the sentence that uses \"superficial\" correctly.",
+    "answer": "The inspection was superficial and missed major faults.",
+    "options": [
+      "The inspection was superficial and missed major faults.",
+      "He offered a plausible reason for the delay.",
+      "The ambiguous instruction confused the new staff.",
+      "The report gives an accurate account of the incident."
+    ],
+    "explanation": "The sentence uses \"superficial\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-257",
+    "question": "Which word is closest in meaning to \"tenacious\"?",
+    "answer": "persistent",
+    "options": [
+      "friendly",
+      "unfriendly",
+      "persistent",
+      "unclear"
+    ],
+    "explanation": "\"tenacious\" means persistent.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-258",
+    "question": "Which word is opposite in meaning to \"tenacious\"?",
+    "answer": "yielding",
+    "options": [
+      "favourable",
+      "illicit",
+      "insensitive",
+      "yielding"
+    ],
+    "explanation": "\"yielding\" is the opposite of \"tenacious\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-259",
+    "question": "What does \"tenacious\" mean?",
+    "answer": "determined and unwilling to give up",
+    "options": [
+      "determined and unwilling to give up",
+      "very strong or concentrated",
+      "not yet certain or final",
+      "absolutely needed or extremely important"
+    ],
+    "explanation": "\"tenacious\" means determined and unwilling to give up.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-260",
+    "question": "Choose the sentence that uses \"tenacious\" correctly.",
+    "answer": "The tenacious reporter continued investigating.",
+    "options": [
+      "The climbers faced an arduous journey.",
+      "Clean drinking water is essential for health.",
+      "The tenacious reporter continued investigating.",
+      "Some delays are inevitable during road repairs."
+    ],
+    "explanation": "The sentence uses \"tenacious\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-261",
+    "question": "Which word is closest in meaning to \"tentative\"?",
+    "answer": "provisional",
+    "options": [
+      "detailed",
+      "unfavourable",
+      "merciful",
+      "provisional"
+    ],
+    "explanation": "\"tentative\" means provisional.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-262",
+    "question": "Which word is opposite in meaning to \"tentative\"?",
+    "answer": "definite",
+    "options": [
+      "definite",
+      "unorthodox",
+      "obvious",
+      "fragile"
+    ],
+    "explanation": "\"definite\" is the opposite of \"tentative\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-263",
+    "question": "What does \"tentative\" mean?",
+    "answer": "not yet certain or final",
+    "options": [
+      "skilled at dealing with people without causing offence",
+      "not yet certain or final",
+      "following accepted customs or usual methods",
+      "clever, original and inventive"
+    ],
+    "explanation": "\"tentative\" means not yet certain or final.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-264",
+    "question": "Choose the sentence that uses \"tentative\" correctly.",
+    "answer": "The committee made a tentative decision.",
+    "options": [
+      "The ambiguous instruction confused the new staff.",
+      "The research followed a rigorous testing process.",
+      "The committee made a tentative decision.",
+      "The shop guarantees that every product is genuine."
+    ],
+    "explanation": "The sentence uses \"tentative\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-265",
+    "question": "Which word is closest in meaning to \"thorough\"?",
+    "answer": "comprehensive",
+    "options": [
+      "comprehensive",
+      "credible",
+      "demanding",
+      "noticeable"
+    ],
+    "explanation": "\"thorough\" means comprehensive.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-266",
+    "question": "Which word is opposite in meaning to \"thorough\"?",
+    "answer": "superficial",
+    "options": [
+      "scarce",
+      "superficial",
+      "fragile",
+      "opaque"
+    ],
+    "explanation": "\"superficial\" is the opposite of \"thorough\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-267",
+    "question": "What does \"thorough\" mean?",
+    "answer": "complete and careful",
+    "options": [
+      "complete and careful",
+      "available in large quantities",
+      "able to adjust to new conditions",
+      "advanced, complex or showing good judgement"
+    ],
+    "explanation": "\"thorough\" means complete and careful.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-268",
+    "question": "Choose the sentence that uses \"thorough\" correctly.",
+    "answer": "A thorough inspection revealed the defect.",
+    "options": [
+      "An astute investor studies risks before buying.",
+      "The witness provided a credible explanation.",
+      "The chef maintained impeccable hygiene.",
+      "A thorough inspection revealed the defect."
+    ],
+    "explanation": "The sentence uses \"thorough\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Usage in context"
+  },
+  {
+    "id": "wordquiz-269",
+    "question": "Which word is closest in meaning to \"transparent\"?",
+    "answer": "clear",
+    "options": [
+      "frank",
+      "clear",
+      "careful",
+      "practical"
+    ],
+    "explanation": "\"transparent\" means clear.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
+  },
+  {
+    "id": "wordquiz-270",
+    "question": "Which word is opposite in meaning to \"transparent\"?",
+    "answer": "opaque",
+    "options": [
+      "definite",
+      "evasive",
+      "opaque",
+      "favourable"
+    ],
+    "explanation": "\"opaque\" is the opposite of \"transparent\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
+  },
+  {
+    "id": "wordquiz-271",
+    "question": "What does \"transparent\" mean?",
+    "answer": "easy to understand or open and honest",
+    "options": [
+      "pleasant and friendly in manner",
+      "correct and free from errors",
+      "clear, consistent and easy to understand",
+      "easy to understand or open and honest"
+    ],
+    "explanation": "\"transparent\" means easy to understand or open and honest.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
+  },
+  {
+    "id": "wordquiz-272",
+    "question": "Choose the sentence that uses \"transparent\" correctly.",
+    "answer": "The organisation promised a transparent selection process.",
+    "options": [
+      "We need a pragmatic solution to the transport problem.",
+      "There was an implicit agreement to share the costs.",
+      "The organisation promised a transparent selection process.",
+      "The engineer devised an ingenious solution."
+    ],
+    "explanation": "The sentence uses \"transparent\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Usage in context"
   },
   {
     "id": "wordquiz-273",
-    "question": "Choose the sentence in which 'transparent' is used figuratively.",
-    "answer": "The manager was transparent about the reasons for the delay.",
+    "question": "Which word is closest in meaning to \"versatile\"?",
+    "answer": "adaptable",
     "options": [
-      "The manager was transparent about the reasons for the delay.",
-      "The manager transparent the schedule.",
-      "The transparent meeting lasted two hours.",
-      "She wore a transparent opinion."
+      "adaptable",
+      "plentiful",
+      "deep",
+      "shrewd"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The manager was transparent about the reasons for the delay.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"versatile\" means adaptable.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-274",
-    "question": "Choose the sentence in which 'allocate' is used correctly.",
-    "answer": "The school will allocate funds for new books.",
+    "question": "Which word is opposite in meaning to \"versatile\"?",
+    "answer": "limited",
     "options": [
-      "The school will allocate funds for new books.",
-      "Please allocate the window before sunset.",
-      "He allocated very tired after work.",
-      "The soup allocated delicious."
+      "uncaring",
+      "implausible",
+      "scarce",
+      "limited"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The school will allocate funds for new books.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"limited\" is the opposite of \"versatile\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-275",
-    "question": "Choose the sentence in which 'inevitable' is used correctly.",
-    "answer": "Given the dark clouds, rain seemed inevitable.",
+    "question": "What does \"versatile\" mean?",
+    "answer": "able to perform many different functions",
     "options": [
-      "Given the dark clouds, rain seemed inevitable.",
-      "She inevitable the parcel yesterday.",
-      "The inevitable chair was made of wood.",
-      "He wore an inevitable coat."
+      "able to perform many different functions",
+      "careful about spending money or using resources",
+      "determined and unwilling to give up",
+      "available in large quantities"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “Given the dark clouds, rain seemed inevitable.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"versatile\" means able to perform many different functions.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-276",
-    "question": "Choose the sentence in which 'versatile' is used correctly.",
-    "answer": "A versatile tool can perform several different tasks.",
+    "question": "Choose the sentence that uses \"versatile\" correctly.",
+    "answer": "A versatile tool is useful in many situations.",
     "options": [
-      "A versatile tool can perform several different tasks.",
-      "The versatile water tasted sweet.",
-      "They versatile the road last week.",
-      "Her versatile was blue."
+      "Our amiable neighbour greets everyone warmly.",
+      "The climbers faced an arduous journey.",
+      "A versatile tool is useful in many situations.",
+      "There was a subtle change in her tone."
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “A versatile tool can perform several different tasks.”",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "The sentence uses \"versatile\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Usage in context"
   },
   {
     "id": "wordquiz-277",
-    "question": "Choose the sentence in which 'ambiguous' is used correctly.",
-    "answer": "The instruction was ambiguous, so nobody knew which door to use.",
+    "question": "Which word is closest in meaning to \"vital\"?",
+    "answer": "crucial",
     "options": [
-      "The instruction was ambiguous, so nobody knew which door to use.",
-      "The ambiguous child ran quickly.",
-      "She ambiguous the answer.",
-      "The tea was ambiguous."
+      "outdated",
+      "humble",
+      "believable",
+      "crucial"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The instruction was ambiguous, so nobody knew which door to use.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"vital\" means crucial.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-278",
-    "question": "Choose the sentence in which 'relieve' is used correctly.",
-    "answer": "A short break may relieve the tension.",
+    "question": "Which word is opposite in meaning to \"vital\"?",
+    "answer": "unimportant",
     "options": [
-      "A short break may relieve the tension.",
-      "The relieve table was round.",
-      "He relieved the question into French.",
-      "The room was relieve."
+      "careless",
+      "fake",
+      "unimportant",
+      "impractical"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “A short break may relieve the tension.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"unimportant\" is the opposite of \"vital\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-279",
-    "question": "Choose the sentence in which 'consecutive' is used correctly.",
-    "answer": "The team won three consecutive matches.",
+    "question": "What does \"vital\" mean?",
+    "answer": "extremely important or necessary",
     "options": [
-      "The team won three consecutive matches.",
-      "The consecutive soup was hot.",
-      "She consecutive the letter.",
-      "He bought a consecutive jacket."
+      "truthful and direct",
+      "extremely important or necessary",
+      "correct and free from errors",
+      "complete and careful"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The team won three consecutive matches.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"vital\" means extremely important or necessary.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-280",
-    "question": "Choose the sentence in which 'deteriorate' is used correctly.",
-    "answer": "Without repairs, the old bridge may deteriorate.",
+    "question": "Choose the sentence that uses \"vital\" correctly.",
+    "answer": "Accurate information is vital during an emergency.",
     "options": [
-      "Without repairs, the old bridge may deteriorate.",
-      "The deteriorate child smiled.",
-      "They deteriorate the invitation.",
-      "The room was deteriorate."
+      "Accurate information is vital during an emergency.",
+      "The witness provided a credible explanation.",
+      "Their spontaneous visit delighted the family.",
+      "The necklace has an intricate pattern."
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “Without repairs, the old bridge may deteriorate.”",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "The sentence uses \"vital\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Usage in context"
   },
   {
     "id": "wordquiz-281",
-    "question": "Choose the sentence in which 'persuade' is used correctly.",
-    "answer": "I tried to persuade him to reconsider the offer.",
+    "question": "Which word is closest in meaning to \"vulnerable\"?",
+    "answer": "exposed",
     "options": [
-      "I tried to persuade him to reconsider the offer.",
-      "The persuade road was narrow.",
-      "She persuaded the soup with pepper.",
-      "He is very persuade."
+      "exposed",
+      "plentiful",
+      "frank",
+      "unstable"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “I tried to persuade him to reconsider the offer.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"vulnerable\" means exposed.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-282",
-    "question": "Choose the sentence in which 'compensate' is used correctly.",
-    "answer": "The airline offered a refund to compensate passengers for the delay.",
+    "question": "Which word is opposite in meaning to \"vulnerable\"?",
+    "answer": "protected",
     "options": [
-      "The airline offered a refund to compensate passengers for the delay.",
-      "The compensate sky was clear.",
-      "He compensated the book onto the shelf.",
-      "She is compensate."
+      "scarce",
+      "unknown",
+      "protected",
+      "effortless"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The airline offered a refund to compensate passengers for the delay.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"protected\" is the opposite of \"vulnerable\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-283",
-    "question": "Choose the sentence in which 'accurate' is used correctly.",
-    "answer": "Please provide an accurate account of what happened.",
+    "question": "What does \"vulnerable\" mean?",
+    "answer": "easily harmed, attacked or affected",
     "options": [
-      "Please provide an accurate account of what happened.",
-      "The accurate perfume smelled sweet.",
-      "He accurate the table.",
-      "The sky became accurate."
+      "easily harmed, attacked or affected",
+      "concerned only with the surface or appearance",
+      "available in large quantities",
+      "requiring great effort or endurance"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “Please provide an accurate account of what happened.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"vulnerable\" means easily harmed, attacked or affected.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-284",
-    "question": "Choose the sentence in which 'temporary' is used correctly.",
-    "answer": "The office moved to a temporary location during repairs.",
+    "question": "Choose the sentence that uses \"vulnerable\" correctly.",
+    "answer": "Young plants are vulnerable to frost.",
     "options": [
-      "The office moved to a temporary location during repairs.",
-      "She temporary the letter.",
-      "The temporary cake was delicious.",
-      "He wore a temporary opinion."
+      "The company is known for its innovative products.",
+      "The hotel charged an excessive fee for parking.",
+      "An astute investor studies risks before buying.",
+      "Young plants are vulnerable to frost."
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The office moved to a temporary location during repairs.”",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "The sentence uses \"vulnerable\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Usage in context"
   },
   {
     "id": "wordquiz-285",
-    "question": "Choose the sentence in which 'inefficient' is used correctly.",
-    "answer": "The old heating system is inefficient and wastes energy.",
+    "question": "Which word is closest in meaning to \"wary\"?",
+    "answer": "cautious",
     "options": [
-      "The old heating system is inefficient and wastes energy.",
-      "The inefficient apple tasted sour.",
-      "He inefficient the window.",
-      "The road looked inefficiently."
+      "precise",
+      "cautious",
+      "unclear",
+      "shallow"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The old heating system is inefficient and wastes energy.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"wary\" means cautious.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Synonyms"
   },
   {
     "id": "wordquiz-286",
-    "question": "Choose the sentence in which 'negotiate' is used correctly.",
-    "answer": "The two companies will negotiate a new contract.",
+    "question": "Which word is opposite in meaning to \"wary\"?",
+    "answer": "trusting",
     "options": [
-      "The two companies will negotiate a new contract.",
-      "The negotiate flower was yellow.",
-      "She negotiated the soup carefully.",
-      "He is negotiate."
+      "favourable",
+      "rigid",
+      "trusting",
+      "effortless"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The two companies will negotiate a new contract.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"trusting\" is the opposite of \"wary\".",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Antonyms"
   },
   {
     "id": "wordquiz-287",
-    "question": "Choose the sentence in which 'retain' is used correctly.",
-    "answer": "The container is designed to retain heat.",
+    "question": "What does \"wary\" mean?",
+    "answer": "careful because danger or problems are possible",
     "options": [
-      "The container is designed to retain heat.",
-      "Please retain the door into the room.",
-      "The retain weather was pleasant.",
-      "He retained very hungry."
+      "seeming reasonable or likely to be true",
+      "possible and realistic to achieve",
+      "very strong or concentrated",
+      "careful because danger or problems are possible"
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The container is designed to retain heat.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
+    "explanation": "\"wary\" means careful because danger or problems are possible.",
+    "clue": "Consider the meaning and context of the word before choosing.",
+    "topic": "Word meanings"
   },
   {
     "id": "wordquiz-288",
-    "question": "Choose the sentence in which 'subtle' is used correctly.",
-    "answer": "There was a subtle change in her tone.",
+    "question": "Choose the sentence that uses \"wary\" correctly.",
+    "answer": "Residents remained wary of the unfamiliar offer.",
     "options": [
-      "There was a subtle change in her tone.",
-      "The subtle elephant weighed a tonne.",
-      "He subtle the parcel.",
-      "The soup tasted subtlely."
+      "Residents remained wary of the unfamiliar offer.",
+      "Her diplomatic reply prevented an argument.",
+      "A benevolent donor funded the village library.",
+      "He offered a plausible reason for the delay."
     ],
-    "explanation": "The word is used naturally and accurately in this sentence: “There was a subtle change in her tone.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-289",
-    "question": "Choose the sentence in which 'distract' is used correctly.",
-    "answer": "Loud music can distract drivers.",
-    "options": [
-      "Loud music can distract drivers.",
-      "The distract window was open.",
-      "She distracted the table into the hall.",
-      "He is distract."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “Loud music can distract drivers.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-290",
-    "question": "Choose the sentence in which 'endorse' is used correctly.",
-    "answer": "Several experts endorse the safety recommendation.",
-    "options": [
-      "Several experts endorse the safety recommendation.",
-      "The endorse mountain was high.",
-      "He endorsed the cup with water.",
-      "She is endorse."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “Several experts endorse the safety recommendation.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-291",
-    "question": "Choose the sentence in which 'contemplate' is used correctly.",
-    "answer": "She paused to contemplate the difficult decision.",
-    "options": [
-      "She paused to contemplate the difficult decision.",
-      "The contemplate chair was wooden.",
-      "He contemplated the soup with salt.",
-      "The sky was contemplate."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “She paused to contemplate the difficult decision.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-292",
-    "question": "Choose the sentence in which 'sustain' is used correctly.",
-    "answer": "The village depends on rainfall to sustain its crops.",
-    "options": [
-      "The village depends on rainfall to sustain its crops.",
-      "The sustain blanket was warm.",
-      "She sustained the pencil into the box.",
-      "He is sustain."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The village depends on rainfall to sustain its crops.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-293",
-    "question": "Choose the sentence in which 'exempt' is used correctly.",
-    "answer": "Children under five are exempt from the entry fee.",
-    "options": [
-      "Children under five are exempt from the entry fee.",
-      "The exempt river flowed quickly.",
-      "She exempt the package yesterday.",
-      "The meal was exempt."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “Children under five are exempt from the entry fee.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-294",
-    "question": "Choose the sentence in which 'intricate' is used correctly.",
-    "answer": "The watch contains an intricate arrangement of tiny gears.",
-    "options": [
-      "The watch contains an intricate arrangement of tiny gears.",
-      "The intricate milk was cold.",
-      "He intricate the letter.",
-      "The child felt intricate."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The watch contains an intricate arrangement of tiny gears.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-295",
-    "question": "Choose the sentence in which 'prioritise' is used correctly.",
-    "answer": "We must prioritise urgent repairs before cosmetic changes.",
-    "options": [
-      "We must prioritise urgent repairs before cosmetic changes.",
-      "The prioritise table was round.",
-      "She prioritised the sky into blue.",
-      "He is prioritise."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “We must prioritise urgent repairs before cosmetic changes.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-296",
-    "question": "Choose the sentence in which 'relocate' is used correctly.",
-    "answer": "The family decided to relocate closer to the school.",
-    "options": [
-      "The family decided to relocate closer to the school.",
-      "The relocate tea was hot.",
-      "She relocated the song loudly.",
-      "The road is relocate."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The family decided to relocate closer to the school.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-297",
-    "question": "Choose the sentence in which 'fluctuate' is used correctly.",
-    "answer": "Fuel prices often fluctuate during the year.",
-    "options": [
-      "Fuel prices often fluctuate during the year.",
-      "The fluctuate chair was broken.",
-      "He fluctuated the envelope.",
-      "She is fluctuate."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “Fuel prices often fluctuate during the year.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-298",
-    "question": "Choose the sentence in which 'interpret' is used correctly.",
-    "answer": "Different readers may interpret the poem in different ways.",
-    "options": [
-      "Different readers may interpret the poem in different ways.",
-      "The interpret garden was green.",
-      "He interpreted the suitcase upstairs.",
-      "The bread was interpret."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “Different readers may interpret the poem in different ways.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-299",
-    "question": "Choose the sentence in which 'resemble' is used correctly.",
-    "answer": "The two sisters resemble each other.",
-    "options": [
-      "The two sisters resemble each other.",
-      "The resemble weather was cloudy.",
-      "He resembled the homework carefully.",
-      "The tea is resemble."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “The two sisters resemble each other.”",
-    "clue": "Read the wording carefully and compare all four choices.",
-    "topic": "Usage in context"
-  },
-  {
-    "id": "wordquiz-300",
-    "question": "Choose the sentence in which 'withstand' is used correctly.",
-    "answer": "This fabric can withstand repeated washing.",
-    "options": [
-      "This fabric can withstand repeated washing.",
-      "The withstand book was interesting.",
-      "She withstood the window open.",
-      "He is withstand."
-    ],
-    "explanation": "The word is used naturally and accurately in this sentence: “This fabric can withstand repeated washing.”",
-    "clue": "Read the wording carefully and compare all four choices.",
+    "explanation": "The sentence uses \"wary\" in its correct meaning and context.",
+    "clue": "Consider the meaning and context of the word before choosing.",
     "topic": "Usage in context"
   }
-];
+] as WordQuizQuestion[];
+
+export const WORD_QUIZ_BANK:WordQuizQuestion[]=questions;
