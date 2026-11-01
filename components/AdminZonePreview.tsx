@@ -7,7 +7,6 @@ import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
 import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
-import LaughterLounge from "@/components/LaughterLounge";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -17,7 +16,6 @@ const zones = [
   { icon: "🕵️", name: "Mystery Mansion", tone: "from-slate-700 via-indigo-950 to-purple-950", note: "Four mystery and detective games", action: "mystery-mansion" },
   { icon: "🧩", name: "Puzzle Universe", tone: "from-fuchsia-500 to-purple-700", note: "Three interactive puzzle rooms", action: "puzzle-universe" },
   { icon: "🌍", name: "World Explorer", tone: "from-green-500 to-emerald-700", note: "Three interactive world-discovery games", action: "world-explorer" },
-  { icon: "😂", name: "Laughter Lounge", tone: "from-amber-400 to-orange-600", note: "Three interactive comedy games", action: "laughter-lounge" },
   { icon: "🎨", name: "Creative Studio", tone: "from-pink-500 to-rose-700" },
   { icon: "🚀", name: "Future World", tone: "from-indigo-500 to-blue-800" },
   { icon: "🧠", name: "Mind Lab", tone: "from-teal-500 to-cyan-800" },
@@ -56,10 +54,10 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3 sm:mb-8">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.24em] text-cyan-300 sm:text-xs">Private workspace · Admin only</p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore 20 Worlds</h2>
+                <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore 19 Worlds</h2>
                 <p className="mt-2 max-w-xl text-xs leading-5 text-slate-300 sm:text-sm">Your new Shoppers Ocean layout. Choose a zone to enter its available features.</p>
               </div>
-              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">20 zones · Admin preview</span>
+              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">19 zones · Admin preview</span>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
               {zones.map((zone, index) => (
@@ -118,9 +116,6 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             )}
             {selected.action === "world-explorer" && (
               <WorldExplorer userId={userId} />
-            )}
-            {selected.action === "laughter-lounge" && (
-              <LaughterLounge userId={userId} />
             )}
             {selected.action === "learning" && (
               <div>
