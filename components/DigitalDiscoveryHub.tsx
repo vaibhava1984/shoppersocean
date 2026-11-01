@@ -63,7 +63,7 @@ const areas: Area[] = [
 
 
 
-export default function DigitalDiscoveryHub({ userId }: { userId:string|null }) {
+export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: { userId:string|null; initialAreaId?:string; onExit?:()=>void }) {
  const [active,setActive]=useState<Area|null>(null);
  const [index,setIndex]=useState(0);
  const [choice,setChoice]=useState<number|null>(null);
@@ -150,9 +150,10 @@ export default function DigitalDiscoveryHub({ userId }: { userId:string|null }) 
   skippedRepeated.current=0;setActive(area);setIndex(0);setChoice(null);setMessage("");
   setBankExhausted(false);setAccessError("");setReserved(false);void loadQuota(area);
  };
+ useEffect(()=>{if(!initialAreaId)return;const area=areas.find(item=>item.id===initialAreaId);if(area)begin(area);},[initialAreaId]);
  const record=(skip:boolean,i:number|null)=>{
   if(!active||!question||!userId||!reserved||choice!==null)return;
-  if(skip)playTone("tap");else playTone(i===question.answer?"correct":"wrong");
+  if(!skip)playTone(i===question.answer?"correct":"wrong");
   setChoice(skip?-1:i);
   const selected=i===null?"":question.options[i];
   const explanation=skip
@@ -178,7 +179,7 @@ export default function DigitalDiscoveryHub({ userId }: { userId:string|null }) 
 
  const backToHub=()=>{
   if(advanceTimer.current)clearTimeout(advanceTimer.current);
-  setActive(null);setChoice(null);setMessage("");setReserved(false);setBankExhausted(false);
+  if(initialAreaId&&onExit){onExit();return;}setActive(null);setChoice(null);setMessage("");setReserved(false);setBankExhausted(false);
  };
  if(!active)return <div className="space-y-5">
   <div className="overflow-hidden rounded-3xl border border-cyan-200/30 bg-gradient-to-br from-slate-950 via-blue-950 to-cyan-900 p-6 text-white shadow-xl sm:p-8">
