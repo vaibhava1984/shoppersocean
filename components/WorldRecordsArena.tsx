@@ -58,7 +58,7 @@ const bank: RecordQuestion[] = [
 {id:"wr-050",category:"Animals",question:"Which whale species is known for the longest annual migration among mammals?",options:["Humpback whale","Gray whale","Blue whale","Sperm whale"],answer:1,fact:"Gray whales make exceptionally long annual migrations between Arctic feeding grounds and breeding lagoons in Baja California."}
 ];
 
-export default function WorldRecordsArena({ userId }: { userId: string | null }) {
+export default function WorldRecordsArena({ userId, onExit }: { userId: string | null; onExit?:()=>void }) {
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<number | null>(null);
   const [message, setMessage] = useState("");
@@ -143,7 +143,7 @@ export default function WorldRecordsArena({ userId }: { userId: string | null })
     <div className="relative overflow-hidden rounded-[1.7rem] border border-orange-100/25 bg-gradient-to-br from-[#54220f] via-[#7c2d12] to-[#301015] px-5 py-8 text-center sm:px-10 sm:py-10">
       <p className="text-[10px] font-black uppercase tracking-[.35em] text-amber-200">The extraordinary, verified and unbelievable</p>
       <div className="my-3 text-6xl sm:text-7xl">🏆</div>
-      <h2 className="font-serif text-3xl font-black tracking-wide text-white sm:text-5xl">WORLD RECORDS QUIZ</h2>
+      <div className="mb-4 flex justify-start"><button type="button" onClick={()=>onExit?.()} className="rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black text-white shadow">← Back to Quiz World</button></div><h2 className="font-serif text-3xl font-black tracking-wide text-white sm:text-5xl">WORLD RECORDS QUIZ</h2>
       <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-orange-50/90">Test your knowledge of extraordinary human achievements, nature's extremes, sporting milestones, inventions and astonishing firsts.</p>
       <div className="mt-5 flex flex-wrap justify-center gap-2 text-[10px] font-bold uppercase tracking-wider text-amber-100">
         {["Nature & animals","Sports & people","Science & technology","Landmarks & extremes"].map(tag=><span key={tag} className="rounded-full border border-amber-200/30 bg-amber-100/10 px-3 py-2">{tag}</span>)}
@@ -160,7 +160,7 @@ export default function WorldRecordsArena({ userId }: { userId: string | null })
       {exhausted ? <div className="rounded-2xl bg-white p-7 text-center font-bold text-slate-800">You have completed all unique questions currently in this question bank.</div> : <div className="rounded-3xl border border-orange-100 bg-gradient-to-br from-white via-orange-50 to-amber-50 p-4 text-slate-900 shadow-lg sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><span className="rounded-full bg-orange-800 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">{q.category}</span><span className="text-xs font-bold text-slate-500">{quotaReady ? (isAdmin ? "Unlimited admin preview" : String(quota ?? 0) + " remaining") : "Checking quota…"}</span></div>
         <h3 className="text-lg font-extrabold leading-7 text-slate-900 sm:text-xl">{q.question}</h3>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">{q.options.map((option,i)=><button key={q.id+"-"+i} disabled={!reserved || choice!==null || !quotaReady || noFree || noDaily || !userId} onClick={()=>answer(i)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r "+["from-indigo-600 to-blue-700","from-fuchsia-600 to-purple-700","from-teal-600 to-emerald-700","from-orange-500 to-rose-600"][i]+" px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"}>{String.fromCharCode(65+i)}. {option}</button>)}</div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">{q.options.map((option,i)=><button data-answer-choice key={q.id+"-"+i} disabled={!reserved || choice!==null || !quotaReady || noFree || noDaily || !userId} onClick={()=>answer(i)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r "+["from-indigo-600 to-blue-700","from-fuchsia-600 to-purple-700","from-teal-600 to-emerald-700","from-orange-500 to-rose-600"][i]+" px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"}>{String.fromCharCode(65+i)}. {option}</button>)}</div>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="text-xs font-semibold text-slate-500">{!userId ? "Sign in to play." : !reserved ? "Preparing a fresh record question…" : choice===null ? "Choose the correct record-holder." : "Answer recorded · Next question shortly"}</span><button disabled={!reserved || choice!==null || noFree || noDaily || !userId} onClick={()=>answer(null)} className="rounded-xl border border-amber-300 bg-gradient-to-r from-amber-400 to-orange-500 px-5 py-2.5 text-sm font-black text-slate-950 shadow-md disabled:opacity-50">Skip question ⏭</button></div>
         {message && <div aria-live="polite" className="mt-4 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">{message}</div>}
       </div>}
