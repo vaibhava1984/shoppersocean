@@ -179,13 +179,13 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
       <div ref={heading} className={"relative scroll-mt-20 overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br " + active.tone + " p-5 text-white shadow-xl sm:p-7"}>
         <span className="absolute -right-4 -top-8 text-8xl opacity-20">{active.icon}</span>
         <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
-          <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Puzzle Universe</button>
+          <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Quiz World</button>
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{isAdmin ? "ADMIN PREVIEW" : isSubscribed ? "SUBSCRIBER" : String(quota ?? "…") + " free questions left"}</span>
             <button onClick={() => setSoundOn(value => !value)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn ? "🔊 Sound on" : "🔇 Sound off"}</button>
           </div>
         </div>
-        <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Puzzle Universe · Room {games.findIndex(game => game.id === active.id) + 1}</p>
+        <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Quiz World · Pattern Challenge {games.findIndex(game => game.id === active.id) + 1}</p>
         <h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2>
         <p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
       </div>
