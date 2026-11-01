@@ -142,7 +142,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
                     {activeQuizGame==="geo" && <WorldExplorer key="geo" userId={userId} initialGameId="geo" onExit={()=>setActiveQuizGame(null)} />}
                     {activeQuizGame==="culture" && <WorldExplorer key="culture" userId={userId} initialGameId="culture" onExit={()=>setActiveQuizGame(null)} />}
                     {activeQuizGame==="landmark" && <WorldExplorer key="landmark" userId={userId} initialGameId="landmark" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="records" && <WorldRecordsArena key="records" userId={userId} />}
+                    {activeQuizGame==="records" && <WorldRecordsArena key="records" userId={userId} onExit={()=>setActiveQuizGame(null)} />}
                   </div>
                 )}
               </div>
