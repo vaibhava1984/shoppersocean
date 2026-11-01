@@ -46,7 +46,7 @@ const games: Game[] = [
   ]}
 ];
 
-export default function WorldExplorer({ userId }: { userId: string | null }) {
+export default function WorldExplorer({ userId, initialGameId, onExit }: { userId: string | null; initialGameId?:string; onExit?:()=>void }) {
   const [active, setActive] = useState<Game | null>(null);
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<number | null>(null);
@@ -125,9 +125,10 @@ export default function WorldExplorer({ userId }: { userId: string | null }) {
     repeated.current = 0; setActive(game); setIndex(0); setChoice(null); setMessage(""); setExhausted(false); setAccessError(""); setReserved(false); void loadQuota(game);
   };
 
+  useEffect(() => { if (!initialGameId) return; const game = games.find(item => item.id === initialGameId); if (game) begin(game); }, [initialGameId]);
   const record = (skip: boolean, selected: number | null) => {
     if (!active || !question || !userId || !reserved || choice !== null) return;
-    play(skip ? "tap" : selected === question.answer ? "correct" : "wrong");
+    if (!skip) play(selected === question.answer ? "correct" : "wrong");
     setChoice(skip ? -1 : selected);
     const explanation = skip ? "Skipped. Correct answer: " + question.options[question.answer] + ". " + question.fact : selected === question.answer ? "Correct! " + question.fact : "Not quite. Correct answer: " + question.options[question.answer] + ". " + question.fact;
     setMessage("Recording your answer…");
@@ -140,9 +141,9 @@ export default function WorldExplorer({ userId }: { userId: string | null }) {
     }).catch(() => setMessage("Your attempt could not be recorded. Please check your connection."));
   };
 
-  const back = () => { if (timer.current) clearTimeout(timer.current); setActive(null); setChoice(null); setMessage(""); setReserved(false); setExhausted(false); };
+  const back = () => { if (timer.current) clearTimeout(timer.current); if (initialGameId && onExit) { onExit(); return; } setActive(null); setChoice(null); setMessage(""); setReserved(false); setExhausted(false); };
 
-  if (!active) return (
+  if (!active && !initialGameId) return (
     <div className="relative isolate overflow-hidden rounded-[2rem] border border-emerald-200 bg-[#071d25] p-4 text-white shadow-2xl sm:p-7">
       <div className="pointer-events-none absolute inset-0 opacity-50" style={{ backgroundImage: "radial-gradient(circle at 12% 15%,rgba(52,211,153,.35),transparent 32%),radial-gradient(circle at 88% 75%,rgba(34,211,238,.3),transparent 32%),radial-gradient(circle at 50% 45%,rgba(250,204,21,.16),transparent 38%)" }} />
       <div className="relative overflow-hidden rounded-[1.7rem] border border-emerald-100/25 bg-gradient-to-br from-[#103c3a] via-[#12334a] to-[#071c30] px-5 py-8 text-center sm:px-10 sm:py-12">
@@ -162,6 +163,7 @@ export default function WorldExplorer({ userId }: { userId: string | null }) {
       <p className="relative mt-5 text-center text-[10px] text-emerald-100/70">Admin preview · Starter set · Larger question and picture banks can be added without changing this layout</p>
     </div>
   );
+  if (!active) return <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center font-bold text-emerald-900">Opening your world discovery game…</div>;
 
   const noQuota = quota === 0 && !isAdmin && !isSubscribed;
   const noDaily = quota === 0 && (isAdmin || isSubscribed);
@@ -169,10 +171,10 @@ export default function WorldExplorer({ userId }: { userId: string | null }) {
     <div ref={heading} className={"relative scroll-mt-20 overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br " + active.tone + " p-5 text-white shadow-xl sm:p-7"}>
       <span className="absolute -right-4 -top-8 text-8xl opacity-20">{active.icon}</span>
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
-        <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to World Discovery Games</button>
+        <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Quiz World</button>
         <div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{isAdmin ? "ADMIN PREVIEW" : isSubscribed ? "SUBSCRIBER" : String(quota ?? "…") + " free questions left"}</span><button onClick={() => setSoundOn(v => !v)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn ? "🔊 Sound on" : "🔇 Sound off"}</button></div>
       </div>
-      <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">World Explorer · Journey {games.findIndex(g => g.id === active.id) + 1}</p><h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2><p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
+      <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Quiz World · World Challenge {games.findIndex(g => g.id === active.id) + 1}</p><h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2><p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
     </div>
     {accessError && <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
     {noQuota && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials for this game collection have been used. Subscribe to continue.</div>}
@@ -182,7 +184,7 @@ export default function WorldExplorer({ userId }: { userId: string | null }) {
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><span className="rounded-full bg-slate-900 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">Discovery {String(index + 1).padStart(2, "0")}</span><span className="text-xs font-bold text-slate-500">{quotaReady ? (isAdmin ? "Unlimited preview" : String(quota ?? 0) + " remaining") : "Checking quota…"}</span></div>
       {question.image && <div className="mb-4 flex min-h-40 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 sm:min-h-48"><img src={question.image} alt="" aria-hidden="true" loading="eager" fetchPriority="high" decoding="async" referrerPolicy="no-referrer" width={640} height={420} onError={(event) => { const image = event.currentTarget; if (image.dataset.fallback !== "proxy") { image.dataset.fallback = "proxy"; image.src = "https://wsrv.nl/?url=" + encodeURIComponent(question.image || "") + "&w=640&output=webp"; } }} className="mx-auto block h-40 w-full max-w-md object-contain sm:h-48" /></div>}
       <h3 className="text-lg font-extrabold leading-7 text-slate-900 sm:text-xl">{question.q}</h3>
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">{question.options.map((option, i) => <button key={question.id + "-" + i} disabled={!reserved || choice !== null || !quotaReady || noQuota || noDaily} onClick={() => record(false, i)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r " + ["from-indigo-600 to-blue-700", "from-fuchsia-600 to-purple-700", "from-teal-600 to-emerald-700", "from-orange-500 to-rose-600"][i] + " px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"}>{String.fromCharCode(65 + i)}. {option}</button>)}</div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">{question.options.map((option, i) => <button data-answer-choice key={question.id + "-" + i} disabled={!reserved || choice !== null || !quotaReady || noQuota || noDaily} onClick={() => record(false, i)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r " + ["from-indigo-600 to-blue-700", "from-fuchsia-600 to-purple-700", "from-teal-600 to-emerald-700", "from-orange-500 to-rose-600"][i] + " px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"}>{String.fromCharCode(65 + i)}. {option}</button>)}</div>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="text-xs font-semibold text-slate-500">{!reserved ? "Preparing your discovery…" : choice === null ? "Observe, identify or skip this question." : "Answer recorded · Next discovery in 5 seconds"}</span><button disabled={!reserved || choice !== null || !quotaReady || noQuota || noDaily} onClick={() => record(true, null)} className="rounded-xl border border-amber-300 bg-gradient-to-r from-amber-400 to-orange-500 px-5 py-2.5 text-sm font-black text-slate-950 shadow-md transition hover:scale-[1.03] disabled:opacity-50">⏭ Skip question</button></div>
       {message && <div aria-live="polite" className="mt-4 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">{message}</div>}
     </div>}
