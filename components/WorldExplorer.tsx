@@ -171,10 +171,10 @@ export default function WorldExplorer({ userId, initialGameId, onExit }: { userI
     <div ref={heading} className={"relative scroll-mt-20 overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br " + active.tone + " p-5 text-white shadow-xl sm:p-7"}>
       <span className="absolute -right-4 -top-8 text-8xl opacity-20">{active.icon}</span>
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
-        <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to World Discovery Games</button>
+        <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Quiz World</button>
         <div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{isAdmin ? "ADMIN PREVIEW" : isSubscribed ? "SUBSCRIBER" : String(quota ?? "…") + " free questions left"}</span><button onClick={() => setSoundOn(v => !v)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn ? "🔊 Sound on" : "🔇 Sound off"}</button></div>
       </div>
-      <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">World Explorer · Journey {games.findIndex(g => g.id === active.id) + 1}</p><h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2><p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
+      <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Quiz World · World Challenge {games.findIndex(g => g.id === active.id) + 1}</p><h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2><p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
     </div>
     {accessError && <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
     {noQuota && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials for this game collection have been used. Subscribe to continue.</div>}
