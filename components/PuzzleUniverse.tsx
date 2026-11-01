@@ -170,6 +170,7 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
       <p className="relative mt-5 text-center text-[10px] text-fuchsia-200/70">Admin preview · Starter puzzles · Full question banks follow after section testing</p>
     </div>
   );
+  if (!active) return <div className="rounded-2xl border border-fuchsia-200 bg-fuchsia-50 p-6 text-center font-bold text-fuchsia-900">Opening Pattern Master…</div>;
 
   const noQuota = quota === 0 && !isAdmin && !isSubscribed;
   const noDaily = quota === 0 && (isAdmin || isSubscribed);
