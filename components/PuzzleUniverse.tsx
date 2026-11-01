@@ -14,7 +14,7 @@ const games: Game[] = [
 
 ];
 
-export default function PuzzleUniverse({ userId }: { userId: string | null }) {
+export default function PuzzleUniverse({ userId, initialGameId, onExit }: { userId: string | null; initialGameId?:string; onExit?:()=>void }) {
   const [active, setActive] = useState<Game | null>(null);
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<number | null>(null);
@@ -112,9 +112,10 @@ export default function PuzzleUniverse({ userId }: { userId: string | null }) {
     void loadQuota(game);
   };
 
+  useEffect(() => { if (!initialGameId) return; const game = games.find(item => item.id === initialGameId); if (game) begin(game); }, [initialGameId]);
   const record = (skip: boolean, selected: number | null) => {
     if (!active || !question || !userId || !reserved || choice !== null) return;
-    play(skip ? "tap" : selected === question.answer ? "correct" : "wrong");
+    if (!skip) play(selected === question.answer ? "correct" : "wrong");
     setChoice(skip ? -1 : selected);
     const explanation = skip
       ? "Skipped. Correct answer: " + question.options[question.answer] + ". " + question.fact
