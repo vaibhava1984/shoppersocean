@@ -143,7 +143,7 @@ export default function WorldExplorer({ userId, initialGameId, onExit }: { userI
 
   const back = () => { if (timer.current) clearTimeout(timer.current); if (initialGameId && onExit) { onExit(); return; } setActive(null); setChoice(null); setMessage(""); setReserved(false); setExhausted(false); };
 
-  if (!active) return (
+  if (!active && !initialGameId) return (
     <div className="relative isolate overflow-hidden rounded-[2rem] border border-emerald-200 bg-[#071d25] p-4 text-white shadow-2xl sm:p-7">
       <div className="pointer-events-none absolute inset-0 opacity-50" style={{ backgroundImage: "radial-gradient(circle at 12% 15%,rgba(52,211,153,.35),transparent 32%),radial-gradient(circle at 88% 75%,rgba(34,211,238,.3),transparent 32%),radial-gradient(circle at 50% 45%,rgba(250,204,21,.16),transparent 38%)" }} />
       <div className="relative overflow-hidden rounded-[1.7rem] border border-emerald-100/25 bg-gradient-to-br from-[#103c3a] via-[#12334a] to-[#071c30] px-5 py-8 text-center sm:px-10 sm:py-12">
