@@ -11,16 +11,7 @@ const games: Game[] = [
     { id: "pu-pm-02", q: "Find the missing letter: A, C, F, J, O, __", options: ["T", "U", "V", "W"], answer: 1, fact: "The letter jumps grow by one each time: +2, +3, +4, +5, then +6. O plus six letters is U." },
     { id: "pu-pm-03", q: "A shape sequence repeats in this order: circle, triangle, square, pentagon. Which shape is 10th?", options: ["Circle", "Triangle", "Square", "Pentagon"], answer: 1, fact: "Each group has four shapes. Positions 1, 5 and 9 are circles, so position 10 is a triangle." }
   ]},
-  { id: "missing", type: "missing-piece", icon: "🧩", title: "The Missing Piece", subtitle: "Think in space. Find what completes the whole.", tone: "from-fuchsia-600 via-purple-700 to-violet-900", questions: [
-    { id: "pu-mp-01", q: "A large square is divided into a 2 × 2 grid. Three small squares are blue and the bottom-right square is empty. What completes the large square?", options: ["A blue square of the same size", "A blue circle", "A rectangle twice as wide", "A smaller triangle"], answer: 0, fact: "The four equal cells form one complete square. The missing cell must match the size and shape of the other three." },
-    { id: "pu-mp-02", q: "A paper arrow points upward. It is turned one quarter-turn clockwise. Which direction does it point now?", options: ["Left", "Right", "Down", "Up"], answer: 1, fact: "A quarter-turn clockwise from up points to the right." },
-    { id: "pu-mp-03", q: "A cube has opposite faces paired: red–blue, green–yellow, and white–black. If red is on top, which colour must be on the bottom?", options: ["Green", "Yellow", "White", "Blue"], answer: 3, fact: "The opposite of red is blue, so blue must be on the bottom." }
-  ]},
-  { id: "words", type: "word-puzzle", icon: "🔤", title: "The Word Puzzle Lab", subtitle: "Untangle letters and uncover hidden word connections.", tone: "from-amber-500 via-orange-600 to-rose-700", questions: [
-    { id: "pu-wp-01", q: "Rearrange the letters L I S T E N to make a word meaning quiet.", options: ["SILENT", "ENLIST", "TINSEL", "INLETS"], answer: 0, fact: "LISTEN can be rearranged to SILENT. The same six letters create a different word." },
-    { id: "pu-wp-02", q: "Which word links all three clues: river, money, and bank?", options: ["Current", "Branch", "Flow", "Water"], answer: 1, fact: "A river has a bank, money is kept in a bank, and a bank can have branches." },
-    { id: "pu-wp-03", q: "Find the hidden animal in this sentence: 'The caT ATE quickly.'", options: ["Cat", "Ate", "Tiger", "Turtle"], answer: 0, fact: "The letters C-A-T appear consecutively across the sentence boundary and capitalisation: caT." }
-  ]}
+
 ];
 
 export default function PuzzleUniverse({ userId }: { userId: string | null }) {
@@ -155,7 +146,7 @@ export default function PuzzleUniverse({ userId }: { userId: string | null }) {
       <div className="relative overflow-hidden rounded-[1.7rem] border border-fuchsia-200/30 bg-gradient-to-br from-[#21113e] via-[#171a43] to-[#08172d] px-5 py-8 text-center shadow-[inset_0_0_55px_rgba(217,70,239,.13)] sm:px-10 sm:py-12">
         <p className="text-[10px] font-black uppercase tracking-[.35em] text-cyan-200">Enter the world of curious minds</p>
         <div className="my-4 text-6xl sm:text-7xl">🧩</div>
-        <h2 className="font-serif text-3xl font-black tracking-wide text-white sm:text-5xl">PUZZLE UNIVERSE</h2>
+        <h2 className="font-serif text-3xl font-black tracking-wide text-white sm:text-5xl">THE PATTERN MASTER</h2>
         <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-fuchsia-100/90">A playful universe of patterns, missing pieces and word mysteries. Three puzzle rooms. Countless ways to think differently.</p>
         <div className="mt-5 flex flex-wrap justify-center gap-2 text-[10px] font-bold uppercase tracking-wider text-cyan-100">
           <span className="rounded-full border border-cyan-200/30 bg-cyan-100/10 px-3 py-2">Patterns</span>
