@@ -37,7 +37,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
   const selected = activeZone === null ? null : zones[activeZone];
 
   return (
-    <section aria-label="Admin-only 11 zone workspace" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub]")) return; playZoneTap(); }} className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
+    <section aria-label="Admin-only 11 zone workspace" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); const quizWorldEntry = button?.getAttribute("aria-label") === "Open Quiz World"; if ((!selected || selected.action !== "games") && !quizWorldEntry) return; if (!button || target.closest("[data-answer-choice], [data-entertainment-hub]")) return; playZoneTap(); }} className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
