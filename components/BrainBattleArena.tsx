@@ -59,11 +59,13 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
   const [finished,setFinished]=useState(false);
   const [round,setRound]=useState(0);
   const [bankExhausted,setBankExhausted]=useState(false);
+  const [soundOn,setSoundOn]=useState(true);
   const session=useRef("brain-battle-"+Date.now()+"-"+Math.random().toString(36).slice(2));
   const heading=useRef<HTMLDivElement|null>(null);
   const timer=useRef<ReturnType<typeof setTimeout>|null>(null);
   const preview=admin;
   const exhausted=quota===0&&!admin&&!subscribed;
+  const playSound=(kind:"tap"|"correct"|"wrong")=>{if(!soundOn||typeof window==="undefined")return;const audio=new Audio(kind==="correct"?"/correct.mp3":kind==="wrong"?"/Lose.mp3":"/Tap.mp3");audio.volume=0.8;void audio.play().catch(()=>{});};
 
   useEffect(()=>{
     if(!userId)return;
@@ -99,6 +101,7 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
   const options=useMemo(()=>question?shuffled(question.options.map((label,index)=>({label,index}))):[],[question]);
   const submit=async(index:number)=>{
     if(!question||!userId||!reserved||finished||choice!==null)return;
+    playSound(index===question.answer?"correct":"wrong");
     setChoice(index);setFinished(true);setFeedback("Checking your reasoning…");
     try{
       const r=await fetch("/api/game-access",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"brain-battle-arena",gameTypeId:"master-deception-case",challengeId:question.id,challengeQuestion:question.scenario+" "+question.question,reservationSessionId:session.current,previewMode:preview})});
@@ -111,8 +114,8 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
     }catch(e){setFinished(false);setFeedback(e instanceof Error?e.message:"Could not record this attempt.");}
   };
 
-  return <div className="overflow-hidden rounded-[2rem] border border-amber-200/30 bg-[#10152b] p-4 text-white shadow-2xl sm:p-7">
-    <div className="rounded-[1.7rem] border border-amber-200/30 bg-gradient-to-br from-[#1c2144] via-[#30214d] to-[#10152b] px-5 py-8 text-center sm:px-10 sm:py-10">
+  return <div className="relative isolate overflow-hidden rounded-[2rem] border border-amber-200/30 bg-[#10152b] p-4 text-white shadow-2xl sm:p-7"><div className="pointer-events-none absolute inset-0 opacity-50" style={{backgroundImage:"radial-gradient(circle at 12% 15%,rgba(251,191,36,.28),transparent 32%),radial-gradient(circle at 88% 75%,rgba(168,85,247,.28),transparent 32%),radial-gradient(circle at 50% 45%,rgba(34,211,238,.14),transparent 38%)"}} />
+    <div className="relative overflow-hidden rounded-[1.7rem] border border-amber-100/25 bg-gradient-to-br from-[#493014] via-[#30214d] to-[#10152b] px-5 py-8 text-center sm:px-10 sm:py-12">
       <p className="text-[10px] font-black uppercase tracking-[.35em] text-amber-200">Real life · Sharp thinking · Smart decisions</p>
       <div className="my-3 text-5xl">🧠</div>
       <h2 className="text-3xl font-black tracking-wide text-amber-100 sm:text-5xl">BRAIN BATTLE ARENA</h2>
