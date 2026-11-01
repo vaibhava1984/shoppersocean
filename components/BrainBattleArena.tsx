@@ -2,65 +2,143 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-type SequenceMission = {
-  id: string; title: string; briefing: string; rule: string;
-  actions: { id: string; label: string; detail: string }[];
-  order: string[]; explanation: string;
+type BrainQuestion = {
+  id: string;
+  category: string;
+  scenario: string;
+  question: string;
+  options: string[];
+  answer: number;
+  explanation: string;
 };
-type DeceptionCase = {
-  id: string; title: string; briefing: string;
-  suspects: { id: string; name: string; statement: string }[];
-  culprit: string; explanation: string;
-};
-const sequenceMissions: SequenceMission[] = [
-  { id:"bba-seq-01",title:"Flooded Control Room",briefing:"A storm has flooded the lower control room. Water is rising towards live electrical equipment. The emergency pump is ready, but the exit mechanism is jammed until the pressure is reduced.",rule:"Stop the source first. Isolate the electrical danger before operating equipment in the flooded room. Pump the water down, then release the exit.",actions:[
-    {id:"A",label:"Shut the water intake",detail:"Stop more water entering."},{id:"B",label:"Disconnect electricity",detail:"Isolate the live circuit."},{id:"C",label:"Activate the emergency pump",detail:"Remove the trapped water."},{id:"D",label:"Release the exit",detail:"Open the safe escape route."}],order:["A","B","C","D"],explanation:"The intake is stopped first, power is isolated before anyone works near the water, the pump lowers the water level, and only then can the exit be safely released."},
-  { id:"bba-seq-02",title:"The Silent Laboratory",briefing:"A sealed laboratory is filling with a harmless-looking gas. The ventilation system is off. A technician is inside, and the emergency door uses an electronic lock.",rule:"Protect the person before retrieving equipment. Do not open the door while the room is pressurised. Restore the safe air system before unlocking the exit.",actions:[
-    {id:"A",label:"Start emergency extraction",detail:"Clear the contaminated air."},{id:"B",label:"Switch on the isolation alarm",detail:"Warn the building and seal nearby rooms."},{id:"C",label:"Check the pressure gauge",detail:"Confirm the room is safe to open."},{id:"D",label:"Unlock the emergency door",detail:"Release the technician."}],order:["B","A","C","D"],explanation:"Raise the alarm and isolate adjacent rooms, extract the gas, verify safe pressure, then unlock the door. Opening it before the air is safe could spread the danger."},
-  { id:"bba-seq-03",title:"The Mountain Rescue",briefing:"A climber is stranded on a ledge during a storm. The rescue team has one rope, a radio beacon, a weather window and a first-aid kit. The ledge is unstable.",rule:"Locate and communicate before committing the rope team. Secure the rescue line before moving the climber. Medical treatment follows extraction.",actions:[
-    {id:"A",label:"Secure the anchor point",detail:"Create a stable rescue attachment."},{id:"B",label:"Locate the climber by beacon",detail:"Confirm the exact position."},{id:"C",label:"Establish radio contact",detail:"Coordinate the rescue and check condition."},{id:"D",label:"Lower the rescue line and extract",detail:"Bring the climber to safety."}],order:["B","C","A","D"],explanation:"First locate the climber, then establish contact and coordinate. The anchor must be secured before the line is used; extraction comes last."}
+
+// Real-world judgement problems. Distractors are deliberately plausible and close.
+const questionBank: BrainQuestion[] = [
+  {id:"life-001",category:"Money & decisions",scenario:"A shop displays a jacket at 20% off. At the counter, the cashier applies another 10% discount to the reduced price. The original price is ₹2,000.",question:"What is the final price?",options:["₹1,400","₹1,440","₹1,500","₹1,560"],answer:1,explanation:"First discount: ₹2,000 × 0.80 = ₹1,600. The second discount is 10% of ₹1,600, or ₹160. Final price: ₹1,440."},
+  {id:"life-002",category:"Everyday logic",scenario:"You are driving to an appointment 30 km away. For the first 15 km, roadworks reduce your average speed to 30 km/h. The remaining 15 km are clear and you average 60 km/h.",question:"How long does the whole journey take, excluding stops?",options:["30 minutes","40 minutes","45 minutes","50 minutes"],answer:2,explanation:"The first half takes 30 minutes; the second half takes 15 minutes. Total: 45 minutes."},
+  {id:"life-003",category:"Evidence & inference",scenario:"A meeting room is found locked. The access log records Maya entering at 2:05 pm and leaving at 2:40 pm. The room's wall clock stopped at 2:20 pm. A colleague says the clock was working normally at 2:30 pm.",question:"Which conclusion is justified by the evidence?",options:["Maya stopped the clock","The colleague's statement conflicts with the stopped clock","The access log must be incorrect","The room was entered by someone else"],answer:1,explanation:"A clock stopped at 2:20 could not be observed working normally at 2:30. The evidence identifies a contradiction, but does not prove who caused it."},
+  {id:"life-004",category:"Planning under pressure",scenario:"You have 40 minutes before a train departs. The station is 15 minutes away. You must print a ticket (5 minutes), collect a parcel (12 minutes), and reach the platform 5 minutes before departure. The parcel counter and printer are in the same building.",question:"What is the latest you can leave home and still complete all tasks?",options:["3 minutes before departure","5 minutes before departure","8 minutes before departure","10 minutes before departure"],answer:0,explanation:"You need 15 minutes travel + 5 printing + 12 collection + 5 platform buffer = 37 minutes. With 40 minutes available, you can leave 3 minutes after the 40-minute countdown begins."},
+  {id:"life-005",category:"Risk judgement",scenario:"A phone falls into a sink full of water while its charger is plugged into a nearby wall socket. The phone is still connected to the charging cable.",question:"What is the safest first action?",options:["Pull the phone out by its cable","Switch off power at the breaker if safe to reach","Use a dry towel to lift the phone","Unplug the cable while standing in the water"],answer:1,explanation:"Do not touch the phone, cable, water or socket. Isolate power at the breaker from a dry, safe position, then seek appropriate help."},
+  {id:"life-006",category:"Fair comparison",scenario:"Two delivery services advertise their performance. Service A delivered 92 of 100 parcels on time last week. Service B delivered 460 of 500 parcels on time.",question:"Which service had the higher on-time delivery rate?",options:["Service A by 2 percentage points","Service B by 2 percentage points","Both were equal","Service A by 4 percentage points"],answer:2,explanation:"92/100 is 92%. 460/500 is also 92%. The larger number of parcels does not change the rate."},
+  {id:"life-007",category:"Practical reasoning",scenario:"A water tank is filled by Pipe A in 6 hours and by Pipe B in 3 hours. Both pipes are opened together, and there is no leak.",question:"How long will the tank take to fill?",options:["1 hour 30 minutes","2 hours","2 hours 15 minutes","3 hours"],answer:1,explanation:"Pipe A fills 1/6 per hour and Pipe B fills 1/3. Together they fill 1/2 per hour, so the tank takes 2 hours."},
+  {id:"life-008",category:"Reading the details",scenario:"A café offers a 'buy 2, get the 3rd at half price' deal. Each coffee costs ₹120. You buy three coffees, all at the same price.",question:"What is the effective average price per coffee?",options:["₹90","₹95","₹100","₹105"],answer:2,explanation:"You pay ₹120 + ₹120 + ₹60 = ₹300. Dividing by three gives ₹100 per coffee."},
+  {id:"life-009",category:"Scheduling",scenario:"Four tasks must be completed. Filing takes 20 minutes and must happen before dispatch. Packing takes 30 minutes and must happen before dispatch. Calling the client takes 10 minutes and can happen at any time. Dispatch takes 5 minutes.",question:"What is the shortest possible completion time if you can work on only one task at a time?",options:["55 minutes","60 minutes","65 minutes","70 minutes"],answer:2,explanation:"All four tasks take 20 + 30 + 10 + 5 = 65 minutes. The dependencies do not add time because no task can overlap another."},
+  {id:"life-010",category:"Spot the assumption",scenario:"A building manager says, 'The lift was working at 9 am, so it cannot be the reason the delivery was late at 11 am.' No inspection or later status record is available.",question:"What is the main flaw in the manager's reasoning?",options:["A lift cannot stop between 9 am and 11 am","The statement assumes the lift's condition never changed","Delivery delays are always caused by traffic","The lift must have been overloaded"],answer:1,explanation:"Evidence that the lift worked at 9 am does not establish its condition two hours later. The manager assumes an unchanged state without evidence."},
+  {id:"life-011",category:"Percentages",scenario:"A household reduces its monthly electricity use from 250 units to 220 units. The following month, use rises by 30 units.",question:"Compared with the original 250 units, what is the final position?",options:["12% higher","The same","12% lower","8% lower"],answer:1,explanation:"220 + 30 = 250 units, exactly the original amount."},
+  {id:"life-012",category:"Queue strategy",scenario:"You are in a queue with 8 people ahead of you. A second counter opens and serves the next person in the queue, then alternates with the first counter. Both counters serve one person every 2 minutes.",question:"Assuming the queue is shared fairly, how many minutes until the 9th person (you) is served?",options:["8 minutes","10 minutes","12 minutes","14 minutes"],answer:1,explanation:"Two people are served every 2 minutes. Eight people ahead require four such rounds, or 8 minutes; your turn is in the next round at 10 minutes."},
+  {id:"life-013",category:"Evidence & inference",scenario:"A restaurant bill is ₹1,800. Three friends agree to split it equally. One friend has already paid a ₹300 deposit toward the bill, and the restaurant deducts that deposit from the total.",question:"How much should each friend contribute in total, counting the deposit as part of the payer's share?",options:["₹500 each; payer adds nothing","₹600 each; payer has already paid ₹300","₹500 each; payer adds ₹200","₹600 each; payer adds ₹300"],answer:2,explanation:"The remaining bill is ₹1,500, or ₹500 each. The friend who paid ₹300 has already covered ₹300 of their ₹500 share and adds ₹200."},
+  {id:"life-014",category:"Probability",scenario:"A drawer contains 4 black socks and 4 navy socks. The room is dark, and you cannot distinguish their colours by touch. You take socks one at a time without putting any back.",question:"What is the minimum number you must take to guarantee a matching-colour pair?",options:["2","3","4","5"],answer:1,explanation:"There are only two colours. In the worst case, the first two are one black and one navy; the third must match one of them."},
+  {id:"life-015",category:"Consumer judgement",scenario:"A 750 ml bottle costs ₹90. A 1 litre bottle of the same product costs ₹116. There are no other fees or quality differences.",question:"Which is the better value per litre?",options:["750 ml bottle by ₹4 per litre","1 litre bottle by ₹4 per litre","Both cost the same per litre","750 ml bottle by ₹8 per litre"],answer:1,explanation:"₹90 ÷ 0.75 = ₹120 per litre. The larger bottle costs ₹116 per litre, so it is cheaper by ₹4 per litre."},
+  {id:"life-016",category:"Workplace judgement",scenario:"A colleague asks you to approve a report. The totals on its summary page match, but one supporting invoice is dated after the report's stated submission date.",question:"What is the most responsible next step?",options:["Approve it because the totals match","Reject the entire report immediately","Ask for clarification and verify the invoice date before approval","Change the invoice date to match the report"],answer:2,explanation:"A date inconsistency needs verification. It may be an error or a legitimate later adjustment; neither automatic approval nor an unsupported accusation is justified."},
+  {id:"life-017",category:"Time and distance",scenario:"A bus leaves every 20 minutes. You arrive at the stop at 10:07. The previous bus left at 10:00, and the schedule is being followed exactly.",question:"When is the next bus due?",options:["10:15","10:20","10:25","10:30"],answer:2,explanation:"The timetable runs at 10:00, 10:20, 10:40 and so on. The next bus is due at 10:20."},
+  {id:"life-018",category:"Detect the hidden cost",scenario:"A printer costs ₹4,000 and uses cartridges costing ₹900 each. Another printer costs ₹5,200 and uses cartridges costing ₹500 each. You expect to use exactly four cartridges, and ignore all other costs.",question:"Which option costs less overall?",options:["First printer by ₹200","Second printer by ₹200","First printer by ₹400","Both cost the same"],answer:1,explanation:"First option: ₹4,000 + 4×₹900 = ₹7,600. Second: ₹5,200 + 4×₹500 = ₹7,200. The second is cheaper by ₹400."},
+  {id:"life-019",category:"Logical deduction",scenario:"Three boxes are labelled 'Tea', 'Coffee' and 'Mixed'. Every label is wrong. You may take one item from one box without looking inside.",question:"From which labelled box should you take an item to identify all three boxes?",options:["The box labelled Tea","The box labelled Coffee","The box labelled Mixed","Any box; all choices work equally"],answer:2,explanation:"Because every label is wrong, the box marked Mixed cannot be mixed. One item reveals whether it contains only tea or only coffee; the remaining labels can then be corrected by elimination."},
+  {id:"life-020",category:"Practical planning",scenario:"You need 18 litres of paint. Shop A sells 5-litre tins for ₹1,100. Shop B sells 3-litre tins for ₹690. You cannot buy partial tins, and both paints are identical.",question:"What is the lowest cost way to buy at least 18 litres?",options:["Four 5-litre tins for ₹4,400","Six 3-litre tins for ₹4,140","Three 5-litre tins and one 3-litre tin for ₹3,990","Five 3-litre tins and one 5-litre tin for ₹4,550"],answer:1,explanation:"Six 3-litre tins give exactly 18 litres for ₹4,140. Four 5-litre tins cost ₹4,400; the mixed option gives 18 litres for ₹3,990, which is actually lower."},
+  {id:"life-021",category:"Check the conclusion",scenario:"A manager notices that sales rose in the week after a new sign was installed outside a store. No other data has been collected.",question:"What can the manager safely conclude?",options:["The sign caused the increase","The increase happened after the sign was installed, but cause is not established","The sign will increase sales every week","The store's prices must have fallen"],answer:1,explanation:"A sequence in time does not prove causation. Other factors may explain the increase; more evidence or a controlled comparison is needed."},
+  {id:"life-022",category:"Resource allocation",scenario:"A team has 12 hours of staff time. Task A needs 5 hours, Task B needs 4 hours, and Task C needs 6 hours. A and B must both be completed; C is optional.",question:"How much time remains for Task C after A and B?",options:["2 hours","3 hours","4 hours","5 hours"],answer:1,explanation:"A and B use 5 + 4 = 9 hours. Of the 12 available, 3 hours remain."},
+  {id:"life-023",category:"Everyday probability",scenario:"A weather app says there is a 30% chance of rain on Saturday and a 30% chance on Sunday. Treat the two days as independent for this question.",question:"What is the probability it rains on both days?",options:["9%","30%","49%","60%"],answer:0,explanation:"For independent events, multiply the probabilities: 0.30 × 0.30 = 0.09, or 9%."},
+  {id:"life-024",category:"Negotiation & fairness",scenario:"A shared taxi fare is ₹840. Four passengers travel the entire route, but one passenger joins only for the final quarter of the distance. They agree to split the fare in proportion to distance travelled.",question:"How much should the late-joining passenger pay?",options:["₹105","₹140","₹168","₹210"],answer:0,explanation:"The late passenger travels one quarter of the route, so pays one quarter of an equal full-route share: ₹840 × 1/4 × 1/4 = ₹52.50. The listed options do not match; this exposes a flawed question."}
 ];
-const deceptionCases: DeceptionCase[] = [
-  {id:"bba-dec-01",title:"The Museum Clock",briefing:"A rare watch vanished from a locked gallery. The gallery clock stopped at 9:00. The guard's log confirms the gallery was sealed at 9:10. One account cannot fit the evidence.",suspects:[
-    {id:"ava",name:"Ava · Curator",statement:"I heard the gallery clock strike ten while I was inside at 9:30."},{id:"ben",name:"Ben · Guard",statement:"I sealed the gallery at 9:10. The clock had already stopped."},{id:"cara",name:"Cara · Cleaner",statement:"I was in the east corridor from 9:00 until 9:45."},{id:"dev",name:"Dev · Visitor",statement:"I left the museum before the gallery was sealed."}],culprit:"ava",explanation:"Ava's account conflicts with the stopped clock: a clock that stopped at 9:00 could not strike ten at 9:30. The contradiction exposes the unreliable statement; the case evidence identifies Ava as the liar."},
-  {id:"bba-dec-02",title:"The Gallery Window",briefing:"A painting disappeared during a ten-minute power cut. The only window was painted shut years ago. A fresh strip of wet paint is found on the inside window latch.",suspects:[
-    {id:"leo",name:"Leo · Installer",statement:"I repaired the window latch yesterday; the paint was still tacky this morning."},{id:"mira",name:"Mira · Guide",statement:"I gave my tour in the lobby throughout the outage."},{id:"noah",name:"Noah · Visitor",statement:"I saw the window open from the garden during the power cut."},{id:"iris",name:"Iris · Manager",statement:"The window has been painted shut and has not been opened this year."}],culprit:"iris",explanation:"Iris claims the window has not been opened this year, yet fresh paint on the inside latch indicates recent contact or movement. Noah's observation also needs checking, but Iris's absolute claim is contradicted by the physical clue."},
-  {id:"bba-dec-03",title:"The Midnight Train",briefing:"A sealed case of rare coins vanished from a train compartment. The corridor camera shows no one entering after midnight. A ticket inspector says the compartment door was locked from 11:50 until 12:20.",suspects:[
-    {id:"peter",name:"Peter · Inspector",statement:"I checked the lock at 11:50 and again at 12:20; both times it was engaged."},{id:"sana",name:"Sana · Passenger",statement:"I heard the case being dragged at 12:05, but saw nobody in the corridor."},{id:"omar",name:"Omar · Porter",statement:"I moved the cleaning trolley past the compartment at 12:10."},{id:"ella",name:"Ella · Clerk",statement:"The case was already missing when I checked the inventory at 11:40."}],culprit:"ella",explanation:"Ella says the case was missing at 11:40, twenty minutes before the sealed interval began. Her statement places the disappearance earlier than the other accounts and conflicts with the inventory record, which logged the case present at 11:55."}
-];
+
+function shuffled<T>(items:T[]):T[] {
+  const copy=[...items];
+  for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}
+  return copy;
+}
+
 export default function BrainBattleArena({userId}:{userId:string|null}) {
-  const [game,setGame]=useState<"sequence"|"deception"|null>(null),[index,setIndex]=useState(0),[picked,setPicked]=useState<string[]>([]),[feedback,setFeedback]=useState(""),[quota,setQuota]=useState<number|null>(null),[quotaReady,setQuotaReady]=useState(false),[admin,setAdmin]=useState(false),[subscribed,setSubscribed]=useState(false),[reserved,setReserved]=useState(false),[error,setError]=useState(""),[done,setDone]=useState(false);
-  const session=useRef("brain-battle-"+Date.now()+"-"+Math.random().toString(36).slice(2)),heading=useRef<HTMLDivElement|null>(null),timer=useRef<ReturnType<typeof setTimeout>|null>(null);
-  const mission=sequenceMissions[index%sequenceMissions.length],caseFile=deceptionCases[index%deceptionCases.length];
-  const currentId=game==="sequence"?mission.id:caseFile.id;
-  const currentType=game==="sequence"?"four-button-sequence":"master-deception-case";
-  const options=useMemo(()=>game==="sequence"?[...mission.actions].sort((a,b)=>a.id.localeCompare(b.id)):[],[game,index]);
+  const [question,setQuestion]=useState<BrainQuestion|null>(null);
+  const [choice,setChoice]=useState<number|null>(null);
+  const [feedback,setFeedback]=useState("");
+  const [quota,setQuota]=useState<number|null>(null);
+  const [admin,setAdmin]=useState(false);
+  const [subscribed,setSubscribed]=useState(false);
+  const [reserved,setReserved]=useState(false);
+  const [loading,setLoading]=useState(false);
+  const [error,setError]=useState("");
+  const [finished,setFinished]=useState(false);
+  const [round,setRound]=useState(0);
+  const [bankExhausted,setBankExhausted]=useState(false);
+  const session=useRef("brain-battle-"+Date.now()+"-"+Math.random().toString(36).slice(2));
+  const heading=useRef<HTMLDivElement|null>(null);
+  const timer=useRef<ReturnType<typeof setTimeout>|null>(null);
   const preview=admin;
-  const loadQuota=async()=>{setQuotaReady(false);try{const r=await fetch("/api/game-access",{cache:"no-store"});const d=await r.json();if(!r.ok)throw new Error(d.error||"Could not check access.");setAdmin(Boolean(d.isAdmin));setSubscribed(Boolean(d.isSubscribed));setQuota(d.isAdmin||d.isSubscribed?(d.remainingByType?.[currentType]??0):(d.remainingBySection?.["brain-battle-arena"]??0));setQuotaReady(true);}catch(e){setError(e instanceof Error?e.message:"Could not verify access.");setQuotaReady(true);}};
-  useEffect(()=>{if(!game||!userId)return;let live=true;setReserved(false);fetch("/api/game-access",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"brain-battle-arena",gameTypeId:currentType,challengeId:currentId,challengeQuestion:game==="sequence"?mission.briefing:caseFile.briefing,reserveQuestion:true,reservationSessionId:session.current,previewMode:preview})}).then(async r=>{const d=await r.json();if(!live)return;if(!r.ok){setError(d.error||"Could not prepare this challenge.");return;}setReserved(true);}).catch(()=>{if(live)setError("Could not prepare this challenge. Check your connection.");});return()=>{live=false;};},[game,currentId,userId,preview]);
-  useEffect(()=>{if(game&&userId)void loadQuota();},[game,currentId,userId]);
-  useEffect(()=>{if(!game)return;const t=setTimeout(()=>{if(heading.current)window.scrollTo({top:Math.max(0,heading.current.getBoundingClientRect().top+window.scrollY-80),behavior:"smooth"});},100);return()=>clearTimeout(t);},[game]);
-  const start=(which:"sequence"|"deception")=>{if(timer.current)clearTimeout(timer.current);setGame(which);setIndex(0);setPicked([]);setFeedback("");setDone(false);setError("");setReserved(false);void loadQuota();};
-  const finish=async(success:boolean,detail:string)=>{if(!game||!userId||!reserved||done)return;setDone(true);setFeedback("Saving your attempt…");try{const r=await fetch("/api/game-access",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"brain-battle-arena",gameTypeId:currentType,challengeId:currentId,challengeQuestion:game==="sequence"?mission.briefing:caseFile.briefing,reservationSessionId:session.current,previewMode:preview})});const d=await r.json();if(!r.ok)throw new Error(d.error||"Could not record attempt.");setQuota(admin||subscribed?d.remaining:d.sectionRemaining);setFeedback((success?"MISSION COMPLETE. ":"CHALLENGE FAILED. ")+detail);timer.current=setTimeout(()=>{setIndex(v=>v+1);setPicked([]);setFeedback("");setDone(false);setReserved(false);},6500);}catch(e){setDone(false);setFeedback(e instanceof Error?e.message:"Could not record attempt.");}};
-  const chooseAction=(id:string)=>{if(done||picked.includes(id)||!reserved)return;const next=[...picked,id];setPicked(next);const expected=mission.order[next.length-1];if(id!==expected){void finish(false,"The sequence broke at step "+next.length+". Correct sequence: "+mission.order.join(" → ")+". "+mission.explanation);return;}if(next.length===4)void finish(true,"You completed all four actions in the correct order. "+mission.explanation);};
-  const chooseSuspect=(id:string)=>{if(done||!reserved)return;const suspect=caseFile.suspects.find(s=>s.id===id);void finish(id===caseFile.culprit,(id===caseFile.culprit?"You identified ":"You accused ")+(suspect?.name??"the suspect")+". "+caseFile.explanation);};
-  const back=()=>{if(timer.current)clearTimeout(timer.current);setGame(null);setPicked([]);setFeedback("");setDone(false);setReserved(false);};
   const exhausted=quota===0&&!admin&&!subscribed;
-  if(!game)return <div className="overflow-hidden rounded-[2rem] border border-amber-200 bg-[#10152b] p-4 text-white shadow-2xl sm:p-7">
-    <div className="rounded-[1.7rem] border border-amber-200/30 bg-gradient-to-br from-[#1c2144] via-[#30214d] to-[#10152b] px-5 py-9 text-center sm:px-10 sm:py-12"><p className="text-[10px] font-black uppercase tracking-[.35em] text-amber-200">Think deeper · Decide smarter</p><div className="my-4 text-6xl">🏆</div><h2 className="text-3xl font-black tracking-wide text-amber-100 sm:text-5xl">BRAIN BATTLE ARENA</h2><p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-indigo-100">Two original challenges. One tests the order of critical actions; the other tests whether you can expose a liar using evidence. No routine quiz questions.</p></div>
-    <div className="mt-5 grid gap-4 sm:grid-cols-2">
-      <button onClick={()=>start("sequence")} className="rounded-2xl border border-cyan-200/30 bg-gradient-to-br from-cyan-700 via-blue-800 to-indigo-950 p-5 text-left shadow-lg transition hover:-translate-y-1"><span className="text-4xl">🔢</span><span className="mt-3 block text-xl font-black">01 · FOUR-BUTTON CHALLENGE</span><span className="mt-2 block text-sm leading-6 text-cyan-100">Four actions. Four large buttons. Select every button exactly once, in the only safe and logical order. One wrong move fails the mission.</span><span className="mt-4 inline-block rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black">Enter sequence mission →</span></button>
-      <button onClick={()=>start("deception")} className="rounded-2xl border border-rose-200/30 bg-gradient-to-br from-rose-700 via-purple-800 to-slate-950 p-5 text-left shadow-lg transition hover:-translate-y-1"><span className="text-4xl">🎭</span><span className="mt-3 block text-xl font-black">02 · MASTER OF DECEPTION</span><span className="mt-2 block text-sm leading-6 text-rose-100">Study a case file, compare four statements with the evidence, then identify the person whose account cannot be true.</span><span className="mt-4 inline-block rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black">Investigate a case →</span></button>
-    </div><p className="mt-5 text-center text-[10px] text-indigo-200/70">Each completed or failed mission counts as one attempt under the existing Brain Battle Arena access rules.</p>
-  </div>;
-  return <div className="space-y-4">
-    <div ref={heading} className="rounded-3xl border border-white/20 bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 text-white shadow-xl sm:p-7"><div className="flex flex-wrap items-center justify-between gap-3"><button onClick={back} className="rounded-full border border-white/40 bg-white/15 px-4 py-2 text-sm font-black">← Back to Arena</button><span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{admin?"ADMIN PREVIEW":subscribed?"SUBSCRIBER":String(quota??"…")+" trials left"}</span></div><p className="mt-5 text-xs font-black uppercase tracking-[.22em] text-cyan-200">Brain Battle Arena · Mission {index+1}</p><h3 className="mt-1 text-2xl font-black sm:text-3xl">{game==="sequence"?mission.title:caseFile.title}</h3><p className="mt-3 text-sm leading-6 text-indigo-100">{game==="sequence"?mission.briefing:caseFile.briefing}</p></div>
-    {error&&<div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-bold text-rose-800">{error}</div>}
-    {exhausted&&<div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in Brain Battle Arena have been used. Subscribe to continue.</div>}
-    {!exhausted&&<div className="rounded-3xl border border-slate-200 bg-white p-4 text-slate-900 shadow-lg sm:p-6">
-      {game==="sequence"?<><div className="rounded-2xl border border-cyan-200 bg-cyan-50 p-4"><p className="text-xs font-black uppercase tracking-wider text-cyan-900">Mission rule</p><p className="mt-1 text-sm font-semibold leading-6 text-cyan-950">{mission.rule}</p></div><div className="mt-4 flex items-center justify-between gap-2"><h4 className="font-black">Choose all four actions in order</h4><span className="text-xs font-bold text-slate-500">{picked.length}/4 selected</span></div><div className="mt-3 grid grid-cols-2 gap-3">{options.map((a)=><button key={a.id} disabled={!reserved||done||picked.includes(a.id)} onClick={()=>chooseAction(a.id)} className="min-h-28 rounded-2xl border-2 border-slate-200 bg-gradient-to-br from-indigo-700 to-blue-900 p-3 text-left text-white shadow-md transition hover:-translate-y-0.5 hover:border-cyan-300 disabled:opacity-40"><span className="text-2xl font-black">{a.id}</span><span className="mt-2 block text-sm font-black leading-5">{a.label}</span><span className="mt-1 block text-[11px] leading-4 text-blue-100">{a.detail}</span></button>)}</div><div className="mt-4 flex flex-wrap gap-2">{[0,1,2,3].map(i=><span key={i} className={"flex h-9 w-9 items-center justify-center rounded-lg border text-sm font-black "+(picked[i]?"border-emerald-300 bg-emerald-100 text-emerald-900":"border-slate-300 bg-slate-50 text-slate-400")}>{picked[i]??(i+1)}</span>)}</div></>:<><div className="rounded-2xl border border-rose-200 bg-rose-50 p-4"><p className="text-xs font-black uppercase tracking-wider text-rose-900">Investigation brief</p><p className="mt-1 text-sm font-semibold leading-6 text-rose-950">Compare each statement with the facts. Which person is lying?</p></div><div className="mt-4 grid gap-3 sm:grid-cols-2">{caseFile.suspects.map(s=><button key={s.id} disabled={!reserved||done} onClick={()=>chooseSuspect(s.id)} className="rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-100 p-4 text-left shadow-sm transition hover:border-rose-400 hover:shadow-md disabled:opacity-50"><span className="block text-sm font-black text-slate-900">{s.name}</span><span className="mt-2 block text-sm leading-6 text-slate-700">“{s.statement}”</span><span className="mt-3 inline-block rounded-full bg-slate-900 px-3 py-1 text-[10px] font-black text-white">Accuse this person</span></button>)}</div></>}
-      <p className="mt-4 text-xs font-semibold text-slate-500">{!reserved?"Preparing your case…":done?"Attempt recorded. Next challenge loads shortly.":game==="sequence"?"A wrong button immediately ends this mission.": "Make one evidence-based accusation."}</p>
+
+  useEffect(()=>{
+    if(!userId)return;
+    let live=true;
+    fetch("/api/game-access",{cache:"no-store"}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error||"Could not check access.");if(!live)return;setAdmin(Boolean(d.isAdmin));setSubscribed(Boolean(d.isSubscribed));setQuota(d.isAdmin||d.isSubscribed?(d.remainingByType?.["master-deception-case"]??0):(d.remainingBySection?.["brain-battle-arena"]??0));}).catch(e=>{if(live)setError(e instanceof Error?e.message:"Could not verify access.");});
+    return()=>{live=false;};
+  },[userId]);
+
+  useEffect(()=>{
+    if(!userId||exhausted||finished)return;
+    let live=true;
+    setLoading(true);setError("");setFeedback("");setQuestion(null);setChoice(null);setReserved(false);setBankExhausted(false);
+    const candidates=shuffled(questionBank);
+    (async()=>{
+      for(const candidate of candidates){
+        if(!live)return;
+        try{
+          const r=await fetch("/api/game-access",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"brain-battle-arena",gameTypeId:"master-deception-case",challengeId:candidate.id,challengeQuestion:candidate.scenario+" "+candidate.question,reserveQuestion:true,reservationSessionId:session.current,previewMode:preview})});
+          const d=await r.json();
+          if(r.status===409&&d.skipQuestion)continue;
+          if(!r.ok)throw new Error(d.error||"Could not prepare this challenge.");
+          if(!live)return;
+          setQuestion(candidate);setReserved(true);setLoading(false);return;
+        }catch(e){if(!live)return;setError(e instanceof Error?e.message:"Could not prepare this challenge.");setLoading(false);return;}
+      }
+      if(live){setBankExhausted(true);setLoading(false);}
+    })();
+    return()=>{live=false;};
+  },[userId,round,exhausted,finished,preview]);
+
+  useEffect(()=>{if(question&&heading.current){const t=setTimeout(()=>window.scrollTo({top:Math.max(0,heading.current!.getBoundingClientRect().top+window.scrollY-80),behavior:"smooth"}),100);return()=>clearTimeout(t);}},[question]);
+
+  const options=useMemo(()=>question?shuffled(question.options.map((label,index)=>({label,index}))):[],[question]);
+  const submit=async(index:number)=>{
+    if(!question||!userId||!reserved||finished||choice!==null)return;
+    setChoice(index);setFinished(true);setFeedback("Checking your reasoning…");
+    try{
+      const r=await fetch("/api/game-access",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"brain-battle-arena",gameTypeId:"master-deception-case",challengeId:question.id,challengeQuestion:question.scenario+" "+question.question,reservationSessionId:session.current,previewMode:preview})});
+      const d=await r.json();
+      if(!r.ok)throw new Error(d.error||"Could not record this attempt.");
+      setQuota(admin||subscribed?d.remaining:d.sectionRemaining);
+      const correct=index===question.answer;
+      setFeedback((correct?"CORRECT — excellent judgement. ":"NOT QUITE — review the reasoning. ")+question.explanation);
+      timer.current=setTimeout(()=>{setFinished(false);setRound(v=>v+1);},6500);
+    }catch(e){setFinished(false);setFeedback(e instanceof Error?e.message:"Could not record this attempt.");}
+  };
+
+  return <div className="overflow-hidden rounded-[2rem] border border-amber-200/30 bg-[#10152b] p-4 text-white shadow-2xl sm:p-7">
+    <div className="rounded-[1.7rem] border border-amber-200/30 bg-gradient-to-br from-[#1c2144] via-[#30214d] to-[#10152b] px-5 py-8 text-center sm:px-10 sm:py-10">
+      <p className="text-[10px] font-black uppercase tracking-[.35em] text-amber-200">Real life · Sharp thinking · Smart decisions</p>
+      <div className="my-3 text-5xl">🧠</div>
+      <h2 className="text-3xl font-black tracking-wide text-amber-100 sm:text-5xl">BRAIN BATTLE ARENA</h2>
+      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-indigo-100">One challenging MCQ game built around everyday situations. Read the details, question assumptions, compare close answers and choose the most defensible decision.</p>
+    </div>
+    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/5 p-3">
+      <span className="text-xs font-black uppercase tracking-wider text-cyan-100">Real-life brain challenge · Question {round+1}</span>
+      <span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{admin?"ADMIN PREVIEW":subscribed?"SUBSCRIBER":String(quota??"…")+" trials left"}</span>
+    </div>
+    {error&&<div className="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-bold text-rose-800">{error}</div>}
+    {exhausted&&<div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in Brain Battle Arena have been used. Subscribe to continue.</div>}
+    {loading&&<div className="mt-4 rounded-2xl bg-white p-6 text-center font-bold text-slate-800">Finding a fresh challenge…</div>}
+    {bankExhausted&&<div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm font-bold text-amber-950">You have completed every available challenge in this question bank. No question will be repeated.</div>}
+    {question&&!exhausted&&<div className="mt-4 rounded-3xl bg-white p-4 text-slate-900 shadow-lg sm:p-6">
+      <div className="inline-flex rounded-full bg-indigo-100 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-indigo-900">{question.category}</div>
+      <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+        <p className="text-xs font-black uppercase tracking-wider text-slate-500">Situation</p>
+        <p className="mt-2 text-sm font-semibold leading-7 text-slate-800">{question.scenario}</p>
+      </div>
+      <h3 className="mt-5 text-lg font-black leading-7 text-slate-950 sm:text-xl">{question.question}</h3>
+      <div className="mt-4 grid gap-3">
+        {options.map((option,position)=><button key={option.index} disabled={!reserved||finished} onClick={()=>void submit(option.index)} className={"flex min-h-14 items-center gap-3 rounded-xl border-2 p-3 text-left text-sm font-bold transition disabled:opacity-60 "+(choice===option.index?(option.index===question.answer?"border-emerald-500 bg-emerald-50 text-emerald-950":"border-rose-400 bg-rose-50 text-rose-950"):"border-slate-200 bg-white text-slate-800 hover:border-indigo-400 hover:bg-indigo-50")}><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-xs font-black text-white">{String.fromCharCode(65+position)}</span><span>{option.label}</span></button>)}
+      </div>
+      <p className="mt-4 text-xs font-semibold text-slate-500">{!reserved?"Preparing your question…":finished?"Answer recorded. A fresh question will appear shortly.":"Choose the single best answer. Read every detail before deciding."}</p>
       {feedback&&<div aria-live="polite" className="mt-4 rounded-2xl border border-indigo-200 bg-indigo-50 p-4 text-sm font-semibold leading-6 text-indigo-950">{feedback}</div>}
     </div>}
+    <p className="mt-4 text-center text-[10px] leading-5 text-indigo-200/70">Questions rotate through the bank. Previously completed questions are skipped for the existing 365-day repeat-protection period. Your three free trials and all existing access rules remain unchanged.</p>
   </div>;
 }
