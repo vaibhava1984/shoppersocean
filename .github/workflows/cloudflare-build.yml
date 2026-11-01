@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - cloudflare-safe-migration-final
+      - future-world-test-20261101
   workflow_dispatch:
 
 permissions:
