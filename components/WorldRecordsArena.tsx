@@ -122,8 +122,7 @@ export default function WorldRecordsArena({ userId, onExit }: { userId: string |
     setChoice(selected ?? -1);
     const explanation = selected === null ? "Skipped. " : selected === q.answer ? "Correct! " : "Not quite. The correct answer is " + q.options[q.answer] + ". ";
     setMessage("Recording your answer…");
-    const sound = new Audio(selected === null ? "/Tap.mp3" : selected === q.answer ? "/correct.mp3" : "/Lose.mp3");
-    if (soundOn) void sound.play().catch(() => {});
+    if (selected !== null && soundOn) { const sound = new Audio(selected === q.answer ? "/correct.mp3" : "/Lose.mp3"); void sound.play().catch(() => {}); }
     void fetch("/api/game-access", { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sectionId: "world-records-arena", gameTypeId: "world-records", challengeId: q.id, challengeQuestion: q.question, reservationSessionId: session })
     }).then(async response => {
