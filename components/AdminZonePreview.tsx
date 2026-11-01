@@ -127,7 +127,10 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             {selected.action === "thriller-zone" && (
               <ThrillerZone userId={userId} />
             )}
-            {selected.action === "world-records-arena" && (\n              <WorldRecordsArena userId={userId} />\n            )}\n            {selected.action === "learning" && (
+            {selected.action === "world-records-arena" && (
+              <WorldRecordsArena userId={userId} />
+            )}
+            {selected.action === "learning" && (
               <div>
                 <div className="mb-4 rounded-2xl bg-gradient-to-r from-emerald-700 via-teal-700 to-cyan-800 p-4 text-white">
                   <h3 className="text-xl font-black">English Master Quiz</h3>
