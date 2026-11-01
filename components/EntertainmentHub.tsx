@@ -7,13 +7,22 @@ import { getWordPuzzle, getHiddenPuzzle, getMissingPuzzle, getSequencePuzzle, ge
 
 type Game = "tic"|"connect"|"jigsaw"|"worldquiz"|"memory"|"word"|"hidden"|"missing"|"sequence"|"odd"|"quiz"|"riddle"|"daily"|"recall"|"spot"|"books"|"english";
 const groups: {id:string;icon:string;title:string;desc:string;games:[string,string][]}[] = [
-{id:"english-expert",icon:"📘",title:"English Expert",desc:"Build strong English grammar skills through clear lessons and smart daily quizzes across 20 topics",games:[["english","English Expert"]]},
-{id:"word-playground",icon:"🔤",title:"Word Playground",desc:"Play with letters and words",games:[["hidden","Word Quiz"],["missing","Missing Word"]]},
-{id:"brain-logic",icon:"🧠",title:"Brain & Logic Lab",desc:"Think deeply, reason carefully and solve",games:[["sequence","Logical Riddle"],["odd","Odd One Out"]]},
-{id:"quiz-arena",icon:"🔬",title:"Science Quiz",desc:"Explore fascinating questions from every branch of science",games:[["quiz","Science Quiz"]]},
-{id:"riddle-corner",icon:"💡",title:"Riddle Corner",desc:"Clues, riddles and brain teasers",games:[["riddle","Solve a Riddle"]]},
-{id:"classic-games",icon:"🎮",title:"Classic Games",desc:"Enjoy the timeless game of strategy",games:[["tic","Tic Tac Toe"]]},
-{id:"read-ebooks",icon:"📚",title:"Read E-books",desc:"Discover books by genre, author, language and trending collections",games:[["books","Browse E-books"]]}
+{id:"word-playground",icon:"🌍",title:"World Playground",desc:"Explore knowledge, words and discoveries from around the world.",games:[["hidden","Word Quiz"]]},
+{id:"brain-logic",icon:"🧠",title:"Brain and Logic Lab",desc:"Challenge your reasoning with patterns and logical problems.",games:[["sequence","Logical Riddle"]]},
+{id:"riddle-corner",icon:"💡",title:"Riddle Corner",desc:"Crack clever riddles and think beyond the obvious.",games:[["riddle","Solve a Riddle"]]},
+{id:"digital-discovery-hub",icon:"🌐",title:"Secrets of the Internet",desc:"Test your knowledge of the digital world and online technology.",games:[["quiz","Internet Knowledge Quiz"]]},
+{id:"mind-lab",icon:"🤖",title:"Artificial Intelligence",desc:"Explore intelligent systems, machine learning and the future of AI.",games:[["worldquiz","AI Knowledge Quiz"]]},
+{id:"brain-battle-arena",icon:"🕵️",title:"Cyber Detective",desc:"Use careful reasoning to investigate digital clues and spot the odd detail.",games:[["odd","Cyber Detective Challenge"]]},
+{id:"classic-games",icon:"⌛",title:"Technology Through Time",desc:"Discover how inventions and technology have shaped our world.",games:[["tic","Technology Through Time Challenge"]]},
+{id:"mystery-mansion",icon:"🚪",title:"The Locked Room Mystery",desc:"Follow the clues and solve a puzzling mystery.",games:[["riddle","Locked Room Mystery"]]},
+{id:"puzzle-universe",icon:"🔐",title:"The Secret Code Chamber",desc:"Decode patterns and uncover hidden answers.",games:[["sequence","Secret Code Challenge"]]},
+{id:"creative-studio",icon:"🎭",title:"The Master of Deception",desc:"Separate fact from trickery using sharp observation.",games:[["odd","Deception Challenge"]]},
+{id:"world-knowledge-quiz",icon:"🔷",title:"The Pattern Master",desc:"Recognise sequences and uncover the rule behind each pattern.",games:[["worldquiz","Pattern Challenge"]]},
+{id:"world-explorer",icon:"🗺️",title:"The Geography Quest",desc:"Travel across continents, countries and remarkable places.",games:[["worldquiz","Geography Quiz"]]},
+{id:"daily-challenge",icon:"🎎",title:"The World Culture Challenge",desc:"Explore traditions, customs and cultures from around the globe.",games:[["daily","World Culture Challenge"]]},
+{id:"memory-observation",icon:"🏛️",title:"The Landmark Adventure",desc:"Test your memory and knowledge of famous world landmarks.",games:[["memory","Landmark Challenge"]]},
+{id:"world-records-arena",icon:"🏆",title:"World Record Quiz",desc:"Discover extraordinary achievements and record-breaking facts.",games:[["quiz","World Records Quiz"]]},
+{id:"quiz-arena",icon:"🔬",title:"Science Quiz",desc:"Explore fascinating questions from every branch of science.",games:[["quiz","Science Quiz"]]}
  ];
 const words=["ALGORITHM","CONUNDRUM","LABYRINTH","PARADOXICAL","METAMORPHIC","PERSPICACIOUS"];
 const hidden=[["ORANGE","A citrus fruit and a colour"],["PLANET","Earth is one"],["GUITAR","A musical instrument with strings"],["CASTLE","A grand fortified building"]];
