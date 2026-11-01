@@ -148,7 +148,7 @@ export default function WorldExplorer({ userId }: { userId: string | null }) {
       <div className="relative overflow-hidden rounded-[1.7rem] border border-emerald-100/25 bg-gradient-to-br from-[#103c3a] via-[#12334a] to-[#071c30] px-5 py-8 text-center sm:px-10 sm:py-12">
         <p className="text-[10px] font-black uppercase tracking-[.35em] text-amber-200">A planet full of stories</p>
         <div className="my-3 text-6xl sm:text-7xl">🌍</div>
-        <h2 className="font-serif text-3xl font-black tracking-wide text-white sm:text-5xl">WORLD EXPLORER</h2>
+        <h2 className="font-serif text-3xl font-black tracking-wide text-white sm:text-5xl">WORLD DISCOVERY GAMES</h2>
         <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-emerald-50/90">Travel through maps, traditions and extraordinary places. Look closely, recognise the picture and discover something new.</p>
         <div className="mt-5 flex flex-wrap justify-center gap-2 text-[10px] font-bold uppercase tracking-wider text-cyan-100">
           <span className="rounded-full border border-cyan-200/30 bg-cyan-100/10 px-3 py-2">Picture clues</span><span className="rounded-full border border-emerald-200/30 bg-emerald-100/10 px-3 py-2">Maps & flags</span><span className="rounded-full border border-amber-200/30 bg-amber-100/10 px-3 py-2">Landmarks</span>
@@ -169,13 +169,13 @@ export default function WorldExplorer({ userId }: { userId: string | null }) {
     <div ref={heading} className={"relative scroll-mt-20 overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br " + active.tone + " p-5 text-white shadow-xl sm:p-7"}>
       <span className="absolute -right-4 -top-8 text-8xl opacity-20">{active.icon}</span>
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
-        <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to World Explorer</button>
+        <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to World Discovery Games</button>
         <div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{isAdmin ? "ADMIN PREVIEW" : isSubscribed ? "SUBSCRIBER" : String(quota ?? "…") + " free questions left"}</span><button onClick={() => setSoundOn(v => !v)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn ? "🔊 Sound on" : "🔇 Sound off"}</button></div>
       </div>
       <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">World Explorer · Journey {games.findIndex(g => g.id === active.id) + 1}</p><h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2><p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
     </div>
     {accessError && <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
-    {noQuota && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in World Explorer have been used. Subscribe to continue.</div>}
+    {noQuota && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials for this game collection have been used. Subscribe to continue.</div>}
     {noDaily && <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's quota for this game is complete. Please return after the daily reset.</div>}
     {exhausted && <div className="rounded-xl border border-violet-200 bg-violet-50 p-5 text-center text-sm font-bold text-violet-900">You have completed every currently available starter question in this game. The full picture and question bank will be added in the next content stage.</div>}
     {!noQuota && !noDaily && !exhausted && question && <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-emerald-50 p-4 shadow-lg sm:p-6">
