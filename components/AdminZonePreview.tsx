@@ -7,8 +7,7 @@ import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
 import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
-import dynamic from "next/dynamic";
-const BrainBattleArena = dynamic(() => import("@/components/BrainBattleArena"), { loading: () => <div className="rounded-2xl bg-slate-100 p-8 text-center font-bold text-slate-600">Preparing Brain Battle Arena…</div> });
+import BrainBattleArena from "@/components/BrainBattleArena";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -115,6 +114,9 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             )}
             {selected.action === "world-explorer" && (
               <WorldExplorer userId={userId} />
+            )}
+            {selected.action === "brain-battle-arena" && (
+              <BrainBattleArena userId={userId} />
             )}
             {selected.action === "learning" && (
               <div>
