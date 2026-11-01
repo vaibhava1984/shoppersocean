@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   ImagePlus, Download, RotateCw, RotateCcw, FlipHorizontal, FlipVertical,
-  Sun, Contrast, Palette, Frame, Type, Eye, RotateCcw as ResetIcon
+  Sun, Palette, Frame, Type, Eye, RotateCcw as ResetIcon
 } from "lucide-react";
 
 type EditorSettings = {
@@ -109,8 +109,6 @@ export default function AiMagicStudioPreview() {
     if (!image || !canvas) return;
     const s = original ? initialSettings : settings;
     const quarterTurn = Math.abs(s.rotation % 180) === 90;
-    const width = Math.min(1400, quarterTurn ? image.naturalHeight : image.naturalWidth);
-    const height = Math.min(1400, quarterTurn ? image.naturalWidth : image.naturalHeight);
     const scale = Math.min(1, 1400 / Math.max(image.naturalWidth, image.naturalHeight));
     const baseW = Math.max(1, Math.round(image.naturalWidth * scale));
     const baseH = Math.max(1, Math.round(image.naturalHeight * scale));
