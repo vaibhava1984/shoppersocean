@@ -123,7 +123,7 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
     </div>
     <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/5 p-3">
       <span className="text-xs font-black uppercase tracking-wider text-cyan-100">Real-life brain challenge · Question {round+1}</span>
-      <span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{admin?"ADMIN PREVIEW":subscribed?"SUBSCRIBER":String(quota??"…")+" trials left"}</span>
+      <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={()=>{setSoundOn(v=>!v);if(!soundOn)playSound("tap");}} className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"}</button><span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{admin?"ADMIN PREVIEW":subscribed?"SUBSCRIBER":String(quota??"…")+" trials left"}</span></div>
     </div>
     {error&&<div className="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-bold text-rose-800">{error}</div>}
     {exhausted&&<div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in Brain Battle Arena have been used. Subscribe to continue.</div>}
@@ -136,8 +136,8 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
         <p className="mt-2 text-sm font-semibold leading-7 text-slate-800">{question.scenario}</p>
       </div>
       <h3 className="mt-5 text-lg font-black leading-7 text-slate-950 sm:text-xl">{question.question}</h3>
-      <div className="mt-4 grid gap-3">
-        {options.map((option,position)=><button key={option.index} disabled={!reserved||finished} onClick={()=>void submit(option.index)} className={"flex min-h-14 items-center gap-3 rounded-xl border-2 p-3 text-left text-sm font-bold transition disabled:opacity-60 "+(choice===option.index?(option.index===question.answer?"border-emerald-500 bg-emerald-50 text-emerald-950":"border-rose-400 bg-rose-50 text-rose-950"):"border-slate-200 bg-white text-slate-800 hover:border-indigo-400 hover:bg-indigo-50")}><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-xs font-black text-white">{String.fromCharCode(65+position)}</span><span>{option.label}</span></button>)}
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        {options.map((option,position)=><button key={option.index} disabled={!reserved||finished} onClick={()=>void submit(option.index)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r "+["from-indigo-600 to-blue-700","from-fuchsia-600 to-purple-700","from-teal-600 to-emerald-700","from-orange-500 to-rose-600"][position]+" px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 "+(choice===option.index?(option.index===question.answer?"ring-4 ring-emerald-300":"ring-4 ring-rose-300"):"")}><span className="mr-2 font-black">{String.fromCharCode(65+position)}.</span>{option.label}</button>)}
       </div>
       <p className="mt-4 text-xs font-semibold text-slate-500">{!reserved?"Preparing your question…":finished?"Answer recorded. A fresh question will appear shortly.":"Choose the single best answer. Read every detail before deciding."}</p>
       {feedback&&<div aria-live="polite" className="mt-4 rounded-2xl border border-indigo-200 bg-indigo-50 p-4 text-sm font-semibold leading-6 text-indigo-950">{feedback}</div>}
