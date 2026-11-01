@@ -83,7 +83,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
         ) : (
           <div className="min-h-[55vh] rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <button type="button" onClick={() => setActiveZone(null)} className="rounded-full border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-extrabold text-indigo-800 transition hover:bg-indigo-100">← Back to 20 zones</button>
+              <button type="button" onClick={() => setActiveZone(null)} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to 20 games</button>
               <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
             </div>
             {selected.action === "books" && (
