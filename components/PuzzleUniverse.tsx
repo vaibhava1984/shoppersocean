@@ -142,7 +142,7 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
     setActive(null); setChoice(null); setMessage(""); setReserved(false); setExhausted(false);
   };
 
-  if (!active) return (
+  if (!active && !initialGameId) return (
     <div className="relative isolate overflow-hidden rounded-[2rem] border border-fuchsia-200 bg-[#100b25] p-4 text-white shadow-2xl sm:p-7">
       <div className="pointer-events-none absolute inset-0 opacity-50" style={{ backgroundImage: "radial-gradient(circle at 12% 18%,rgba(217,70,239,.42),transparent 32%),radial-gradient(circle at 88% 78%,rgba(34,211,238,.30),transparent 32%),radial-gradient(circle at 52% 45%,rgba(99,102,241,.20),transparent 38%)" }} />
       <div className="relative overflow-hidden rounded-[1.7rem] border border-fuchsia-200/30 bg-gradient-to-br from-[#21113e] via-[#171a43] to-[#08172d] px-5 py-8 text-center shadow-[inset_0_0_55px_rgba(217,70,239,.13)] sm:px-10 sm:py-12">
