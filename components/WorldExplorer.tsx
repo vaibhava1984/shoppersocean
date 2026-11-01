@@ -163,6 +163,7 @@ export default function WorldExplorer({ userId, initialGameId, onExit }: { userI
       <p className="relative mt-5 text-center text-[10px] text-emerald-100/70">Admin preview · Starter set · Larger question and picture banks can be added without changing this layout</p>
     </div>
   );
+  if (!active) return <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center font-bold text-emerald-900">Opening your world discovery game…</div>;
 
   const noQuota = quota === 0 && !isAdmin && !isSubscribed;
   const noDaily = quota === 0 && (isAdmin || isSubscribed);
