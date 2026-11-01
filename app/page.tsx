@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer"
 import HeroSection from "@/components/HeroSection";
 import EntertainmentHub from "@/components/EntertainmentHub";
+import AdminZonePreview from "@/components/AdminZonePreview";
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +34,7 @@ export const metadata = {
 
 export default async function LandingPage() {
   const user = await getCurrentUser();
+  const isAdmin = user?.publicMetadata?.userrole === "ADMIN";
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header user={user} />
@@ -41,14 +43,15 @@ export default async function LandingPage() {
           title="Shoppers Ocean"
           subtitle="One Destination. Endless Ways to Enjoy."
           welcomeName={user?.firstName || undefined}
-          isAdmin={user?.publicMetadata?.userrole === "ADMIN"}
-          isAuthor={Boolean(user?.publicMetadata?.isAuthor) && user?.publicMetadata?.userrole !== "ADMIN"}
+          isAdmin={isAdmin}
+          isAuthor={Boolean(user?.publicMetadata?.isAuthor) && !isAdmin}
           buttonText="Explore Flipbooks"
           buttonLink="/bookShelf"
           imageSrc="/1.jpg?rev=2"
           imageAlt="Shoppers Ocean featured hero image"
         />
       </div>
+      {isAdmin && <AdminZonePreview />}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8"><EntertainmentHub userId={user?.id ?? null} /></div>
       </section>
