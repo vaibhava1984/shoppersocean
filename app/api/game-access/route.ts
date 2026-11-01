@@ -51,10 +51,12 @@ async function handle(req:Request,consume:boolean){
    let body:any={};try{body=await req.json()}catch{}
    const section=body.sectionId,type=body.gameTypeId,challenge=typeof body.challengeId==="string"?body.challengeId.slice(0,160):"",questionText=typeof body.challengeQuestion==="string"?body.challengeQuestion.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300):"";
    const reserveQuestion=body.reserveQuestion===true,reservationSessionId=typeof body.reservationSessionId==="string"?body.reservationSessionId.slice(0,120):"";
+   const previewMode=body.previewMode===true&&admin;
    if(!SECTIONS.includes(section)||!TYPES[section]?.includes(type))return NextResponse.json({error:"Choose a valid game and section."},{status:400,headers});
    // Reserve a question when it is displayed, not only after an answer. This prevents repeats
    // from appearing on screen and shares the 365-day history across every game type.
    if(reserveQuestion){
+    if(previewMode)return NextResponse.json({reserved:true,previewMode:true},{headers});
     if(!challenge||!questionText||!reservationSessionId)return NextResponse.json({error:"A question reservation requires a challenge and session."},{status:400,headers});
     const existing=await db.prepare("SELECT question_text,session_id FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? LIMIT 1").bind(user.id,type,challenge).first<any>();
     if(existing){
@@ -85,7 +87,7 @@ async function handle(req:Request,consume:boolean){
    }
    // Check the section's daily quota before duplicate-history checks so exhausted sections stop immediately.
    const limit=typeLimit(type);
-   const changed=await db.prepare("INSERT INTO game_subscriber_usage_by_type(user_id,game_type_id,usage_date,plays_used) VALUES(?,?,?,1) ON CONFLICT(user_id,game_type_id,usage_date) DO UPDATE SET plays_used=plays_used+1 WHERE game_subscriber_usage_by_type.plays_used < ? RETURNING plays_used").bind(user.id,type,date,limit).first<any>();
+   const changed=previewMode?{plays_used:0}:await db.prepare("INSERT INTO game_subscriber_usage_by_type(user_id,game_type_id,usage_date,plays_used) VALUES(?,?,?,1) ON CONFLICT(user_id,game_type_id,usage_date) DO UPDATE SET plays_used=plays_used+1 WHERE game_subscriber_usage_by_type.plays_used < ? RETURNING plays_used").bind(user.id,type,date,limit).first<any>();
    if(!changed){
     const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
     const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
@@ -98,7 +100,7 @@ async function handle(req:Request,consume:boolean){
     const priorQuestion=questionText?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,"__question__",questionText).first<any>():null;
     const rawQuestion=typeof body.challengeQuestion==="string"?body.challengeQuestion.trim().slice(0,240):"";
     const priorLegacyQuestion=rawQuestion.length>=8?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND played_at>? AND instr(lower(challenge_id),lower(?))>0 LIMIT 1").bind(user.id,new Date(Date.now()-365*86400000).toISOString(),rawQuestion).first<any>():null;
-    if(type!=="daily"&&((prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorQuestion&&Date.now()-Date.parse(priorQuestion.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorLegacyQuestion))){
+    if(!previewMode&&type!=="daily"&&((prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorQuestion&&Date.now()-Date.parse(priorQuestion.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorLegacyQuestion))){
      await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
@@ -113,15 +115,15 @@ async function handle(req:Request,consume:boolean){
     freeTrialsUsed=Number(trial.trials_used??0);
    }
    const playedAt=new Date().toISOString();
-   if(type!=="daily"&&((challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt))||(questionText&&!await claimChallenge(db,user.id,"__question__",questionText,playedAt)))){
+   if(!previewMode&&type!=="daily"&&((challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt))||(questionText&&!await claimChallenge(db,user.id,"__question__",questionText,playedAt)))){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
     if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
     return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
    }
    if(isReservedForCurrentSession)await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? AND session_id=?").bind(user.id,type,challenge,reservationSessionId).run();
-   const all=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
+   const all=previewMode?{results:[] as any[]}:await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
    const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
-   const dailyRemaining=Math.max(0,limit-Number(changed.plays_used??0));
+   const dailyRemaining=previewMode?limit:Math.max(0,limit-Number(changed.plays_used??0));
    const dailySectionRemaining=sectionDailyRemaining(section,usedTypes);
    const sectionRemaining=admin||subscribed||section==="daily-challenge"?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    const remaining=admin||subscribed||section==="daily-challenge"?dailyRemaining:Math.min(dailyRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
