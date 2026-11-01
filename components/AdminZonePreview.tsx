@@ -9,6 +9,7 @@ import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
+import AiMagicStudioPreview from "@/components/AiMagicStudioPreview";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -22,6 +23,7 @@ const zones = [
   { icon: "🛠️", name: "Creative Crafts & DIY", tone: "from-lime-500 to-green-700", note: "Proposed zone name" },
   { icon: "🏝️", name: "Adventure Island", tone: "from-cyan-500 to-teal-800" },
   { icon: "🎁", name: "Surprise Station", tone: "from-red-500 to-fuchsia-700" },
+  { icon: "✨", name: "AI Magic Studio", tone: "from-fuchsia-600 via-violet-700 to-indigo-900", note: "Prompt-based image transformation preview", action: "ai-magic-studio" },
 ];
 
 const entertainmentGroups = [
@@ -80,6 +82,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
               <button type="button" onClick={() => { setActiveZone(null); setActiveQuizGame(null); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button>
               <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
             </div>
+            {selected.action === "ai-magic-studio" && <AiMagicStudioPreview />}
             {selected.action === "books" && (
               <div className="mx-auto max-w-2xl rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 via-white to-indigo-50 p-7 text-center sm:p-10">
                 <div className="text-5xl" aria-hidden="true">📚</div>
