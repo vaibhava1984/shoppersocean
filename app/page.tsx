@@ -59,7 +59,7 @@ export default async function LandingPage() {
             <h2 className="mt-2 font-serif text-2xl font-bold text-slate-800 sm:text-3xl">Explore the World of Flipbooks</h2>
             <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base">Take a break from the games and discover stories and digital books from authors across languages.</p>
           </div>
-          <Link href="/bookShelf" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-blue-700 px-6 py-3 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Explore Flipbooks <span className="ml-2" aria-hidden="true">→</span></Link>
+          <Link href="/read-ebooks" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-blue-700 px-6 py-3 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Explore Flipbooks <span className="ml-2" aria-hidden="true">→</span></Link>
         </div>
       </section>}
 
