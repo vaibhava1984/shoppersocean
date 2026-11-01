@@ -138,6 +138,7 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
 
   const back = () => {
     if (timer.current) clearTimeout(timer.current);
+    if (initialGameId && onExit) { onExit(); return; }
     setActive(null); setChoice(null); setMessage(""); setReserved(false); setExhausted(false);
   };
 
@@ -200,7 +201,7 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
           <h3 className="text-lg font-extrabold leading-7 text-slate-900 sm:text-xl">{question.q}</h3>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {question.options.map((option, i) => (
-              <button key={question.id + "-" + i} disabled={!reserved || choice !== null || !quotaReady || noQuota || noDaily} onClick={() => record(false, i)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r " + ["from-indigo-600 to-blue-700", "from-fuchsia-600 to-purple-700", "from-teal-600 to-emerald-700", "from-orange-500 to-rose-600"][i] + " px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"}>
+              <button data-answer-choice key={question.id + "-" + i} disabled={!reserved || choice !== null || !quotaReady || noQuota || noDaily} onClick={() => record(false, i)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r " + ["from-indigo-600 to-blue-700", "from-fuchsia-600 to-purple-700", "from-teal-600 to-emerald-700", "from-orange-500 to-rose-600"][i] + " px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"}>
                 {String.fromCharCode(65 + i)}. {option}
               </button>
             ))}
