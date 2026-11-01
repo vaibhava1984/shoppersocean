@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import EntertainmentHub from "@/components/EntertainmentHub";
 import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
@@ -52,19 +51,19 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
                   key={zone.name}
                   type="button"
                   disabled={!zone.action}
-                  onClick={() => { if (zone.action) { setActiveZone(index); setActiveQuizGame(null); } }}
+                  onClick={() => { if (zone.action === "books") { window.location.assign("/bookShelf"); return; } if (zone.action) { setActiveZone(index); setActiveQuizGame(null); } }}
                   aria-label={zone.action ? `Open ${zone.name}` : `${zone.name}, under construction`}
-                  style={{ animation: "liveZoneZoom 650ms cubic-bezier(.2,.8,.2,1) both", animationDelay: `${index * 90}ms` }}
-                  className={`group relative min-h-[132px] overflow-hidden rounded-2xl border border-white/30 bg-gradient-to-br ${zone.tone} p-3 text-left shadow-lg transition duration-300 sm:min-h-[148px] sm:p-4 ${zone.action ? "hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200" : "cursor-not-allowed opacity-90"}`}
+                  style={{ animation: "liveZoneZoom 5s cubic-bezier(.2,.8,.2,1) both", animationDelay: `${index * 180}ms` }}
+                  className={`group relative min-h-[238px] overflow-hidden rounded-[1.65rem] border border-white/30 bg-gradient-to-br ${zone.tone} p-5 text-left shadow-[0_14px_35px_rgba(15,23,42,0.20)] transition-all duration-500 ${zone.action ? "hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200" : "cursor-not-allowed opacity-90"}`}
                 >
-                  <span className="absolute -right-3 -top-4 text-7xl opacity-20 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" aria-hidden="true">{zone.icon}</span>
+                  <span className="absolute -right-3 -top-4 text-8xl opacity-20 transition-transform duration-700 group-hover:rotate-12 group-hover:scale-110" aria-hidden="true">{zone.icon}</span>
                   <span className="relative flex items-start justify-between gap-1">
-                    <span className="text-3xl drop-shadow sm:text-4xl" aria-hidden="true">{zone.icon}</span>
+                    <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/30 bg-white/20 text-3xl shadow-lg backdrop-blur-sm" aria-hidden="true">{zone.icon}</span>
                     <span className="rounded-full border border-white/30 bg-black/15 px-2 py-1 text-[9px] font-black tracking-wide text-white">#{String(index + 1).padStart(2, "0")}</span>
                   </span>
-                  <span className="relative mt-3 block text-xs font-black leading-5 text-white drop-shadow sm:text-sm">{zone.name}</span>
-                  <span className="relative mt-1 block text-[9px] font-semibold leading-4 text-white/90 sm:text-[10px]">{zone.note ?? "Under construction"}</span>
-                  {zone.action && <span className="relative mt-2 inline-flex rounded-full border border-white/40 bg-white/20 px-2.5 py-1 text-[9px] font-extrabold text-white">Open zone →</span>}
+                  <span className="relative mt-4 block text-2xl font-black tracking-tight text-white drop-shadow">{zone.name}</span>
+                  <span className="relative mt-2 block max-w-[18rem] text-sm font-semibold leading-6 text-white/90">{zone.note ?? "Under construction"}</span>
+                  {zone.action && <span className="relative mt-4 inline-flex rounded-full border border-white/30 bg-white/15 px-3.5 py-2 text-sm font-extrabold text-white shadow-sm backdrop-blur-sm">Open zone →</span>}
                 </button>
               ))}
             </div>
@@ -76,14 +75,6 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
               <button type="button" onClick={() => { setActiveZone(null); setActiveQuizGame(null); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button>
               <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
             </div>
-            {selected.action === "books" && (
-              <div className="mx-auto max-w-2xl rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 via-white to-indigo-50 p-7 text-center sm:p-10">
-                <div className="text-5xl" aria-hidden="true">📚</div>
-                <h3 className="mt-4 text-2xl font-black text-slate-900">Read E-books</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">Open the existing Shoppers Ocean book library.</p>
-                <Link href="/read-ebooks" className="mt-6 inline-flex rounded-xl bg-gradient-to-r from-blue-700 to-indigo-700 px-7 py-3 font-extrabold text-white shadow-lg transition hover:brightness-110">Enter Read E-books →</Link>
-              </div>
-            )}
             {selected.action === "games" && (
               <div>
                 {!activeQuizGame ? (
