@@ -183,7 +183,7 @@ export default function DigitalDiscoveryHub({ userId }: { userId:string|null }) 
  if(!active)return <div className="space-y-5">
   <div className="overflow-hidden rounded-3xl border border-cyan-200/30 bg-gradient-to-br from-slate-950 via-blue-950 to-cyan-900 p-6 text-white shadow-xl sm:p-8">
    <p className="text-xs font-black uppercase tracking-[.24em] text-cyan-200">Explore · Investigate · Discover</p>
-   <h3 className="mt-2 text-3xl font-black sm:text-4xl">Digital Discovery Hub</h3>
+   <h3 className="mt-2 text-3xl font-black sm:text-4xl">Digital Discovery Games</h3>
    <p className="mt-3 max-w-2xl text-sm leading-6 text-blue-100">Four interactive worlds filled with internet discoveries, artificial intelligence, cyber safety and landmark inventions.</p>
    <div className="mt-5 flex flex-wrap gap-2 text-xs font-bold"><span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5">4 discovery games</span><span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5">40 starter challenges</span><span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5">Fresh-question rotation</span></div>
   </div>
