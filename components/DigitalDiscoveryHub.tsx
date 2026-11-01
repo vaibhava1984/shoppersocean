@@ -22,7 +22,7 @@ const areas: Area[] = [
 {id:"net-09",q:"Why can a public Wi-Fi network be riskier than a trusted private network?",options:["It always damages batteries","Other users may be able to observe or imitate network activity","It makes files heavier","It disables all passwords"],answer:1,fact:"Use HTTPS, avoid sensitive actions on untrusted networks, and consider a reputable VPN when appropriate."},
 {id:"net-10",q:"What is cloud storage?",options:["Saving files on remote internet-connected servers","Saving files only inside a keyboard","A weather forecast","A special type of monitor"],answer:0,fact:"Cloud storage keeps data on remote servers that you access over a network."}
 ]},
-{ id:"artificial-intelligence",type:"artificial-intelligence",icon:"🤖",title:"Artificial Intelligence World",intro:"Meet the systems that learn patterns and assist people.",tone:"from-violet-600 to-fuchsia-500",questions:[
+{ id:"artificial-intelligence",type:"artificial-intelligence",icon:"🤖",title:"Artificial Intelligence",intro:"Meet the systems that learn patterns and assist people.",tone:"from-violet-600 to-fuchsia-500",questions:[
 {id:"ai-01",q:"What is machine learning?",options:["A method where systems learn patterns from data","A way to wash computer parts","A faster internet cable","A screen repair technique"],answer:0,fact:"Machine learning uses data and algorithms to find patterns and make predictions or decisions."},
 {id:"ai-02",q:"What is a training dataset used for?",options:["Teaching a model patterns","Charging a robot","Cleaning a camera lens","Measuring screen size"],answer:0,fact:"A training dataset provides examples from which a machine-learning model adjusts its parameters."},
 {id:"ai-03",q:"What does an AI chatbot generate in response to a prompt?",options:["A response based on learned patterns and context","A guaranteed legal decision","A physical object","A new internet connection"],answer:0,fact:"Chatbots generate likely responses; they can still make mistakes and should be checked."},
@@ -205,7 +205,7 @@ export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: {
   <div ref={headingRef} className={`relative scroll-mt-20 overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br ${active.tone} p-5 text-white shadow-xl sm:p-7`}>
    <div className="absolute -right-8 -top-10 text-8xl opacity-20">{active.icon}</div>
    <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
-    <button onClick={backToHub} className="rounded-full border border-white/50 bg-gradient-to-r from-white/25 to-white/10 px-5 py-2.5 text-sm font-black text-white shadow-lg backdrop-blur transition hover:scale-[1.03] hover:bg-white/25">← Back to Discovery Hub</button>
+    <button onClick={backToHub} className="rounded-full border border-white/50 bg-gradient-to-r from-white/25 to-white/10 px-5 py-2.5 text-sm font-black text-white shadow-lg backdrop-blur transition hover:scale-[1.03] hover:bg-white/25">← Back to Quiz World</button>
     <div className="flex flex-wrap items-center gap-2">
      <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{isAdmin?"ADMIN PREVIEW":isSubscribed?"SUBSCRIBER":`${quota??"…"} ${isSubscribed||isAdmin?"questions left today":"free questions left"}`}</span>
      <button onClick={()=>setSoundOn(v=>!v)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-extrabold text-white">{soundOn?"🔊 Sound on":"🔇 Sound off"}</button>
