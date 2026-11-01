@@ -46,7 +46,7 @@ const games: Game[] = [
   ]}
 ];
 
-export default function WorldExplorer({ userId }: { userId: string | null }) {
+export default function WorldExplorer({ userId, initialGameId, onExit }: { userId: string | null; initialGameId?:string; onExit?:()=>void }) {
   const [active, setActive] = useState<Game | null>(null);
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<number | null>(null);
@@ -125,9 +125,10 @@ export default function WorldExplorer({ userId }: { userId: string | null }) {
     repeated.current = 0; setActive(game); setIndex(0); setChoice(null); setMessage(""); setExhausted(false); setAccessError(""); setReserved(false); void loadQuota(game);
   };
 
+  useEffect(() => { if (!initialGameId) return; const game = games.find(item => item.id === initialGameId); if (game) begin(game); }, [initialGameId]);
   const record = (skip: boolean, selected: number | null) => {
     if (!active || !question || !userId || !reserved || choice !== null) return;
-    play(skip ? "tap" : selected === question.answer ? "correct" : "wrong");
+    if (!skip) play(selected === question.answer ? "correct" : "wrong");
     setChoice(skip ? -1 : selected);
     const explanation = skip ? "Skipped. Correct answer: " + question.options[question.answer] + ". " + question.fact : selected === question.answer ? "Correct! " + question.fact : "Not quite. Correct answer: " + question.options[question.answer] + ". " + question.fact;
     setMessage("Recording your answer…");
@@ -140,7 +141,7 @@ export default function WorldExplorer({ userId }: { userId: string | null }) {
     }).catch(() => setMessage("Your attempt could not be recorded. Please check your connection."));
   };
 
-  const back = () => { if (timer.current) clearTimeout(timer.current); setActive(null); setChoice(null); setMessage(""); setReserved(false); setExhausted(false); };
+  const back = () => { if (timer.current) clearTimeout(timer.current); if (initialGameId && onExit) { onExit(); return; } setActive(null); setChoice(null); setMessage(""); setReserved(false); setExhausted(false); };
 
   if (!active) return (
     <div className="relative isolate overflow-hidden rounded-[2rem] border border-emerald-200 bg-[#071d25] p-4 text-white shadow-2xl sm:p-7">
