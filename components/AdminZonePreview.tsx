@@ -16,12 +16,6 @@ const zones = [
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
   { icon: "🎮", name: "Classic Games", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "Play Tic Tac Toe", action: "classic-games" },
   { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "One challenging real-life reasoning MCQ game", action: "brain-battle-arena" },
-  { icon: "🪐", name: "Space Odyssey", tone: "from-violet-600 to-slate-950" },
-  { icon: "🎭", name: "Roleplay Theatre", tone: "from-rose-500 to-pink-800" },
-  { icon: "👁️", name: "Visual Wonders", tone: "from-blue-500 to-indigo-800" },
-  { icon: "🛠️", name: "Creative Crafts & DIY", tone: "from-lime-500 to-green-700", note: "Proposed zone name" },
-  { icon: "🏝️", name: "Adventure Island", tone: "from-cyan-500 to-teal-800" },
-  { icon: "🎁", name: "Surprise Station", tone: "from-red-500 to-fuchsia-700" },
 ];
 
 const entertainmentGroups = [
@@ -37,21 +31,22 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
   const selected = activeZone === null ? null : zones[activeZone];
 
   return (
-    <section aria-label="Admin-only 11 zone workspace" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); const quizWorldEntry = button?.getAttribute("aria-label") === "Open Quiz World"; if ((!selected || selected.action !== "games") && !quizWorldEntry) return; if (!button || target.closest("[data-answer-choice], [data-entertainment-hub]")) return; playZoneTap(); }} className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
+    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); const quizWorldEntry = button?.getAttribute("aria-label") === "Open Quiz World"; if ((!selected || selected.action !== "games") && !quizWorldEntry) return; if (!button || target.closest("[data-answer-choice], [data-entertainment-hub]")) return; playZoneTap(); }} className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
+      <style jsx global>{`@keyframes liveZoneZoom{0%{opacity:0;transform:scale(.55)}65%{opacity:1;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}`}</style>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {!selected ? (
           <>
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3 sm:mb-8">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-cyan-300 sm:text-xs">Private workspace · Admin only</p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore 11 Worlds</h2>
-                <p className="mt-2 max-w-xl text-xs leading-5 text-slate-300 sm:text-sm">Your new Shoppers Ocean layout. Choose a zone to enter its available features.</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-cyan-300 sm:text-xs">Explore & Enjoy</p>
+                <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore Our Worlds</h2>
+                <p className="mt-2 max-w-xl text-xs leading-5 text-slate-300 sm:text-sm">Choose a zone and enjoy its activities.</p>
               </div>
-              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">11 zones · Admin preview</span>
+              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">5 activity zones</span>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4">
               {zones.map((zone, index) => (
                 <button
                   key={zone.name}
@@ -59,6 +54,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
                   disabled={!zone.action}
                   onClick={() => { if (zone.action) { setActiveZone(index); setActiveQuizGame(null); } }}
                   aria-label={zone.action ? `Open ${zone.name}` : `${zone.name}, under construction`}
+                  style={{ animation: "liveZoneZoom 650ms cubic-bezier(.2,.8,.2,1) both", animationDelay: `${index * 90}ms` }}
                   className={`group relative min-h-[132px] overflow-hidden rounded-2xl border border-white/30 bg-gradient-to-br ${zone.tone} p-3 text-left shadow-lg transition duration-300 sm:min-h-[148px] sm:p-4 ${zone.action ? "hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200" : "cursor-not-allowed opacity-90"}`}
                 >
                   <span className="absolute -right-3 -top-4 text-7xl opacity-20 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" aria-hidden="true">{zone.icon}</span>
@@ -72,7 +68,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
                 </button>
               ))}
             </div>
-            <p className="mt-5 text-center text-[10px] font-medium text-slate-400">Private admin preview only · Unfinished zones remain unavailable to visitors</p>
+            <p className="mt-5 text-center text-[10px] font-medium text-slate-400">Choose any zone to begin exploring.</p>
           </>
         ) : (
           <div className="min-h-[55vh] rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
