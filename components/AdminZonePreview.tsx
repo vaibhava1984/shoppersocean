@@ -17,7 +17,7 @@ const zones = [
   { icon: "🕵️", name: "Mystery Mansion", tone: "from-slate-700 via-indigo-950 to-purple-950", note: "Four mystery and detective games", action: "mystery-mansion" },
   { icon: "🧩", name: "Puzzle Universe", tone: "from-fuchsia-500 to-purple-700", note: "Three interactive puzzle rooms", action: "puzzle-universe" },
   { icon: "🌍", name: "World Explorer", tone: "from-green-500 to-emerald-700", note: "Three interactive world-discovery games", action: "world-explorer" },
-  { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "Two original strategy and deduction games", action: "brain-battle-arena" },
+  { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "One challenging real-life reasoning MCQ game", action: "brain-battle-arena" },
   { icon: "🔦", name: "Thriller Zone", tone: "from-zinc-600 to-neutral-950" },
   { icon: "🌟", name: "World Records Arena", tone: "from-orange-500 to-red-700" },
   { icon: "🪐", name: "Space Odyssey", tone: "from-violet-600 to-slate-950" },
