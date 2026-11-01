@@ -143,7 +143,7 @@ export default function WorldRecordsArena({ userId }: { userId: string | null })
     <div className="relative overflow-hidden rounded-[1.7rem] border border-orange-100/25 bg-gradient-to-br from-[#54220f] via-[#7c2d12] to-[#301015] px-5 py-8 text-center sm:px-10 sm:py-10">
       <p className="text-[10px] font-black uppercase tracking-[.35em] text-amber-200">The extraordinary, verified and unbelievable</p>
       <div className="my-3 text-6xl sm:text-7xl">🏆</div>
-      <h2 className="font-serif text-3xl font-black tracking-wide text-white sm:text-5xl">WORLD RECORDS ARENA</h2>
+      <h2 className="font-serif text-3xl font-black tracking-wide text-white sm:text-5xl">WORLD RECORDS QUIZ</h2>
       <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-orange-50/90">Test your knowledge of extraordinary human achievements, nature's extremes, sporting milestones, inventions and astonishing firsts.</p>
       <div className="mt-5 flex flex-wrap justify-center gap-2 text-[10px] font-bold uppercase tracking-wider text-amber-100">
         {["Nature & animals","Sports & people","Science & technology","Landmarks & extremes"].map(tag=><span key={tag} className="rounded-full border border-amber-200/30 bg-amber-100/10 px-3 py-2">{tag}</span>)}
@@ -155,7 +155,7 @@ export default function WorldRecordsArena({ userId }: { userId: string | null })
     </div>
     <div className="relative mt-5">
       {accessError && <div className="mb-3 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
-      {noFree && <div className="mb-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in World Records Arena have been used. Subscribe to continue.</div>}
+      {noFree && <div className="mb-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials for World Records Quiz have been used. Subscribe to continue.</div>}
       {noDaily && <div className="mb-3 rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's quota for this game is complete. Please return after the daily reset.</div>}
       {exhausted ? <div className="rounded-2xl bg-white p-7 text-center font-bold text-slate-800">You have completed all unique questions currently in this question bank.</div> : <div className="rounded-3xl border border-orange-100 bg-gradient-to-br from-white via-orange-50 to-amber-50 p-4 text-slate-900 shadow-lg sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><span className="rounded-full bg-orange-800 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">{q.category}</span><span className="text-xs font-bold text-slate-500">{quotaReady ? (isAdmin ? "Unlimited admin preview" : String(quota ?? 0) + " remaining") : "Checking quota…"}</span></div>
