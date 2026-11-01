@@ -181,7 +181,7 @@ export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: {
   if(advanceTimer.current)clearTimeout(advanceTimer.current);
   if(initialAreaId&&onExit){onExit();return;}setActive(null);setChoice(null);setMessage("");setReserved(false);setBankExhausted(false);
  };
- if(!active)return <div className="space-y-5">
+ if(!active&& !initialAreaId)return <div className="space-y-5">
   <div className="overflow-hidden rounded-3xl border border-cyan-200/30 bg-gradient-to-br from-slate-950 via-blue-950 to-cyan-900 p-6 text-white shadow-xl sm:p-8">
    <p className="text-xs font-black uppercase tracking-[.24em] text-cyan-200">Explore · Investigate · Discover</p>
    <h3 className="mt-2 text-3xl font-black sm:text-4xl">Digital Discovery Games</h3>
