@@ -5,6 +5,7 @@ import Link from "next/link";
 import EntertainmentHub from "@/components/EntertainmentHub";
 import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
+import PuzzleUniverse from "@/components/PuzzleUniverse";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -12,7 +13,7 @@ const zones = [
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
   { icon: "💡", name: "Digital Discovery Hub", tone: "from-cyan-500 to-blue-700", note: "Four interactive technology worlds", action: "digital-discovery" },
   { icon: "🕵️", name: "Mystery Mansion", tone: "from-slate-700 via-indigo-950 to-purple-950", note: "Four mystery and detective games", action: "mystery-mansion" },
-  { icon: "🧩", name: "Puzzle Universe", tone: "from-fuchsia-500 to-purple-700" },
+  { icon: "🧩", name: "Puzzle Universe", tone: "from-fuchsia-500 to-purple-700", note: "Three interactive puzzle rooms", action: "puzzle-universe" },
   { icon: "🌍", name: "World Explorer", tone: "from-green-500 to-emerald-700" },
   { icon: "😂", name: "Laughter Lounge", tone: "from-amber-400 to-orange-600" },
   { icon: "🎨", name: "Creative Studio", tone: "from-pink-500 to-rose-700" },
@@ -109,6 +110,9 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             )}
             {selected.action === "mystery-mansion" && (
               <MysteryMansion userId={userId} />
+            )}
+            {selected.action === "puzzle-universe" && (
+              <PuzzleUniverse userId={userId} />
             )}
             {selected.action === "learning" && (
               <div>
