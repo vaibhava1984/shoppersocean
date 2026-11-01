@@ -9,6 +9,7 @@ import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import ThrillerZone from "@/components/ThrillerZone";
+import WorldRecordsArena from "@/components/WorldRecordsArena";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -21,7 +22,7 @@ const zones = [
   { icon: "🌍", name: "World Explorer", tone: "from-green-500 to-emerald-700", note: "Three interactive world-discovery games", action: "world-explorer" },
   { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "One challenging real-life reasoning MCQ game", action: "brain-battle-arena" },
   { icon: "🔦", name: "Thriller Zone", tone: "from-zinc-600 to-neutral-950", note: "THE FINAL HOUR · One branching suspense story", action: "thriller-zone" },
-  { icon: "🌟", name: "World Records Arena", tone: "from-orange-500 to-red-700" },
+  { icon: "🌟", name: "World Records Arena", tone: "from-orange-500 to-red-700", note: "A varied multiple-choice quiz on world records", action: "world-records-arena" },
   { icon: "🪐", name: "Space Odyssey", tone: "from-violet-600 to-slate-950" },
   { icon: "🎭", name: "Roleplay Theatre", tone: "from-rose-500 to-pink-800" },
   { icon: "👁️", name: "Visual Wonders", tone: "from-blue-500 to-indigo-800" },
@@ -126,7 +127,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             {selected.action === "thriller-zone" && (
               <ThrillerZone userId={userId} />
             )}
-            {selected.action === "learning" && (
+            {selected.action === "world-records-arena" && (\n              <WorldRecordsArena userId={userId} />\n            )}\n            {selected.action === "learning" && (
               <div>
                 <div className="mb-4 rounded-2xl bg-gradient-to-r from-emerald-700 via-teal-700 to-cyan-800 p-4 text-white">
                   <h3 className="text-xl font-black">English Master Quiz</h3>
