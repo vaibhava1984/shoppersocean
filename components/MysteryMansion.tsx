@@ -41,7 +41,7 @@ export default function MysteryMansion({userId}:{userId:string|null}) {
   <div className="pointer-events-none absolute inset-0 opacity-40" style={{backgroundImage:"radial-gradient(circle at 15% 15%,rgba(139,92,246,.5),transparent 32%),radial-gradient(circle at 90% 75%,rgba(14,165,233,.3),transparent 30%)"}}/>
   <div className="relative overflow-hidden rounded-[1.6rem] border border-amber-200/30 bg-gradient-to-br from-[#11162e] via-[#241b3e] to-[#080d20] px-5 py-8 text-center shadow-[inset_0_0_50px_rgba(167,139,250,.12)] sm:px-10 sm:py-12">
    <p className="text-[10px] font-black uppercase tracking-[.35em] text-amber-200">The doors are open · Enter if you dare</p><div className="my-4 text-6xl sm:text-7xl">🏰</div>
-   <h2 className="font-serif text-3xl font-black tracking-wide text-amber-100 sm:text-5xl">MYSTERY MANSION</h2>
+   <h2 className="font-serif text-3xl font-black tracking-wide text-amber-100 sm:text-5xl">MYSTERY &amp; DETECTIVE GAMES</h2>
    <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-violet-100/90">Three rooms. Three kinds of mystery. Follow the clues, challenge every explanation and uncover the truth hidden behind the mansion doors.</p>
    <div className="mt-5 flex flex-wrap justify-center gap-2 text-[10px] font-bold uppercase tracking-wider text-amber-100"><span className="rounded-full border border-amber-200/30 bg-amber-100/10 px-3 py-2">Evidence</span><span className="rounded-full border border-violet-200/30 bg-violet-100/10 px-3 py-2">Logic</span><span className="rounded-full border border-cyan-200/30 bg-cyan-100/10 px-3 py-2">Codes</span><span className="rounded-full border border-rose-200/30 bg-rose-100/10 px-3 py-2">Deception</span></div>
   </div>
@@ -55,7 +55,7 @@ export default function MysteryMansion({userId}:{userId:string|null}) {
    <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Mystery Mansion · Room {games.findIndex(g=>g.id===active.id)+1}</p><h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2><p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
   </div>
   {accessError&&<div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
-  {noQuota&&<div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in Mystery Mansion have been used. Subscribe to continue.</div>}
+  {noQuota&&<div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials for this game collection have been used. Subscribe to continue.</div>}
   {noDaily&&<div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's quota for this room is complete. Please return after the daily reset.</div>}
   {exhausted&&<div className="rounded-xl border border-violet-200 bg-violet-50 p-5 text-center text-sm font-bold text-violet-900">You have completed every currently available starter mystery in this room. More mysteries will be added during the question-bank stage.</div>}
   {!noQuota&&!noDaily&&!exhausted&&question&&<div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-violet-50 p-4 shadow-lg sm:p-6">
