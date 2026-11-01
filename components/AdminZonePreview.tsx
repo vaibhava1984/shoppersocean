@@ -8,21 +8,14 @@ import MysteryMansion from "@/components/MysteryMansion";
 import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
-import ThrillerZone from "@/components/ThrillerZone";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
-  { icon: "🎮", name: "Simple Quiz", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "Three interactive game sections", action: "games" },
+  { icon: "🎮", name: "Quiz World", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "A collection of quizzes, mysteries, technology and world challenges", action: "games" },
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
   { icon: "🎮", name: "Classic Games", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "Play Tic Tac Toe", action: "classic-games" },
-  { icon: "💡", name: "Digital Discovery Hub", tone: "from-cyan-500 to-blue-700", note: "Four interactive technology worlds", action: "digital-discovery" },
-  { icon: "🕵️", name: "Mystery Mansion", tone: "from-slate-700 via-indigo-950 to-purple-950", note: "Three mystery and detective games", action: "mystery-mansion" },
-  { icon: "🧩", name: "The Pattern Master", tone: "from-fuchsia-500 to-purple-700", note: "One interactive pattern challenge", action: "puzzle-universe" },
-  { icon: "🌍", name: "World Explorer", tone: "from-green-500 to-emerald-700", note: "Three interactive world-discovery games", action: "world-explorer" },
   { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "One challenging real-life reasoning MCQ game", action: "brain-battle-arena" },
-  { icon: "🔦", name: "Thriller Zone", tone: "from-zinc-600 to-neutral-950", note: "THE FINAL HOUR · One branching suspense story", action: "thriller-zone" },
-  { icon: "🌟", name: "World Records Arena", tone: "from-orange-500 to-red-700", note: "A varied multiple-choice quiz on world records", action: "world-records-arena" },
   { icon: "🪐", name: "Space Odyssey", tone: "from-violet-600 to-slate-950" },
   { icon: "🎭", name: "Roleplay Theatre", tone: "from-rose-500 to-pink-800" },
   { icon: "👁️", name: "Visual Wonders", tone: "from-blue-500 to-indigo-800" },
@@ -40,10 +33,11 @@ const entertainmentGroups = [
 
 export default function AdminZonePreview({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
+  const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
   const selected = activeZone === null ? null : zones[activeZone];
 
   return (
-    <section aria-label="Admin-only 18 zone workspace" className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
+    <section aria-label="Admin-only 12 zone workspace" className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -52,10 +46,10 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3 sm:mb-8">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.24em] text-cyan-300 sm:text-xs">Private workspace · Admin only</p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore 18 Worlds</h2>
+                <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore 12 Worlds</h2>
                 <p className="mt-2 max-w-xl text-xs leading-5 text-slate-300 sm:text-sm">Your new Shoppers Ocean layout. Choose a zone to enter its available features.</p>
               </div>
-              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">18 zones · Admin preview</span>
+              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">12 zones · Admin preview</span>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
               {zones.map((zone, index) => (
@@ -63,7 +57,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
                   key={zone.name}
                   type="button"
                   disabled={!zone.action}
-                  onClick={() => zone.action && setActiveZone(index)}
+                  onClick={() => { if (zone.action) { setActiveZone(index); setActiveQuizGame(null); } }}
                   aria-label={zone.action ? `Open ${zone.name}` : `${zone.name}, under construction`}
                   className={`group relative min-h-[132px] overflow-hidden rounded-2xl border border-white/30 bg-gradient-to-br ${zone.tone} p-3 text-left shadow-lg transition duration-300 sm:min-h-[148px] sm:p-4 ${zone.action ? "hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200" : "cursor-not-allowed opacity-90"}`}
                 >
@@ -83,7 +77,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
         ) : (
           <div className="min-h-[55vh] rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <button type="button" onClick={() => setActiveZone(null)} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button>
+              <button type="button" onClick={() => { setActiveZone(null); setActiveQuizGame(null); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button>
               <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
             </div>
             {selected.action === "books" && (
@@ -96,11 +90,41 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             )}
             {selected.action === "games" && (
               <div>
-                <div className="mb-4 rounded-2xl bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-4 text-white">
-                  <h3 className="text-xl font-black">Simple Quiz</h3>
-                  <p className="mt-1 text-sm text-violet-100">Choose a game section below. Its existing game logic and question rotation remain in place.</p>
-                </div>
-                <EntertainmentHub userId={userId} visibleGroupIds={entertainmentGroups} />
+                {!activeQuizGame ? (
+                  <>
+                    <div className="mb-5 rounded-2xl bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-4 text-white">
+                      <h3 className="text-xl font-black">Quiz World</h3>
+                      <p className="mt-1 text-sm text-violet-100">Choose a collection to explore. Each game collection opens only when selected, while its original questions, history and access rules remain intact.</p>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      {[
+                        { id: "core", icon: "🎯", title: "Quiz & Brain Games", note: "Word games, brain logic and riddles" },
+                        { id: "digital", icon: "💡", title: "Digital Discovery Games", note: "Internet, artificial intelligence, cyber safety and technology history" },
+                        { id: "mystery", icon: "🕵️", title: "Mystery & Detective Games", note: "Locked room, secret codes and deception cases" },
+                        { id: "pattern", icon: "🧩", title: "The Pattern Master", note: "Find the rule and complete the sequence" },
+                        { id: "world", icon: "🌍", title: "World Explorer Games", note: "Geography, world culture and landmark challenges" },
+                        { id: "records", icon: "🏆", title: "World Records Quiz", note: "Fifty curated questions about remarkable records" },
+                      ].map((game) => (
+                        <button key={game.id} type="button" onClick={() => setActiveQuizGame(game.id)} className="group rounded-2xl border border-indigo-200 bg-gradient-to-br from-white via-indigo-50 to-sky-50 p-5 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                          <span className="text-3xl" aria-hidden="true">{game.icon}</span>
+                          <span className="mt-3 block text-base font-black text-slate-900">{game.title}</span>
+                          <span className="mt-1 block text-xs leading-5 text-slate-600">{game.note}</span>
+                          <span className="mt-3 inline-flex rounded-full bg-indigo-700 px-3 py-1.5 text-[10px] font-extrabold text-white">Open games →</span>
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div>
+                    <button type="button" onClick={() => setActiveQuizGame(null)} className="mb-4 rounded-full border border-indigo-300 bg-indigo-700 px-5 py-2.5 text-sm font-black text-white shadow">← Back to Quiz World</button>
+                    {activeQuizGame === "core" && <EntertainmentHub userId={userId} visibleGroupIds={entertainmentGroups} />}
+                    {activeQuizGame === "digital" && <DigitalDiscoveryHub userId={userId} />}
+                    {activeQuizGame === "mystery" && <MysteryMansion userId={userId} />}
+                    {activeQuizGame === "pattern" && <PuzzleUniverse userId={userId} />}
+                    {activeQuizGame === "world" && <WorldExplorer userId={userId} />}
+                    {activeQuizGame === "records" && <WorldRecordsArena userId={userId} />}
+                  </div>
+                )}
               </div>
             )}
             {selected.action === "classic-games" && (
@@ -109,26 +133,8 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             {selected.action === "science-quiz" && (
               <EntertainmentHub userId={userId} visibleGroupIds={["quiz-arena"]} />
             )}
-            {selected.action === "digital-discovery" && (
-              <DigitalDiscoveryHub userId={userId} />
-            )}
-            {selected.action === "mystery-mansion" && (
-              <MysteryMansion userId={userId} />
-            )}
-            {selected.action === "puzzle-universe" && (
-              <PuzzleUniverse userId={userId} />
-            )}
-            {selected.action === "world-explorer" && (
-              <WorldExplorer userId={userId} />
-            )}
             {selected.action === "brain-battle-arena" && (
               <BrainBattleArena userId={userId} />
-            )}
-            {selected.action === "thriller-zone" && (
-              <ThrillerZone userId={userId} />
-            )}
-            {selected.action === "world-records-arena" && (
-              <WorldRecordsArena userId={userId} />
             )}
             {selected.action === "learning" && (
               <div>
