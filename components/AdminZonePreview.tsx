@@ -7,6 +7,7 @@ import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
 import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
+import MindLab from "@/components/MindLab";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -16,7 +17,7 @@ const zones = [
   { icon: "🕵️", name: "Mystery Mansion", tone: "from-slate-700 via-indigo-950 to-purple-950", note: "Four mystery and detective games", action: "mystery-mansion" },
   { icon: "🧩", name: "Puzzle Universe", tone: "from-fuchsia-500 to-purple-700", note: "Three interactive puzzle rooms", action: "puzzle-universe" },
   { icon: "🌍", name: "World Explorer", tone: "from-green-500 to-emerald-700", note: "Three interactive world-discovery games", action: "world-explorer" },
-  { icon: "🧠", name: "Mind Lab", tone: "from-teal-500 to-cyan-800" },
+  { icon: "🧠", name: "Mind Lab", tone: "from-teal-500 to-cyan-800", note: "Six interactive brain-training rooms", action: "mind-lab" },
   { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "Proposed zone name" },
   { icon: "🔦", name: "Thriller Zone", tone: "from-zinc-600 to-neutral-950" },
   { icon: "🌟", name: "World Records Arena", tone: "from-orange-500 to-red-700" },
@@ -115,6 +116,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             {selected.action === "world-explorer" && (
               <WorldExplorer userId={userId} />
             )}
+            {selected.action === "mind-lab" && <MindLab userId={userId} />}
             {selected.action === "learning" && (
               <div>
                 <div className="mb-4 rounded-2xl bg-gradient-to-r from-emerald-700 via-teal-700 to-cyan-800 p-4 text-white">
