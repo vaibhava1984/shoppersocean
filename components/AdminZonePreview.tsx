@@ -3,12 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import EntertainmentHub from "@/components/EntertainmentHub";
+import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
   { icon: "🎮", name: "Entertainment Arena", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "Seven existing game sections", action: "games" },
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
-  { icon: "💡", name: "Digital Discovery Hub", tone: "from-cyan-500 to-blue-700", note: "Proposed zone name" },
+  { icon: "💡", name: "Digital Discovery Hub", tone: "from-cyan-500 to-blue-700", note: "Six interactive technology worlds", action: "digital-discovery" },
   { icon: "🕵️", name: "Mystery Mansion", tone: "from-slate-600 to-slate-900" },
   { icon: "🧩", name: "Puzzle Universe", tone: "from-fuchsia-500 to-purple-700" },
   { icon: "🌍", name: "World Explorer", tone: "from-green-500 to-emerald-700" },
@@ -101,6 +102,9 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
                 </div>
                 <EntertainmentHub userId={userId} visibleGroupIds={entertainmentGroups} />
               </div>
+            )}
+            {selected.action === "digital-discovery" && (
+              <DigitalDiscoveryHub userId={userId} />
             )}
             {selected.action === "learning" && (
               <div>
