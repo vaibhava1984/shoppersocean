@@ -197,6 +197,7 @@ export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: {
    </button>)}
   </div>
  </div>;
+ if(!active)return <div className="rounded-2xl border border-cyan-200 bg-cyan-50 p-6 text-center font-bold text-cyan-900">Opening your discovery game…</div>;
 
  const noQuota=quota===0&&!isAdmin&&!isSubscribed;
  const dailyDone=quota===0&&(isAdmin||isSubscribed);
