@@ -14,7 +14,7 @@ const games: Game[] = [
 
 ];
 
-export default function PuzzleUniverse({ userId }: { userId: string | null }) {
+export default function PuzzleUniverse({ userId, initialGameId, onExit }: { userId: string | null; initialGameId?:string; onExit?:()=>void }) {
   const [active, setActive] = useState<Game | null>(null);
   const [index, setIndex] = useState(0);
   const [choice, setChoice] = useState<number | null>(null);
@@ -112,9 +112,10 @@ export default function PuzzleUniverse({ userId }: { userId: string | null }) {
     void loadQuota(game);
   };
 
+  useEffect(() => { if (!initialGameId) return; const game = games.find(item => item.id === initialGameId); if (game) begin(game); }, [initialGameId]);
   const record = (skip: boolean, selected: number | null) => {
     if (!active || !question || !userId || !reserved || choice !== null) return;
-    play(skip ? "tap" : selected === question.answer ? "correct" : "wrong");
+    if (!skip) play(selected === question.answer ? "correct" : "wrong");
     setChoice(skip ? -1 : selected);
     const explanation = skip
       ? "Skipped. Correct answer: " + question.options[question.answer] + ". " + question.fact
@@ -137,10 +138,11 @@ export default function PuzzleUniverse({ userId }: { userId: string | null }) {
 
   const back = () => {
     if (timer.current) clearTimeout(timer.current);
+    if (initialGameId && onExit) { onExit(); return; }
     setActive(null); setChoice(null); setMessage(""); setReserved(false); setExhausted(false);
   };
 
-  if (!active) return (
+  if (!active && !initialGameId) return (
     <div className="relative isolate overflow-hidden rounded-[2rem] border border-fuchsia-200 bg-[#100b25] p-4 text-white shadow-2xl sm:p-7">
       <div className="pointer-events-none absolute inset-0 opacity-50" style={{ backgroundImage: "radial-gradient(circle at 12% 18%,rgba(217,70,239,.42),transparent 32%),radial-gradient(circle at 88% 78%,rgba(34,211,238,.30),transparent 32%),radial-gradient(circle at 52% 45%,rgba(99,102,241,.20),transparent 38%)" }} />
       <div className="relative overflow-hidden rounded-[1.7rem] border border-fuchsia-200/30 bg-gradient-to-br from-[#21113e] via-[#171a43] to-[#08172d] px-5 py-8 text-center shadow-[inset_0_0_55px_rgba(217,70,239,.13)] sm:px-10 sm:py-12">
@@ -168,6 +170,7 @@ export default function PuzzleUniverse({ userId }: { userId: string | null }) {
       <p className="relative mt-5 text-center text-[10px] text-fuchsia-200/70">Admin preview · Starter puzzles · Full question banks follow after section testing</p>
     </div>
   );
+  if (!active) return <div className="rounded-2xl border border-fuchsia-200 bg-fuchsia-50 p-6 text-center font-bold text-fuchsia-900">Opening Pattern Master…</div>;
 
   const noQuota = quota === 0 && !isAdmin && !isSubscribed;
   const noDaily = quota === 0 && (isAdmin || isSubscribed);
@@ -176,13 +179,13 @@ export default function PuzzleUniverse({ userId }: { userId: string | null }) {
       <div ref={heading} className={"relative scroll-mt-20 overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br " + active.tone + " p-5 text-white shadow-xl sm:p-7"}>
         <span className="absolute -right-4 -top-8 text-8xl opacity-20">{active.icon}</span>
         <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
-          <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Puzzle Universe</button>
+          <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Quiz World</button>
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{isAdmin ? "ADMIN PREVIEW" : isSubscribed ? "SUBSCRIBER" : String(quota ?? "…") + " free questions left"}</span>
             <button onClick={() => setSoundOn(value => !value)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn ? "🔊 Sound on" : "🔇 Sound off"}</button>
           </div>
         </div>
-        <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Puzzle Universe · Room {games.findIndex(game => game.id === active.id) + 1}</p>
+        <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Quiz World · Pattern Challenge {games.findIndex(game => game.id === active.id) + 1}</p>
         <h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2>
         <p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
       </div>
@@ -199,7 +202,7 @@ export default function PuzzleUniverse({ userId }: { userId: string | null }) {
           <h3 className="text-lg font-extrabold leading-7 text-slate-900 sm:text-xl">{question.q}</h3>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {question.options.map((option, i) => (
-              <button key={question.id + "-" + i} disabled={!reserved || choice !== null || !quotaReady || noQuota || noDaily} onClick={() => record(false, i)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r " + ["from-indigo-600 to-blue-700", "from-fuchsia-600 to-purple-700", "from-teal-600 to-emerald-700", "from-orange-500 to-rose-600"][i] + " px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"}>
+              <button data-answer-choice key={question.id + "-" + i} disabled={!reserved || choice !== null || !quotaReady || noQuota || noDaily} onClick={() => record(false, i)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r " + ["from-indigo-600 to-blue-700", "from-fuchsia-600 to-purple-700", "from-teal-600 to-emerald-700", "from-orange-500 to-rose-600"][i] + " px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"}>
                 {String.fromCharCode(65 + i)}. {option}
               </button>
             ))}
