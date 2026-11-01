@@ -7,6 +7,8 @@ import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
 import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
+import dynamic from "next/dynamic";
+const BrainBattleArena = dynamic(() => import("@/components/BrainBattleArena"), { loading: () => <div className="rounded-2xl bg-slate-100 p-8 text-center font-bold text-slate-600">Preparing Brain Battle Arena…</div> });
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -16,7 +18,7 @@ const zones = [
   { icon: "🕵️", name: "Mystery Mansion", tone: "from-slate-700 via-indigo-950 to-purple-950", note: "Four mystery and detective games", action: "mystery-mansion" },
   { icon: "🧩", name: "Puzzle Universe", tone: "from-fuchsia-500 to-purple-700", note: "Three interactive puzzle rooms", action: "puzzle-universe" },
   { icon: "🌍", name: "World Explorer", tone: "from-green-500 to-emerald-700", note: "Three interactive world-discovery games", action: "world-explorer" },
-  { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "Proposed zone name" },
+  { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "Two original strategy and deduction games", action: "brain-battle-arena" },
   { icon: "🔦", name: "Thriller Zone", tone: "from-zinc-600 to-neutral-950" },
   { icon: "🌟", name: "World Records Arena", tone: "from-orange-500 to-red-700" },
   { icon: "🪐", name: "Space Odyssey", tone: "from-violet-600 to-slate-950" },
@@ -42,7 +44,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
   const selected = activeZone === null ? null : zones[activeZone];
 
   return (
-    <section aria-label="Admin-only 17 zone workspace" className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
+    <section aria-label="Admin-only 16 zone workspace" className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -51,10 +53,10 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3 sm:mb-8">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.24em] text-cyan-300 sm:text-xs">Private workspace · Admin only</p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore 17 Worlds</h2>
+                <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore 16 Worlds</h2>
                 <p className="mt-2 max-w-xl text-xs leading-5 text-slate-300 sm:text-sm">Your new Shoppers Ocean layout. Choose a zone to enter its available features.</p>
               </div>
-              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">17 zones · Admin preview</span>
+              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">16 zones · Admin preview</span>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
               {zones.map((zone, index) => (
