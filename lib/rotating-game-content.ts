@@ -1,5 +1,6 @@
 import { DAILY_GK_QUESTIONS, getDailyGKQuestion, getDailyGKOptions } from "@/lib/daily-knowledge";
 import { WORD_QUIZ_BANK } from "@/data/word-quiz-bank";
+import { BRAIN_LOGICAL_RIDDLES, ODD_ONE_OUT_BANK } from "@/data/brain-logic-bank";
 export { getDailyGKQuestion };
 export type Puzzle = { id:string; question:string; answer:string; clue?:string; pattern?:string; options?:string[]; correctIndex?:number; explanation?:string; topic?:string };
 const DAY_MS=86400000;
@@ -3653,73 +3654,9 @@ export function getSequencePuzzle(date:string,slot:number):Puzzle & {explanation
  const nums=[0,1,2,3,4].map(i=>a+i*step+i*i*curve),next=a+5*step+25*curve;
  return {id:"sequence:"+nums.join(",")+":"+next,question:nums.join(", ") + ", ?",answer:String(next),explanation:"The sequence adds a steady step and a growing square-based amount."};
 }
-const oddWordSets=[
- {o:["Saturn","Jupiter","Neptune","Sirius"],a:"Sirius",why:"Sirius is a star; the others are planets."},
- {o:["Kilogram","Metre","Second","Celsius"],a:"Celsius",why:"Celsius is a temperature scale; the others are SI base units."},
- {o:["Shark","Whale","Dolphin","Octopus"],a:"Octopus",why:"Octopus is a mollusc; the others are vertebrates."},
- {o:["Mercury","Iron","Copper","Oxygen"],a:"Oxygen",why:"Oxygen is a gas at room temperature; the others are metals."},
- {o:["Violin","Trumpet","Clarinet","Oboe"],a:"Violin",why:"Violin is a string instrument; the others are wind instruments."},
- {o:["Amazon","Nile","Danube","Sahara"],a:"Sahara",why:"Sahara is a desert; the others are rivers."},
- {o:["Everest","Kilimanjaro","Aconcagua","Amazon"],a:"Amazon",why:"Amazon is a river; the others are mountains."},
- {o:["Copper","Bronze","Brass","Steel"],a:"Copper",why:"Copper is an element; the others are alloys."},
- {o:["Square","Rectangle","Rhombus","Sphere"],a:"Sphere",why:"Sphere is three-dimensional; the others are plane shapes."},
- {o:["January","March","May","June"],a:"June",why:"June has 30 days; the others have 31."},
- {o:["Oxygen","Hydrogen","Nitrogen","Water"],a:"Water",why:"Water is a compound; the others are elements."},
- {o:["Cheetah","Leopard","Jaguar","Wolf"],a:"Wolf",why:"Wolf belongs to the dog family; the others are big cats."},
- {o:["Novel","Biography","Atlas","Poetry"],a:"Atlas",why:"Atlas is a book of maps; the others are literary forms."},
- {o:["Ruby","Sapphire","Emerald","Quartz"],a:"Quartz",why:"Quartz is a mineral family; the others are precious gemstones."},
- {o:["North","South","East","Up"],a:"Up",why:"Up is vertical; the others are compass directions."},
- {o:["Piano","Harp","Guitar","Drum"],a:"Drum",why:"Drum is a percussion instrument; the others are string instruments."},
- {o:["Ant","Bee","Butterfly","Spider"],a:"Spider",why:"Spider is an arachnid; the others are insects."},
- {o:["Liver","Heart","Lung","Femur"],a:"Femur",why:"Femur is a bone; the others are organs."},
- {o:["Venus","Mars","Earth","Moon"],a:"Moon",why:"Moon is a natural satellite; the others are planets."},
- {o:["Gold","Silver","Platinum","Diamond"],a:"Diamond",why:"Diamond is a form of carbon; the others are metals."},
- {o:["Poet","Novelist","Playwright","Publisher"],a:"Publisher",why:"Publisher produces and distributes works; the others create literary works."},
- {o:["Cairo","Tokyo","Lisbon","Sahara"],a:"Sahara",why:"Sahara is a desert; the others are cities."},
- {o:["Frog","Salamander","Newt","Lizard"],a:"Lizard",why:"Lizard is a reptile; the others are amphibians."},
- {o:["Square","Cube","Pyramid","Cylinder"],a:"Square",why:"Square is two-dimensional; the others are three-dimensional solids."},
- {o:["Carbon","Oxygen","Helium","Granite"],a:"Granite",why:"Granite is a rock; the others are chemical elements."},
- {o:["Rose","Daisy","Sunflower","Moss"],a:"Moss",why:"Moss is non-flowering; the others are flowering plants."},
- {o:["Monday","Tuesday","Friday","April"],a:"April",why:"April is a month; the others are weekdays."},
- {o:["Lake","Pond","Reservoir","Mountain"],a:"Mountain",why:"Mountain is a landform; the others are bodies of water."},
- {o:["Compass","Thermometer","Barometer","Microscope"],a:"Microscope",why:"Microscope magnifies tiny objects; the others measure direction or weather."},
- {o:["Cobalt","Nickel","Iron","Granite"],a:"Granite",why:"Granite is a rock; the others are metals."},
- {o:["Falcon","Eagle","Hawk","Penguin"],a:"Penguin",why:"Penguin is flightless; the others are birds adapted for flight."},
- {o:["Mercury","Venus","Earth","Pluto"],a:"Pluto",why:"Pluto is classified as a dwarf planet; the others are planets."},
- {o:["Asia","Africa","Europe","Pacific"],a:"Pacific",why:"Pacific is an ocean; the others are continents."},
- {o:["Soprano","Alto","Tenor","Violin"],a:"Violin",why:"Violin is an instrument; the others are vocal ranges."},
- {o:["Rectangle","Pentagon","Hexagon","Triangle"],a:"Rectangle",why:"Rectangle has four sides; the others listed have three, five or six."},
- {o:["Oak","Pine","Maple","Mushroom"],a:"Mushroom",why:"Mushroom is a fungus; the others are trees."},
- {o:["Copper","Aluminium","Iron","Plastic"],a:"Plastic",why:"Plastic is not a metal; the others are metals."},
- {o:["Hockey","Tennis","Badminton","Piano"],a:"Piano",why:"Piano is a musical instrument; the others are sports."},
- {o:["Dolphin","Seal","Walrus","Crocodile"],a:"Crocodile",why:"Crocodile is a reptile; the others are mammals."},
- {o:["Earth","Mars","Jupiter","Andromeda"],a:"Andromeda",why:"Andromeda is a galaxy; the others are planets."},
- {o:["Kilometre","Centimetre","Millimetre","Litre"],a:"Litre",why:"Litre measures volume; the others measure length."},
- {o:["Rose","Tulip","Lily","Pine"],a:"Pine",why:"Pine is a tree; the others are flowering plants."},
- {o:["Chess","Checkers","Go","Swimming"],a:"Swimming",why:"Swimming is a physical sport; the others are board games."},
- {o:["Sodium","Potassium","Calcium","Salt"],a:"Salt",why:"Salt is a compound; the others are elements."},
- {o:["Whale","Bat","Dolphin","Penguin"],a:"Penguin",why:"Penguin is a bird; the others are mammals."},
- {o:["Spring","Summer","Autumn","January"],a:"January",why:"January is a month; the others are seasons."},
- {o:["Mercury","Mars","Jupiter","Europa"],a:"Europa",why:"Europa is a moon; the others are planets."},
- {o:["Poem","Essay","Novel","Dictionary"],a:"Dictionary",why:"Dictionary is a reference work; the others are literary compositions."},
- {o:["Triangle","Pentagon","Octagon","Circle"],a:"Circle",why:"Circle has no straight sides; the others are polygons."},
- {o:["Atlantic","Indian","Arctic","Mediterranean"],a:"Mediterranean",why:"Mediterranean is a sea; the others are oceans."},
- {o:["Bee","Ant","Wasp","Scorpion"],a:"Scorpion",why:"Scorpion is an arachnid; the others are insects."},
-
- {o:["Violin","Cello","Flute","Viola"],a:"Flute",why:"Flute is a wind instrument; the others are string instruments."},
- {o:["Eagle","Falcon","Owl","Dolphin"],a:"Dolphin",why:"Dolphin is a mammal; the others are birds."},
- {o:["Mercury","Venus","Mars","Europa"],a:"Europa",why:"Europa is a moon; the others are planets."},
- {o:["Novel","Poem","Play","Compass"],a:"Compass",why:"Compass is a navigation tool; the others are literary forms."},
- {o:["Copper","Silver","Gold","Granite"],a:"Granite",why:"Granite is a rock; the others are metals."},
- {o:["Rose","Tulip","Orchid","Fern"],a:"Fern",why:"Fern reproduces by spores; the others are flowering plants."},
- {o:["Whisper","Murmur","Shout","Silence"],a:"Silence",why:"Silence is the absence of sound; the others are ways of speaking."},
- {o:["Painter","Sculptor","Composer","Gallery"],a:"Gallery",why:"A gallery is a place; the others are creators."},
- {o:["January","April","August","Tuesday"],a:"Tuesday",why:"Tuesday is a weekday; the others are months."},
- {o:["Maple","Oak","Pine","Lily"],a:"Lily",why:"Lily is a flowering plant; the others are trees."}
-];
 export function getOddPuzzle(date:string,slot:number):Puzzle & {options:string[];explanation:string}{
- const seed=seedFor(date,slot),item=oddWordSets[((seed%oddWordSets.length)+oddWordSets.length)%oddWordSets.length],options=shuffled(item.o,seed+17);
- return {id:"odd:"+item.a+":"+options.join(","),question:"Read the words carefully. Which one does not belong with the others?",options,answer:item.a,explanation:item.why};
+ const seed=seedFor(date,slot),index=((Math.floor(seed)%ODD_ONE_OUT_BANK.length)+ODD_ONE_OUT_BANK.length)%ODD_ONE_OUT_BANK.length,item=ODD_ONE_OUT_BANK[index],options=shuffled(item.o,seed+17);
+ return {id:"odd:"+index+":"+item.a,question:"Read the words carefully. Which one does not belong with the others?",options,answer:item.a,explanation:item.why};
 }
 const answerPools:Record<string,string[]>={
  capital:Array.from(new Set(DAILY_GK_QUESTIONS.filter(x=>x.id.startsWith("capital-")).map(x=>x.answer))),
@@ -3932,23 +3869,9 @@ export function getLogicRiddlePuzzle(date:string,slot:number):Puzzle & {options:
  const seed=seedFor(date,slot),index=((seed%logicRiddleBank.length)+logicRiddleBank.length)%logicRiddleBank.length,item=logicRiddleBank[index],options=shuffled(item.o,seed+71);
  return {id:"logic-riddle:"+index,question:item.q,answer:item.a,options,correctIndex:options.indexOf(item.a),explanation:item.e,topic:"Logic"};
 }
-const riddleBank:Array<{q:string;a:string;e:string;o:string[]}>= [
-{q:"A prisoner is told: “If you speak a true sentence, you will be hanged; if you speak a false sentence, you will be shot.” What sentence can he say to make either punishment impossible under the rule?",a:"You will shoot me",e:"If shot, the sentence was true and he should be hanged; if hanged, it was false and he should be shot. The rule contradicts itself.",o:["You will shoot me","I will be hanged","I will be shot","You will release me"]},
-{q:"A clock loses exactly 6 minutes every hour. It is set correctly at noon. When the faulty clock shows 3:00, what is the actual time?",a:"3:18 PM",e:"The clock runs at 54 minutes per real hour. It needs 3 hours 20 minutes of real time to show 3 hours elapsed.",o:["3:18 PM","3:20 PM","3:24 PM","3:30 PM"]},
-{q:"You have 8 identical-looking balls; one is heavier. Using a balance scale only twice, how can you guarantee finding it?",a:"Weigh 3 against 3, then compare one from the heavier group or the remaining pair",e:"If the first weighing balances, the heavy ball is among the two left; otherwise it is in the heavier group of three. A second weighing resolves either case.",o:["Weigh 3 against 3, then compare one from the heavier group or the remaining pair","Weigh 4 against 4, then weigh 2 against 2","Weigh 2 against 2, then weigh the four remaining balls","Weigh 5 against 3, then compare the two heaviest"]},
-{q:"A man leaves home, makes three left turns, and returns home. Two masked figures are waiting there. What is happening?",a:"He is a baseball player returning to home plate",e:"The route describes a baseball diamond; the masked figures are the catcher and umpire.",o:["He is a baseball player returning to home plate","He is lost in a one-way street system","He is circling a roundabout","He is returning from a three-sided maze"]},
-{q:"A woman has two coins that total 30 cents. One of them is not a nickel. What are the coins?",a:"A quarter and a nickel",e:"One coin is not a nickel—the quarter. The other can be a nickel.",o:["A quarter and a nickel","Three dimes","Two quarters","A twenty-cent coin and a dime"]},
-{q:"A room has no windows or doors. Inside are a table and a mirror. How do you get out?",a:"Stop imagining the room",e:"It is a wordplay riddle: the room exists only in the imagined scenario.",o:["Stop imagining the room","Break the mirror and use a shard","Move the table to reveal a trapdoor","Wait until the room becomes visible"]},
-{q:"A number has two digits. Its digits add to 9. Reversing the digits makes the number 27 greater. What is the number?",a:"36",e:"63 − 36 = 27 and 3 + 6 = 9.",o:["36","45","27","54"]},
-{q:"You see a boat filled with people. It has not sunk, but when you look again you cannot see a single person aboard. Why?",a:"Everyone aboard is married",e:"There is not a single person because everyone is part of a couple.",o:["Everyone aboard is married","The passengers went below deck","The boat reached a fog bank","The people are reflected in the water"]},
-{q:"A farmer must cross a river with a fox, a chicken, and grain. The boat carries the farmer and one item. What is the minimum number of one-way crossings?",a:"Seven",e:"Take chicken across, return alone, take fox across, bring chicken back, take grain across, return alone, then take chicken across: seven crossings.",o:["Seven","Five","Six","Nine"]},
-{q:"Three boxes are labelled APPLES, ORANGES, and MIXED. Every label is wrong. You may take one fruit from one box. Which box should you choose to identify all three?",a:"The box labelled MIXED",e:"Since every label is wrong, that box cannot be mixed. Its single fruit identifies it, and the other labels follow by elimination.",o:["The box labelled MIXED","The box labelled APPLES","The box labelled ORANGES","Any box, but take two fruits"]},
-{q:"A 5-litre jug and a 3-litre jug have no markings. How can you measure exactly 4 litres?",a:"Fill 5, pour into 3, empty 3, transfer the remaining 2, then refill 5 and top up the 3",e:"After transferring 2 litres into the 3-litre jug, fill the 5-litre jug and pour 1 litre into the 3-litre jug; 4 litres remain.",o:["Fill 5, pour into 3, empty 3, transfer the remaining 2, then refill 5 and top up the 3","Fill 3 twice and pour into the 5-litre jug","Fill 5 and pour half into the 3-litre jug","Fill both jugs and subtract their volumes"]},
-{q:"A father is four times as old as his son. In 20 years, he will be twice as old as his son. How old is the son now?",a:"10",e:"Let the son's age be x. Father is 4x; 4x+20=2(x+20), so x=10.",o:["10","12","15","20"]}
-];
 export function getRiddlePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
- const seed=seedFor(date,slot),item=riddleBank[((seed%riddleBank.length)+riddleBank.length)%riddleBank.length];
- return {id:"riddle:"+item.a+":"+item.q,question:item.q,answer:item.a,explanation:item.e,options:shuffled(item.o,seed+41)};
+ const seed=seedFor(date,slot),index=((Math.floor(seed)%BRAIN_LOGICAL_RIDDLES.length)+BRAIN_LOGICAL_RIDDLES.length)%BRAIN_LOGICAL_RIDDLES.length,item=BRAIN_LOGICAL_RIDDLES[index];
+ return {id:"riddle:"+index+":"+item.q,question:item.q,answer:item.a,explanation:item.e,options:shuffled(item.o,seed+41)};
 }
 export function getSpotPuzzle(date:string,slot:number):{id:string;size:number;target:number;targetIcon:number;baseIcon:number}{
  const seed=seedFor(date,slot),size=seed%3===0?36:25,target=(hash(seed+77)%(size));
