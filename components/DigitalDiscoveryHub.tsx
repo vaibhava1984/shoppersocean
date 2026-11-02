@@ -4,6 +4,7 @@ import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 import Link from "next/link";
+import { internetQuestionBank } from "@/components/internetQuestionBank";
 
 type Question = { id:string; q:string; options:string[]; answer:number; fact:string };
 type Area = { id:string; type:string; icon:string; title:string; intro:string; tone:string; questions:Question[] };
@@ -12,7 +13,7 @@ type Question = { id: string; q: string; options: string[]; answer: number; fact
 type Area = { id: string; type: string; icon: string; title: string; intro: string; tone: string; questions: Question[] };
 
 const areas: Area[] = [
-{ id:"internet",type:"internet",icon:"🌐",title:"Secrets of the Internet",intro:"Uncover how the connected world really works.",tone:"from-blue-600 to-cyan-500",questions:[
+{ id:"internet",type:"internet",icon:"🌐",title:"Secrets of the Internet",intro:"Uncover how the connected world really works.",tone:"from-blue-600 to-cyan-500",questions:[...internetQuestionBank,
 {id:"net-01",q:"What does DNS do when you open a website by its name?",options:["Finds the server's IP address","Charges your internet bill","Creates the website design","Encrypts your keyboard"],answer:0,fact:"DNS is like the internet's address book: it translates domain names into IP addresses."},
 {id:"net-02",q:"Which device usually directs data between your home network and the internet?",options:["Printer","Router","Webcam","Monitor"],answer:1,fact:"A router forwards data between networks and often provides Wi-Fi to devices at home."},
 {id:"net-03",q:"What does HTTPS add to a website connection?",options:["A bigger screen","Encrypted communication and identity checks","Unlimited storage","Faster typing"],answer:1,fact:"HTTPS uses TLS to protect data in transit and help verify the website's identity."},
