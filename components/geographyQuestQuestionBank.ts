@@ -20,14 +20,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/af.png",
     "alt": "Flag of Afghanistan",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Afghanistan is located in Asia."
   },
   {
@@ -52,12 +50,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Albania is located in Europe."
   },
   {
@@ -81,11 +77,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Algeria",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Algeria is located in Africa."
@@ -110,14 +104,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ad.png",
     "alt": "Flag of Andorra",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa",
+      "Asia"
     ],
-    "answer": 2,
+    "answer": 1,
     "fact": "Andorra is located in Europe."
   },
   {
@@ -140,14 +132,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ao.png",
     "alt": "Flag of Angola",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Angola is located in Africa."
   },
   {
@@ -170,12 +160,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ag.png",
     "alt": "Flag of Antigua and Barbuda",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America"
     ],
     "answer": 3,
     "fact": "Antigua and Barbuda is located in North America."
@@ -200,14 +188,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ar.png",
     "alt": "Flag of Argentina",
     "options": [
-      "Africa",
-      "Asia",
+      "South America",
       "Europe",
       "North America",
-      "South America",
       "Oceania"
     ],
-    "answer": 4,
+    "answer": 0,
     "fact": "Argentina is located in South America."
   },
   {
@@ -230,12 +216,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/am.png",
     "alt": "Flag of Armenia",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Armenia is located in Asia."
@@ -260,14 +244,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/au.png",
     "alt": "Flag of Australia",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "Oceania",
+      "Africa"
     ],
-    "answer": 5,
+    "answer": 2,
     "fact": "Australia is located in Oceania."
   },
   {
@@ -292,12 +274,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Austria is located in Europe."
   },
   {
@@ -320,14 +300,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/az.png",
     "alt": "Flag of Azerbaijan",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
       "South America",
       "Oceania"
     ],
-    "answer": 1,
+    "answer": 0,
     "fact": "Azerbaijan is located in Asia."
   },
   {
@@ -350,14 +328,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/bs.png",
     "alt": "Flag of Bahamas",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America",
+      "Asia",
+      "Europe"
     ],
-    "answer": 3,
+    "answer": 1,
     "fact": "Bahamas is located in North America."
   },
   {
@@ -380,14 +356,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/bh.png",
     "alt": "Flag of Bahrain",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Bahrain is located in Asia."
   },
   {
@@ -410,14 +384,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/bd.png",
     "alt": "Flag of Bangladesh",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Bangladesh is located in Asia."
   },
   {
@@ -440,14 +412,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/bb.png",
     "alt": "Flag of Barbados",
     "options": [
-      "Africa",
+      "North America",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
-    "answer": 3,
+    "answer": 0,
     "fact": "Barbados is located in North America."
   },
   {
@@ -470,14 +440,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/by.png",
     "alt": "Flag of Belarus",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa",
+      "Asia"
     ],
-    "answer": 2,
+    "answer": 1,
     "fact": "Belarus is located in Europe."
   },
   {
@@ -500,12 +468,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/be.png",
     "alt": "Flag of Belgium",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa"
     ],
     "answer": 2,
     "fact": "Belgium is located in Europe."
@@ -530,12 +496,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/bz.png",
     "alt": "Flag of Belize",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America"
     ],
     "answer": 3,
     "fact": "Belize is located in North America."
@@ -561,11 +525,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Benin",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Benin is located in Africa."
@@ -590,12 +552,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/bt.png",
     "alt": "Flag of Bhutan",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Bhutan is located in Asia."
@@ -620,14 +580,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/bo.png",
     "alt": "Flag of Bolivia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
+      "Oceania",
       "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 4,
+    "answer": 2,
     "fact": "Bolivia is located in South America."
   },
   {
@@ -652,12 +610,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Bosnia and Herzegovina is located in Europe."
   },
   {
@@ -681,11 +637,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Botswana",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Botswana is located in Africa."
@@ -710,14 +664,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/br.png",
     "alt": "Flag of Brazil",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
+      "Oceania",
       "South America",
-      "Oceania"
+      "Europe",
+      "North America"
     ],
-    "answer": 4,
+    "answer": 1,
     "fact": "Brazil is located in South America."
   },
   {
@@ -740,14 +692,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/bn.png",
     "alt": "Flag of Brunei",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Brunei is located in Asia."
   },
   {
@@ -772,12 +722,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Bulgaria is located in Europe."
   },
   {
@@ -801,11 +749,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Burkina Faso",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Burkina Faso is located in Africa."
@@ -830,14 +776,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/bi.png",
     "alt": "Flag of Burundi",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Burundi is located in Africa."
   },
   {
@@ -860,14 +804,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/kh.png",
     "alt": "Flag of Cambodia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Cambodia is located in Asia."
   },
   {
@@ -890,14 +832,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/cm.png",
     "alt": "Flag of Cameroon",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa"
     ],
-    "answer": 0,
+    "answer": 3,
     "fact": "Cameroon is located in Africa."
   },
   {
@@ -920,14 +860,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ca.png",
     "alt": "Flag of Canada",
     "options": [
-      "Africa",
+      "North America",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
-    "answer": 3,
+    "answer": 0,
     "fact": "Canada is located in North America."
   },
   {
@@ -950,14 +888,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/cv.png",
     "alt": "Flag of Cape Verde",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Cape Verde is located in Africa."
   },
   {
@@ -980,14 +916,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/cf.png",
     "alt": "Flag of Central African Republic",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Central African Republic is located in Africa."
   },
   {
@@ -1010,14 +944,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/td.png",
     "alt": "Flag of Chad",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa"
     ],
-    "answer": 0,
+    "answer": 3,
     "fact": "Chad is located in Africa."
   },
   {
@@ -1040,14 +972,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/cl.png",
     "alt": "Flag of Chile",
     "options": [
-      "Africa",
-      "Asia",
+      "South America",
       "Europe",
       "North America",
-      "South America",
       "Oceania"
     ],
-    "answer": 4,
+    "answer": 0,
     "fact": "Chile is located in South America."
   },
   {
@@ -1070,12 +1000,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/cn.png",
     "alt": "Flag of China",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "China is located in Asia."
@@ -1100,14 +1028,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/co.png",
     "alt": "Flag of Colombia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
+      "Oceania",
       "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 4,
+    "answer": 2,
     "fact": "Colombia is located in South America."
   },
   {
@@ -1130,14 +1056,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/km.png",
     "alt": "Flag of Comoros",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa"
     ],
-    "answer": 0,
+    "answer": 3,
     "fact": "Comoros is located in Africa."
   },
   {
@@ -1160,14 +1084,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/cr.png",
     "alt": "Flag of Costa Rica",
     "options": [
-      "Africa",
+      "North America",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
-    "answer": 3,
+    "answer": 0,
     "fact": "Costa Rica is located in North America."
   },
   {
@@ -1190,14 +1112,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/hr.png",
     "alt": "Flag of Croatia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa",
+      "Asia"
     ],
-    "answer": 2,
+    "answer": 1,
     "fact": "Croatia is located in Europe."
   },
   {
@@ -1220,14 +1140,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/cu.png",
     "alt": "Flag of Cuba",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America",
+      "Asia"
     ],
-    "answer": 3,
+    "answer": 2,
     "fact": "Cuba is located in North America."
   },
   {
@@ -1252,12 +1170,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Cyprus is located in Europe."
   },
   {
@@ -1280,14 +1196,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/cz.png",
     "alt": "Flag of Czechia",
     "options": [
+      "Europe",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "North America"
     ],
-    "answer": 2,
+    "answer": 0,
     "fact": "Czechia is located in Europe."
   },
   {
@@ -1310,14 +1224,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/cd.png",
     "alt": "Flag of Democratic Republic of the Congo",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Democratic Republic of the Congo is located in Africa."
   },
   {
@@ -1340,12 +1252,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/dk.png",
     "alt": "Flag of Denmark",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa"
     ],
     "answer": 2,
     "fact": "Denmark is located in Europe."
@@ -1370,14 +1280,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/dj.png",
     "alt": "Flag of Djibouti",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa"
     ],
-    "answer": 0,
+    "answer": 3,
     "fact": "Djibouti is located in Africa."
   },
   {
@@ -1400,14 +1308,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/dm.png",
     "alt": "Flag of Dominica",
     "options": [
-      "Africa",
+      "North America",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
-    "answer": 3,
+    "answer": 0,
     "fact": "Dominica is located in North America."
   },
   {
@@ -1430,14 +1336,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/do.png",
     "alt": "Flag of Dominican Republic",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America",
+      "Asia",
+      "Europe"
     ],
-    "answer": 3,
+    "answer": 1,
     "fact": "Dominican Republic is located in North America."
   },
   {
@@ -1460,14 +1364,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ec.png",
     "alt": "Flag of Ecuador",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
+      "Oceania",
       "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 4,
+    "answer": 2,
     "fact": "Ecuador is located in South America."
   },
   {
@@ -1490,14 +1392,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/eg.png",
     "alt": "Flag of Egypt",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa"
     ],
-    "answer": 0,
+    "answer": 3,
     "fact": "Egypt is located in Africa."
   },
   {
@@ -1520,14 +1420,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/sv.png",
     "alt": "Flag of El Salvador",
     "options": [
-      "Africa",
+      "North America",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
-    "answer": 3,
+    "answer": 0,
     "fact": "El Salvador is located in North America."
   },
   {
@@ -1550,14 +1448,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/gq.png",
     "alt": "Flag of Equatorial Guinea",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Equatorial Guinea is located in Africa."
   },
   {
@@ -1580,14 +1476,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/er.png",
     "alt": "Flag of Eritrea",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Eritrea is located in Africa."
   },
   {
@@ -1612,12 +1506,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Estonia is located in Europe."
   },
   {
@@ -1641,11 +1533,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Eswatini",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Eswatini is located in Africa."
@@ -1670,14 +1560,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/et.png",
     "alt": "Flag of Ethiopia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Ethiopia is located in Africa."
   },
   {
@@ -1700,14 +1588,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/fj.png",
     "alt": "Flag of Fiji",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "Oceania",
+      "Africa"
     ],
-    "answer": 5,
+    "answer": 2,
     "fact": "Fiji is located in Oceania."
   },
   {
@@ -1732,12 +1618,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Finland is located in Europe."
   },
   {
@@ -1760,14 +1644,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/fr.png",
     "alt": "Flag of France",
     "options": [
+      "Europe",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "North America"
     ],
-    "answer": 2,
+    "answer": 0,
     "fact": "France is located in Europe."
   },
   {
@@ -1790,14 +1672,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ga.png",
     "alt": "Flag of Gabon",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Gabon is located in Africa."
   },
   {
@@ -1820,14 +1700,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/gm.png",
     "alt": "Flag of Gambia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Gambia is located in Africa."
   },
   {
@@ -1850,14 +1728,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ge.png",
     "alt": "Flag of Georgia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Georgia is located in Asia."
   },
   {
@@ -1880,14 +1756,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/de.png",
     "alt": "Flag of Germany",
     "options": [
+      "Europe",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "North America"
     ],
-    "answer": 2,
+    "answer": 0,
     "fact": "Germany is located in Europe."
   },
   {
@@ -1910,14 +1784,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/gh.png",
     "alt": "Flag of Ghana",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Ghana is located in Africa."
   },
   {
@@ -1940,12 +1812,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/gr.png",
     "alt": "Flag of Greece",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa"
     ],
     "answer": 2,
     "fact": "Greece is located in Europe."
@@ -1970,12 +1840,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/gd.png",
     "alt": "Flag of Grenada",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America"
     ],
     "answer": 3,
     "fact": "Grenada is located in North America."
@@ -2000,14 +1868,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/gt.png",
     "alt": "Flag of Guatemala",
     "options": [
-      "Africa",
+      "North America",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
-    "answer": 3,
+    "answer": 0,
     "fact": "Guatemala is located in North America."
   },
   {
@@ -2030,14 +1896,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/gn.png",
     "alt": "Flag of Guinea",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Guinea is located in Africa."
   },
   {
@@ -2060,14 +1924,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/gw.png",
     "alt": "Flag of Guinea-Bissau",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Guinea-Bissau is located in Africa."
   },
   {
@@ -2090,14 +1952,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/gy.png",
     "alt": "Flag of Guyana",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Oceania",
+      "South America"
     ],
-    "answer": 4,
+    "answer": 3,
     "fact": "Guyana is located in South America."
   },
   {
@@ -2120,14 +1980,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ht.png",
     "alt": "Flag of Haiti",
     "options": [
-      "Africa",
+      "North America",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
-    "answer": 3,
+    "answer": 0,
     "fact": "Haiti is located in North America."
   },
   {
@@ -2150,14 +2008,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/hn.png",
     "alt": "Flag of Honduras",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America",
+      "Asia",
+      "Europe"
     ],
-    "answer": 3,
+    "answer": 1,
     "fact": "Honduras is located in North America."
   },
   {
@@ -2180,12 +2036,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/hu.png",
     "alt": "Flag of Hungary",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa"
     ],
     "answer": 2,
     "fact": "Hungary is located in Europe."
@@ -2212,12 +2066,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Iceland is located in Europe."
   },
   {
@@ -2240,14 +2092,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/in.png",
     "alt": "Flag of India",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
       "South America",
       "Oceania"
     ],
-    "answer": 1,
+    "answer": 0,
     "fact": "India is located in Asia."
   },
   {
@@ -2270,12 +2120,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/id.png",
     "alt": "Flag of Indonesia",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Indonesia is located in Asia."
@@ -2300,14 +2148,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ir.png",
     "alt": "Flag of Iran",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Iran is located in Asia."
   },
   {
@@ -2330,14 +2176,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/iq.png",
     "alt": "Flag of Iraq",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Iraq is located in Asia."
   },
   {
@@ -2360,14 +2204,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ie.png",
     "alt": "Flag of Ireland",
     "options": [
+      "Europe",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "North America"
     ],
-    "answer": 2,
+    "answer": 0,
     "fact": "Ireland is located in Europe."
   },
   {
@@ -2390,12 +2232,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/il.png",
     "alt": "Flag of Israel",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Israel is located in Asia."
@@ -2420,12 +2260,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/it.png",
     "alt": "Flag of Italy",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa"
     ],
     "answer": 2,
     "fact": "Italy is located in Europe."
@@ -2450,12 +2288,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/jm.png",
     "alt": "Flag of Jamaica",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America"
     ],
     "answer": 3,
     "fact": "Jamaica is located in North America."
@@ -2480,14 +2316,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/jp.png",
     "alt": "Flag of Japan",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
       "South America",
       "Oceania"
     ],
-    "answer": 1,
+    "answer": 0,
     "fact": "Japan is located in Asia."
   },
   {
@@ -2510,12 +2344,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/jo.png",
     "alt": "Flag of Jordan",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Jordan is located in Asia."
@@ -2540,14 +2372,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/kz.png",
     "alt": "Flag of Kazakhstan",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Kazakhstan is located in Asia."
   },
   {
@@ -2570,14 +2400,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ke.png",
     "alt": "Flag of Kenya",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa"
     ],
-    "answer": 0,
+    "answer": 3,
     "fact": "Kenya is located in Africa."
   },
   {
@@ -2600,14 +2428,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ki.png",
     "alt": "Flag of Kiribati",
     "options": [
+      "Oceania",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 5,
+    "answer": 0,
     "fact": "Kiribati is located in Oceania."
   },
   {
@@ -2630,12 +2456,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/kw.png",
     "alt": "Flag of Kuwait",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Kuwait is located in Asia."
@@ -2660,14 +2484,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/kg.png",
     "alt": "Flag of Kyrgyzstan",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Kyrgyzstan is located in Asia."
   },
   {
@@ -2690,14 +2512,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/la.png",
     "alt": "Flag of Laos",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Laos is located in Asia."
   },
   {
@@ -2720,14 +2540,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/lv.png",
     "alt": "Flag of Latvia",
     "options": [
+      "Europe",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "North America"
     ],
-    "answer": 2,
+    "answer": 0,
     "fact": "Latvia is located in Europe."
   },
   {
@@ -2750,12 +2568,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/lb.png",
     "alt": "Flag of Lebanon",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Lebanon is located in Asia."
@@ -2780,14 +2596,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ls.png",
     "alt": "Flag of Lesotho",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Lesotho is located in Africa."
   },
   {
@@ -2810,14 +2624,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/lr.png",
     "alt": "Flag of Liberia",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa"
     ],
-    "answer": 0,
+    "answer": 3,
     "fact": "Liberia is located in Africa."
   },
   {
@@ -2841,11 +2653,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Libya",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Libya is located in Africa."
@@ -2870,14 +2680,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/li.png",
     "alt": "Flag of Liechtenstein",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa",
+      "Asia"
     ],
-    "answer": 2,
+    "answer": 1,
     "fact": "Liechtenstein is located in Europe."
   },
   {
@@ -2900,12 +2708,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/lt.png",
     "alt": "Flag of Lithuania",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa"
     ],
     "answer": 2,
     "fact": "Lithuania is located in Europe."
@@ -2932,12 +2738,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Luxembourg is located in Europe."
   },
   {
@@ -2961,11 +2765,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Madagascar",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Madagascar is located in Africa."
@@ -2990,14 +2792,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/mw.png",
     "alt": "Flag of Malawi",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Malawi is located in Africa."
   },
   {
@@ -3020,14 +2820,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/my.png",
     "alt": "Flag of Malaysia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Malaysia is located in Asia."
   },
   {
@@ -3050,14 +2848,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/mv.png",
     "alt": "Flag of Maldives",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Maldives is located in Asia."
   },
   {
@@ -3081,11 +2877,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Mali",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Mali is located in Africa."
@@ -3110,14 +2904,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/mt.png",
     "alt": "Flag of Malta",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa",
+      "Asia"
     ],
-    "answer": 2,
+    "answer": 1,
     "fact": "Malta is located in Europe."
   },
   {
@@ -3140,14 +2932,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/mh.png",
     "alt": "Flag of Marshall Islands",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "Oceania",
+      "Africa"
     ],
-    "answer": 5,
+    "answer": 2,
     "fact": "Marshall Islands is located in Oceania."
   },
   {
@@ -3170,14 +2960,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/mr.png",
     "alt": "Flag of Mauritania",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa"
     ],
-    "answer": 0,
+    "answer": 3,
     "fact": "Mauritania is located in Africa."
   },
   {
@@ -3201,11 +2989,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Mauritius",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Mauritius is located in Africa."
@@ -3230,14 +3016,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/mx.png",
     "alt": "Flag of Mexico",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America",
+      "Asia",
+      "Europe"
     ],
-    "answer": 3,
+    "answer": 1,
     "fact": "Mexico is located in North America."
   },
   {
@@ -3260,14 +3044,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/fm.png",
     "alt": "Flag of Micronesia",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "Oceania",
+      "Africa"
     ],
-    "answer": 5,
+    "answer": 2,
     "fact": "Micronesia is located in Oceania."
   },
   {
@@ -3292,12 +3074,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Moldova is located in Europe."
   },
   {
@@ -3320,14 +3100,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/mc.png",
     "alt": "Flag of Monaco",
     "options": [
+      "Europe",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "North America"
     ],
-    "answer": 2,
+    "answer": 0,
     "fact": "Monaco is located in Europe."
   },
   {
@@ -3350,12 +3128,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/mn.png",
     "alt": "Flag of Mongolia",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Mongolia is located in Asia."
@@ -3380,12 +3156,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/me.png",
     "alt": "Flag of Montenegro",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa"
     ],
     "answer": 2,
     "fact": "Montenegro is located in Europe."
@@ -3410,14 +3184,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ma.png",
     "alt": "Flag of Morocco",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa"
     ],
-    "answer": 0,
+    "answer": 3,
     "fact": "Morocco is located in Africa."
   },
   {
@@ -3441,11 +3213,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Mozambique",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Mozambique is located in Africa."
@@ -3470,12 +3240,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/mm.png",
     "alt": "Flag of Myanmar",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Myanmar is located in Asia."
@@ -3500,14 +3268,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/na.png",
     "alt": "Flag of Namibia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Namibia is located in Africa."
   },
   {
@@ -3533,11 +3299,9 @@ export const geographyQuestQuestionBank = [
       "Africa",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
       "Oceania"
     ],
-    "answer": 5,
+    "answer": 3,
     "fact": "Nauru is located in Oceania."
   },
   {
@@ -3560,14 +3324,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/np.png",
     "alt": "Flag of Nepal",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
       "South America",
       "Oceania"
     ],
-    "answer": 1,
+    "answer": 0,
     "fact": "Nepal is located in Asia."
   },
   {
@@ -3590,14 +3352,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/nl.png",
     "alt": "Flag of Netherlands",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa",
+      "Asia"
     ],
-    "answer": 2,
+    "answer": 1,
     "fact": "Netherlands is located in Europe."
   },
   {
@@ -3620,14 +3380,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/nz.png",
     "alt": "Flag of New Zealand",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "Oceania",
+      "Africa"
     ],
-    "answer": 5,
+    "answer": 2,
     "fact": "New Zealand is located in Oceania."
   },
   {
@@ -3650,12 +3408,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ni.png",
     "alt": "Flag of Nicaragua",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America"
     ],
     "answer": 3,
     "fact": "Nicaragua is located in North America."
@@ -3681,11 +3437,9 @@ export const geographyQuestQuestionBank = [
     "alt": "Flag of Niger",
     "options": [
       "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 0,
     "fact": "Niger is located in Africa."
@@ -3710,14 +3464,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ng.png",
     "alt": "Flag of Nigeria",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe",
+      "North America"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Nigeria is located in Africa."
   },
   {
@@ -3740,14 +3492,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/kp.png",
     "alt": "Flag of North Korea",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "North Korea is located in Asia."
   },
   {
@@ -3772,12 +3522,10 @@ export const geographyQuestQuestionBank = [
     "options": [
       "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "North Macedonia is located in Europe."
   },
   {
@@ -3800,14 +3548,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/no.png",
     "alt": "Flag of Norway",
     "options": [
+      "Europe",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "North America"
     ],
-    "answer": 2,
+    "answer": 0,
     "fact": "Norway is located in Europe."
   },
   {
@@ -3830,12 +3576,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/om.png",
     "alt": "Flag of Oman",
     "options": [
-      "Africa",
+      "Oceania",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
     "answer": 1,
     "fact": "Oman is located in Asia."
@@ -3860,14 +3604,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/pk.png",
     "alt": "Flag of Pakistan",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Pakistan is located in Asia."
   },
   {
@@ -3893,11 +3635,9 @@ export const geographyQuestQuestionBank = [
       "Africa",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
       "Oceania"
     ],
-    "answer": 5,
+    "answer": 3,
     "fact": "Palau is located in Oceania."
   },
   {
@@ -3920,14 +3660,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/pa.png",
     "alt": "Flag of Panama",
     "options": [
-      "Africa",
+      "North America",
       "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "South America"
     ],
-    "answer": 3,
+    "answer": 0,
     "fact": "Panama is located in North America."
   },
   {
@@ -3950,14 +3688,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/pg.png",
     "alt": "Flag of Papua New Guinea",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "Oceania",
+      "Africa",
+      "Asia"
     ],
-    "answer": 5,
+    "answer": 1,
     "fact": "Papua New Guinea is located in Oceania."
   },
   {
@@ -3980,14 +3716,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/py.png",
     "alt": "Flag of Paraguay",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
+      "Oceania",
       "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 4,
+    "answer": 2,
     "fact": "Paraguay is located in South America."
   },
   {
@@ -4010,14 +3744,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/pe.png",
     "alt": "Flag of Peru",
     "options": [
-      "Africa",
-      "Asia",
       "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Oceania",
+      "South America"
     ],
-    "answer": 4,
+    "answer": 3,
     "fact": "Peru is located in South America."
   },
   {
@@ -4040,14 +3772,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ph.png",
     "alt": "Flag of Philippines",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
       "South America",
       "Oceania"
     ],
-    "answer": 1,
+    "answer": 0,
     "fact": "Philippines is located in Asia."
   },
   {
@@ -4070,14 +3800,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/pl.png",
     "alt": "Flag of Poland",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa",
+      "Asia"
     ],
-    "answer": 2,
+    "answer": 1,
     "fact": "Poland is located in Europe."
   },
   {
@@ -4100,12 +3828,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/pt.png",
     "alt": "Flag of Portugal",
     "options": [
-      "Africa",
       "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa"
     ],
     "answer": 2,
     "fact": "Portugal is located in Europe."
@@ -4130,14 +3856,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/qa.png",
     "alt": "Flag of Qatar",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Qatar is located in Asia."
   },
   {
@@ -4160,14 +3884,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ro.png",
     "alt": "Flag of Romania",
     "options": [
+      "Europe",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "North America"
     ],
-    "answer": 2,
+    "answer": 0,
     "fact": "Romania is located in Europe."
   },
   {
@@ -4190,14 +3912,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ru.png",
     "alt": "Flag of Russia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa",
+      "Asia"
     ],
-    "answer": 2,
+    "answer": 1,
     "fact": "Russia is located in Europe."
   },
   {
@@ -4220,14 +3940,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/rw.png",
     "alt": "Flag of Rwanda",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
       "South America",
-      "Oceania"
+      "Africa",
+      "Europe"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Rwanda is located in Africa."
   },
   {
@@ -4250,12 +3968,10 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/lc.png",
     "alt": "Flag of Saint Lucia",
     "options": [
-      "Africa",
       "Asia",
       "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "North America"
     ],
     "answer": 3,
     "fact": "Saint Lucia is located in North America."
@@ -4280,14 +3996,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/ws.png",
     "alt": "Flag of Samoa",
     "options": [
+      "Oceania",
       "Africa",
       "Asia",
-      "Europe",
-      "North America",
-      "South America",
-      "Oceania"
+      "Europe"
     ],
-    "answer": 5,
+    "answer": 0,
     "fact": "Samoa is located in Oceania."
   },
   {
@@ -4310,14 +4024,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/sm.png",
     "alt": "Flag of San Marino",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
       "North America",
-      "South America",
-      "Oceania"
+      "Europe",
+      "Africa",
+      "Asia"
     ],
-    "answer": 2,
+    "answer": 1,
     "fact": "San Marino is located in Europe."
   },
   {
@@ -4340,14 +4052,12 @@ export const geographyQuestQuestionBank = [
     "image": "https://flagcdn.com/w320/sa.png",
     "alt": "Flag of Saudi Arabia",
     "options": [
-      "Africa",
-      "Asia",
-      "Europe",
-      "North America",
       "South America",
-      "Oceania"
+      "Oceania",
+      "Asia",
+      "North America"
     ],
-    "answer": 1,
+    "answer": 2,
     "fact": "Saudi Arabia is located in Asia."
   }
 ] as const;
