@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EntertainmentHub from "@/components/EntertainmentHub";
 import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
@@ -25,6 +25,18 @@ const entertainmentGroups = [
 
 export default function AdminZonePreview({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
+  const activeZoneRef = useRef<number | null>(null);
+  useEffect(() => {
+    const handleMobileBack = () => { if (activeZoneRef.current !== null) window.location.replace("/"); };
+    window.addEventListener("popstate", handleMobileBack);
+    return () => window.removeEventListener("popstate", handleMobileBack);
+  }, []);
+  const openZone = (index: number) => {
+    if (activeZoneRef.current === null) window.history.pushState({ shoppersOceanZone: true }, "", window.location.href);
+    activeZoneRef.current = index;
+    setActiveZone(index);
+    setActiveQuizGame(null);
+  };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
   const playZoneTap = () => { try { const audio = new Audio("/Tap.mp3"); audio.volume = 0.85; void audio.play().catch(() => {}); } catch {} };
   const selected = activeZone === null ? null : zones[activeZone];
@@ -51,7 +63,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
                   key={zone.name}
                   type="button"
                   disabled={!zone.action}
-                  onClick={() => { if (zone.action === "books") { window.location.assign("/read-ebooks"); return; } if (zone.action) { setActiveZone(index); setActiveQuizGame(null); } }}
+                  onClick={() => { if (zone.action === "books") { window.location.assign("/read-ebooks"); return; } if (zone.action) openZone(index); }}
                   aria-label={zone.action ? `Open ${zone.name}` : `${zone.name}, under construction`}
                   style={{ animation: "liveZoneZoom 5s cubic-bezier(.2,.8,.2,1) both", animationDelay: `${index * 180}ms` }}
                   className={`group relative min-h-[238px] overflow-hidden rounded-[1.65rem] border border-white/30 bg-gradient-to-br ${zone.tone} p-5 text-left shadow-[0_14px_35px_rgba(15,23,42,0.20)] transition-all duration-500 ${zone.action ? "hover:-translate-y-1 hover:scale-[1.02] hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200" : "cursor-not-allowed opacity-90"}`}
@@ -72,7 +84,7 @@ export default function AdminZonePreview({ userId }: { userId: string | null }) 
         ) : (
           <div className="min-h-[55vh] rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { setActiveZone(null); setActiveQuizGame(null); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button><button type="button" onClick={() => { window.location.assign("/"); }} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">⌂ Home</button></div>
+              <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { activeZoneRef.current = null; setActiveZone(null); setActiveQuizGame(null); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button><button type="button" onClick={() => { window.location.assign("/"); }} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">⌂ Home</button></div>
               <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
             </div>
             {selected.action === "games" && (
