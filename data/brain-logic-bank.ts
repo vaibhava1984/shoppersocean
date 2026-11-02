@@ -3,7 +3,7 @@ export type OddOneOut = { o: string[]; a: string; why: string };
 
 const numericOptions = (answer: number, step = 1) => {
   const values = [answer, answer + step, Math.max(0, answer - step), answer + step * 2];
-  return [...new Set(values)].slice(0, 4).sort((a,b) => ((a * 17 + 11) % 97) - ((b * 17 + 11) % 97)).map(String);
+  return [...new Set(values)].slice(0, 4).sort((a,b) => a - b).map(String);
 };
 
 const sequenceRiddles: BrainRiddle[] = Array.from({ length: 50 }, (_, i) => {
@@ -14,13 +14,13 @@ const sequenceRiddles: BrainRiddle[] = Array.from({ length: 50 }, (_, i) => {
 });
 
 const numberRiddles: BrainRiddle[] = Array.from({ length: 50 }, (_, i) => {
-  const tens = 2 + (i % 7), ones = (i * 3 + 1) % 10;
+  const tens = 2 + (i % 7), ones = (i * 3 + 1) % tens;
   const value = tens * 10 + ones, reversed = ones * 10 + tens;
   const sum = tens + ones, difference = Math.abs(value - reversed);
   const answer = String(value);
   const opts = [value, value + 9, value - 9, reversed].filter((v, j, a) => v > 9 && v < 100 && a.indexOf(v) === j);
   while (opts.length < 4) opts.push(value + 11 + opts.length * 10);
-  return { q: `I am a two-digit number. My digits add up to ${sum}. Reversing my digits changes my value by ${difference}. What number am I?`, a: answer, e: `The digits are ${tens} and ${ones}; their sum is ${sum}, and ${value} reversed is ${reversed}, a difference of ${difference}.`, o: opts.slice(0,4).map(String) };
+  return { q: `I am a two-digit number. My digits add up to ${sum}, my tens digit is larger than my ones digit, and reversing my digits changes my value by ${difference}. What number am I?`, a: answer, e: `The digits are ${tens} and ${ones}; their sum is ${sum}, and ${value} reversed is ${reversed}, a difference of ${difference}.`, o: opts.slice(0,4).map(String) };
 });
 
 const ageRiddles: BrainRiddle[] = Array.from({ length: 50 }, (_, i) => {
@@ -64,7 +64,7 @@ const oddCategories: { name: string; members: string[]; outsiders: string[]; rea
   {name:"countries",members:["Japan","Brazil","Kenya","Norway","Peru"],outsiders:["Tokyo","Nairobi","Amazon","Sahara","Everest","Pacific","Berlin","Andes","Nile","Sydney"],reason:"the other three are countries; this is a city, river, desert, or other place"},
   {name:"geometric shapes",members:["Triangle","Square","Pentagon","Hexagon","Octagon"],outsiders:["Sphere","Cylinder","Cone","Cube","Pyramid","Prism","Torus","Hemisphere","Ellipsoid","Tetrahedron"],reason:"the other three are two-dimensional polygons; this is a three-dimensional solid"},
   {name:"planar shapes",members:["Circle","Oval","Ellipse","Semicircle","Rectangle"],outsiders:["Cube","Sphere","Cone","Cylinder","Pyramid","Prism","Torus","Cuboid","Tetrahedron","Hemisphere"],reason:"the other three are flat two-dimensional shapes; this is a three-dimensional solid"},
-  {name:"months",members:["January","March","May","July","August"],outsiders:["Monday","Tuesday","Friday","Sunday","Spring","Summer","Winter","Dawn","Noon","December's Eve"],reason:"the other three are months; this is a weekday or a time/season term"},
+  {name:"months",members:["January","March","May","July","August"],outsiders:["Monday","Tuesday","Friday","Sunday","Spring","Summer","Winter","Dawn","Noon","Autumn"],reason:"the other three are months; this is a weekday or a time/season term"},
   {name:"living plants",members:["Rose","Tulip","Daisy","Orchid","Lily"],outsiders:["Granite","Basalt","Marble","Quartz","Slate","Copper","Iron","Sandstone","Limestone","Obsidian"],reason:"the other three are flowering plants; this is a rock or mineral"},
   {name:"human senses",members:["Sight","Hearing","Smell","Taste","Touch"],outsiders:["Memory","Balance","Imagination","Reason","Speech","Sleep","Hunger","Thirst","Emotion","Reflex"],reason:"the other three are the traditional five senses; this is a different ability or state"},
   {name:"programming languages",members:["Python","Java","Ruby","Swift","Kotlin"],outsiders:["HTML","CSS","SQL","JSON","XML","HTTP","Git","Linux","Docker","React"],reason:"the other three are programming languages; this is a markup, query, data, protocol, or tool term"},
