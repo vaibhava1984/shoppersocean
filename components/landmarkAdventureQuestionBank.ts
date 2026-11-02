@@ -20,12 +20,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Great_Wall_of_China.jpg?width=640",
     "alt": "Great Wall of China landmark",
     "options": [
-      "India",
-      "South Korea",
-      "China",
-      "Japan"
+      "Cambodia",
+      "Palestine",
+      "United States",
+      "China"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Great Wall of China is located in China."
   },
   {
@@ -48,12 +48,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Forbidden_City.jpg?width=640",
     "alt": "Forbidden City landmark",
     "options": [
-      "China",
-      "Vietnam",
       "Cambodia",
-      "Thailand"
+      "China",
+      "Kenya",
+      "United Arab Emirates"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Forbidden City is located in China."
   },
   {
@@ -76,9 +76,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Terracotta_Army.jpg?width=640",
     "alt": "Terracotta Army landmark",
     "options": [
-      "Indonesia",
-      "Nepal",
-      "Malaysia",
+      "India",
+      "Singapore",
+      "Bolivia",
       "China"
     ],
     "answer": 3,
@@ -104,10 +104,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Temple_of_Heaven.jpg?width=640",
     "alt": "Temple of Heaven landmark",
     "options": [
-      "Turkey",
-      "Bhutan",
+      "France",
+      "United Arab Emirates",
       "China",
-      "Jordan"
+      "Cuba"
     ],
     "answer": 2,
     "fact": "Temple of Heaven is located in China."
@@ -132,12 +132,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Potala_Palace.jpg?width=640",
     "alt": "Potala Palace landmark",
     "options": [
-      "Philippines",
-      "China",
-      "Singapore",
-      "Myanmar"
+      "Palestine",
+      "United Arab Emirates",
+      "India",
+      "China"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Potala Palace is located in China."
   },
   {
@@ -160,10 +160,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Taj_Mahal.jpg?width=640",
     "alt": "Taj Mahal landmark",
     "options": [
+      "Cambodia",
       "India",
-      "United Arab Emirates"
+      "Jordan",
+      "Turkey"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Taj Mahal is located in India."
   },
   {
@@ -186,9 +188,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Qutub_Minar.jpg?width=640",
     "alt": "Qutub Minar landmark",
     "options": [
-      "South Korea",
-      "Thailand",
-      "Vietnam",
+      "Cambodia",
+      "Philippines",
+      "Italy",
       "India"
     ],
     "answer": 3,
@@ -214,12 +216,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Hawa_Mahal.jpg?width=640",
     "alt": "Hawa Mahal landmark",
     "options": [
-      "India",
-      "Indonesia",
       "Cambodia",
-      "Malaysia"
+      "India",
+      "South Korea",
+      "United Arab Emirates"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Hawa Mahal is located in India."
   },
   {
@@ -242,12 +244,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Gateway_of_India.jpg?width=640",
     "alt": "Gateway of India landmark",
     "options": [
-      "Nepal",
-      "India",
-      "Turkey",
-      "Bhutan"
+      "China",
+      "Cambodia",
+      "United Arab Emirates",
+      "India"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Gateway of India is located in India."
   },
   {
@@ -270,8 +272,8 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Konark_Sun_Temple.jpg?width=640",
     "alt": "Konark Sun Temple landmark",
     "options": [
-      "Singapore",
-      "Myanmar",
+      "Palestine",
+      "Malaysia",
       "India",
       "Jordan"
     ],
@@ -298,11 +300,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Golden_Temple.jpg?width=640",
     "alt": "Golden Temple landmark",
     "options": [
-      "United Arab Emirates",
-      "India",
-      "Philippines"
+      "Cambodia",
+      "Philippines",
+      "China",
+      "India"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Golden Temple is located in India."
   },
   {
@@ -325,12 +328,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Mysore_Palace.jpg?width=640",
     "alt": "Mysore Palace landmark",
     "options": [
+      "Guyana",
       "India",
-      "Japan",
-      "South Korea",
-      "Thailand"
+      "Jordan",
+      "Greece"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Mysore Palace is located in India."
   },
   {
@@ -353,12 +356,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Angkor_Wat.jpg?width=640",
     "alt": "Angkor Wat landmark",
     "options": [
-      "Thailand",
-      "Indonesia",
-      "Cambodia",
-      "Vietnam"
+      "India",
+      "United Arab Emirates",
+      "Turkey",
+      "Cambodia"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Angkor Wat is located in Cambodia."
   },
   {
@@ -381,12 +384,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Bayon_Temple.jpg?width=640",
     "alt": "Bayon Temple landmark",
     "options": [
+      "United Kingdom",
       "Cambodia",
-      "Nepal",
-      "Bhutan",
-      "Malaysia"
+      "Turkey",
+      "United Arab Emirates"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Bayon Temple is located in Cambodia."
   },
   {
@@ -409,9 +412,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Petra_Treasury.jpg?width=640",
     "alt": "Petra Treasury landmark",
     "options": [
-      "Bhutan",
+      "China",
       "Singapore",
-      "Turkey",
+      "Spain",
       "Jordan"
     ],
     "answer": 3,
@@ -437,10 +440,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Burj_Khalifa.jpg?width=640",
     "alt": "Burj Khalifa landmark",
     "options": [
-      "Myanmar",
-      "Singapore",
+      "United Kingdom",
+      "Malaysia",
       "United Arab Emirates",
-      "Philippines"
+      "Russia"
     ],
     "answer": 2,
     "fact": "Burj Khalifa is located in United Arab Emirates."
@@ -465,12 +468,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sheikh_Zayed_Grand_Mosque.jpg?width=640",
     "alt": "Sheikh Zayed Grand Mosque landmark",
     "options": [
+      "India",
       "Japan",
-      "United Arab Emirates",
-      "China",
-      "India"
+      "Palestine",
+      "United Arab Emirates"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Sheikh Zayed Grand Mosque is located in United Arab Emirates."
   },
   {
@@ -493,12 +496,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Dome_of_the_Rock.jpg?width=640",
     "alt": "Dome of the Rock landmark",
     "options": [
-      "Palestine",
-      "Japan",
       "India",
-      "China"
+      "Palestine",
+      "Turkey",
+      "Austria"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Dome of the Rock is located in Palestine."
   },
   {
@@ -521,9 +524,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Hagia_Sophia.jpg?width=640",
     "alt": "Hagia Sophia landmark",
     "options": [
-      "Cambodia",
-      "Indonesia",
-      "Malaysia",
+      "Austria",
+      "Vietnam",
+      "Palestine",
       "Turkey"
     ],
     "answer": 3,
@@ -549,12 +552,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Blue_Mosque.jpg?width=640",
     "alt": "Blue Mosque landmark",
     "options": [
+      "Indonesia",
       "Turkey",
-      "Bhutan",
-      "Nepal",
-      "Jordan"
+      "Slovenia",
+      "Philippines"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Blue Mosque is located in Turkey."
   },
   {
@@ -577,12 +580,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Mount_Fuji.jpg?width=640",
     "alt": "Mount Fuji landmark",
     "options": [
-      "Singapore",
-      "Japan",
       "Philippines",
-      "Myanmar"
+      "Chile",
+      "Palestine",
+      "Japan"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Mount Fuji is located in Japan."
   },
   {
@@ -605,10 +608,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Fushimi_Inari_Shrine.jpg?width=640",
     "alt": "Fushimi Inari Shrine landmark",
     "options": [
+      "India",
+      "Jordan",
       "Japan",
-      "United Arab Emirates"
+      "Cambodia"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Fushimi Inari Shrine is located in Japan."
   },
   {
@@ -631,9 +636,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Kinkaku_ji.jpg?width=640",
     "alt": "Kinkaku ji landmark",
     "options": [
-      "Thailand",
-      "Vietnam",
-      "South Korea",
+      "Ecuador",
+      "Jordan",
+      "China",
       "Japan"
     ],
     "answer": 3,
@@ -659,12 +664,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Tokyo_Tower.jpg?width=640",
     "alt": "Tokyo Tower landmark",
     "options": [
+      "India",
       "Japan",
-      "Cambodia",
-      "Indonesia",
-      "Malaysia"
+      "Denmark",
+      "Greece"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Tokyo Tower is located in Japan."
   },
   {
@@ -687,12 +692,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Gyeongbokgung_Palace.jpg?width=640",
     "alt": "Gyeongbokgung Palace landmark",
     "options": [
-      "Nepal",
-      "Turkey",
-      "South Korea",
-      "Bhutan"
+      "United Arab Emirates",
+      "Jordan",
+      "Palestine",
+      "South Korea"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Gyeongbokgung Palace is located in South Korea."
   },
   {
@@ -715,12 +720,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Marina_Bay_Sands.jpg?width=640",
     "alt": "Marina Bay Sands landmark",
     "options": [
+      "Austria",
       "Singapore",
-      "Jordan",
-      "Myanmar",
-      "Turkey"
+      "Norway",
+      "United Arab Emirates"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Marina Bay Sands is located in Singapore."
   },
   {
@@ -743,11 +748,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Petronas_Towers.jpg?width=640",
     "alt": "Petronas Towers landmark",
     "options": [
-      "Philippines",
-      "Malaysia",
-      "United Arab Emirates"
+      "Palestine",
+      "Poland",
+      "Jordan",
+      "Malaysia"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Petronas Towers is located in Malaysia."
   },
   {
@@ -770,10 +776,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Borobudur.jpg?width=640",
     "alt": "Borobudur landmark",
     "options": [
-      "Japan",
       "India",
+      "Vietnam",
       "Indonesia",
-      "South Korea"
+      "United Kingdom"
     ],
     "answer": 2,
     "fact": "Borobudur is located in Indonesia."
@@ -798,12 +804,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Prambanan_Temple.jpg?width=640",
     "alt": "Prambanan Temple landmark",
     "options": [
-      "Cambodia",
-      "Indonesia",
-      "Thailand",
-      "Vietnam"
+      "India",
+      "Jordan",
+      "China",
+      "Indonesia"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Prambanan Temple is located in Indonesia."
   },
   {
@@ -826,12 +832,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Shwedagon_Pagoda.jpg?width=640",
     "alt": "Shwedagon Pagoda landmark",
     "options": [
+      "Palestine",
       "Myanmar",
-      "Nepal",
-      "Malaysia",
-      "Indonesia"
+      "Cambodia",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Shwedagon Pagoda is located in Myanmar."
   },
   {
@@ -854,9 +860,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Banaue_Rice_Terraces.jpg?width=640",
     "alt": "Banaue Rice Terraces landmark",
     "options": [
-      "Bhutan",
-      "Turkey",
-      "Jordan",
+      "India",
+      "United Arab Emirates",
+      "Palestine",
       "Philippines"
     ],
     "answer": 3,
@@ -882,12 +888,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Lotus_Temple.jpg?width=640",
     "alt": "Lotus Temple landmark",
     "options": [
+      "Austria",
       "India",
-      "Philippines",
-      "Myanmar",
-      "United Arab Emirates"
+      "France",
+      "Germany"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Lotus Temple is located in India."
   },
   {
@@ -911,11 +917,11 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Rani ki Vav landmark",
     "options": [
       "China",
-      "India",
-      "South Korea",
-      "Japan"
+      "Germany",
+      "Philippines",
+      "India"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Rani ki Vav is located in India."
   },
   {
@@ -938,10 +944,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Ajanta_Caves.jpg?width=640",
     "alt": "Ajanta Caves landmark",
     "options": [
-      "Vietnam",
-      "Cambodia",
+      "Poland",
+      "United Arab Emirates",
       "India",
-      "Thailand"
+      "Jordan"
     ],
     "answer": 2,
     "fact": "Ajanta Caves is located in India."
@@ -966,9 +972,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Ellora_Kailasa_Temple.jpg?width=640",
     "alt": "Ellora Kailasa Temple landmark",
     "options": [
-      "Malaysia",
-      "Nepal",
-      "Indonesia",
+      "Greece",
+      "United Arab Emirates",
+      "China",
       "India"
     ],
     "answer": 3,
@@ -994,12 +1000,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Meenakshi_Temple.jpg?width=640",
     "alt": "Meenakshi Temple landmark",
     "options": [
+      "Cambodia",
       "India",
-      "Bhutan",
-      "Turkey",
-      "Jordan"
+      "Jordan",
+      "Japan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Meenakshi Temple is located in India."
   },
   {
@@ -1022,12 +1028,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Charminar.jpg?width=640",
     "alt": "Charminar landmark",
     "options": [
+      "United Kingdom",
       "Singapore",
-      "Philippines",
-      "India",
-      "Myanmar"
+      "Myanmar",
+      "India"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Charminar is located in India."
   },
   {
@@ -1050,10 +1056,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Victoria_Memorial.jpg?width=640",
     "alt": "Victoria Memorial landmark",
     "options": [
+      "Algeria",
       "India",
-      "United Arab Emirates"
+      "Palestine",
+      "Japan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Victoria Memorial is located in India."
   },
   {
@@ -1076,9 +1084,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Brihadeeswarar_Temple.jpg?width=640",
     "alt": "Brihadeeswarar Temple landmark",
     "options": [
-      "South Korea",
-      "Vietnam",
-      "Thailand",
+      "Austria",
+      "Vatican City",
+      "Namibia",
       "India"
     ],
     "answer": 3,
@@ -1104,10 +1112,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sanchi_Stupa.jpg?width=640",
     "alt": "Sanchi Stupa landmark",
     "options": [
-      "Indonesia",
-      "Cambodia",
+      "South Korea",
+      "United Kingdom",
       "India",
-      "Malaysia"
+      "Jordan"
     ],
     "answer": 2,
     "fact": "Sanchi Stupa is located in India."
@@ -1132,12 +1140,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Mount_Everest.jpg?width=640",
     "alt": "Mount Everest landmark",
     "options": [
-      "South Korea",
-      "Nepal and China",
       "India",
-      "Japan"
+      "United Arab Emirates",
+      "Turkey",
+      "Nepal and China"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Mount Everest is located in Nepal and China."
   },
   {
@@ -1160,12 +1168,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Tigers_Nest_Monastery.jpg?width=640",
     "alt": "Tigers Nest Monastery landmark",
     "options": [
+      "France",
       "Bhutan",
-      "Myanmar",
-      "Singapore",
+      "United Kingdom",
       "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Tigers Nest Monastery is located in Bhutan."
   },
   {
@@ -1188,11 +1196,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Boudhanath_Stupa.jpg?width=640",
     "alt": "Boudhanath Stupa landmark",
     "options": [
-      "Philippines",
-      "United Arab Emirates",
+      "India",
+      "Malaysia",
+      "Japan",
       "Nepal"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Boudhanath Stupa is located in Nepal."
   },
   {
@@ -1215,12 +1224,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Pashupatinath_Temple.jpg?width=640",
     "alt": "Pashupatinath Temple landmark",
     "options": [
-      "Nepal",
-      "Japan",
       "India",
-      "South Korea"
+      "Nepal",
+      "Greece",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Pashupatinath Temple is located in Nepal."
   },
   {
@@ -1243,12 +1252,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Kiyomizu_dera.jpg?width=640",
     "alt": "Kiyomizu dera landmark",
     "options": [
-      "Vietnam",
-      "Japan",
-      "Indonesia",
-      "Cambodia"
+      "China",
+      "Palestine",
+      "Malaysia",
+      "Japan"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Kiyomizu dera is located in Japan."
   },
   {
@@ -1271,10 +1280,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Osaka_Castle.jpg?width=640",
     "alt": "Osaka Castle landmark",
     "options": [
-      "Nepal",
-      "Bhutan",
+      "India",
+      "Czech Republic",
       "Japan",
-      "Malaysia"
+      "Turkey"
     ],
     "answer": 2,
     "fact": "Osaka Castle is located in Japan."
@@ -1299,9 +1308,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Library_of_Celsus.jpg?width=640",
     "alt": "Library of Celsus landmark",
     "options": [
-      "Jordan",
-      "Singapore",
-      "Bhutan",
+      "Greece",
+      "Austria",
+      "United Arab Emirates",
       "Turkey"
     ],
     "answer": 3,
@@ -1327,12 +1336,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Pamukkale_Terraces.jpg?width=640",
     "alt": "Pamukkale Terraces landmark",
     "options": [
+      "Singapore",
       "Turkey",
-      "Myanmar",
-      "Philippines",
-      "United Arab Emirates"
+      "Nepal",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Pamukkale Terraces is located in Turkey."
   },
   {
@@ -1355,12 +1364,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Mount_Bromo.jpg?width=640",
     "alt": "Mount Bromo landmark",
     "options": [
-      "China",
-      "Japan",
-      "Indonesia",
-      "India"
+      "Nepal",
+      "Vietnam",
+      "Palestine",
+      "Indonesia"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Mount Bromo is located in Indonesia."
   },
   {
@@ -1383,12 +1392,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Ha_Long_Bay.jpg?width=640",
     "alt": "Ha Long Bay landmark",
     "options": [
+      "Philippines",
       "Vietnam",
-      "Thailand",
-      "Cambodia",
-      "South Korea"
+      "Singapore",
+      "Greece"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Ha Long Bay is located in Vietnam."
   },
   {
@@ -1411,9 +1420,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Golden_Bridge_Da_Nang.jpg?width=640",
     "alt": "Golden Bridge Da Nang landmark",
     "options": [
-      "Indonesia",
-      "Nepal",
-      "Malaysia",
+      "China",
+      "Myanmar",
+      "Venezuela, Brazil and Guyana",
       "Vietnam"
     ],
     "answer": 3,
@@ -1439,10 +1448,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Batu_Caves.jpg?width=640",
     "alt": "Batu Caves landmark",
     "options": [
-      "Turkey",
-      "Bhutan",
+      "India",
+      "South Korea",
       "Malaysia",
-      "Jordan"
+      "Vietnam"
     ],
     "answer": 2,
     "fact": "Batu Caves is located in Malaysia."
@@ -1467,12 +1476,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Bagan_Temples.jpg?width=640",
     "alt": "Bagan Temples landmark",
     "options": [
-      "Philippines",
-      "Myanmar",
+      "India",
       "Jordan",
-      "Singapore"
+      "Ethiopia",
+      "Myanmar"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Bagan Temples is located in Myanmar."
   },
   {
@@ -1495,10 +1504,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Wat_Arun.jpg?width=640",
     "alt": "Wat Arun landmark",
     "options": [
+      "Turkey",
       "Thailand",
-      "United Arab Emirates"
+      "Austria",
+      "Malaysia"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Wat Arun is located in Thailand."
   },
   {
@@ -1521,9 +1532,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Grand_Palace_Bangkok.jpg?width=640",
     "alt": "Grand Palace Bangkok landmark",
     "options": [
-      "Japan",
-      "South Korea",
-      "Vietnam",
+      "United Arab Emirates",
+      "Algeria",
+      "Ecuador",
       "Thailand"
     ],
     "answer": 3,
@@ -1549,12 +1560,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Boracay_White_Beach.jpg?width=640",
     "alt": "Boracay White Beach landmark",
     "options": [
+      "India",
       "Philippines",
-      "Cambodia",
-      "Vietnam",
-      "Indonesia"
+      "Palestine",
+      "Japan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Boracay White Beach is located in Philippines."
   },
   {
@@ -1577,12 +1588,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Parthenon.jpg?width=640",
     "alt": "Parthenon landmark",
     "options": [
-      "Romania",
-      "Greece",
-      "Denmark",
-      "Slovenia"
+      "Nepal",
+      "South Korea",
+      "Jordan",
+      "Greece"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Parthenon is located in Greece."
   },
   {
@@ -1605,10 +1616,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Acropolis_of_Athens.jpg?width=640",
     "alt": "Acropolis of Athens landmark",
     "options": [
-      "France",
-      "United Kingdom",
+      "India",
+      "Jordan",
       "Greece",
-      "Italy"
+      "Switzerland"
     ],
     "answer": 2,
     "fact": "Acropolis of Athens is located in Greece."
@@ -1633,9 +1644,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Colosseum.jpg?width=640",
     "alt": "Colosseum landmark",
     "options": [
-      "Spain",
-      "Austria",
-      "Germany",
+      "India",
+      "Japan",
+      "China",
       "Italy"
     ],
     "answer": 3,
@@ -1661,12 +1672,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Leaning_Tower_of_Pisa.jpg?width=640",
     "alt": "Leaning Tower of Pisa landmark",
     "options": [
+      "Vietnam",
       "Italy",
-      "Switzerland",
-      "Netherlands",
-      "Czech Republic"
+      "Singapore",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Leaning Tower of Pisa is located in Italy."
   },
   {
@@ -1689,12 +1700,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Trevi_Fountain.jpg?width=640",
     "alt": "Trevi Fountain landmark",
     "options": [
-      "Russia",
-      "Norway",
-      "Italy",
-      "Croatia"
+      "Singapore",
+      "Algeria",
+      "Palestine",
+      "Italy"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Trevi Fountain is located in Italy."
   },
   {
@@ -1717,12 +1728,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/St_Peters_Basilica.jpg?width=640",
     "alt": "St Peters Basilica landmark",
     "options": [
+      "India",
       "Vatican City",
-      "Germany",
-      "Spain",
-      "United Kingdom"
+      "Indonesia",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "St Peters Basilica is located in Vatican City."
   },
   {
@@ -1745,9 +1756,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Eiffel_Tower.jpg?width=640",
     "alt": "Eiffel Tower landmark",
     "options": [
-      "Hungary",
-      "Slovenia",
-      "Romania",
+      "Thailand",
+      "India",
+      "Poland",
       "France"
     ],
     "answer": 3,
@@ -1773,10 +1784,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Palace_of_Versailles.jpg?width=640",
     "alt": "Palace of Versailles landmark",
     "options": [
+      "Austria",
+      "South Korea",
       "France",
-      "Denmark"
+      "Algeria"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Palace of Versailles is located in France."
   },
   {
@@ -1799,12 +1812,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Arc_de_Triomphe.jpg?width=640",
     "alt": "Arc de Triomphe landmark",
     "options": [
-      "Spain",
-      "France",
-      "United Kingdom",
-      "Germany"
+      "Nepal",
+      "Bhutan",
+      "China",
+      "France"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Arc de Triomphe is located in France."
   },
   {
@@ -1827,12 +1840,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Mont_Saint_Michel.jpg?width=640",
     "alt": "Mont Saint Michel landmark",
     "options": [
+      "Singapore",
       "France",
-      "Netherlands",
-      "Switzerland",
-      "Austria"
+      "Cambodia",
+      "United Kingdom"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Mont Saint Michel is located in France."
   },
   {
@@ -1855,9 +1868,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Stonehenge.jpg?width=640",
     "alt": "Stonehenge landmark",
     "options": [
-      "Czech Republic",
-      "Russia",
-      "Croatia",
+      "India",
+      "Jordan",
+      "United Arab Emirates",
       "United Kingdom"
     ],
     "answer": 3,
@@ -1883,12 +1896,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Big_Ben.jpg?width=640",
     "alt": "Big Ben landmark",
     "options": [
+      "Turkey",
       "United Kingdom",
-      "Poland",
-      "Norway",
-      "Belgium"
+      "Japan",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Big Ben is located in United Kingdom."
   },
   {
@@ -1911,12 +1924,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Tower_Bridge.jpg?width=640",
     "alt": "Tower Bridge landmark",
     "options": [
-      "Ireland",
-      "United Kingdom",
-      "Romania",
-      "Hungary"
+      "Turkey",
+      "India",
+      "Thailand",
+      "United Kingdom"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Tower Bridge is located in United Kingdom."
   },
   {
@@ -1939,9 +1952,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Edinburgh_Castle.jpg?width=640",
     "alt": "Edinburgh Castle landmark",
     "options": [
-      "Denmark",
-      "Slovenia",
-      "United Kingdom"
+      "United Arab Emirates",
+      "Jordan",
+      "United Kingdom",
+      "Cambodia"
     ],
     "answer": 2,
     "fact": "Edinburgh Castle is located in United Kingdom."
@@ -1966,9 +1980,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sagrada_Familia.jpg?width=640",
     "alt": "Sagrada Familia landmark",
     "options": [
-      "France",
-      "United Kingdom",
-      "Italy",
+      "Malaysia",
+      "United Arab Emirates",
+      "China",
       "Spain"
     ],
     "answer": 3,
@@ -1994,12 +2008,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Alhambra.jpg?width=640",
     "alt": "Alhambra landmark",
     "options": [
+      "Slovenia",
       "Spain",
-      "Germany",
-      "Austria",
-      "Switzerland"
+      "Cambodia",
+      "Germany"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Alhambra is located in Spain."
   },
   {
@@ -2022,12 +2036,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Park_Guell.jpg?width=640",
     "alt": "Park Guell landmark",
     "options": [
-      "Netherlands",
-      "Russia",
-      "Spain",
-      "Czech Republic"
+      "Namibia",
+      "Indonesia",
+      "Palestine",
+      "Spain"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Park Guell is located in Spain."
   },
   {
@@ -2050,12 +2064,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Brandenburg_Gate.jpg?width=640",
     "alt": "Brandenburg Gate landmark",
     "options": [
+      "India",
       "Germany",
-      "Norway",
-      "Poland",
-      "Croatia"
+      "Palestine",
+      "Ecuador"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Brandenburg Gate is located in Germany."
   },
   {
@@ -2078,9 +2092,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Neuschwanstein_Castle.jpg?width=640",
     "alt": "Neuschwanstein Castle landmark",
     "options": [
-      "Belgium",
-      "Hungary",
-      "Ireland",
+      "Chile",
+      "Palestine",
+      "Jordan",
       "Germany"
     ],
     "answer": 3,
@@ -2106,10 +2120,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Charles_Bridge.jpg?width=640",
     "alt": "Charles Bridge landmark",
     "options": [
-      "Slovenia",
-      "Romania",
+      "India",
+      "Japan",
       "Czech Republic",
-      "Denmark"
+      "Cambodia"
     ],
     "answer": 2,
     "fact": "Charles Bridge is located in Czech Republic."
@@ -2134,12 +2148,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/St_Basils_Cathedral.jpg?width=640",
     "alt": "St Basils Cathedral landmark",
     "options": [
-      "France",
-      "Russia",
-      "Greece",
-      "Italy"
+      "Venezuela, Brazil and Guyana",
+      "Bolivia",
+      "United Arab Emirates",
+      "Russia"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "St Basils Cathedral is located in Russia."
   },
   {
@@ -2162,12 +2176,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Red_Square.jpg?width=640",
     "alt": "Red Square landmark",
     "options": [
+      "India",
       "Russia",
-      "Spain",
-      "Germany",
-      "United Kingdom"
+      "Thailand",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Red Square is located in Russia."
   },
   {
@@ -2190,9 +2204,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Bran_Castle.jpg?width=640",
     "alt": "Bran Castle landmark",
     "options": [
-      "Austria",
-      "Switzerland",
-      "Netherlands",
+      "India",
+      "Jordan",
+      "Palestine",
       "Romania"
     ],
     "answer": 3,
@@ -2218,12 +2232,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Schonbrunn_Palace.jpg?width=640",
     "alt": "Schonbrunn Palace landmark",
     "options": [
+      "Kenya",
       "Austria",
-      "Croatia",
-      "Russia",
-      "Norway"
+      "Ecuador",
+      "Philippines"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Schonbrunn Palace is located in Austria."
   },
   {
@@ -2246,12 +2260,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Atomium.jpg?width=640",
     "alt": "Atomium landmark",
     "options": [
-      "Norway",
-      "Belgium",
-      "Ireland",
-      "Poland"
+      "China",
+      "India",
+      "Indonesia",
+      "Belgium"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Atomium is located in Belgium."
   },
   {
@@ -2274,10 +2288,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Matterhorn.jpg?width=640",
     "alt": "Matterhorn landmark",
     "options": [
-      "Romania",
-      "Slovenia",
+      "Turkey",
+      "Philippines",
       "Switzerland",
-      "Hungary"
+      "Cambodia"
     ],
     "answer": 2,
     "fact": "Matterhorn is located in Switzerland."
@@ -2302,10 +2316,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Hallstatt.jpg?width=640",
     "alt": "Hallstatt landmark",
     "options": [
-      "Denmark",
+      "Algeria",
+      "Thailand",
+      "Slovenia",
       "Austria"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Hallstatt is located in Austria."
   },
   {
@@ -2328,12 +2344,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Rijksmuseum.jpg?width=640",
     "alt": "Rijksmuseum landmark",
     "options": [
+      "South Korea",
       "Netherlands",
-      "France",
-      "United Kingdom",
-      "Germany"
+      "Thailand",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Rijksmuseum is located in Netherlands."
   },
   {
@@ -2356,12 +2372,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Nyhavn.jpg?width=640",
     "alt": "Nyhavn landmark",
     "options": [
-      "Spain",
-      "Switzerland",
-      "Denmark",
-      "Austria"
+      "United Arab Emirates",
+      "Philippines",
+      "Singapore",
+      "Denmark"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Nyhavn is located in Denmark."
   },
   {
@@ -2384,12 +2400,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Northern_Lights.jpg?width=640",
     "alt": "Northern Lights landmark",
     "options": [
+      "India",
       "Norway",
-      "Czech Republic",
-      "Russia",
-      "Netherlands"
+      "Palestine",
+      "Poland"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Northern Lights is located in Norway."
   },
   {
@@ -2412,9 +2428,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Bled_Island_Church.jpg?width=640",
     "alt": "Bled Island Church landmark",
     "options": [
-      "Croatia",
-      "Poland",
-      "Norway",
+      "Palestine",
+      "India",
+      "South Korea",
       "Slovenia"
     ],
     "answer": 3,
@@ -2440,10 +2456,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Buda_Castle.jpg?width=640",
     "alt": "Buda Castle landmark",
     "options": [
-      "Ireland",
-      "Belgium",
+      "India",
+      "Thailand",
       "Hungary",
-      "Romania"
+      "South Africa"
     ],
     "answer": 2,
     "fact": "Buda Castle is located in Hungary."
@@ -2468,11 +2484,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Krakow_Cloth_Hall.jpg?width=640",
     "alt": "Krakow Cloth Hall landmark",
     "options": [
-      "Denmark",
-      "Poland",
-      "Slovenia"
+      "Bhutan",
+      "Jordan",
+      "China",
+      "Poland"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Krakow Cloth Hall is located in Poland."
   },
   {
@@ -2495,12 +2512,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Cliffs_of_Moher.jpg?width=640",
     "alt": "Cliffs of Moher landmark",
     "options": [
+      "Palestine",
       "Ireland",
-      "United Kingdom",
-      "France",
-      "Italy"
+      "Malaysia",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Cliffs of Moher is located in Ireland."
   },
   {
@@ -2523,9 +2540,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Plitvice_Lakes.jpg?width=640",
     "alt": "Plitvice Lakes landmark",
     "options": [
-      "Germany",
-      "Spain",
-      "Austria",
+      "India",
+      "United Arab Emirates",
+      "Romania",
       "Croatia"
     ],
     "answer": 3,
@@ -2551,12 +2568,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Dubrovnik_Old_Town.jpg?width=640",
     "alt": "Dubrovnik Old Town landmark",
     "options": [
+      "India",
       "Croatia",
-      "Netherlands",
-      "Switzerland",
-      "Czech Republic"
+      "Turkey",
+      "Cuba"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Dubrovnik Old Town is located in Croatia."
   },
   {
@@ -2579,12 +2596,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Giants_Causeway.jpg?width=640",
     "alt": "Giants Causeway landmark",
     "options": [
-      "Croatia",
-      "United Kingdom",
-      "Poland",
-      "Norway"
+      "Belgium",
+      "South Korea",
+      "Jordan",
+      "United Kingdom"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Giants Causeway is located in United Kingdom."
   },
   {
@@ -2607,10 +2624,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Geirangerfjord.jpg?width=640",
     "alt": "Geirangerfjord landmark",
     "options": [
-      "Ireland",
-      "Hungary",
+      "India",
+      "Turkey",
       "Norway",
-      "Belgium"
+      "Myanmar"
     ],
     "answer": 2,
     "fact": "Geirangerfjord is located in Norway."
@@ -2635,9 +2652,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Lake_Como.jpg?width=640",
     "alt": "Lake Como landmark",
     "options": [
-      "Slovenia",
-      "Denmark",
-      "Romania",
+      "Malaysia",
+      "Jordan",
+      "Thailand",
       "Italy"
     ],
     "answer": 3,
@@ -2663,12 +2680,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Pyramids_of_Giza.jpg?width=640",
     "alt": "Pyramids of Giza landmark",
     "options": [
+      "Turkey",
       "Egypt",
-      "Namibia",
-      "Algeria",
-      "Zambia and Zimbabwe"
+      "Austria",
+      "Thailand"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Pyramids of Giza is located in Egypt."
   },
   {
@@ -2691,12 +2708,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Great_Sphinx_of_Giza.jpg?width=640",
     "alt": "Great Sphinx of Giza landmark",
     "options": [
-      "Morocco",
-      "Kenya",
-      "Egypt",
-      "South Africa"
+      "India",
+      "Jordan",
+      "Nepal",
+      "Egypt"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Great Sphinx of Giza is located in Egypt."
   },
   {
@@ -2719,12 +2736,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Abu_Simbel_Temples.jpg?width=640",
     "alt": "Abu Simbel Temples landmark",
     "options": [
+      "India",
       "Egypt",
-      "Ethiopia",
-      "Namibia",
+      "Romania",
       "Tanzania"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Abu Simbel Temples is located in Egypt."
   },
   {
@@ -2747,11 +2764,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Karnak_Temple.jpg?width=640",
     "alt": "Karnak Temple landmark",
     "options": [
-      "Algeria",
-      "Egypt",
-      "Zambia and Zimbabwe"
+      "Ireland",
+      "Thailand",
+      "Jordan",
+      "Egypt"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Karnak Temple is located in Egypt."
   },
   {
@@ -2774,10 +2792,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Lalibela_Rock_Hewn_Churches.jpg?width=640",
     "alt": "Lalibela Rock Hewn Churches landmark",
     "options": [
-      "South Africa",
-      "Morocco",
+      "Singapore",
+      "South Korea",
       "Ethiopia",
-      "Kenya"
+      "Cambodia"
     ],
     "answer": 2,
     "fact": "Lalibela Rock Hewn Churches is located in Ethiopia."
@@ -2802,12 +2820,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Table_Mountain.jpg?width=640",
     "alt": "Table Mountain landmark",
     "options": [
-      "Algeria",
-      "South Africa",
-      "Ethiopia",
-      "Namibia"
+      "India",
+      "United Arab Emirates",
+      "China",
+      "South Africa"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Table Mountain is located in South Africa."
   },
   {
@@ -2830,10 +2848,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Robben_Island.jpg?width=640",
     "alt": "Robben Island landmark",
     "options": [
+      "Thailand",
       "South Africa",
-      "Zambia and Zimbabwe"
+      "France",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Robben Island is located in South Africa."
   },
   {
@@ -2856,9 +2876,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Victoria_Falls.jpg?width=640",
     "alt": "Victoria Falls landmark",
     "options": [
-      "South Africa",
-      "Kenya",
-      "Tanzania",
+      "Japan",
+      "Jordan",
+      "Malaysia",
       "Zambia and Zimbabwe"
     ],
     "answer": 3,
@@ -2884,12 +2904,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Mount_Kilimanjaro.jpg?width=640",
     "alt": "Mount Kilimanjaro landmark",
     "options": [
+      "Malaysia",
       "Tanzania",
-      "Algeria",
-      "Namibia",
-      "Zambia and Zimbabwe"
+      "Egypt",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Mount Kilimanjaro is located in Tanzania."
   },
   {
@@ -2912,12 +2932,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Serengeti_National_Park.jpg?width=640",
     "alt": "Serengeti National Park landmark",
     "options": [
-      "Egypt",
-      "Tanzania",
-      "South Africa",
-      "Morocco"
+      "Canada and United States",
+      "Palestine",
+      "Romania",
+      "Tanzania"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Serengeti National Park is located in Tanzania."
   },
   {
@@ -2940,10 +2960,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Ngorongoro_Crater.jpg?width=640",
     "alt": "Ngorongoro Crater landmark",
     "options": [
-      "Ethiopia",
-      "Namibia",
+      "Nepal",
+      "Malaysia",
       "Tanzania",
-      "Kenya"
+      "Cambodia"
     ],
     "answer": 2,
     "fact": "Ngorongoro Crater is located in Tanzania."
@@ -2968,11 +2988,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Ait_Benhaddou.jpg?width=640",
     "alt": "Ait Benhaddou landmark",
     "options": [
-      "Zambia and Zimbabwe",
-      "Morocco",
-      "Algeria"
+      "India",
+      "Algeria",
+      "Japan",
+      "Morocco"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Ait Benhaddou is located in Morocco."
   },
   {
@@ -2995,12 +3016,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Hassan_II_Mosque.jpg?width=640",
     "alt": "Hassan II Mosque landmark",
     "options": [
+      "Hungary",
       "Morocco",
-      "South Africa",
-      "Kenya",
-      "Tanzania"
+      "Palestine",
+      "Nepal"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Hassan II Mosque is located in Morocco."
   },
   {
@@ -3023,12 +3044,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Djamaa_el_Djazair.jpg?width=640",
     "alt": "Djamaa el Djazair landmark",
     "options": [
-      "Tanzania",
-      "Namibia",
-      "Algeria",
-      "Ethiopia"
+      "India",
+      "South Korea",
+      "Palestine",
+      "Algeria"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Djamaa el Djazair is located in Algeria."
   },
   {
@@ -3051,10 +3072,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Boulders_Beach.jpg?width=640",
     "alt": "Boulders Beach landmark",
     "options": [
+      "United Arab Emirates",
       "South Africa",
-      "Zambia and Zimbabwe"
+      "Palestine",
+      "Chile"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Boulders Beach is located in South Africa."
   },
   {
@@ -3077,9 +3100,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Mount_Kenya.jpg?width=640",
     "alt": "Mount Kenya landmark",
     "options": [
-      "South Africa",
-      "Ethiopia",
-      "Tanzania",
+      "Italy",
+      "Singapore",
+      "Germany",
       "Kenya"
     ],
     "answer": 3,
@@ -3105,10 +3128,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sossusvlei_Dunes.jpg?width=640",
     "alt": "Sossusvlei Dunes landmark",
     "options": [
-      "Algeria",
-      "Ethiopia",
+      "India",
+      "Jordan",
       "Namibia",
-      "Zambia and Zimbabwe"
+      "Malaysia"
     ],
     "answer": 2,
     "fact": "Sossusvlei Dunes is located in Namibia."
@@ -3133,12 +3156,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Statue_of_Liberty.jpg?width=640",
     "alt": "Statue of Liberty landmark",
     "options": [
-      "Cuba",
-      "United States",
-      "Canada",
-      "Mexico"
+      "India",
+      "Jordan",
+      "China",
+      "United States"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Statue of Liberty is located in United States."
   },
   {
@@ -3161,10 +3184,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Golden_Gate_Bridge.jpg?width=640",
     "alt": "Golden Gate Bridge landmark",
     "options": [
+      "India",
       "United States",
-      "Panama"
+      "Cambodia",
+      "Hungary"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Golden Gate Bridge is located in United States."
   },
   {
@@ -3187,11 +3212,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Grand_Canyon.jpg?width=640",
     "alt": "Grand Canyon landmark",
     "options": [
-      "Cuba",
-      "Panama",
+      "Vatican City",
+      "France",
+      "Thailand",
       "United States"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Grand Canyon is located in United States."
   },
   {
@@ -3214,12 +3240,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Mount_Rushmore.jpg?width=640",
     "alt": "Mount Rushmore landmark",
     "options": [
+      "Myanmar",
       "United States",
-      "Cuba",
-      "Mexico",
-      "Panama"
+      "Russia",
+      "Cuba"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Mount Rushmore is located in United States."
   },
   {
@@ -3242,12 +3268,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/White_House.jpg?width=640",
     "alt": "White House landmark",
     "options": [
-      "Canada",
-      "United States",
-      "Cuba",
-      "Mexico"
+      "Germany",
+      "Turkey",
+      "Russia",
+      "United States"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "White House is located in United States."
   },
   {
@@ -3270,10 +3296,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Niagara_Falls.jpg?width=640",
     "alt": "Niagara Falls landmark",
     "options": [
-      "Mexico",
-      "Cuba",
+      "Thailand",
+      "Nepal",
       "Canada and United States",
-      "Canada"
+      "United Arab Emirates"
     ],
     "answer": 2,
     "fact": "Niagara Falls is located in Canada and United States."
@@ -3298,11 +3324,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/CN_Tower.jpg?width=640",
     "alt": "CN Tower landmark",
     "options": [
-      "Panama",
-      "Canada",
-      "Cuba"
+      "Algeria",
+      "Jordan",
+      "China",
+      "Canada"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "CN Tower is located in Canada."
   },
   {
@@ -3325,12 +3352,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Chichen_Itza.jpg?width=640",
     "alt": "Chichen Itza landmark",
     "options": [
+      "Singapore",
       "Mexico",
-      "Canada",
-      "Cuba",
-      "Panama"
+      "Venezuela, Brazil and Guyana",
+      "Vietnam"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Chichen Itza is located in Mexico."
   },
   {
@@ -3353,12 +3380,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Teotihuacan_Pyramid_of_the_Sun.jpg?width=640",
     "alt": "Teotihuacan Pyramid of the Sun landmark",
     "options": [
-      "United States",
-      "Cuba",
-      "Mexico",
-      "Canada"
+      "India",
+      "France",
+      "Palestine",
+      "Mexico"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Teotihuacan Pyramid of the Sun is located in Mexico."
   },
   {
@@ -3381,10 +3408,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Tulum_Ruins.jpg?width=640",
     "alt": "Tulum Ruins landmark",
     "options": [
+      "India",
       "Mexico",
-      "Panama"
+      "Belgium",
+      "Zambia and Zimbabwe"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Tulum Ruins is located in Mexico."
   },
   {
@@ -3407,11 +3436,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Palace_of_Fine_Arts.jpg?width=640",
     "alt": "Palace of Fine Arts landmark",
     "options": [
-      "Cuba",
-      "Mexico",
-      "Panama"
+      "China",
+      "Romania",
+      "Jordan",
+      "Mexico"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Palace of Fine Arts is located in Mexico."
   },
   {
@@ -3434,10 +3464,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Old_Havana_Capitol.jpg?width=640",
     "alt": "Old Havana Capitol landmark",
     "options": [
-      "Mexico",
-      "Canada",
+      "Namibia",
+      "Germany",
       "Cuba",
-      "Panama"
+      "Cambodia"
     ],
     "answer": 2,
     "fact": "Old Havana Capitol is located in Cuba."
@@ -3462,12 +3492,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Panama_Canal.jpg?width=640",
     "alt": "Panama Canal landmark",
     "options": [
-      "Mexico",
-      "Panama",
-      "United States",
-      "Canada"
+      "United Arab Emirates",
+      "Jordan",
+      "Singapore",
+      "Panama"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Panama Canal is located in Panama."
   },
   {
@@ -3490,10 +3520,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Banff_Lake_Louise.jpg?width=640",
     "alt": "Banff Lake Louise landmark",
     "options": [
+      "Vatican City",
       "Canada",
-      "Panama"
+      "Cambodia",
+      "Palestine"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Banff Lake Louise is located in Canada."
   },
   {
@@ -3516,11 +3548,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Yosemite_Valley.jpg?width=640",
     "alt": "Yosemite Valley landmark",
     "options": [
-      "Cuba",
-      "Panama",
+      "India",
+      "Greece",
+      "South Africa",
       "United States"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Yosemite Valley is located in United States."
   },
   {
@@ -3543,12 +3576,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Antelope_Canyon.jpg?width=640",
     "alt": "Antelope Canyon landmark",
     "options": [
+      "India",
       "United States",
-      "Cuba",
-      "Mexico",
-      "Panama"
+      "Turkey",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Antelope Canyon is located in United States."
   },
   {
@@ -3571,12 +3604,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Moraine_Lake.jpg?width=640",
     "alt": "Moraine Lake landmark",
     "options": [
-      "United States",
-      "Canada",
-      "Cuba",
-      "Mexico"
+      "Indonesia",
+      "Hungary",
+      "Turkey",
+      "Canada"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Moraine Lake is located in Canada."
   },
   {
@@ -3599,10 +3632,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Iguazu_Falls.jpg?width=640",
     "alt": "Iguazu Falls landmark",
     "options": [
-      "Brazil",
-      "Bolivia",
+      "Vatican City",
+      "Jordan",
       "Argentina and Brazil",
-      "Peru"
+      "Italy"
     ],
     "answer": 2,
     "fact": "Iguazu Falls is located in Argentina and Brazil."
@@ -3627,9 +3660,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Machu_Picchu.jpg?width=640",
     "alt": "Machu Picchu landmark",
     "options": [
-      "Argentina",
-      "Chile",
-      "Ecuador",
+      "Japan",
+      "Nepal",
+      "China",
       "Peru"
     ],
     "answer": 3,
@@ -3655,12 +3688,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Christ_the_Redeemer.jpg?width=640",
     "alt": "Christ the Redeemer landmark",
     "options": [
+      "India",
       "Brazil",
-      "Colombia",
-      "Venezuela",
-      "Guyana"
+      "Cambodia",
+      "France"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Christ the Redeemer is located in Brazil."
   },
   {
@@ -3683,12 +3716,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sugarloaf_Mountain.jpg?width=640",
     "alt": "Sugarloaf Mountain landmark",
     "options": [
-      "Peru",
-      "Bolivia",
-      "Brazil",
-      "Argentina and Brazil"
+      "Mexico",
+      "Algeria",
+      "Palestine",
+      "Brazil"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Sugarloaf Mountain is located in Brazil."
   },
   {
@@ -3711,12 +3744,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Salar_de_Uyuni.jpg?width=640",
     "alt": "Salar de Uyuni landmark",
     "options": [
+      "India",
       "Bolivia",
-      "Argentina",
-      "Chile",
-      "Ecuador"
+      "Ecuador",
+      "Nepal"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Salar de Uyuni is located in Bolivia."
   },
   {
@@ -3739,9 +3772,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Galapagos_Islands.jpg?width=640",
     "alt": "Galapagos Islands landmark",
     "options": [
-      "Colombia",
-      "Guyana",
-      "Venezuela",
+      "Egypt",
+      "United Kingdom",
+      "Jordan",
       "Ecuador"
     ],
     "answer": 3,
@@ -3767,10 +3800,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Perito_Moreno_Glacier.jpg?width=640",
     "alt": "Perito Moreno Glacier landmark",
     "options": [
-      "Brazil",
-      "Peru",
+      "Algeria",
+      "Japan",
       "Argentina",
-      "Argentina and Brazil"
+      "Cambodia"
     ],
     "answer": 2,
     "fact": "Perito Moreno Glacier is located in Argentina."
@@ -3795,12 +3828,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Torres_del_Paine.jpg?width=640",
     "alt": "Torres del Paine landmark",
     "options": [
-      "Argentina",
-      "Chile",
-      "Bolivia",
-      "Ecuador"
+      "Romania",
+      "Vatican City",
+      "United Arab Emirates",
+      "Chile"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Torres del Paine is located in Chile."
   },
   {
@@ -3823,12 +3856,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Easter_Island_Moai.jpg?width=640",
     "alt": "Easter Island Moai landmark",
     "options": [
+      "Bolivia",
       "Chile",
-      "Guyana",
-      "Venezuela",
-      "Colombia"
+      "Palestine",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Easter Island Moai is located in Chile."
   },
   {
@@ -3851,9 +3884,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Cartagena_Walled_City.jpg?width=640",
     "alt": "Cartagena Walled City landmark",
     "options": [
-      "Peru",
-      "Brazil",
-      "Argentina and Brazil",
+      "India",
+      "Jordan",
+      "Palestine",
       "Colombia"
     ],
     "answer": 3,
@@ -3879,12 +3912,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Angel_Falls.jpg?width=640",
     "alt": "Angel Falls landmark",
     "options": [
+      "Myanmar",
       "Venezuela",
-      "Ecuador",
-      "Bolivia",
-      "Argentina"
+      "Palestine",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Angel Falls is located in Venezuela."
   },
   {
@@ -3907,12 +3940,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Kaieteur_Falls.jpg?width=640",
     "alt": "Kaieteur Falls landmark",
     "options": [
-      "Chile",
-      "Guyana",
-      "Venezuela",
-      "Colombia"
+      "China",
+      "India",
+      "Turkey",
+      "Guyana"
     ],
-    "answer": 1,
+    "answer": 3,
     "fact": "Kaieteur Falls is located in Guyana."
   },
   {
@@ -3935,10 +3968,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Uyuni_Train_Cemetery.jpg?width=640",
     "alt": "Uyuni Train Cemetery landmark",
     "options": [
-      "Brazil",
-      "Argentina and Brazil",
+      "Myanmar",
+      "Malaysia",
       "Bolivia",
-      "Peru"
+      "South Africa"
     ],
     "answer": 2,
     "fact": "Uyuni Train Cemetery is located in Bolivia."
@@ -3963,9 +3996,9 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Mount_Roraima.jpg?width=640",
     "alt": "Mount Roraima landmark",
     "options": [
-      "Colombia",
-      "Venezuela",
-      "Chile",
+      "India",
+      "Japan",
+      "Nepal",
       "Venezuela, Brazil and Guyana"
     ],
     "answer": 3,
@@ -3991,10 +4024,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sydney_Opera_House.jpg?width=640",
     "alt": "Sydney Opera House landmark",
     "options": [
+      "India",
       "Australia",
-      "French Polynesia"
+      "Malaysia",
+      "Jordan"
     ],
-    "answer": 0,
+    "answer": 1,
     "fact": "Sydney Opera House is located in Australia."
   },
   {
@@ -4017,11 +4052,12 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sydney_Harbour_Bridge.jpg?width=640",
     "alt": "Sydney Harbour Bridge landmark",
     "options": [
-      "New Zealand",
-      "French Polynesia",
+      "Russia",
+      "Philippines",
+      "Vietnam",
       "Australia"
     ],
-    "answer": 2,
+    "answer": 3,
     "fact": "Sydney Harbour Bridge is located in Australia."
   }
 ] as const;
