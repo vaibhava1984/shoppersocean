@@ -2,6 +2,7 @@
 import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { lockedRoomMysteryQuestionBank } from "@/components/lockedRoomMysteryQuestionBank";
 import { secretCodeChamberQuestionBank } from "@/components/secretCodeChamberQuestionBank";
+import { masterOfDeceptionQuestionBank } from "@/components/masterOfDeceptionQuestionBank";
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 
@@ -19,7 +20,7 @@ const games: Game[] = [
   {id:"mm-sc-02",q:"Use A=1, B=2, C=3 and so on. What word is represented by 8–5–12–12–15?",options:["HELLO","HOUSE","CROWN","LIGHT"],answer:0,fact:"8 is H, 5 is E, 12 is L, 12 is L and 15 is O. Together they spell HELLO."},
   {id:"mm-sc-03",q:"A keypad clue says: triangle, square, pentagon. Enter the number of sides of each shape in that order. What is the code?",options:["345","354","435","543"],answer:0,fact:"A triangle has 3 sides, a square 4 and a pentagon 5. The code is 345."}
  ]},
- { id:"deception",type:"master-deception",icon:"🎭",title:"The Master of Deception",subtitle:"Compare statements and expose contradictions.",tone:"from-rose-600 via-pink-700 to-purple-900",questions:[
+ { id:"deception",type:"master-deception",icon:"🎭",title:"The Master of Deception",subtitle:"Compare statements and expose contradictions.",tone:"from-rose-600 via-pink-700 to-purple-900",questions:[...masterOfDeceptionQuestionBank,
   {id:"mm-md-01",q:"The library clock stopped at 9:00. Ava says, 'I heard it strike ten while I was in the library.' Ben says, 'It had stopped when I arrived at 9:30.' Whose statement conflicts with the clue?",options:["Ava's","Ben's","Both","Neither"],answer:0,fact:"A clock stopped at 9:00 could not strike ten afterward. Ben's statement is consistent with the clue."},
   {id:"mm-md-02",q:"Mira says she never entered the kitchen. A fresh footprint matching her distinctive boot is found in flour on the kitchen floor. What is the fairest conclusion?",options:["Her statement needs checking against the footprint","The footprint proves guilt beyond doubt","The kitchen moved overnight","Footprints can never be evidence"],answer:0,fact:"The footprint challenges Mira's account, but the print and boot should be verified before drawing a final conclusion."},
   {id:"mm-md-03",q:"Leo says he stayed in the west wing all night. Nora says she spoke to him in the east wing at midnight. What evidence would best test their accounts?",options:["A reliable time-stamped record of Leo's location","The colour of their coats","The mansion's age","Tomorrow's weather"],answer:0,fact:"A reliable time-stamped record directly tests the disputed location and is stronger than unrelated details."}
