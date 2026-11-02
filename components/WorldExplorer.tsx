@@ -1,6 +1,7 @@
 "use client";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { geographyQuestQuestionBank } from "@/components/geographyQuestQuestionBank";
+import { worldCultureQuestionBank } from "@/components/worldCultureQuestionBank";
 
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
@@ -25,6 +26,7 @@ const games: Game[] = [
     { id: "we-gq-10", q: "Which country does this flag represent?", image: "https://flagcdn.com/w320/kr.png", alt: "", options: ["Japan", "South Korea", "North Korea", "Mongolia"], answer: 1, fact: "The central red-and-blue taegeuk and four black trigrams identify South Korea." }
   ]},
   { id: "culture", type: "world-culture", icon: "🎎", title: "The World Culture Challenge", subtitle: "Identify cultural clothing, celebrations, art and traditions from pictures.", tone: "from-fuchsia-600 via-purple-700 to-indigo-900", questions: [
+    ...worldCultureQuestionBank,
     { id: "we-wc-01", q: "Which traditional Japanese garment is shown?", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Japanese_Traditional_Kimono.jpg?width=640", alt: "", options: ["Sari", "Kimono", "Hanbok", "Kilt"], answer: 1, fact: "The kimono is a traditional Japanese garment, with styles varying by occasion and season." },
     { id: "we-wc-02", q: "Which traditional Indian garment is pictured?", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Indian_traditional_lady_wearing_saree.jpg?width=640", alt: "", options: ["Sari", "Dirndl", "Kimono", "Poncho"], answer: 0, fact: "The sari is a traditional draped garment worn in India and across South Asia." },
     { id: "we-wc-03", q: "Which country's traditional clothing is represented by this outfit?", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Japanese_Kimono.jpg?width=640", alt: "", options: ["Japan", "Norway", "Egypt", "Peru"], answer: 0, fact: "The outfit shown is associated with traditional Japanese dress." },
