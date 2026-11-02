@@ -162,7 +162,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               <div ref={activityTargetRef}><EntertainmentHub userId={userId} visibleGroupIds={["classic-games"]} /></div>
             )}
             {selected.action === "brain-battle-arena" && (
-              <div ref={activityTargetRef}><BrainBattleArena userId={userId} /></div>
+              <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={()=>{activeZoneRef.current=null;setActiveZone(null);setActiveQuizGame(null);}} /></div>
             )}
             {selected.action === "learning" && (
               <div ref={activityTargetRef}>
