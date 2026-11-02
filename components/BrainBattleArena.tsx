@@ -1,4 +1,5 @@
 "use client";
+import GameQuotaNotice from "@/components/GameQuotaNotice";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
@@ -150,7 +151,7 @@ export default function BrainBattleArena({userId,onExit}:{userId:string|null;onE
       <p className="relative mt-1 max-w-3xl text-sm leading-6 text-white/90">One challenging MCQ game built around everyday situations. Read the details, question assumptions, compare close answers and choose the most defensible decision.</p>
     </div>
     {error&&<div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-bold text-rose-800">{error}</div>}
-    {exhausted&&<div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in Brain Battle Arena have been used. Subscribe to continue.</div>}
+    {exhausted&&<GameQuotaNotice title="Your three free trials in Brain Battle Arena are complete!" description="Subscribe to continue testing your judgement and decision-making skills." />}
     {noDaily&&<div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's 10 plays for Brain Battle Arena are complete. Please return after the daily reset.</div>}
     {loading&&<div className="rounded-2xl bg-white p-6 text-center font-bold text-slate-800 shadow">Finding a fresh challenge…</div>}
     {bankExhausted&&<div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm font-bold text-amber-950">You have completed every available challenge in this question bank. No question will be repeated.</div>}

@@ -1,4 +1,5 @@
 "use client";
+import GameQuotaNotice from "@/components/GameQuotaNotice";
 
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
@@ -220,7 +221,7 @@ export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: {
   {!userId?<div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center"><h4 className="text-xl font-black text-amber-900">Sign in to start playing</h4><Link href="/login" className="mt-4 inline-flex rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-6 py-3 font-black text-slate-950 shadow">Sign In / Create Account →</Link></div>
   :!quotaReady?<div className="rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center text-sm font-semibold text-slate-600">Checking your available quota…</div>
   :accessError?<div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center text-sm font-semibold text-amber-900">{accessError}</div>
-  :noQuota?<div className="rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-7 text-center shadow-lg"><div className="text-4xl">🌟</div><h4 className="mt-3 text-2xl font-black text-slate-900">Your three free questions are complete!</h4><p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-slate-600">Subscribe to continue exploring all four Digital Discovery games.</p><Link href="/subscribe-now" className="mt-5 inline-flex rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-500 px-7 py-3 font-black text-slate-950 shadow-lg">SUBSCRIBE NOW →</Link></div>
+  :noQuota?<GameQuotaNotice title="Your three free questions are complete!" description="Subscribe to continue exploring all four Digital Discovery games." />
   :dailyDone?<div className="rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center"><h4 className="text-xl font-black text-slate-900">Today's game quota is complete</h4><p className="mt-2 text-sm text-slate-600">Please return after the daily reset at 8:00 AM IST.</p></div>
   :bankExhausted?<div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-7 text-center"><h4 className="text-xl font-black text-emerald-900">This game's available questions are complete</h4><p className="mt-2 text-sm text-emerald-800">{message}</p></div>
   :!question?<div className="rounded-2xl bg-slate-50 p-6">Loading your next question…</div>

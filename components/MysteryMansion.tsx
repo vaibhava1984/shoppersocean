@@ -1,4 +1,5 @@
 "use client";
+import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 
@@ -58,7 +59,7 @@ export default function MysteryMansion({userId,initialGameId,onExit}:{userId:str
    <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Quiz World · Mystery Challenge {games.findIndex(g=>g.id===active.id)+1}</p><h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2><p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
   </div>
   {accessError&&<div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
-  {noQuota&&<div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials for this game collection have been used. Subscribe to continue.</div>}
+  {noQuota&&<GameQuotaNotice title="Your three free trials in Mystery Mansion are complete!" description="Subscribe to investigate more mysteries and unlock every case." />}
   {noDaily&&<div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's quota for this room is complete. Please return after the daily reset.</div>}
   {exhausted&&<div className="rounded-xl border border-violet-200 bg-violet-50 p-5 text-center text-sm font-bold text-violet-900">You have completed every currently available starter mystery in this room. More mysteries will be added during the question-bank stage.</div>}
   {!noQuota&&!noDaily&&!exhausted&&question&&<div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-violet-50 p-4 shadow-lg sm:p-6">
