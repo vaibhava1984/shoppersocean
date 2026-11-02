@@ -1,0 +1,9 @@
+"use client";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+export default function GameQuotaPopup({open,resetKey}:{open:boolean;resetKey:string}){
+ const [visible,setVisible]=useState(false);
+ useEffect(()=>{if(!open)return;setVisible(true);const timer=window.setTimeout(()=>setVisible(false),5000);return()=>window.clearTimeout(timer);},[open,resetKey]);
+ if(!visible)return null;
+ return <div className="fixed inset-0 z-[150] flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm" role="alertdialog" aria-modal="true" aria-label="Free game quota exhausted"><div className="w-full max-w-md overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-2xl"><div className="h-2 bg-gradient-to-r from-amber-400 via-pink-500 to-violet-600"><div className="h-2 bg-gradient-to-r from-cyan-300 to-white/80" style={{animation:"popupCountdown 5s linear forwards"}}/></div><div className="bg-gradient-to-br from-indigo-700 via-violet-600 to-fuchsia-600 px-6 py-7 text-center text-white"><div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 text-3xl shadow-lg">✨</div><h3 className="mt-4 text-xl font-black leading-8">Your free quota on this game has been exhausted. Please subscribe to play further.</h3><p className="mt-2 text-sm text-white/85">Keep the fun going with Shoppers Ocean.</p><Link href="/subscribe-now" className="mt-5 inline-flex rounded-full bg-white px-6 py-3 text-sm font-black text-indigo-700 shadow-lg">Subscribe Now →</Link></div></div></div>;
+}

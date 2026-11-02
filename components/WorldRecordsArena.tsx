@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import GameQuotaPopup from "@/components/GameQuotaPopup";
 
 type RecordQuestion = { id: string; category: string; question: string; options: string[]; answer: number; fact: string };
 
@@ -165,5 +166,5 @@ export default function WorldRecordsArena({ userId, onExit }: { userId: string |
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="text-xs font-semibold text-slate-500">{!userId ? "Sign in to play." : !reserved ? "Preparing a fresh record question…" : choice===null ? "Choose the correct record-holder." : "Answer recorded · Next question shortly"}</span><button disabled={!reserved || choice!==null || noFree || noDaily || !userId} onClick={()=>answer(null)} className="rounded-xl border border-amber-300 bg-gradient-to-r from-amber-400 to-orange-500 px-5 py-2.5 text-sm font-black text-slate-950 shadow-md disabled:opacity-50">Skip question ⏭</button></div>
       {message && <div aria-live="polite" className="mt-4 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">{message}</div>}
     </div>}
-  </div>;
+  <GameQuotaPopup open={quotaReady && quota===0 && !isAdmin && !isSubscribed} resetKey={String(index)} /></div>;
 }

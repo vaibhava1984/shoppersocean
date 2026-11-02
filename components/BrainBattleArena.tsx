@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import GameQuotaPopup from "@/components/GameQuotaPopup";
 
 type BrainQuestion = {
   id: string;
@@ -169,5 +170,5 @@ export default function BrainBattleArena({userId,onExit}:{userId:string|null;onE
       <p className="mt-4 text-xs font-semibold text-slate-500">{!userId?"Sign in to play.":!reserved?"Preparing your question…":finished?"Answer recorded. A fresh question will appear shortly.":"Choose the single best answer. Read every detail before deciding."}</p>
       {feedback&&<div aria-live="polite" className="mt-4 rounded-2xl border border-indigo-200 bg-indigo-50 p-4 text-sm font-semibold leading-6 text-indigo-950">{feedback}</div>}
     </div>}
-  </div>;
+  <GameQuotaPopup open={quota!==null && quota===0 && !admin && !subscribed} resetKey={String(round)} /></div>;
 }
