@@ -26,10 +26,6 @@ async function handle(req:Request,consume:boolean){
   await db.prepare("CREATE TABLE IF NOT EXISTS game_subscriber_usage_by_type(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,usage_date TEXT NOT NULL,plays_used INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(user_id,game_type_id,usage_date))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_challenge_history(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,challenge_id TEXT NOT NULL,played_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id,challenge_id))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_question_reservations(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,challenge_id TEXT NOT NULL,question_text TEXT NOT NULL,session_id TEXT NOT NULL,reserved_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id,challenge_id))").run();
-  // Reservations are short-lived display locks. Clean abandoned locks, then enforce one active copy of a question per user across every game.
-  await db.prepare("DELETE FROM game_question_reservations WHERE reserved_at < ?").bind(new Date(Date.now()-30*60*1000).toISOString()).run();
-  await db.prepare("DELETE FROM game_question_reservations WHERE rowid NOT IN (SELECT MIN(rowid) FROM game_question_reservations GROUP BY user_id,question_text)").run();
-  await db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS game_question_reservations_user_question_unique ON game_question_reservations(user_id,question_text)").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_picture_pair_quota_reset_v2(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS user_subscriptions(user_id TEXT PRIMARY KEY,status TEXT NOT NULL DEFAULT 'inactive',started_at TEXT,expires_at TEXT,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
   const acct=await db.prepare("SELECT role,email,full_name FROM users WHERE id=? LIMIT 1").bind(user.id).first<any>();
@@ -60,6 +56,13 @@ async function handle(req:Request,consume:boolean){
    // from appearing on screen and shares the 365-day history across every game type.
    if(reserveQuestion){
     if(previewMode)return NextResponse.json({reserved:true,previewMode:true},{headers});
+    // A user can have only one active reservation for the same normalized question across all games.
+    await db.prepare("DELETE FROM game_question_reservations WHERE reserved_at < ?").bind(new Date(Date.now()-30*60*1000).toISOString()).run();
+    const reservationIndex=await db.prepare("SELECT name FROM sqlite_master WHERE type='index' AND name='game_question_reservations_user_question_unique'").first<any>();
+    if(!reservationIndex){
+     await db.prepare("DELETE FROM game_question_reservations WHERE rowid NOT IN (SELECT MIN(rowid) FROM game_question_reservations GROUP BY user_id,question_text)").run();
+     await db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS game_question_reservations_user_question_unique ON game_question_reservations(user_id,question_text)").run();
+    }
     if(!challenge||!questionText||!reservationSessionId)return NextResponse.json({error:"A question reservation requires a challenge and session."},{status:400,headers});
     const existing=await db.prepare("SELECT question_text,session_id FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? LIMIT 1").bind(user.id,type,challenge).first<any>();
     if(existing){
