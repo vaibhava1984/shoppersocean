@@ -1,3 +1,0 @@
-Original Tic Tac Toe game copied from https://github.com/mashukui/web-games/tree/main/tic-tac-toe
-The game design and gameplay are retained. Shoppers Ocean changes are limited to a same-origin message bridge for existing per-round quota checks and the More Games link back to the Shoppers Ocean homepage.
-The full MIT licence is included in LICENSE.txt.
