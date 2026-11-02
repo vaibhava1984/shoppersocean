@@ -54,7 +54,10 @@ function PremiumTicTacToe({onStart,playSound,soundOn}:{onStart:(id:string)=>Prom
  const round=useRef("tic:"+Date.now()+":"+Math.random()),busyRef=useRef(false);
  const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
  const winner=(board:(string|null)[])=>lines.map(line=>board[line[0]]&&board[line[0]]===board[line[1]]&&board[line[0]]===board[line[2]]?board[line[0]]:null).find(Boolean)??null;
- const sound=(kind:GameSoundKind)=>playSound(kind,soundOn&&!muted);
+ const ticSound=(player:"X"|"O")=>{
+  if(!soundOn||muted)return;
+  try{const context=getGameAudioContext();if(!context)return;void context.resume();const now=context.currentTime;const oscillator=context.createOscillator();const overtone=context.createOscillator();const gain=context.createGain();oscillator.type="sine";overtone.type="triangle";const base=player==="X"?660:523;oscillator.frequency.setValueAtTime(base,now);oscillator.frequency.exponentialRampToValueAtTime(base*1.28,now+0.075);overtone.frequency.setValueAtTime(base*2,now);gain.gain.setValueAtTime(0.0001,now);gain.gain.exponentialRampToValueAtTime(0.16,now+0.012);gain.gain.exponentialRampToValueAtTime(0.0001,now+0.19);oscillator.connect(gain);overtone.connect(gain);gain.connect(context.destination);oscillator.start(now);overtone.start(now);oscillator.stop(now+0.2);overtone.stop(now+0.2);}catch(error){console.error("Tic Tac Toe sound unavailable:",error);}
+ };
  const aiMove=(board:(string|null)[])=>{
   const score=(state:(string|null)[],player:"X"|"O"):number=>{const won=winner(state);if(won)return won==="O"?10:-10;if(state.every(Boolean))return 0;const scores:number[]=[];state.forEach((value,index)=>{if(value)return;const next=[...state];next[index]=player;scores.push(score(next,player==="O"?"X":"O"));});return player==="O"?Math.max(...scores):Math.min(...scores);};
   const moves=board.map((value,index)=>{if(value)return null;const next=[...board];next[index]="O";return {index,value:score(next,"X")};}).filter((move):move is {index:number;value:number}=>move!==null);
@@ -64,29 +67,30 @@ function PremiumTicTacToe({onStart,playSound,soundOn}:{onStart:(id:string)=>Prom
   if(busyRef.current||finished||cells[index])return;
   busyRef.current=true;setBusy(true);
   try{
-   // Verify the round before changing the board. Failed quota/network checks never
-   // leave a temporary mark that disappears, and successful marks remain in place.
    if(!claimed){setMessage("Starting your game…");const allowed=await onStart(round.current);if(!allowed){setMessage("This round could not be started. Please try again.");return;}setClaimed(true);}
-   const next=[...cells];next[index]="X";setCells(next);sound("tap");
-   if(winner(next)){setFinished(true);setMessage("You win! A brilliant three in a row! 🎉");sound("win");return;}
-   if(next.every(Boolean)){setFinished(true);setMessage("It’s a draw! Well played.");sound("win");return;}
+   const next=[...cells];next[index]="X";setCells(next);ticSound("X");
+   if(winner(next)){setFinished(true);setMessage("You win! A brilliant three in a row! 🎉");playSound("win",soundOn&&!muted);return;}
+   if(next.every(Boolean)){setFinished(true);setMessage("It’s a draw! Well played.");playSound("win",soundOn&&!muted);return;}
    setMessage("Computer is thinking…");
-   await new Promise(resolve=>window.setTimeout(resolve,380));
-   const after=[...next],computerIndex=aiMove(after);if(computerIndex!==undefined)after[computerIndex]="O";setCells(after);sound("tap");
-   if(winner(after)){setFinished(true);setMessage("Computer wins this round. Try again!");sound("lose");}
-   else if(after.every(Boolean)){setFinished(true);setMessage("It’s a draw! Well played.");sound("win");}
+   await new Promise(resolve=>window.setTimeout(resolve,2000+Math.floor(Math.random()*1001)));
+   const after=[...next],computerIndex=aiMove(after);if(computerIndex!==undefined)after[computerIndex]="O";setCells(after);ticSound("O");
+   if(winner(after)){setFinished(true);setMessage("Computer wins this round. Try again!");playSound("lose",soundOn&&!muted);}
+   else if(after.every(Boolean)){setFinished(true);setMessage("It’s a draw! Well played.");playSound("win",soundOn&&!muted);}
    else setMessage("Your turn — choose another square.");
   }catch{setMessage("Connection problem. Your board is unchanged; tap a square to retry.");}
   finally{busyRef.current=false;setBusy(false);}
  };
- const restart=()=>{if(busyRef.current)return;setCells(Array(9).fill(null));setFinished(false);setClaimed(false);setMessage("Your turn — tap any empty square.");round.current="tic:"+Date.now()+":"+Math.random();sound("tap");};
- return <section className="mx-auto flex w-full max-w-none flex-col gap-4 overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-br from-indigo-950 via-violet-900 to-fuchsia-900 p-3 text-white shadow-2xl sm:gap-5 sm:p-5">
-  <div className="w-full rounded-2xl border border-white/20 bg-white/10 p-2 shadow-inner sm:p-3">
+ const restart=()=>{if(busyRef.current)return;setCells(Array(9).fill(null));setFinished(false);setClaimed(false);setMessage("Your turn — tap any empty square.");round.current="tic:"+Date.now()+":"+Math.random();ticSound("X");};
+ return <section className="mx-auto flex w-full max-w-5xl flex-col gap-4 overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-br from-indigo-950 via-violet-900 to-fuchsia-900 p-3 text-white shadow-2xl sm:gap-5 sm:p-5">
+  <style>{`@keyframes ticDraw{from{stroke-dashoffset:140;opacity:.35}to{stroke-dashoffset:0;opacity:1}}.tic-draw-x{stroke-dasharray:140;stroke-dashoffset:140;animation:ticDraw .42s cubic-bezier(.2,.8,.2,1) forwards}.tic-draw-o{stroke-dasharray:220;stroke-dashoffset:220;animation:ticDraw .55s cubic-bezier(.2,.8,.2,1) forwards}`}</style>
+  <div className="mx-auto w-full max-w-4xl rounded-2xl border border-white/20 bg-white/10 p-2 shadow-inner sm:p-3">
    <div className="grid w-full grid-cols-3 gap-2 sm:gap-3">
-    {cells.map((value,index)=><button key={index} type="button" data-tic-cell aria-label={"Square "+(index+1)+(value?", "+value:", empty")} disabled={Boolean(value)||finished||busy} onClick={()=>void play(index)} className={"flex aspect-square w-full min-w-0 items-center justify-center rounded-xl border-2 border-white/60 bg-gradient-to-br from-white via-sky-50 to-indigo-100 text-[clamp(2.8rem,13vw,6.5rem)] font-black not-italic leading-none shadow-[0_5px_0_rgba(15,23,42,.32)] transition duration-200 hover:border-amber-300 active:scale-95 disabled:cursor-default sm:rounded-2xl "+(value==="X"?"text-cyan-600":value==="O"?"text-fuchsia-600":"text-slate-300")}>{value==="X"?"✕":value==="O"?"◯":""}</button>)}
+    {cells.map((value,index)=><button key={index} type="button" data-tic-cell aria-label={"Square "+(index+1)+(value?", "+value:", empty")} disabled={Boolean(value)||finished||busy} onClick={()=>void play(index)} className={"flex aspect-[1.12/1] w-full min-w-0 items-center justify-center rounded-xl border-2 border-white/60 bg-gradient-to-br from-white via-sky-50 to-indigo-100 shadow-[0_5px_0_rgba(15,23,42,.32)] transition duration-200 hover:border-amber-300 active:scale-95 disabled:cursor-default sm:rounded-2xl "+(value==="X"?"text-cyan-600":value==="O"?"text-fuchsia-600":"text-slate-300")}>
+     {value==="X"?<svg viewBox="0 0 100 100" className="h-[76%] w-[76%]" aria-hidden="true"><path className="tic-draw-x" d="M20 20 L80 80 M80 20 L20 80" fill="none" stroke="currentColor" strokeWidth="12" strokeLinecap="round"/></svg>:value==="O"?<svg viewBox="0 0 100 100" className="h-[76%] w-[76%]" aria-hidden="true"><circle className="tic-draw-o" cx="50" cy="50" r="34" fill="none" stroke="currentColor" strokeWidth="11"/></svg>:null}
+    </button>)}
    </div>
   </div>
-  <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+  <div className="mx-auto flex w-full max-w-4xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
    <div className="min-w-0 flex-1"><p className="text-xs font-black uppercase tracking-wider text-cyan-200">You are ✕ · Computer is ◯</p><p aria-live="polite" className="mt-1 break-words text-base font-extrabold leading-snug text-white sm:text-lg">{message}</p></div>
    <div className="flex w-full gap-2 sm:w-auto"><button type="button" disabled={busy} onClick={restart} className="flex-1 rounded-full bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 px-5 py-3 text-sm font-black not-italic text-indigo-950 shadow-lg disabled:opacity-50 sm:flex-none">{finished?"↻ Play Again":"↻ Restart"}</button><button type="button" onClick={()=>setMuted(value=>!value)} aria-pressed={!muted} className="flex-1 rounded-full border border-white/35 bg-white/10 px-5 py-3 text-sm font-bold not-italic text-white sm:flex-none">{muted?"🔇 Sound Off":"🔊 Sound On"}</button></div>
   </div>
