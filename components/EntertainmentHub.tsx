@@ -14,7 +14,7 @@ const groups: {id:string;icon:string;title:string;desc:string;games:[string,stri
 {id:"brain-logic",icon:"🧠",title:"Brain & Logic Lab",desc:"Think deeply, reason carefully and solve",games:[["sequence","Logical Riddle"],["odd","Odd One Out"]]},
 {id:"quiz-arena",icon:"🔬",title:"Science Quiz",desc:"Explore fascinating questions from every branch of science",games:[["quiz","Science Quiz"]]},
 {id:"riddle-corner",icon:"💡",title:"Riddle Corner",desc:"Clues, riddles and brain teasers",games:[["riddle","Solve a Riddle"]]},
-{id:"classic-games",icon:"🎮",title:"Classic Games",desc:"Enjoy the timeless game of strategy",games:[["tic","Tic Tac Toe"]]},
+{id:"classic-games",icon:"🎮",title:"Tic Tac Toe",desc:"Enjoy the timeless game of strategy",games:[["tic","Tic Tac Toe"]]},
 {id:"read-ebooks",icon:"📚",title:"Read E-books",desc:"Discover books by genre, author, language and trending collections",games:[["books","Browse E-books"]]}
  ];
 const words=["ALGORITHM","CONUNDRUM","LABYRINTH","PARADOXICAL","METAMORPHIC","PERSPICACIOUS"];
