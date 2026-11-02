@@ -178,7 +178,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               </div>
             )}
             {selected.action === "classic-games" && (
-              <div ref={activityTargetRef}><EntertainmentHub userId={userId} visibleGroupIds={["classic-games"]} embedded /></div>
+              <div ref={activityTargetRef}><EntertainmentHub userId={userId} visibleGroupIds={["classic-games"]} initialGroupId="classic-games" initialGame="tic" autoStart embedded /></div>
             )}
             {selected.action === "brain-battle-arena" && (
               <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={exitGame} /></div>
