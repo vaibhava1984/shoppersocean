@@ -47,26 +47,54 @@ const getGameAudioContext=()=>{if(typeof window==="undefined")return null;const 
 const loadGameSound=(kind:GameSoundKind)=>{const context=getGameAudioContext();if(!context)return Promise.resolve(null);if(gameSoundBuffers[kind])return Promise.resolve(gameSoundBuffers[kind]!);if(!gameSoundLoads[kind])gameSoundLoads[kind]=fetch(gameSoundPaths[kind],{cache:"force-cache"}).then(response=>{if(!response.ok)throw new Error("Sound file unavailable: "+gameSoundPaths[kind]);return response.arrayBuffer();}).then(bytes=>context.decodeAudioData(bytes)).then(buffer=>{gameSoundBuffers[kind]=buffer;return buffer;}).catch(error=>{console.error("Game sound failed to load:",kind,error);return null;});return gameSoundLoads[kind]!;};
 const primeGameSounds=()=>{const context=getGameAudioContext();if(!context)return;void context.resume().catch(error=>console.error("Game audio could not start:",error));for(const kind of Object.keys(gameSoundPaths) as GameSoundKind[])void loadGameSound(kind);};
 const playGameSound=(kind:GameSoundKind,enabled=true)=>{if(!enabled)return;if(kind==="lose"){playFallbackGameSound("lose");return;}const context=getGameAudioContext();if(!context){playFallbackGameSound(kind);return;}void (async()=>{try{if(context.state!=="running")await context.resume();const buffer=gameSoundBuffers[kind]??await loadGameSound(kind);if(!buffer){playFallbackGameSound(kind);return;}const source=context.createBufferSource();const gain=context.createGain();source.buffer=buffer;gain.gain.value=0.85;source.connect(gain);gain.connect(context.destination);source.start(0);}catch(error){console.error("Game sound playback failed:",error);playFallbackGameSound(kind);}})();};
-function PremiumTicTacToe({onStart}:{onStart:(id:string)=>Promise<boolean>}) {
- const frameRef=useRef<HTMLIFrameElement>(null);
- const pending=useRef(new Set<string>());
- useEffect(()=>{
-  const handleMessage=(event:MessageEvent)=>{
-   if(event.origin!==window.location.origin||event.source!==frameRef.current?.contentWindow)return;
-   const data=event.data as {type?:string;roundId?:string};
-   if(data?.type!=="shoppers-ocean:tic-start"||typeof data.roundId!=="string"||pending.current.has(data.roundId))return;
-   const roundId=data.roundId;
-   pending.current.add(roundId);
-   void onStart("tic:"+roundId).then(allowed=>{
-    frameRef.current?.contentWindow?.postMessage({type:"shoppers-ocean:tic-start-result",roundId,allowed},window.location.origin);
-   }).catch(()=>{
-    frameRef.current?.contentWindow?.postMessage({type:"shoppers-ocean:tic-start-result",roundId,allowed:false},window.location.origin);
-   }).finally(()=>pending.current.delete(roundId));
-  };
-  window.addEventListener("message",handleMessage);
-  return()=>window.removeEventListener("message",handleMessage);
- },[onStart]);
- return <iframe ref={frameRef} title="Tic Tac Toe" src="/games/tic-tac-toe/index.html" loading="eager" allow="autoplay" style={{display:"block",width:"100%",height:"820px",border:0,borderRadius:"18px",background:"#1a2a3a"}} />;
+function PremiumTicTacToe({onStart,playSound,soundOn}:{onStart:(id:string)=>Promise<boolean>;playSound:(kind:GameSoundKind,enabled?:boolean)=>void;soundOn:boolean}){
+ const [cells,setCells]=useState<(string|null)[]>(Array(9).fill(null));
+ const [message,setMessage]=useState("Your turn — tap any empty square.");
+ const [finished,setFinished]=useState(false),[claimed,setClaimed]=useState(false),[muted,setMuted]=useState(false),[busy,setBusy]=useState(false);
+ const round=useRef("tic:"+Date.now()+":"+Math.random()),busyRef=useRef(false);
+ const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+ const winner=(board:(string|null)[])=>lines.map(line=>board[line[0]]&&board[line[0]]===board[line[1]]&&board[line[0]]===board[line[2]]?board[line[0]]:null).find(Boolean)??null;
+ const ticSound=(player:"X"|"O")=>{
+  if(!soundOn||muted)return;
+  try{const context=getGameAudioContext();if(!context)return;void context.resume();const now=context.currentTime;const oscillator=context.createOscillator();const overtone=context.createOscillator();const gain=context.createGain();oscillator.type="sine";overtone.type="triangle";const base=player==="X"?660:523;oscillator.frequency.setValueAtTime(base,now);oscillator.frequency.exponentialRampToValueAtTime(base*1.28,now+0.075);overtone.frequency.setValueAtTime(base*2,now);gain.gain.setValueAtTime(0.0001,now);gain.gain.exponentialRampToValueAtTime(0.16,now+0.012);gain.gain.exponentialRampToValueAtTime(0.0001,now+0.19);oscillator.connect(gain);overtone.connect(gain);gain.connect(context.destination);oscillator.start(now);overtone.start(now);oscillator.stop(now+0.2);overtone.stop(now+0.2);}catch(error){console.error("Tic Tac Toe sound unavailable:",error);}
+ };
+ const aiMove=(board:(string|null)[])=>{
+  const score=(state:(string|null)[],player:"X"|"O"):number=>{const won=winner(state);if(won)return won==="O"?10:-10;if(state.every(Boolean))return 0;const scores:number[]=[];state.forEach((value,index)=>{if(value)return;const next=[...state];next[index]=player;scores.push(score(next,player==="O"?"X":"O"));});return player==="O"?Math.max(...scores):Math.min(...scores);};
+  const moves=board.map((value,index)=>{if(value)return null;const next=[...board];next[index]="O";return {index,value:score(next,"X")};}).filter((move):move is {index:number;value:number}=>move!==null);
+  const best=Math.max(...moves.map(move=>move.value));return moves.find(move=>move.value===best)?.index;
+ };
+ const play=async(index:number)=>{
+  if(busyRef.current||finished||cells[index])return;
+  busyRef.current=true;setBusy(true);
+  try{
+   if(!claimed){setMessage("Starting your game…");const allowed=await onStart(round.current);if(!allowed){setMessage("This round could not be started. Please try again.");return;}setClaimed(true);}
+   const next=[...cells];next[index]="X";setCells(next);ticSound("X");
+   if(winner(next)){setFinished(true);setMessage("You win! A brilliant three in a row! 🎉");playSound("win",soundOn&&!muted);return;}
+   if(next.every(Boolean)){setFinished(true);setMessage("It’s a draw! Well played.");playSound("win",soundOn&&!muted);return;}
+   setMessage("Computer is thinking…");
+   await new Promise(resolve=>window.setTimeout(resolve,2000+Math.floor(Math.random()*1001)));
+   const after=[...next],computerIndex=aiMove(after);if(computerIndex!==undefined)after[computerIndex]="O";setCells(after);ticSound("O");
+   if(winner(after)){setFinished(true);setMessage("Computer wins this round. Try again!");playSound("lose",soundOn&&!muted);}
+   else if(after.every(Boolean)){setFinished(true);setMessage("It’s a draw! Well played.");playSound("win",soundOn&&!muted);}
+   else setMessage("Your turn — choose another square.");
+  }catch{setMessage("Connection problem. Your board is unchanged; tap a square to retry.");}
+  finally{busyRef.current=false;setBusy(false);}
+ };
+ const restart=()=>{if(busyRef.current)return;setCells(Array(9).fill(null));setFinished(false);setClaimed(false);setMessage("Your turn — tap any empty square.");round.current="tic:"+Date.now()+":"+Math.random();ticSound("X");};
+ return <section className="mx-auto flex w-full max-w-5xl flex-col gap-4 overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-br from-indigo-950 via-violet-900 to-fuchsia-900 p-3 text-white shadow-2xl sm:gap-5 sm:p-5">
+  <style>{`@keyframes ticDraw{from{stroke-dashoffset:140;opacity:.35}to{stroke-dashoffset:0;opacity:1}}.tic-draw-x{stroke-dasharray:140;stroke-dashoffset:140;animation:ticDraw .42s cubic-bezier(.2,.8,.2,1) forwards}.tic-draw-o{stroke-dasharray:220;stroke-dashoffset:220;animation:ticDraw .55s cubic-bezier(.2,.8,.2,1) forwards}`}</style>
+  <div className="mx-auto w-full max-w-4xl rounded-2xl border border-white/20 bg-white/10 p-2 shadow-inner sm:p-3">
+   <div className="grid w-full grid-cols-3 gap-2 sm:gap-3">
+    {cells.map((value,index)=><button key={index} type="button" data-tic-cell aria-label={"Square "+(index+1)+(value?", "+value:", empty")} disabled={Boolean(value)||finished||busy} onClick={()=>void play(index)} className={"flex aspect-[1.12/1] w-full min-w-0 items-center justify-center rounded-xl border-2 border-white/60 bg-gradient-to-br from-white via-sky-50 to-indigo-100 shadow-[0_5px_0_rgba(15,23,42,.32)] transition duration-200 hover:border-amber-300 active:scale-95 disabled:cursor-default sm:rounded-2xl "+(value==="X"?"text-cyan-600":value==="O"?"text-fuchsia-600":"text-slate-300")}>
+     {value==="X"?<svg viewBox="0 0 100 100" className="h-[76%] w-[76%]" aria-hidden="true"><path className="tic-draw-x" d="M20 20 L80 80 M80 20 L20 80" fill="none" stroke="currentColor" strokeWidth="12" strokeLinecap="round"/></svg>:value==="O"?<svg viewBox="0 0 100 100" className="h-[76%] w-[76%]" aria-hidden="true"><circle className="tic-draw-o" cx="50" cy="50" r="34" fill="none" stroke="currentColor" strokeWidth="11"/></svg>:null}
+    </button>)}
+   </div>
+  </div>
+  <div className="mx-auto flex w-full max-w-4xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+   <div className="min-w-0 flex-1"><p className="text-xs font-black uppercase tracking-wider text-cyan-200">You are ✕ · Computer is ◯</p><p aria-live="polite" className="mt-1 break-words text-base font-extrabold leading-snug text-white sm:text-lg">{message}</p></div>
+   <div className="flex w-full gap-2 sm:w-auto"><button type="button" disabled={busy} onClick={restart} className="flex-1 rounded-full bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 px-5 py-3 text-sm font-black not-italic text-indigo-950 shadow-lg disabled:opacity-50 sm:flex-none">{finished?"↻ Play Again":"↻ Restart"}</button><button type="button" onClick={()=>setMuted(value=>!value)} aria-pressed={!muted} className="flex-1 rounded-full border border-white/35 bg-white/10 px-5 py-3 text-sm font-bold not-italic text-white sm:flex-none">{muted?"🔇 Sound Off":"🔊 Sound On"}</button></div>
+  </div>
+ </section>;
 }
 function ConnectFour({onMove,playSound}:{onMove:(roundId:string)=>Promise<boolean>;playSound:(kind:"correct"|"lose"|"tap"|"win",enabled?:boolean)=>void;soundOn:boolean}){const [cells,setCells]=useState<(string|null)[]>(Array(42).fill(null));const [message,setMessage]=useState("Your turn — connect four discs.");const [finished,setFinished]=useState(false);const [claimed,setClaimed]=useState(false);const roundId=useRef("connect:"+Date.now()+":"+Math.random());const won=(b:(string|null)[],p:string)=>{for(let r=0;r<6;r++)for(let c=0;c<7;c++)for(const d of [[0,1],[1,0],[1,1],[1,-1]]){const line=[];for(let k=0;k<4;k++){const rr=r+d[0]*k,cc=c+d[1]*k;if(rr<0||rr>=6||cc<0||cc>=7)break;line.push(b[rr*7+cc]);}if(line.length===4&&line.every(x=>x===p))return true;}return false;};const drop=async(col:number)=>{if(finished)return;const next=[...cells];let row=-1;for(let r=5;r>=0;r--)if(!next[r*7+col]){row=r;break;}if(row<0)return;if(!claimed){if(!await onMove(roundId.current))return;setClaimed(true);}next[row*7+col]="🔴";if(won(next,"🔴")){setCells(next);setMessage("You connected four — brilliant!");setFinished(true);playSound("win");return;}const empty=next.map((v,i)=>v===null?i:-1).filter(i=>i>=0);if(!empty.length){setCells(next);setMessage("A draw!");setFinished(true);return;}let move=-1;for(const token of ["🟡","🔴"]){for(const i of empty){const test=[...next];test[i]=token;if(won(test,token)){move=i;break;}}if(move>=0)break;}if(move<0){const cols=[3,2,4,1,5,0,6].filter(c=>next[c]===null||[0,1,2,3,4,5].some(r=>next[r*7+c]===null));const c=cols[Math.floor(Math.random()*cols.length)];for(let r=5;r>=0;r--)if(!next[r*7+c]){move=r*7+c;break;}}if(move>=0)next[move]="🟡";setCells(next);if(won(next,"🟡")){setMessage("The computer connected four. Try another strategy.");setFinished(true);playSound("lose");}else{setMessage("Your turn — look for a line of four.");playSound("tap");}};return <div className="max-w-xl"><h3 className="text-xl font-black">Connect Four</h3><p className="my-2 text-sm text-slate-600">Tap a column to drop a disc. Connect four horizontally, vertically, or diagonally.</p><div className="grid grid-cols-7 gap-1 rounded-2xl bg-blue-700 p-2">{Array.from({length:42},(_,i)=><button key={i} disabled={finished||Boolean(cells[i])} onClick={()=>void drop(i%7)} className="aspect-square rounded-full border border-blue-900/20 bg-white text-base sm:text-xl">{cells[i]??""}</button>)}</div><p className="my-3 text-sm font-bold text-slate-800">{message}</p>{finished&&<button className="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-extrabold text-white" onClick={()=>{setCells(Array(42).fill(null));setMessage("Your turn — connect four discs.");setFinished(false);setClaimed(false);roundId.current="connect:"+Date.now()+":"+Math.random();}}>Play another round</button>}</div>;}
 function JigsawPicture({onStart,onNext,canPlayAnother,playSound,soundOn}:{onStart:(roundId:string)=>Promise<boolean>;onNext:()=>void;canPlayAnother:boolean;playSound:(kind:"correct"|"lose"|"tap"|"win",enabled?:boolean)=>void;soundOn:boolean}){
