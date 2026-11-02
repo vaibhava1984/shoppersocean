@@ -2,6 +2,7 @@
 import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { geographyQuestQuestionBank } from "@/components/geographyQuestQuestionBank";
 import { worldCultureQuestionBank } from "@/components/worldCultureQuestionBank";
+import { landmarkAdventureQuestionBank } from "@/components/landmarkAdventureQuestionBank";
 
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
@@ -39,6 +40,7 @@ const games: Game[] = [
     { id: "we-wc-10", q: "Which traditional performance art uses these expressive masks?", image: "https://commons.wikimedia.org/wiki/Special:FilePath/Masked_dancer_-_Bali.jpg?width=640", alt: "", options: ["Balinese mask dance", "Irish step dance", "Flamenco", "Tango"], answer: 0, fact: "Masked dance traditions are important in Bali, Indonesia, and tell stories through movement." }
   ]},
   { id: "landmark", type: "landmark-adventure", icon: "🏛️", title: "The Landmark Adventure", subtitle: "Recognise iconic buildings and natural wonders.", tone: "from-amber-500 via-orange-600 to-rose-700", questions: [
+    ...landmarkAdventureQuestionBank,
     { id: "we-la-01", q: "Which world-famous monument is pictured here?", image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=640&auto=format&fit=crop&q=60", alt: "", options: ["Angkor Wat", "Taj Mahal", "Petra", "Colosseum"], answer: 1, fact: "The Taj Mahal stands in Agra, India, and was commissioned by Mughal emperor Shah Jahan." },
     { id: "we-la-02", q: "Which landmark is shown in this picture?", image: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=640&auto=format&fit=crop&q=60", alt: "", options: ["Eiffel Tower", "Leaning Tower of Pisa", "Big Ben", "Brandenburg Gate"], answer: 0, fact: "The Eiffel Tower is one of the best-known landmarks of Paris, France." },
     { id: "we-la-03", q: "Which ancient amphitheatre is pictured?", image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=640&auto=format&fit=crop&q=60", alt: "", options: ["The Colosseum", "The Parthenon", "The Pantheon", "The Arena of Verona"], answer: 0, fact: "The Colosseum in Rome was used for public spectacles in ancient Rome." },
