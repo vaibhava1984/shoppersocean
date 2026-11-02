@@ -160,7 +160,7 @@ export default function WorldExplorer({ userId, initialGameId, onExit }: { userI
           <span className="absolute -right-2 -top-5 text-8xl opacity-20">{game.icon}</span><span className="text-3xl">{game.icon}</span><span className="mt-3 block text-lg font-black">{String(i + 1).padStart(2, "0")} · {game.title}</span><span className="mt-1 block text-xs leading-5 text-white/90">{game.subtitle}</span><span className="mt-3 inline-flex rounded-full border border-white/40 bg-white/20 px-3 py-1.5 text-xs font-extrabold">Start exploring →</span>
         </button>)}
       </div>
-      <p className="relative mt-5 text-center text-[10px] text-emerald-100/70">Admin preview · Starter set · Larger question and picture banks can be added without changing this layout</p>
+      <p className="relative mt-5 text-center text-[10px] text-emerald-100/70">Choose a world challenge and begin exploring.</p>
     </div>
   );
   if (!active) return <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center font-bold text-emerald-900">Opening your world discovery game…</div>;
