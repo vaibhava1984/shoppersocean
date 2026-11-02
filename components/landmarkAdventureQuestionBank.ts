@@ -4011,7 +4011,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sydney Opera House landmark",
     "options": [
       "Sydney Opera House",
-      "Sydney Harbour Bridge"
+      "Great Wall of China",
+      "Forbidden City",
+      "Terracotta Army"
     ],
     "answer": 0,
     "fact": "This is Sydney Opera House, located in Australia."
@@ -4036,7 +4038,10 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sydney_Harbour_Bridge.jpg?width=640",
     "alt": "Sydney Harbour Bridge landmark",
     "options": [
-      "Sydney Harbour Bridge"
+      "Sydney Harbour Bridge",
+      "Great Wall of China",
+      "Forbidden City",
+      "Terracotta Army"
     ],
     "answer": 0,
     "fact": "This is Sydney Harbour Bridge, located in Australia."
