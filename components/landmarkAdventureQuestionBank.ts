@@ -4010,7 +4010,8 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sydney_Opera_House.jpg?width=640",
     "alt": "Sydney Opera House landmark",
     "options": [
-      "Sydney Opera House"
+      "Sydney Opera House",
+      "Sydney Harbour Bridge"
     ],
     "answer": 0,
     "fact": "This is Sydney Opera House, located in Australia."
