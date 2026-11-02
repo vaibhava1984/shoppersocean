@@ -1,6 +1,6 @@
 "use client";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
-
+import { patternMasterQuestionBank } from "@/components/patternMasterQuestionBank";
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 
@@ -9,6 +9,7 @@ type Game = { id: string; type: string; icon: string; title: string; subtitle: s
 
 const games: Game[] = [
   { id: "pattern", type: "pattern-master", icon: "🔷", title: "The Pattern Master", subtitle: "Spot the rule. Complete the sequence.", tone: "from-cyan-500 via-blue-600 to-indigo-800", questions: [
+    ...patternMasterQuestionBank,
     { id: "pu-pm-01", q: "What number comes next? 2, 6, 12, 20, 30, __", options: ["36", "40", "42", "44"], answer: 2, fact: "The differences are +4, +6, +8 and +10. The next difference is +12, giving 42." },
     { id: "pu-pm-02", q: "Find the missing letter: A, C, F, J, O, __", options: ["T", "U", "V", "W"], answer: 1, fact: "The letter jumps grow by one each time: +2, +3, +4, +5, then +6. O plus six letters is U." },
     { id: "pu-pm-03", q: "A shape sequence repeats in this order: circle, triangle, square, pentagon. Which shape is 10th?", options: ["Circle", "Triangle", "Square", "Pentagon"], answer: 1, fact: "Each group has four shapes. Positions 1, 5 and 9 are circles, so position 10 is a triangle." }
