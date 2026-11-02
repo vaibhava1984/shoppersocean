@@ -216,6 +216,6 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
           {message && <div aria-live="polite" className="mt-4 rounded-2xl border border-violet-200 bg-gradient-to-r from-violet-50 to-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">{message}</div>}
         </div>
       )}
-    <GameQuotaPopup open={quotaReady && quota===0 && !isAdmin && !isSubscribed} resetKey={active?.id??''} /></div>
+    <GameQuotaPopup open={quotaReady && quota===0 && !isAdmin} isSubscribed={isSubscribed} resetKey={active?.id??''} /></div>
   );
 }
