@@ -1,5 +1,6 @@
 "use client";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
+import { lockedRoomMysteryQuestionBank } from "@/components/lockedRoomMysteryQuestionBank";
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 
@@ -7,7 +8,7 @@ type Q = { id: string; q: string; options: string[]; answer: number; fact: strin
 type Game = { id: string; type: string; icon: string; title: string; subtitle: string; tone: string; questions: Q[] };
 
 const games: Game[] = [
- { id:"locked",type:"locked-room",icon:"🗝️",title:"The Locked Room Mystery",subtitle:"Solve impossible-looking situations with practical logic.",tone:"from-cyan-600 via-blue-700 to-indigo-900",questions:[
+ { id:"locked",type:"locked-room",icon:"🗝️",title:"The Locked Room Mystery",subtitle:"Solve impossible-looking situations with practical logic.",tone:"from-cyan-600 via-blue-700 to-indigo-900",questions:[...lockedRoomMysteryQuestionBank,
   {id:"mm-lr-01",q:"A room is locked from the inside. A small puddle lies beneath a table, and an empty ice-shaped mould is beside it. What could explain a missing metal key?",options:["It may have been frozen inside a block of ice that melted","The key turned into water","The puddle unlocked the door","The room has no floor"],answer:0,fact:"A key frozen inside ice could be left behind as the ice melts. The puddle and empty mould are physical traces."},
   {id:"mm-lr-02",q:"A person says they left a room without opening its only door. Investigators find a wide serving hatch leading into the pantry. How could the statement be true?",options:["They used the serving hatch","They walked through a solid wall","The door opened without moving","They became invisible"],answer:0,fact:"The door was not the only possible exit. The serving hatch provides another route."},
   {id:"mm-lr-03",q:"A trail of fresh snow leads from a ventilation grille to the centre of a warm room. Which explanation best fits the clue?",options:["Something carrying snow may have passed through the grille","The room created snow from sunlight","The floor is made of water","The grille must be painted"],answer:0,fact:"The trail points to the grille as a possible route. A good solution explains the physical evidence."}
