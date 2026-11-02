@@ -1,6 +1,6 @@
 import { DAILY_GK_QUESTIONS, getDailyGKQuestion, getDailyGKOptions } from "@/lib/daily-knowledge";
 import { WORD_QUIZ_BANK } from "@/data/word-quiz-bank";
-import { BRAIN_LOGICAL_RIDDLES, ODD_ONE_OUT_BANK } from "@/data/brain-logic-bank";
+import { ODD_ONE_OUT_BANK } from "@/data/brain-logic-bank";
 import { RIDDLE_CORNER_BANK } from "@/data/riddle-corner-bank";
 export { getDailyGKQuestion };
 export type Puzzle = { id:string; question:string; answer:string; clue?:string; pattern?:string; options?:string[]; correctIndex?:number; explanation?:string; topic?:string };
