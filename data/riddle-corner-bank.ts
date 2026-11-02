@@ -1,4 +1,4 @@
-export type RiddleCornerQuestion = { id: string; q: string; a: string | number; o: [string,string,string,string]; e: string; topic?: string };
+export type RiddleCornerQuestion = { id: string; q: string; a: string; o: [string,string,string,string]; e: string; topic?: string };
 
 // 240 verbal riddles and 60 numerical reasoning questions.
 export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
@@ -3124,7 +3124,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-241",
     "q": "A number multiplied by 2 and then increased by 5 gives 11. Find the number.",
-    "a": 3,
+    "a": "3",
     "o": [
       "3",
       "2",
@@ -3137,7 +3137,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-242",
     "q": "A number multiplied by 3 and then increased by 6 gives 18. Find the number.",
-    "a": 4,
+    "a": "4",
     "o": [
       "4",
       "3",
@@ -3150,7 +3150,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-243",
     "q": "A number multiplied by 4 and then increased by 7 gives 27. Find the number.",
-    "a": 5,
+    "a": "5",
     "o": [
       "5",
       "4",
@@ -3163,7 +3163,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-244",
     "q": "A number multiplied by 5 and then increased by 8 gives 38. Find the number.",
-    "a": 6,
+    "a": "6",
     "o": [
       "6",
       "5",
@@ -3176,7 +3176,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-245",
     "q": "A number multiplied by 6 and then increased by 9 gives 51. Find the number.",
-    "a": 7,
+    "a": "7",
     "o": [
       "7",
       "6",
@@ -3189,7 +3189,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-246",
     "q": "A number multiplied by 7 and then increased by 10 gives 66. Find the number.",
-    "a": 8,
+    "a": "8",
     "o": [
       "8",
       "7",
@@ -3202,7 +3202,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-247",
     "q": "A number multiplied by 8 and then increased by 11 gives 83. Find the number.",
-    "a": 9,
+    "a": "9",
     "o": [
       "9",
       "8",
@@ -3215,7 +3215,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-248",
     "q": "A number multiplied by 9 and then increased by 12 gives 102. Find the number.",
-    "a": 10,
+    "a": "10",
     "o": [
       "10",
       "9",
@@ -3228,7 +3228,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-249",
     "q": "A number multiplied by 10 and then increased by 13 gives 123. Find the number.",
-    "a": 11,
+    "a": "11",
     "o": [
       "11",
       "10",
@@ -3241,7 +3241,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-250",
     "q": "A number multiplied by 11 and then increased by 14 gives 146. Find the number.",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "11",
@@ -3254,7 +3254,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-251",
     "q": "What is the next number in this sequence: 1, 2, 3, 4, ...?",
-    "a": 5,
+    "a": "5",
     "o": [
       "5",
       "6",
@@ -3267,7 +3267,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-252",
     "q": "What is the next number in this sequence: 2, 4, 6, 8, ...?",
-    "a": 10,
+    "a": "10",
     "o": [
       "10",
       "12",
@@ -3280,7 +3280,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-253",
     "q": "What is the next number in this sequence: 3, 6, 9, 12, ...?",
-    "a": 15,
+    "a": "15",
     "o": [
       "15",
       "18",
@@ -3293,7 +3293,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-254",
     "q": "What is the next number in this sequence: 4, 8, 12, 16, ...?",
-    "a": 20,
+    "a": "20",
     "o": [
       "20",
       "24",
@@ -3306,7 +3306,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-255",
     "q": "What is the next number in this sequence: 5, 10, 15, 20, ...?",
-    "a": 25,
+    "a": "25",
     "o": [
       "25",
       "30",
@@ -3319,7 +3319,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-256",
     "q": "What is the next number in this sequence: 6, 12, 18, 24, ...?",
-    "a": 30,
+    "a": "30",
     "o": [
       "30",
       "36",
@@ -3332,7 +3332,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-257",
     "q": "What is the next number in this sequence: 7, 14, 21, 28, ...?",
-    "a": 35,
+    "a": "35",
     "o": [
       "35",
       "42",
@@ -3345,7 +3345,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-258",
     "q": "What is the next number in this sequence: 8, 16, 24, 32, ...?",
-    "a": 40,
+    "a": "40",
     "o": [
       "40",
       "48",
@@ -3358,7 +3358,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-259",
     "q": "What is the next number in this sequence: 9, 18, 27, 36, ...?",
-    "a": 45,
+    "a": "45",
     "o": [
       "45",
       "54",
@@ -3371,7 +3371,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-260",
     "q": "What is the next number in this sequence: 10, 20, 30, 40, ...?",
-    "a": 50,
+    "a": "50",
     "o": [
       "50",
       "60",
@@ -3384,7 +3384,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-261",
     "q": "A rectangle is 4 cm long and 2 cm wide. What is its area?",
-    "a": 8,
+    "a": "8",
     "o": [
       "8",
       "6",
@@ -3397,7 +3397,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-262",
     "q": "A rectangle is 5 cm long and 3 cm wide. What is its area?",
-    "a": 15,
+    "a": "15",
     "o": [
       "15",
       "12",
@@ -3410,7 +3410,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-263",
     "q": "A rectangle is 6 cm long and 4 cm wide. What is its area?",
-    "a": 24,
+    "a": "24",
     "o": [
       "24",
       "20",
@@ -3423,7 +3423,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-264",
     "q": "A rectangle is 7 cm long and 5 cm wide. What is its area?",
-    "a": 35,
+    "a": "35",
     "o": [
       "35",
       "30",
@@ -3436,7 +3436,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-265",
     "q": "A rectangle is 8 cm long and 6 cm wide. What is its area?",
-    "a": 48,
+    "a": "48",
     "o": [
       "48",
       "42",
@@ -3449,7 +3449,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-266",
     "q": "A rectangle is 9 cm long and 7 cm wide. What is its area?",
-    "a": 63,
+    "a": "63",
     "o": [
       "63",
       "56",
@@ -3462,7 +3462,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-267",
     "q": "A rectangle is 10 cm long and 8 cm wide. What is its area?",
-    "a": 80,
+    "a": "80",
     "o": [
       "80",
       "72",
@@ -3475,7 +3475,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-268",
     "q": "A rectangle is 11 cm long and 9 cm wide. What is its area?",
-    "a": 99,
+    "a": "99",
     "o": [
       "99",
       "90",
@@ -3488,7 +3488,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-269",
     "q": "A rectangle is 12 cm long and 10 cm wide. What is its area?",
-    "a": 120,
+    "a": "120",
     "o": [
       "120",
       "110",
@@ -3501,7 +3501,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-270",
     "q": "A rectangle is 13 cm long and 11 cm wide. What is its area?",
-    "a": 143,
+    "a": "143",
     "o": [
       "143",
       "132",
@@ -3514,7 +3514,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-271",
     "q": "A price of 40 is reduced by 10%. What is the new price?",
-    "a": 36,
+    "a": "36",
     "o": [
       "36",
       "32",
@@ -3527,7 +3527,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-272",
     "q": "A price of 50 is reduced by 10%. What is the new price?",
-    "a": 45,
+    "a": "45",
     "o": [
       "45",
       "40",
@@ -3540,7 +3540,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-273",
     "q": "A price of 60 is reduced by 10%. What is the new price?",
-    "a": 54,
+    "a": "54",
     "o": [
       "54",
       "48",
@@ -3553,7 +3553,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-274",
     "q": "A price of 70 is reduced by 10%. What is the new price?",
-    "a": 63,
+    "a": "63",
     "o": [
       "63",
       "56",
@@ -3566,7 +3566,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-275",
     "q": "A price of 80 is reduced by 10%. What is the new price?",
-    "a": 72,
+    "a": "72",
     "o": [
       "72",
       "64",
@@ -3579,7 +3579,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-276",
     "q": "A price of 90 is reduced by 10%. What is the new price?",
-    "a": 81,
+    "a": "81",
     "o": [
       "81",
       "72",
@@ -3592,7 +3592,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-277",
     "q": "A price of 100 is reduced by 10%. What is the new price?",
-    "a": 90,
+    "a": "90",
     "o": [
       "90",
       "80",
@@ -3605,7 +3605,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-278",
     "q": "A price of 110 is reduced by 10%. What is the new price?",
-    "a": 99,
+    "a": "99",
     "o": [
       "99",
       "88",
@@ -3618,7 +3618,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-279",
     "q": "A price of 120 is reduced by 10%. What is the new price?",
-    "a": 108,
+    "a": "108",
     "o": [
       "108",
       "96",
@@ -3631,7 +3631,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-280",
     "q": "A price of 130 is reduced by 10%. What is the new price?",
-    "a": 117,
+    "a": "117",
     "o": [
       "117",
       "104",
@@ -3644,7 +3644,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-281",
     "q": "There are 3 bags with 4 marbles in each. How many marbles altogether?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "7",
@@ -3657,7 +3657,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-282",
     "q": "There are 4 bags with 5 marbles in each. How many marbles altogether?",
-    "a": 20,
+    "a": "20",
     "o": [
       "20",
       "9",
@@ -3670,7 +3670,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-283",
     "q": "There are 5 bags with 6 marbles in each. How many marbles altogether?",
-    "a": 30,
+    "a": "30",
     "o": [
       "30",
       "11",
@@ -3683,7 +3683,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-284",
     "q": "There are 6 bags with 7 marbles in each. How many marbles altogether?",
-    "a": 42,
+    "a": "42",
     "o": [
       "42",
       "13",
@@ -3696,7 +3696,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-285",
     "q": "There are 7 bags with 8 marbles in each. How many marbles altogether?",
-    "a": 56,
+    "a": "56",
     "o": [
       "56",
       "15",
@@ -3709,7 +3709,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-286",
     "q": "There are 8 bags with 9 marbles in each. How many marbles altogether?",
-    "a": 72,
+    "a": "72",
     "o": [
       "72",
       "17",
@@ -3722,7 +3722,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-287",
     "q": "There are 9 bags with 10 marbles in each. How many marbles altogether?",
-    "a": 90,
+    "a": "90",
     "o": [
       "90",
       "19",
@@ -3735,7 +3735,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-288",
     "q": "There are 10 bags with 11 marbles in each. How many marbles altogether?",
-    "a": 110,
+    "a": "110",
     "o": [
       "110",
       "21",
@@ -3748,7 +3748,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-289",
     "q": "There are 11 bags with 12 marbles in each. How many marbles altogether?",
-    "a": 132,
+    "a": "132",
     "o": [
       "132",
       "23",
@@ -3761,7 +3761,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-290",
     "q": "There are 12 bags with 13 marbles in each. How many marbles altogether?",
-    "a": 156,
+    "a": "156",
     "o": [
       "156",
       "25",
@@ -3774,7 +3774,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-291",
     "q": "A journey of 36 km is completed in 3 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
@@ -3787,7 +3787,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-292",
     "q": "A journey of 48 km is completed in 4 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
@@ -3800,7 +3800,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-293",
     "q": "A journey of 60 km is completed in 5 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
@@ -3813,7 +3813,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-294",
     "q": "A journey of 72 km is completed in 6 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
@@ -3826,7 +3826,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-295",
     "q": "A journey of 84 km is completed in 7 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
@@ -3839,7 +3839,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-296",
     "q": "A journey of 96 km is completed in 8 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
@@ -3852,7 +3852,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-297",
     "q": "A journey of 108 km is completed in 9 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
@@ -3865,7 +3865,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-298",
     "q": "A journey of 120 km is completed in 10 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
@@ -3878,7 +3878,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-299",
     "q": "A journey of 132 km is completed in 11 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
@@ -3891,7 +3891,7 @@ export const RIDDLE_CORNER_BANK: RiddleCornerQuestion[] = [
   {
     "id": "riddle-corner-300",
     "q": "A journey of 144 km is completed in 12 hours. What is the average speed?",
-    "a": 12,
+    "a": "12",
     "o": [
       "12",
       "10",
