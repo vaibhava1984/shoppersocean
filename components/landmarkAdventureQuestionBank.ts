@@ -7,9 +7,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Great Wall of China landmark",
     "options": [
       "Great Wall of China",
-      "Pamukkale Terraces",
-      "Sagrada Familia",
-      "Abu Simbel Temples"
+      "Ha Long Bay",
+      "Gyeongbokgung Palace",
+      "Burj Khalifa"
     ],
     "answer": 0,
     "fact": "This is Great Wall of China, located in China."
@@ -21,9 +21,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Great Wall of China landmark",
     "options": [
       "China",
-      "Slovenia",
-      "Nepal",
-      "Poland"
+      "Vietnam",
+      "Jordan",
+      "Thailand"
     ],
     "answer": 0,
     "fact": "Great Wall of China is located in China."
@@ -35,9 +35,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Forbidden City landmark",
     "options": [
       "Forbidden City",
-      "Ngorongoro Crater",
-      "Teotihuacan Pyramid of the Sun",
-      "Pashupatinath Temple"
+      "Grand Palace Bangkok",
+      "Qutub Minar",
+      "Golden Temple"
     ],
     "answer": 0,
     "fact": "This is Forbidden City, located in China."
@@ -49,9 +49,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Forbidden City landmark",
     "options": [
       "China",
-      "Morocco",
-      "Panama",
-      "India"
+      "United Arab Emirates",
+      "India",
+      "Jordan"
     ],
     "answer": 0,
     "fact": "Forbidden City is located in China."
@@ -63,9 +63,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Terracotta Army landmark",
     "options": [
       "Terracotta Army",
-      "Blue Mosque",
-      "Petronas Towers",
-      "Salar de Uyuni"
+      "Potala Palace",
+      "Temple of Heaven",
+      "Bagan Temples"
     ],
     "answer": 0,
     "fact": "This is Terracotta Army, located in China."
@@ -77,9 +77,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Terracotta Army landmark",
     "options": [
       "China",
-      "Argentina and Brazil",
-      "Czech Republic",
-      "Russia"
+      "Nepal",
+      "Malaysia",
+      "Vietnam"
     ],
     "answer": 0,
     "fact": "Terracotta Army is located in China."
@@ -91,9 +91,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Temple of Heaven landmark",
     "options": [
       "Temple of Heaven",
-      "Red Square",
-      "St Basils Cathedral",
-      "Sossusvlei Dunes"
+      "Konark Sun Temple",
+      "Ajanta Caves",
+      "Petra Treasury"
     ],
     "answer": 0,
     "fact": "This is Temple of Heaven, located in China."
@@ -105,9 +105,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Temple of Heaven landmark",
     "options": [
       "China",
-      "Venezuela, Brazil and Guyana",
-      "Guyana",
-      "Brazil"
+      "Japan",
+      "Philippines",
+      "Jordan"
     ],
     "answer": 0,
     "fact": "Temple of Heaven is located in China."
@@ -119,9 +119,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Potala Palace landmark",
     "options": [
       "Potala Palace",
-      "Perito Moreno Glacier",
       "Petra Treasury",
-      "Acropolis of Athens"
+      "Gateway of India",
+      "Taj Mahal"
     ],
     "answer": 0,
     "fact": "This is Potala Palace, located in China."
@@ -134,8 +134,8 @@ export const landmarkAdventureQuestionBank = [
     "options": [
       "China",
       "Singapore",
-      "Netherlands",
-      "Vietnam"
+      "Thailand",
+      "India"
     ],
     "answer": 0,
     "fact": "Potala Palace is located in China."
@@ -147,9 +147,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Taj Mahal landmark",
     "options": [
       "Taj Mahal",
-      "Ha Long Bay",
-      "Arc de Triomphe",
-      "Terracotta Army"
+      "Blue Mosque",
+      "Brihadeeswarar Temple",
+      "Batu Caves"
     ],
     "answer": 0,
     "fact": "This is Taj Mahal, located in India."
@@ -161,9 +161,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Taj Mahal landmark",
     "options": [
       "India",
-      "Greece",
-      "United Arab Emirates",
-      "Kenya"
+      "Cambodia",
+      "Turkey",
+      "Jordan"
     ],
     "answer": 0,
     "fact": "Taj Mahal is located in India."
@@ -175,9 +175,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Qutub Minar landmark",
     "options": [
       "Qutub Minar",
-      "Hassan II Mosque",
-      "Grand Canyon",
-      "Banff Lake Louise"
+      "Gyeongbokgung Palace",
+      "Bayon Temple",
+      "Marina Bay Sands"
     ],
     "answer": 0,
     "fact": "This is Qutub Minar, located in India."
@@ -189,9 +189,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Qutub Minar landmark",
     "options": [
       "India",
-      "Austria",
-      "South Africa",
-      "Indonesia"
+      "Palestine",
+      "Myanmar",
+      "China"
     ],
     "answer": 0,
     "fact": "Qutub Minar is located in India."
@@ -203,9 +203,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Hawa Mahal landmark",
     "options": [
       "Hawa Mahal",
-      "Fushimi Inari Shrine",
-      "Mount Fuji",
-      "Alhambra"
+      "Shwedagon Pagoda",
+      "Pashupatinath Temple",
+      "Temple of Heaven"
     ],
     "answer": 0,
     "fact": "This is Hawa Mahal, located in India."
@@ -217,9 +217,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Hawa Mahal landmark",
     "options": [
       "India",
-      "Croatia",
-      "Nepal and China",
-      "Poland"
+      "Bhutan",
+      "South Korea",
+      "Malaysia"
     ],
     "answer": 0,
     "fact": "Hawa Mahal is located in India."
@@ -231,9 +231,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Gateway of India landmark",
     "options": [
       "Gateway of India",
-      "Schonbrunn Palace",
-      "Sagrada Familia",
-      "Dome of the Rock"
+      "Ellora Kailasa Temple",
+      "Hagia Sophia",
+      "Golden Bridge Da Nang"
     ],
     "answer": 0,
     "fact": "This is Gateway of India, located in India."
@@ -245,8 +245,8 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Gateway of India landmark",
     "options": [
       "India",
-      "United States",
-      "Mexico",
+      "South Korea",
+      "Bhutan",
       "China"
     ],
     "answer": 0,
@@ -259,9 +259,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Konark Sun Temple landmark",
     "options": [
       "Konark Sun Temple",
-      "Easter Island Moai",
-      "Hawa Mahal",
-      "Angel Falls"
+      "Sanchi Stupa",
+      "Mount Bromo",
+      "Angkor Wat"
     ],
     "answer": 0,
     "fact": "This is Konark Sun Temple, located in India."
@@ -273,9 +273,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Konark Sun Temple landmark",
     "options": [
       "India",
-      "Ecuador",
-      "Italy",
-      "Switzerland"
+      "Myanmar",
+      "Palestine",
+      "Malaysia"
     ],
     "answer": 0,
     "fact": "Konark Sun Temple is located in India."
@@ -287,9 +287,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Golden Temple landmark",
     "options": [
       "Golden Temple",
-      "Batu Caves",
-      "Colosseum",
-      "Northern Lights"
+      "Kiyomizu dera",
+      "Tokyo Tower",
+      "Terracotta Army"
     ],
     "answer": 0,
     "fact": "This is Golden Temple, located in India."
@@ -301,9 +301,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Golden Temple landmark",
     "options": [
       "India",
-      "Jordan",
-      "Bolivia",
-      "Brazil"
+      "Indonesia",
+      "Cambodia",
+      "Philippines"
     ],
     "answer": 0,
     "fact": "Golden Temple is located in India."
@@ -315,9 +315,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mysore Palace landmark",
     "options": [
       "Mysore Palace",
-      "Boulders Beach",
-      "Djamaa el Djazair",
-      "Palace of Versailles"
+      "Ha Long Bay",
+      "Wat Arun",
+      "Mount Everest"
     ],
     "answer": 0,
     "fact": "This is Mysore Palace, located in India."
@@ -329,9 +329,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mysore Palace landmark",
     "options": [
       "India",
-      "Philippines",
-      "Belgium",
-      "Vatican City"
+      "Nepal and China",
+      "Singapore",
+      "Malaysia"
     ],
     "answer": 0,
     "fact": "Mysore Palace is located in India."
@@ -343,9 +343,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Angkor Wat landmark",
     "options": [
       "Angkor Wat",
-      "Tokyo Tower",
-      "Petra Treasury",
-      "Gateway of India"
+      "Grand Palace Bangkok",
+      "Prambanan Temple",
+      "Golden Temple"
     ],
     "answer": 0,
     "fact": "This is Angkor Wat, located in Cambodia."
@@ -357,9 +357,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Angkor Wat landmark",
     "options": [
       "Cambodia",
-      "United Kingdom",
+      "Turkey",
       "India",
-      "Kenya"
+      "Philippines"
     ],
     "answer": 0,
     "fact": "Angkor Wat is located in Cambodia."
@@ -371,9 +371,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Bayon Temple landmark",
     "options": [
       "Bayon Temple",
-      "Matterhorn",
-      "Arc de Triomphe",
-      "Lalibela Rock Hewn Churches"
+      "Temple of Heaven",
+      "Rani ki Vav",
+      "Forbidden City"
     ],
     "answer": 0,
     "fact": "This is Bayon Temple, located in Cambodia."
@@ -385,9 +385,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Bayon Temple landmark",
     "options": [
       "Cambodia",
-      "Denmark",
-      "Egypt",
-      "Indonesia"
+      "South Korea",
+      "Nepal",
+      "United Arab Emirates"
     ],
     "answer": 0,
     "fact": "Bayon Temple is located in Cambodia."
@@ -399,9 +399,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Petra Treasury landmark",
     "options": [
       "Petra Treasury",
-      "Angel Falls",
-      "Grand Canyon",
-      "Red Square"
+      "Gateway of India",
+      "Qutub Minar",
+      "Mount Bromo"
     ],
     "answer": 0,
     "fact": "This is Petra Treasury, located in Jordan."
@@ -413,9 +413,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Petra Treasury landmark",
     "options": [
       "Jordan",
-      "Zambia and Zimbabwe",
-      "Myanmar",
-      "Ethiopia"
+      "Philippines",
+      "United Arab Emirates",
+      "Bhutan"
     ],
     "answer": 0,
     "fact": "Petra Treasury is located in Jordan."
@@ -427,9 +427,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Burj Khalifa landmark",
     "options": [
       "Burj Khalifa",
-      "Wat Arun",
-      "Bagan Temples",
-      "Tokyo Tower"
+      "Bayon Temple",
+      "Victoria Memorial",
+      "Sanchi Stupa"
     ],
     "answer": 0,
     "fact": "This is Burj Khalifa, located in United Arab Emirates."
@@ -441,9 +441,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Burj Khalifa landmark",
     "options": [
       "United Arab Emirates",
-      "Cuba",
-      "Algeria",
-      "China"
+      "Indonesia",
+      "Thailand",
+      "South Korea"
     ],
     "answer": 0,
     "fact": "Burj Khalifa is located in United Arab Emirates."
@@ -455,9 +455,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sheikh Zayed Grand Mosque landmark",
     "options": [
       "Sheikh Zayed Grand Mosque",
-      "Sossusvlei Dunes",
-      "Victoria Falls",
-      "Golden Gate Bridge"
+      "Blue Mosque",
+      "Mysore Palace",
+      "Great Wall of China"
     ],
     "answer": 0,
     "fact": "This is Sheikh Zayed Grand Mosque, located in United Arab Emirates."
@@ -469,9 +469,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sheikh Zayed Grand Mosque landmark",
     "options": [
       "United Arab Emirates",
-      "Venezuela",
-      "Thailand",
-      "Switzerland"
+      "China",
+      "Turkey",
+      "Bhutan"
     ],
     "answer": 0,
     "fact": "Sheikh Zayed Grand Mosque is located in United Arab Emirates."
@@ -483,9 +483,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Dome of the Rock landmark",
     "options": [
       "Dome of the Rock",
-      "Marina Bay Sands",
-      "Hawa Mahal",
-      "Dubrovnik Old Town"
+      "Gyeongbokgung Palace",
+      "Boudhanath Stupa",
+      "Pamukkale Terraces"
     ],
     "answer": 0,
     "fact": "This is Dome of the Rock, located in Palestine."
@@ -497,9 +497,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Dome of the Rock landmark",
     "options": [
       "Palestine",
-      "Japan",
-      "Peru",
-      "Chile"
+      "Turkey",
+      "Myanmar",
+      "Nepal and China"
     ],
     "answer": 0,
     "fact": "Dome of the Rock is located in Palestine."
@@ -511,9 +511,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Hagia Sophia landmark",
     "options": [
       "Hagia Sophia",
-      "Rijksmuseum",
-      "Colosseum",
-      "Victoria Memorial"
+      "Shwedagon Pagoda",
+      "Sheikh Zayed Grand Mosque",
+      "Brihadeeswarar Temple"
     ],
     "answer": 0,
     "fact": "This is Hagia Sophia, located in Turkey."
@@ -525,9 +525,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Hagia Sophia landmark",
     "options": [
       "Turkey",
-      "Vietnam",
-      "Romania",
-      "Vatican City"
+      "Thailand",
+      "South Korea",
+      "Bhutan"
     ],
     "answer": 0,
     "fact": "Hagia Sophia is located in Turkey."
@@ -539,9 +539,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Blue Mosque landmark",
     "options": [
       "Blue Mosque",
-      "Uyuni Train Cemetery",
-      "Djamaa el Djazair",
-      "Petra Treasury"
+      "Ellora Kailasa Temple",
+      "Pamukkale Terraces",
+      "Boracay White Beach"
     ],
     "answer": 0,
     "fact": "This is Blue Mosque, located in Turkey."
@@ -553,9 +553,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Blue Mosque landmark",
     "options": [
       "Turkey",
-      "Russia",
-      "Australia",
-      "Canada"
+      "United Arab Emirates",
+      "Bhutan",
+      "Nepal and China"
     ],
     "answer": 0,
     "fact": "Blue Mosque is located in Turkey."
@@ -567,9 +567,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Fuji landmark",
     "options": [
       "Mount Fuji",
-      "Boracay White Beach",
-      "Library of Celsus",
-      "Ngorongoro Crater"
+      "Sanchi Stupa",
+      "Kinkaku ji",
+      "Library of Celsus"
     ],
     "answer": 0,
     "fact": "This is Mount Fuji, located in Japan."
@@ -581,9 +581,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Fuji landmark",
     "options": [
       "Japan",
-      "Poland",
-      "Norway",
-      "Bhutan"
+      "Nepal",
+      "Nepal and China",
+      "Indonesia"
     ],
     "answer": 0,
     "fact": "Mount Fuji is located in Japan."
@@ -595,9 +595,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Fushimi Inari Shrine landmark",
     "options": [
       "Fushimi Inari Shrine",
-      "Golden Gate Bridge",
-      "Great Sphinx of Giza",
-      "Batu Caves"
+      "Kiyomizu dera",
+      "Bagan Temples",
+      "Victoria Memorial"
     ],
     "answer": 0,
     "fact": "This is Fushimi Inari Shrine, located in Japan."
@@ -609,9 +609,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Fushimi Inari Shrine landmark",
     "options": [
       "Japan",
-      "Kenya",
-      "Palestine",
-      "Ethiopia"
+      "India",
+      "Indonesia",
+      "Nepal and China"
     ],
     "answer": 0,
     "fact": "Fushimi Inari Shrine is located in Japan."
@@ -623,9 +623,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Kinkaku ji landmark",
     "options": [
       "Kinkaku ji",
+      "Ha Long Bay",
       "Borobudur",
-      "Forbidden City",
-      "Shwedagon Pagoda"
+      "Grand Palace Bangkok"
     ],
     "answer": 0,
     "fact": "This is Kinkaku ji, located in Japan."
@@ -637,9 +637,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Kinkaku ji landmark",
     "options": [
       "Japan",
-      "Brazil",
-      "Tanzania",
-      "United Arab Emirates"
+      "Singapore",
+      "Myanmar",
+      "Indonesia"
     ],
     "answer": 0,
     "fact": "Kinkaku ji is located in Japan."
@@ -651,9 +651,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Tokyo Tower landmark",
     "options": [
       "Tokyo Tower",
-      "Northern Lights",
-      "Bagan Temples",
-      "Chichen Itza"
+      "Grand Palace Bangkok",
+      "Forbidden City",
+      "Osaka Castle"
     ],
     "answer": 0,
     "fact": "This is Tokyo Tower, located in Japan."
@@ -665,9 +665,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Tokyo Tower landmark",
     "options": [
       "Japan",
-      "China",
-      "Nepal",
-      "Switzerland"
+      "Cambodia",
+      "South Korea",
+      "Myanmar"
     ],
     "answer": 0,
     "fact": "Tokyo Tower is located in Japan."
@@ -679,9 +679,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Gyeongbokgung Palace landmark",
     "options": [
       "Gyeongbokgung Palace",
-      "Sydney Opera House",
-      "Victoria Falls",
-      "Mont Saint Michel"
+      "Temple of Heaven",
+      "Taj Mahal",
+      "Charminar"
     ],
     "answer": 0,
     "fact": "This is Gyeongbokgung Palace, located in South Korea."
@@ -693,9 +693,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Gyeongbokgung Palace landmark",
     "options": [
       "South Korea",
-      "Indonesia",
-      "Panama",
-      "Chile"
+      "Palestine",
+      "Bhutan",
+      "Indonesia"
     ],
     "answer": 0,
     "fact": "Gyeongbokgung Palace is located in South Korea."
@@ -707,9 +707,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Marina Bay Sands landmark",
     "options": [
       "Marina Bay Sands",
-      "Acropolis of Athens",
-      "Hawa Mahal",
-      "Pashupatinath Temple"
+      "Gateway of India",
+      "Charminar",
+      "Wat Arun"
     ],
     "answer": 0,
     "fact": "This is Marina Bay Sands, located in Singapore."
@@ -721,9 +721,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Marina Bay Sands landmark",
     "options": [
       "Singapore",
-      "Vatican City",
-      "Czech Republic",
-      "Germany"
+      "Nepal",
+      "Palestine",
+      "Myanmar"
     ],
     "answer": 0,
     "fact": "Marina Bay Sands is located in Singapore."
@@ -735,9 +735,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Petronas Towers landmark",
     "options": [
       "Petronas Towers",
-      "Mount Rushmore",
-      "Plitvice Lakes",
-      "Salar de Uyuni"
+      "Bayon Temple",
+      "Golden Temple",
+      "Kiyomizu dera"
     ],
     "answer": 0,
     "fact": "This is Petronas Towers, located in Malaysia."
@@ -749,9 +749,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Petronas Towers landmark",
     "options": [
       "Malaysia",
-      "Switzerland",
-      "Argentina",
-      "Canada"
+      "Japan",
+      "Vietnam",
+      "Bhutan"
     ],
     "answer": 0,
     "fact": "Petronas Towers is located in Malaysia."
@@ -763,9 +763,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Borobudur landmark",
     "options": [
       "Borobudur",
-      "Shwedagon Pagoda",
-      "Kaieteur Falls",
-      "Sossusvlei Dunes"
+      "Hagia Sophia",
+      "Tigers Nest Monastery",
+      "Meenakshi Temple"
     ],
     "answer": 0,
     "fact": "This is Borobudur, located in Indonesia."
@@ -777,9 +777,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Borobudur landmark",
     "options": [
       "Indonesia",
-      "Ethiopia",
-      "Netherlands",
-      "Bhutan"
+      "Myanmar",
+      "Singapore",
+      "Nepal"
     ],
     "answer": 0,
     "fact": "Borobudur is located in Indonesia."
@@ -791,9 +791,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Prambanan Temple landmark",
     "options": [
       "Prambanan Temple",
-      "Buda Castle",
-      "Library of Celsus",
-      "Acropolis of Athens"
+      "Tokyo Tower",
+      "Burj Khalifa",
+      "Bagan Temples"
     ],
     "answer": 0,
     "fact": "This is Prambanan Temple, located in Indonesia."
@@ -805,9 +805,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Prambanan Temple landmark",
     "options": [
       "Indonesia",
-      "Canada",
-      "Jordan",
-      "Morocco"
+      "Cambodia",
+      "United Arab Emirates",
+      "Japan"
     ],
     "answer": 0,
     "fact": "Prambanan Temple is located in Indonesia."
@@ -819,9 +819,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Shwedagon Pagoda landmark",
     "options": [
       "Shwedagon Pagoda",
-      "Great Wall of China",
-      "Great Sphinx of Giza",
-      "Terracotta Army"
+      "Prambanan Temple",
+      "Library of Celsus",
+      "Pashupatinath Temple"
     ],
     "answer": 0,
     "fact": "This is Shwedagon Pagoda, located in Myanmar."
@@ -833,9 +833,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Shwedagon Pagoda landmark",
     "options": [
       "Myanmar",
-      "Chile",
-      "South Africa",
-      "United Arab Emirates"
+      "Nepal and China",
+      "Thailand",
+      "Nepal"
     ],
     "answer": 0,
     "fact": "Shwedagon Pagoda is located in Myanmar."
@@ -847,9 +847,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Banaue Rice Terraces landmark",
     "options": [
       "Banaue Rice Terraces",
-      "Leaning Tower of Pisa",
-      "Forbidden City",
-      "Banff Lake Louise"
+      "Ellora Kailasa Temple",
+      "Mount Fuji",
+      "Brihadeeswarar Temple"
     ],
     "answer": 0,
     "fact": "This is Banaue Rice Terraces, located in Philippines."
@@ -861,9 +861,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Banaue Rice Terraces landmark",
     "options": [
       "Philippines",
-      "United Arab Emirates",
-      "Nepal and China",
-      "Slovenia"
+      "Bhutan",
+      "Turkey",
+      "Japan"
     ],
     "answer": 0,
     "fact": "Banaue Rice Terraces is located in Philippines."
@@ -875,9 +875,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Lotus Temple landmark",
     "options": [
       "Lotus Temple",
-      "Niagara Falls",
-      "Nyhavn",
-      "Alhambra"
+      "Sanchi Stupa",
+      "Batu Caves",
+      "Hagia Sophia"
     ],
     "answer": 0,
     "fact": "This is Lotus Temple, located in India."
@@ -889,9 +889,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Lotus Temple landmark",
     "options": [
       "India",
-      "Bhutan",
-      "Namibia",
-      "Chile"
+      "Thailand",
+      "China",
+      "Bhutan"
     ],
     "answer": 0,
     "fact": "Lotus Temple is located in India."
@@ -903,9 +903,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Rani ki Vav landmark",
     "options": [
       "Rani ki Vav",
-      "Banaue Rice Terraces",
-      "Galapagos Islands",
-      "Sheikh Zayed Grand Mosque"
+      "Kiyomizu dera",
+      "Marina Bay Sands",
+      "Boudhanath Stupa"
     ],
     "answer": 0,
     "fact": "This is Rani ki Vav, located in India."
@@ -917,9 +917,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Rani ki Vav landmark",
     "options": [
       "India",
-      "Germany",
-      "Italy",
-      "Namibia"
+      "Philippines",
+      "Malaysia",
+      "Palestine"
     ],
     "answer": 0,
     "fact": "Rani ki Vav is located in India."
@@ -931,9 +931,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ajanta Caves landmark",
     "options": [
       "Ajanta Caves",
-      "Cliffs of Moher",
-      "Mount Everest",
-      "Angel Falls"
+      "Ha Long Bay",
+      "Great Wall of China",
+      "Rani ki Vav"
     ],
     "answer": 0,
     "fact": "This is Ajanta Caves, located in India."
@@ -945,9 +945,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ajanta Caves landmark",
     "options": [
       "India",
-      "Slovenia",
-      "Bolivia",
-      "Argentina and Brazil"
+      "Malaysia",
+      "Philippines",
+      "Cambodia"
     ],
     "answer": 0,
     "fact": "Ajanta Caves is located in India."
@@ -959,9 +959,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ellora Kailasa Temple landmark",
     "options": [
       "Ellora Kailasa Temple",
-      "Terracotta Army",
-      "Plitvice Lakes",
-      "Northern Lights"
+      "Grand Palace Bangkok",
+      "Banaue Rice Terraces",
+      "Tokyo Tower"
     ],
     "answer": 0,
     "fact": "This is Ellora Kailasa Temple, located in India."
@@ -973,9 +973,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ellora Kailasa Temple landmark",
     "options": [
       "India",
-      "Morocco",
-      "Belgium",
-      "Bhutan"
+      "China",
+      "Thailand",
+      "Palestine"
     ],
     "answer": 0,
     "fact": "Ellora Kailasa Temple is located in India."
@@ -987,9 +987,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Meenakshi Temple landmark",
     "options": [
       "Meenakshi Temple",
-      "St Peters Basilica",
-      "Kaieteur Falls",
-      "Banaue Rice Terraces"
+      "Temple of Heaven",
+      "Ellora Kailasa Temple",
+      "Tigers Nest Monastery"
     ],
     "answer": 0,
     "fact": "This is Meenakshi Temple, located in India."
@@ -1001,9 +1001,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Meenakshi Temple landmark",
     "options": [
       "India",
-      "Argentina and Brazil",
-      "Cambodia",
-      "Morocco"
+      "Jordan",
+      "Turkey",
+      "Cambodia"
     ],
     "answer": 0,
     "fact": "Meenakshi Temple is located in India."
@@ -1015,9 +1015,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Charminar landmark",
     "options": [
       "Charminar",
-      "Chichen Itza",
-      "Library of Celsus",
-      "Gateway of India"
+      "Gateway of India",
+      "Konark Sun Temple",
+      "Lotus Temple"
     ],
     "answer": 0,
     "fact": "This is Charminar, located in India."
@@ -1029,8 +1029,8 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Charminar landmark",
     "options": [
       "India",
-      "Venezuela, Brazil and Guyana",
-      "Egypt",
+      "Vietnam",
+      "Nepal and China",
       "Singapore"
     ],
     "answer": 0,
@@ -1043,9 +1043,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Victoria Memorial landmark",
     "options": [
       "Victoria Memorial",
-      "Rani ki Vav",
-      "Moraine Lake",
-      "Lalibela Rock Hewn Churches"
+      "Bayon Temple",
+      "Mount Everest",
+      "Kinkaku ji"
     ],
     "answer": 0,
     "fact": "This is Victoria Memorial, located in India."
@@ -1057,9 +1057,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Victoria Memorial landmark",
     "options": [
       "India",
-      "Singapore",
-      "South Korea",
-      "Slovenia"
+      "United Arab Emirates",
+      "Indonesia",
+      "Cambodia"
     ],
     "answer": 0,
     "fact": "Victoria Memorial is located in India."
@@ -1071,9 +1071,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Brihadeeswarar Temple landmark",
     "options": [
       "Brihadeeswarar Temple",
-      "Dubrovnik Old Town",
-      "Ajanta Caves",
-      "Red Square"
+      "Hagia Sophia",
+      "Petra Treasury",
+      "Mount Everest"
     ],
     "answer": 0,
     "fact": "This is Brihadeeswarar Temple, located in India."
@@ -1085,9 +1085,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Brihadeeswarar Temple landmark",
     "options": [
       "India",
-      "Greece",
-      "Algeria",
-      "Venezuela, Brazil and Guyana"
+      "Nepal",
+      "Myanmar",
+      "Singapore"
     ],
     "answer": 0,
     "fact": "Brihadeeswarar Temple is located in India."
@@ -1099,9 +1099,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sanchi Stupa landmark",
     "options": [
       "Sanchi Stupa",
-      "Potala Palace",
-      "Nyhavn",
-      "Kinkaku ji"
+      "Tokyo Tower",
+      "Osaka Castle",
+      "Banaue Rice Terraces"
     ],
     "answer": 0,
     "fact": "This is Sanchi Stupa, located in India."
@@ -1113,9 +1113,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sanchi Stupa landmark",
     "options": [
       "India",
-      "Austria",
-      "Thailand",
-      "Germany"
+      "Japan",
+      "Palestine",
+      "Philippines"
     ],
     "answer": 0,
     "fact": "Sanchi Stupa is located in India."
@@ -1127,9 +1127,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Everest landmark",
     "options": [
       "Mount Everest",
-      "Palace of Versailles",
-      "Galapagos Islands",
-      "Golden Gate Bridge"
+      "Prambanan Temple",
+      "Blue Mosque",
+      "Fushimi Inari Shrine"
     ],
     "answer": 0,
     "fact": "This is Mount Everest, located in Nepal and China."
@@ -1141,9 +1141,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Everest landmark",
     "options": [
       "Nepal and China",
-      "Croatia",
-      "Peru",
-      "Argentina and Brazil"
+      "Jordan",
+      "Vietnam",
+      "Singapore"
     ],
     "answer": 0,
     "fact": "Mount Everest is located in Nepal and China."
@@ -1155,9 +1155,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Tigers Nest Monastery landmark",
     "options": [
       "Tigers Nest Monastery",
-      "Tulum Ruins",
-      "Sanchi Stupa",
-      "Dubrovnik Old Town"
+      "Ajanta Caves",
+      "Golden Bridge Da Nang",
+      "Brihadeeswarar Temple"
     ],
     "answer": 0,
     "fact": "This is Tigers Nest Monastery, located in Bhutan."
@@ -1169,9 +1169,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Tigers Nest Monastery landmark",
     "options": [
       "Bhutan",
-      "United States",
-      "Romania",
-      "Greece"
+      "Vietnam",
+      "Singapore",
+      "India"
     ],
     "answer": 0,
     "fact": "Tigers Nest Monastery is located in Bhutan."
@@ -1183,9 +1183,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Boudhanath Stupa landmark",
     "options": [
       "Boudhanath Stupa",
-      "Ellora Kailasa Temple",
-      "Palace of Fine Arts",
-      "Charminar"
+      "Brihadeeswarar Temple",
+      "Gyeongbokgung Palace",
+      "Shwedagon Pagoda"
     ],
     "answer": 0,
     "fact": "This is Boudhanath Stupa, located in Nepal."
@@ -1197,9 +1197,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Boudhanath Stupa landmark",
     "options": [
       "Nepal",
-      "Ecuador",
-      "Colombia",
-      "Morocco"
+      "Palestine",
+      "India",
+      "Malaysia"
     ],
     "answer": 0,
     "fact": "Boudhanath Stupa is located in Nepal."
@@ -1211,9 +1211,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Pashupatinath Temple landmark",
     "options": [
       "Pashupatinath Temple",
-      "Geirangerfjord",
-      "Borobudur",
-      "Antelope Canyon"
+      "Kiyomizu dera",
+      "Boracay White Beach",
+      "Mount Fuji"
     ],
     "answer": 0,
     "fact": "This is Pashupatinath Temple, located in Nepal."
@@ -1225,9 +1225,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Pashupatinath Temple landmark",
     "options": [
       "Nepal",
-      "Cambodia",
-      "Norway",
-      "South Korea"
+      "Bhutan",
+      "Malaysia",
+      "India"
     ],
     "answer": 0,
     "fact": "Pashupatinath Temple is located in Nepal."
@@ -1239,9 +1239,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Kiyomizu dera landmark",
     "options": [
       "Kiyomizu dera",
-      "Qutub Minar",
-      "Bran Castle",
-      "Ngorongoro Crater"
+      "Ha Long Bay",
+      "Shwedagon Pagoda",
+      "Victoria Memorial"
     ],
     "answer": 0,
     "fact": "This is Kiyomizu dera, located in Japan."
@@ -1253,9 +1253,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Kiyomizu dera landmark",
     "options": [
       "Japan",
-      "Philippines",
-      "Palestine",
-      "Croatia"
+      "South Korea",
+      "United Arab Emirates",
+      "Nepal"
     ],
     "answer": 0,
     "fact": "Kiyomizu dera is located in Japan."
@@ -1267,9 +1267,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Osaka Castle landmark",
     "options": [
       "Osaka Castle",
-      "Mont Saint Michel",
-      "Moraine Lake",
-      "Batu Caves"
+      "Grand Palace Bangkok",
+      "Potala Palace",
+      "Prambanan Temple"
     ],
     "answer": 0,
     "fact": "This is Osaka Castle, located in Japan."
@@ -1281,9 +1281,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Osaka Castle landmark",
     "options": [
       "Japan",
-      "United Kingdom",
-      "Tanzania",
-      "Venezuela, Brazil and Guyana"
+      "Myanmar",
+      "Vietnam",
+      "United Arab Emirates"
     ],
     "answer": 0,
     "fact": "Osaka Castle is located in Japan."
@@ -1295,9 +1295,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Library of Celsus landmark",
     "options": [
       "Library of Celsus",
-      "Old Havana Capitol",
-      "Ajanta Caves",
-      "Prambanan Temple"
+      "Temple of Heaven",
+      "Gateway of India",
+      "Blue Mosque"
     ],
     "answer": 0,
     "fact": "This is Library of Celsus, located in Turkey."
@@ -1309,9 +1309,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Library of Celsus landmark",
     "options": [
       "Turkey",
-      "Denmark",
-      "Nepal",
-      "Austria"
+      "Cambodia",
+      "Jordan",
+      "Malaysia"
     ],
     "answer": 0,
     "fact": "Library of Celsus is located in Turkey."
@@ -1323,9 +1323,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Pamukkale Terraces landmark",
     "options": [
       "Pamukkale Terraces",
-      "Charminar",
-      "Nyhavn",
-      "Chichen Itza"
+      "Gateway of India",
+      "Brihadeeswarar Temple",
+      "Charminar"
     ],
     "answer": 0,
     "fact": "This is Pamukkale Terraces, located in Turkey."
@@ -1337,9 +1337,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Pamukkale Terraces landmark",
     "options": [
       "Turkey",
-      "Zambia and Zimbabwe",
-      "Panama",
-      "Ecuador"
+      "Nepal and China",
+      "China",
+      "United Arab Emirates"
     ],
     "answer": 0,
     "fact": "Pamukkale Terraces is located in Turkey."
@@ -1351,9 +1351,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Bromo landmark",
     "options": [
       "Mount Bromo",
-      "Pyramids of Giza",
-      "Fushimi Inari Shrine",
-      "Mont Saint Michel"
+      "Bayon Temple",
+      "Borobudur",
+      "Boracay White Beach"
     ],
     "answer": 0,
     "fact": "This is Mount Bromo, located in Indonesia."
@@ -1365,9 +1365,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Bromo landmark",
     "options": [
       "Indonesia",
-      "Cuba",
-      "France",
-      "Greece"
+      "Turkey",
+      "Malaysia",
+      "Thailand"
     ],
     "answer": 0,
     "fact": "Mount Bromo is located in Indonesia."
@@ -1379,9 +1379,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ha Long Bay landmark",
     "options": [
       "Ha Long Bay",
-      "Gateway of India",
-      "Park Guell",
-      "Boudhanath Stupa"
+      "Hagia Sophia",
+      "Pashupatinath Temple",
+      "Meenakshi Temple"
     ],
     "answer": 0,
     "fact": "This is Ha Long Bay, located in Vietnam."
@@ -1393,9 +1393,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ha Long Bay landmark",
     "options": [
       "Vietnam",
-      "Venezuela",
-      "Argentina",
-      "United States"
+      "South Korea",
+      "Philippines",
+      "United Arab Emirates"
     ],
     "answer": 0,
     "fact": "Ha Long Bay is located in Vietnam."
@@ -1407,9 +1407,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Golden Bridge Da Nang landmark",
     "options": [
       "Golden Bridge Da Nang",
-      "Big Ben",
-      "Palace of Fine Arts",
-      "Salar de Uyuni"
+      "Tokyo Tower",
+      "Hagia Sophia",
+      "Meenakshi Temple"
     ],
     "answer": 0,
     "fact": "This is Golden Bridge Da Nang, located in Vietnam."
@@ -1421,9 +1421,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Golden Bridge Da Nang landmark",
     "options": [
       "Vietnam",
-      "Turkey",
-      "Netherlands",
-      "South Korea"
+      "Philippines",
+      "Nepal and China",
+      "Thailand"
     ],
     "answer": 0,
     "fact": "Golden Bridge Da Nang is located in Vietnam."
@@ -1435,9 +1435,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Batu Caves landmark",
     "options": [
       "Batu Caves",
-      "Banff Lake Louise",
-      "Borobudur",
-      "Schonbrunn Palace"
+      "Prambanan Temple",
+      "Mount Bromo",
+      "Petronas Towers"
     ],
     "answer": 0,
     "fact": "This is Batu Caves, located in Malaysia."
@@ -1449,9 +1449,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Batu Caves landmark",
     "options": [
       "Malaysia",
-      "Vietnam",
-      "Jordan",
-      "Croatia"
+      "Indonesia",
+      "Cambodia",
+      "Jordan"
     ],
     "answer": 0,
     "fact": "Batu Caves is located in Malaysia."
@@ -1463,9 +1463,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Bagan Temples landmark",
     "options": [
       "Bagan Temples",
-      "Brihadeeswarar Temple",
-      "Bran Castle",
-      "Acropolis of Athens"
+      "Ajanta Caves",
+      "Tokyo Tower",
+      "Dome of the Rock"
     ],
     "answer": 0,
     "fact": "This is Bagan Temples, located in Myanmar."
@@ -1477,9 +1477,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Bagan Temples landmark",
     "options": [
       "Myanmar",
-      "Russia",
-      "South Africa",
-      "Cambodia"
+      "China",
+      "Singapore",
+      "United Arab Emirates"
     ],
     "answer": 0,
     "fact": "Bagan Temples is located in Myanmar."
@@ -1491,9 +1491,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Wat Arun landmark",
     "options": [
       "Wat Arun",
-      "Abu Simbel Temples",
-      "Burj Khalifa",
-      "Terracotta Army"
+      "Brihadeeswarar Temple",
+      "Grand Palace Bangkok",
+      "Gateway of India"
     ],
     "answer": 0,
     "fact": "This is Wat Arun, located in Thailand."
@@ -1505,9 +1505,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Wat Arun landmark",
     "options": [
       "Thailand",
-      "Poland",
-      "Singapore",
-      "Austria"
+      "Jordan",
+      "Japan",
+      "Philippines"
     ],
     "answer": 0,
     "fact": "Wat Arun is located in Thailand."
@@ -1519,9 +1519,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Grand Palace Bangkok landmark",
     "options": [
       "Grand Palace Bangkok",
-      "Golden Temple",
-      "Stonehenge",
-      "Geirangerfjord"
+      "Pashupatinath Temple",
+      "Prambanan Temple",
+      "Marina Bay Sands"
     ],
     "answer": 0,
     "fact": "This is Grand Palace Bangkok, located in Thailand."
@@ -1533,9 +1533,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Grand Palace Bangkok landmark",
     "options": [
       "Thailand",
-      "Kenya",
-      "Namibia",
-      "Ecuador"
+      "Vietnam",
+      "Bhutan",
+      "China"
     ],
     "answer": 0,
     "fact": "Grand Palace Bangkok is located in Thailand."
@@ -1547,9 +1547,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Boracay White Beach landmark",
     "options": [
       "Boracay White Beach",
-      "Edinburgh Castle",
-      "White House",
-      "Alhambra"
+      "Mount Bromo",
+      "Temple of Heaven",
+      "Sheikh Zayed Grand Mosque"
     ],
     "answer": 0,
     "fact": "This is Boracay White Beach, located in Philippines."
@@ -1561,9 +1561,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Boracay White Beach landmark",
     "options": [
       "Philippines",
-      "Brazil",
-      "Italy",
-      "United Kingdom"
+      "United Arab Emirates",
+      "Palestine",
+      "Indonesia"
     ],
     "answer": 0,
     "fact": "Boracay White Beach is located in Philippines."
@@ -1575,9 +1575,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Parthenon landmark",
     "options": [
       "Parthenon",
-      "Antelope Canyon",
-      "Fushimi Inari Shrine",
-      "Sheikh Zayed Grand Mosque"
+      "Leaning Tower of Pisa",
+      "Krakow Cloth Hall",
+      "Matterhorn"
     ],
     "answer": 0,
     "fact": "This is Parthenon, located in Greece."
@@ -1589,9 +1589,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Parthenon landmark",
     "options": [
       "Greece",
-      "China",
-      "Bolivia",
-      "United States"
+      "Czech Republic",
+      "Vatican City",
+      "Croatia"
     ],
     "answer": 0,
     "fact": "Parthenon is located in Greece."
@@ -1603,9 +1603,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Acropolis of Athens landmark",
     "options": [
       "Acropolis of Athens",
-      "Mount Everest",
-      "Park Guell",
-      "Angel Falls"
+      "Sagrada Familia",
+      "Parthenon",
+      "Bled Island Church"
     ],
     "answer": 0,
     "fact": "This is Acropolis of Athens, located in Greece."
@@ -1617,9 +1617,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Acropolis of Athens landmark",
     "options": [
       "Greece",
-      "Malaysia",
       "Belgium",
-      "Myanmar"
+      "Spain",
+      "Norway"
     ],
     "answer": 0,
     "fact": "Acropolis of Athens is located in Greece."
@@ -1631,8 +1631,8 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Colosseum landmark",
     "options": [
       "Colosseum",
-      "Lalibela Rock Hewn Churches",
-      "Palace of Fine Arts",
+      "Matterhorn",
+      "Sagrada Familia",
       "Northern Lights"
     ],
     "answer": 0,
@@ -1645,9 +1645,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Colosseum landmark",
     "options": [
       "Italy",
-      "Vatican City",
-      "India",
-      "Croatia"
+      "Denmark",
+      "Russia",
+      "Poland"
     ],
     "answer": 0,
     "fact": "Colosseum is located in Italy."
@@ -1659,9 +1659,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Leaning Tower of Pisa landmark",
     "options": [
       "Leaning Tower of Pisa",
-      "Angkor Wat",
-      "Trevi Fountain",
-      "Banaue Rice Terraces"
+      "Giants Causeway",
+      "Rijksmuseum",
+      "Nyhavn"
     ],
     "answer": 0,
     "fact": "This is Leaning Tower of Pisa, located in Italy."
@@ -1673,9 +1673,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Leaning Tower of Pisa landmark",
     "options": [
       "Italy",
-      "Switzerland",
-      "Hungary",
-      "Cambodia"
+      "Germany",
+      "Ireland",
+      "Russia"
     ],
     "answer": 0,
     "fact": "Leaning Tower of Pisa is located in Italy."
@@ -1687,9 +1687,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Trevi Fountain landmark",
     "options": [
       "Trevi Fountain",
-      "Alhambra",
-      "Mount Kenya",
-      "Gateway of India"
+      "Mont Saint Michel",
+      "Acropolis of Athens",
+      "Cliffs of Moher"
     ],
     "answer": 0,
     "fact": "This is Trevi Fountain, located in Italy."
@@ -1701,9 +1701,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Trevi Fountain landmark",
     "options": [
       "Italy",
-      "Ethiopia",
-      "Japan",
-      "Denmark"
+      "Czech Republic",
+      "Vatican City",
+      "Croatia"
     ],
     "answer": 0,
     "fact": "Trevi Fountain is located in Italy."
@@ -1715,9 +1715,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "St Peters Basilica landmark",
     "options": [
       "St Peters Basilica",
-      "Iguazu Falls",
-      "Burj Khalifa",
-      "Lalibela Rock Hewn Churches"
+      "St Basils Cathedral",
+      "Alhambra",
+      "Krakow Cloth Hall"
     ],
     "answer": 0,
     "fact": "This is St Peters Basilica, located in Vatican City."
@@ -1729,9 +1729,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "St Peters Basilica landmark",
     "options": [
       "Vatican City",
-      "Canada",
-      "Algeria",
-      "Ecuador"
+      "Poland",
+      "Netherlands",
+      "Croatia"
     ],
     "answer": 0,
     "fact": "St Peters Basilica is located in Vatican City."
@@ -1743,9 +1743,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Eiffel Tower landmark",
     "options": [
       "Eiffel Tower",
-      "Boudhanath Stupa",
-      "Stonehenge",
-      "Kiyomizu dera"
+      "Buda Castle",
+      "Nyhavn",
+      "Plitvice Lakes"
     ],
     "answer": 0,
     "fact": "This is Eiffel Tower, located in France."
@@ -1757,9 +1757,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Eiffel Tower landmark",
     "options": [
       "France",
-      "Chile",
-      "Vietnam",
-      "United Kingdom"
+      "Denmark",
+      "Belgium",
+      "Czech Republic"
     ],
     "answer": 0,
     "fact": "Eiffel Tower is located in France."
@@ -1771,9 +1771,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Palace of Versailles landmark",
     "options": [
       "Palace of Versailles",
-      "Robben Island",
-      "White House",
-      "Kinkaku ji"
+      "Leaning Tower of Pisa",
+      "Colosseum",
+      "Giants Causeway"
     ],
     "answer": 0,
     "fact": "This is Palace of Versailles, located in France."
@@ -1785,9 +1785,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Palace of Versailles landmark",
     "options": [
       "France",
-      "United Arab Emirates",
-      "Peru",
-      "Cuba"
+      "Germany",
+      "Denmark",
+      "Russia"
     ],
     "answer": 0,
     "fact": "Palace of Versailles is located in France."
@@ -1799,9 +1799,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Arc de Triomphe landmark",
     "options": [
       "Arc de Triomphe",
-      "Petra Treasury",
-      "Wat Arun",
-      "Golden Gate Bridge"
+      "Alhambra",
+      "Park Guell",
+      "Dubrovnik Old Town"
     ],
     "answer": 0,
     "fact": "This is Arc de Triomphe, located in France."
@@ -1813,9 +1813,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Arc de Triomphe landmark",
     "options": [
       "France",
-      "Nepal and China",
-      "Spain",
-      "Myanmar"
+      "Czech Republic",
+      "Germany",
+      "Croatia"
     ],
     "answer": 0,
     "fact": "Arc de Triomphe is located in France."
@@ -1827,9 +1827,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mont Saint Michel landmark",
     "options": [
       "Mont Saint Michel",
-      "Brandenburg Gate",
-      "Serengeti National Park",
-      "Dubrovnik Old Town"
+      "Hallstatt",
+      "Northern Lights",
+      "Plitvice Lakes"
     ],
     "answer": 0,
     "fact": "This is Mont Saint Michel, located in France."
@@ -1841,9 +1841,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mont Saint Michel landmark",
     "options": [
       "France",
-      "Germany",
-      "Colombia",
-      "Zambia and Zimbabwe"
+      "Belgium",
+      "Czech Republic",
+      "Netherlands"
     ],
     "answer": 0,
     "fact": "Mont Saint Michel is located in France."
@@ -1855,9 +1855,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Stonehenge landmark",
     "options": [
       "Stonehenge",
-      "Christ the Redeemer",
-      "Konark Sun Temple",
-      "Charminar"
+      "Geirangerfjord",
+      "Leaning Tower of Pisa",
+      "Parthenon"
     ],
     "answer": 0,
     "fact": "This is Stonehenge, located in United Kingdom."
@@ -1869,9 +1869,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Stonehenge landmark",
     "options": [
       "United Kingdom",
-      "Slovenia",
-      "Norway",
-      "Turkey"
+      "Denmark",
+      "Belgium",
+      "Czech Republic"
     ],
     "answer": 0,
     "fact": "Stonehenge is located in United Kingdom."
@@ -1883,9 +1883,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Big Ben landmark",
     "options": [
       "Big Ben",
-      "Kiyomizu dera",
-      "Leaning Tower of Pisa",
-      "Antelope Canyon"
+      "Mont Saint Michel",
+      "Brandenburg Gate",
+      "Lake Como"
     ],
     "answer": 0,
     "fact": "This is Big Ben, located in United Kingdom."
@@ -1897,9 +1897,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Big Ben landmark",
     "options": [
       "United Kingdom",
-      "Morocco",
-      "Palestine",
-      "Denmark"
+      "Germany",
+      "Denmark",
+      "Russia"
     ],
     "answer": 0,
     "fact": "Big Ben is located in United Kingdom."
@@ -1911,9 +1911,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Tower Bridge landmark",
     "options": [
       "Tower Bridge",
-      "Mount Kilimanjaro",
-      "Mount Kenya",
-      "Ngorongoro Crater"
+      "Red Square",
+      "Atomium",
+      "Geirangerfjord"
     ],
     "answer": 0,
     "fact": "This is Tower Bridge, located in United Kingdom."
@@ -1925,9 +1925,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Tower Bridge landmark",
     "options": [
       "United Kingdom",
-      "Argentina and Brazil",
-      "Tanzania",
-      "Venezuela"
+      "Czech Republic",
+      "Germany",
+      "Croatia"
     ],
     "answer": 0,
     "fact": "Tower Bridge is located in United Kingdom."
@@ -1939,9 +1939,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Edinburgh Castle landmark",
     "options": [
       "Edinburgh Castle",
-      "Sheikh Zayed Grand Mosque",
-      "Burj Khalifa",
-      "Golden Bridge Da Nang"
+      "Krakow Cloth Hall",
+      "Geirangerfjord",
+      "Leaning Tower of Pisa"
     ],
     "answer": 0,
     "fact": "This is Edinburgh Castle, located in United Kingdom."
@@ -1953,9 +1953,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Edinburgh Castle landmark",
     "options": [
       "United Kingdom",
-      "Venezuela, Brazil and Guyana",
-      "Bhutan",
-      "France"
+      "Belgium",
+      "Czech Republic",
+      "Netherlands"
     ],
     "answer": 0,
     "fact": "Edinburgh Castle is located in United Kingdom."
@@ -1967,9 +1967,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sagrada Familia landmark",
     "options": [
       "Sagrada Familia",
-      "Charles Bridge",
-      "Karnak Temple",
-      "Uyuni Train Cemetery"
+      "Trevi Fountain",
+      "Big Ben",
+      "Colosseum"
     ],
     "answer": 0,
     "fact": "This is Sagrada Familia, located in Spain."
@@ -1981,9 +1981,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sagrada Familia landmark",
     "options": [
       "Spain",
-      "South Korea",
-      "Canada and United States",
-      "Cuba"
+      "Denmark",
+      "Belgium",
+      "Czech Republic"
     ],
     "answer": 0,
     "fact": "Sagrada Familia is located in Spain."
@@ -1995,9 +1995,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Alhambra landmark",
     "options": [
       "Alhambra",
-      "Salar de Uyuni",
-      "Temple of Heaven",
-      "Chichen Itza"
+      "Park Guell",
+      "Matterhorn",
+      "Acropolis of Athens"
     ],
     "answer": 0,
     "fact": "This is Alhambra, located in Spain."
@@ -2009,9 +2009,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Alhambra landmark",
     "options": [
       "Spain",
-      "Thailand",
-      "Vatican City",
-      "Nepal"
+      "United Kingdom",
+      "Denmark",
+      "Russia"
     ],
     "answer": 0,
     "fact": "Alhambra is located in Spain."
@@ -2023,9 +2023,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Park Guell landmark",
     "options": [
       "Park Guell",
-      "Library of Celsus",
-      "Wat Arun",
-      "Arc de Triomphe"
+      "Rijksmuseum",
+      "Lake Como",
+      "Parthenon"
     ],
     "answer": 0,
     "fact": "This is Park Guell, located in Spain."
@@ -2037,9 +2037,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Park Guell landmark",
     "options": [
       "Spain",
-      "Austria",
-      "Argentina",
-      "Zambia and Zimbabwe"
+      "Czech Republic",
+      "Netherlands",
+      "Switzerland"
     ],
     "answer": 0,
     "fact": "Park Guell is located in Spain."
@@ -2051,9 +2051,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Brandenburg Gate landmark",
     "options": [
       "Brandenburg Gate",
-      "Ngorongoro Crater",
-      "Serengeti National Park",
-      "Boudhanath Stupa"
+      "Lake Como",
+      "Tower Bridge",
+      "St Peters Basilica"
     ],
     "answer": 0,
     "fact": "This is Brandenburg Gate, located in Germany."
@@ -2065,9 +2065,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Brandenburg Gate landmark",
     "options": [
       "Germany",
-      "Croatia",
-      "Netherlands",
-      "Turkey"
+      "Belgium",
+      "Poland",
+      "Netherlands"
     ],
     "answer": 0,
     "fact": "Brandenburg Gate is located in Germany."
@@ -2079,9 +2079,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Neuschwanstein Castle landmark",
     "options": [
       "Neuschwanstein Castle",
-      "Hagia Sophia",
-      "Konark Sun Temple",
-      "Salar de Uyuni"
+      "Stonehenge",
+      "Hallstatt",
+      "Trevi Fountain"
     ],
     "answer": 0,
     "fact": "This is Neuschwanstein Castle, located in Germany."
@@ -2093,9 +2093,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Neuschwanstein Castle landmark",
     "options": [
       "Germany",
-      "United States",
-      "Jordan",
-      "Poland"
+      "Denmark",
+      "Slovenia",
+      "Czech Republic"
     ],
     "answer": 0,
     "fact": "Neuschwanstein Castle is located in Germany."
@@ -2107,9 +2107,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Charles Bridge landmark",
     "options": [
       "Charles Bridge",
-      "Red Square",
-      "Giants Causeway",
-      "Schonbrunn Palace"
+      "Bran Castle",
+      "Parthenon",
+      "Leaning Tower of Pisa"
     ],
     "answer": 0,
     "fact": "This is Charles Bridge, located in Czech Republic."
@@ -2121,9 +2121,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Charles Bridge landmark",
     "options": [
       "Czech Republic",
-      "Ecuador",
-      "Ireland",
-      "Venezuela"
+      "United Kingdom",
+      "France",
+      "Spain"
     ],
     "answer": 0,
     "fact": "Charles Bridge is located in Czech Republic."
@@ -2135,9 +2135,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "St Basils Cathedral landmark",
     "options": [
       "St Basils Cathedral",
-      "Perito Moreno Glacier",
-      "Mount Roraima",
-      "Parthenon"
+      "Cliffs of Moher",
+      "Edinburgh Castle",
+      "Arc de Triomphe"
     ],
     "answer": 0,
     "fact": "This is St Basils Cathedral, located in Russia."
@@ -2149,9 +2149,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "St Basils Cathedral landmark",
     "options": [
       "Russia",
-      "Cambodia",
-      "Singapore",
-      "Czech Republic"
+      "Netherlands",
+      "Switzerland",
+      "Austria"
     ],
     "answer": 0,
     "fact": "St Basils Cathedral is located in Russia."
@@ -2163,9 +2163,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Red Square landmark",
     "options": [
       "Red Square",
-      "Mount Bromo",
-      "Pamukkale Terraces",
-      "Terracotta Army"
+      "St Peters Basilica",
+      "Rijksmuseum",
+      "Palace of Versailles"
     ],
     "answer": 0,
     "fact": "This is Red Square, located in Russia."
@@ -2177,9 +2177,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Red Square landmark",
     "options": [
       "Russia",
-      "Myanmar",
-      "Namibia",
-      "Cuba"
+      "Belgium",
+      "Poland",
+      "Switzerland"
     ],
     "answer": 0,
     "fact": "Red Square is located in Russia."
@@ -2191,9 +2191,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Bran Castle landmark",
     "options": [
       "Bran Castle",
-      "Hassan II Mosque",
-      "Karnak Temple",
-      "Geirangerfjord"
+      "Park Guell",
+      "Acropolis of Athens",
+      "Eiffel Tower"
     ],
     "answer": 0,
     "fact": "This is Bran Castle, located in Romania."
@@ -2205,9 +2205,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Bran Castle landmark",
     "options": [
       "Romania",
-      "France",
-      "Greece",
-      "Nepal"
+      "Denmark",
+      "Slovenia",
+      "Germany"
     ],
     "answer": 0,
     "fact": "Bran Castle is located in Romania."
@@ -2219,9 +2219,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Schonbrunn Palace landmark",
     "options": [
       "Schonbrunn Palace",
-      "Mount Fuji",
-      "Temple of Heaven",
-      "Sagrada Familia"
+      "Nyhavn",
+      "Arc de Triomphe",
+      "Big Ben"
     ],
     "answer": 0,
     "fact": "This is Schonbrunn Palace, located in Austria."
@@ -2233,9 +2233,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Schonbrunn Palace landmark",
     "options": [
       "Austria",
-      "Denmark",
-      "Bolivia",
-      "Kenya"
+      "United Kingdom",
+      "France",
+      "Spain"
     ],
     "answer": 0,
     "fact": "Schonbrunn Palace is located in Austria."
@@ -2247,9 +2247,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Atomium landmark",
     "options": [
       "Atomium",
-      "Bran Castle",
-      "Wat Arun",
-      "Sheikh Zayed Grand Mosque"
+      "Parthenon",
+      "Red Square",
+      "Stonehenge"
     ],
     "answer": 0,
     "fact": "This is Atomium, located in Belgium."
@@ -2261,9 +2261,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Atomium landmark",
     "options": [
       "Belgium",
-      "Zambia and Zimbabwe",
-      "Austria",
-      "Turkey"
+      "Netherlands",
+      "Switzerland",
+      "Austria"
     ],
     "answer": 0,
     "fact": "Atomium is located in Belgium."
@@ -2275,9 +2275,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Matterhorn landmark",
     "options": [
       "Matterhorn",
-      "Easter Island Moai",
-      "Torres del Paine",
-      "Hassan II Mosque"
+      "Big Ben",
+      "Dubrovnik Old Town",
+      "Mont Saint Michel"
     ],
     "answer": 0,
     "fact": "This is Matterhorn, located in Switzerland."
@@ -2289,9 +2289,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Matterhorn landmark",
     "options": [
       "Switzerland",
-      "Cuba",
-      "Guyana",
-      "Poland"
+      "Belgium",
+      "Poland",
+      "United Kingdom"
     ],
     "answer": 0,
     "fact": "Matterhorn is located in Switzerland."
@@ -2303,9 +2303,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Hallstatt landmark",
     "options": [
       "Hallstatt",
-      "Golden Bridge Da Nang",
-      "Tigers Nest Monastery",
-      "Northern Lights"
+      "Bran Castle",
+      "Mont Saint Michel",
+      "Sagrada Familia"
     ],
     "answer": 0,
     "fact": "This is Hallstatt, located in Austria."
@@ -2317,9 +2317,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Hallstatt landmark",
     "options": [
       "Austria",
-      "Venezuela",
-      "Hungary",
-      "China"
+      "Denmark",
+      "Slovenia",
+      "Germany"
     ],
     "answer": 0,
     "fact": "Hallstatt is located in Austria."
@@ -2331,9 +2331,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Rijksmuseum landmark",
     "options": [
       "Rijksmuseum",
-      "Boulders Beach",
-      "Giants Causeway",
-      "Banaue Rice Terraces"
+      "Plitvice Lakes",
+      "Bran Castle",
+      "Edinburgh Castle"
     ],
     "answer": 0,
     "fact": "This is Rijksmuseum, located in Netherlands."
@@ -2345,9 +2345,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Rijksmuseum landmark",
     "options": [
       "Netherlands",
-      "Turkey",
-      "Japan",
-      "Czech Republic"
+      "United Kingdom",
+      "Austria",
+      "Spain"
     ],
     "answer": 0,
     "fact": "Rijksmuseum is located in Netherlands."
@@ -2359,9 +2359,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Nyhavn landmark",
     "options": [
       "Nyhavn",
-      "Kinkaku ji",
-      "Mount Roraima",
-      "Gateway of India"
+      "Eiffel Tower",
+      "Giants Causeway",
+      "Tower Bridge"
     ],
     "answer": 0,
     "fact": "This is Nyhavn, located in Denmark."
@@ -2373,9 +2373,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Nyhavn landmark",
     "options": [
       "Denmark",
-      "Nepal",
-      "Algeria",
-      "Brazil"
+      "Netherlands",
+      "Croatia",
+      "France"
     ],
     "answer": 0,
     "fact": "Nyhavn is located in Denmark."
@@ -2387,9 +2387,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Northern Lights landmark",
     "options": [
       "Northern Lights",
-      "Atomium",
-      "Pamukkale Terraces",
-      "Lalibela Rock Hewn Churches"
+      "Brandenburg Gate",
+      "Stonehenge",
+      "Atomium"
     ],
     "answer": 0,
     "fact": "This is Northern Lights, located in Norway."
@@ -2401,9 +2401,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Northern Lights landmark",
     "options": [
       "Norway",
-      "Czech Republic",
-      "Vietnam",
-      "Nepal"
+      "Belgium",
+      "Romania",
+      "United Kingdom"
     ],
     "answer": 0,
     "fact": "Northern Lights is located in Norway."
@@ -2415,9 +2415,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Bled Island Church landmark",
     "options": [
       "Bled Island Church",
-      "Angel Falls",
-      "Machu Picchu",
-      "Kiyomizu dera"
+      "Nyhavn",
+      "Schonbrunn Palace",
+      "Park Guell"
     ],
     "answer": 0,
     "fact": "This is Bled Island Church, located in Slovenia."
@@ -2429,9 +2429,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Bled Island Church landmark",
     "options": [
       "Slovenia",
-      "Poland",
-      "Peru",
-      "Kenya"
+      "Denmark",
+      "Italy",
+      "Germany"
     ],
     "answer": 0,
     "fact": "Bled Island Church is located in Slovenia."
@@ -2443,9 +2443,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Buda Castle landmark",
     "options": [
       "Buda Castle",
-      "Bagan Temples",
-      "Meenakshi Temple",
-      "Kinkaku ji"
+      "Acropolis of Athens",
+      "Geirangerfjord",
+      "Alhambra"
     ],
     "answer": 0,
     "fact": "This is Buda Castle, located in Hungary."
@@ -2457,9 +2457,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Buda Castle landmark",
     "options": [
       "Hungary",
-      "Kenya",
       "United Kingdom",
-      "Malaysia"
+      "Austria",
+      "Spain"
     ],
     "answer": 0,
     "fact": "Buda Castle is located in Hungary."
@@ -2471,9 +2471,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Krakow Cloth Hall landmark",
     "options": [
       "Krakow Cloth Hall",
-      "Sossusvlei Dunes",
-      "Northern Lights",
-      "Golden Gate Bridge"
+      "Tower Bridge",
+      "Big Ben",
+      "St Basils Cathedral"
     ],
     "answer": 0,
     "fact": "This is Krakow Cloth Hall, located in Poland."
@@ -2485,9 +2485,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Krakow Cloth Hall landmark",
     "options": [
       "Poland",
-      "Brazil",
-      "Colombia",
-      "Hungary"
+      "Netherlands",
+      "Croatia",
+      "France"
     ],
     "answer": 0,
     "fact": "Krakow Cloth Hall is located in Poland."
@@ -2499,9 +2499,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Cliffs of Moher landmark",
     "options": [
       "Cliffs of Moher",
-      "Gyeongbokgung Palace",
-      "Torres del Paine",
-      "Colosseum"
+      "Schonbrunn Palace",
+      "Atomium",
+      "Charles Bridge"
     ],
     "answer": 0,
     "fact": "This is Cliffs of Moher, located in Ireland."
@@ -2513,9 +2513,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Cliffs of Moher landmark",
     "options": [
       "Ireland",
-      "China",
-      "Denmark",
-      "Egypt"
+      "Poland",
+      "Romania",
+      "United Kingdom"
     ],
     "answer": 0,
     "fact": "Cliffs of Moher is located in Ireland."
@@ -2527,9 +2527,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Plitvice Lakes landmark",
     "options": [
       "Plitvice Lakes",
-      "Hallstatt",
-      "Tigers Nest Monastery",
-      "Charminar"
+      "Dubrovnik Old Town",
+      "Buda Castle",
+      "Neuschwanstein Castle"
     ],
     "answer": 0,
     "fact": "This is Plitvice Lakes, located in Croatia."
@@ -2541,9 +2541,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Plitvice Lakes landmark",
     "options": [
       "Croatia",
-      "Malaysia",
-      "Palestine",
-      "Belgium"
+      "Denmark",
+      "Italy",
+      "Germany"
     ],
     "answer": 0,
     "fact": "Plitvice Lakes is located in Croatia."
@@ -2555,9 +2555,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Dubrovnik Old Town landmark",
     "options": [
       "Dubrovnik Old Town",
-      "Uyuni Train Cemetery",
-      "Giants Causeway",
-      "Antelope Canyon"
+      "Palace of Versailles",
+      "Eiffel Tower",
+      "Brandenburg Gate"
     ],
     "answer": 0,
     "fact": "This is Dubrovnik Old Town, located in Croatia."
@@ -2569,9 +2569,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Dubrovnik Old Town landmark",
     "options": [
       "Croatia",
-      "Italy",
-      "Tanzania",
-      "Brazil"
+      "United Kingdom",
+      "Austria",
+      "Italy"
     ],
     "answer": 0,
     "fact": "Dubrovnik Old Town is located in Croatia."
@@ -2583,9 +2583,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Giants Causeway landmark",
     "options": [
       "Giants Causeway",
-      "Grand Palace Bangkok",
-      "Shwedagon Pagoda",
-      "Ngorongoro Crater"
+      "Neuschwanstein Castle",
+      "Charles Bridge",
+      "Bran Castle"
     ],
     "answer": 0,
     "fact": "This is Giants Causeway, located in United Kingdom."
@@ -2597,9 +2597,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Giants Causeway landmark",
     "options": [
       "United Kingdom",
-      "Switzerland",
-      "Indonesia",
-      "Italy"
+      "Czech Republic",
+      "Norway",
+      "France"
     ],
     "answer": 0,
     "fact": "Giants Causeway is located in United Kingdom."
@@ -2611,9 +2611,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Geirangerfjord landmark",
     "options": [
       "Geirangerfjord",
-      "Golden Gate Bridge",
-      "Schonbrunn Palace",
-      "Golden Bridge Da Nang"
+      "Northern Lights",
+      "Krakow Cloth Hall",
+      "Red Square"
     ],
     "answer": 0,
     "fact": "This is Geirangerfjord, located in Norway."
@@ -2625,9 +2625,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Geirangerfjord landmark",
     "options": [
       "Norway",
-      "Ethiopia",
-      "Canada and United States",
-      "Canada"
+      "Belgium",
+      "Romania",
+      "United Kingdom"
     ],
     "answer": 0,
     "fact": "Geirangerfjord is located in Norway."
@@ -2639,9 +2639,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Lake Como landmark",
     "options": [
       "Lake Como",
-      "Petronas Towers",
-      "Machu Picchu",
-      "Uyuni Train Cemetery"
+      "Colosseum",
+      "Palace of Versailles",
+      "St Basils Cathedral"
     ],
     "answer": 0,
     "fact": "This is Lake Como, located in Italy."
@@ -2653,9 +2653,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Lake Como landmark",
     "options": [
       "Italy",
-      "Canada",
-      "France",
-      "Malaysia"
+      "Denmark",
+      "Austria",
+      "Greece"
     ],
     "answer": 0,
     "fact": "Lake Como is located in Italy."
@@ -2667,9 +2667,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Pyramids of Giza landmark",
     "options": [
       "Pyramids of Giza",
-      "Nyhavn",
-      "Meenakshi Temple",
-      "Chichen Itza"
+      "Ngorongoro Crater",
+      "Table Mountain",
+      "Lalibela Rock Hewn Churches"
     ],
     "answer": 0,
     "fact": "This is Pyramids of Giza, located in Egypt."
@@ -2681,9 +2681,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Pyramids of Giza landmark",
     "options": [
       "Egypt",
-      "Chile",
-      "Argentina",
-      "Ethiopia"
+      "Zambia and Zimbabwe",
+      "Kenya",
+      "South Africa"
     ],
     "answer": 0,
     "fact": "Pyramids of Giza is located in Egypt."
@@ -2695,9 +2695,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Great Sphinx of Giza landmark",
     "options": [
       "Great Sphinx of Giza",
-      "Sydney Opera House",
-      "Northern Lights",
-      "Arc de Triomphe"
+      "Victoria Falls",
+      "Boulders Beach",
+      "Serengeti National Park"
     ],
     "answer": 0,
     "fact": "This is Great Sphinx of Giza, located in Egypt."
@@ -2709,9 +2709,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Great Sphinx of Giza landmark",
     "options": [
       "Egypt",
-      "United Arab Emirates",
-      "Switzerland",
-      "China"
+      "Ethiopia",
+      "Tanzania",
+      "Algeria"
     ],
     "answer": 0,
     "fact": "Great Sphinx of Giza is located in Egypt."
@@ -2723,9 +2723,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Abu Simbel Temples landmark",
     "options": [
       "Abu Simbel Temples",
-      "Parthenon",
-      "Tokyo Tower",
-      "Golden Temple"
+      "Lalibela Rock Hewn Churches",
+      "Victoria Falls",
+      "Boulders Beach"
     ],
     "answer": 0,
     "fact": "This is Abu Simbel Temples, located in Egypt."
@@ -2737,9 +2737,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Abu Simbel Temples landmark",
     "options": [
       "Egypt",
-      "Nepal and China",
-      "Jordan",
-      "Belgium"
+      "South Africa",
+      "Ethiopia",
+      "Tanzania"
     ],
     "answer": 0,
     "fact": "Abu Simbel Temples is located in Egypt."
@@ -2751,9 +2751,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Karnak Temple landmark",
     "options": [
       "Karnak Temple",
-      "Mount Rushmore",
-      "Brandenburg Gate",
-      "Salar de Uyuni"
+      "Pyramids of Giza",
+      "Sossusvlei Dunes",
+      "Abu Simbel Temples"
     ],
     "answer": 0,
     "fact": "This is Karnak Temple, located in Egypt."
@@ -2765,9 +2765,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Karnak Temple landmark",
     "options": [
       "Egypt",
-      "Spain",
-      "Poland",
-      "Chile"
+      "Algeria",
+      "Namibia",
+      "Morocco"
     ],
     "answer": 0,
     "fact": "Karnak Temple is located in Egypt."
@@ -2779,9 +2779,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Lalibela Rock Hewn Churches landmark",
     "options": [
       "Lalibela Rock Hewn Churches",
-      "Prambanan Temple",
-      "Panama Canal",
-      "Bran Castle"
+      "Boulders Beach",
+      "Serengeti National Park",
+      "Mount Kilimanjaro"
     ],
     "answer": 0,
     "fact": "This is Lalibela Rock Hewn Churches, located in Ethiopia."
@@ -2793,9 +2793,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Lalibela Rock Hewn Churches landmark",
     "options": [
       "Ethiopia",
-      "Norway",
-      "Singapore",
-      "Italy"
+      "Kenya",
+      "Algeria",
+      "Namibia"
     ],
     "answer": 0,
     "fact": "Lalibela Rock Hewn Churches is located in Ethiopia."
@@ -2807,9 +2807,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Table Mountain landmark",
     "options": [
       "Table Mountain",
-      "Bled Island Church",
-      "Shwedagon Pagoda",
-      "Gyeongbokgung Palace"
+      "Ait Benhaddou",
+      "Great Sphinx of Giza",
+      "Djamaa el Djazair"
     ],
     "answer": 0,
     "fact": "This is Table Mountain, located in South Africa."
@@ -2821,9 +2821,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Table Mountain landmark",
     "options": [
       "South Africa",
-      "Morocco",
-      "Namibia",
-      "Canada"
+      "Egypt",
+      "Zambia and Zimbabwe",
+      "Kenya"
     ],
     "answer": 0,
     "fact": "Table Mountain is located in South Africa."
@@ -2835,9 +2835,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Robben Island landmark",
     "options": [
       "Robben Island",
-      "Great Wall of China",
-      "Schonbrunn Palace",
-      "Terracotta Army"
+      "Mount Kilimanjaro",
+      "Ait Benhaddou",
+      "Great Sphinx of Giza"
     ],
     "answer": 0,
     "fact": "This is Robben Island, located in South Africa."
@@ -2849,9 +2849,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Robben Island landmark",
     "options": [
       "South Africa",
-      "Argentina and Brazil",
-      "Greece",
-      "Nepal and China"
+      "Namibia",
+      "Egypt",
+      "Zambia and Zimbabwe"
     ],
     "answer": 0,
     "fact": "Robben Island is located in South Africa."
@@ -2863,9 +2863,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Victoria Falls landmark",
     "options": [
       "Victoria Falls",
-      "Colosseum",
-      "Machu Picchu",
-      "Giants Causeway"
+      "Lalibela Rock Hewn Churches",
+      "Karnak Temple",
+      "Robben Island"
     ],
     "answer": 0,
     "fact": "This is Victoria Falls, located in Zambia and Zimbabwe."
@@ -2877,9 +2877,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Victoria Falls landmark",
     "options": [
       "Zambia and Zimbabwe",
-      "Venezuela, Brazil and Guyana",
-      "Bolivia",
-      "Egypt"
+      "South Africa",
+      "Morocco",
+      "Tanzania"
     ],
     "answer": 0,
     "fact": "Victoria Falls is located in Zambia and Zimbabwe."
@@ -2891,9 +2891,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Kilimanjaro landmark",
     "options": [
       "Mount Kilimanjaro",
-      "Niagara Falls",
-      "Big Ben",
-      "Sagrada Familia"
+      "Great Sphinx of Giza",
+      "Djamaa el Djazair",
+      "Hassan II Mosque"
     ],
     "answer": 0,
     "fact": "This is Mount Kilimanjaro, located in Tanzania."
@@ -2905,9 +2905,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Kilimanjaro landmark",
     "options": [
       "Tanzania",
-      "South Korea",
-      "Germany",
-      "United Arab Emirates"
+      "Zambia and Zimbabwe",
+      "South Africa",
+      "Morocco"
     ],
     "answer": 0,
     "fact": "Mount Kilimanjaro is located in Tanzania."
@@ -2919,9 +2919,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Serengeti National Park landmark",
     "options": [
       "Serengeti National Park",
-      "Banaue Rice Terraces",
-      "CN Tower",
-      "Sheikh Zayed Grand Mosque"
+      "Mount Kenya",
+      "Table Mountain",
+      "Pyramids of Giza"
     ],
     "answer": 0,
     "fact": "This is Serengeti National Park, located in Tanzania."
@@ -2933,9 +2933,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Serengeti National Park landmark",
     "options": [
       "Tanzania",
-      "Thailand",
-      "Guyana",
-      "Belgium"
+      "Ethiopia",
+      "Kenya",
+      "Algeria"
     ],
     "answer": 0,
     "fact": "Serengeti National Park is located in Tanzania."
@@ -2947,9 +2947,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ngorongoro Crater landmark",
     "options": [
       "Ngorongoro Crater",
-      "Krakow Cloth Hall",
-      "Tokyo Tower",
-      "Hassan II Mosque"
+      "Hassan II Mosque",
+      "Mount Kenya",
+      "Table Mountain"
     ],
     "answer": 0,
     "fact": "This is Ngorongoro Crater, located in Tanzania."
@@ -2961,9 +2961,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ngorongoro Crater landmark",
     "options": [
       "Tanzania",
-      "Romania",
-      "Slovenia",
-      "Chile"
+      "Morocco",
+      "Ethiopia",
+      "Kenya"
     ],
     "answer": 0,
     "fact": "Ngorongoro Crater is located in Tanzania."
@@ -2975,9 +2975,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ait Benhaddou landmark",
     "options": [
       "Ait Benhaddou",
-      "Terracotta Army",
-      "Brandenburg Gate",
-      "Nyhavn"
+      "Mount Kilimanjaro",
+      "Victoria Falls",
+      "Ngorongoro Crater"
     ],
     "answer": 0,
     "fact": "This is Ait Benhaddou, located in Morocco."
@@ -2989,9 +2989,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Ait Benhaddou landmark",
     "options": [
       "Morocco",
-      "Ireland",
-      "Japan",
-      "Spain"
+      "Algeria",
+      "Namibia",
+      "Egypt"
     ],
     "answer": 0,
     "fact": "Ait Benhaddou is located in Morocco."
@@ -3003,9 +3003,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Hassan II Mosque landmark",
     "options": [
       "Hassan II Mosque",
-      "Trevi Fountain",
-      "Panama Canal",
-      "Banaue Rice Terraces"
+      "Table Mountain",
+      "Pyramids of Giza",
+      "Sossusvlei Dunes"
     ],
     "answer": 0,
     "fact": "This is Hassan II Mosque, located in Morocco."
@@ -3017,9 +3017,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Hassan II Mosque landmark",
     "options": [
       "Morocco",
-      "United States",
+      "Tanzania",
       "Algeria",
-      "Canada"
+      "Namibia"
     ],
     "answer": 0,
     "fact": "Hassan II Mosque is located in Morocco."
@@ -3031,9 +3031,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Djamaa el Djazair landmark",
     "options": [
       "Djamaa el Djazair",
-      "Chichen Itza",
-      "St Peters Basilica",
-      "Tulum Ruins"
+      "Abu Simbel Temples",
+      "Serengeti National Park",
+      "Lalibela Rock Hewn Churches"
     ],
     "answer": 0,
     "fact": "This is Djamaa el Djazair, located in Algeria."
@@ -3045,9 +3045,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Djamaa el Djazair landmark",
     "options": [
       "Algeria",
-      "Ecuador",
-      "Vietnam",
-      "Nepal and China"
+      "Egypt",
+      "Zambia and Zimbabwe",
+      "South Africa"
     ],
     "answer": 0,
     "fact": "Djamaa el Djazair is located in Algeria."
@@ -3059,9 +3059,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Boulders Beach landmark",
     "options": [
       "Boulders Beach",
-      "Rani ki Vav",
-      "Statue of Liberty",
-      "Karnak Temple"
+      "Sossusvlei Dunes",
+      "Abu Simbel Temples",
+      "Serengeti National Park"
     ],
     "answer": 0,
     "fact": "This is Boulders Beach, located in South Africa."
@@ -3073,9 +3073,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Boulders Beach landmark",
     "options": [
       "South Africa",
-      "Cambodia",
-      "Mexico",
-      "Morocco"
+      "Namibia",
+      "Egypt",
+      "Zambia and Zimbabwe"
     ],
     "answer": 0,
     "fact": "Boulders Beach is located in South Africa."
@@ -3087,9 +3087,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Kenya landmark",
     "options": [
       "Mount Kenya",
-      "Plitvice Lakes",
-      "Dome of the Rock",
-      "Kiyomizu dera"
+      "Hassan II Mosque",
+      "Ait Benhaddou",
+      "Boulders Beach"
     ],
     "answer": 0,
     "fact": "This is Mount Kenya, located in Kenya."
@@ -3101,9 +3101,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Kenya landmark",
     "options": [
       "Kenya",
-      "Myanmar",
-      "United Kingdom",
-      "United Arab Emirates"
+      "South Africa",
+      "Morocco",
+      "Ethiopia"
     ],
     "answer": 0,
     "fact": "Mount Kenya is located in Kenya."
@@ -3115,9 +3115,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sossusvlei Dunes landmark",
     "options": [
       "Sossusvlei Dunes",
-      "Potala Palace",
-      "Big Ben",
-      "Kinkaku ji"
+      "Serengeti National Park",
+      "Lalibela Rock Hewn Churches",
+      "Karnak Temple"
     ],
     "answer": 0,
     "fact": "This is Sossusvlei Dunes, located in Namibia."
@@ -3129,9 +3129,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sossusvlei Dunes landmark",
     "options": [
       "Namibia",
-      "France",
-      "Colombia",
-      "Norway"
+      "Zambia and Zimbabwe",
+      "South Africa",
+      "Morocco"
     ],
     "answer": 0,
     "fact": "Sossusvlei Dunes is located in Namibia."
@@ -3143,9 +3143,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Statue of Liberty landmark",
     "options": [
       "Statue of Liberty",
-      "Eiffel Tower",
-      "CN Tower",
-      "Golden Gate Bridge"
+      "Chichen Itza",
+      "Yosemite Valley",
+      "Tulum Ruins"
     ],
     "answer": 0,
     "fact": "This is Statue of Liberty, located in United States."
@@ -3157,9 +3157,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Statue of Liberty landmark",
     "options": [
       "United States",
-      "Netherlands",
-      "Denmark",
-      "Venezuela, Brazil and Guyana"
+      "Panama",
+      "Canada and United States",
+      "Canada"
     ],
     "answer": 0,
     "fact": "Statue of Liberty is located in United States."
@@ -3171,9 +3171,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Golden Gate Bridge landmark",
     "options": [
       "Golden Gate Bridge",
-      "Tulum Ruins",
-      "Tokyo Tower",
-      "Colosseum"
+      "White House",
+      "Chichen Itza",
+      "Yosemite Valley"
     ],
     "answer": 0,
     "fact": "This is Golden Gate Bridge, located in United States."
@@ -3185,9 +3185,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Golden Gate Bridge landmark",
     "options": [
       "United States",
-      "South Africa",
-      "Palestine",
-      "Spain"
+      "Panama",
+      "Canada and United States",
+      "Canada"
     ],
     "answer": 0,
     "fact": "Golden Gate Bridge is located in United States."
@@ -3199,9 +3199,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Grand Canyon landmark",
     "options": [
       "Grand Canyon",
-      "Ellora Kailasa Temple",
-      "Ngorongoro Crater",
-      "Charminar"
+      "Statue of Liberty",
+      "Moraine Lake",
+      "Mount Rushmore"
     ],
     "answer": 0,
     "fact": "This is Grand Canyon, located in United States."
@@ -3213,9 +3213,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Grand Canyon landmark",
     "options": [
       "United States",
-      "Cuba",
-      "Croatia",
-      "Argentina and Brazil"
+      "Panama",
+      "Canada and United States",
+      "Mexico"
     ],
     "answer": 0,
     "fact": "Grand Canyon is located in United States."
@@ -3227,9 +3227,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Rushmore landmark",
     "options": [
       "Mount Rushmore",
-      "Giants Causeway",
-      "Mysore Palace",
-      "Antelope Canyon"
+      "Yosemite Valley",
+      "Tulum Ruins",
+      "Teotihuacan Pyramid of the Sun"
     ],
     "answer": 0,
     "fact": "This is Mount Rushmore, located in United States."
@@ -3241,9 +3241,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Rushmore landmark",
     "options": [
       "United States",
-      "Venezuela",
-      "Indonesia",
-      "Nepal and China"
+      "Panama",
+      "Canada and United States",
+      "Cuba"
     ],
     "answer": 0,
     "fact": "Mount Rushmore is located in United States."
@@ -3255,9 +3255,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "White House landmark",
     "options": [
       "White House",
-      "Qutub Minar",
-      "St Peters Basilica",
-      "Park Guell"
+      "Old Havana Capitol",
+      "Golden Gate Bridge",
+      "Banff Lake Louise"
     ],
     "answer": 0,
     "fact": "This is White House, located in United States."
@@ -3269,9 +3269,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "White House landmark",
     "options": [
       "United States",
-      "Turkey",
+      "Panama",
       "Canada and United States",
-      "Tanzania"
+      "Cuba"
     ],
     "answer": 0,
     "fact": "White House is located in United States."
@@ -3283,9 +3283,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Niagara Falls landmark",
     "options": [
       "Niagara Falls",
-      "Arc de Triomphe",
-      "Sossusvlei Dunes",
-      "Golden Bridge Da Nang"
+      "Teotihuacan Pyramid of the Sun",
+      "Old Havana Capitol",
+      "Golden Gate Bridge"
     ],
     "answer": 0,
     "fact": "This is Niagara Falls, located in Canada and United States."
@@ -3297,9 +3297,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Niagara Falls landmark",
     "options": [
       "Canada and United States",
-      "Nepal",
-      "Vatican City",
-      "South Korea"
+      "Cuba",
+      "United States",
+      "Mexico"
     ],
     "answer": 0,
     "fact": "Niagara Falls is located in Canada and United States."
@@ -3311,9 +3311,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "CN Tower landmark",
     "options": [
       "CN Tower",
-      "Old Havana Capitol",
-      "Dome of the Rock",
-      "Uyuni Train Cemetery"
+      "White House",
+      "Mount Rushmore",
+      "Chichen Itza"
     ],
     "answer": 0,
     "fact": "This is CN Tower, located in Canada."
@@ -3325,9 +3325,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "CN Tower landmark",
     "options": [
       "Canada",
-      "Czech Republic",
-      "Argentina",
-      "Norway"
+      "Panama",
+      "Mexico",
+      "Canada and United States"
     ],
     "answer": 0,
     "fact": "CN Tower is located in Canada."
@@ -3339,9 +3339,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Chichen Itza landmark",
     "options": [
       "Chichen Itza",
-      "Charminar",
-      "Lalibela Rock Hewn Churches",
-      "Bled Island Church"
+      "Golden Gate Bridge",
+      "Banff Lake Louise",
+      "Panama Canal"
     ],
     "answer": 0,
     "fact": "This is Chichen Itza, located in Mexico."
@@ -3353,9 +3353,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Chichen Itza landmark",
     "options": [
       "Mexico",
-      "Hungary",
-      "Switzerland",
-      "Venezuela, Brazil and Guyana"
+      "Panama",
+      "Cuba",
+      "Canada and United States"
     ],
     "answer": 0,
     "fact": "Chichen Itza is located in Mexico."
@@ -3367,9 +3367,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Teotihuacan Pyramid of the Sun landmark",
     "options": [
       "Teotihuacan Pyramid of the Sun",
-      "Lake Como",
-      "Taj Mahal",
-      "Arc de Triomphe"
+      "Antelope Canyon",
+      "Niagara Falls",
+      "Statue of Liberty"
     ],
     "answer": 0,
     "fact": "This is Teotihuacan Pyramid of the Sun, located in Mexico."
@@ -3381,9 +3381,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Teotihuacan Pyramid of the Sun landmark",
     "options": [
       "Mexico",
-      "Algeria",
-      "Australia",
-      "Romania"
+      "Panama",
+      "Canada and United States",
+      "Canada"
     ],
     "answer": 0,
     "fact": "Teotihuacan Pyramid of the Sun is located in Mexico."
@@ -3395,9 +3395,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Tulum Ruins landmark",
     "options": [
       "Tulum Ruins",
-      "Gateway of India",
-      "Boracay White Beach",
-      "Golden Temple"
+      "Panama Canal",
+      "Antelope Canyon",
+      "Niagara Falls"
     ],
     "answer": 0,
     "fact": "This is Tulum Ruins, located in Mexico."
@@ -3409,9 +3409,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Tulum Ruins landmark",
     "options": [
       "Mexico",
-      "Brazil",
-      "Poland",
-      "Argentina and Brazil"
+      "Panama",
+      "United States",
+      "Canada and United States"
     ],
     "answer": 0,
     "fact": "Tulum Ruins is located in Mexico."
@@ -3423,9 +3423,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Palace of Fine Arts landmark",
     "options": [
       "Palace of Fine Arts",
-      "Stonehenge",
-      "Ngorongoro Crater",
-      "Salar de Uyuni"
+      "Teotihuacan Pyramid of the Sun",
+      "Chichen Itza",
+      "Old Havana Capitol"
     ],
     "answer": 0,
     "fact": "This is Palace of Fine Arts, located in Mexico."
@@ -3437,9 +3437,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Palace of Fine Arts landmark",
     "options": [
       "Mexico",
-      "China",
-      "Singapore",
-      "Thailand"
+      "Panama",
+      "Cuba",
+      "United States"
     ],
     "answer": 0,
     "fact": "Palace of Fine Arts is located in Mexico."
@@ -3451,9 +3451,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Old Havana Capitol landmark",
     "options": [
       "Old Havana Capitol",
-      "Banff Lake Louise",
-      "Mysore Palace",
-      "Bran Castle"
+      "Niagara Falls",
+      "Statue of Liberty",
+      "Moraine Lake"
     ],
     "answer": 0,
     "fact": "This is Old Havana Capitol, located in Cuba."
@@ -3465,9 +3465,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Old Havana Capitol landmark",
     "options": [
       "Cuba",
-      "Malaysia",
-      "Kenya",
-      "Tanzania"
+      "Panama",
+      "Canada",
+      "United States"
     ],
     "answer": 0,
     "fact": "Old Havana Capitol is located in Cuba."
@@ -3479,9 +3479,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Panama Canal landmark",
     "options": [
       "Panama Canal",
-      "Brihadeeswarar Temple",
-      "St Peters Basilica",
-      "Gyeongbokgung Palace"
+      "Grand Canyon",
+      "Tulum Ruins",
+      "White House"
     ],
     "answer": 0,
     "fact": "This is Panama Canal, located in Panama."
@@ -3493,9 +3493,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Panama Canal landmark",
     "options": [
       "Panama",
-      "Italy",
-      "Greece",
-      "South Korea"
+      "Cuba",
+      "Canada and United States",
+      "Mexico"
     ],
     "answer": 0,
     "fact": "Panama Canal is located in Panama."
@@ -3507,9 +3507,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Banff Lake Louise landmark",
     "options": [
       "Banff Lake Louise",
-      "Great Sphinx of Giza",
-      "Sydney Harbour Bridge",
-      "Terracotta Army"
+      "Moraine Lake",
+      "Grand Canyon",
+      "Tulum Ruins"
     ],
     "answer": 0,
     "fact": "This is Banff Lake Louise, located in Canada."
@@ -3521,9 +3521,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Banff Lake Louise landmark",
     "options": [
       "Canada",
-      "Belgium",
       "Panama",
-      "Ireland"
+      "United States",
+      "Mexico"
     ],
     "answer": 0,
     "fact": "Banff Lake Louise is located in Canada."
@@ -3535,9 +3535,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Yosemite Valley landmark",
     "options": [
       "Yosemite Valley",
-      "Golden Temple",
-      "Ha Long Bay",
-      "Giants Causeway"
+      "Panama Canal",
+      "Old Havana Capitol",
+      "Antelope Canyon"
     ],
     "answer": 0,
     "fact": "This is Yosemite Valley, located in United States."
@@ -3549,9 +3549,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Yosemite Valley landmark",
     "options": [
       "United States",
-      "Egypt",
-      "Germany",
-      "Venezuela, Brazil and Guyana"
+      "Panama",
+      "Cuba",
+      "Canada and United States"
     ],
     "answer": 0,
     "fact": "Yosemite Valley is located in United States."
@@ -3563,9 +3563,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Antelope Canyon landmark",
     "options": [
       "Antelope Canyon",
-      "Tower Bridge",
-      "Lalibela Rock Hewn Churches",
-      "Brihadeeswarar Temple"
+      "Tulum Ruins",
+      "White House",
+      "Mount Rushmore"
     ],
     "answer": 0,
     "fact": "This is Antelope Canyon, located in United States."
@@ -3577,9 +3577,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Antelope Canyon landmark",
     "options": [
       "United States",
-      "Canada",
-      "Guyana",
-      "Romania"
+      "Panama",
+      "Cuba",
+      "Canada"
     ],
     "answer": 0,
     "fact": "Antelope Canyon is located in United States."
@@ -3591,9 +3591,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Moraine Lake landmark",
     "options": [
       "Moraine Lake",
-      "Yosemite Valley",
-      "Taj Mahal",
-      "Sheikh Zayed Grand Mosque"
+      "CN Tower",
+      "Banff Lake Louise",
+      "Teotihuacan Pyramid of the Sun"
     ],
     "answer": 0,
     "fact": "This is Moraine Lake, located in Canada."
@@ -3605,9 +3605,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Moraine Lake landmark",
     "options": [
       "Canada",
-      "Chile",
-      "Slovenia",
-      "Ecuador"
+      "Panama",
+      "Cuba",
+      "Canada and United States"
     ],
     "answer": 0,
     "fact": "Moraine Lake is located in Canada."
@@ -3619,9 +3619,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Iguazu Falls landmark",
     "options": [
       "Iguazu Falls",
-      "Mount Everest",
-      "Boracay White Beach",
-      "Ait Benhaddou"
+      "Kaieteur Falls",
+      "Galapagos Islands",
+      "Sugarloaf Mountain"
     ],
     "answer": 0,
     "fact": "This is Iguazu Falls, located in Argentina and Brazil."
@@ -3633,9 +3633,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Iguazu Falls landmark",
     "options": [
       "Argentina and Brazil",
-      "United Arab Emirates",
-      "Japan",
-      "Thailand"
+      "Ecuador",
+      "Bolivia",
+      "Brazil"
     ],
     "answer": 0,
     "fact": "Iguazu Falls is located in Argentina and Brazil."
@@ -3647,9 +3647,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Machu Picchu landmark",
     "options": [
       "Machu Picchu",
-      "Karnak Temple",
-      "Cartagena Walled City",
-      "Nyhavn"
+      "Sugarloaf Mountain",
+      "Angel Falls",
+      "Uyuni Train Cemetery"
     ],
     "answer": 0,
     "fact": "This is Machu Picchu, located in Peru."
@@ -3661,9 +3661,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Machu Picchu landmark",
     "options": [
       "Peru",
-      "Nepal and China",
-      "Morocco",
-      "Namibia"
+      "Guyana",
+      "Venezuela",
+      "Bolivia"
     ],
     "answer": 0,
     "fact": "Machu Picchu is located in Peru."
@@ -3675,9 +3675,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Christ the Redeemer landmark",
     "options": [
       "Christ the Redeemer",
-      "Angkor Wat",
-      "Pashupatinath Temple",
-      "Banaue Rice Terraces"
+      "Easter Island Moai",
+      "Machu Picchu",
+      "Uyuni Train Cemetery"
     ],
     "answer": 0,
     "fact": "This is Christ the Redeemer, located in Brazil."
@@ -3689,9 +3689,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Christ the Redeemer landmark",
     "options": [
       "Brazil",
-      "Spain",
-      "Philippines",
-      "South Korea"
+      "Ecuador",
+      "Bolivia",
+      "Argentina"
     ],
     "answer": 0,
     "fact": "Christ the Redeemer is located in Brazil."
@@ -3703,9 +3703,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sugarloaf Mountain landmark",
     "options": [
       "Sugarloaf Mountain",
-      "Sagrada Familia",
-      "Geirangerfjord",
-      "Teotihuacan Pyramid of the Sun"
+      "Mount Roraima",
+      "Torres del Paine",
+      "Uyuni Train Cemetery"
     ],
     "answer": 0,
     "fact": "This is Sugarloaf Mountain, located in Brazil."
@@ -3717,9 +3717,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sugarloaf Mountain landmark",
     "options": [
       "Brazil",
-      "Norway",
-      "Canada",
-      "Ireland"
+      "Guyana",
+      "Venezuela",
+      "Peru"
     ],
     "answer": 0,
     "fact": "Sugarloaf Mountain is located in Brazil."
@@ -3731,9 +3731,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Salar de Uyuni landmark",
     "options": [
       "Salar de Uyuni",
-      "Moraine Lake",
-      "Sydney Harbour Bridge",
-      "Karnak Temple"
+      "Galapagos Islands",
+      "Uyuni Train Cemetery",
+      "Easter Island Moai"
     ],
     "answer": 0,
     "fact": "This is Salar de Uyuni, located in Bolivia."
@@ -3745,9 +3745,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Salar de Uyuni landmark",
     "options": [
       "Bolivia",
-      "Tanzania",
-      "United Kingdom",
-      "Cambodia"
+      "Ecuador",
+      "Argentina and Brazil",
+      "Brazil"
     ],
     "answer": 0,
     "fact": "Salar de Uyuni is located in Bolivia."
@@ -3759,9 +3759,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Galapagos Islands landmark",
     "options": [
       "Galapagos Islands",
-      "Boudhanath Stupa",
-      "Ha Long Bay",
-      "Kiyomizu dera"
+      "Angel Falls",
+      "Easter Island Moai",
+      "Sugarloaf Mountain"
     ],
     "answer": 0,
     "fact": "This is Galapagos Islands, located in Ecuador."
@@ -3773,9 +3773,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Galapagos Islands landmark",
     "options": [
       "Ecuador",
-      "Panama",
-      "Colombia",
-      "Romania"
+      "Guyana",
+      "Venezuela",
+      "Argentina and Brazil"
     ],
     "answer": 0,
     "fact": "Galapagos Islands is located in Ecuador."
@@ -3787,9 +3787,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Perito Moreno Glacier landmark",
     "options": [
       "Perito Moreno Glacier",
-      "Table Mountain",
-      "Lalibela Rock Hewn Churches",
-      "Galapagos Islands"
+      "Machu Picchu",
+      "Mount Roraima",
+      "Easter Island Moai"
     ],
     "answer": 0,
     "fact": "This is Perito Moreno Glacier, located in Argentina."
@@ -3801,9 +3801,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Perito Moreno Glacier landmark",
     "options": [
       "Argentina",
-      "Venezuela, Brazil and Guyana",
-      "Denmark",
-      "Bolivia"
+      "Bolivia",
+      "Argentina and Brazil",
+      "Venezuela, Brazil and Guyana"
     ],
     "answer": 0,
     "fact": "Perito Moreno Glacier is located in Argentina."
@@ -3815,9 +3815,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Torres del Paine landmark",
     "options": [
       "Torres del Paine",
-      "Petra Treasury",
-      "Victoria Memorial",
-      "Statue of Liberty"
+      "Perito Moreno Glacier",
+      "Salar de Uyuni",
+      "Sugarloaf Mountain"
     ],
     "answer": 0,
     "fact": "This is Torres del Paine, located in Chile."
@@ -3829,9 +3829,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Torres del Paine landmark",
     "options": [
       "Chile",
-      "South Korea",
-      "India",
-      "France"
+      "Guyana",
+      "Venezuela",
+      "Peru"
     ],
     "answer": 0,
     "fact": "Torres del Paine is located in Chile."
@@ -3843,9 +3843,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Easter Island Moai landmark",
     "options": [
       "Easter Island Moai",
-      "Park Guell",
-      "Buda Castle",
-      "Colosseum"
+      "Uyuni Train Cemetery",
+      "Angel Falls",
+      "Sugarloaf Mountain"
     ],
     "answer": 0,
     "fact": "This is Easter Island Moai, located in Chile."
@@ -3857,9 +3857,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Easter Island Moai landmark",
     "options": [
       "Chile",
-      "Thailand",
-      "Croatia",
-      "Namibia"
+      "Bolivia",
+      "Argentina and Brazil",
+      "Brazil"
     ],
     "answer": 0,
     "fact": "Easter Island Moai is located in Chile."
@@ -3871,9 +3871,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Cartagena Walled City landmark",
     "options": [
       "Cartagena Walled City",
+      "Sugarloaf Mountain",
       "Machu Picchu",
-      "Easter Island Moai",
-      "Charminar"
+      "Iguazu Falls"
     ],
     "answer": 0,
     "fact": "This is Cartagena Walled City, located in Colombia."
@@ -3885,9 +3885,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Cartagena Walled City landmark",
     "options": [
       "Colombia",
-      "Romania",
-      "Indonesia",
-      "Myanmar"
+      "Guyana",
+      "Brazil",
+      "Argentina"
     ],
     "answer": 0,
     "fact": "Cartagena Walled City is located in Colombia."
@@ -3899,9 +3899,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Angel Falls landmark",
     "options": [
       "Angel Falls",
-      "Kiyomizu dera",
-      "Pashupatinath Temple",
-      "Yosemite Valley"
+      "Easter Island Moai",
+      "Perito Moreno Glacier",
+      "Mount Roraima"
     ],
     "answer": 0,
     "fact": "This is Angel Falls, located in Venezuela."
@@ -3913,9 +3913,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Angel Falls landmark",
     "options": [
       "Venezuela",
-      "Ireland",
-      "United States",
-      "South Africa"
+      "Bolivia",
+      "Chile",
+      "Venezuela, Brazil and Guyana"
     ],
     "answer": 0,
     "fact": "Angel Falls is located in Venezuela."
@@ -3927,9 +3927,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Kaieteur Falls landmark",
     "options": [
       "Kaieteur Falls",
-      "Victoria Falls",
-      "Geirangerfjord",
-      "Park Guell"
+      "Iguazu Falls",
+      "Uyuni Train Cemetery",
+      "Mount Roraima"
     ],
     "answer": 0,
     "fact": "This is Kaieteur Falls, located in Guyana."
@@ -3941,9 +3941,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Kaieteur Falls landmark",
     "options": [
       "Guyana",
-      "Namibia",
-      "Vatican City",
-      "Cambodia"
+      "Venezuela",
+      "Brazil",
+      "Peru"
     ],
     "answer": 0,
     "fact": "Kaieteur Falls is located in Guyana."
@@ -3955,9 +3955,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Uyuni Train Cemetery landmark",
     "options": [
       "Uyuni Train Cemetery",
-      "Sheikh Zayed Grand Mosque",
-      "Lotus Temple",
-      "Golden Bridge Da Nang"
+      "Galapagos Islands",
+      "Sugarloaf Mountain",
+      "Mount Roraima"
     ],
     "answer": 0,
     "fact": "This is Uyuni Train Cemetery, located in Bolivia."
@@ -3970,8 +3970,8 @@ export const landmarkAdventureQuestionBank = [
     "options": [
       "Bolivia",
       "Ecuador",
-      "Argentina",
-      "Netherlands"
+      "Colombia",
+      "Venezuela"
     ],
     "answer": 0,
     "fact": "Uyuni Train Cemetery is located in Bolivia."
@@ -3983,9 +3983,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Roraima landmark",
     "options": [
       "Mount Roraima",
-      "Neuschwanstein Castle",
-      "Matterhorn",
-      "Kaieteur Falls"
+      "Angel Falls",
+      "Easter Island Moai",
+      "Cartagena Walled City"
     ],
     "answer": 0,
     "fact": "This is Mount Roraima, located in Venezuela, Brazil and Guyana."
@@ -3997,9 +3997,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Mount Roraima landmark",
     "options": [
       "Venezuela, Brazil and Guyana",
-      "Cambodia",
-      "Russia",
-      "Bolivia"
+      "Venezuela",
+      "Brazil",
+      "Guyana"
     ],
     "answer": 0,
     "fact": "Mount Roraima is located in Venezuela, Brazil and Guyana."
@@ -4011,9 +4011,7 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sydney Opera House landmark",
     "options": [
       "Sydney Opera House",
-      "Sugarloaf Mountain",
-      "Christ the Redeemer",
-      "Bled Island Church"
+      "Sydney Harbour Bridge"
     ],
     "answer": 0,
     "fact": "This is Sydney Opera House, located in Australia."
@@ -4025,9 +4023,8 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sydney Opera House landmark",
     "options": [
       "Australia",
-      "Myanmar",
-      "Venezuela, Brazil and Guyana",
-      "France"
+      "French Polynesia",
+      "New Zealand"
     ],
     "answer": 0,
     "fact": "Sydney Opera House is located in Australia."
@@ -4039,9 +4036,7 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sydney Harbour Bridge landmark",
     "options": [
       "Sydney Harbour Bridge",
-      "Library of Celsus",
-      "Victoria Memorial",
-      "Arc de Triomphe"
+      "Sydney Opera House"
     ],
     "answer": 0,
     "fact": "This is Sydney Harbour Bridge, located in Australia."
@@ -4053,9 +4048,8 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sydney Harbour Bridge landmark",
     "options": [
       "Australia",
-      "France",
-      "Poland",
-      "Mexico"
+      "New Zealand",
+      "French Polynesia"
     ],
     "answer": 0,
     "fact": "Sydney Harbour Bridge is located in Australia."
