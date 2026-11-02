@@ -207,7 +207,7 @@ export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: {
    <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
     <button onClick={backToHub} className="rounded-full border border-white/50 bg-gradient-to-r from-white/25 to-white/10 px-5 py-2.5 text-sm font-black text-white shadow-lg backdrop-blur transition hover:scale-[1.03] hover:bg-white/25">← Back to Quiz World</button>
     <div className="flex flex-wrap items-center gap-2">
-     <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{isAdmin?"ADMIN PREVIEW":isSubscribed?"SUBSCRIBER":`${quota??"…"} ${isSubscribed||isAdmin?"questions left today":"free questions left"}`}</span>
+     <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{!quotaReady?"Checking quota…":`${quota??0} / ${isAdmin||isSubscribed?10:3} ${isAdmin||isSubscribed?"plays left today":"free trials left"}`}</span>
      <button onClick={()=>setSoundOn(v=>!v)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-extrabold text-white">{soundOn?"🔊 Sound on":"🔇 Sound off"}</button>
     </div>
    </div>
