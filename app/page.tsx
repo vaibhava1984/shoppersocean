@@ -51,7 +51,13 @@ export default async function LandingPage() {
         />
       </div>
 
-      {!isAdmin && <section className="relative overflow-hidden border-y border-blue-100 bg-gradient-to-r from-white via-blue-50 to-cyan-50 py-10 sm:py-12">
+      <HomeActivityZones userId={user?.id ?? null} />
+
+      <div><AuthorApplicationBanner /></div>
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8"><TestimonialSection /></div>
+      </section>
+      <section className="relative overflow-hidden border-y border-blue-100 bg-gradient-to-r from-white via-blue-50 to-cyan-50 py-10 sm:py-12">
         <div className="container mx-auto flex flex-col items-center justify-between gap-5 px-4 text-center sm:flex-row sm:px-6 sm:text-left lg:px-8">
           <div className="max-w-2xl">
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-blue-700">A little more to discover</p>
@@ -60,14 +66,8 @@ export default async function LandingPage() {
           </div>
           <Link href="/read-ebooks" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-blue-700 px-6 py-3 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Explore Flipbooks <span className="ml-2" aria-hidden="true">→</span></Link>
         </div>
-      </section>}
-
-      <HomeActivityZones userId={user?.id ?? null} />
-
-      <div><AuthorApplicationBanner /></div>
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8"><TestimonialSection /></div>
       </section>
+
       <section className="py-20 bg-white"><ContactForm user={user} /></section>
       <Footer />
     </div>
