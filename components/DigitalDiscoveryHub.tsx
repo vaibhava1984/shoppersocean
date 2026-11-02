@@ -7,6 +7,7 @@ import Link from "next/link";
 import { internetQuestionBank } from "@/components/internetQuestionBank";
 import { artificialIntelligenceQuestionBank } from "@/components/artificialIntelligenceQuestionBank";
 import { cyberDetectiveQuestionBank } from "@/components/cyberDetectiveQuestionBank";
+import { technologyThroughTimeQuestionBank } from "@/components/technologyThroughTimeQuestionBank";
 
 type Question = { id:string; q:string; options:string[]; answer:number; fact:string };
 type Area = { id:string; type:string; icon:string; title:string; intro:string; tone:string; questions:Question[] };
@@ -51,7 +52,7 @@ const areas: Area[] = [
 {id:"cy-09",q:"Why are software updates important?",options:["They can fix security weaknesses","They always delete your photos","They reveal your password","They turn off encryption"],answer:0,fact:"Updates often patch vulnerabilities that attackers could otherwise exploit."},
 {id:"cy-10",q:"You think an account has been compromised. What should you do first?",options:["Ignore all alerts","Use the official service to secure the account and change its password","Post your login details","Delete your device backups"],answer:1,fact:"Secure the account from a trusted device, revoke unknown sessions, enable MFA and contact the provider."}
 ]},
-{ id:"technology-history",type:"technology-history",icon:"🕰️",title:"Technology Through Time",intro:"Trace the inventions that transformed everyday life.",tone:"from-amber-500 to-orange-600",questions:[
+{ id:"technology-history",type:"technology-history",icon:"🕰️",title:"Technology Through Time",intro:"Trace the inventions that transformed everyday life.",tone:"from-amber-500 to-orange-600",questions:[...technologyThroughTimeQuestionBank,
 {id:"th-01",q:"Which invention made it possible to reproduce books efficiently in large numbers in Europe?",options:["Movable-type printing press","Steam locomotive","Telephone","Television"],answer:0,fact:"Gutenberg's press helped make printed books more widely available in 15th-century Europe."},
 {id:"th-02",q:"Who is widely credited with inventing the practical telephone?",options:["Alexander Graham Bell","Isaac Newton","Marie Curie","Charles Darwin"],answer:0,fact:"Bell received a US patent for the telephone in 1876; the history includes several contributors."},
 {id:"th-03",q:"Which energy source powered many early industrial steam engines?",options:["Coal","Wind from fans","Batteries","Solar cells"],answer:0,fact:"Coal-fired steam engines powered factories, mines and railways during the Industrial Revolution."},
