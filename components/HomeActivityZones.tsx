@@ -27,6 +27,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const activeZoneRef = useRef<number | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
+  const gameTargetRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const handleMobileBack = () => { if (activeZoneRef.current !== null) window.location.replace("/"); };
     window.addEventListener("popstate", handleMobileBack);
@@ -45,7 +46,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   useEffect(() => {
     if (activeZone === null) return;
     const frame = window.requestAnimationFrame(() => {
-      const target = activityTargetRef.current;
+      const target = activeQuizGame ? (gameTargetRef.current ?? activityTargetRef.current) : activityTargetRef.current;
       if (!target) return;
       const top = target.getBoundingClientRect().top + window.scrollY - 88;
       window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
@@ -137,7 +138,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                     </div>
                   </>
                 ) : (
-                  <div ref={activityTargetRef}>
+                  <div ref={gameTargetRef}>
                     {activeQuizGame==="word" && <EntertainmentHub key="word" userId={userId} visibleGroupIds={["word-playground"]} initialGroupId="word-playground" initialGame="hidden" autoStart onExit={()=>setActiveQuizGame(null)} />}
                     {activeQuizGame==="brain" && <EntertainmentHub key="brain" userId={userId} visibleGroupIds={["brain-logic"]} initialGroupId="brain-logic" initialGame="sequence" autoStart onExit={()=>setActiveQuizGame(null)} />}
                     {activeQuizGame==="riddle" && <EntertainmentHub key="riddle" userId={userId} visibleGroupIds={["riddle-corner"]} initialGroupId="riddle-corner" initialGame="riddle" autoStart onExit={()=>setActiveQuizGame(null)} />}
