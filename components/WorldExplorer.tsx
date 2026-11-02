@@ -1,5 +1,6 @@
 "use client";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
+import { geographyQuestQuestionBank } from "@/components/geographyQuestQuestionBank";
 
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
@@ -11,6 +12,7 @@ type Game = { id: string; type: string; icon: string; title: string; subtitle: s
 // responsive WebP/flag assets and are requested only when their question is shown.
 const games: Game[] = [
   { id: "geo", type: "geography-quest", icon: "🧭", title: "The Geography Quest", subtitle: "Explore countries, flags and natural wonders.", tone: "from-emerald-500 via-teal-600 to-cyan-800", questions: [
+    ...geographyQuestQuestionBank,
     { id: "we-gq-01", q: "Which country does this flag belong to?", image: "https://flagcdn.com/w320/jp.png", alt: "", options: ["China", "Japan", "South Korea", "Thailand"], answer: 1, fact: "The white field and red sun disc identify Japan's national flag." },
     { id: "we-gq-02", q: "Which continent is home to this famous desert landscape?", image: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=640&auto=format&fit=crop&q=60", alt: "", options: ["Asia", "Africa", "South America", "Europe"], answer: 1, fact: "The Sahara is the world's largest hot desert and lies in northern Africa." },
     { id: "we-gq-03", q: "Identify the country shown by this flag.", image: "https://flagcdn.com/w320/br.png", alt: "", options: ["Portugal", "Brazil", "Argentina", "Mexico"], answer: 1, fact: "The green field, yellow diamond and blue globe belong to Brazil." },
