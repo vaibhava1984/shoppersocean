@@ -190,5 +190,5 @@ export default function WorldExplorer({ userId, initialGameId, onExit }: { userI
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="text-xs font-semibold text-slate-500">{!reserved ? "Preparing your discovery…" : choice === null ? "Observe, identify or skip this question." : "Answer recorded · Next discovery in 5 seconds"}</span><button disabled={!reserved || choice !== null || !quotaReady || noQuota || noDaily} onClick={() => record(true, null)} className="rounded-xl border border-amber-300 bg-gradient-to-r from-amber-400 to-orange-500 px-5 py-2.5 text-sm font-black text-slate-950 shadow-md transition hover:scale-[1.03] disabled:opacity-50">⏭ Skip question</button></div>
       {message && <div aria-live="polite" className="mt-4 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">{message}</div>}
     </div>}
-  <GameQuotaPopup open={quotaReady && quota===0 && !isAdmin} isSubscribed={isSubscribed} resetKey={active?.id??''} /></div>;
+  <GameQuotaPopup open={(noQuota || (quotaReady && quota===0)) && !isAdmin} isSubscribed={isSubscribed} resetKey={active?.id??''} /></div>;
 }
