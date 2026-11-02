@@ -36,7 +36,7 @@ export default function SnakesLaddersGame({onStart}:Props){
  const reset=()=>{posRef.current=[0,0];turnRef.current=0;startedRef.current=false;setPos([0,0]);setPlayerTurn(0);setFace(1);setLastRoll(0);setRolling(false);setBusy(false);setWinner(-1);setStarted(false);setMessage("Tap the golden dice. Roll a six to enter the jungle trail!");};
  const cells=Array.from({length:100},(_,i)=>{const r=Math.floor(i/10),c=i%10;return r%2===0?100-r*10-c:91-r*10+c;});
  return <section className="mx-auto w-full max-w-5xl overflow-hidden rounded-[30px] border border-amber-300/50 bg-[#10251d] p-3 text-white shadow-2xl sm:p-6">
- <style>{\`
+ <style>{`
  @keyframes jungleGlow{0%,100%{box-shadow:0 0 12px #e7b95b55}50%{box-shadow:0 0 28px #f6d77caa}}
  @keyframes diceSpin{0%{transform:rotateX(0) rotateY(0) translateY(0)}30%{transform:rotateX(170deg) rotateY(130deg) translateY(-23px)}65%{transform:rotateX(310deg) rotateY(270deg) translateY(-8px)}100%{transform:rotateX(360deg) rotateY(360deg) translateY(0)}}
  @keyframes tokenFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
@@ -44,7 +44,7 @@ export default function SnakesLaddersGame({onStart}:Props){
  .jungle-cell{position:relative;aspect-ratio:1;min-width:0;display:flex;align-items:center;justify-content:center;border:1px solid #70532d55;color:#263b2b;font-size:clamp(8px,2.15vw,15px);font-weight:950;text-shadow:0 1px 0 #fff9}
  .jungle-cell:nth-child(4n){background:linear-gradient(145deg,#f7e7bd,#d8bd81)}.jungle-cell:nth-child(4n+1){background:linear-gradient(145deg,#e8edc8,#a8bd86)}.jungle-cell:nth-child(4n+2){background:linear-gradient(145deg,#f5dfaa,#c9a86b)}.jungle-cell:nth-child(4n+3){background:linear-gradient(145deg,#d9e5b8,#9caf79)}
  .jungle-token{animation:tokenFloat 1s ease-in-out infinite}
- \`}</style>
+ `}</style>
  <header className="mb-4 flex flex-wrap items-center justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.38em] text-[#e9c16e]">The premium jungle edition</p><h2 className="font-serif text-2xl font-black tracking-wide text-[#fff0c5] sm:text-4xl">Snakes <span className="text-[#e8bd65]">&amp;</span> Ladders</h2><p className="mt-1 text-xs text-emerald-100/65">A royal race through the enchanted forest</p></div><div className="rounded-full border border-[#d9b45d]/50 bg-[#d9b45d]/10 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-[#ffe8a8]">2 Players · 100 Squares</div></header>
  <div className="relative rounded-[22px] border-[7px] border-[#8a5a2b] bg-gradient-to-br from-[#f6e2ae] via-[#c9a66c] to-[#6d4928] p-[5px] shadow-[inset_0_0_0_2px_#f8d98b,inset_0_0_28px_#38210e,0_12px_24px_#0009]">
  <div className="relative overflow-hidden rounded-[12px] border border-[#f5d68c] shadow-inner"><div className="grid grid-cols-10">{cells.map(n=><div key={n} className="jungle-cell"><span className="absolute left-1 top-0.5 z-[2] text-[7px] opacity-70 sm:text-[9px]">{n}</span>{n===1&&<span className="text-base sm:text-2xl">🏕️</span>}{n===100&&<span className="text-base sm:text-2xl">👑</span>}{positions.map((p,k)=>p===n?<span key={k} className="jungle-token relative z-20 -mx-1 text-base drop-shadow-xl sm:text-2xl">{k===0?"🔴":"🔵"}</span>:null)}</div>)}</div>
