@@ -1,5 +1,6 @@
 "use client";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
+import { worldRecordsQuestionBank } from "@/components/worldRecordsQuestionBank";
 
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
@@ -7,7 +8,7 @@ import GameQuotaPopup from "@/components/GameQuotaPopup";
 type RecordQuestion = { id: string; category: string; question: string; options: string[]; answer: number; fact: string };
 
 // Curated record facts. Records that can change are anchored to the stated date or category.
-const bank: RecordQuestion[] = [
+const starterBank: RecordQuestion[] = [
 {id:"wr-001",category:"Mountains",question:"Which mountain is the highest on Earth above sea level?",options:["K2","Mount Everest","Kangchenjunga","Lhotse"],answer:1,fact:"Everest reaches 8,848.86 m above sea level, according to the 2020 Nepal–China survey."},
 {id:"wr-002",category:"Mountains",question:"Which mountain is tallest when measured from its submarine base to its summit?",options:["Mauna Kea","Mount Everest","Denali","Kilimanjaro"],answer:0,fact:"Mauna Kea rises about 10,205 m from its submarine base to its summit."},
 {id:"wr-003",category:"Mountains",question:"Which peak is farthest from the centre of the Earth?",options:["Mount Everest","Aconcagua","Chimborazo","Mont Blanc"],answer:2,fact:"Chimborazo's equatorial location places its summit farther from Earth's centre than Everest's."},
@@ -59,6 +60,8 @@ const bank: RecordQuestion[] = [
 {id:"wr-049",category:"Transport",question:"Which train service is famous for setting the record for the fastest conventional steel-wheel train test run at 574.8 km/h?",options:["Japanese Shinkansen","French TGV","German ICE","Chinese CRH"],answer:1,fact:"A modified French TGV set the 574.8 km/h steel-wheel rail speed record in 2007."},
 {id:"wr-050",category:"Animals",question:"Which whale species is known for the longest annual migration among mammals?",options:["Humpback whale","Gray whale","Blue whale","Sperm whale"],answer:1,fact:"Gray whales make exceptionally long annual migrations between Arctic feeding grounds and breeding lagoons in Baja California."}
 ];
+
+const bank: RecordQuestion[] = [...worldRecordsQuestionBank, ...starterBank];
 
 export default function WorldRecordsArena({ userId, onExit }: { userId: string | null; onExit?:()=>void }) {
   const [index, setIndex] = useState(0);
