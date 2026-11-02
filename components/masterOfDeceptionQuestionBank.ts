@@ -2,7 +2,7 @@
 export const masterOfDeceptionQuestionBank = [
   {
     "id": "md-004",
-    "q": "Ava insists the sealed envelope was collected from the archive at 8:10. However, a time-stamped access log records that the archive had been locked until 8:25. Which assessment is strongest? Case file 004: the evidence concerns glass vial and the observatory.",
+    "q": "Ava insists the sealed envelope was collected from the archive at 8:10. However, A time-stamped access log records that the archive had been locked until 8:25. Which assessment is strongest?.",
     "options": [
       "The claim is confirmed because the object existed",
       "The time difference is irrelevant to the access question",
@@ -14,7 +14,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-005",
-    "q": "Felix says they remained in the workshop continuously. The spare compass bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a maintenance record written before the incident places the workshop door opening then. What should an investigator conclude? Case file 005: the evidence concerns desk calendar and the workshop.",
+    "q": "Felix says they remained in the workshop continuously. The spare compass bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a maintenance record written before the incident places the workshop door opening then. What should an investigator conclude?.",
     "options": [
       "The mark alone proves deliberate deception",
       "The alibi must be true because it is confidently stated",
@@ -26,7 +26,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-006",
-    "q": "Cleo says, 'I never touched the fountain pen.' A witness saw Cleo move its protective case in the map room at 9:50. Which interpretation is most careful? Case file 006: the evidence concerns sealed envelope and the control room.",
+    "q": "Cleo says, 'I never touched the fountain pen.' A witness saw Cleo move its protective case in the map room at 9:50. Which interpretation is most careful?.",
     "options": [
       "The statement may be literally true while omitting relevant handling of the case",
       "The witness proves the object itself was touched",
@@ -38,7 +38,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-007",
-    "q": "Kai claims not to have seen the sealed silver watch. Before investigators mention its contents, Kai describes a tiny blue thread inside it. What is the key question? Case file 007: the evidence concerns broken lens and the studio.",
+    "q": "Kai claims not to have seen the sealed silver watch. Before investigators mention its contents, Kai describes a tiny blue thread inside it. What is the key question?.",
     "options": [
       "Who purchased the sealed container?",
       "How could the speaker know a detail that had not been disclosed?",
@@ -50,7 +50,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-008",
-    "q": "June presents a note saying the velvet pouch was inspected at 9:05. The ink analysis suggests the note was written later, while a security camera with a verified clock independently logs the inspection at a different time. What is the best response? Case file 008: the evidence concerns copper coin and the laboratory.",
+    "q": "June presents a note saying the velvet pouch was inspected at 9:05. The ink analysis suggests the note was written later, while a security camera with a verified clock independently logs the inspection at a different time. What is the best response?.",
     "options": [
       "Accept the note because it contains a precise time",
       "Discard every other record from the archive",
@@ -62,7 +62,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-009",
-    "q": "Marcus tells the group, 'I was nowhere near the workshop after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish? Case file 009: the evidence concerns visitor badge and the records office.",
+    "q": "Marcus tells the group, 'I was nowhere near the workshop after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish?.",
     "options": [
       "The receipt proves entry into every room",
       "The receipt proves the purchase was stolen",
@@ -74,7 +74,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-010",
-    "q": "Lila reports seeing someone carry the train ticket through the map room at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion? Case file 010: the evidence concerns fountain pen and the archive.",
+    "q": "Lila reports seeing someone carry the train ticket through the map room at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion?.",
     "options": [
       "The observation may establish movement, but identification is uncertain",
       "The witness has conclusively identified the carrier",
@@ -86,7 +86,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-011",
-    "q": "Henry claims the desk calendar was already missing before the search. a sealed delivery receipt and a separate inventory both show it was present shortly before 9:05. What should be checked next? Case file 011: the evidence concerns camera card and the music room.",
+    "q": "Henry claims the desk calendar was already missing before the search. A sealed delivery receipt and a separate inventory both show it was present shortly before 9:05. What should be checked next?.",
     "options": [
       "Whether the inventory uses the same handwriting",
       "Whether the claimed discovery time is compatible with both independent records",
@@ -98,7 +98,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-012",
-    "q": "Clara says, 'I did not take the shipping manifest from the archive.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved? Case file 012: the evidence concerns radio handset and the library.",
+    "q": "Clara says, 'I did not take the shipping manifest from the archive.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved?.",
     "options": [
       "Whether the storage shelf is part of the archive",
       "Whether the item is made of metal",
@@ -110,7 +110,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-013",
-    "q": "Leo had a clear reason to want the weather log removed from the workshop, but a time-stamped access log places several people near the room at 8:10. What is the soundest conclusion? Case file 013: the evidence concerns brass key and the winter garden.",
+    "q": "Leo had a clear reason to want the weather log removed from the workshop, but A time-stamped access log places several people near the room at 8:10. What is the soundest conclusion?.",
     "options": [
       "Motive alone proves responsibility",
       "Everyone near the room must have shared the motive",
@@ -122,7 +122,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-014",
-    "q": "Lena describes the audio recorder as having a red seal. The original photograph, taken before anyone entered the map room, clearly shows a green seal. Which point is directly contradicted? Case file 014: the evidence concerns velvet pouch and the basement.",
+    "q": "Lena describes the audio recorder as having a red seal. The original photograph, taken before anyone entered the map room, clearly shows a green seal. Which point is directly contradicted?.",
     "options": [
       "The speaker's description of the seal's colour",
       "The speaker's location at the time",
@@ -134,7 +134,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-015",
-    "q": "Hugo says the blue ledger was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a device's locally stored timestamp contains no instruction. What should be sought? Case file 015: the evidence concerns film reel and the dining hall.",
+    "q": "Hugo says the blue ledger was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a device's locally stored timestamp contains no instruction. What should be sought?.",
     "options": [
       "A repetition of the same rumour by more people",
       "The original source of the order and any direct record or witness",
@@ -146,7 +146,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-016",
-    "q": "Dina insists the broken lens was untouched after discovery. A second photograph shows its position changed between two documented images of the archive. What is the key issue? Case file 016: the evidence concerns weather log and the west gallery.",
+    "q": "Dina insists the broken lens was untouched after discovery. A second photograph shows its position changed between two documented images of the archive. What is the key issue?.",
     "options": [
       "Whether the object is expensive",
       "Whether the first photographer knew Dina",
@@ -158,7 +158,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-017",
-    "q": "Caleb says they first read the warning on the receipt and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows? Case file 017: the evidence concerns door sensor and the gallery.",
+    "q": "Caleb says they first read the warning on the receipt and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows?.",
     "options": [
       "The warning must have caused the earlier alarm",
       "The log proves who printed the warning",
@@ -170,7 +170,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-018",
-    "q": "Anya's first account says the camera card was in the map room; a later account places it in the map room at the same time. What is the most useful next step? Case file 018: the evidence concerns train ticket and the greenhouse.",
+    "q": "Anya's first account says the camera card was in the map room; a later account places it in the map room at the same time. What is the most useful next step?.",
     "options": [
       "Ask what prompted the change and test both versions against independent evidence",
       "Automatically accept the later version",
@@ -182,7 +182,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-019",
-    "q": "Dylan states with certainty that the museum label was never in the dining hall. Yet an old inventory lists it there, though the date is unclear. What is the best assessment? Case file 019: the evidence concerns parcel tag and the east corridor.",
+    "q": "Dylan states with certainty that the museum label was never in the dining hall. Yet an old inventory lists it there, though the date is unclear. What is the best assessment?.",
     "options": [
       "The inventory should be ignored because its date is unclear",
       "The absolute claim is not established until the inventory's date and reliability are checked",
@@ -194,7 +194,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-020",
-    "q": "Elena disputes the time shown on a camera in the archive. A technician confirms its clock was seven minutes fast that day. How should the footage be used? Case file 020: the evidence concerns blue ledger and the map room.",
+    "q": "Elena disputes the time shown on a camera in the archive. A technician confirms its clock was seven minutes fast that day. How should the footage be used?.",
     "options": [
       "Use the displayed time without adjustment",
       "Assume the person in the footage changed the clock",
@@ -206,7 +206,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-021",
-    "q": "David reports finding the painted tile exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference? Case file 021: the evidence concerns maintenance sheet and the roof terrace.",
+    "q": "David reports finding the painted tile exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference?.",
     "options": [
       "The dust identifies who staged it",
       "The object was never in the room",
@@ -218,7 +218,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-022",
-    "q": "Iris and a friend give matching accounts about the footprint cast in the map room. Both admit they discussed what to say before being interviewed. What limits the value of their agreement? Case file 022: the evidence concerns shipping manifest and the clock tower.",
+    "q": "Iris and a friend give matching accounts about the footprint cast in the map room. Both admit they discussed what to say before being interviewed. What limits the value of their agreement?.",
     "options": [
       "Their accounts may not be independent corroboration",
       "Matching accounts always prove honesty",
@@ -230,7 +230,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-023",
-    "q": "Theo produces a printed authorisation for moving the brass key. The document has no original file, signature verification or issuing-office record. What is the priority? Case file 023: the evidence concerns spare compass and the boathouse.",
+    "q": "Theo produces a printed authorisation for moving the brass key. The document has no original file, signature verification or issuing-office record. What is the priority?.",
     "options": [
       "Ask only whether Theo agrees with its wording",
       "Authenticate the document's origin before relying on its authority",
@@ -242,7 +242,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-024",
-    "q": "Sofia offers a short recording that seems to contain the curator saying, 'Move the coded note.' The clip begins mid-sentence and ends immediately. What is needed? Case file 024: the evidence concerns receipt and the observatory.",
+    "q": "Sofia offers a short recording that seems to contain the curator saying, 'Move the coded note.' The clip begins mid-sentence and ends immediately. What is needed?.",
     "options": [
       "A written guess about the missing sentence",
       "A vote on whether the voice sounds confident",
@@ -254,7 +254,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-025",
-    "q": "Ravi shows a photograph of the door sensor beside the workshop clock as proof of the time. The clock face has no date or verified setting. What does the image establish? Case file 025: the evidence concerns wax seal and the workshop.",
+    "q": "Ravi shows a photograph of the door sensor beside the workshop clock as proof of the time. The clock face has no date or verified setting. What does the image establish?.",
     "options": [
       "It proves the camera date is accurate",
       "It proves the clock was correct",
@@ -266,7 +266,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-026",
-    "q": "Elise says the glass vial remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises? Case file 026: the evidence concerns footprint cast and the control room.",
+    "q": "Elise says the glass vial remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises?.",
     "options": [
       "The chain of custody is incomplete, so handling during the gap must be established",
       "The item is automatically counterfeit",
@@ -278,7 +278,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-027",
-    "q": "Adrian repeatedly argues that the maintenance sheet is worthless, while the question concerns who entered the dining hall at 9:50. What is the best response? Case file 027: the evidence concerns silver watch and the studio.",
+    "q": "Adrian repeatedly argues that the maintenance sheet is worthless, while the question concerns who entered the dining hall at 9:50. What is the best response?.",
     "options": [
       "Change the inquiry to the object's market price",
       "Return to the specific access question and ask for evidence about the entry",
@@ -290,7 +290,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-028",
-    "q": "An investigator asks Sara, 'Why did you hide the copper coin in the archive?' No evidence yet establishes that Sara hid it. What is wrong with the question? Case file 028: the evidence concerns museum label and the laboratory.",
+    "q": "An investigator asks Sara, 'Why did you hide the copper coin in the archive?' No evidence yet establishes that Sara hid it. What is wrong with the question?.",
     "options": [
       "It is too short to be useful",
       "It requests an answer based on a document",
@@ -302,7 +302,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-029",
-    "q": "Ibrahim avoids eye contact while answering questions about the wax seal. The account is consistent with a sealed delivery receipt. What is the fairest interpretation? Case file 029: the evidence concerns white glove and the records office.",
+    "q": "Ibrahim avoids eye contact while answering questions about the wax seal. The account is consistent with A sealed delivery receipt. What is the fairest interpretation?.",
     "options": [
       "Avoiding eye contact proves a lie",
       "A consistent account proves innocence",
@@ -314,7 +314,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-030",
-    "q": "Mira gives an approximate time for seeing the radio handset several weeks earlier, then corrects it after checking a diary. What should an investigator do? Case file 030: the evidence concerns coded note and the archive.",
+    "q": "Mira gives an approximate time for seeing the radio handset several weeks earlier, then corrects it after checking a diary. What should an investigator do?.",
     "options": [
       "Compare the corrected recollection with the diary and other records",
       "Treat any correction as deliberate lying",
@@ -326,7 +326,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-031",
-    "q": "Owen gives an exact minute for moving the sealed envelope, but cannot explain how they know the time. a time-stamped access log has no entry for that minute. What is the proper treatment? Case file 031: the evidence concerns sketchbook and the music room.",
+    "q": "Owen gives an exact minute for moving the sealed envelope, but cannot explain how they know the time. A time-stamped access log has no entry for that minute. What is the proper treatment?.",
     "options": [
       "Round the time until it matches the record",
       "Treat the precision as an unverified claim and ask for its basis",
@@ -338,7 +338,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-032",
-    "q": "Aria is responsible for checking the archive inventory and also gives the only account that the spare compass was present. What safeguard would strengthen the inquiry? Case file 032: the evidence concerns painted tile and the library.",
+    "q": "Aria is responsible for checking the archive inventory and also gives the only account that the spare compass was present. What safeguard would strengthen the inquiry?.",
     "options": [
       "Remove the inventory from consideration",
       "Ask a friend of Aria to confirm it",
@@ -350,7 +350,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-033",
-    "q": "Finn says the fountain pen was moved by an intruder. The access record shows a scheduled cleaner also entered the workshop during the relevant window. What is the correct approach? Case file 033: the evidence concerns audio recorder and the winter garden.",
+    "q": "Finn says the fountain pen was moved by an intruder. The access record shows a scheduled cleaner also entered the workshop during the relevant window. What is the correct approach?.",
     "options": [
       "Assume the cleaner is responsible",
       "Assume an intruder entered because an item is missing",
@@ -362,7 +362,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-034",
-    "q": "Nina quotes the curator as saying, 'The silver watch can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted? Case file 034: the evidence concerns glass vial and the basement.",
+    "q": "Nina quotes the curator as saying, 'The silver watch can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted?.",
     "options": [
       "The condition that had to be met before the move was authorised",
       "The identity of the object",
@@ -374,7 +374,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-035",
-    "q": "Simon claims every witness independently confirmed the same detail about the velvet pouch. Interview notes show the witnesses were questioned together. What is the concern? Case file 035: the evidence concerns desk calendar and the dining hall.",
+    "q": "Simon claims every witness independently confirmed the same detail about the velvet pouch. Interview notes show the witnesses were questioned together. What is the concern?.",
     "options": [
       "The notes establish who first suggested the detail",
       "Their answers may have influenced one another and should be checked separately",
@@ -386,7 +386,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-036",
-    "q": "Naomi dismisses a witness's account of the sketchbook as unreliable but fails to mention they are business partners. Why does that matter? Case file 036: the evidence concerns sealed envelope and the west gallery.",
+    "q": "Naomi dismisses a witness's account of the sketchbook as unreliable but fails to mention they are business partners. Why does that matter?.",
     "options": [
       "The relationship proves the witness is lying",
       "The relationship determines who owned the object",
@@ -398,7 +398,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-037",
-    "q": "Max says, 'If you cannot prove I moved the train ticket, you must accept my story.' What is the flaw in this reasoning? Case file 037: the evidence concerns broken lens and the gallery.",
+    "q": "Max says, 'If you cannot prove I moved the train ticket, you must accept my story.' What is the flaw in this reasoning?.",
     "options": [
       "A story becomes true when repeated",
       "The object must have moved itself",
@@ -410,7 +410,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-038",
-    "q": "Rosa says the desk calendar was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove? Case file 038: the evidence concerns copper coin and the greenhouse.",
+    "q": "Rosa says the desk calendar was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove?.",
     "options": [
       "Only its earlier usual position, not its position on the incident day",
       "That it remained there continuously",
@@ -422,7 +422,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-039",
-    "q": "Ethan claims the shipping manifest was never exposed to rain while stored in the dining hall. A dated storm record and fresh water marks are found. Which check is most useful? Case file 039: the evidence concerns visitor badge and the east corridor.",
+    "q": "Ethan claims the shipping manifest was never exposed to rain while stored in the dining hall. A dated storm record and fresh water marks are found. Which check is most useful?.",
     "options": [
       "Ignore the storm because it affected the whole town",
       "Compare the marks' origin and timing with the storm and the room's exposure",
@@ -434,7 +434,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-040",
-    "q": "Ruby relies on a permission slip bearing the curator's signature for moving the weather log. The curator denies signing it. What is the strongest next step? Case file 040: the evidence concerns fountain pen and the map room.",
+    "q": "Ruby relies on a permission slip bearing the curator's signature for moving the weather log. The curator denies signing it. What is the strongest next step?.",
     "options": [
       "Judge the signature from a low-resolution copy",
       "Assume the paper's age confirms the signature",
@@ -446,7 +446,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-041",
-    "q": "Eli says the audio recorder could not fit through the workshop doorway. The measured object is narrower than the verified doorway opening. What does this show? Case file 041: the evidence concerns camera card and the roof terrace.",
+    "q": "Eli says the audio recorder could not fit through the workshop doorway. The measured object is narrower than the verified doorway opening. What does this show?.",
     "options": [
       "It proves the object was carried through that doorway",
       "It proves the speaker intentionally lied",
@@ -458,7 +458,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-042",
-    "q": "Talia supplies a screenshot of a message about the blue ledger. The original conversation is unavailable and the screenshot is cropped. What is the best verification? Case file 042: the evidence concerns radio handset and the clock tower.",
+    "q": "Talia supplies a screenshot of a message about the blue ledger. The original conversation is unavailable and the screenshot is cropped. What is the best verification?.",
     "options": [
       "Obtain the original message data with its surrounding conversation and metadata",
       "Enlarge the cropped screenshot until text is clearer",
@@ -470,7 +470,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-043",
-    "q": "Jonah says the broken lens was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first? Case file 043: the evidence concerns brass key and the boathouse.",
+    "q": "Jonah says the broken lens was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first?.",
     "options": [
       "Assume the courier must be correct",
       "Check each clock, entry method and record source before deciding which time is reliable",
@@ -482,7 +482,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-044",
-    "q": "Grace argues that either the curator moved the receipt or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument? Case file 044: the evidence concerns velvet pouch and the observatory.",
+    "q": "Grace argues that either the curator moved the receipt or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument?.",
     "options": [
       "Proof that the object vanished by itself",
       "A rule that only two explanations are possible",
@@ -494,7 +494,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-045",
-    "q": "Lucas is seen near the workshop shortly before the camera card is reported missing. No footage shows contact with the object. What can fairly be said? Case file 045: the evidence concerns film reel and the workshop.",
+    "q": "Lucas is seen near the workshop shortly before the camera card is reported missing. No footage shows contact with the object. What can fairly be said?.",
     "options": [
       "Being nearby proves theft",
       "The missing object proves the footage is incomplete",
@@ -506,7 +506,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-046",
-    "q": "Tessa insists the museum label was collected from the studio at 8:10. However, two independent witnesses records that the studio had been locked until 8:25. Which assessment is strongest? Case file 046: the evidence concerns weather log and the control room.",
+    "q": "Tessa insists the museum label was collected from the studio at 8:10. However, two independent witnesses records that the studio had been locked until 8:25. Which assessment is strongest?.",
     "options": [
       "The claimed collection time conflicts with the recorded access window",
       "The record proves who took the object, but not when",
@@ -518,7 +518,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-047",
-    "q": "Noah says they remained in the clock tower continuously. The film reel bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a sealed delivery receipt places the workshop door opening then. What should an investigator conclude? Case file 047: the evidence concerns door sensor and the studio.",
+    "q": "Noah says they remained in the clock tower continuously. The film reel bears a fresh mark that could only have been made in the adjoining workshop at 9:05; A sealed delivery receipt places the workshop door opening then. What should an investigator conclude?.",
     "options": [
       "The workshop record establishes the person's motive",
       "The alibi needs testing because independent evidence suggests a possible movement",
@@ -530,7 +530,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-048",
-    "q": "Zara says, 'I never touched the painted tile.' A witness saw Zara move its protective case in the gallery at 9:50. Which interpretation is most careful? Case file 048: the evidence concerns train ticket and the laboratory.",
+    "q": "Zara says, 'I never touched the painted tile.' A witness saw Zara move its protective case in the gallery at 9:50. Which interpretation is most careful?.",
     "options": [
       "The statement and observation cannot both be true",
       "The witness establishes why the case was moved",
@@ -542,7 +542,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-049",
-    "q": "Jude claims not to have seen the sealed footprint cast. Before investigators mention its contents, Jude describes a tiny blue thread inside it. What is the key question? Case file 049: the evidence concerns parcel tag and the records office.",
+    "q": "Jude claims not to have seen the sealed footprint cast. Before investigators mention its contents, Jude describes a tiny blue thread inside it. What is the key question?.",
     "options": [
       "Why was the thread blue rather than red?",
       "Whether the speaker likes the library",
@@ -554,7 +554,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-050",
-    "q": "Freya presents a note saying the brass key was inspected at 9:05. The ink analysis suggests the note was written later, while a maintenance record written before the incident independently logs the inspection at a different time. What is the best response? Case file 050: the evidence concerns blue ledger and the archive.",
+    "q": "Freya presents a note saying the brass key was inspected at 9:05. The ink analysis suggests the note was written later, while a maintenance record written before the incident independently logs the inspection at a different time. What is the best response?.",
     "options": [
       "Treat the note's stated time as unverified and compare its creation with the independent record",
       "Assume the ink test identifies the writer",
@@ -566,7 +566,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-051",
-    "q": "Oscar tells the group, 'I was nowhere near the clock tower after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish? Case file 051: the evidence concerns maintenance sheet and the music room.",
+    "q": "Oscar tells the group, 'I was nowhere near the clock tower after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish?.",
     "options": [
       "The statement is accurate because the kiosk is outside",
       "The statement may be misleading because the entrance is part of the location being discussed",
@@ -578,7 +578,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-052",
-    "q": "Priya reports seeing someone carry the door sensor through the gallery at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion? Case file 052: the evidence concerns shipping manifest and the library.",
+    "q": "Priya reports seeing someone carry the door sensor through the gallery at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion?.",
     "options": [
       "The darkness proves the report is fabricated",
       "The object could not have been carried in darkness",
@@ -590,7 +590,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-053",
-    "q": "Peter claims the glass vial was already missing before the search. a security camera with a verified clock and a separate inventory both show it was present shortly before 9:05. What should be checked next? Case file 053: the evidence concerns spare compass and the winter garden.",
+    "q": "Peter claims the glass vial was already missing before the search. a security camera with a verified clock and a separate inventory both show it was present shortly before 9:05. What should be checked next?.",
     "options": [
       "Whether the object is valuable enough to steal",
       "Whether the speaker appears nervous",
@@ -602,7 +602,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-054",
-    "q": "Yara says, 'I did not take the maintenance sheet from the studio.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved? Case file 054: the evidence concerns receipt and the basement.",
+    "q": "Yara says, 'I did not take the maintenance sheet from the studio.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved?.",
     "options": [
       "Whether the speaker moved it by another route or arranged for someone else to do so",
       "Whether the object ever existed",
@@ -614,7 +614,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-055",
-    "q": "Ben had a clear reason to want the copper coin removed from the clock tower, but two independent witnesses places several people near the room at 8:10. What is the soundest conclusion? Case file 055: the evidence concerns wax seal and the dining hall.",
+    "q": "Ben had a clear reason to want the copper coin removed from the clock tower, but two independent witnesses places several people near the room at 8:10. What is the soundest conclusion?.",
     "options": [
       "The motive makes the access record unnecessary",
       "Motive gives a reason to investigate but does not establish who acted",
@@ -626,7 +626,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-056",
-    "q": "Nora describes the wax seal as having a red seal. The original photograph, taken before anyone entered the gallery, clearly shows a green seal. Which point is directly contradicted? Case file 056: the evidence concerns footprint cast and the west gallery.",
+    "q": "Nora describes the wax seal as having a red seal. The original photograph, taken before anyone entered the gallery, clearly shows a green seal. Which point is directly contradicted?.",
     "options": [
       "The ownership of the object",
       "The time the photograph was taken",
@@ -638,7 +638,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-057",
-    "q": "Miles says the radio handset was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and an original signed register contains no instruction. What should be sought? Case file 057: the evidence concerns silver watch and the gallery.",
+    "q": "Miles says the radio handset was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and an original signed register contains no instruction. What should be sought?.",
     "options": [
       "A list of people who dislike the curator",
       "A guess about what the curator intended",
@@ -650,7 +650,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-058",
-    "q": "Maya insists the sealed envelope was untouched after discovery. A second photograph shows its position changed between two documented images of the studio. What is the key issue? Case file 058: the evidence concerns museum label and the greenhouse.",
+    "q": "Maya insists the sealed envelope was untouched after discovery. A second photograph shows its position changed between two documented images of the studio. What is the key issue?.",
     "options": [
       "Who had access between the photographs and whether the item was moved",
       "Whether the second photograph is more attractive",
@@ -662,7 +662,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-059",
-    "q": "Ezra says they first read the warning on the spare compass and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows? Case file 059: the evidence concerns white glove and the east corridor.",
+    "q": "Ezra says they first read the warning on the spare compass and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows?.",
     "options": [
       "The sequence is correct if the speaker was distracted",
       "The described sequence conflicts with the logged order of events",
@@ -674,7 +674,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-060",
-    "q": "Amira's first account says the fountain pen was in the gallery; a later account places it in the map room at the same time. What is the most useful next step? Case file 060: the evidence concerns coded note and the map room.",
+    "q": "Amira's first account says the fountain pen was in the gallery; a later account places it in the map room at the same time. What is the most useful next step?.",
     "options": [
       "Assume the first version was intentionally false",
       "Ignore the location because both rooms are nearby",
@@ -686,7 +686,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-061",
-    "q": "Victor states with certainty that the silver watch was never in the library. Yet an old inventory lists it there, though the date is unclear. What is the best assessment? Case file 061: the evidence concerns sketchbook and the roof terrace.",
+    "q": "Victor states with certainty that the silver watch was never in the library. Yet an old inventory lists it there, though the date is unclear. What is the best assessment?.",
     "options": [
       "The inventory proves the item was there during the incident",
       "Confidence makes the statement reliable",
@@ -698,7 +698,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-062",
-    "q": "Mina disputes the time shown on a camera in the studio. A technician confirms its clock was seven minutes fast that day. How should the footage be used? Case file 062: the evidence concerns painted tile and the clock tower.",
+    "q": "Mina disputes the time shown on a camera in the studio. A technician confirms its clock was seven minutes fast that day. How should the footage be used?.",
     "options": [
       "Correct the timestamp using the verified offset before comparing accounts",
       "Discard the footage entirely",
@@ -710,7 +710,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-063",
-    "q": "Sam reports finding the sketchbook exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference? Case file 063: the evidence concerns audio recorder and the boathouse.",
+    "q": "Sam reports finding the sketchbook exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference?.",
     "options": [
       "The display proves the report is true",
       "The object's displayed position may have been arranged shortly before discovery",
@@ -722,7 +722,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-064",
-    "q": "Ava and a friend give matching accounts about the train ticket in the gallery. Both admit they discussed what to say before being interviewed. What limits the value of their agreement? Case file 064: the evidence concerns glass vial and the observatory.",
+    "q": "Ava and a friend give matching accounts about the train ticket in the gallery. Both admit they discussed what to say before being interviewed. What limits the value of their agreement?.",
     "options": [
       "Discussing an event makes memory perfect",
       "Their agreement establishes the object's ownership",
@@ -734,7 +734,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-065",
-    "q": "Felix produces a printed authorisation for moving the desk calendar. The document has no original file, signature verification or issuing-office record. What is the priority? Case file 065: the evidence concerns desk calendar and the workshop.",
+    "q": "Felix produces a printed authorisation for moving the desk calendar. The document has no original file, signature verification or issuing-office record. What is the priority?.",
     "options": [
       "Assume it is genuine because it is printed",
       "Judge it by the paper's colour",
@@ -746,7 +746,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-066",
-    "q": "Cleo offers a short recording that seems to contain the curator saying, 'Move the shipping manifest.' The clip begins mid-sentence and ends immediately. What is needed? Case file 066: the evidence concerns sealed envelope and the control room.",
+    "q": "Cleo offers a short recording that seems to contain the curator saying, 'Move the shipping manifest.' The clip begins mid-sentence and ends immediately. What is needed?.",
     "options": [
       "The full original recording and context around the quoted words",
       "A louder copy of the same excerpt",
@@ -758,7 +758,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-067",
-    "q": "Kai shows a photograph of the weather log beside the clock tower clock as proof of the time. The clock face has no date or verified setting. What does the image establish? Case file 067: the evidence concerns broken lens and the studio.",
+    "q": "Kai shows a photograph of the weather log beside the clock tower clock as proof of the time. The clock face has no date or verified setting. What does the image establish?.",
     "options": [
       "It proves who took the photograph",
       "It shows the object and clock together, but not a verified time",
@@ -770,7 +770,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-068",
-    "q": "June says the audio recorder remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises? Case file 068: the evidence concerns copper coin and the laboratory.",
+    "q": "June says the audio recorder remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises?.",
     "options": [
       "The last handler must be responsible",
       "The seal number is irrelevant",
@@ -782,7 +782,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-069",
-    "q": "Marcus repeatedly argues that the blue ledger is worthless, while the question concerns who entered the library at 9:50. What is the best response? Case file 069: the evidence concerns visitor badge and the records office.",
+    "q": "Marcus repeatedly argues that the blue ledger is worthless, while the question concerns who entered the library at 9:50. What is the best response?.",
     "options": [
       "Accept the valuation as an alibi",
       "Assume the distraction proves guilt",
@@ -794,7 +794,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-070",
-    "q": "An investigator asks Lila, 'Why did you hide the broken lens in the studio?' No evidence yet establishes that Lila hid it. What is wrong with the question? Case file 070: the evidence concerns fountain pen and the archive.",
+    "q": "An investigator asks Lila, 'Why did you hide the broken lens in the studio?' No evidence yet establishes that Lila hid it. What is wrong with the question?.",
     "options": [
       "It assumes the disputed act occurred and that the person did it",
       "It asks about a location rather than a time",
@@ -806,7 +806,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-071",
-    "q": "Henry avoids eye contact while answering questions about the receipt. The account is consistent with a security camera with a verified clock. What is the fairest interpretation? Case file 071: the evidence concerns camera card and the music room.",
+    "q": "Henry avoids eye contact while answering questions about the receipt. The account is consistent with a security camera with a verified clock. What is the fairest interpretation?.",
     "options": [
       "Nervousness establishes a hidden motive",
       "Body language alone cannot establish deception; assess verifiable evidence",
@@ -818,7 +818,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-072",
-    "q": "Clara gives an approximate time for seeing the camera card several weeks earlier, then corrects it after checking a diary. What should an investigator do? Case file 072: the evidence concerns radio handset and the library.",
+    "q": "Clara gives an approximate time for seeing the camera card several weeks earlier, then corrects it after checking a diary. What should an investigator do?.",
     "options": [
       "Prefer the first estimate because it came sooner",
       "Ignore the diary because memory is personal",
@@ -830,7 +830,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-073",
-    "q": "Leo gives an exact minute for moving the museum label, but cannot explain how they know the time. two independent witnesses has no entry for that minute. What is the proper treatment? Case file 073: the evidence concerns brass key and the winter garden.",
+    "q": "Leo gives an exact minute for moving the museum label, but cannot explain how they know the time. two independent witnesses has no entry for that minute. What is the proper treatment?.",
     "options": [
       "Assume exact times are always accurate",
       "Assume the missing log entry proves the event impossible",
@@ -842,7 +842,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-074",
-    "q": "Lena is responsible for checking the studio inventory and also gives the only account that the film reel was present. What safeguard would strengthen the inquiry? Case file 074: the evidence concerns velvet pouch and the basement.",
+    "q": "Lena is responsible for checking the studio inventory and also gives the only account that the film reel was present. What safeguard would strengthen the inquiry?.",
     "options": [
       "Have an independent person audit the inventory against original records",
       "Let Lena certify their own account again",
@@ -854,7 +854,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-075",
-    "q": "Hugo says the painted tile was moved by an intruder. The access record shows a scheduled cleaner also entered the clock tower during the relevant window. What is the correct approach? Case file 075: the evidence concerns film reel and the dining hall.",
+    "q": "Hugo says the painted tile was moved by an intruder. The access record shows a scheduled cleaner also entered the clock tower during the relevant window. What is the correct approach?.",
     "options": [
       "Ignore the access record because it shows authorised entry",
       "Investigate both possibilities instead of treating the intruder claim as established",
@@ -866,7 +866,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-076",
-    "q": "Dina quotes the curator as saying, 'The footprint cast can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted? Case file 076: the evidence concerns weather log and the west gallery.",
+    "q": "Dina quotes the curator as saying, 'The footprint cast can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted?.",
     "options": [
       "The curator's opinion of the gallery",
       "The date on which the note was written",
@@ -878,7 +878,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-077",
-    "q": "Caleb claims every witness independently confirmed the same detail about the brass key. Interview notes show the witnesses were questioned together. What is the concern? Case file 077: the evidence concerns door sensor and the gallery.",
+    "q": "Caleb claims every witness independently confirmed the same detail about the brass key. Interview notes show the witnesses were questioned together. What is the concern?.",
     "options": [
       "The shared interview proves all accounts are false",
       "The detail is confirmed because everyone heard it",
@@ -890,7 +890,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-078",
-    "q": "Anya dismisses a witness's account of the coded note as unreliable but fails to mention they are business partners. Why does that matter? Case file 078: the evidence concerns train ticket and the greenhouse.",
+    "q": "Anya dismisses a witness's account of the coded note as unreliable but fails to mention they are business partners. Why does that matter?.",
     "options": [
       "The undisclosed relationship may affect how the criticism and possible bias are assessed",
       "A business relationship automatically makes the witness truthful",
@@ -902,7 +902,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-079",
-    "q": "Dylan says, 'If you cannot prove I moved the door sensor, you must accept my story.' What is the flaw in this reasoning? Case file 079: the evidence concerns parcel tag and the east corridor.",
+    "q": "Dylan says, 'If you cannot prove I moved the door sensor, you must accept my story.' What is the flaw in this reasoning?.",
     "options": [
       "The investigator must accept the first explanation offered",
       "Lack of proof against a person does not automatically verify their account",
@@ -914,7 +914,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-080",
-    "q": "Elena says the glass vial was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove? Case file 080: the evidence concerns blue ledger and the map room.",
+    "q": "Elena says the glass vial was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove?.",
     "options": [
       "That nobody could have moved it",
       "That the photograph was taken on the incident day",
@@ -926,7 +926,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-081",
-    "q": "David claims the maintenance sheet was never exposed to rain while stored in the library. A dated storm record and fresh water marks are found. Which check is most useful? Case file 081: the evidence concerns maintenance sheet and the roof terrace.",
+    "q": "David claims the maintenance sheet was never exposed to rain while stored in the library. A dated storm record and fresh water marks are found. Which check is most useful?.",
     "options": [
       "Ask whether David likes rainy weather",
       "Assume the marks prove the object was outdoors",
@@ -938,7 +938,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-082",
-    "q": "Iris relies on a permission slip bearing the curator's signature for moving the copper coin. The curator denies signing it. What is the strongest next step? Case file 082: the evidence concerns shipping manifest and the clock tower.",
+    "q": "Iris relies on a permission slip bearing the curator's signature for moving the copper coin. The curator denies signing it. What is the strongest next step?.",
     "options": [
       "Compare the original signature with authenticated samples and verify who handled the slip",
       "Accept the denial as conclusive proof of forgery",
@@ -950,7 +950,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-083",
-    "q": "Theo says the wax seal could not fit through the clock tower doorway. The measured object is narrower than the verified doorway opening. What does this show? Case file 083: the evidence concerns spare compass and the boathouse.",
+    "q": "Theo says the wax seal could not fit through the clock tower doorway. The measured object is narrower than the verified doorway opening. What does this show?.",
     "options": [
       "It proves the doorway was always open",
       "The stated physical impossibility is not supported by the measurements",
@@ -962,7 +962,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-084",
-    "q": "Sofia supplies a screenshot of a message about the radio handset. The original conversation is unavailable and the screenshot is cropped. What is the best verification? Case file 084: the evidence concerns receipt and the observatory.",
+    "q": "Sofia supplies a screenshot of a message about the radio handset. The original conversation is unavailable and the screenshot is cropped. What is the best verification?.",
     "options": [
       "Rely on the sender's display name alone",
       "Treat the screenshot as authenticated because it looks genuine",
@@ -974,7 +974,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-085",
-    "q": "Ravi says the sealed envelope was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first? Case file 085: the evidence concerns wax seal and the workshop.",
+    "q": "Ravi says the sealed envelope was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first?.",
     "options": [
       "Choose whichever time supports the accusation",
       "Average the three times without checking them",
@@ -986,7 +986,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-086",
-    "q": "Elise argues that either the curator moved the spare compass or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument? Case file 086: the evidence concerns footprint cast and the control room.",
+    "q": "Elise argues that either the curator moved the spare compass or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument?.",
     "options": [
       "It ignores other plausible people and explanations",
       "A reason to distrust every access log",
@@ -998,7 +998,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-087",
-    "q": "Adrian is seen near the clock tower shortly before the fountain pen is reported missing. No footage shows contact with the object. What can fairly be said? Case file 087: the evidence concerns silver watch and the studio.",
+    "q": "Adrian is seen near the clock tower shortly before the fountain pen is reported missing. No footage shows contact with the object. What can fairly be said?.",
     "options": [
       "The person must know where the object is",
       "The person was nearby, but the evidence does not show they took the object",
@@ -1010,7 +1010,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-088",
-    "q": "Sara insists the silver watch was collected from the observatory at 8:10. However, a weather station record records that the observatory had been locked until 8:25. Which assessment is strongest? Case file 088: the evidence concerns museum label and the laboratory.",
+    "q": "Sara insists the silver watch was collected from the observatory at 8:10. However, a weather station record records that the observatory had been locked until 8:25. Which assessment is strongest?.",
     "options": [
       "The claim is confirmed because the object existed",
       "The time difference is irrelevant to the access question",
@@ -1022,7 +1022,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-089",
-    "q": "Ibrahim says they remained in the east corridor continuously. The velvet pouch bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a security camera with a verified clock places the workshop door opening then. What should an investigator conclude? Case file 089: the evidence concerns white glove and the records office.",
+    "q": "Ibrahim says they remained in the east corridor continuously. The velvet pouch bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a security camera with a verified clock places the workshop door opening then. What should an investigator conclude?.",
     "options": [
       "The mark alone proves deliberate deception",
       "The alibi must be true because it is confidently stated",
@@ -1034,7 +1034,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-090",
-    "q": "Mira says, 'I never touched the sketchbook.' A witness saw Mira move its protective case in the basement at 9:50. Which interpretation is most careful? Case file 090: the evidence concerns coded note and the archive.",
+    "q": "Mira says, 'I never touched the sketchbook.' A witness saw Mira move its protective case in the basement at 9:50. Which interpretation is most careful?.",
     "options": [
       "The statement may be literally true while omitting relevant handling of the case",
       "The witness proves the object itself was touched",
@@ -1046,7 +1046,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-091",
-    "q": "Owen claims not to have seen the sealed train ticket. Before investigators mention its contents, Owen describes a tiny blue thread inside it. What is the key question? Case file 091: the evidence concerns sketchbook and the music room.",
+    "q": "Owen claims not to have seen the sealed train ticket. Before investigators mention its contents, Owen describes a tiny blue thread inside it. What is the key question?.",
     "options": [
       "Who purchased the sealed container?",
       "How could the speaker know a detail that had not been disclosed?",
@@ -1058,7 +1058,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-092",
-    "q": "Aria presents a note saying the desk calendar was inspected at 9:05. The ink analysis suggests the note was written later, while a sealed delivery receipt independently logs the inspection at a different time. What is the best response? Case file 092: the evidence concerns painted tile and the library.",
+    "q": "Aria presents a note saying the desk calendar was inspected at 9:05. The ink analysis suggests the note was written later, while A sealed delivery receipt independently logs the inspection at a different time. What is the best response?.",
     "options": [
       "Accept the note because it contains a precise time",
       "Discard every other record from the observatory",
@@ -1070,7 +1070,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-093",
-    "q": "Finn tells the group, 'I was nowhere near the east corridor after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish? Case file 093: the evidence concerns audio recorder and the winter garden.",
+    "q": "Finn tells the group, 'I was nowhere near the east corridor after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish?.",
     "options": [
       "The receipt proves entry into every room",
       "The receipt proves the purchase was stolen",
@@ -1082,7 +1082,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-094",
-    "q": "Nina reports seeing someone carry the weather log through the basement at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion? Case file 094: the evidence concerns glass vial and the basement.",
+    "q": "Nina reports seeing someone carry the weather log through the basement at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion?.",
     "options": [
       "The observation may establish movement, but identification is uncertain",
       "The witness has conclusively identified the carrier",
@@ -1094,7 +1094,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-095",
-    "q": "Simon claims the audio recorder was already missing before the search. a maintenance record written before the incident and a separate inventory both show it was present shortly before 9:05. What should be checked next? Case file 095: the evidence concerns desk calendar and the dining hall.",
+    "q": "Simon claims the audio recorder was already missing before the search. a maintenance record written before the incident and a separate inventory both show it was present shortly before 9:05. What should be checked next?.",
     "options": [
       "Whether the inventory uses the same handwriting",
       "Whether the claimed discovery time is compatible with both independent records",
@@ -1106,7 +1106,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-096",
-    "q": "Naomi says, 'I did not take the blue ledger from the observatory.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved? Case file 096: the evidence concerns sealed envelope and the west gallery.",
+    "q": "Naomi says, 'I did not take the blue ledger from the observatory.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved?.",
     "options": [
       "Whether the storage shelf is part of the observatory",
       "Whether the item is made of metal",
@@ -1118,7 +1118,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-097",
-    "q": "Max had a clear reason to want the broken lens removed from the east corridor, but a weather station record places several people near the room at 8:10. What is the soundest conclusion? Case file 097: the evidence concerns broken lens and the gallery.",
+    "q": "Max had a clear reason to want the broken lens removed from the east corridor, but a weather station record places several people near the room at 8:10. What is the soundest conclusion?.",
     "options": [
       "Motive alone proves responsibility",
       "Everyone near the room must have shared the motive",
@@ -1130,7 +1130,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-098",
-    "q": "Rosa describes the receipt as having a red seal. The original photograph, taken before anyone entered the basement, clearly shows a green seal. Which point is directly contradicted? Case file 098: the evidence concerns copper coin and the greenhouse.",
+    "q": "Rosa describes the receipt as having a red seal. The original photograph, taken before anyone entered the basement, clearly shows a green seal. Which point is directly contradicted?.",
     "options": [
       "The speaker's description of the seal's colour",
       "The speaker's location at the time",
@@ -1142,7 +1142,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-099",
-    "q": "Ethan says the camera card was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a continuous audio recording contains no instruction. What should be sought? Case file 099: the evidence concerns visitor badge and the east corridor.",
+    "q": "Ethan says the camera card was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a continuous audio recording contains no instruction. What should be sought?.",
     "options": [
       "A repetition of the same rumour by more people",
       "The original source of the order and any direct record or witness",
@@ -1154,7 +1154,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-100",
-    "q": "Ruby insists the museum label was untouched after discovery. A second photograph shows its position changed between two documented images of the observatory. What is the key issue? Case file 100: the evidence concerns fountain pen and the map room.",
+    "q": "Ruby insists the museum label was untouched after discovery. A second photograph shows its position changed between two documented images of the observatory. What is the key issue?.",
     "options": [
       "Whether the object is expensive",
       "Whether the first photographer knew Ruby",
@@ -1166,7 +1166,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-101",
-    "q": "Eli says they first read the warning on the film reel and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows? Case file 101: the evidence concerns camera card and the roof terrace.",
+    "q": "Eli says they first read the warning on the film reel and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows?.",
     "options": [
       "The warning must have caused the earlier alarm",
       "The log proves who printed the warning",
@@ -1178,7 +1178,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-102",
-    "q": "Talia's first account says the painted tile was in the basement; a later account places it in the map room at the same time. What is the most useful next step? Case file 102: the evidence concerns radio handset and the clock tower.",
+    "q": "Talia's first account says the painted tile was in the basement; a later account places it in the map room at the same time. What is the most useful next step?.",
     "options": [
       "Ask what prompted the change and test both versions against independent evidence",
       "Automatically accept the later version",
@@ -1190,7 +1190,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-103",
-    "q": "Jonah states with certainty that the footprint cast was never in the records office. Yet an old inventory lists it there, though the date is unclear. What is the best assessment? Case file 103: the evidence concerns brass key and the boathouse.",
+    "q": "Jonah states with certainty that the footprint cast was never in the records office. Yet an old inventory lists it there, though the date is unclear. What is the best assessment?.",
     "options": [
       "The inventory should be ignored because its date is unclear",
       "The absolute claim is not established until the inventory's date and reliability are checked",
@@ -1202,7 +1202,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-104",
-    "q": "Grace disputes the time shown on a camera in the observatory. A technician confirms its clock was seven minutes fast that day. How should the footage be used? Case file 104: the evidence concerns velvet pouch and the observatory.",
+    "q": "Grace disputes the time shown on a camera in the observatory. A technician confirms its clock was seven minutes fast that day. How should the footage be used?.",
     "options": [
       "Use the displayed time without adjustment",
       "Assume the person in the footage changed the clock",
@@ -1214,7 +1214,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-105",
-    "q": "Lucas reports finding the coded note exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference? Case file 105: the evidence concerns film reel and the workshop.",
+    "q": "Lucas reports finding the coded note exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference?.",
     "options": [
       "The dust identifies who staged it",
       "The object was never in the room",
@@ -1226,7 +1226,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-106",
-    "q": "Tessa and a friend give matching accounts about the door sensor in the basement. Both admit they discussed what to say before being interviewed. What limits the value of their agreement? Case file 106: the evidence concerns weather log and the control room.",
+    "q": "Tessa and a friend give matching accounts about the door sensor in the basement. Both admit they discussed what to say before being interviewed. What limits the value of their agreement?.",
     "options": [
       "Their accounts may not be independent corroboration",
       "Matching accounts always prove honesty",
@@ -1238,7 +1238,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-107",
-    "q": "Noah produces a printed authorisation for moving the glass vial. The document has no original file, signature verification or issuing-office record. What is the priority? Case file 107: the evidence concerns door sensor and the studio.",
+    "q": "Noah produces a printed authorisation for moving the glass vial. The document has no original file, signature verification or issuing-office record. What is the priority?.",
     "options": [
       "Ask only whether Noah agrees with its wording",
       "Authenticate the document's origin before relying on its authority",
@@ -1250,7 +1250,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-108",
-    "q": "Zara offers a short recording that seems to contain the curator saying, 'Move the maintenance sheet.' The clip begins mid-sentence and ends immediately. What is needed? Case file 108: the evidence concerns train ticket and the laboratory.",
+    "q": "Zara offers a short recording that seems to contain the curator saying, 'Move the maintenance sheet.' The clip begins mid-sentence and ends immediately. What is needed?.",
     "options": [
       "A written guess about the missing sentence",
       "A vote on whether the voice sounds confident",
@@ -1262,7 +1262,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-109",
-    "q": "Jude shows a photograph of the copper coin beside the east corridor clock as proof of the time. The clock face has no date or verified setting. What does the image establish? Case file 109: the evidence concerns parcel tag and the records office.",
+    "q": "Jude shows a photograph of the copper coin beside the east corridor clock as proof of the time. The clock face has no date or verified setting. What does the image establish?.",
     "options": [
       "It proves the camera date is accurate",
       "It proves the clock was correct",
@@ -1274,7 +1274,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-110",
-    "q": "Freya says the wax seal remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises? Case file 110: the evidence concerns blue ledger and the archive.",
+    "q": "Freya says the wax seal remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises?.",
     "options": [
       "The chain of custody is incomplete, so handling during the gap must be established",
       "The item is automatically counterfeit",
@@ -1286,7 +1286,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-111",
-    "q": "Oscar repeatedly argues that the radio handset is worthless, while the question concerns who entered the records office at 9:50. What is the best response? Case file 111: the evidence concerns maintenance sheet and the music room.",
+    "q": "Oscar repeatedly argues that the radio handset is worthless, while the question concerns who entered the records office at 9:50. What is the best response?.",
     "options": [
       "Change the inquiry to the object's market price",
       "Return to the specific access question and ask for evidence about the entry",
@@ -1298,7 +1298,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-112",
-    "q": "An investigator asks Priya, 'Why did you hide the sealed envelope in the observatory?' No evidence yet establishes that Priya hid it. What is wrong with the question? Case file 112: the evidence concerns shipping manifest and the library.",
+    "q": "An investigator asks Priya, 'Why did you hide the sealed envelope in the observatory?' No evidence yet establishes that Priya hid it. What is wrong with the question?.",
     "options": [
       "It is too short to be useful",
       "It requests an answer based on a document",
@@ -1310,7 +1310,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-113",
-    "q": "Peter avoids eye contact while answering questions about the spare compass. The account is consistent with a maintenance record written before the incident. What is the fairest interpretation? Case file 113: the evidence concerns spare compass and the winter garden.",
+    "q": "Peter avoids eye contact while answering questions about the spare compass. The account is consistent with a maintenance record written before the incident. What is the fairest interpretation?.",
     "options": [
       "Avoiding eye contact proves a lie",
       "A consistent account proves innocence",
@@ -1322,7 +1322,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-114",
-    "q": "Yara gives an approximate time for seeing the fountain pen several weeks earlier, then corrects it after checking a diary. What should an investigator do? Case file 114: the evidence concerns receipt and the basement.",
+    "q": "Yara gives an approximate time for seeing the fountain pen several weeks earlier, then corrects it after checking a diary. What should an investigator do?.",
     "options": [
       "Compare the corrected recollection with the diary and other records",
       "Treat any correction as deliberate lying",
@@ -1334,7 +1334,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-115",
-    "q": "Ben gives an exact minute for moving the silver watch, but cannot explain how they know the time. a weather station record has no entry for that minute. What is the proper treatment? Case file 115: the evidence concerns wax seal and the dining hall.",
+    "q": "Ben gives an exact minute for moving the silver watch, but cannot explain how they know the time. a weather station record has no entry for that minute. What is the proper treatment?.",
     "options": [
       "Round the time until it matches the record",
       "Treat the precision as an unverified claim and ask for its basis",
@@ -1346,7 +1346,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-116",
-    "q": "Nora is responsible for checking the observatory inventory and also gives the only account that the velvet pouch was present. What safeguard would strengthen the inquiry? Case file 116: the evidence concerns footprint cast and the west gallery.",
+    "q": "Nora is responsible for checking the observatory inventory and also gives the only account that the velvet pouch was present. What safeguard would strengthen the inquiry?.",
     "options": [
       "Remove the inventory from consideration",
       "Ask a friend of Nora to confirm it",
@@ -1358,7 +1358,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-117",
-    "q": "Miles says the sketchbook was moved by an intruder. The access record shows a scheduled cleaner also entered the east corridor during the relevant window. What is the correct approach? Case file 117: the evidence concerns silver watch and the gallery.",
+    "q": "Miles says the sketchbook was moved by an intruder. The access record shows a scheduled cleaner also entered the east corridor during the relevant window. What is the correct approach?.",
     "options": [
       "Assume the cleaner is responsible",
       "Assume an intruder entered because an item is missing",
@@ -1370,7 +1370,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-118",
-    "q": "Maya quotes the curator as saying, 'The train ticket can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted? Case file 118: the evidence concerns museum label and the greenhouse.",
+    "q": "Maya quotes the curator as saying, 'The train ticket can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted?.",
     "options": [
       "The condition that had to be met before the move was authorised",
       "The identity of the object",
@@ -1382,7 +1382,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-119",
-    "q": "Ezra claims every witness independently confirmed the same detail about the desk calendar. Interview notes show the witnesses were questioned together. What is the concern? Case file 119: the evidence concerns white glove and the east corridor.",
+    "q": "Ezra claims every witness independently confirmed the same detail about the desk calendar. Interview notes show the witnesses were questioned together. What is the concern?.",
     "options": [
       "The notes establish who first suggested the detail",
       "Their answers may have influenced one another and should be checked separately",
@@ -1394,7 +1394,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-120",
-    "q": "Amira dismisses a witness's account of the shipping manifest as unreliable but fails to mention they are business partners. Why does that matter? Case file 120: the evidence concerns coded note and the map room.",
+    "q": "Amira dismisses a witness's account of the shipping manifest as unreliable but fails to mention they are business partners. Why does that matter?.",
     "options": [
       "The relationship proves the witness is lying",
       "The relationship determines who owned the object",
@@ -1406,7 +1406,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-121",
-    "q": "Victor says, 'If you cannot prove I moved the weather log, you must accept my story.' What is the flaw in this reasoning? Case file 121: the evidence concerns sketchbook and the roof terrace.",
+    "q": "Victor says, 'If you cannot prove I moved the weather log, you must accept my story.' What is the flaw in this reasoning?.",
     "options": [
       "A story becomes true when repeated",
       "The object must have moved itself",
@@ -1418,7 +1418,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-122",
-    "q": "Mina says the audio recorder was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove? Case file 122: the evidence concerns painted tile and the clock tower.",
+    "q": "Mina says the audio recorder was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove?.",
     "options": [
       "Only its earlier usual position, not its position on the incident day",
       "That it remained there continuously",
@@ -1430,7 +1430,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-123",
-    "q": "Sam claims the blue ledger was never exposed to rain while stored in the records office. A dated storm record and fresh water marks are found. Which check is most useful? Case file 123: the evidence concerns audio recorder and the boathouse.",
+    "q": "Sam claims the blue ledger was never exposed to rain while stored in the records office. A dated storm record and fresh water marks are found. Which check is most useful?.",
     "options": [
       "Ignore the storm because it affected the whole town",
       "Compare the marks' origin and timing with the storm and the room's exposure",
@@ -1442,7 +1442,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-124",
-    "q": "Ava relies on a permission slip bearing the curator's signature for moving the broken lens. The curator denies signing it. What is the strongest next step? Case file 124: the evidence concerns glass vial and the observatory.",
+    "q": "Ava relies on a permission slip bearing the curator's signature for moving the broken lens. The curator denies signing it. What is the strongest next step?.",
     "options": [
       "Judge the signature from a low-resolution copy",
       "Assume the paper's age confirms the signature",
@@ -1454,7 +1454,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-125",
-    "q": "Felix says the receipt could not fit through the east corridor doorway. The measured object is narrower than the verified doorway opening. What does this show? Case file 125: the evidence concerns desk calendar and the workshop.",
+    "q": "Felix says the receipt could not fit through the east corridor doorway. The measured object is narrower than the verified doorway opening. What does this show?.",
     "options": [
       "It proves the object was carried through that doorway",
       "It proves the speaker intentionally lied",
@@ -1466,7 +1466,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-126",
-    "q": "Cleo supplies a screenshot of a message about the camera card. The original conversation is unavailable and the screenshot is cropped. What is the best verification? Case file 126: the evidence concerns sealed envelope and the control room.",
+    "q": "Cleo supplies a screenshot of a message about the camera card. The original conversation is unavailable and the screenshot is cropped. What is the best verification?.",
     "options": [
       "Obtain the original message data with its surrounding conversation and metadata",
       "Enlarge the cropped screenshot until text is clearer",
@@ -1478,7 +1478,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-127",
-    "q": "Kai says the museum label was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first? Case file 127: the evidence concerns broken lens and the studio.",
+    "q": "Kai says the museum label was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first?.",
     "options": [
       "Assume the courier must be correct",
       "Check each clock, entry method and record source before deciding which time is reliable",
@@ -1490,7 +1490,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-128",
-    "q": "June argues that either the curator moved the film reel or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument? Case file 128: the evidence concerns copper coin and the laboratory.",
+    "q": "June argues that either the curator moved the film reel or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument?.",
     "options": [
       "Proof that the object vanished by itself",
       "A rule that only two explanations are possible",
@@ -1502,7 +1502,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-129",
-    "q": "Marcus is seen near the east corridor shortly before the painted tile is reported missing. No footage shows contact with the object. What can fairly be said? Case file 129: the evidence concerns visitor badge and the records office.",
+    "q": "Marcus is seen near the east corridor shortly before the painted tile is reported missing. No footage shows contact with the object. What can fairly be said?.",
     "options": [
       "Being nearby proves theft",
       "The missing object proves the footage is incomplete",
@@ -1514,7 +1514,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-130",
-    "q": "Lila insists the footprint cast was collected from the roof terrace at 8:10. However, a time-stamped access log records that the roof terrace had been locked until 8:25. Which assessment is strongest? Case file 130: the evidence concerns fountain pen and the archive.",
+    "q": "Lila insists the footprint cast was collected from the roof terrace at 8:10. However, A time-stamped access log records that the roof terrace had been locked until 8:25. Which assessment is strongest?.",
     "options": [
       "The claimed collection time conflicts with the recorded access window",
       "The record proves who took the object, but not when",
@@ -1526,7 +1526,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-131",
-    "q": "Henry says they remained in the west gallery continuously. The brass key bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a maintenance record written before the incident places the workshop door opening then. What should an investigator conclude? Case file 131: the evidence concerns camera card and the music room.",
+    "q": "Henry says they remained in the west gallery continuously. The brass key bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a maintenance record written before the incident places the workshop door opening then. What should an investigator conclude?.",
     "options": [
       "The workshop record establishes the person's motive",
       "The alibi needs testing because independent evidence suggests a possible movement",
@@ -1538,7 +1538,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-132",
-    "q": "Clara says, 'I never touched the coded note.' A witness saw Clara move its protective case in the music room at 9:50. Which interpretation is most careful? Case file 132: the evidence concerns radio handset and the library.",
+    "q": "Clara says, 'I never touched the coded note.' A witness saw Clara move its protective case in the music room at 9:50. Which interpretation is most careful?.",
     "options": [
       "The statement and observation cannot both be true",
       "The witness establishes why the case was moved",
@@ -1550,7 +1550,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-133",
-    "q": "Leo claims not to have seen the sealed door sensor. Before investigators mention its contents, Leo describes a tiny blue thread inside it. What is the key question? Case file 133: the evidence concerns brass key and the winter garden.",
+    "q": "Leo claims not to have seen the sealed door sensor. Before investigators mention its contents, Leo describes a tiny blue thread inside it. What is the key question?.",
     "options": [
       "Why was the thread blue rather than red?",
       "Whether the speaker likes the control room",
@@ -1562,7 +1562,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-134",
-    "q": "Lena presents a note saying the glass vial was inspected at 9:05. The ink analysis suggests the note was written later, while a security camera with a verified clock independently logs the inspection at a different time. What is the best response? Case file 134: the evidence concerns velvet pouch and the basement.",
+    "q": "Lena presents a note saying the glass vial was inspected at 9:05. The ink analysis suggests the note was written later, while a security camera with a verified clock independently logs the inspection at a different time. What is the best response?.",
     "options": [
       "Treat the note's stated time as unverified and compare its creation with the independent record",
       "Assume the ink test identifies the writer",
@@ -1574,7 +1574,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-135",
-    "q": "Hugo tells the group, 'I was nowhere near the west gallery after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish? Case file 135: the evidence concerns film reel and the dining hall.",
+    "q": "Hugo tells the group, 'I was nowhere near the west gallery after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish?.",
     "options": [
       "The statement is accurate because the kiosk is outside",
       "The statement may be misleading because the entrance is part of the location being discussed",
@@ -1586,7 +1586,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-136",
-    "q": "Dina reports seeing someone carry the copper coin through the music room at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion? Case file 136: the evidence concerns weather log and the west gallery.",
+    "q": "Dina reports seeing someone carry the copper coin through the music room at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion?.",
     "options": [
       "The darkness proves the report is fabricated",
       "The object could not have been carried in darkness",
@@ -1598,7 +1598,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-137",
-    "q": "Caleb claims the wax seal was already missing before the search. a sealed delivery receipt and a separate inventory both show it was present shortly before 9:05. What should be checked next? Case file 137: the evidence concerns door sensor and the gallery.",
+    "q": "Caleb claims the wax seal was already missing before the search. A sealed delivery receipt and a separate inventory both show it was present shortly before 9:05. What should be checked next?.",
     "options": [
       "Whether the object is valuable enough to steal",
       "Whether the speaker appears nervous",
@@ -1610,7 +1610,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-138",
-    "q": "Anya says, 'I did not take the radio handset from the roof terrace.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved? Case file 138: the evidence concerns train ticket and the greenhouse.",
+    "q": "Anya says, 'I did not take the radio handset from the roof terrace.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved?.",
     "options": [
       "Whether the speaker moved it by another route or arranged for someone else to do so",
       "Whether the object ever existed",
@@ -1622,7 +1622,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-139",
-    "q": "Dylan had a clear reason to want the sealed envelope removed from the west gallery, but a time-stamped access log places several people near the room at 8:10. What is the soundest conclusion? Case file 139: the evidence concerns parcel tag and the east corridor.",
+    "q": "Dylan had a clear reason to want the sealed envelope removed from the west gallery, but A time-stamped access log places several people near the room at 8:10. What is the soundest conclusion?.",
     "options": [
       "The motive makes the access record unnecessary",
       "Motive gives a reason to investigate but does not establish who acted",
@@ -1634,7 +1634,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-140",
-    "q": "Elena describes the spare compass as having a red seal. The original photograph, taken before anyone entered the music room, clearly shows a green seal. Which point is directly contradicted? Case file 140: the evidence concerns blue ledger and the map room.",
+    "q": "Elena describes the spare compass as having a red seal. The original photograph, taken before anyone entered the music room, clearly shows a green seal. Which point is directly contradicted?.",
     "options": [
       "The ownership of the object",
       "The time the photograph was taken",
@@ -1646,7 +1646,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-141",
-    "q": "David says the fountain pen was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a device's locally stored timestamp contains no instruction. What should be sought? Case file 141: the evidence concerns maintenance sheet and the roof terrace.",
+    "q": "David says the fountain pen was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a device's locally stored timestamp contains no instruction. What should be sought?.",
     "options": [
       "A list of people who dislike the curator",
       "A guess about what the curator intended",
@@ -1658,7 +1658,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-142",
-    "q": "Iris insists the silver watch was untouched after discovery. A second photograph shows its position changed between two documented images of the roof terrace. What is the key issue? Case file 142: the evidence concerns shipping manifest and the clock tower.",
+    "q": "Iris insists the silver watch was untouched after discovery. A second photograph shows its position changed between two documented images of the roof terrace. What is the key issue?.",
     "options": [
       "Who had access between the photographs and whether the item was moved",
       "Whether the second photograph is more attractive",
@@ -1670,7 +1670,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-143",
-    "q": "Theo says they first read the warning on the velvet pouch and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows? Case file 143: the evidence concerns spare compass and the boathouse.",
+    "q": "Theo says they first read the warning on the velvet pouch and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows?.",
     "options": [
       "The sequence is correct if the speaker was distracted",
       "The described sequence conflicts with the logged order of events",
@@ -1682,7 +1682,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-144",
-    "q": "Sofia's first account says the sketchbook was in the music room; a later account places it in the map room at the same time. What is the most useful next step? Case file 144: the evidence concerns receipt and the observatory.",
+    "q": "Sofia's first account says the sketchbook was in the music room; a later account places it in the map room at the same time. What is the most useful next step?.",
     "options": [
       "Assume the first version was intentionally false",
       "Ignore the location because both rooms are nearby",
@@ -1694,7 +1694,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-145",
-    "q": "Ravi states with certainty that the train ticket was never in the control room. Yet an old inventory lists it there, though the date is unclear. What is the best assessment? Case file 145: the evidence concerns wax seal and the workshop.",
+    "q": "Ravi states with certainty that the train ticket was never in the control room. Yet an old inventory lists it there, though the date is unclear. What is the best assessment?.",
     "options": [
       "The inventory proves the item was there during the incident",
       "Confidence makes the statement reliable",
@@ -1706,7 +1706,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-146",
-    "q": "Elise disputes the time shown on a camera in the roof terrace. A technician confirms its clock was seven minutes fast that day. How should the footage be used? Case file 146: the evidence concerns footprint cast and the control room.",
+    "q": "Elise disputes the time shown on a camera in the roof terrace. A technician confirms its clock was seven minutes fast that day. How should the footage be used?.",
     "options": [
       "Correct the timestamp using the verified offset before comparing accounts",
       "Discard the footage entirely",
@@ -1718,7 +1718,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-147",
-    "q": "Adrian reports finding the shipping manifest exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference? Case file 147: the evidence concerns silver watch and the studio.",
+    "q": "Adrian reports finding the shipping manifest exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference?.",
     "options": [
       "The display proves the report is true",
       "The object's displayed position may have been arranged shortly before discovery",
@@ -1730,7 +1730,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-148",
-    "q": "Sara and a friend give matching accounts about the weather log in the music room. Both admit they discussed what to say before being interviewed. What limits the value of their agreement? Case file 148: the evidence concerns museum label and the laboratory.",
+    "q": "Sara and a friend give matching accounts about the weather log in the music room. Both admit they discussed what to say before being interviewed. What limits the value of their agreement?.",
     "options": [
       "Discussing an event makes memory perfect",
       "Their agreement establishes the object's ownership",
@@ -1742,7 +1742,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-149",
-    "q": "Ibrahim produces a printed authorisation for moving the audio recorder. The document has no original file, signature verification or issuing-office record. What is the priority? Case file 149: the evidence concerns white glove and the records office.",
+    "q": "Ibrahim produces a printed authorisation for moving the audio recorder. The document has no original file, signature verification or issuing-office record. What is the priority?.",
     "options": [
       "Assume it is genuine because it is printed",
       "Judge it by the paper's colour",
@@ -1754,7 +1754,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-150",
-    "q": "Mira offers a short recording that seems to contain the curator saying, 'Move the blue ledger.' The clip begins mid-sentence and ends immediately. What is needed? Case file 150: the evidence concerns coded note and the archive.",
+    "q": "Mira offers a short recording that seems to contain the curator saying, 'Move the blue ledger.' The clip begins mid-sentence and ends immediately. What is needed?.",
     "options": [
       "The full original recording and context around the quoted words",
       "A louder copy of the same excerpt",
@@ -1766,7 +1766,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-151",
-    "q": "Owen shows a photograph of the broken lens beside the west gallery clock as proof of the time. The clock face has no date or verified setting. What does the image establish? Case file 151: the evidence concerns sketchbook and the music room.",
+    "q": "Owen shows a photograph of the broken lens beside the west gallery clock as proof of the time. The clock face has no date or verified setting. What does the image establish?.",
     "options": [
       "It proves who took the photograph",
       "It shows the object and clock together, but not a verified time",
@@ -1778,7 +1778,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-152",
-    "q": "Aria says the receipt remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises? Case file 152: the evidence concerns painted tile and the library.",
+    "q": "Aria says the receipt remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises?.",
     "options": [
       "The last handler must be responsible",
       "The seal number is irrelevant",
@@ -1790,7 +1790,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-153",
-    "q": "Finn repeatedly argues that the camera card is worthless, while the question concerns who entered the control room at 9:50. What is the best response? Case file 153: the evidence concerns audio recorder and the winter garden.",
+    "q": "Finn repeatedly argues that the camera card is worthless, while the question concerns who entered the control room at 9:50. What is the best response?.",
     "options": [
       "Accept the valuation as an alibi",
       "Assume the distraction proves guilt",
@@ -1802,7 +1802,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-154",
-    "q": "An investigator asks Nina, 'Why did you hide the museum label in the roof terrace?' No evidence yet establishes that Nina hid it. What is wrong with the question? Case file 154: the evidence concerns glass vial and the basement.",
+    "q": "An investigator asks Nina, 'Why did you hide the museum label in the roof terrace?' No evidence yet establishes that Nina hid it. What is wrong with the question?.",
     "options": [
       "It assumes the disputed act occurred and that the person did it",
       "It asks about a location rather than a time",
@@ -1814,7 +1814,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-155",
-    "q": "Simon avoids eye contact while answering questions about the film reel. The account is consistent with a sealed delivery receipt. What is the fairest interpretation? Case file 155: the evidence concerns desk calendar and the dining hall.",
+    "q": "Simon avoids eye contact while answering questions about the film reel. The account is consistent with A sealed delivery receipt. What is the fairest interpretation?.",
     "options": [
       "Nervousness establishes a hidden motive",
       "Body language alone cannot establish deception; assess verifiable evidence",
@@ -1826,7 +1826,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-156",
-    "q": "Naomi gives an approximate time for seeing the painted tile several weeks earlier, then corrects it after checking a diary. What should an investigator do? Case file 156: the evidence concerns sealed envelope and the west gallery.",
+    "q": "Naomi gives an approximate time for seeing the painted tile several weeks earlier, then corrects it after checking a diary. What should an investigator do?.",
     "options": [
       "Prefer the first estimate because it came sooner",
       "Ignore the diary because memory is personal",
@@ -1838,7 +1838,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-157",
-    "q": "Max gives an exact minute for moving the footprint cast, but cannot explain how they know the time. a time-stamped access log has no entry for that minute. What is the proper treatment? Case file 157: the evidence concerns broken lens and the gallery.",
+    "q": "Max gives an exact minute for moving the footprint cast, but cannot explain how they know the time. A time-stamped access log has no entry for that minute. What is the proper treatment?.",
     "options": [
       "Assume exact times are always accurate",
       "Assume the missing log entry proves the event impossible",
@@ -1850,7 +1850,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-158",
-    "q": "Rosa is responsible for checking the roof terrace inventory and also gives the only account that the brass key was present. What safeguard would strengthen the inquiry? Case file 158: the evidence concerns copper coin and the greenhouse.",
+    "q": "Rosa is responsible for checking the roof terrace inventory and also gives the only account that the brass key was present. What safeguard would strengthen the inquiry?.",
     "options": [
       "Have an independent person audit the inventory against original records",
       "Let Rosa certify their own account again",
@@ -1862,7 +1862,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-159",
-    "q": "Ethan says the coded note was moved by an intruder. The access record shows a scheduled cleaner also entered the west gallery during the relevant window. What is the correct approach? Case file 159: the evidence concerns visitor badge and the east corridor.",
+    "q": "Ethan says the coded note was moved by an intruder. The access record shows a scheduled cleaner also entered the west gallery during the relevant window. What is the correct approach?.",
     "options": [
       "Ignore the access record because it shows authorised entry",
       "Investigate both possibilities instead of treating the intruder claim as established",
@@ -1874,7 +1874,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-160",
-    "q": "Ruby quotes the curator as saying, 'The door sensor can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted? Case file 160: the evidence concerns fountain pen and the map room.",
+    "q": "Ruby quotes the curator as saying, 'The door sensor can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted?.",
     "options": [
       "The curator's opinion of the music room",
       "The date on which the note was written",
@@ -1886,7 +1886,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-161",
-    "q": "Eli claims every witness independently confirmed the same detail about the glass vial. Interview notes show the witnesses were questioned together. What is the concern? Case file 161: the evidence concerns camera card and the roof terrace.",
+    "q": "Eli claims every witness independently confirmed the same detail about the glass vial. Interview notes show the witnesses were questioned together. What is the concern?.",
     "options": [
       "The shared interview proves all accounts are false",
       "The detail is confirmed because everyone heard it",
@@ -1898,7 +1898,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-162",
-    "q": "Talia dismisses a witness's account of the maintenance sheet as unreliable but fails to mention they are business partners. Why does that matter? Case file 162: the evidence concerns radio handset and the clock tower.",
+    "q": "Talia dismisses a witness's account of the maintenance sheet as unreliable but fails to mention they are business partners. Why does that matter?.",
     "options": [
       "The undisclosed relationship may affect how the criticism and possible bias are assessed",
       "A business relationship automatically makes the witness truthful",
@@ -1910,7 +1910,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-163",
-    "q": "Jonah says, 'If you cannot prove I moved the copper coin, you must accept my story.' What is the flaw in this reasoning? Case file 163: the evidence concerns brass key and the boathouse.",
+    "q": "Jonah says, 'If you cannot prove I moved the copper coin, you must accept my story.' What is the flaw in this reasoning?.",
     "options": [
       "The investigator must accept the first explanation offered",
       "Lack of proof against a person does not automatically verify their account",
@@ -1922,7 +1922,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-164",
-    "q": "Grace says the wax seal was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove? Case file 164: the evidence concerns velvet pouch and the observatory.",
+    "q": "Grace says the wax seal was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove?.",
     "options": [
       "That nobody could have moved it",
       "That the photograph was taken on the incident day",
@@ -1934,7 +1934,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-165",
-    "q": "Lucas claims the radio handset was never exposed to rain while stored in the control room. A dated storm record and fresh water marks are found. Which check is most useful? Case file 165: the evidence concerns film reel and the workshop.",
+    "q": "Lucas claims the radio handset was never exposed to rain while stored in the control room. A dated storm record and fresh water marks are found. Which check is most useful?.",
     "options": [
       "Ask whether Lucas likes rainy weather",
       "Assume the marks prove the object was outdoors",
@@ -1946,7 +1946,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-166",
-    "q": "Tessa relies on a permission slip bearing the curator's signature for moving the sealed envelope. The curator denies signing it. What is the strongest next step? Case file 166: the evidence concerns weather log and the control room.",
+    "q": "Tessa relies on a permission slip bearing the curator's signature for moving the sealed envelope. The curator denies signing it. What is the strongest next step?.",
     "options": [
       "Compare the original signature with authenticated samples and verify who handled the slip",
       "Accept the denial as conclusive proof of forgery",
@@ -1958,7 +1958,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-167",
-    "q": "Noah says the spare compass could not fit through the west gallery doorway. The measured object is narrower than the verified doorway opening. What does this show? Case file 167: the evidence concerns door sensor and the studio.",
+    "q": "Noah says the spare compass could not fit through the west gallery doorway. The measured object is narrower than the verified doorway opening. What does this show?.",
     "options": [
       "It proves the doorway was always open",
       "The stated physical impossibility is not supported by the measurements",
@@ -1970,7 +1970,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-168",
-    "q": "Zara supplies a screenshot of a message about the fountain pen. The original conversation is unavailable and the screenshot is cropped. What is the best verification? Case file 168: the evidence concerns train ticket and the laboratory.",
+    "q": "Zara supplies a screenshot of a message about the fountain pen. The original conversation is unavailable and the screenshot is cropped. What is the best verification?.",
     "options": [
       "Rely on the sender's display name alone",
       "Treat the screenshot as authenticated because it looks genuine",
@@ -1982,7 +1982,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-169",
-    "q": "Jude says the silver watch was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first? Case file 169: the evidence concerns parcel tag and the records office.",
+    "q": "Jude says the silver watch was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first?.",
     "options": [
       "Choose whichever time supports the accusation",
       "Average the three times without checking them",
@@ -1994,7 +1994,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-170",
-    "q": "Freya argues that either the curator moved the velvet pouch or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument? Case file 170: the evidence concerns blue ledger and the archive.",
+    "q": "Freya argues that either the curator moved the velvet pouch or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument?.",
     "options": [
       "It ignores other plausible people and explanations",
       "A reason to distrust every access log",
@@ -2006,7 +2006,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-171",
-    "q": "Oscar is seen near the west gallery shortly before the sketchbook is reported missing. No footage shows contact with the object. What can fairly be said? Case file 171: the evidence concerns maintenance sheet and the music room.",
+    "q": "Oscar is seen near the west gallery shortly before the sketchbook is reported missing. No footage shows contact with the object. What can fairly be said?.",
     "options": [
       "The person must know where the object is",
       "The person was nearby, but the evidence does not show they took the object",
@@ -2018,7 +2018,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-172",
-    "q": "Priya insists the train ticket was collected from the greenhouse at 8:10. However, two independent witnesses records that the greenhouse had been locked until 8:25. Which assessment is strongest? Case file 172: the evidence concerns shipping manifest and the library.",
+    "q": "Priya insists the train ticket was collected from the greenhouse at 8:10. However, two independent witnesses records that the greenhouse had been locked until 8:25. Which assessment is strongest?.",
     "options": [
       "The claim is confirmed because the object existed",
       "The time difference is irrelevant to the access question",
@@ -2030,7 +2030,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-173",
-    "q": "Peter says they remained in the winter garden continuously. The desk calendar bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a sealed delivery receipt places the workshop door opening then. What should an investigator conclude? Case file 173: the evidence concerns spare compass and the winter garden.",
+    "q": "Peter says they remained in the winter garden continuously. The desk calendar bears a fresh mark that could only have been made in the adjoining workshop at 9:05; A sealed delivery receipt places the workshop door opening then. What should an investigator conclude?.",
     "options": [
       "The mark alone proves deliberate deception",
       "The alibi must be true because it is confidently stated",
@@ -2042,7 +2042,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-174",
-    "q": "Yara says, 'I never touched the shipping manifest.' A witness saw Yara move its protective case in the laboratory at 9:50. Which interpretation is most careful? Case file 174: the evidence concerns receipt and the basement.",
+    "q": "Yara says, 'I never touched the shipping manifest.' A witness saw Yara move its protective case in the laboratory at 9:50. Which interpretation is most careful?.",
     "options": [
       "The statement may be literally true while omitting relevant handling of the case",
       "The witness proves the object itself was touched",
@@ -2054,7 +2054,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-175",
-    "q": "Ben claims not to have seen the sealed weather log. Before investigators mention its contents, Ben describes a tiny blue thread inside it. What is the key question? Case file 175: the evidence concerns wax seal and the dining hall.",
+    "q": "Ben claims not to have seen the sealed weather log. Before investigators mention its contents, Ben describes a tiny blue thread inside it. What is the key question?.",
     "options": [
       "Who purchased the sealed container?",
       "How could the speaker know a detail that had not been disclosed?",
@@ -2066,7 +2066,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-176",
-    "q": "Nora presents a note saying the audio recorder was inspected at 9:05. The ink analysis suggests the note was written later, while a maintenance record written before the incident independently logs the inspection at a different time. What is the best response? Case file 176: the evidence concerns footprint cast and the west gallery.",
+    "q": "Nora presents a note saying the audio recorder was inspected at 9:05. The ink analysis suggests the note was written later, while a maintenance record written before the incident independently logs the inspection at a different time. What is the best response?.",
     "options": [
       "Accept the note because it contains a precise time",
       "Discard every other record from the greenhouse",
@@ -2078,7 +2078,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-177",
-    "q": "Miles tells the group, 'I was nowhere near the winter garden after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish? Case file 177: the evidence concerns silver watch and the gallery.",
+    "q": "Miles tells the group, 'I was nowhere near the winter garden after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish?.",
     "options": [
       "The receipt proves entry into every room",
       "The receipt proves the purchase was stolen",
@@ -2090,7 +2090,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-178",
-    "q": "Maya reports seeing someone carry the broken lens through the laboratory at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion? Case file 178: the evidence concerns museum label and the greenhouse.",
+    "q": "Maya reports seeing someone carry the broken lens through the laboratory at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion?.",
     "options": [
       "The observation may establish movement, but identification is uncertain",
       "The witness has conclusively identified the carrier",
@@ -2102,7 +2102,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-179",
-    "q": "Ezra claims the receipt was already missing before the search. a security camera with a verified clock and a separate inventory both show it was present shortly before 9:05. What should be checked next? Case file 179: the evidence concerns white glove and the east corridor.",
+    "q": "Ezra claims the receipt was already missing before the search. a security camera with a verified clock and a separate inventory both show it was present shortly before 9:05. What should be checked next?.",
     "options": [
       "Whether the inventory uses the same handwriting",
       "Whether the claimed discovery time is compatible with both independent records",
@@ -2114,7 +2114,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-180",
-    "q": "Amira says, 'I did not take the camera card from the greenhouse.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved? Case file 180: the evidence concerns coded note and the map room.",
+    "q": "Amira says, 'I did not take the camera card from the greenhouse.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved?.",
     "options": [
       "Whether the storage shelf is part of the greenhouse",
       "Whether the item is made of metal",
@@ -2126,7 +2126,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-181",
-    "q": "Victor had a clear reason to want the museum label removed from the winter garden, but two independent witnesses places several people near the room at 8:10. What is the soundest conclusion? Case file 181: the evidence concerns sketchbook and the roof terrace.",
+    "q": "Victor had a clear reason to want the museum label removed from the winter garden, but two independent witnesses places several people near the room at 8:10. What is the soundest conclusion?.",
     "options": [
       "Motive alone proves responsibility",
       "Everyone near the room must have shared the motive",
@@ -2138,7 +2138,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-182",
-    "q": "Mina describes the film reel as having a red seal. The original photograph, taken before anyone entered the laboratory, clearly shows a green seal. Which point is directly contradicted? Case file 182: the evidence concerns painted tile and the clock tower.",
+    "q": "Mina describes the film reel as having a red seal. The original photograph, taken before anyone entered the laboratory, clearly shows a green seal. Which point is directly contradicted?.",
     "options": [
       "The speaker's description of the seal's colour",
       "The speaker's location at the time",
@@ -2150,7 +2150,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-183",
-    "q": "Sam says the painted tile was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and an original signed register contains no instruction. What should be sought? Case file 183: the evidence concerns audio recorder and the boathouse.",
+    "q": "Sam says the painted tile was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and an original signed register contains no instruction. What should be sought?.",
     "options": [
       "A repetition of the same rumour by more people",
       "The original source of the order and any direct record or witness",
@@ -2162,7 +2162,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-184",
-    "q": "Ava insists the footprint cast was untouched after discovery. A second photograph shows its position changed between two documented images of the greenhouse. What is the key issue? Case file 184: the evidence concerns glass vial and the observatory.",
+    "q": "Ava insists the footprint cast was untouched after discovery. A second photograph shows its position changed between two documented images of the greenhouse. What is the key issue?.",
     "options": [
       "Whether the object is expensive",
       "Whether the first photographer knew Ava",
@@ -2174,7 +2174,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-185",
-    "q": "Felix says they first read the warning on the brass key and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows? Case file 185: the evidence concerns desk calendar and the workshop.",
+    "q": "Felix says they first read the warning on the brass key and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows?.",
     "options": [
       "The warning must have caused the earlier alarm",
       "The log proves who printed the warning",
@@ -2186,7 +2186,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-186",
-    "q": "Cleo's first account says the coded note was in the laboratory; a later account places it in the map room at the same time. What is the most useful next step? Case file 186: the evidence concerns sealed envelope and the control room.",
+    "q": "Cleo's first account says the coded note was in the laboratory; a later account places it in the map room at the same time. What is the most useful next step?.",
     "options": [
       "Ask what prompted the change and test both versions against independent evidence",
       "Automatically accept the later version",
@@ -2198,7 +2198,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-187",
-    "q": "Kai states with certainty that the door sensor was never in the boathouse. Yet an old inventory lists it there, though the date is unclear. What is the best assessment? Case file 187: the evidence concerns broken lens and the studio.",
+    "q": "Kai states with certainty that the door sensor was never in the boathouse. Yet an old inventory lists it there, though the date is unclear. What is the best assessment?.",
     "options": [
       "The inventory should be ignored because its date is unclear",
       "The absolute claim is not established until the inventory's date and reliability are checked",
@@ -2210,7 +2210,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-188",
-    "q": "June disputes the time shown on a camera in the greenhouse. A technician confirms its clock was seven minutes fast that day. How should the footage be used? Case file 188: the evidence concerns copper coin and the laboratory.",
+    "q": "June disputes the time shown on a camera in the greenhouse. A technician confirms its clock was seven minutes fast that day. How should the footage be used?.",
     "options": [
       "Use the displayed time without adjustment",
       "Assume the person in the footage changed the clock",
@@ -2222,7 +2222,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-189",
-    "q": "Marcus reports finding the maintenance sheet exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference? Case file 189: the evidence concerns visitor badge and the records office.",
+    "q": "Marcus reports finding the maintenance sheet exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference?.",
     "options": [
       "The dust identifies who staged it",
       "The object was never in the room",
@@ -2234,7 +2234,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-190",
-    "q": "Lila and a friend give matching accounts about the copper coin in the laboratory. Both admit they discussed what to say before being interviewed. What limits the value of their agreement? Case file 190: the evidence concerns fountain pen and the archive.",
+    "q": "Lila and a friend give matching accounts about the copper coin in the laboratory. Both admit they discussed what to say before being interviewed. What limits the value of their agreement?.",
     "options": [
       "Their accounts may not be independent corroboration",
       "Matching accounts always prove honesty",
@@ -2246,7 +2246,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-191",
-    "q": "Henry produces a printed authorisation for moving the wax seal. The document has no original file, signature verification or issuing-office record. What is the priority? Case file 191: the evidence concerns camera card and the music room.",
+    "q": "Henry produces a printed authorisation for moving the wax seal. The document has no original file, signature verification or issuing-office record. What is the priority?.",
     "options": [
       "Ask only whether Henry agrees with its wording",
       "Authenticate the document's origin before relying on its authority",
@@ -2258,7 +2258,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-192",
-    "q": "Clara offers a short recording that seems to contain the curator saying, 'Move the radio handset.' The clip begins mid-sentence and ends immediately. What is needed? Case file 192: the evidence concerns radio handset and the library.",
+    "q": "Clara offers a short recording that seems to contain the curator saying, 'Move the radio handset.' The clip begins mid-sentence and ends immediately. What is needed?.",
     "options": [
       "A written guess about the missing sentence",
       "A vote on whether the voice sounds confident",
@@ -2270,7 +2270,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-193",
-    "q": "Leo shows a photograph of the sealed envelope beside the winter garden clock as proof of the time. The clock face has no date or verified setting. What does the image establish? Case file 193: the evidence concerns brass key and the winter garden.",
+    "q": "Leo shows a photograph of the sealed envelope beside the winter garden clock as proof of the time. The clock face has no date or verified setting. What does the image establish?.",
     "options": [
       "It proves the camera date is accurate",
       "It proves the clock was correct",
@@ -2282,7 +2282,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-194",
-    "q": "Lena says the spare compass remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises? Case file 194: the evidence concerns velvet pouch and the basement.",
+    "q": "Lena says the spare compass remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises?.",
     "options": [
       "The chain of custody is incomplete, so handling during the gap must be established",
       "The item is automatically counterfeit",
@@ -2294,7 +2294,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-195",
-    "q": "Hugo repeatedly argues that the fountain pen is worthless, while the question concerns who entered the boathouse at 9:50. What is the best response? Case file 195: the evidence concerns film reel and the dining hall.",
+    "q": "Hugo repeatedly argues that the fountain pen is worthless, while the question concerns who entered the boathouse at 9:50. What is the best response?.",
     "options": [
       "Change the inquiry to the object's market price",
       "Return to the specific access question and ask for evidence about the entry",
@@ -2306,7 +2306,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-196",
-    "q": "An investigator asks Dina, 'Why did you hide the silver watch in the greenhouse?' No evidence yet establishes that Dina hid it. What is wrong with the question? Case file 196: the evidence concerns weather log and the west gallery.",
+    "q": "An investigator asks Dina, 'Why did you hide the silver watch in the greenhouse?' No evidence yet establishes that Dina hid it. What is wrong with the question?.",
     "options": [
       "It is too short to be useful",
       "It requests an answer based on a document",
@@ -2318,7 +2318,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-197",
-    "q": "Caleb avoids eye contact while answering questions about the velvet pouch. The account is consistent with a security camera with a verified clock. What is the fairest interpretation? Case file 197: the evidence concerns door sensor and the gallery.",
+    "q": "Caleb avoids eye contact while answering questions about the velvet pouch. The account is consistent with a security camera with a verified clock. What is the fairest interpretation?.",
     "options": [
       "Avoiding eye contact proves a lie",
       "A consistent account proves innocence",
@@ -2330,7 +2330,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-198",
-    "q": "Anya gives an approximate time for seeing the sketchbook several weeks earlier, then corrects it after checking a diary. What should an investigator do? Case file 198: the evidence concerns train ticket and the greenhouse.",
+    "q": "Anya gives an approximate time for seeing the sketchbook several weeks earlier, then corrects it after checking a diary. What should an investigator do?.",
     "options": [
       "Compare the corrected recollection with the diary and other records",
       "Treat any correction as deliberate lying",
@@ -2342,7 +2342,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-199",
-    "q": "Dylan gives an exact minute for moving the train ticket, but cannot explain how they know the time. two independent witnesses has no entry for that minute. What is the proper treatment? Case file 199: the evidence concerns parcel tag and the east corridor.",
+    "q": "Dylan gives an exact minute for moving the train ticket, but cannot explain how they know the time. two independent witnesses has no entry for that minute. What is the proper treatment?.",
     "options": [
       "Round the time until it matches the record",
       "Treat the precision as an unverified claim and ask for its basis",
@@ -2354,7 +2354,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-200",
-    "q": "Elena is responsible for checking the greenhouse inventory and also gives the only account that the desk calendar was present. What safeguard would strengthen the inquiry? Case file 200: the evidence concerns blue ledger and the map room.",
+    "q": "Elena is responsible for checking the greenhouse inventory and also gives the only account that the desk calendar was present. What safeguard would strengthen the inquiry?.",
     "options": [
       "Remove the inventory from consideration",
       "Ask a friend of Elena to confirm it",
@@ -2366,7 +2366,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-201",
-    "q": "David says the shipping manifest was moved by an intruder. The access record shows a scheduled cleaner also entered the winter garden during the relevant window. What is the correct approach? Case file 201: the evidence concerns maintenance sheet and the roof terrace.",
+    "q": "David says the shipping manifest was moved by an intruder. The access record shows a scheduled cleaner also entered the winter garden during the relevant window. What is the correct approach?.",
     "options": [
       "Assume the cleaner is responsible",
       "Assume an intruder entered because an item is missing",
@@ -2378,7 +2378,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-202",
-    "q": "Iris quotes the curator as saying, 'The weather log can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted? Case file 202: the evidence concerns shipping manifest and the clock tower.",
+    "q": "Iris quotes the curator as saying, 'The weather log can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted?.",
     "options": [
       "The condition that had to be met before the move was authorised",
       "The identity of the object",
@@ -2390,7 +2390,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-203",
-    "q": "Theo claims every witness independently confirmed the same detail about the audio recorder. Interview notes show the witnesses were questioned together. What is the concern? Case file 203: the evidence concerns spare compass and the boathouse.",
+    "q": "Theo claims every witness independently confirmed the same detail about the audio recorder. Interview notes show the witnesses were questioned together. What is the concern?.",
     "options": [
       "The notes establish who first suggested the detail",
       "Their answers may have influenced one another and should be checked separately",
@@ -2402,7 +2402,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-204",
-    "q": "Sofia dismisses a witness's account of the blue ledger as unreliable but fails to mention they are business partners. Why does that matter? Case file 204: the evidence concerns receipt and the observatory.",
+    "q": "Sofia dismisses a witness's account of the blue ledger as unreliable but fails to mention they are business partners. Why does that matter?.",
     "options": [
       "The relationship proves the witness is lying",
       "The relationship determines who owned the object",
@@ -2414,7 +2414,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-205",
-    "q": "Ravi says, 'If you cannot prove I moved the broken lens, you must accept my story.' What is the flaw in this reasoning? Case file 205: the evidence concerns wax seal and the workshop.",
+    "q": "Ravi says, 'If you cannot prove I moved the broken lens, you must accept my story.' What is the flaw in this reasoning?.",
     "options": [
       "A story becomes true when repeated",
       "The object must have moved itself",
@@ -2426,7 +2426,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-206",
-    "q": "Elise says the receipt was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove? Case file 206: the evidence concerns footprint cast and the control room.",
+    "q": "Elise says the receipt was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove?.",
     "options": [
       "Only its earlier usual position, not its position on the incident day",
       "That it remained there continuously",
@@ -2438,7 +2438,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-207",
-    "q": "Adrian claims the camera card was never exposed to rain while stored in the boathouse. A dated storm record and fresh water marks are found. Which check is most useful? Case file 207: the evidence concerns silver watch and the studio.",
+    "q": "Adrian claims the camera card was never exposed to rain while stored in the boathouse. A dated storm record and fresh water marks are found. Which check is most useful?.",
     "options": [
       "Ignore the storm because it affected the whole town",
       "Compare the marks' origin and timing with the storm and the room's exposure",
@@ -2450,7 +2450,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-208",
-    "q": "Sara relies on a permission slip bearing the curator's signature for moving the museum label. The curator denies signing it. What is the strongest next step? Case file 208: the evidence concerns museum label and the laboratory.",
+    "q": "Sara relies on a permission slip bearing the curator's signature for moving the museum label. The curator denies signing it. What is the strongest next step?.",
     "options": [
       "Judge the signature from a low-resolution copy",
       "Assume the paper's age confirms the signature",
@@ -2462,7 +2462,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-209",
-    "q": "Ibrahim says the film reel could not fit through the winter garden doorway. The measured object is narrower than the verified doorway opening. What does this show? Case file 209: the evidence concerns white glove and the records office.",
+    "q": "Ibrahim says the film reel could not fit through the winter garden doorway. The measured object is narrower than the verified doorway opening. What does this show?.",
     "options": [
       "It proves the object was carried through that doorway",
       "It proves the speaker intentionally lied",
@@ -2474,7 +2474,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-210",
-    "q": "Mira supplies a screenshot of a message about the painted tile. The original conversation is unavailable and the screenshot is cropped. What is the best verification? Case file 210: the evidence concerns coded note and the archive.",
+    "q": "Mira supplies a screenshot of a message about the painted tile. The original conversation is unavailable and the screenshot is cropped. What is the best verification?.",
     "options": [
       "Obtain the original message data with its surrounding conversation and metadata",
       "Enlarge the cropped screenshot until text is clearer",
@@ -2486,7 +2486,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-211",
-    "q": "Owen says the footprint cast was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first? Case file 211: the evidence concerns sketchbook and the music room.",
+    "q": "Owen says the footprint cast was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first?.",
     "options": [
       "Assume the courier must be correct",
       "Check each clock, entry method and record source before deciding which time is reliable",
@@ -2498,7 +2498,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-212",
-    "q": "Aria argues that either the curator moved the brass key or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument? Case file 212: the evidence concerns painted tile and the library.",
+    "q": "Aria argues that either the curator moved the brass key or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument?.",
     "options": [
       "Proof that the object vanished by itself",
       "A rule that only two explanations are possible",
@@ -2510,7 +2510,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-213",
-    "q": "Finn is seen near the winter garden shortly before the coded note is reported missing. No footage shows contact with the object. What can fairly be said? Case file 213: the evidence concerns audio recorder and the winter garden.",
+    "q": "Finn is seen near the winter garden shortly before the coded note is reported missing. No footage shows contact with the object. What can fairly be said?.",
     "options": [
       "Being nearby proves theft",
       "The missing object proves the footage is incomplete",
@@ -2522,7 +2522,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-214",
-    "q": "Nina insists the door sensor was collected from the dining hall at 8:10. However, a weather station record records that the dining hall had been locked until 8:25. Which assessment is strongest? Case file 214: the evidence concerns glass vial and the basement.",
+    "q": "Nina insists the door sensor was collected from the dining hall at 8:10. However, a weather station record records that the dining hall had been locked until 8:25. Which assessment is strongest?.",
     "options": [
       "The claimed collection time conflicts with the recorded access window",
       "The record proves who took the object, but not when",
@@ -2534,7 +2534,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-215",
-    "q": "Simon says they remained in the archive continuously. The glass vial bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a security camera with a verified clock places the workshop door opening then. What should an investigator conclude? Case file 215: the evidence concerns desk calendar and the dining hall.",
+    "q": "Simon says they remained in the archive continuously. The glass vial bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a security camera with a verified clock places the workshop door opening then. What should an investigator conclude?.",
     "options": [
       "The workshop record establishes the person's motive",
       "The alibi needs testing because independent evidence suggests a possible movement",
@@ -2546,7 +2546,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-216",
-    "q": "Naomi says, 'I never touched the maintenance sheet.' A witness saw Naomi move its protective case in the workshop at 9:50. Which interpretation is most careful? Case file 216: the evidence concerns sealed envelope and the west gallery.",
+    "q": "Naomi says, 'I never touched the maintenance sheet.' A witness saw Naomi move its protective case in the workshop at 9:50. Which interpretation is most careful?.",
     "options": [
       "The statement and observation cannot both be true",
       "The witness establishes why the case was moved",
@@ -2558,7 +2558,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-217",
-    "q": "Max claims not to have seen the sealed copper coin. Before investigators mention its contents, Max describes a tiny blue thread inside it. What is the key question? Case file 217: the evidence concerns broken lens and the gallery.",
+    "q": "Max claims not to have seen the sealed copper coin. Before investigators mention its contents, Max describes a tiny blue thread inside it. What is the key question?.",
     "options": [
       "Why was the thread blue rather than red?",
       "Whether the speaker likes the map room",
@@ -2570,7 +2570,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-218",
-    "q": "Rosa presents a note saying the wax seal was inspected at 9:05. The ink analysis suggests the note was written later, while a sealed delivery receipt independently logs the inspection at a different time. What is the best response? Case file 218: the evidence concerns copper coin and the greenhouse.",
+    "q": "Rosa presents a note saying the wax seal was inspected at 9:05. The ink analysis suggests the note was written later, while A sealed delivery receipt independently logs the inspection at a different time. What is the best response?.",
     "options": [
       "Treat the note's stated time as unverified and compare its creation with the independent record",
       "Assume the ink test identifies the writer",
@@ -2582,7 +2582,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-219",
-    "q": "Ethan tells the group, 'I was nowhere near the archive after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish? Case file 219: the evidence concerns visitor badge and the east corridor.",
+    "q": "Ethan tells the group, 'I was nowhere near the archive after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish?.",
     "options": [
       "The statement is accurate because the kiosk is outside",
       "The statement may be misleading because the entrance is part of the location being discussed",
@@ -2594,7 +2594,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-220",
-    "q": "Ruby reports seeing someone carry the sealed envelope through the workshop at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion? Case file 220: the evidence concerns fountain pen and the map room.",
+    "q": "Ruby reports seeing someone carry the sealed envelope through the workshop at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion?.",
     "options": [
       "The darkness proves the report is fabricated",
       "The object could not have been carried in darkness",
@@ -2606,7 +2606,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-221",
-    "q": "Eli claims the spare compass was already missing before the search. a maintenance record written before the incident and a separate inventory both show it was present shortly before 9:05. What should be checked next? Case file 221: the evidence concerns camera card and the roof terrace.",
+    "q": "Eli claims the spare compass was already missing before the search. a maintenance record written before the incident and a separate inventory both show it was present shortly before 9:05. What should be checked next?.",
     "options": [
       "Whether the object is valuable enough to steal",
       "Whether the speaker appears nervous",
@@ -2618,7 +2618,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-222",
-    "q": "Talia says, 'I did not take the fountain pen from the dining hall.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved? Case file 222: the evidence concerns radio handset and the clock tower.",
+    "q": "Talia says, 'I did not take the fountain pen from the dining hall.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved?.",
     "options": [
       "Whether the speaker moved it by another route or arranged for someone else to do so",
       "Whether the object ever existed",
@@ -2630,7 +2630,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-223",
-    "q": "Jonah had a clear reason to want the silver watch removed from the archive, but a weather station record places several people near the room at 8:10. What is the soundest conclusion? Case file 223: the evidence concerns brass key and the boathouse.",
+    "q": "Jonah had a clear reason to want the silver watch removed from the archive, but a weather station record places several people near the room at 8:10. What is the soundest conclusion?.",
     "options": [
       "The motive makes the access record unnecessary",
       "Motive gives a reason to investigate but does not establish who acted",
@@ -2642,7 +2642,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-224",
-    "q": "Grace describes the velvet pouch as having a red seal. The original photograph, taken before anyone entered the workshop, clearly shows a green seal. Which point is directly contradicted? Case file 224: the evidence concerns velvet pouch and the observatory.",
+    "q": "Grace describes the velvet pouch as having a red seal. The original photograph, taken before anyone entered the workshop, clearly shows a green seal. Which point is directly contradicted?.",
     "options": [
       "The ownership of the object",
       "The time the photograph was taken",
@@ -2654,7 +2654,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-225",
-    "q": "Lucas says the sketchbook was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a continuous audio recording contains no instruction. What should be sought? Case file 225: the evidence concerns film reel and the workshop.",
+    "q": "Lucas says the sketchbook was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a continuous audio recording contains no instruction. What should be sought?.",
     "options": [
       "A list of people who dislike the curator",
       "A guess about what the curator intended",
@@ -2666,7 +2666,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-226",
-    "q": "Tessa insists the train ticket was untouched after discovery. A second photograph shows its position changed between two documented images of the dining hall. What is the key issue? Case file 226: the evidence concerns weather log and the control room.",
+    "q": "Tessa insists the train ticket was untouched after discovery. A second photograph shows its position changed between two documented images of the dining hall. What is the key issue?.",
     "options": [
       "Who had access between the photographs and whether the item was moved",
       "Whether the second photograph is more attractive",
@@ -2678,7 +2678,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-227",
-    "q": "Noah says they first read the warning on the desk calendar and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows? Case file 227: the evidence concerns door sensor and the studio.",
+    "q": "Noah says they first read the warning on the desk calendar and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows?.",
     "options": [
       "The sequence is correct if the speaker was distracted",
       "The described sequence conflicts with the logged order of events",
@@ -2690,7 +2690,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-228",
-    "q": "Zara's first account says the shipping manifest was in the workshop; a later account places it in the map room at the same time. What is the most useful next step? Case file 228: the evidence concerns train ticket and the laboratory.",
+    "q": "Zara's first account says the shipping manifest was in the workshop; a later account places it in the map room at the same time. What is the most useful next step?.",
     "options": [
       "Assume the first version was intentionally false",
       "Ignore the location because both rooms are nearby",
@@ -2702,7 +2702,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-229",
-    "q": "Jude states with certainty that the weather log was never in the map room. Yet an old inventory lists it there, though the date is unclear. What is the best assessment? Case file 229: the evidence concerns parcel tag and the records office.",
+    "q": "Jude states with certainty that the weather log was never in the map room. Yet an old inventory lists it there, though the date is unclear. What is the best assessment?.",
     "options": [
       "The inventory proves the item was there during the incident",
       "Confidence makes the statement reliable",
@@ -2714,7 +2714,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-230",
-    "q": "Freya disputes the time shown on a camera in the dining hall. A technician confirms its clock was seven minutes fast that day. How should the footage be used? Case file 230: the evidence concerns blue ledger and the archive.",
+    "q": "Freya disputes the time shown on a camera in the dining hall. A technician confirms its clock was seven minutes fast that day. How should the footage be used?.",
     "options": [
       "Correct the timestamp using the verified offset before comparing accounts",
       "Discard the footage entirely",
@@ -2726,7 +2726,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-231",
-    "q": "Oscar reports finding the blue ledger exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference? Case file 231: the evidence concerns maintenance sheet and the music room.",
+    "q": "Oscar reports finding the blue ledger exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference?.",
     "options": [
       "The display proves the report is true",
       "The object's displayed position may have been arranged shortly before discovery",
@@ -2738,7 +2738,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-232",
-    "q": "Priya and a friend give matching accounts about the broken lens in the workshop. Both admit they discussed what to say before being interviewed. What limits the value of their agreement? Case file 232: the evidence concerns shipping manifest and the library.",
+    "q": "Priya and a friend give matching accounts about the broken lens in the workshop. Both admit they discussed what to say before being interviewed. What limits the value of their agreement?.",
     "options": [
       "Discussing an event makes memory perfect",
       "Their agreement establishes the object's ownership",
@@ -2750,7 +2750,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-233",
-    "q": "Peter produces a printed authorisation for moving the receipt. The document has no original file, signature verification or issuing-office record. What is the priority? Case file 233: the evidence concerns spare compass and the winter garden.",
+    "q": "Peter produces a printed authorisation for moving the receipt. The document has no original file, signature verification or issuing-office record. What is the priority?.",
     "options": [
       "Assume it is genuine because it is printed",
       "Judge it by the paper's colour",
@@ -2762,7 +2762,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-234",
-    "q": "Yara offers a short recording that seems to contain the curator saying, 'Move the camera card.' The clip begins mid-sentence and ends immediately. What is needed? Case file 234: the evidence concerns receipt and the basement.",
+    "q": "Yara offers a short recording that seems to contain the curator saying, 'Move the camera card.' The clip begins mid-sentence and ends immediately. What is needed?.",
     "options": [
       "The full original recording and context around the quoted words",
       "A louder copy of the same excerpt",
@@ -2774,7 +2774,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-235",
-    "q": "Ben shows a photograph of the museum label beside the archive clock as proof of the time. The clock face has no date or verified setting. What does the image establish? Case file 235: the evidence concerns wax seal and the dining hall.",
+    "q": "Ben shows a photograph of the museum label beside the archive clock as proof of the time. The clock face has no date or verified setting. What does the image establish?.",
     "options": [
       "It proves who took the photograph",
       "It shows the object and clock together, but not a verified time",
@@ -2786,7 +2786,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-236",
-    "q": "Nora says the film reel remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises? Case file 236: the evidence concerns footprint cast and the west gallery.",
+    "q": "Nora says the film reel remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises?.",
     "options": [
       "The last handler must be responsible",
       "The seal number is irrelevant",
@@ -2798,7 +2798,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-237",
-    "q": "Miles repeatedly argues that the painted tile is worthless, while the question concerns who entered the map room at 9:50. What is the best response? Case file 237: the evidence concerns silver watch and the gallery.",
+    "q": "Miles repeatedly argues that the painted tile is worthless, while the question concerns who entered the map room at 9:50. What is the best response?.",
     "options": [
       "Accept the valuation as an alibi",
       "Assume the distraction proves guilt",
@@ -2810,7 +2810,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-238",
-    "q": "An investigator asks Maya, 'Why did you hide the footprint cast in the dining hall?' No evidence yet establishes that Maya hid it. What is wrong with the question? Case file 238: the evidence concerns museum label and the greenhouse.",
+    "q": "An investigator asks Maya, 'Why did you hide the footprint cast in the dining hall?' No evidence yet establishes that Maya hid it. What is wrong with the question?.",
     "options": [
       "It assumes the disputed act occurred and that the person did it",
       "It asks about a location rather than a time",
@@ -2822,7 +2822,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-239",
-    "q": "Ezra avoids eye contact while answering questions about the brass key. The account is consistent with a maintenance record written before the incident. What is the fairest interpretation? Case file 239: the evidence concerns white glove and the east corridor.",
+    "q": "Ezra avoids eye contact while answering questions about the brass key. The account is consistent with a maintenance record written before the incident. What is the fairest interpretation?.",
     "options": [
       "Nervousness establishes a hidden motive",
       "Body language alone cannot establish deception; assess verifiable evidence",
@@ -2834,7 +2834,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-240",
-    "q": "Amira gives an approximate time for seeing the coded note several weeks earlier, then corrects it after checking a diary. What should an investigator do? Case file 240: the evidence concerns coded note and the map room.",
+    "q": "Amira gives an approximate time for seeing the coded note several weeks earlier, then corrects it after checking a diary. What should an investigator do?.",
     "options": [
       "Prefer the first estimate because it came sooner",
       "Ignore the diary because memory is personal",
@@ -2846,7 +2846,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-241",
-    "q": "Victor gives an exact minute for moving the door sensor, but cannot explain how they know the time. a weather station record has no entry for that minute. What is the proper treatment? Case file 241: the evidence concerns sketchbook and the roof terrace.",
+    "q": "Victor gives an exact minute for moving the door sensor, but cannot explain how they know the time. a weather station record has no entry for that minute. What is the proper treatment?.",
     "options": [
       "Assume exact times are always accurate",
       "Assume the missing log entry proves the event impossible",
@@ -2858,7 +2858,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-242",
-    "q": "Mina is responsible for checking the dining hall inventory and also gives the only account that the glass vial was present. What safeguard would strengthen the inquiry? Case file 242: the evidence concerns painted tile and the clock tower.",
+    "q": "Mina is responsible for checking the dining hall inventory and also gives the only account that the glass vial was present. What safeguard would strengthen the inquiry?.",
     "options": [
       "Have an independent person audit the inventory against original records",
       "Let Mina certify their own account again",
@@ -2870,7 +2870,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-243",
-    "q": "Sam says the maintenance sheet was moved by an intruder. The access record shows a scheduled cleaner also entered the archive during the relevant window. What is the correct approach? Case file 243: the evidence concerns audio recorder and the boathouse.",
+    "q": "Sam says the maintenance sheet was moved by an intruder. The access record shows a scheduled cleaner also entered the archive during the relevant window. What is the correct approach?.",
     "options": [
       "Ignore the access record because it shows authorised entry",
       "Investigate both possibilities instead of treating the intruder claim as established",
@@ -2882,7 +2882,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-244",
-    "q": "Ava quotes the curator as saying, 'The copper coin can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted? Case file 244: the evidence concerns glass vial and the observatory.",
+    "q": "Ava quotes the curator as saying, 'The copper coin can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted?.",
     "options": [
       "The curator's opinion of the workshop",
       "The date on which the note was written",
@@ -2894,7 +2894,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-245",
-    "q": "Felix claims every witness independently confirmed the same detail about the wax seal. Interview notes show the witnesses were questioned together. What is the concern? Case file 245: the evidence concerns desk calendar and the workshop.",
+    "q": "Felix claims every witness independently confirmed the same detail about the wax seal. Interview notes show the witnesses were questioned together. What is the concern?.",
     "options": [
       "The shared interview proves all accounts are false",
       "The detail is confirmed because everyone heard it",
@@ -2906,7 +2906,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-246",
-    "q": "Cleo dismisses a witness's account of the radio handset as unreliable but fails to mention they are business partners. Why does that matter? Case file 246: the evidence concerns sealed envelope and the control room.",
+    "q": "Cleo dismisses a witness's account of the radio handset as unreliable but fails to mention they are business partners. Why does that matter?.",
     "options": [
       "The undisclosed relationship may affect how the criticism and possible bias are assessed",
       "A business relationship automatically makes the witness truthful",
@@ -2918,7 +2918,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-247",
-    "q": "Kai says, 'If you cannot prove I moved the sealed envelope, you must accept my story.' What is the flaw in this reasoning? Case file 247: the evidence concerns broken lens and the studio.",
+    "q": "Kai says, 'If you cannot prove I moved the sealed envelope, you must accept my story.' What is the flaw in this reasoning?.",
     "options": [
       "The investigator must accept the first explanation offered",
       "Lack of proof against a person does not automatically verify their account",
@@ -2930,7 +2930,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-248",
-    "q": "June says the spare compass was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove? Case file 248: the evidence concerns copper coin and the laboratory.",
+    "q": "June says the spare compass was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove?.",
     "options": [
       "That nobody could have moved it",
       "That the photograph was taken on the incident day",
@@ -2942,7 +2942,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-249",
-    "q": "Marcus claims the fountain pen was never exposed to rain while stored in the map room. A dated storm record and fresh water marks are found. Which check is most useful? Case file 249: the evidence concerns visitor badge and the records office.",
+    "q": "Marcus claims the fountain pen was never exposed to rain while stored in the map room. A dated storm record and fresh water marks are found. Which check is most useful?.",
     "options": [
       "Ask whether Marcus likes rainy weather",
       "Assume the marks prove the object was outdoors",
@@ -2954,7 +2954,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-250",
-    "q": "Lila relies on a permission slip bearing the curator's signature for moving the silver watch. The curator denies signing it. What is the strongest next step? Case file 250: the evidence concerns fountain pen and the archive.",
+    "q": "Lila relies on a permission slip bearing the curator's signature for moving the silver watch. The curator denies signing it. What is the strongest next step?.",
     "options": [
       "Compare the original signature with authenticated samples and verify who handled the slip",
       "Accept the denial as conclusive proof of forgery",
@@ -2966,7 +2966,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-251",
-    "q": "Henry says the velvet pouch could not fit through the archive doorway. The measured object is narrower than the verified doorway opening. What does this show? Case file 251: the evidence concerns camera card and the music room.",
+    "q": "Henry says the velvet pouch could not fit through the archive doorway. The measured object is narrower than the verified doorway opening. What does this show?.",
     "options": [
       "It proves the doorway was always open",
       "The stated physical impossibility is not supported by the measurements",
@@ -2978,7 +2978,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-252",
-    "q": "Clara supplies a screenshot of a message about the sketchbook. The original conversation is unavailable and the screenshot is cropped. What is the best verification? Case file 252: the evidence concerns radio handset and the library.",
+    "q": "Clara supplies a screenshot of a message about the sketchbook. The original conversation is unavailable and the screenshot is cropped. What is the best verification?.",
     "options": [
       "Rely on the sender's display name alone",
       "Treat the screenshot as authenticated because it looks genuine",
@@ -2990,7 +2990,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-253",
-    "q": "Leo says the train ticket was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first? Case file 253: the evidence concerns brass key and the winter garden.",
+    "q": "Leo says the train ticket was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first?.",
     "options": [
       "Choose whichever time supports the accusation",
       "Average the three times without checking them",
@@ -3002,7 +3002,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-254",
-    "q": "Lena argues that either the curator moved the desk calendar or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument? Case file 254: the evidence concerns velvet pouch and the basement.",
+    "q": "Lena argues that either the curator moved the desk calendar or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument?.",
     "options": [
       "It ignores other plausible people and explanations",
       "A reason to distrust every access log",
@@ -3014,7 +3014,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-255",
-    "q": "Hugo is seen near the archive shortly before the shipping manifest is reported missing. No footage shows contact with the object. What can fairly be said? Case file 255: the evidence concerns film reel and the dining hall.",
+    "q": "Hugo is seen near the archive shortly before the shipping manifest is reported missing. No footage shows contact with the object. What can fairly be said?.",
     "options": [
       "The person must know where the object is",
       "The person was nearby, but the evidence does not show they took the object",
@@ -3026,7 +3026,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-256",
-    "q": "Dina insists the weather log was collected from the library at 8:10. However, a time-stamped access log records that the library had been locked until 8:25. Which assessment is strongest? Case file 256: the evidence concerns weather log and the west gallery.",
+    "q": "Dina insists the weather log was collected from the library at 8:10. However, A time-stamped access log records that the library had been locked until 8:25. Which assessment is strongest?.",
     "options": [
       "The claim is confirmed because the object existed",
       "The time difference is irrelevant to the access question",
@@ -3038,7 +3038,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-257",
-    "q": "Caleb says they remained in the studio continuously. The audio recorder bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a maintenance record written before the incident places the workshop door opening then. What should an investigator conclude? Case file 257: the evidence concerns door sensor and the gallery.",
+    "q": "Caleb says they remained in the studio continuously. The audio recorder bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a maintenance record written before the incident places the workshop door opening then. What should an investigator conclude?.",
     "options": [
       "The mark alone proves deliberate deception",
       "The alibi must be true because it is confidently stated",
@@ -3050,7 +3050,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-258",
-    "q": "Anya says, 'I never touched the blue ledger.' A witness saw Anya move its protective case in the clock tower at 9:50. Which interpretation is most careful? Case file 258: the evidence concerns train ticket and the greenhouse.",
+    "q": "Anya says, 'I never touched the blue ledger.' A witness saw Anya move its protective case in the clock tower at 9:50. Which interpretation is most careful?.",
     "options": [
       "The statement may be literally true while omitting relevant handling of the case",
       "The witness proves the object itself was touched",
@@ -3062,7 +3062,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-259",
-    "q": "Dylan claims not to have seen the sealed broken lens. Before investigators mention its contents, Dylan describes a tiny blue thread inside it. What is the key question? Case file 259: the evidence concerns parcel tag and the east corridor.",
+    "q": "Dylan claims not to have seen the sealed broken lens. Before investigators mention its contents, Dylan describes a tiny blue thread inside it. What is the key question?.",
     "options": [
       "Who purchased the sealed container?",
       "How could the speaker know a detail that had not been disclosed?",
@@ -3074,7 +3074,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-260",
-    "q": "Elena presents a note saying the receipt was inspected at 9:05. The ink analysis suggests the note was written later, while a security camera with a verified clock independently logs the inspection at a different time. What is the best response? Case file 260: the evidence concerns blue ledger and the map room.",
+    "q": "Elena presents a note saying the receipt was inspected at 9:05. The ink analysis suggests the note was written later, while a security camera with a verified clock independently logs the inspection at a different time. What is the best response?.",
     "options": [
       "Accept the note because it contains a precise time",
       "Discard every other record from the library",
@@ -3086,7 +3086,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-261",
-    "q": "David tells the group, 'I was nowhere near the studio after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish? Case file 261: the evidence concerns maintenance sheet and the roof terrace.",
+    "q": "David tells the group, 'I was nowhere near the studio after 9:50.' Later, a verified receipt shows a purchase at the entrance kiosk at that exact time. What does this establish?.",
     "options": [
       "The receipt proves entry into every room",
       "The receipt proves the purchase was stolen",
@@ -3098,7 +3098,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-262",
-    "q": "Iris reports seeing someone carry the museum label through the clock tower at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion? Case file 262: the evidence concerns shipping manifest and the clock tower.",
+    "q": "Iris reports seeing someone carry the museum label through the clock tower at 8:10. The corridor lights were off and the witness viewed the figure from far away. What is the fairest conclusion?.",
     "options": [
       "The observation may establish movement, but identification is uncertain",
       "The witness has conclusively identified the carrier",
@@ -3110,7 +3110,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-263",
-    "q": "Theo claims the film reel was already missing before the search. a sealed delivery receipt and a separate inventory both show it was present shortly before 9:05. What should be checked next? Case file 263: the evidence concerns spare compass and the boathouse.",
+    "q": "Theo claims the film reel was already missing before the search. A sealed delivery receipt and a separate inventory both show it was present shortly before 9:05. What should be checked next?.",
     "options": [
       "Whether the inventory uses the same handwriting",
       "Whether the claimed discovery time is compatible with both independent records",
@@ -3122,7 +3122,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-264",
-    "q": "Sofia says, 'I did not take the painted tile from the library.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved? Case file 264: the evidence concerns receipt and the observatory.",
+    "q": "Sofia says, 'I did not take the painted tile from the library.' Evidence shows the item was moved from a display case to a storage shelf, but not who moved it. What is still unresolved?.",
     "options": [
       "Whether the storage shelf is part of the library",
       "Whether the item is made of metal",
@@ -3134,7 +3134,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-265",
-    "q": "Ravi had a clear reason to want the footprint cast removed from the studio, but a time-stamped access log places several people near the room at 8:10. What is the soundest conclusion? Case file 265: the evidence concerns wax seal and the workshop.",
+    "q": "Ravi had a clear reason to want the footprint cast removed from the studio, but A time-stamped access log places several people near the room at 8:10. What is the soundest conclusion?.",
     "options": [
       "Motive alone proves responsibility",
       "Everyone near the room must have shared the motive",
@@ -3146,7 +3146,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-266",
-    "q": "Elise describes the brass key as having a red seal. The original photograph, taken before anyone entered the clock tower, clearly shows a green seal. Which point is directly contradicted? Case file 266: the evidence concerns footprint cast and the control room.",
+    "q": "Elise describes the brass key as having a red seal. The original photograph, taken before anyone entered the clock tower, clearly shows a green seal. Which point is directly contradicted?.",
     "options": [
       "The speaker's description of the seal's colour",
       "The speaker's location at the time",
@@ -3158,7 +3158,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-267",
-    "q": "Adrian says the coded note was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a device's locally stored timestamp contains no instruction. What should be sought? Case file 267: the evidence concerns silver watch and the studio.",
+    "q": "Adrian says the coded note was moved because 'everyone knows' the curator ordered it. No one heard the order directly, and a device's locally stored timestamp contains no instruction. What should be sought?.",
     "options": [
       "A repetition of the same rumour by more people",
       "The original source of the order and any direct record or witness",
@@ -3170,7 +3170,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-268",
-    "q": "Sara insists the door sensor was untouched after discovery. A second photograph shows its position changed between two documented images of the library. What is the key issue? Case file 268: the evidence concerns museum label and the laboratory.",
+    "q": "Sara insists the door sensor was untouched after discovery. A second photograph shows its position changed between two documented images of the library. What is the key issue?.",
     "options": [
       "Whether the object is expensive",
       "Whether the first photographer knew Sara",
@@ -3182,7 +3182,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-269",
-    "q": "Ibrahim says they first read the warning on the glass vial and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows? Case file 269: the evidence concerns white glove and the records office.",
+    "q": "Ibrahim says they first read the warning on the glass vial and then heard the alarm at 9:05. The alarm log shows it sounded before the warning was printed. What follows?.",
     "options": [
       "The warning must have caused the earlier alarm",
       "The log proves who printed the warning",
@@ -3194,7 +3194,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-270",
-    "q": "Mira's first account says the maintenance sheet was in the clock tower; a later account places it in the map room at the same time. What is the most useful next step? Case file 270: the evidence concerns coded note and the archive.",
+    "q": "Mira's first account says the maintenance sheet was in the clock tower; a later account places it in the map room at the same time. What is the most useful next step?.",
     "options": [
       "Ask what prompted the change and test both versions against independent evidence",
       "Automatically accept the later version",
@@ -3206,7 +3206,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-271",
-    "q": "Owen states with certainty that the copper coin was never in the gallery. Yet an old inventory lists it there, though the date is unclear. What is the best assessment? Case file 271: the evidence concerns sketchbook and the music room.",
+    "q": "Owen states with certainty that the copper coin was never in the gallery. Yet an old inventory lists it there, though the date is unclear. What is the best assessment?.",
     "options": [
       "The inventory should be ignored because its date is unclear",
       "The absolute claim is not established until the inventory's date and reliability are checked",
@@ -3218,7 +3218,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-272",
-    "q": "Aria disputes the time shown on a camera in the library. A technician confirms its clock was seven minutes fast that day. How should the footage be used? Case file 272: the evidence concerns painted tile and the library.",
+    "q": "Aria disputes the time shown on a camera in the library. A technician confirms its clock was seven minutes fast that day. How should the footage be used?.",
     "options": [
       "Use the displayed time without adjustment",
       "Assume the person in the footage changed the clock",
@@ -3230,7 +3230,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-273",
-    "q": "Finn reports finding the radio handset exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference? Case file 273: the evidence concerns audio recorder and the winter garden.",
+    "q": "Finn reports finding the radio handset exactly as shown in a staged display. Dust patterns beneath it show it had recently been placed there. What is the cautious inference?.",
     "options": [
       "The dust identifies who staged it",
       "The object was never in the room",
@@ -3242,7 +3242,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-274",
-    "q": "Nina and a friend give matching accounts about the sealed envelope in the clock tower. Both admit they discussed what to say before being interviewed. What limits the value of their agreement? Case file 274: the evidence concerns glass vial and the basement.",
+    "q": "Nina and a friend give matching accounts about the sealed envelope in the clock tower. Both admit they discussed what to say before being interviewed. What limits the value of their agreement?.",
     "options": [
       "Their accounts may not be independent corroboration",
       "Matching accounts always prove honesty",
@@ -3254,7 +3254,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-275",
-    "q": "Simon produces a printed authorisation for moving the spare compass. The document has no original file, signature verification or issuing-office record. What is the priority? Case file 275: the evidence concerns desk calendar and the dining hall.",
+    "q": "Simon produces a printed authorisation for moving the spare compass. The document has no original file, signature verification or issuing-office record. What is the priority?.",
     "options": [
       "Ask only whether Simon agrees with its wording",
       "Authenticate the document's origin before relying on its authority",
@@ -3266,7 +3266,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-276",
-    "q": "Naomi offers a short recording that seems to contain the curator saying, 'Move the fountain pen.' The clip begins mid-sentence and ends immediately. What is needed? Case file 276: the evidence concerns sealed envelope and the west gallery.",
+    "q": "Naomi offers a short recording that seems to contain the curator saying, 'Move the fountain pen.' The clip begins mid-sentence and ends immediately. What is needed?.",
     "options": [
       "A written guess about the missing sentence",
       "A vote on whether the voice sounds confident",
@@ -3278,7 +3278,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-277",
-    "q": "Max shows a photograph of the silver watch beside the studio clock as proof of the time. The clock face has no date or verified setting. What does the image establish? Case file 277: the evidence concerns broken lens and the gallery.",
+    "q": "Max shows a photograph of the silver watch beside the studio clock as proof of the time. The clock face has no date or verified setting. What does the image establish?.",
     "options": [
       "It proves the camera date is accurate",
       "It proves the clock was correct",
@@ -3290,7 +3290,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-278",
-    "q": "Rosa says the velvet pouch remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises? Case file 278: the evidence concerns copper coin and the greenhouse.",
+    "q": "Rosa says the velvet pouch remained sealed after collection, but the evidence register has an unexplained gap between two handlers. What concern arises?.",
     "options": [
       "The chain of custody is incomplete, so handling during the gap must be established",
       "The item is automatically counterfeit",
@@ -3302,7 +3302,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-279",
-    "q": "Ethan repeatedly argues that the sketchbook is worthless, while the question concerns who entered the gallery at 9:50. What is the best response? Case file 279: the evidence concerns visitor badge and the east corridor.",
+    "q": "Ethan repeatedly argues that the sketchbook is worthless, while the question concerns who entered the gallery at 9:50. What is the best response?.",
     "options": [
       "Change the inquiry to the object's market price",
       "Return to the specific access question and ask for evidence about the entry",
@@ -3314,7 +3314,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-280",
-    "q": "An investigator asks Ruby, 'Why did you hide the train ticket in the library?' No evidence yet establishes that Ruby hid it. What is wrong with the question? Case file 280: the evidence concerns fountain pen and the map room.",
+    "q": "An investigator asks Ruby, 'Why did you hide the train ticket in the library?' No evidence yet establishes that Ruby hid it. What is wrong with the question?.",
     "options": [
       "It is too short to be useful",
       "It requests an answer based on a document",
@@ -3326,7 +3326,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-281",
-    "q": "Eli avoids eye contact while answering questions about the desk calendar. The account is consistent with a sealed delivery receipt. What is the fairest interpretation? Case file 281: the evidence concerns camera card and the roof terrace.",
+    "q": "Eli avoids eye contact while answering questions about the desk calendar. The account is consistent with A sealed delivery receipt. What is the fairest interpretation?.",
     "options": [
       "Avoiding eye contact proves a lie",
       "A consistent account proves innocence",
@@ -3338,7 +3338,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-282",
-    "q": "Talia gives an approximate time for seeing the shipping manifest several weeks earlier, then corrects it after checking a diary. What should an investigator do? Case file 282: the evidence concerns radio handset and the clock tower.",
+    "q": "Talia gives an approximate time for seeing the shipping manifest several weeks earlier, then corrects it after checking a diary. What should an investigator do?.",
     "options": [
       "Compare the corrected recollection with the diary and other records",
       "Treat any correction as deliberate lying",
@@ -3350,7 +3350,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-283",
-    "q": "Jonah gives an exact minute for moving the weather log, but cannot explain how they know the time. a time-stamped access log has no entry for that minute. What is the proper treatment? Case file 283: the evidence concerns brass key and the boathouse.",
+    "q": "Jonah gives an exact minute for moving the weather log, but cannot explain how they know the time. A time-stamped access log has no entry for that minute. What is the proper treatment?.",
     "options": [
       "Round the time until it matches the record",
       "Treat the precision as an unverified claim and ask for its basis",
@@ -3362,7 +3362,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-284",
-    "q": "Grace is responsible for checking the library inventory and also gives the only account that the audio recorder was present. What safeguard would strengthen the inquiry? Case file 284: the evidence concerns velvet pouch and the observatory.",
+    "q": "Grace is responsible for checking the library inventory and also gives the only account that the audio recorder was present. What safeguard would strengthen the inquiry?.",
     "options": [
       "Remove the inventory from consideration",
       "Ask a friend of Grace to confirm it",
@@ -3374,7 +3374,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-285",
-    "q": "Lucas says the blue ledger was moved by an intruder. The access record shows a scheduled cleaner also entered the studio during the relevant window. What is the correct approach? Case file 285: the evidence concerns film reel and the workshop.",
+    "q": "Lucas says the blue ledger was moved by an intruder. The access record shows a scheduled cleaner also entered the studio during the relevant window. What is the correct approach?.",
     "options": [
       "Assume the cleaner is responsible",
       "Assume an intruder entered because an item is missing",
@@ -3386,7 +3386,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-286",
-    "q": "Tessa quotes the curator as saying, 'The broken lens can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted? Case file 286: the evidence concerns weather log and the control room.",
+    "q": "Tessa quotes the curator as saying, 'The broken lens can be moved.' The full note continues, 'only after the alarm is disabled by the technician.' What was omitted?.",
     "options": [
       "The condition that had to be met before the move was authorised",
       "The identity of the object",
@@ -3398,7 +3398,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-287",
-    "q": "Noah claims every witness independently confirmed the same detail about the receipt. Interview notes show the witnesses were questioned together. What is the concern? Case file 287: the evidence concerns door sensor and the studio.",
+    "q": "Noah claims every witness independently confirmed the same detail about the receipt. Interview notes show the witnesses were questioned together. What is the concern?.",
     "options": [
       "The notes establish who first suggested the detail",
       "Their answers may have influenced one another and should be checked separately",
@@ -3410,7 +3410,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-288",
-    "q": "Zara dismisses a witness's account of the camera card as unreliable but fails to mention they are business partners. Why does that matter? Case file 288: the evidence concerns train ticket and the laboratory.",
+    "q": "Zara dismisses a witness's account of the camera card as unreliable but fails to mention they are business partners. Why does that matter?.",
     "options": [
       "The relationship proves the witness is lying",
       "The relationship determines who owned the object",
@@ -3422,7 +3422,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-289",
-    "q": "Jude says, 'If you cannot prove I moved the museum label, you must accept my story.' What is the flaw in this reasoning? Case file 289: the evidence concerns parcel tag and the records office.",
+    "q": "Jude says, 'If you cannot prove I moved the museum label, you must accept my story.' What is the flaw in this reasoning?.",
     "options": [
       "A story becomes true when repeated",
       "The object must have moved itself",
@@ -3434,7 +3434,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-290",
-    "q": "Freya says the film reel was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove? Case file 290: the evidence concerns blue ledger and the archive.",
+    "q": "Freya says the film reel was in the same place 'as usual'. A photograph from last month shows it there, but there is no image from the day in question. What does that comparison prove?.",
     "options": [
       "Only its earlier usual position, not its position on the incident day",
       "That it remained there continuously",
@@ -3446,7 +3446,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-291",
-    "q": "Oscar claims the painted tile was never exposed to rain while stored in the gallery. A dated storm record and fresh water marks are found. Which check is most useful? Case file 291: the evidence concerns maintenance sheet and the music room.",
+    "q": "Oscar claims the painted tile was never exposed to rain while stored in the gallery. A dated storm record and fresh water marks are found. Which check is most useful?.",
     "options": [
       "Ignore the storm because it affected the whole town",
       "Compare the marks' origin and timing with the storm and the room's exposure",
@@ -3458,7 +3458,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-292",
-    "q": "Priya relies on a permission slip bearing the curator's signature for moving the footprint cast. The curator denies signing it. What is the strongest next step? Case file 292: the evidence concerns shipping manifest and the library.",
+    "q": "Priya relies on a permission slip bearing the curator's signature for moving the footprint cast. The curator denies signing it. What is the strongest next step?.",
     "options": [
       "Judge the signature from a low-resolution copy",
       "Assume the paper's age confirms the signature",
@@ -3470,7 +3470,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-293",
-    "q": "Peter says the brass key could not fit through the studio doorway. The measured object is narrower than the verified doorway opening. What does this show? Case file 293: the evidence concerns spare compass and the winter garden.",
+    "q": "Peter says the brass key could not fit through the studio doorway. The measured object is narrower than the verified doorway opening. What does this show?.",
     "options": [
       "It proves the object was carried through that doorway",
       "It proves the speaker intentionally lied",
@@ -3482,7 +3482,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-294",
-    "q": "Yara supplies a screenshot of a message about the coded note. The original conversation is unavailable and the screenshot is cropped. What is the best verification? Case file 294: the evidence concerns receipt and the basement.",
+    "q": "Yara supplies a screenshot of a message about the coded note. The original conversation is unavailable and the screenshot is cropped. What is the best verification?.",
     "options": [
       "Obtain the original message data with its surrounding conversation and metadata",
       "Enlarge the cropped screenshot until text is clearer",
@@ -3494,7 +3494,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-295",
-    "q": "Ben says the door sensor was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first? Case file 295: the evidence concerns wax seal and the dining hall.",
+    "q": "Ben says the door sensor was delivered at 8:10. The courier record says 8:25, while the building register records an earlier arrival. What should happen first?.",
     "options": [
       "Assume the courier must be correct",
       "Check each clock, entry method and record source before deciding which time is reliable",
@@ -3506,7 +3506,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-296",
-    "q": "Nora argues that either the curator moved the glass vial or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument? Case file 296: the evidence concerns footprint cast and the west gallery.",
+    "q": "Nora argues that either the curator moved the glass vial or it vanished without explanation. The access log lists several other authorised visitors. What is missing from the argument?.",
     "options": [
       "Proof that the object vanished by itself",
       "A rule that only two explanations are possible",
@@ -3518,7 +3518,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-297",
-    "q": "Miles is seen near the studio shortly before the maintenance sheet is reported missing. No footage shows contact with the object. What can fairly be said? Case file 297: the evidence concerns silver watch and the gallery.",
+    "q": "Miles is seen near the studio shortly before the maintenance sheet is reported missing. No footage shows contact with the object. What can fairly be said?.",
     "options": [
       "Being nearby proves theft",
       "The missing object proves the footage is incomplete",
@@ -3530,7 +3530,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-298",
-    "q": "Maya insists the copper coin was collected from the records office at 8:10. However, two independent witnesses records that the records office had been locked until 8:25. Which assessment is strongest? Case file 298: the evidence concerns museum label and the greenhouse.",
+    "q": "Maya insists the copper coin was collected from the records office at 8:10. However, two independent witnesses records that the records office had been locked until 8:25. Which assessment is strongest?.",
     "options": [
       "The claimed collection time conflicts with the recorded access window",
       "The record proves who took the object, but not when",
@@ -3542,7 +3542,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-299",
-    "q": "Ezra says they remained in the observatory continuously. The wax seal bears a fresh mark that could only have been made in the adjoining workshop at 9:05; a sealed delivery receipt places the workshop door opening then. What should an investigator conclude? Case file 299: the evidence concerns white glove and the east corridor.",
+    "q": "Ezra says they remained in the observatory continuously. The wax seal bears a fresh mark that could only have been made in the adjoining workshop at 9:05; A sealed delivery receipt places the workshop door opening then. What should an investigator conclude?.",
     "options": [
       "The workshop record establishes the person's motive",
       "The alibi needs testing because independent evidence suggests a possible movement",
@@ -3554,7 +3554,7 @@ export const masterOfDeceptionQuestionBank = [
   },
   {
     "id": "md-300",
-    "q": "Amira says, 'I never touched the radio handset.' A witness saw Amira move its protective case in the east corridor at 9:50. Which interpretation is most careful? Case file 300: the evidence concerns coded note and the map room.",
+    "q": "Amira says, 'I never touched the radio handset.' A witness saw Amira move its protective case in the east corridor at 9:50. Which interpretation is most careful?.",
     "options": [
       "The statement and observation cannot both be true",
       "The witness establishes why the case was moved",
