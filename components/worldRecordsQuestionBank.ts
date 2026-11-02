@@ -1,4 +1,4 @@
-import type { RecordQuestion } from "@/components/worldRecordsTypes";
+type RecordQuestion = { id: string; category: string; question: string; options: string[]; answer: number; fact: string };
 
 export const worldRecordsQuestionBank: RecordQuestion[] = [
   {
