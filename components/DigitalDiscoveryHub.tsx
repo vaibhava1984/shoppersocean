@@ -237,5 +237,5 @@ export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: {
    </div>
    {message&&<div role="status" aria-live="polite" className={`mt-4 rounded-2xl border p-4 text-sm leading-6 shadow-sm ${choice===question.answer?"border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-950":choice===-1?"border-amber-200 bg-gradient-to-r from-amber-50 to-yellow-50 text-amber-950":"border-rose-200 bg-gradient-to-r from-rose-50 to-pink-50 text-rose-950"}`}><p className="font-black">{choice===-1?"Question skipped":choice===question.answer?"Correct answer!":"Wrong answer"}</p><p className="mt-1">{message}</p><p className="mt-2 text-[11px] font-bold opacity-70">Next question in 5 seconds…</p></div>}
   </div>}
- <GameQuotaPopup open={quotaReady && quota===0 && !isAdmin} isSubscribed={isSubscribed} resetKey={active?.id??''} /></div>;
+ <GameQuotaPopup open={(noQuota || (quotaReady && quota===0)) && !isAdmin} isSubscribed={isSubscribed} resetKey={active?.id??''} /></div>;
 }
