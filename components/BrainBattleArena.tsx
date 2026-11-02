@@ -63,7 +63,7 @@ function shuffled<T>(items:T[]):T[] {
   return copy;
 }
 
-export default function BrainBattleArena({userId}:{userId:string|null}) {
+export default function BrainBattleArena({userId,onExit}:{userId:string|null;onExit?:()=>void}) {
   const [question,setQuestion]=useState<BrainQuestion|null>(null);
   const [choice,setChoice]=useState<number|null>(null);
   const [feedback,setFeedback]=useState("");
@@ -82,7 +82,7 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
   const session=useRef("brain-battle-"+Date.now()+"-"+Math.random().toString(36).slice(2));
   const heading=useRef<HTMLDivElement|null>(null);
   const timer=useRef<ReturnType<typeof setTimeout>|null>(null);
-  const preview=admin;
+  const preview=false;
   const exhausted=quota===0&&!admin&&!subscribed;
   const playSound=(kind:"tap"|"correct"|"wrong")=>{if(!soundOn||typeof window==="undefined")return;const audio=new Audio(kind==="correct"?"/correct.mp3":kind==="wrong"?"/Lose.mp3":"/Tap.mp3");audio.volume=0.8;void audio.play().catch(()=>{});};
 
@@ -94,7 +94,7 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
   },[userId]);
 
   useEffect(()=>{
-    if(!userId||exhausted||finished)return;
+    if(!userId||exhausted||finished||(quota===0&&(admin||subscribed)))return;
     let live=true;
     setLoading(true);setError("");setFeedback("");setQuestion(null);setChoice(null);setReserved(false);setBankExhausted(false);
     const candidates=shuffled(questionBank);
@@ -113,7 +113,7 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
       if(live){setBankExhausted(true);setLoading(false);}
     })();
     return()=>{live=false;};
-  },[userId,round,exhausted,finished,preview]);
+  },[userId,round,exhausted,finished,preview,quota,admin,subscribed]);
 
   useEffect(()=>{if(question&&heading.current){const t=setTimeout(()=>window.scrollTo({top:Math.max(0,heading.current!.getBoundingClientRect().top+window.scrollY-80),behavior:"smooth"}),100);return()=>clearTimeout(t);}},[question]);
 
@@ -133,32 +133,40 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
     }catch(e){setFinished(false);setFeedback(e instanceof Error?e.message:"Could not record this attempt.");}
   };
 
-  return <div className="relative isolate overflow-hidden rounded-[2rem] border border-amber-200/30 bg-[#10152b] p-4 text-white shadow-2xl sm:p-7"><div className="pointer-events-none absolute inset-0 opacity-50" style={{backgroundImage:"radial-gradient(circle at 12% 15%,rgba(251,191,36,.28),transparent 32%),radial-gradient(circle at 88% 75%,rgba(168,85,247,.28),transparent 32%),radial-gradient(circle at 50% 45%,rgba(34,211,238,.14),transparent 38%)"}} />
-    <div className="relative overflow-hidden rounded-[1.7rem] border border-amber-100/25 bg-gradient-to-br from-[#493014] via-[#30214d] to-[#10152b] px-5 py-8 text-center sm:px-10 sm:py-12">
-      <p className="text-[10px] font-black uppercase tracking-[.35em] text-amber-200">Real life · Sharp thinking · Smart decisions</p>
-      <div className="my-3 text-5xl">🧠</div>
-      <h2 className="text-3xl font-black tracking-wide text-amber-100 sm:text-5xl">BRAIN BATTLE ARENA</h2>
-      <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-indigo-100">One challenging MCQ game built around everyday situations. Read the details, question assumptions, compare close answers and choose the most defensible decision.</p>
+  const noDaily=quota===0&&(admin||subscribed);
+  return <div className="space-y-4">
+    <div ref={heading} className="relative scroll-mt-20 overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-amber-600 via-orange-700 to-rose-800 p-5 text-white shadow-xl sm:p-7">
+      <span className="absolute -right-4 -top-8 text-8xl opacity-20">🧠</span>
+      <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+        <button type="button" onClick={()=>onExit?.()} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to all zones</button>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{String(quota??"…")} / {admin||subscribed?"10 DAILY PLAYS":"3 FREE TRIALS"}</span>
+          <button type="button" onClick={()=>{setSoundOn(v=>!v);if(!soundOn)playSound("tap");}} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn?"🔊 Sound on":"🔇 Sound off"}</button>
+        </div>
+      </div>
+      <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Brain Battle Arena · Real-life judgement</p>
+      <h2 className="relative mt-1 text-2xl font-black sm:text-3xl">BRAIN BATTLE ARENA</h2>
+      <p className="relative mt-1 max-w-3xl text-sm leading-6 text-white/90">One challenging MCQ game built around everyday situations. Read the details, question assumptions, compare close answers and choose the most defensible decision.</p>
     </div>
-    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/5 p-3">
-      <span className="text-xs font-black uppercase tracking-wider text-cyan-100">Real-life brain challenge · Question {round+1}</span>
-      <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={()=>{setSoundOn(v=>!v);if(!soundOn)playSound("tap");}} className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"}</button><span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{String(dailyQuota??"…")} / 10 TODAY</span>{!admin&&!subscribed&&<span className="rounded-full border border-amber-200/50 bg-amber-300/15 px-3 py-2 text-xs font-black">{String(freeTrials??"…")} / 3 FREE TRIALS</span>}{(admin||subscribed)&&<span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{admin?"ADMIN · 10 DAILY PLAYS":"SUBSCRIBER · 10 DAILY PLAYS"}</span>}</div>
-    </div>
-    {error&&<div className="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-bold text-rose-800">{error}</div>}
-    {exhausted&&<div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in Brain Battle Arena have been used. Subscribe to continue.</div>}
-    {loading&&<div className="mt-4 rounded-2xl bg-white p-6 text-center font-bold text-slate-800">Finding a fresh challenge…</div>}
-    {bankExhausted&&<div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm font-bold text-amber-950">You have completed every available challenge in this question bank. No question will be repeated.</div>}
-    {question&&!exhausted&&<div className="mt-4 rounded-3xl bg-white p-4 text-slate-900 shadow-lg sm:p-6">
-      <div className="inline-flex rounded-full bg-indigo-100 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-indigo-900">{question.category}</div>
-      <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+    {error&&<div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-bold text-rose-800">{error}</div>}
+    {exhausted&&<div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in Brain Battle Arena have been used. Subscribe to continue.</div>}
+    {noDaily&&<div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's 10 plays for Brain Battle Arena are complete. Please return after the daily reset.</div>}
+    {loading&&<div className="rounded-2xl bg-white p-6 text-center font-bold text-slate-800 shadow">Finding a fresh challenge…</div>}
+    {bankExhausted&&<div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm font-bold text-amber-950">You have completed every available challenge in this question bank. No question will be repeated.</div>}
+    {question&&!exhausted&&!noDaily&&<div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-amber-50 p-4 text-slate-900 shadow-lg sm:p-6">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <span className="rounded-full bg-slate-900 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">{question.category}</span>
+        <span className="text-xs font-bold text-slate-500">Question {round+1} · {String(quota??"…")} remaining</span>
+      </div>
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
         <p className="text-xs font-black uppercase tracking-wider text-slate-500">Situation</p>
         <p className="mt-2 text-sm font-semibold leading-7 text-slate-800">{question.scenario}</p>
       </div>
       <h3 className="mt-5 text-lg font-black leading-7 text-slate-950 sm:text-xl">{question.question}</h3>
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        {options.map((option,position)=><button key={option.index} disabled={!reserved||finished} onClick={()=>void submit(option.index)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r "+["from-indigo-600 to-blue-700","from-fuchsia-600 to-purple-700","from-teal-600 to-emerald-700","from-orange-500 to-rose-600"][position]+" px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 "+(choice===option.index?(option.index===question.answer?"ring-4 ring-emerald-300":"ring-4 ring-rose-300"):"")}><span className="mr-2 font-black">{String.fromCharCode(65+position)}.</span>{option.label}</button>)}
+        {options.map((option,position)=><button key={option.index} disabled={!reserved||finished||!quota||!userId} onClick={()=>void submit(option.index)} className={"min-h-14 rounded-xl border border-white/70 bg-gradient-to-r "+["from-indigo-600 to-blue-700","from-fuchsia-600 to-purple-700","from-teal-600 to-emerald-700","from-orange-500 to-rose-600"][position]+" px-4 py-3 text-left text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 "+(choice===option.index?(option.index===question.answer?"ring-4 ring-emerald-300":"ring-4 ring-rose-300"):"")}><span className="mr-2 font-black">{String.fromCharCode(65+position)}.</span>{option.label}</button>)}
       </div>
-      <p className="mt-4 text-xs font-semibold text-slate-500">{!reserved?"Preparing your question…":finished?"Answer recorded. A fresh question will appear shortly.":"Choose the single best answer. Read every detail before deciding."}</p>
+      <p className="mt-4 text-xs font-semibold text-slate-500">{!userId?"Sign in to play.":!reserved?"Preparing your question…":finished?"Answer recorded. A fresh question will appear shortly.":"Choose the single best answer. Read every detail before deciding."}</p>
       {feedback&&<div aria-live="polite" className="mt-4 rounded-2xl border border-indigo-200 bg-indigo-50 p-4 text-sm font-semibold leading-6 text-indigo-950">{feedback}</div>}
     </div>}
   </div>;
