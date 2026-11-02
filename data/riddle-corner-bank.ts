@@ -28,7 +28,7 @@ banks.push(Array.from({length:30},(_,i)=>{
   return make(61+i,`A parent is ${factor} times as old as a child. In ${years} years, the parent will be twice the child's age. How old is the child now?`,String(child),numericOptions(child,2),`Let the child's age be x. ${factor}x + ${years} = 2(x + ${years}), so x = ${child}.`);
 }));
 banks.push(Array.from({length:30},(_,i)=>{
-  const count=8+i,groups=Math.ceil(count/3);
+  const count=8+i;
   const a="Divide the coins into three groups as evenly as possible and weigh two groups";
   return make(91+i,`Among ${count} identical-looking coins, one is heavier. With a balance scale, what is the best first move to locate it efficiently?`,a,[a,"Weigh every coin together on one pan","Compare only two randomly chosen coins","Place all coins on the scale one at a time"],"A three-way split lets the balance identify which group contains the heavier coin, or shows it is in the unweighed group.");
 }));
@@ -48,12 +48,10 @@ banks.push(Array.from({length:30},(_,i)=>{
   return make(181+i,`A code uses this rule: the first number is multiplied by the second. If the pair is ${a} and ${b}, what is the code?`,String(c),numericOptions(c,Math.max(2,a)),`Multiply the two values: ${a} × ${b} = ${c}.`);
 }));
 banks.push(Array.from({length:30},(_,i)=>{
-  const switches=["the bulb is lit","the bulb is warm but unlit","the bulb is cold and unlit"];
   const answer="Use the bulb's light and warmth to distinguish the three switches";
   return make(211+i,`Three switches are outside a closed room; one controls a bulb inside. You may enter once, and the bulb becomes warm when lit. Which method identifies the correct switch?`,answer,[answer,"Turn all switches on and guess","Enter repeatedly while testing one switch at a time","Leave all switches off and inspect the door"],"Turn one switch on for a few minutes, turn it off, turn a second on, then enter. Lit means the second; warm means the first; cold means the third.");
 }));
 banks.push(Array.from({length:30},(_,i)=>{
-  const n=3+(i%9), total=n*2+1;
   const answer="Choose one item from the basket labelled MIXED";
   return make(241+i,`Three baskets are labelled APPLES, ORANGES and MIXED, but every label is wrong. What is the best first move if you may take only one fruit?`,answer,[answer,"Choose from the basket labelled APPLES","Choose from the basket labelled ORANGES","Take one fruit from each basket"],"The MIXED label must be false, so that basket contains only one fruit type. One draw identifies it, and the remaining labels follow by elimination.");
 }));
