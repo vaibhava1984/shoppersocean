@@ -13,6 +13,7 @@ const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
   { icon: "🎮", name: "Quiz World", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "A collection of quizzes, mysteries, technology and world challenges", action: "games" },
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
+  { icon: "🎮", name: "Classic Games", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "More classic games coming soon", action: "classic-games" },
   { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "One challenging real-life reasoning MCQ game", action: "brain-battle-arena" },
 ];
 
@@ -175,6 +176,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                   </div>
                 )}
               </div>
+            )}
+            {selected.action === "classic-games" && (
+              <div ref={activityTargetRef} className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-indigo-50 p-8 text-center"><h3 className="text-xl font-black text-indigo-900">Classic Games</h3><p className="mt-2 text-sm text-slate-600">More classic games coming soon.</p></div>
             )}
             {selected.action === "brain-battle-arena" && (
               <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={exitGame} /></div>
