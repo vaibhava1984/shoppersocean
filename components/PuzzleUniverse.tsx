@@ -197,7 +197,7 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
         <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-fuchsia-50 p-4 shadow-lg sm:p-6">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <span className="rounded-full bg-slate-900 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">Puzzle {String(index + 1).padStart(2, "0")}</span>
-            <span className="text-xs font-bold text-slate-500">{quotaReady ? (isAdmin ? "Unlimited preview" : String(quota ?? 0) + " remaining") : "Checking quota…"}</span>
+            <span className="text-xs font-bold text-slate-500">{quotaReady ? String(quota ?? 0) + " / " + (isAdmin || isSubscribed ? 10 : 3) + (isAdmin || isSubscribed ? " plays left today" : " free trials left") : "Checking quota…"}</span>
           </div>
           <h3 className="text-lg font-extrabold leading-7 text-slate-900 sm:text-xl">{question.q}</h3>
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
