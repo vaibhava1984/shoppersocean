@@ -1,6 +1,7 @@
 "use client";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { lockedRoomMysteryQuestionBank } from "@/components/lockedRoomMysteryQuestionBank";
+import { secretCodeChamberQuestionBank } from "@/components/secretCodeChamberQuestionBank";
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 
@@ -13,7 +14,7 @@ const games: Game[] = [
   {id:"mm-lr-02",q:"A person says they left a room without opening its only door. Investigators find a wide serving hatch leading into the pantry. How could the statement be true?",options:["They used the serving hatch","They walked through a solid wall","The door opened without moving","They became invisible"],answer:0,fact:"The door was not the only possible exit. The serving hatch provides another route."},
   {id:"mm-lr-03",q:"A trail of fresh snow leads from a ventilation grille to the centre of a warm room. Which explanation best fits the clue?",options:["Something carrying snow may have passed through the grille","The room created snow from sunlight","The floor is made of water","The grille must be painted"],answer:0,fact:"The trail points to the grille as a possible route. A good solution explains the physical evidence."}
  ]},
- { id:"codes",type:"secret-code",icon:"🔐",title:"The Secret Code Chamber",subtitle:"Crack ciphers, number clues and hidden messages.",tone:"from-violet-600 via-purple-700 to-fuchsia-800",questions:[
+ { id:"codes",type:"secret-code",icon:"🔐",title:"The Secret Code Chamber",subtitle:"Crack ciphers, number clues and hidden messages.",tone:"from-violet-600 via-purple-700 to-fuchsia-800",questions:[...secretCodeChamberQuestionBank,
   {id:"mm-sc-01",q:"In a Caesar code, each letter is shifted one place forward: A becomes B, B becomes C. The coded word DBU is shown on a wall. What is the original word?",options:["CAT","DOG","BAT","CAR"],answer:0,fact:"Shift each letter one place backward: D→C, B→A and U→T. The decoded word is CAT."},
   {id:"mm-sc-02",q:"Use A=1, B=2, C=3 and so on. What word is represented by 8–5–12–12–15?",options:["HELLO","HOUSE","CROWN","LIGHT"],answer:0,fact:"8 is H, 5 is E, 12 is L, 12 is L and 15 is O. Together they spell HELLO."},
   {id:"mm-sc-03",q:"A keypad clue says: triangle, square, pentagon. Enter the number of sides of each shape in that order. What is the code?",options:["345","354","435","543"],answer:0,fact:"A triangle has 3 sides, a square 4 and a pentagon 5. The code is 345."}
