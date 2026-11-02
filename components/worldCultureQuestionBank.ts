@@ -161,9 +161,9 @@ export const worldCultureQuestionBank = [
     "alt": "Lederhosen cultural image",
     "options": [
       "Germany",
-      "Scotland",
-      "France",
-      "Italy"
+      "Japan",
+      "South Korea",
+      "China"
     ],
     "answer": 0,
     "fact": "Lederhosen is associated with Germany."
@@ -300,10 +300,10 @@ export const worldCultureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Djellaba.jpeg?width=640",
     "alt": "Djellaba cultural image",
     "options": [
-      "Senegal",
-      "Ghana",
+      "South Korea",
+      "China",
       "Morocco",
-      "West Africa"
+      "Japan"
     ],
     "answer": 2,
     "fact": "Djellaba is associated with Morocco."
@@ -441,9 +441,9 @@ export const worldCultureQuestionBank = [
     "alt": "Sombrero cultural image",
     "options": [
       "Mexico",
-      "Peru",
-      "Guatemala",
-      "Brazil"
+      "Japan",
+      "South Korea",
+      "China"
     ],
     "answer": 0,
     "fact": "Sombrero is associated with Mexico."
@@ -860,10 +860,10 @@ export const worldCultureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Balalaika.jpg?width=640",
     "alt": "Balalaika cultural image",
     "options": [
-      "Scotland",
-      "France",
+      "South Korea",
+      "China",
       "Russia",
-      "Germany"
+      "Japan"
     ],
     "answer": 2,
     "fact": "Balalaika is associated with Russia."
@@ -1140,10 +1140,10 @@ export const worldCultureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Bandoneon.jpeg?width=640",
     "alt": "Bandoneon cultural image",
     "options": [
-      "Peru",
-      "Guatemala",
+      "South Korea",
+      "China",
       "Argentina",
-      "Mexico"
+      "Japan"
     ],
     "answer": 2,
     "fact": "Bandoneon is associated with Argentina."
@@ -1980,10 +1980,10 @@ export const worldCultureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Delftware.jpeg?width=640",
     "alt": "Delftware cultural image",
     "options": [
-      "Scotland",
-      "France",
+      "South Korea",
+      "China",
       "Netherlands",
-      "Germany"
+      "Japan"
     ],
     "answer": 2,
     "fact": "Delftware is associated with Netherlands."
@@ -2540,10 +2540,10 @@ export const worldCultureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Jollof_rice.jpg?width=640",
     "alt": "Jollof rice cultural image",
     "options": [
-      "Ghana",
-      "Nigeria",
+      "South Korea",
+      "China",
       "West Africa",
-      "Senegal"
+      "Japan"
     ],
     "answer": 2,
     "fact": "Jollof rice is associated with West Africa."
@@ -2681,9 +2681,9 @@ export const worldCultureQuestionBank = [
     "alt": "Tacos cultural image",
     "options": [
       "Mexico",
-      "Peru",
-      "Guatemala",
-      "Brazil"
+      "Japan",
+      "South Korea",
+      "China"
     ],
     "answer": 0,
     "fact": "Tacos is associated with Mexico."
@@ -2820,10 +2820,10 @@ export const worldCultureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Churros.jpeg?width=640",
     "alt": "Churros cultural image",
     "options": [
-      "Scotland",
-      "France",
+      "South Korea",
+      "China",
       "Spain",
-      "Germany"
+      "Japan"
     ],
     "answer": 2,
     "fact": "Churros is associated with Spain."
@@ -2961,9 +2961,9 @@ export const worldCultureQuestionBank = [
     "alt": "Tortilla cultural image",
     "options": [
       "Mexico",
-      "Peru",
-      "Guatemala",
-      "Brazil"
+      "Japan",
+      "South Korea",
+      "China"
     ],
     "answer": 0,
     "fact": "Tortilla is associated with Mexico."
@@ -3241,9 +3241,9 @@ export const worldCultureQuestionBank = [
     "alt": "Alhambra cultural image",
     "options": [
       "Spain",
-      "Germany",
-      "Scotland",
-      "France"
+      "Japan",
+      "South Korea",
+      "China"
     ],
     "answer": 0,
     "fact": "Alhambra is associated with Spain."
@@ -3521,9 +3521,9 @@ export const worldCultureQuestionBank = [
     "alt": "Palau de la Música cultural image",
     "options": [
       "Spain",
-      "Germany",
-      "Scotland",
-      "France"
+      "Japan",
+      "South Korea",
+      "China"
     ],
     "answer": 0,
     "fact": "Palau de la Música is associated with Spain."
@@ -3940,9 +3940,12 @@ export const worldCultureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Inuit_igloo.png?width=640",
     "alt": "Inuit igloo cultural image",
     "options": [
-      "Arctic"
+      "South Korea",
+      "China",
+      "Arctic",
+      "Japan"
     ],
-    "answer": 0,
+    "answer": 2,
     "fact": "Inuit igloo is associated with Arctic."
   },
   {
