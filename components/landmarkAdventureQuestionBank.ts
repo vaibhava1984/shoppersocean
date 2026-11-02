@@ -4010,8 +4010,7 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sydney_Opera_House.jpg?width=640",
     "alt": "Sydney Opera House landmark",
     "options": [
-      "Sydney Opera House",
-      "Sydney Harbour Bridge"
+      "Sydney Opera House"
     ],
     "answer": 0,
     "fact": "This is Sydney Opera House, located in Australia."
@@ -4023,8 +4022,9 @@ export const landmarkAdventureQuestionBank = [
     "alt": "Sydney Opera House landmark",
     "options": [
       "Australia",
+      "New Zealand",
       "French Polynesia",
-      "New Zealand"
+      "Papua New Guinea"
     ],
     "answer": 0,
     "fact": "Sydney Opera House is located in Australia."
@@ -4035,8 +4035,7 @@ export const landmarkAdventureQuestionBank = [
     "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Sydney_Harbour_Bridge.jpg?width=640",
     "alt": "Sydney Harbour Bridge landmark",
     "options": [
-      "Sydney Harbour Bridge",
-      "Sydney Opera House"
+      "Sydney Harbour Bridge"
     ],
     "answer": 0,
     "fact": "This is Sydney Harbour Bridge, located in Australia."
@@ -4049,7 +4048,8 @@ export const landmarkAdventureQuestionBank = [
     "options": [
       "Australia",
       "New Zealand",
-      "French Polynesia"
+      "French Polynesia",
+      "Papua New Guinea"
     ],
     "answer": 0,
     "fact": "Sydney Harbour Bridge is located in Australia."
