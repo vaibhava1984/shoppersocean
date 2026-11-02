@@ -32,15 +32,15 @@ export default async function ReadEbooksPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header user={user} />
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#07152e] via-[#123d70] to-[#087e8c] py-12 sm:py-16">
+      <section className="relative overflow-hidden bg-[#123d70] py-12 sm:py-16">
         <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-cyan-300/20 blur-3xl" />
         <div aria-hidden="true" className="pointer-events-none absolute -left-16 bottom-0 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl" />
-        <div className="container relative mx-auto px-4 text-center sm:px-6 lg:px-8"><div className="mb-5"><Link href="/" className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-extrabold text-white backdrop-blur hover:bg-white/20">← Back</Link></div>
-          <p className="text-xs font-extrabold uppercase tracking-[0.2em] not-italic text-cyan-200">Shoppers Ocean · A world of stories</p>
-          <h1 className="mt-3 font-serif text-3xl font-black tracking-tight text-white sm:text-5xl">Read E-books</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-blue-50/90 sm:text-lg">Choose a genre, discover an author, select your language, or explore trending and international stories.</p>
+        <div className="container relative mx-auto px-4 text-center sm:px-6 lg:px-8"><div className="mb-5"><Link href="/" className="inline-flex items-center rounded-full border border-white bg-white px-4 py-2 text-sm font-extrabold text-slate-900 shadow-[0_0_14px_rgba(255,255,255,0.65)] transition hover:bg-slate-100">← Back</Link></div>
+          <p className="font-sans text-xs font-extrabold uppercase tracking-[0.2em] not-italic text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.65)]">Shoppers Ocean · A world of stories</p>
+          <h1 className="mt-3 font-serif text-3xl font-black tracking-tight text-white drop-shadow-[0_3px_8px_rgba(0,0,0,0.65)] sm:text-5xl">Read E-books</h1>
+          <p className="mx-auto mt-4 max-w-2xl font-sans text-base leading-7 text-white drop-shadow-[0_2px_5px_rgba(0,0,0,0.65)] sm:text-lg">Choose a genre, discover an author, select your language, or explore trending and international stories.</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <a href="#trending-books" className="rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-extrabold not-italic text-white backdrop-blur transition hover:bg-white/20">Trending Books ↓</a>
+            <a href="#trending-books" className="rounded-xl border border-white bg-white px-5 py-3 text-sm font-extrabold not-italic text-slate-900 shadow-[0_0_14px_rgba(255,255,255,0.55)] transition hover:bg-slate-100">Trending Books ↓</a>
             <a href="#international-books" className="rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-extrabold not-italic text-white backdrop-blur transition hover:bg-white/20">International Languages ↓</a>
           </div>
         </div>
