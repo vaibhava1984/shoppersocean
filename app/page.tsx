@@ -8,6 +8,7 @@ import TestimonialSection from './components/TestimonialSection';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer"
 import HeroSection from "@/components/HeroSection";
+import HomeActivityZones from "@/components/HomeActivityZones";
 
 export const dynamic = 'force-dynamic';
 
@@ -60,6 +61,8 @@ export default async function LandingPage() {
           <Link href="/read-ebooks" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-blue-700 px-6 py-3 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Explore Flipbooks <span className="ml-2" aria-hidden="true">→</span></Link>
         </div>
       </section>}
+
+      <HomeActivityZones userId={user?.id ?? null} />
 
       <div><AuthorApplicationBanner /></div>
       <section className="py-20 bg-white">
