@@ -8,6 +8,7 @@ import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
+import SnakesLaddersGame from "@/components/SnakesLaddersGame";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -178,7 +179,24 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               </div>
             )}
             {selected.action === "classic-games" && (
-              <div ref={activityTargetRef} className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-indigo-50 p-8 text-center"><h3 className="text-xl font-black text-indigo-900">Classic Games</h3><p className="mt-2 text-sm text-slate-600">More classic games coming soon.</p></div>
+              <div ref={activityTargetRef} className="space-y-4">
+                <div className="rounded-2xl bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-4 text-white">
+                  <h3 className="text-xl font-black">Classic Games</h3>
+                  <p className="mt-1 text-sm text-violet-100">Play the classic Snakes &amp; Ladders challenge.</p>
+                </div>
+                <SnakesLaddersGame onStart={async (id) => {
+                  try {
+                    const response = await fetch("/api/game-access", { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: "snakes", challengeId: id, challengeQuestion: "Snakes and Ladders game" }) });
+                    if (response.ok) return true;
+                    const data = await response.json().catch(() => ({}));
+                    window.alert(data.error || "Your daily game quota is exhausted. Please visit tomorrow.");
+                    return false;
+                  } catch {
+                    window.alert("Unable to verify your game quota. Please try again.");
+                    return false;
+                  }
+                }} />
+              </div>
             )}
             {selected.action === "brain-battle-arena" && (
               <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={exitGame} /></div>
