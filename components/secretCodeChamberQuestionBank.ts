@@ -1,3567 +1,3567 @@
-// 297 additional original code puzzles; three starter questions remain in MysteryMansion.tsx.
+// 297 additional original secret-code puzzles; three starter questions remain in MysteryMansion.tsx.
 export const secretCodeChamberQuestionBank = [
   {
     "id": "scc-004",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"D\".",
+    "q": "Caesar shift +3: decode \"ODPS\" to reveal the chamber word. (Seal 001)",
     "options": [
-      "A",
-      "AX",
-      "XA",
-      "Y"
+      "LAMP",
+      "CODE",
+      "LOCK",
+      "NORTH"
     ],
     "answer": 0,
-    "fact": "Shift each letter three places backward to recover A."
+    "fact": "Move each letter three places backward to reveal LAMP."
   },
   {
     "id": "scc-005",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"Y\".",
+    "q": "Caesar shift +3: decode \"FRGH\" to reveal the chamber word. (Seal 002)",
     "options": [
-      "Y",
-      "B",
-      "BX",
-      "XB"
+      "EAST",
+      "CODE",
+      "KEY",
+      "SAFE"
     ],
     "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover B."
+    "fact": "Move each letter three places backward to reveal CODE."
   },
   {
     "id": "scc-006",
-    "q": "The mirror cipher reverses the letters. Decode \"C\".",
+    "q": "Caesar shift +3: decode \"NHB\" to reveal the chamber word. (Seal 003)",
     "options": [
-      "XC",
-      "Y",
-      "C",
-      "CX"
+      "RIDDLE",
+      "WEST",
+      "KEY",
+      "VAULT"
     ],
     "answer": 2,
-    "fact": "Read the inscription from right to left to recover C."
+    "fact": "Move each letter three places backward to reveal KEY."
   },
   {
     "id": "scc-007",
-    "q": "Using A=1 through Z=26, decode this sequence: 4.",
+    "q": "Caesar shift +3: decode \"YDXOW\" to reveal the chamber word. (Seal 004)",
     "options": [
-      "DX",
-      "XD",
-      "Y",
-      "D"
+      "CLUE",
+      "PUZZLE",
+      "SOUTH",
+      "VAULT"
     ],
     "answer": 3,
-    "fact": "Convert each number to its alphabet position; the result is D."
+    "fact": "Move each letter three places backward to reveal VAULT."
   },
   {
     "id": "scc-008",
-    "q": "A Morse signal enters the chamber: .. Which word does it spell?",
+    "q": "Caesar shift +3: decode \"FOXH\" to reveal the chamber word. (Seal 005)",
     "options": [
-      "E",
-      "EX",
-      "XE",
-      "Y"
+      "CLUE",
+      "CRYPT",
+      "SHADOW",
+      "RIVER"
     ],
     "answer": 0,
-    "fact": "Decode each Morse group in order to obtain E."
+    "fact": "Move each letter three places backward to reveal CLUE."
   },
   {
     "id": "scc-009",
-    "q": "The terminal displays 8-bit ASCII value 01000110. Which letter is encoded?",
+    "q": "Caesar shift +3: decode \"FUBSW\" to reveal the chamber word. (Seal 006)",
     "options": [
-      "Y",
-      "F",
-      "FX",
-      "XF"
+      "BRIDGE",
+      "CRYPT",
+      "CIPHER",
+      "NIGHT"
     ],
     "answer": 1,
-    "fact": "The binary value represents ASCII letter F."
+    "fact": "Move each letter three places backward to reveal CRYPT."
   },
   {
     "id": "scc-010",
-    "q": "A hexadecimal ASCII clue reads 47. Which letter is encoded?",
+    "q": "Caesar shift +3: decode \"FLSKHU\" to reveal the chamber word. (Seal 007)",
     "options": [
-      "XG",
-      "Y",
-      "G",
-      "GX"
+      "TOWER",
+      "GARDEN",
+      "CIPHER",
+      "SECRET"
     ],
     "answer": 2,
-    "fact": "Hexadecimal 47 is the ASCII code for G."
+    "fact": "Move each letter three places backward to reveal CIPHER."
   },
   {
     "id": "scc-011",
-    "q": "Decode this classic multi-tap keypad sequence: 44.",
+    "q": "Caesar shift +3: decode \"VHFUHW\" to reveal the chamber word. (Seal 008)",
     "options": [
-      "HX",
-      "XH",
-      "Y",
-      "H"
+      "LOCK",
+      "STONE",
+      "MIRROR",
+      "SECRET"
     ],
     "answer": 3,
-    "fact": "Repeated keypad presses select the letters to spell H."
+    "fact": "Move each letter three places backward to reveal SECRET."
   },
   {
     "id": "scc-012",
-    "q": "The chamber uses ROT13. Decode \"V\".",
+    "q": "Caesar shift +3: decode \"ORFN\" to reveal the chamber word. (Seal 009)",
     "options": [
-      "I",
-      "IX",
-      "XI",
-      "Y"
+      "LOCK",
+      "SAFE",
+      "NORTH",
+      "SILVER"
     ],
     "answer": 0,
-    "fact": "Apply ROT13 again to recover I."
+    "fact": "Move each letter three places backward to reveal LOCK."
   },
   {
     "id": "scc-013",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"M\".",
+    "q": "Caesar shift +3: decode \"VDIH\" to reveal the chamber word. (Seal 010)",
     "options": [
-      "Y",
-      "J",
-      "JX",
-      "XJ"
+      "GOLD",
+      "SAFE",
+      "RIDDLE",
+      "EAST"
     ],
     "answer": 1,
-    "fact": "Shift each letter three places backward to recover J."
+    "fact": "Move each letter three places backward to reveal SAFE."
   },
   {
     "id": "scc-014",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"P\".",
+    "q": "Caesar shift +3: decode \"ULGGOH\" to reveal the chamber word. (Seal 011)",
     "options": [
-      "XK",
-      "Y",
-      "K",
-      "KX"
+      "WEST",
+      "CROWN",
+      "RIDDLE",
+      "PUZZLE"
     ],
     "answer": 2,
-    "fact": "Reflect each letter across the alphabet to recover K."
+    "fact": "Move each letter three places backward to reveal RIDDLE."
   },
   {
     "id": "scc-015",
-    "q": "The mirror cipher reverses the letters. Decode \"L\".",
+    "q": "Caesar shift +3: decode \"SXCCOH\" to reveal the chamber word. (Seal 012)",
     "options": [
-      "LX",
-      "XL",
-      "Y",
-      "L"
+      "SHADOW",
+      "SOUTH",
+      "KNIGHT",
+      "PUZZLE"
     ],
     "answer": 3,
-    "fact": "Read the inscription from right to left to recover L."
+    "fact": "Move each letter three places backward to reveal PUZZLE."
   },
   {
     "id": "scc-016",
-    "q": "Using A=1 through Z=26, decode this sequence: 13.",
+    "q": "Caesar shift +3: decode \"VKDGRZ\" to reveal the chamber word. (Seal 013)",
     "options": [
-      "M",
-      "MX",
-      "XM",
-      "Y"
+      "SHADOW",
+      "NIGHT",
+      "RIVER",
+      "CASTLE"
     ],
     "answer": 0,
-    "fact": "Convert each number to its alphabet position; the result is M."
+    "fact": "Move each letter three places backward to reveal SHADOW."
   },
   {
     "id": "scc-017",
-    "q": "A Morse signal enters the chamber: -.. Which word does it spell?",
+    "q": "Caesar shift +3: decode \"QLJKW\" to reveal the chamber word. (Seal 014)",
     "options": [
-      "Y",
-      "N",
-      "NX",
-      "XN"
+      "HIDDEN",
+      "NIGHT",
+      "TOWER",
+      "BRIDGE"
     ],
     "answer": 1,
-    "fact": "Decode each Morse group in order to obtain N."
+    "fact": "Move each letter three places backward to reveal NIGHT."
   },
   {
     "id": "scc-018",
-    "q": "The terminal displays 8-bit ASCII value 01001111. Which letter is encoded?",
+    "q": "Caesar shift +3: decode \"WRZHU\" to reveal the chamber word. (Seal 015)",
     "options": [
-      "XO",
-      "Y",
-      "O",
-      "OX"
+      "GARDEN",
+      "MESSAGE",
+      "TOWER",
+      "STONE"
     ],
     "answer": 2,
-    "fact": "The binary value represents ASCII letter O."
+    "fact": "Move each letter three places backward to reveal TOWER."
   },
   {
     "id": "scc-019",
-    "q": "A hexadecimal ASCII clue reads 50. Which letter is encoded?",
+    "q": "Caesar shift +3: decode \"VWRQH\" to reveal the chamber word. (Seal 016)",
     "options": [
-      "PX",
-      "XP",
-      "Y",
-      "P"
+      "NORTH",
+      "MIRROR",
+      "NUMBER",
+      "STONE"
     ],
     "answer": 3,
-    "fact": "Hexadecimal 50 is the ASCII code for P."
+    "fact": "Move each letter three places backward to reveal STONE."
   },
   {
     "id": "scc-020",
-    "q": "Decode this classic multi-tap keypad sequence: 77.",
+    "q": "Caesar shift +3: decode \"QRUWK\" to reveal the chamber word. (Seal 017)",
     "options": [
-      "Q",
-      "QX",
-      "XQ",
-      "Y"
+      "NORTH",
+      "EAST",
+      "SILVER",
+      "SIGNAL"
     ],
     "answer": 0,
-    "fact": "Repeated keypad presses select the letters to spell Q."
+    "fact": "Move each letter three places backward to reveal NORTH."
   },
   {
     "id": "scc-021",
-    "q": "The chamber uses ROT13. Decode \"E\".",
+    "q": "Caesar shift +3: decode \"HDVW\" to reveal the chamber word. (Seal 018)",
     "options": [
-      "Y",
-      "R",
-      "RX",
-      "XR"
+      "LAMP",
+      "EAST",
+      "WEST",
+      "GOLD"
     ],
     "answer": 1,
-    "fact": "Apply ROT13 again to recover R."
+    "fact": "Move each letter three places backward to reveal EAST."
   },
   {
     "id": "scc-022",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"V\".",
+    "q": "Caesar shift +3: decode \"ZHVW\" to reveal the chamber word. (Seal 019)",
     "options": [
-      "XS",
-      "Y",
-      "S",
-      "SX"
+      "CROWN",
+      "CODE",
+      "WEST",
+      "SOUTH"
     ],
     "answer": 2,
-    "fact": "Shift each letter three places backward to recover S."
+    "fact": "Move each letter three places backward to reveal WEST."
   },
   {
     "id": "scc-023",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"G\".",
+    "q": "Caesar shift +3: decode \"VRXWK\" to reveal the chamber word. (Seal 020)",
     "options": [
-      "TX",
-      "XT",
-      "Y",
-      "T"
+      "RIVER",
+      "KNIGHT",
+      "KEY",
+      "SOUTH"
     ],
     "answer": 3,
-    "fact": "Reflect each letter across the alphabet to recover T."
+    "fact": "Move each letter three places backward to reveal SOUTH."
   },
   {
     "id": "scc-024",
-    "q": "The mirror cipher reverses the letters. Decode \"U\".",
+    "q": "Caesar shift +3: decode \"ULYHU\" to reveal the chamber word. (Seal 021)",
     "options": [
-      "U",
-      "UX",
-      "XU",
-      "Y"
+      "RIVER",
+      "BRIDGE",
+      "CASTLE",
+      "VAULT"
     ],
     "answer": 0,
-    "fact": "Read the inscription from right to left to recover U."
+    "fact": "Move each letter three places backward to reveal RIVER."
   },
   {
     "id": "scc-025",
-    "q": "Using A=1 through Z=26, decode this sequence: 22.",
+    "q": "Caesar shift +3: decode \"EULGJH\" to reveal the chamber word. (Seal 022)",
     "options": [
-      "Y",
-      "V",
-      "VX",
-      "XV"
+      "CLUE",
+      "BRIDGE",
+      "GARDEN",
+      "HIDDEN"
     ],
     "answer": 1,
-    "fact": "Convert each number to its alphabet position; the result is V."
+    "fact": "Move each letter three places backward to reveal BRIDGE."
   },
   {
     "id": "scc-026",
-    "q": "A Morse signal enters the chamber: .--. Which word does it spell?",
+    "q": "Caesar shift +3: decode \"JDUGHQ\" to reveal the chamber word. (Seal 023)",
     "options": [
-      "XW",
-      "Y",
-      "W",
-      "WX"
+      "MESSAGE",
+      "CRYPT",
+      "GARDEN",
+      "MIRROR"
     ],
     "answer": 2,
-    "fact": "Decode each Morse group in order to obtain W."
+    "fact": "Move each letter three places backward to reveal GARDEN."
   },
   {
     "id": "scc-027",
-    "q": "The terminal displays 8-bit ASCII value 01011000. Which letter is encoded?",
+    "q": "Caesar shift +3: decode \"PLUURU\" to reveal the chamber word. (Seal 024)",
     "options": [
-      "XX",
-      "XX",
-      "Y",
-      "X"
+      "SILVER",
+      "NUMBER",
+      "CIPHER",
+      "MIRROR"
     ],
     "answer": 3,
-    "fact": "The binary value represents ASCII letter X."
+    "fact": "Move each letter three places backward to reveal MIRROR."
   },
   {
     "id": "scc-028",
-    "q": "A hexadecimal ASCII clue reads 59. Which letter is encoded?",
+    "q": "Caesar shift +3: decode \"VLOYHU\" to reveal the chamber word. (Seal 025)",
     "options": [
-      "Y",
-      "YX",
-      "XY",
-      "Y"
+      "SILVER",
+      "GOLD",
+      "SIGNAL",
+      "SECRET"
     ],
     "answer": 0,
-    "fact": "Hexadecimal 59 is the ASCII code for Y."
+    "fact": "Move each letter three places backward to reveal SILVER."
   },
   {
     "id": "scc-029",
-    "q": "Decode this classic multi-tap keypad sequence: 9999.",
+    "q": "Caesar shift +3: decode \"JROG\" to reveal the chamber word. (Seal 026)",
     "options": [
-      "Y",
-      "Z",
-      "ZX",
-      "XZ"
+      "LOCK",
+      "GOLD",
+      "CROWN",
+      "LAMP"
     ],
     "answer": 1,
-    "fact": "Repeated keypad presses select the letters to spell Z."
+    "fact": "Move each letter three places backward to reveal GOLD."
   },
   {
     "id": "scc-030",
-    "q": "The chamber uses ROT13. Decode \"NN\".",
+    "q": "Caesar shift +3: decode \"FURZQ\" to reveal the chamber word. (Seal 027)",
     "options": [
-      "XAA",
-      "AY",
-      "AA",
-      "AAX"
+      "CODE",
+      "SAFE",
+      "CROWN",
+      "KNIGHT"
     ],
     "answer": 2,
-    "fact": "Apply ROT13 again to recover AA."
+    "fact": "Move each letter three places backward to reveal CROWN."
   },
   {
     "id": "scc-031",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"DE\".",
+    "q": "Caesar shift +3: decode \"NQLJKW\" to reveal the chamber word. (Seal 028)",
     "options": [
-      "ABX",
-      "XAB",
-      "AY",
-      "AB"
+      "CASTLE",
+      "KEY",
+      "RIDDLE",
+      "KNIGHT"
     ],
     "answer": 3,
-    "fact": "Shift each letter three places backward to recover AB."
+    "fact": "Move each letter three places backward to reveal KNIGHT."
   },
   {
     "id": "scc-032",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"ZX\".",
+    "q": "Caesar shift +3: decode \"FDVWOH\" to reveal the chamber word. (Seal 029)",
     "options": [
-      "AC",
-      "ACX",
-      "XAC",
-      "AY"
+      "CASTLE",
+      "HIDDEN",
+      "VAULT",
+      "PUZZLE"
     ],
     "answer": 0,
-    "fact": "Reflect each letter across the alphabet to recover AC."
+    "fact": "Move each letter three places backward to reveal CASTLE."
   },
   {
     "id": "scc-033",
-    "q": "The mirror cipher reverses the letters. Decode \"DA\".",
+    "q": "Caesar shift +3: decode \"KLGGHQ\" to reveal the chamber word. (Seal 030)",
     "options": [
-      "AY",
-      "AD",
-      "ADX",
-      "XAD"
+      "SHADOW",
+      "HIDDEN",
+      "MESSAGE",
+      "CLUE"
     ],
     "answer": 1,
-    "fact": "Read the inscription from right to left to recover AD."
+    "fact": "Move each letter three places backward to reveal HIDDEN."
   },
   {
     "id": "scc-034",
-    "q": "Using A=1 through Z=26, decode this sequence: 1-5.",
+    "q": "Caesar shift +3: decode \"PHVVDJH\" to reveal the chamber word. (Seal 031)",
     "options": [
-      "XAE",
-      "AY",
-      "AE",
-      "AEX"
+      "CRYPT",
+      "NIGHT",
+      "MESSAGE",
+      "NUMBER"
     ],
     "answer": 2,
-    "fact": "Convert each number to its alphabet position; the result is AE."
+    "fact": "Move each letter three places backward to reveal MESSAGE."
   },
   {
     "id": "scc-035",
-    "q": "A Morse signal enters the chamber: .- / ..-.. Which word does it spell?",
+    "q": "Caesar shift +3: decode \"QXPEHU\" to reveal the chamber word. (Seal 032)",
     "options": [
-      "AFX",
-      "XAF",
-      "AY",
-      "AF"
+      "SIGNAL",
+      "CIPHER",
+      "TOWER",
+      "NUMBER"
     ],
     "answer": 3,
-    "fact": "Decode each Morse group in order to obtain AF."
+    "fact": "Move each letter three places backward to reveal NUMBER."
   },
   {
     "id": "scc-036",
-    "q": "The terminal displays 8-bit ASCII value 01000001. Which letter is encoded?",
+    "q": "Caesar shift +3: decode \"VLJQDO\" to reveal the chamber word. (Seal 033)",
     "options": [
-      "AG",
-      "AGX",
-      "XAG",
-      "AY"
+      "SIGNAL",
+      "LAMP",
+      "SECRET",
+      "STONE"
     ],
     "answer": 0,
-    "fact": "The binary value represents ASCII letter A."
+    "fact": "Move each letter three places backward to reveal SIGNAL."
   },
   {
     "id": "scc-037",
-    "q": "A hexadecimal ASCII clue reads 41. Which letter is encoded?",
+    "q": "Atbash alphabet reflection: decode \"OZNK\" to reveal the chamber word. (Seal 034)",
     "options": [
-      "AY",
-      "AH",
-      "AHX",
-      "XAH"
+      "EAST",
+      "LAMP",
+      "KEY",
+      "SAFE"
     ],
     "answer": 1,
-    "fact": "Hexadecimal 41 is the ASCII code for A."
+    "fact": "Reflect each letter across the alphabet to reveal LAMP."
   },
   {
     "id": "scc-038",
-    "q": "Decode this classic multi-tap keypad sequence: 2 444.",
+    "q": "Atbash alphabet reflection: decode \"XLWV\" to reveal the chamber word. (Seal 035)",
     "options": [
-      "XAI",
-      "AY",
-      "AI",
-      "AIX"
+      "RIDDLE",
+      "WEST",
+      "CODE",
+      "VAULT"
     ],
     "answer": 2,
-    "fact": "Repeated keypad presses select the letters to spell AI."
+    "fact": "Reflect each letter across the alphabet to reveal CODE."
   },
   {
     "id": "scc-039",
-    "q": "The chamber uses ROT13. Decode \"NW\".",
+    "q": "Atbash alphabet reflection: decode \"PVB\" to reveal the chamber word. (Seal 036)",
     "options": [
-      "AJX",
-      "XAJ",
-      "AY",
-      "AJ"
+      "CLUE",
+      "PUZZLE",
+      "SOUTH",
+      "KEY"
     ],
     "answer": 3,
-    "fact": "Apply ROT13 again to recover AJ."
+    "fact": "Reflect each letter across the alphabet to reveal KEY."
   },
   {
     "id": "scc-040",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"DN\".",
+    "q": "Atbash alphabet reflection: decode \"EZFOG\" to reveal the chamber word. (Seal 037)",
     "options": [
-      "AK",
-      "AKX",
-      "XAK",
-      "AY"
+      "VAULT",
+      "CRYPT",
+      "SHADOW",
+      "RIVER"
     ],
     "answer": 0,
-    "fact": "Shift each letter three places backward to recover AK."
+    "fact": "Reflect each letter across the alphabet to reveal VAULT."
   },
   {
     "id": "scc-041",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"ZO\".",
+    "q": "Atbash alphabet reflection: decode \"XOFV\" to reveal the chamber word. (Seal 038)",
     "options": [
-      "AY",
-      "AL",
-      "ALX",
-      "XAL"
+      "BRIDGE",
+      "CLUE",
+      "CIPHER",
+      "NIGHT"
     ],
     "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover AL."
+    "fact": "Reflect each letter across the alphabet to reveal CLUE."
   },
   {
     "id": "scc-042",
-    "q": "The mirror cipher reverses the letters. Decode \"MA\".",
+    "q": "Atbash alphabet reflection: decode \"XIBKG\" to reveal the chamber word. (Seal 039)",
     "options": [
-      "XAM",
-      "AY",
-      "AM",
-      "AMX"
+      "TOWER",
+      "GARDEN",
+      "CRYPT",
+      "SECRET"
     ],
     "answer": 2,
-    "fact": "Read the inscription from right to left to recover AM."
+    "fact": "Reflect each letter across the alphabet to reveal CRYPT."
   },
   {
     "id": "scc-043",
-    "q": "Using A=1 through Z=26, decode this sequence: 1-14.",
+    "q": "Atbash alphabet reflection: decode \"XRKSVI\" to reveal the chamber word. (Seal 040)",
     "options": [
-      "ANX",
-      "XAN",
-      "AY",
-      "AN"
+      "LOCK",
+      "STONE",
+      "MIRROR",
+      "CIPHER"
     ],
     "answer": 3,
-    "fact": "Convert each number to its alphabet position; the result is AN."
+    "fact": "Reflect each letter across the alphabet to reveal CIPHER."
   },
   {
     "id": "scc-044",
-    "q": "A Morse signal enters the chamber: .- / ---. Which word does it spell?",
+    "q": "Atbash alphabet reflection: decode \"HVXIVG\" to reveal the chamber word. (Seal 041)",
     "options": [
-      "AO",
-      "AOX",
-      "XAO",
-      "AY"
+      "SECRET",
+      "SAFE",
+      "NORTH",
+      "SILVER"
     ],
     "answer": 0,
-    "fact": "Decode each Morse group in order to obtain AO."
+    "fact": "Reflect each letter across the alphabet to reveal SECRET."
   },
   {
     "id": "scc-045",
-    "q": "The terminal displays 8-bit ASCII value 01000001. Which letter is encoded?",
+    "q": "Atbash alphabet reflection: decode \"OLXP\" to reveal the chamber word. (Seal 042)",
     "options": [
-      "AY",
-      "AP",
-      "APX",
-      "XAP"
+      "GOLD",
+      "LOCK",
+      "RIDDLE",
+      "EAST"
     ],
     "answer": 1,
-    "fact": "The binary value represents ASCII letter A."
+    "fact": "Reflect each letter across the alphabet to reveal LOCK."
   },
   {
     "id": "scc-046",
-    "q": "A hexadecimal ASCII clue reads 41. Which letter is encoded?",
+    "q": "Atbash alphabet reflection: decode \"HZUV\" to reveal the chamber word. (Seal 043)",
     "options": [
-      "XAQ",
-      "AY",
-      "AQ",
-      "AQX"
+      "WEST",
+      "CROWN",
+      "SAFE",
+      "PUZZLE"
     ],
     "answer": 2,
-    "fact": "Hexadecimal 41 is the ASCII code for A."
+    "fact": "Reflect each letter across the alphabet to reveal SAFE."
   },
   {
     "id": "scc-047",
-    "q": "Decode this classic multi-tap keypad sequence: 2 777.",
+    "q": "Atbash alphabet reflection: decode \"IRWWOV\" to reveal the chamber word. (Seal 044)",
     "options": [
-      "ARX",
-      "XAR",
-      "AY",
-      "AR"
+      "SHADOW",
+      "SOUTH",
+      "KNIGHT",
+      "RIDDLE"
     ],
     "answer": 3,
-    "fact": "Repeated keypad presses select the letters to spell AR."
+    "fact": "Reflect each letter across the alphabet to reveal RIDDLE."
   },
   {
     "id": "scc-048",
-    "q": "The chamber uses ROT13. Decode \"NF\".",
+    "q": "Atbash alphabet reflection: decode \"KFAAOV\" to reveal the chamber word. (Seal 045)",
     "options": [
-      "AS",
-      "ASX",
-      "XAS",
-      "AY"
+      "PUZZLE",
+      "NIGHT",
+      "RIVER",
+      "CASTLE"
     ],
     "answer": 0,
-    "fact": "Apply ROT13 again to recover AS."
+    "fact": "Reflect each letter across the alphabet to reveal PUZZLE."
   },
   {
     "id": "scc-049",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"DW\".",
+    "q": "Atbash alphabet reflection: decode \"HSZWLD\" to reveal the chamber word. (Seal 046)",
     "options": [
-      "AY",
-      "AT",
-      "ATX",
-      "XAT"
+      "HIDDEN",
+      "SHADOW",
+      "TOWER",
+      "BRIDGE"
     ],
     "answer": 1,
-    "fact": "Shift each letter three places backward to recover AT."
+    "fact": "Reflect each letter across the alphabet to reveal SHADOW."
   },
   {
     "id": "scc-050",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"ZF\".",
+    "q": "Atbash alphabet reflection: decode \"MRTSG\" to reveal the chamber word. (Seal 047)",
     "options": [
-      "XAU",
-      "AY",
-      "AU",
-      "AUX"
+      "GARDEN",
+      "MESSAGE",
+      "NIGHT",
+      "STONE"
     ],
     "answer": 2,
-    "fact": "Reflect each letter across the alphabet to recover AU."
+    "fact": "Reflect each letter across the alphabet to reveal NIGHT."
   },
   {
     "id": "scc-051",
-    "q": "The mirror cipher reverses the letters. Decode \"VA\".",
+    "q": "Atbash alphabet reflection: decode \"GLDVI\" to reveal the chamber word. (Seal 048)",
     "options": [
-      "AVX",
-      "XAV",
-      "AY",
-      "AV"
+      "NORTH",
+      "MIRROR",
+      "NUMBER",
+      "TOWER"
     ],
     "answer": 3,
-    "fact": "Read the inscription from right to left to recover AV."
+    "fact": "Reflect each letter across the alphabet to reveal TOWER."
   },
   {
     "id": "scc-052",
-    "q": "Using A=1 through Z=26, decode this sequence: 1-23.",
+    "q": "Atbash alphabet reflection: decode \"HGLMV\" to reveal the chamber word. (Seal 049)",
     "options": [
-      "AW",
-      "AWX",
-      "XAW",
-      "AY"
+      "STONE",
+      "EAST",
+      "SILVER",
+      "SIGNAL"
     ],
     "answer": 0,
-    "fact": "Convert each number to its alphabet position; the result is AW."
+    "fact": "Reflect each letter across the alphabet to reveal STONE."
   },
   {
     "id": "scc-053",
-    "q": "A Morse signal enters the chamber: .- / -..-. Which word does it spell?",
+    "q": "Atbash alphabet reflection: decode \"MLIGS\" to reveal the chamber word. (Seal 050)",
     "options": [
-      "AY",
-      "AX",
-      "AXX",
-      "XAX"
+      "LAMP",
+      "NORTH",
+      "WEST",
+      "GOLD"
     ],
     "answer": 1,
-    "fact": "Decode each Morse group in order to obtain AX."
+    "fact": "Reflect each letter across the alphabet to reveal NORTH."
   },
   {
     "id": "scc-054",
-    "q": "The terminal displays 8-bit ASCII value 01000001. Which letter is encoded?",
+    "q": "Atbash alphabet reflection: decode \"VZHG\" to reveal the chamber word. (Seal 051)",
     "options": [
-      "XAY",
-      "AY",
-      "AY",
-      "AYX"
+      "CROWN",
+      "CODE",
+      "EAST",
+      "SOUTH"
     ],
-    "answer": 1,
-    "fact": "The binary value represents ASCII letter A."
+    "answer": 2,
+    "fact": "Reflect each letter across the alphabet to reveal EAST."
   },
   {
     "id": "scc-055",
-    "q": "A hexadecimal ASCII clue reads 41. Which letter is encoded?",
+    "q": "Atbash alphabet reflection: decode \"DVHG\" to reveal the chamber word. (Seal 052)",
     "options": [
-      "AZX",
-      "XAZ",
-      "AY",
-      "AZ"
+      "RIVER",
+      "KNIGHT",
+      "KEY",
+      "WEST"
     ],
     "answer": 3,
-    "fact": "Hexadecimal 41 is the ASCII code for A."
+    "fact": "Reflect each letter across the alphabet to reveal WEST."
   },
   {
     "id": "scc-056",
-    "q": "Decode this classic multi-tap keypad sequence: 22 2.",
+    "q": "Atbash alphabet reflection: decode \"HLFGS\" to reveal the chamber word. (Seal 053)",
     "options": [
-      "BA",
-      "BAX",
-      "XBA",
-      "BY"
+      "SOUTH",
+      "BRIDGE",
+      "CASTLE",
+      "VAULT"
     ],
     "answer": 0,
-    "fact": "Repeated keypad presses select the letters to spell BA."
+    "fact": "Reflect each letter across the alphabet to reveal SOUTH."
   },
   {
     "id": "scc-057",
-    "q": "The chamber uses ROT13. Decode \"OO\".",
+    "q": "Atbash alphabet reflection: decode \"IREVI\" to reveal the chamber word. (Seal 054)",
     "options": [
-      "BY",
-      "BB",
-      "BBX",
-      "XBB"
+      "CLUE",
+      "RIVER",
+      "GARDEN",
+      "HIDDEN"
     ],
     "answer": 1,
-    "fact": "Apply ROT13 again to recover BB."
+    "fact": "Reflect each letter across the alphabet to reveal RIVER."
   },
   {
     "id": "scc-058",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"EF\".",
+    "q": "Atbash alphabet reflection: decode \"YIRWTV\" to reveal the chamber word. (Seal 055)",
     "options": [
-      "XBC",
-      "BY",
-      "BC",
-      "BCX"
+      "MESSAGE",
+      "CRYPT",
+      "BRIDGE",
+      "MIRROR"
     ],
     "answer": 2,
-    "fact": "Shift each letter three places backward to recover BC."
+    "fact": "Reflect each letter across the alphabet to reveal BRIDGE."
   },
   {
     "id": "scc-059",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"YW\".",
+    "q": "Atbash alphabet reflection: decode \"TZIWVM\" to reveal the chamber word. (Seal 056)",
     "options": [
-      "BDX",
-      "XBD",
-      "BY",
-      "BD"
+      "SILVER",
+      "NUMBER",
+      "CIPHER",
+      "GARDEN"
     ],
     "answer": 3,
-    "fact": "Reflect each letter across the alphabet to recover BD."
+    "fact": "Reflect each letter across the alphabet to reveal GARDEN."
   },
   {
     "id": "scc-060",
-    "q": "The mirror cipher reverses the letters. Decode \"EB\".",
+    "q": "Atbash alphabet reflection: decode \"NRIILI\" to reveal the chamber word. (Seal 057)",
     "options": [
-      "BE",
-      "BEX",
-      "XBE",
-      "BY"
+      "MIRROR",
+      "GOLD",
+      "SIGNAL",
+      "SECRET"
     ],
     "answer": 0,
-    "fact": "Read the inscription from right to left to recover BE."
+    "fact": "Reflect each letter across the alphabet to reveal MIRROR."
   },
   {
     "id": "scc-061",
-    "q": "Using A=1 through Z=26, decode this sequence: 2-6.",
+    "q": "Atbash alphabet reflection: decode \"HROEVI\" to reveal the chamber word. (Seal 058)",
     "options": [
-      "BY",
-      "BF",
-      "BFX",
-      "XBF"
+      "LOCK",
+      "SILVER",
+      "CROWN",
+      "LAMP"
     ],
     "answer": 1,
-    "fact": "Convert each number to its alphabet position; the result is BF."
+    "fact": "Reflect each letter across the alphabet to reveal SILVER."
   },
   {
     "id": "scc-062",
-    "q": "A Morse signal enters the chamber: -... / --.. Which word does it spell?",
+    "q": "Atbash alphabet reflection: decode \"TLOW\" to reveal the chamber word. (Seal 059)",
     "options": [
-      "XBG",
-      "BY",
-      "BG",
-      "BGX"
+      "CODE",
+      "SAFE",
+      "GOLD",
+      "KNIGHT"
     ],
     "answer": 2,
-    "fact": "Decode each Morse group in order to obtain BG."
+    "fact": "Reflect each letter across the alphabet to reveal GOLD."
   },
   {
     "id": "scc-063",
-    "q": "The terminal displays 8-bit ASCII value 01000010. Which letter is encoded?",
+    "q": "Atbash alphabet reflection: decode \"XILDM\" to reveal the chamber word. (Seal 060)",
     "options": [
-      "BHX",
-      "XBH",
-      "BY",
-      "BH"
+      "CASTLE",
+      "KEY",
+      "RIDDLE",
+      "CROWN"
     ],
     "answer": 3,
-    "fact": "The binary value represents ASCII letter B."
+    "fact": "Reflect each letter across the alphabet to reveal CROWN."
   },
   {
     "id": "scc-064",
-    "q": "A hexadecimal ASCII clue reads 42. Which letter is encoded?",
+    "q": "Atbash alphabet reflection: decode \"PMRTSG\" to reveal the chamber word. (Seal 061)",
     "options": [
-      "BI",
-      "BIX",
-      "XBI",
-      "BY"
+      "KNIGHT",
+      "HIDDEN",
+      "VAULT",
+      "PUZZLE"
     ],
     "answer": 0,
-    "fact": "Hexadecimal 42 is the ASCII code for B."
+    "fact": "Reflect each letter across the alphabet to reveal KNIGHT."
   },
   {
     "id": "scc-065",
-    "q": "Decode this classic multi-tap keypad sequence: 22 5.",
+    "q": "Atbash alphabet reflection: decode \"XZHGOV\" to reveal the chamber word. (Seal 062)",
     "options": [
-      "BY",
-      "BJ",
-      "BJX",
-      "XBJ"
+      "SHADOW",
+      "CASTLE",
+      "MESSAGE",
+      "CLUE"
     ],
     "answer": 1,
-    "fact": "Repeated keypad presses select the letters to spell BJ."
+    "fact": "Reflect each letter across the alphabet to reveal CASTLE."
   },
   {
     "id": "scc-066",
-    "q": "The chamber uses ROT13. Decode \"OX\".",
+    "q": "Atbash alphabet reflection: decode \"SRWWVM\" to reveal the chamber word. (Seal 063)",
     "options": [
-      "XBK",
-      "BY",
-      "BK",
-      "BKX"
+      "CRYPT",
+      "NIGHT",
+      "HIDDEN",
+      "NUMBER"
     ],
     "answer": 2,
-    "fact": "Apply ROT13 again to recover BK."
+    "fact": "Reflect each letter across the alphabet to reveal HIDDEN."
   },
   {
     "id": "scc-067",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"EO\".",
+    "q": "Atbash alphabet reflection: decode \"NVHHZTV\" to reveal the chamber word. (Seal 064)",
     "options": [
-      "BLX",
-      "XBL",
-      "BY",
-      "BL"
+      "SIGNAL",
+      "CIPHER",
+      "TOWER",
+      "MESSAGE"
     ],
     "answer": 3,
-    "fact": "Shift each letter three places backward to recover BL."
+    "fact": "Reflect each letter across the alphabet to reveal MESSAGE."
   },
   {
     "id": "scc-068",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"YN\".",
+    "q": "Atbash alphabet reflection: decode \"MFNYVI\" to reveal the chamber word. (Seal 065)",
     "options": [
-      "BM",
-      "BMX",
-      "XBM",
-      "BY"
+      "NUMBER",
+      "LAMP",
+      "SECRET",
+      "STONE"
     ],
     "answer": 0,
-    "fact": "Reflect each letter across the alphabet to recover BM."
+    "fact": "Reflect each letter across the alphabet to reveal NUMBER."
   },
   {
     "id": "scc-069",
-    "q": "The mirror cipher reverses the letters. Decode \"NB\".",
+    "q": "Atbash alphabet reflection: decode \"HRTMZO\" to reveal the chamber word. (Seal 066)",
     "options": [
-      "BY",
-      "BN",
-      "BNX",
-      "XBN"
+      "NORTH",
+      "SIGNAL",
+      "CODE",
+      "LOCK"
     ],
     "answer": 1,
-    "fact": "Read the inscription from right to left to recover BN."
+    "fact": "Reflect each letter across the alphabet to reveal SIGNAL."
   },
   {
     "id": "scc-070",
-    "q": "Using A=1 through Z=26, decode this sequence: 2-15.",
+    "q": "Mirror cipher: reverse the letters in \"PMAL\" to reveal the chamber word. (Seal 067)",
     "options": [
-      "XBO",
-      "BY",
-      "BO",
-      "BOX"
+      "RIDDLE",
+      "WEST",
+      "LAMP",
+      "VAULT"
     ],
     "answer": 2,
-    "fact": "Convert each number to its alphabet position; the result is BO."
+    "fact": "Read the coded letters from right to left to reveal LAMP."
   },
   {
     "id": "scc-071",
-    "q": "A Morse signal enters the chamber: -... / .--.. Which word does it spell?",
+    "q": "Mirror cipher: reverse the letters in \"EDOC\" to reveal the chamber word. (Seal 068)",
     "options": [
-      "BPX",
-      "XBP",
-      "BY",
-      "BP"
+      "CLUE",
+      "PUZZLE",
+      "SOUTH",
+      "CODE"
     ],
     "answer": 3,
-    "fact": "Decode each Morse group in order to obtain BP."
+    "fact": "Read the coded letters from right to left to reveal CODE."
   },
   {
     "id": "scc-072",
-    "q": "The terminal displays 8-bit ASCII value 01000010. Which letter is encoded?",
+    "q": "Mirror cipher: reverse the letters in \"YEK\" to reveal the chamber word. (Seal 069)",
     "options": [
-      "BQ",
-      "BQX",
-      "XBQ",
-      "BY"
+      "KEY",
+      "CRYPT",
+      "SHADOW",
+      "RIVER"
     ],
     "answer": 0,
-    "fact": "The binary value represents ASCII letter B."
+    "fact": "Read the coded letters from right to left to reveal KEY."
   },
   {
     "id": "scc-073",
-    "q": "A hexadecimal ASCII clue reads 42. Which letter is encoded?",
+    "q": "Mirror cipher: reverse the letters in \"TLUAV\" to reveal the chamber word. (Seal 070)",
     "options": [
-      "BY",
-      "BR",
-      "BRX",
-      "XBR"
+      "BRIDGE",
+      "VAULT",
+      "CIPHER",
+      "NIGHT"
     ],
     "answer": 1,
-    "fact": "Hexadecimal 42 is the ASCII code for B."
+    "fact": "Read the coded letters from right to left to reveal VAULT."
   },
   {
     "id": "scc-074",
-    "q": "Decode this classic multi-tap keypad sequence: 22 7777.",
+    "q": "Mirror cipher: reverse the letters in \"EULC\" to reveal the chamber word. (Seal 071)",
     "options": [
-      "XBS",
-      "BY",
-      "BS",
-      "BSX"
+      "TOWER",
+      "GARDEN",
+      "CLUE",
+      "SECRET"
     ],
     "answer": 2,
-    "fact": "Repeated keypad presses select the letters to spell BS."
+    "fact": "Read the coded letters from right to left to reveal CLUE."
   },
   {
     "id": "scc-075",
-    "q": "The chamber uses ROT13. Decode \"OG\".",
+    "q": "Mirror cipher: reverse the letters in \"TPYRC\" to reveal the chamber word. (Seal 072)",
     "options": [
-      "BTX",
-      "XBT",
-      "BY",
-      "BT"
+      "LOCK",
+      "STONE",
+      "MIRROR",
+      "CRYPT"
     ],
     "answer": 3,
-    "fact": "Apply ROT13 again to recover BT."
+    "fact": "Read the coded letters from right to left to reveal CRYPT."
   },
   {
     "id": "scc-076",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"EX\".",
+    "q": "Mirror cipher: reverse the letters in \"REHPIC\" to reveal the chamber word. (Seal 073)",
     "options": [
-      "BU",
-      "BUX",
-      "XBU",
-      "BY"
+      "CIPHER",
+      "SAFE",
+      "NORTH",
+      "SILVER"
     ],
     "answer": 0,
-    "fact": "Shift each letter three places backward to recover BU."
+    "fact": "Read the coded letters from right to left to reveal CIPHER."
   },
   {
     "id": "scc-077",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"YE\".",
+    "q": "Mirror cipher: reverse the letters in \"TERCES\" to reveal the chamber word. (Seal 074)",
     "options": [
-      "BY",
-      "BV",
-      "BVX",
-      "XBV"
+      "GOLD",
+      "SECRET",
+      "RIDDLE",
+      "EAST"
     ],
     "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover BV."
+    "fact": "Read the coded letters from right to left to reveal SECRET."
   },
   {
     "id": "scc-078",
-    "q": "The mirror cipher reverses the letters. Decode \"WB\".",
+    "q": "Mirror cipher: reverse the letters in \"KCOL\" to reveal the chamber word. (Seal 075)",
     "options": [
-      "XBW",
-      "BY",
-      "BW",
-      "BWX"
+      "WEST",
+      "CROWN",
+      "LOCK",
+      "PUZZLE"
     ],
     "answer": 2,
-    "fact": "Read the inscription from right to left to recover BW."
+    "fact": "Read the coded letters from right to left to reveal LOCK."
   },
   {
     "id": "scc-079",
-    "q": "Using A=1 through Z=26, decode this sequence: 2-24.",
+    "q": "Mirror cipher: reverse the letters in \"EFAS\" to reveal the chamber word. (Seal 076)",
     "options": [
-      "BXX",
-      "XBX",
-      "BY",
-      "BX"
+      "SHADOW",
+      "SOUTH",
+      "KNIGHT",
+      "SAFE"
     ],
     "answer": 3,
-    "fact": "Convert each number to its alphabet position; the result is BX."
+    "fact": "Read the coded letters from right to left to reveal SAFE."
   },
   {
     "id": "scc-080",
-    "q": "A Morse signal enters the chamber: -... / -.--. Which word does it spell?",
+    "q": "Mirror cipher: reverse the letters in \"ELDDIR\" to reveal the chamber word. (Seal 077)",
     "options": [
-      "BY",
-      "BYX",
-      "XBY",
-      "BY"
+      "RIDDLE",
+      "NIGHT",
+      "RIVER",
+      "CASTLE"
     ],
     "answer": 0,
-    "fact": "Decode each Morse group in order to obtain BY."
+    "fact": "Read the coded letters from right to left to reveal RIDDLE."
   },
   {
     "id": "scc-081",
-    "q": "The terminal displays 8-bit ASCII value 01000010. Which letter is encoded?",
+    "q": "Mirror cipher: reverse the letters in \"ELZZUP\" to reveal the chamber word. (Seal 078)",
     "options": [
-      "BY",
-      "BZ",
-      "BZX",
-      "XBZ"
+      "HIDDEN",
+      "PUZZLE",
+      "TOWER",
+      "BRIDGE"
     ],
     "answer": 1,
-    "fact": "The binary value represents ASCII letter B."
+    "fact": "Read the coded letters from right to left to reveal PUZZLE."
   },
   {
     "id": "scc-082",
-    "q": "A hexadecimal ASCII clue reads 43. Which letter is encoded?",
+    "q": "Mirror cipher: reverse the letters in \"WODAHS\" to reveal the chamber word. (Seal 079)",
     "options": [
-      "XCA",
-      "CY",
-      "CA",
-      "CAX"
+      "GARDEN",
+      "MESSAGE",
+      "SHADOW",
+      "STONE"
     ],
     "answer": 2,
-    "fact": "Hexadecimal 43 is the ASCII code for C."
+    "fact": "Read the coded letters from right to left to reveal SHADOW."
   },
   {
     "id": "scc-083",
-    "q": "Decode this classic multi-tap keypad sequence: 222 22.",
+    "q": "Mirror cipher: reverse the letters in \"THGIN\" to reveal the chamber word. (Seal 080)",
     "options": [
-      "CBX",
-      "XCB",
-      "CY",
-      "CB"
+      "NORTH",
+      "MIRROR",
+      "NUMBER",
+      "NIGHT"
     ],
     "answer": 3,
-    "fact": "Repeated keypad presses select the letters to spell CB."
+    "fact": "Read the coded letters from right to left to reveal NIGHT."
   },
   {
     "id": "scc-084",
-    "q": "The chamber uses ROT13. Decode \"PP\".",
+    "q": "Mirror cipher: reverse the letters in \"REWOT\" to reveal the chamber word. (Seal 081)",
     "options": [
-      "CC",
-      "CCX",
-      "XCC",
-      "CY"
+      "TOWER",
+      "EAST",
+      "SILVER",
+      "SIGNAL"
     ],
     "answer": 0,
-    "fact": "Apply ROT13 again to recover CC."
+    "fact": "Read the coded letters from right to left to reveal TOWER."
   },
   {
     "id": "scc-085",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"FG\".",
+    "q": "Mirror cipher: reverse the letters in \"ENOTS\" to reveal the chamber word. (Seal 082)",
     "options": [
-      "CY",
-      "CD",
-      "CDX",
-      "XCD"
+      "LAMP",
+      "STONE",
+      "WEST",
+      "GOLD"
     ],
     "answer": 1,
-    "fact": "Shift each letter three places backward to recover CD."
+    "fact": "Read the coded letters from right to left to reveal STONE."
   },
   {
     "id": "scc-086",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"XV\".",
+    "q": "Mirror cipher: reverse the letters in \"HTRON\" to reveal the chamber word. (Seal 083)",
     "options": [
-      "XCE",
-      "CY",
-      "CE",
-      "CEX"
+      "CROWN",
+      "CODE",
+      "NORTH",
+      "SOUTH"
     ],
     "answer": 2,
-    "fact": "Reflect each letter across the alphabet to recover CE."
+    "fact": "Read the coded letters from right to left to reveal NORTH."
   },
   {
     "id": "scc-087",
-    "q": "The mirror cipher reverses the letters. Decode \"FC\".",
+    "q": "Mirror cipher: reverse the letters in \"TSAE\" to reveal the chamber word. (Seal 084)",
     "options": [
-      "CFX",
-      "XCF",
-      "CY",
-      "CF"
+      "RIVER",
+      "KNIGHT",
+      "KEY",
+      "EAST"
     ],
     "answer": 3,
-    "fact": "Read the inscription from right to left to recover CF."
+    "fact": "Read the coded letters from right to left to reveal EAST."
   },
   {
     "id": "scc-088",
-    "q": "Using A=1 through Z=26, decode this sequence: 3-7.",
+    "q": "Mirror cipher: reverse the letters in \"TSEW\" to reveal the chamber word. (Seal 085)",
     "options": [
-      "CG",
-      "CGX",
-      "XCG",
-      "CY"
+      "WEST",
+      "BRIDGE",
+      "CASTLE",
+      "VAULT"
     ],
     "answer": 0,
-    "fact": "Convert each number to its alphabet position; the result is CG."
+    "fact": "Read the coded letters from right to left to reveal WEST."
   },
   {
     "id": "scc-089",
-    "q": "A Morse signal enters the chamber: -.-. / ..... Which word does it spell?",
+    "q": "Mirror cipher: reverse the letters in \"HTUOS\" to reveal the chamber word. (Seal 086)",
     "options": [
-      "CY",
-      "CH",
-      "CHX",
-      "XCH"
+      "CLUE",
+      "SOUTH",
+      "GARDEN",
+      "HIDDEN"
     ],
     "answer": 1,
-    "fact": "Decode each Morse group in order to obtain CH."
+    "fact": "Read the coded letters from right to left to reveal SOUTH."
   },
   {
     "id": "scc-090",
-    "q": "The terminal displays 8-bit ASCII value 01000011. Which letter is encoded?",
+    "q": "Mirror cipher: reverse the letters in \"REVIR\" to reveal the chamber word. (Seal 087)",
     "options": [
-      "XCI",
-      "CY",
-      "CI",
-      "CIX"
+      "MESSAGE",
+      "CRYPT",
+      "RIVER",
+      "MIRROR"
     ],
     "answer": 2,
-    "fact": "The binary value represents ASCII letter C."
+    "fact": "Read the coded letters from right to left to reveal RIVER."
   },
   {
     "id": "scc-091",
-    "q": "A hexadecimal ASCII clue reads 43. Which letter is encoded?",
+    "q": "Mirror cipher: reverse the letters in \"EGDIRB\" to reveal the chamber word. (Seal 088)",
     "options": [
-      "CJX",
-      "XCJ",
-      "CY",
-      "CJ"
+      "SILVER",
+      "NUMBER",
+      "CIPHER",
+      "BRIDGE"
     ],
     "answer": 3,
-    "fact": "Hexadecimal 43 is the ASCII code for C."
+    "fact": "Read the coded letters from right to left to reveal BRIDGE."
   },
   {
     "id": "scc-092",
-    "q": "Decode this classic multi-tap keypad sequence: 222 55.",
+    "q": "Mirror cipher: reverse the letters in \"NEDRAG\" to reveal the chamber word. (Seal 089)",
     "options": [
-      "CK",
-      "CKX",
-      "XCK",
-      "CY"
+      "GARDEN",
+      "GOLD",
+      "SIGNAL",
+      "SECRET"
     ],
     "answer": 0,
-    "fact": "Repeated keypad presses select the letters to spell CK."
+    "fact": "Read the coded letters from right to left to reveal GARDEN."
   },
   {
     "id": "scc-093",
-    "q": "The chamber uses ROT13. Decode \"PY\".",
+    "q": "Mirror cipher: reverse the letters in \"RORRIM\" to reveal the chamber word. (Seal 090)",
     "options": [
-      "CY",
-      "CL",
-      "CLX",
-      "XCL"
+      "LOCK",
+      "MIRROR",
+      "CROWN",
+      "LAMP"
     ],
     "answer": 1,
-    "fact": "Apply ROT13 again to recover CL."
+    "fact": "Read the coded letters from right to left to reveal MIRROR."
   },
   {
     "id": "scc-094",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"FP\".",
+    "q": "Mirror cipher: reverse the letters in \"REVLIS\" to reveal the chamber word. (Seal 091)",
     "options": [
-      "XCM",
-      "CY",
-      "CM",
-      "CMX"
+      "CODE",
+      "SAFE",
+      "SILVER",
+      "KNIGHT"
     ],
     "answer": 2,
-    "fact": "Shift each letter three places backward to recover CM."
+    "fact": "Read the coded letters from right to left to reveal SILVER."
   },
   {
     "id": "scc-095",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"XM\".",
+    "q": "Mirror cipher: reverse the letters in \"DLOG\" to reveal the chamber word. (Seal 092)",
     "options": [
-      "CNX",
-      "XCN",
-      "CY",
-      "CN"
+      "CASTLE",
+      "KEY",
+      "RIDDLE",
+      "GOLD"
     ],
     "answer": 3,
-    "fact": "Reflect each letter across the alphabet to recover CN."
+    "fact": "Read the coded letters from right to left to reveal GOLD."
   },
   {
     "id": "scc-096",
-    "q": "The mirror cipher reverses the letters. Decode \"OC\".",
+    "q": "Mirror cipher: reverse the letters in \"NWORC\" to reveal the chamber word. (Seal 093)",
     "options": [
-      "CO",
-      "COX",
-      "XCO",
-      "CY"
+      "CROWN",
+      "HIDDEN",
+      "VAULT",
+      "PUZZLE"
     ],
     "answer": 0,
-    "fact": "Read the inscription from right to left to recover CO."
+    "fact": "Read the coded letters from right to left to reveal CROWN."
   },
   {
     "id": "scc-097",
-    "q": "Using A=1 through Z=26, decode this sequence: 3-16.",
+    "q": "Mirror cipher: reverse the letters in \"THGINK\" to reveal the chamber word. (Seal 094)",
     "options": [
-      "CY",
-      "CP",
-      "CPX",
-      "XCP"
+      "SHADOW",
+      "KNIGHT",
+      "MESSAGE",
+      "CLUE"
     ],
     "answer": 1,
-    "fact": "Convert each number to its alphabet position; the result is CP."
+    "fact": "Read the coded letters from right to left to reveal KNIGHT."
   },
   {
     "id": "scc-098",
-    "q": "A Morse signal enters the chamber: -.-. / --.-. Which word does it spell?",
+    "q": "Mirror cipher: reverse the letters in \"ELTSAC\" to reveal the chamber word. (Seal 095)",
     "options": [
-      "XCQ",
-      "CY",
-      "CQ",
-      "CQX"
+      "CRYPT",
+      "NIGHT",
+      "CASTLE",
+      "NUMBER"
     ],
     "answer": 2,
-    "fact": "Decode each Morse group in order to obtain CQ."
+    "fact": "Read the coded letters from right to left to reveal CASTLE."
   },
   {
     "id": "scc-099",
-    "q": "The terminal displays 8-bit ASCII value 01000011. Which letter is encoded?",
+    "q": "Mirror cipher: reverse the letters in \"NEDDIH\" to reveal the chamber word. (Seal 096)",
     "options": [
-      "CRX",
-      "XCR",
-      "CY",
-      "CR"
+      "SIGNAL",
+      "CIPHER",
+      "TOWER",
+      "HIDDEN"
     ],
     "answer": 3,
-    "fact": "The binary value represents ASCII letter C."
+    "fact": "Read the coded letters from right to left to reveal HIDDEN."
   },
   {
     "id": "scc-100",
-    "q": "A hexadecimal ASCII clue reads 43. Which letter is encoded?",
+    "q": "Mirror cipher: reverse the letters in \"EGASSEM\" to reveal the chamber word. (Seal 097)",
     "options": [
-      "CS",
-      "CSX",
-      "XCS",
-      "CY"
+      "MESSAGE",
+      "LAMP",
+      "SECRET",
+      "STONE"
+    ],
+    "answer": 0,
+    "fact": "Read the coded letters from right to left to reveal MESSAGE."
+  },
+  {
+    "id": "scc-101",
+    "q": "Mirror cipher: reverse the letters in \"REBMUN\" to reveal the chamber word. (Seal 098)",
+    "options": [
+      "NORTH",
+      "NUMBER",
+      "CODE",
+      "LOCK"
+    ],
+    "answer": 1,
+    "fact": "Read the coded letters from right to left to reveal NUMBER."
+  },
+  {
+    "id": "scc-102",
+    "q": "Mirror cipher: reverse the letters in \"LANGIS\" to reveal the chamber word. (Seal 099)",
+    "options": [
+      "SAFE",
+      "EAST",
+      "SIGNAL",
+      "KEY"
+    ],
+    "answer": 2,
+    "fact": "Read the coded letters from right to left to reveal SIGNAL."
+  },
+  {
+    "id": "scc-103",
+    "q": "Number cipher: using A=1 through Z=26, decode 12-1-13-16 to reveal the chamber word. (Seal 100)",
+    "options": [
+      "CLUE",
+      "PUZZLE",
+      "SOUTH",
+      "LAMP"
+    ],
+    "answer": 3,
+    "fact": "Convert each number into its alphabet position to reveal LAMP."
+  },
+  {
+    "id": "scc-104",
+    "q": "Number cipher: using A=1 through Z=26, decode 3-15-4-5 to reveal the chamber word. (Seal 101)",
+    "options": [
+      "CODE",
+      "CRYPT",
+      "SHADOW",
+      "RIVER"
+    ],
+    "answer": 0,
+    "fact": "Convert each number into its alphabet position to reveal CODE."
+  },
+  {
+    "id": "scc-105",
+    "q": "Number cipher: using A=1 through Z=26, decode 11-5-25 to reveal the chamber word. (Seal 102)",
+    "options": [
+      "BRIDGE",
+      "KEY",
+      "CIPHER",
+      "NIGHT"
+    ],
+    "answer": 1,
+    "fact": "Convert each number into its alphabet position to reveal KEY."
+  },
+  {
+    "id": "scc-106",
+    "q": "Number cipher: using A=1 through Z=26, decode 22-1-21-12-20 to reveal the chamber word. (Seal 103)",
+    "options": [
+      "TOWER",
+      "GARDEN",
+      "VAULT",
+      "SECRET"
+    ],
+    "answer": 2,
+    "fact": "Convert each number into its alphabet position to reveal VAULT."
+  },
+  {
+    "id": "scc-107",
+    "q": "Number cipher: using A=1 through Z=26, decode 3-12-21-5 to reveal the chamber word. (Seal 104)",
+    "options": [
+      "LOCK",
+      "STONE",
+      "MIRROR",
+      "CLUE"
+    ],
+    "answer": 3,
+    "fact": "Convert each number into its alphabet position to reveal CLUE."
+  },
+  {
+    "id": "scc-108",
+    "q": "Number cipher: using A=1 through Z=26, decode 3-18-25-16-20 to reveal the chamber word. (Seal 105)",
+    "options": [
+      "CRYPT",
+      "SAFE",
+      "NORTH",
+      "SILVER"
+    ],
+    "answer": 0,
+    "fact": "Convert each number into its alphabet position to reveal CRYPT."
+  },
+  {
+    "id": "scc-109",
+    "q": "Number cipher: using A=1 through Z=26, decode 3-9-16-8-5-18 to reveal the chamber word. (Seal 106)",
+    "options": [
+      "GOLD",
+      "CIPHER",
+      "RIDDLE",
+      "EAST"
+    ],
+    "answer": 1,
+    "fact": "Convert each number into its alphabet position to reveal CIPHER."
+  },
+  {
+    "id": "scc-110",
+    "q": "Number cipher: using A=1 through Z=26, decode 19-5-3-18-5-20 to reveal the chamber word. (Seal 107)",
+    "options": [
+      "WEST",
+      "CROWN",
+      "SECRET",
+      "PUZZLE"
+    ],
+    "answer": 2,
+    "fact": "Convert each number into its alphabet position to reveal SECRET."
+  },
+  {
+    "id": "scc-111",
+    "q": "Number cipher: using A=1 through Z=26, decode 12-15-3-11 to reveal the chamber word. (Seal 108)",
+    "options": [
+      "SHADOW",
+      "SOUTH",
+      "KNIGHT",
+      "LOCK"
+    ],
+    "answer": 3,
+    "fact": "Convert each number into its alphabet position to reveal LOCK."
+  },
+  {
+    "id": "scc-112",
+    "q": "Number cipher: using A=1 through Z=26, decode 19-1-6-5 to reveal the chamber word. (Seal 109)",
+    "options": [
+      "SAFE",
+      "NIGHT",
+      "RIVER",
+      "CASTLE"
+    ],
+    "answer": 0,
+    "fact": "Convert each number into its alphabet position to reveal SAFE."
+  },
+  {
+    "id": "scc-113",
+    "q": "Number cipher: using A=1 through Z=26, decode 18-9-4-4-12-5 to reveal the chamber word. (Seal 110)",
+    "options": [
+      "HIDDEN",
+      "RIDDLE",
+      "TOWER",
+      "BRIDGE"
+    ],
+    "answer": 1,
+    "fact": "Convert each number into its alphabet position to reveal RIDDLE."
+  },
+  {
+    "id": "scc-114",
+    "q": "Number cipher: using A=1 through Z=26, decode 16-21-26-26-12-5 to reveal the chamber word. (Seal 111)",
+    "options": [
+      "GARDEN",
+      "MESSAGE",
+      "PUZZLE",
+      "STONE"
+    ],
+    "answer": 2,
+    "fact": "Convert each number into its alphabet position to reveal PUZZLE."
+  },
+  {
+    "id": "scc-115",
+    "q": "Number cipher: using A=1 through Z=26, decode 19-8-1-4-15-23 to reveal the chamber word. (Seal 112)",
+    "options": [
+      "NORTH",
+      "MIRROR",
+      "NUMBER",
+      "SHADOW"
+    ],
+    "answer": 3,
+    "fact": "Convert each number into its alphabet position to reveal SHADOW."
+  },
+  {
+    "id": "scc-116",
+    "q": "Number cipher: using A=1 through Z=26, decode 14-9-7-8-20 to reveal the chamber word. (Seal 113)",
+    "options": [
+      "NIGHT",
+      "EAST",
+      "SILVER",
+      "SIGNAL"
+    ],
+    "answer": 0,
+    "fact": "Convert each number into its alphabet position to reveal NIGHT."
+  },
+  {
+    "id": "scc-117",
+    "q": "Number cipher: using A=1 through Z=26, decode 20-15-23-5-18 to reveal the chamber word. (Seal 114)",
+    "options": [
+      "LAMP",
+      "TOWER",
+      "WEST",
+      "GOLD"
+    ],
+    "answer": 1,
+    "fact": "Convert each number into its alphabet position to reveal TOWER."
+  },
+  {
+    "id": "scc-118",
+    "q": "Number cipher: using A=1 through Z=26, decode 19-20-15-14-5 to reveal the chamber word. (Seal 115)",
+    "options": [
+      "CROWN",
+      "CODE",
+      "STONE",
+      "SOUTH"
+    ],
+    "answer": 2,
+    "fact": "Convert each number into its alphabet position to reveal STONE."
+  },
+  {
+    "id": "scc-119",
+    "q": "Number cipher: using A=1 through Z=26, decode 14-15-18-20-8 to reveal the chamber word. (Seal 116)",
+    "options": [
+      "RIVER",
+      "KNIGHT",
+      "KEY",
+      "NORTH"
+    ],
+    "answer": 3,
+    "fact": "Convert each number into its alphabet position to reveal NORTH."
+  },
+  {
+    "id": "scc-120",
+    "q": "Number cipher: using A=1 through Z=26, decode 5-1-19-20 to reveal the chamber word. (Seal 117)",
+    "options": [
+      "EAST",
+      "BRIDGE",
+      "CASTLE",
+      "VAULT"
+    ],
+    "answer": 0,
+    "fact": "Convert each number into its alphabet position to reveal EAST."
+  },
+  {
+    "id": "scc-121",
+    "q": "Number cipher: using A=1 through Z=26, decode 23-5-19-20 to reveal the chamber word. (Seal 118)",
+    "options": [
+      "CLUE",
+      "WEST",
+      "GARDEN",
+      "HIDDEN"
+    ],
+    "answer": 1,
+    "fact": "Convert each number into its alphabet position to reveal WEST."
+  },
+  {
+    "id": "scc-122",
+    "q": "Number cipher: using A=1 through Z=26, decode 19-15-21-20-8 to reveal the chamber word. (Seal 119)",
+    "options": [
+      "MESSAGE",
+      "CRYPT",
+      "SOUTH",
+      "MIRROR"
+    ],
+    "answer": 2,
+    "fact": "Convert each number into its alphabet position to reveal SOUTH."
+  },
+  {
+    "id": "scc-123",
+    "q": "Number cipher: using A=1 through Z=26, decode 18-9-22-5-18 to reveal the chamber word. (Seal 120)",
+    "options": [
+      "SILVER",
+      "NUMBER",
+      "CIPHER",
+      "RIVER"
+    ],
+    "answer": 3,
+    "fact": "Convert each number into its alphabet position to reveal RIVER."
+  },
+  {
+    "id": "scc-124",
+    "q": "Number cipher: using A=1 through Z=26, decode 2-18-9-4-7-5 to reveal the chamber word. (Seal 121)",
+    "options": [
+      "BRIDGE",
+      "GOLD",
+      "SIGNAL",
+      "SECRET"
+    ],
+    "answer": 0,
+    "fact": "Convert each number into its alphabet position to reveal BRIDGE."
+  },
+  {
+    "id": "scc-125",
+    "q": "Number cipher: using A=1 through Z=26, decode 7-1-18-4-5-14 to reveal the chamber word. (Seal 122)",
+    "options": [
+      "LOCK",
+      "GARDEN",
+      "CROWN",
+      "LAMP"
+    ],
+    "answer": 1,
+    "fact": "Convert each number into its alphabet position to reveal GARDEN."
+  },
+  {
+    "id": "scc-126",
+    "q": "Number cipher: using A=1 through Z=26, decode 13-9-18-18-15-18 to reveal the chamber word. (Seal 123)",
+    "options": [
+      "CODE",
+      "SAFE",
+      "MIRROR",
+      "KNIGHT"
+    ],
+    "answer": 2,
+    "fact": "Convert each number into its alphabet position to reveal MIRROR."
+  },
+  {
+    "id": "scc-127",
+    "q": "Number cipher: using A=1 through Z=26, decode 19-9-12-22-5-18 to reveal the chamber word. (Seal 124)",
+    "options": [
+      "CASTLE",
+      "KEY",
+      "RIDDLE",
+      "SILVER"
+    ],
+    "answer": 3,
+    "fact": "Convert each number into its alphabet position to reveal SILVER."
+  },
+  {
+    "id": "scc-128",
+    "q": "Number cipher: using A=1 through Z=26, decode 7-15-12-4 to reveal the chamber word. (Seal 125)",
+    "options": [
+      "GOLD",
+      "HIDDEN",
+      "VAULT",
+      "PUZZLE"
+    ],
+    "answer": 0,
+    "fact": "Convert each number into its alphabet position to reveal GOLD."
+  },
+  {
+    "id": "scc-129",
+    "q": "Number cipher: using A=1 through Z=26, decode 3-18-15-23-14 to reveal the chamber word. (Seal 126)",
+    "options": [
+      "SHADOW",
+      "CROWN",
+      "MESSAGE",
+      "CLUE"
+    ],
+    "answer": 1,
+    "fact": "Convert each number into its alphabet position to reveal CROWN."
+  },
+  {
+    "id": "scc-130",
+    "q": "Number cipher: using A=1 through Z=26, decode 11-14-9-7-8-20 to reveal the chamber word. (Seal 127)",
+    "options": [
+      "CRYPT",
+      "NIGHT",
+      "KNIGHT",
+      "NUMBER"
+    ],
+    "answer": 2,
+    "fact": "Convert each number into its alphabet position to reveal KNIGHT."
+  },
+  {
+    "id": "scc-131",
+    "q": "Number cipher: using A=1 through Z=26, decode 3-1-19-20-12-5 to reveal the chamber word. (Seal 128)",
+    "options": [
+      "SIGNAL",
+      "CIPHER",
+      "TOWER",
+      "CASTLE"
+    ],
+    "answer": 3,
+    "fact": "Convert each number into its alphabet position to reveal CASTLE."
+  },
+  {
+    "id": "scc-132",
+    "q": "Number cipher: using A=1 through Z=26, decode 8-9-4-4-5-14 to reveal the chamber word. (Seal 129)",
+    "options": [
+      "HIDDEN",
+      "LAMP",
+      "SECRET",
+      "STONE"
+    ],
+    "answer": 0,
+    "fact": "Convert each number into its alphabet position to reveal HIDDEN."
+  },
+  {
+    "id": "scc-133",
+    "q": "Number cipher: using A=1 through Z=26, decode 13-5-19-19-1-7-5 to reveal the chamber word. (Seal 130)",
+    "options": [
+      "NORTH",
+      "MESSAGE",
+      "CODE",
+      "LOCK"
+    ],
+    "answer": 1,
+    "fact": "Convert each number into its alphabet position to reveal MESSAGE."
+  },
+  {
+    "id": "scc-134",
+    "q": "Number cipher: using A=1 through Z=26, decode 14-21-13-2-5-18 to reveal the chamber word. (Seal 131)",
+    "options": [
+      "SAFE",
+      "EAST",
+      "NUMBER",
+      "KEY"
+    ],
+    "answer": 2,
+    "fact": "Convert each number into its alphabet position to reveal NUMBER."
+  },
+  {
+    "id": "scc-135",
+    "q": "Number cipher: using A=1 through Z=26, decode 19-9-7-14-1-12 to reveal the chamber word. (Seal 132)",
+    "options": [
+      "VAULT",
+      "RIDDLE",
+      "WEST",
+      "SIGNAL"
+    ],
+    "answer": 3,
+    "fact": "Convert each number into its alphabet position to reveal SIGNAL."
+  },
+  {
+    "id": "scc-136",
+    "q": "Morse signal: decode .-.. / .- / -- / .--. to reveal the chamber word. (Seal 133)",
+    "options": [
+      "LAMP",
+      "CRYPT",
+      "SHADOW",
+      "RIVER"
+    ],
+    "answer": 0,
+    "fact": "Decode each Morse group in sequence to reveal LAMP."
+  },
+  {
+    "id": "scc-137",
+    "q": "Morse signal: decode -.-. / --- / -.. / . to reveal the chamber word. (Seal 134)",
+    "options": [
+      "BRIDGE",
+      "CODE",
+      "CIPHER",
+      "NIGHT"
+    ],
+    "answer": 1,
+    "fact": "Decode each Morse group in sequence to reveal CODE."
+  },
+  {
+    "id": "scc-138",
+    "q": "Morse signal: decode -.- / . / -.-- to reveal the chamber word. (Seal 135)",
+    "options": [
+      "TOWER",
+      "GARDEN",
+      "KEY",
+      "SECRET"
+    ],
+    "answer": 2,
+    "fact": "Decode each Morse group in sequence to reveal KEY."
+  },
+  {
+    "id": "scc-139",
+    "q": "Morse signal: decode ...- / .- / ..- / .-.. / - to reveal the chamber word. (Seal 136)",
+    "options": [
+      "LOCK",
+      "STONE",
+      "MIRROR",
+      "VAULT"
+    ],
+    "answer": 3,
+    "fact": "Decode each Morse group in sequence to reveal VAULT."
+  },
+  {
+    "id": "scc-140",
+    "q": "Morse signal: decode -.-. / .-.. / ..- / . to reveal the chamber word. (Seal 137)",
+    "options": [
+      "CLUE",
+      "SAFE",
+      "NORTH",
+      "SILVER"
+    ],
+    "answer": 0,
+    "fact": "Decode each Morse group in sequence to reveal CLUE."
+  },
+  {
+    "id": "scc-141",
+    "q": "Morse signal: decode -.-. / .-. / -.-- / .--. / - to reveal the chamber word. (Seal 138)",
+    "options": [
+      "GOLD",
+      "CRYPT",
+      "RIDDLE",
+      "EAST"
+    ],
+    "answer": 1,
+    "fact": "Decode each Morse group in sequence to reveal CRYPT."
+  },
+  {
+    "id": "scc-142",
+    "q": "Morse signal: decode -.-. / .. / .--. / .... / . / .-. to reveal the chamber word. (Seal 139)",
+    "options": [
+      "WEST",
+      "CROWN",
+      "CIPHER",
+      "PUZZLE"
+    ],
+    "answer": 2,
+    "fact": "Decode each Morse group in sequence to reveal CIPHER."
+  },
+  {
+    "id": "scc-143",
+    "q": "Morse signal: decode ... / . / -.-. / .-. / . / - to reveal the chamber word. (Seal 140)",
+    "options": [
+      "SHADOW",
+      "SOUTH",
+      "KNIGHT",
+      "SECRET"
+    ],
+    "answer": 3,
+    "fact": "Decode each Morse group in sequence to reveal SECRET."
+  },
+  {
+    "id": "scc-144",
+    "q": "Morse signal: decode .-.. / --- / -.-. / -.- to reveal the chamber word. (Seal 141)",
+    "options": [
+      "LOCK",
+      "NIGHT",
+      "RIVER",
+      "CASTLE"
+    ],
+    "answer": 0,
+    "fact": "Decode each Morse group in sequence to reveal LOCK."
+  },
+  {
+    "id": "scc-145",
+    "q": "Morse signal: decode ... / .- / ..-. / . to reveal the chamber word. (Seal 142)",
+    "options": [
+      "HIDDEN",
+      "SAFE",
+      "TOWER",
+      "BRIDGE"
+    ],
+    "answer": 1,
+    "fact": "Decode each Morse group in sequence to reveal SAFE."
+  },
+  {
+    "id": "scc-146",
+    "q": "Morse signal: decode .-. / .. / -.. / -.. / .-.. / . to reveal the chamber word. (Seal 143)",
+    "options": [
+      "GARDEN",
+      "MESSAGE",
+      "RIDDLE",
+      "STONE"
+    ],
+    "answer": 2,
+    "fact": "Decode each Morse group in sequence to reveal RIDDLE."
+  },
+  {
+    "id": "scc-147",
+    "q": "Morse signal: decode .--. / ..- / --.. / --.. / .-.. / . to reveal the chamber word. (Seal 144)",
+    "options": [
+      "NORTH",
+      "MIRROR",
+      "NUMBER",
+      "PUZZLE"
+    ],
+    "answer": 3,
+    "fact": "Decode each Morse group in sequence to reveal PUZZLE."
+  },
+  {
+    "id": "scc-148",
+    "q": "Morse signal: decode ... / .... / .- / -.. / --- / .-- to reveal the chamber word. (Seal 145)",
+    "options": [
+      "SHADOW",
+      "EAST",
+      "SILVER",
+      "SIGNAL"
+    ],
+    "answer": 0,
+    "fact": "Decode each Morse group in sequence to reveal SHADOW."
+  },
+  {
+    "id": "scc-149",
+    "q": "Morse signal: decode -. / .. / --. / .... / - to reveal the chamber word. (Seal 146)",
+    "options": [
+      "LAMP",
+      "NIGHT",
+      "WEST",
+      "GOLD"
+    ],
+    "answer": 1,
+    "fact": "Decode each Morse group in sequence to reveal NIGHT."
+  },
+  {
+    "id": "scc-150",
+    "q": "Morse signal: decode - / --- / .-- / . / .-. to reveal the chamber word. (Seal 147)",
+    "options": [
+      "CROWN",
+      "CODE",
+      "TOWER",
+      "SOUTH"
+    ],
+    "answer": 2,
+    "fact": "Decode each Morse group in sequence to reveal TOWER."
+  },
+  {
+    "id": "scc-151",
+    "q": "Morse signal: decode ... / - / --- / -. / . to reveal the chamber word. (Seal 148)",
+    "options": [
+      "RIVER",
+      "KNIGHT",
+      "KEY",
+      "STONE"
+    ],
+    "answer": 3,
+    "fact": "Decode each Morse group in sequence to reveal STONE."
+  },
+  {
+    "id": "scc-152",
+    "q": "Morse signal: decode -. / --- / .-. / - / .... to reveal the chamber word. (Seal 149)",
+    "options": [
+      "NORTH",
+      "BRIDGE",
+      "CASTLE",
+      "VAULT"
+    ],
+    "answer": 0,
+    "fact": "Decode each Morse group in sequence to reveal NORTH."
+  },
+  {
+    "id": "scc-153",
+    "q": "Morse signal: decode . / .- / ... / - to reveal the chamber word. (Seal 150)",
+    "options": [
+      "CLUE",
+      "EAST",
+      "GARDEN",
+      "HIDDEN"
+    ],
+    "answer": 1,
+    "fact": "Decode each Morse group in sequence to reveal EAST."
+  },
+  {
+    "id": "scc-154",
+    "q": "Morse signal: decode .-- / . / ... / - to reveal the chamber word. (Seal 151)",
+    "options": [
+      "MESSAGE",
+      "CRYPT",
+      "WEST",
+      "MIRROR"
+    ],
+    "answer": 2,
+    "fact": "Decode each Morse group in sequence to reveal WEST."
+  },
+  {
+    "id": "scc-155",
+    "q": "Morse signal: decode ... / --- / ..- / - / .... to reveal the chamber word. (Seal 152)",
+    "options": [
+      "SILVER",
+      "NUMBER",
+      "CIPHER",
+      "SOUTH"
+    ],
+    "answer": 3,
+    "fact": "Decode each Morse group in sequence to reveal SOUTH."
+  },
+  {
+    "id": "scc-156",
+    "q": "Morse signal: decode .-. / .. / ...- / . / .-. to reveal the chamber word. (Seal 153)",
+    "options": [
+      "RIVER",
+      "GOLD",
+      "SIGNAL",
+      "SECRET"
+    ],
+    "answer": 0,
+    "fact": "Decode each Morse group in sequence to reveal RIVER."
+  },
+  {
+    "id": "scc-157",
+    "q": "Morse signal: decode -... / .-. / .. / -.. / --. / . to reveal the chamber word. (Seal 154)",
+    "options": [
+      "LOCK",
+      "BRIDGE",
+      "CROWN",
+      "LAMP"
+    ],
+    "answer": 1,
+    "fact": "Decode each Morse group in sequence to reveal BRIDGE."
+  },
+  {
+    "id": "scc-158",
+    "q": "Morse signal: decode --. / .- / .-. / -.. / . / -. to reveal the chamber word. (Seal 155)",
+    "options": [
+      "CODE",
+      "SAFE",
+      "GARDEN",
+      "KNIGHT"
+    ],
+    "answer": 2,
+    "fact": "Decode each Morse group in sequence to reveal GARDEN."
+  },
+  {
+    "id": "scc-159",
+    "q": "Morse signal: decode -- / .. / .-. / .-. / --- / .-. to reveal the chamber word. (Seal 156)",
+    "options": [
+      "CASTLE",
+      "KEY",
+      "RIDDLE",
+      "MIRROR"
+    ],
+    "answer": 3,
+    "fact": "Decode each Morse group in sequence to reveal MIRROR."
+  },
+  {
+    "id": "scc-160",
+    "q": "Morse signal: decode ... / .. / .-.. / ...- / . / .-. to reveal the chamber word. (Seal 157)",
+    "options": [
+      "SILVER",
+      "HIDDEN",
+      "VAULT",
+      "PUZZLE"
+    ],
+    "answer": 0,
+    "fact": "Decode each Morse group in sequence to reveal SILVER."
+  },
+  {
+    "id": "scc-161",
+    "q": "Morse signal: decode --. / --- / .-.. / -.. to reveal the chamber word. (Seal 158)",
+    "options": [
+      "SHADOW",
+      "GOLD",
+      "MESSAGE",
+      "CLUE"
+    ],
+    "answer": 1,
+    "fact": "Decode each Morse group in sequence to reveal GOLD."
+  },
+  {
+    "id": "scc-162",
+    "q": "Morse signal: decode -.-. / .-. / --- / .-- / -. to reveal the chamber word. (Seal 159)",
+    "options": [
+      "CRYPT",
+      "NIGHT",
+      "CROWN",
+      "NUMBER"
+    ],
+    "answer": 2,
+    "fact": "Decode each Morse group in sequence to reveal CROWN."
+  },
+  {
+    "id": "scc-163",
+    "q": "Morse signal: decode -.- / -. / .. / --. / .... / - to reveal the chamber word. (Seal 160)",
+    "options": [
+      "SIGNAL",
+      "CIPHER",
+      "TOWER",
+      "KNIGHT"
+    ],
+    "answer": 3,
+    "fact": "Decode each Morse group in sequence to reveal KNIGHT."
+  },
+  {
+    "id": "scc-164",
+    "q": "Morse signal: decode -.-. / .- / ... / - / .-.. / . to reveal the chamber word. (Seal 161)",
+    "options": [
+      "CASTLE",
+      "LAMP",
+      "SECRET",
+      "STONE"
+    ],
+    "answer": 0,
+    "fact": "Decode each Morse group in sequence to reveal CASTLE."
+  },
+  {
+    "id": "scc-165",
+    "q": "Morse signal: decode .... / .. / -.. / -.. / . / -. to reveal the chamber word. (Seal 162)",
+    "options": [
+      "NORTH",
+      "HIDDEN",
+      "CODE",
+      "LOCK"
+    ],
+    "answer": 1,
+    "fact": "Decode each Morse group in sequence to reveal HIDDEN."
+  },
+  {
+    "id": "scc-166",
+    "q": "Morse signal: decode -- / . / ... / ... / .- / --. / . to reveal the chamber word. (Seal 163)",
+    "options": [
+      "SAFE",
+      "EAST",
+      "MESSAGE",
+      "KEY"
+    ],
+    "answer": 2,
+    "fact": "Decode each Morse group in sequence to reveal MESSAGE."
+  },
+  {
+    "id": "scc-167",
+    "q": "Morse signal: decode -. / ..- / -- / -... / . / .-. to reveal the chamber word. (Seal 164)",
+    "options": [
+      "VAULT",
+      "RIDDLE",
+      "WEST",
+      "NUMBER"
+    ],
+    "answer": 3,
+    "fact": "Decode each Morse group in sequence to reveal NUMBER."
+  },
+  {
+    "id": "scc-168",
+    "q": "Morse signal: decode ... / .. / --. / -. / .- / .-.. to reveal the chamber word. (Seal 165)",
+    "options": [
+      "SIGNAL",
+      "CLUE",
+      "PUZZLE",
+      "SOUTH"
+    ],
+    "answer": 0,
+    "fact": "Decode each Morse group in sequence to reveal SIGNAL."
+  },
+  {
+    "id": "scc-169",
+    "q": "Binary terminal: the 8-bit ASCII value 01001100 encodes which first letter? (Seal 166)",
+    "options": [
+      "BRIDGE",
+      "LAMP",
+      "CIPHER",
+      "NIGHT"
+    ],
+    "answer": 1,
+    "fact": "The binary value represents the initial L."
+  },
+  {
+    "id": "scc-170",
+    "q": "Binary terminal: the 8-bit ASCII value 01000011 encodes which first letter? (Seal 167)",
+    "options": [
+      "TOWER",
+      "GARDEN",
+      "CODE",
+      "SECRET"
+    ],
+    "answer": 2,
+    "fact": "The binary value represents the initial C."
+  },
+  {
+    "id": "scc-171",
+    "q": "Binary terminal: the 8-bit ASCII value 01001011 encodes which first letter? (Seal 168)",
+    "options": [
+      "LOCK",
+      "STONE",
+      "MIRROR",
+      "KEY"
+    ],
+    "answer": 3,
+    "fact": "The binary value represents the initial K."
+  },
+  {
+    "id": "scc-172",
+    "q": "Binary terminal: the 8-bit ASCII value 01010110 encodes which first letter? (Seal 169)",
+    "options": [
+      "VAULT",
+      "SAFE",
+      "NORTH",
+      "SILVER"
+    ],
+    "answer": 0,
+    "fact": "The binary value represents the initial V."
+  },
+  {
+    "id": "scc-173",
+    "q": "Binary terminal: the 8-bit ASCII value 01000011 encodes which first letter? (Seal 170)",
+    "options": [
+      "GOLD",
+      "CLUE",
+      "RIDDLE",
+      "EAST"
+    ],
+    "answer": 1,
+    "fact": "The binary value represents the initial C."
+  },
+  {
+    "id": "scc-174",
+    "q": "Binary terminal: the 8-bit ASCII value 01000011 encodes which first letter? (Seal 171)",
+    "options": [
+      "WEST",
+      "CROWN",
+      "CRYPT",
+      "PUZZLE"
+    ],
+    "answer": 2,
+    "fact": "The binary value represents the initial C."
+  },
+  {
+    "id": "scc-175",
+    "q": "Binary terminal: the 8-bit ASCII value 01000011 encodes which first letter? (Seal 172)",
+    "options": [
+      "SHADOW",
+      "SOUTH",
+      "KNIGHT",
+      "CIPHER"
+    ],
+    "answer": 3,
+    "fact": "The binary value represents the initial C."
+  },
+  {
+    "id": "scc-176",
+    "q": "Binary terminal: the 8-bit ASCII value 01010011 encodes which first letter? (Seal 173)",
+    "options": [
+      "SECRET",
+      "NIGHT",
+      "RIVER",
+      "CASTLE"
+    ],
+    "answer": 0,
+    "fact": "The binary value represents the initial S."
+  },
+  {
+    "id": "scc-177",
+    "q": "Binary terminal: the 8-bit ASCII value 01001100 encodes which first letter? (Seal 174)",
+    "options": [
+      "HIDDEN",
+      "LOCK",
+      "TOWER",
+      "BRIDGE"
+    ],
+    "answer": 1,
+    "fact": "The binary value represents the initial L."
+  },
+  {
+    "id": "scc-178",
+    "q": "Binary terminal: the 8-bit ASCII value 01010011 encodes which first letter? (Seal 175)",
+    "options": [
+      "GARDEN",
+      "MESSAGE",
+      "SAFE",
+      "STONE"
+    ],
+    "answer": 2,
+    "fact": "The binary value represents the initial S."
+  },
+  {
+    "id": "scc-179",
+    "q": "Binary terminal: the 8-bit ASCII value 01010010 encodes which first letter? (Seal 176)",
+    "options": [
+      "NORTH",
+      "MIRROR",
+      "NUMBER",
+      "RIDDLE"
+    ],
+    "answer": 3,
+    "fact": "The binary value represents the initial R."
+  },
+  {
+    "id": "scc-180",
+    "q": "Binary terminal: the 8-bit ASCII value 01010000 encodes which first letter? (Seal 177)",
+    "options": [
+      "PUZZLE",
+      "EAST",
+      "SILVER",
+      "SIGNAL"
+    ],
+    "answer": 0,
+    "fact": "The binary value represents the initial P."
+  },
+  {
+    "id": "scc-181",
+    "q": "Binary terminal: the 8-bit ASCII value 01010011 encodes which first letter? (Seal 178)",
+    "options": [
+      "LAMP",
+      "SHADOW",
+      "WEST",
+      "GOLD"
+    ],
+    "answer": 1,
+    "fact": "The binary value represents the initial S."
+  },
+  {
+    "id": "scc-182",
+    "q": "Binary terminal: the 8-bit ASCII value 01001110 encodes which first letter? (Seal 179)",
+    "options": [
+      "CROWN",
+      "CODE",
+      "NIGHT",
+      "SOUTH"
+    ],
+    "answer": 2,
+    "fact": "The binary value represents the initial N."
+  },
+  {
+    "id": "scc-183",
+    "q": "Binary terminal: the 8-bit ASCII value 01010100 encodes which first letter? (Seal 180)",
+    "options": [
+      "RIVER",
+      "KNIGHT",
+      "KEY",
+      "TOWER"
+    ],
+    "answer": 3,
+    "fact": "The binary value represents the initial T."
+  },
+  {
+    "id": "scc-184",
+    "q": "Binary terminal: the 8-bit ASCII value 01010011 encodes which first letter? (Seal 181)",
+    "options": [
+      "STONE",
+      "BRIDGE",
+      "CASTLE",
+      "VAULT"
+    ],
+    "answer": 0,
+    "fact": "The binary value represents the initial S."
+  },
+  {
+    "id": "scc-185",
+    "q": "Binary terminal: the 8-bit ASCII value 01001110 encodes which first letter? (Seal 182)",
+    "options": [
+      "CLUE",
+      "NORTH",
+      "GARDEN",
+      "HIDDEN"
+    ],
+    "answer": 1,
+    "fact": "The binary value represents the initial N."
+  },
+  {
+    "id": "scc-186",
+    "q": "Binary terminal: the 8-bit ASCII value 01000101 encodes which first letter? (Seal 183)",
+    "options": [
+      "MESSAGE",
+      "CRYPT",
+      "EAST",
+      "MIRROR"
+    ],
+    "answer": 2,
+    "fact": "The binary value represents the initial E."
+  },
+  {
+    "id": "scc-187",
+    "q": "Binary terminal: the 8-bit ASCII value 01010111 encodes which first letter? (Seal 184)",
+    "options": [
+      "SILVER",
+      "NUMBER",
+      "CIPHER",
+      "WEST"
+    ],
+    "answer": 3,
+    "fact": "The binary value represents the initial W."
+  },
+  {
+    "id": "scc-188",
+    "q": "Binary terminal: the 8-bit ASCII value 01010011 encodes which first letter? (Seal 185)",
+    "options": [
+      "SOUTH",
+      "GOLD",
+      "SIGNAL",
+      "SECRET"
+    ],
+    "answer": 0,
+    "fact": "The binary value represents the initial S."
+  },
+  {
+    "id": "scc-189",
+    "q": "Binary terminal: the 8-bit ASCII value 01010010 encodes which first letter? (Seal 186)",
+    "options": [
+      "LOCK",
+      "RIVER",
+      "CROWN",
+      "LAMP"
+    ],
+    "answer": 1,
+    "fact": "The binary value represents the initial R."
+  },
+  {
+    "id": "scc-190",
+    "q": "Binary terminal: the 8-bit ASCII value 01000010 encodes which first letter? (Seal 187)",
+    "options": [
+      "CODE",
+      "SAFE",
+      "BRIDGE",
+      "KNIGHT"
+    ],
+    "answer": 2,
+    "fact": "The binary value represents the initial B."
+  },
+  {
+    "id": "scc-191",
+    "q": "Binary terminal: the 8-bit ASCII value 01000111 encodes which first letter? (Seal 188)",
+    "options": [
+      "CASTLE",
+      "KEY",
+      "RIDDLE",
+      "GARDEN"
+    ],
+    "answer": 3,
+    "fact": "The binary value represents the initial G."
+  },
+  {
+    "id": "scc-192",
+    "q": "Binary terminal: the 8-bit ASCII value 01001101 encodes which first letter? (Seal 189)",
+    "options": [
+      "MIRROR",
+      "HIDDEN",
+      "VAULT",
+      "PUZZLE"
+    ],
+    "answer": 0,
+    "fact": "The binary value represents the initial M."
+  },
+  {
+    "id": "scc-193",
+    "q": "Binary terminal: the 8-bit ASCII value 01010011 encodes which first letter? (Seal 190)",
+    "options": [
+      "SHADOW",
+      "SILVER",
+      "MESSAGE",
+      "CLUE"
+    ],
+    "answer": 1,
+    "fact": "The binary value represents the initial S."
+  },
+  {
+    "id": "scc-194",
+    "q": "Binary terminal: the 8-bit ASCII value 01000111 encodes which first letter? (Seal 191)",
+    "options": [
+      "CRYPT",
+      "NIGHT",
+      "GOLD",
+      "NUMBER"
+    ],
+    "answer": 2,
+    "fact": "The binary value represents the initial G."
+  },
+  {
+    "id": "scc-195",
+    "q": "Binary terminal: the 8-bit ASCII value 01000011 encodes which first letter? (Seal 192)",
+    "options": [
+      "SIGNAL",
+      "CIPHER",
+      "TOWER",
+      "CROWN"
+    ],
+    "answer": 3,
+    "fact": "The binary value represents the initial C."
+  },
+  {
+    "id": "scc-196",
+    "q": "Binary terminal: the 8-bit ASCII value 01001011 encodes which first letter? (Seal 193)",
+    "options": [
+      "KNIGHT",
+      "LAMP",
+      "SECRET",
+      "STONE"
+    ],
+    "answer": 0,
+    "fact": "The binary value represents the initial K."
+  },
+  {
+    "id": "scc-197",
+    "q": "Binary terminal: the 8-bit ASCII value 01000011 encodes which first letter? (Seal 194)",
+    "options": [
+      "NORTH",
+      "CASTLE",
+      "CODE",
+      "LOCK"
+    ],
+    "answer": 1,
+    "fact": "The binary value represents the initial C."
+  },
+  {
+    "id": "scc-198",
+    "q": "Binary terminal: the 8-bit ASCII value 01001000 encodes which first letter? (Seal 195)",
+    "options": [
+      "SAFE",
+      "EAST",
+      "HIDDEN",
+      "KEY"
+    ],
+    "answer": 2,
+    "fact": "The binary value represents the initial H."
+  },
+  {
+    "id": "scc-199",
+    "q": "Binary terminal: the 8-bit ASCII value 01001101 encodes which first letter? (Seal 196)",
+    "options": [
+      "VAULT",
+      "RIDDLE",
+      "WEST",
+      "MESSAGE"
+    ],
+    "answer": 3,
+    "fact": "The binary value represents the initial M."
+  },
+  {
+    "id": "scc-200",
+    "q": "Binary terminal: the 8-bit ASCII value 01001110 encodes which first letter? (Seal 197)",
+    "options": [
+      "NUMBER",
+      "CLUE",
+      "PUZZLE",
+      "SOUTH"
+    ],
+    "answer": 0,
+    "fact": "The binary value represents the initial N."
+  },
+  {
+    "id": "scc-201",
+    "q": "Binary terminal: the 8-bit ASCII value 01010011 encodes which first letter? (Seal 198)",
+    "options": [
+      "RIVER",
+      "SIGNAL",
+      "CRYPT",
+      "SHADOW"
+    ],
+    "answer": 1,
+    "fact": "The binary value represents the initial S."
+  },
+  {
+    "id": "scc-202",
+    "q": "Hexadecimal terminal: ASCII code 4C represents which first letter of the hidden word? (Seal 199)",
+    "options": [
+      "TOWER",
+      "GARDEN",
+      "LAMP",
+      "SECRET"
+    ],
+    "answer": 2,
+    "fact": "Hexadecimal 4C is the ASCII code for L."
+  },
+  {
+    "id": "scc-203",
+    "q": "Hexadecimal terminal: ASCII code 43 represents which first letter of the hidden word? (Seal 200)",
+    "options": [
+      "LOCK",
+      "STONE",
+      "MIRROR",
+      "CODE"
+    ],
+    "answer": 3,
+    "fact": "Hexadecimal 43 is the ASCII code for C."
+  },
+  {
+    "id": "scc-204",
+    "q": "Hexadecimal terminal: ASCII code 4B represents which first letter of the hidden word? (Seal 201)",
+    "options": [
+      "KEY",
+      "SAFE",
+      "NORTH",
+      "SILVER"
+    ],
+    "answer": 0,
+    "fact": "Hexadecimal 4B is the ASCII code for K."
+  },
+  {
+    "id": "scc-205",
+    "q": "Hexadecimal terminal: ASCII code 56 represents which first letter of the hidden word? (Seal 202)",
+    "options": [
+      "GOLD",
+      "VAULT",
+      "RIDDLE",
+      "EAST"
+    ],
+    "answer": 1,
+    "fact": "Hexadecimal 56 is the ASCII code for V."
+  },
+  {
+    "id": "scc-206",
+    "q": "Hexadecimal terminal: ASCII code 43 represents which first letter of the hidden word? (Seal 203)",
+    "options": [
+      "WEST",
+      "CROWN",
+      "CLUE",
+      "PUZZLE"
+    ],
+    "answer": 2,
+    "fact": "Hexadecimal 43 is the ASCII code for C."
+  },
+  {
+    "id": "scc-207",
+    "q": "Hexadecimal terminal: ASCII code 43 represents which first letter of the hidden word? (Seal 204)",
+    "options": [
+      "SHADOW",
+      "SOUTH",
+      "KNIGHT",
+      "CRYPT"
+    ],
+    "answer": 3,
+    "fact": "Hexadecimal 43 is the ASCII code for C."
+  },
+  {
+    "id": "scc-208",
+    "q": "Hexadecimal terminal: ASCII code 43 represents which first letter of the hidden word? (Seal 205)",
+    "options": [
+      "CIPHER",
+      "NIGHT",
+      "RIVER",
+      "CASTLE"
     ],
     "answer": 0,
     "fact": "Hexadecimal 43 is the ASCII code for C."
   },
   {
-    "id": "scc-101",
-    "q": "Decode this classic multi-tap keypad sequence: 222 8.",
-    "options": [
-      "CY",
-      "CT",
-      "CTX",
-      "XCT"
-    ],
-    "answer": 1,
-    "fact": "Repeated keypad presses select the letters to spell CT."
-  },
-  {
-    "id": "scc-102",
-    "q": "The chamber uses ROT13. Decode \"PH\".",
-    "options": [
-      "XCU",
-      "CY",
-      "CU",
-      "CUX"
-    ],
-    "answer": 2,
-    "fact": "Apply ROT13 again to recover CU."
-  },
-  {
-    "id": "scc-103",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"FY\".",
-    "options": [
-      "CVX",
-      "XCV",
-      "CY",
-      "CV"
-    ],
-    "answer": 3,
-    "fact": "Shift each letter three places backward to recover CV."
-  },
-  {
-    "id": "scc-104",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"XD\".",
-    "options": [
-      "CW",
-      "CWX",
-      "XCW",
-      "CY"
-    ],
-    "answer": 0,
-    "fact": "Reflect each letter across the alphabet to recover CW."
-  },
-  {
-    "id": "scc-105",
-    "q": "The mirror cipher reverses the letters. Decode \"XC\".",
-    "options": [
-      "CY",
-      "CX",
-      "CXX",
-      "XCX"
-    ],
-    "answer": 1,
-    "fact": "Read the inscription from right to left to recover CX."
-  },
-  {
-    "id": "scc-106",
-    "q": "Using A=1 through Z=26, decode this sequence: 3-25.",
-    "options": [
-      "XCY",
-      "CY",
-      "CY",
-      "CYX"
-    ],
-    "answer": 1,
-    "fact": "Convert each number to its alphabet position; the result is CY."
-  },
-  {
-    "id": "scc-107",
-    "q": "A Morse signal enters the chamber: -.-. / --... Which word does it spell?",
-    "options": [
-      "CZX",
-      "XCZ",
-      "CY",
-      "CZ"
-    ],
-    "answer": 3,
-    "fact": "Decode each Morse group in order to obtain CZ."
-  },
-  {
-    "id": "scc-108",
-    "q": "The terminal displays 8-bit ASCII value 01000100. Which letter is encoded?",
-    "options": [
-      "DA",
-      "DAX",
-      "XDA",
-      "DY"
-    ],
-    "answer": 0,
-    "fact": "The binary value represents ASCII letter D."
-  },
-  {
-    "id": "scc-109",
-    "q": "A hexadecimal ASCII clue reads 44. Which letter is encoded?",
-    "options": [
-      "DY",
-      "DB",
-      "DBX",
-      "XDB"
-    ],
-    "answer": 1,
-    "fact": "Hexadecimal 44 is the ASCII code for D."
-  },
-  {
-    "id": "scc-110",
-    "q": "Decode this classic multi-tap keypad sequence: 3 222.",
-    "options": [
-      "XDC",
-      "DY",
-      "DC",
-      "DCX"
-    ],
-    "answer": 2,
-    "fact": "Repeated keypad presses select the letters to spell DC."
-  },
-  {
-    "id": "scc-111",
-    "q": "The chamber uses ROT13. Decode \"QQ\".",
-    "options": [
-      "DDX",
-      "XDD",
-      "DY",
-      "DD"
-    ],
-    "answer": 3,
-    "fact": "Apply ROT13 again to recover DD."
-  },
-  {
-    "id": "scc-112",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"GH\".",
-    "options": [
-      "DE",
-      "DEX",
-      "XDE",
-      "DY"
-    ],
-    "answer": 0,
-    "fact": "Shift each letter three places backward to recover DE."
-  },
-  {
-    "id": "scc-113",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"WU\".",
-    "options": [
-      "DY",
-      "DF",
-      "DFX",
-      "XDF"
-    ],
-    "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover DF."
-  },
-  {
-    "id": "scc-114",
-    "q": "The mirror cipher reverses the letters. Decode \"GD\".",
-    "options": [
-      "XDG",
-      "DY",
-      "DG",
-      "DGX"
-    ],
-    "answer": 2,
-    "fact": "Read the inscription from right to left to recover DG."
-  },
-  {
-    "id": "scc-115",
-    "q": "Using A=1 through Z=26, decode this sequence: 4-8.",
-    "options": [
-      "DHX",
-      "XDH",
-      "DY",
-      "DH"
-    ],
-    "answer": 3,
-    "fact": "Convert each number to its alphabet position; the result is DH."
-  },
-  {
-    "id": "scc-116",
-    "q": "A Morse signal enters the chamber: -.. / ... Which word does it spell?",
-    "options": [
-      "DI",
-      "DIX",
-      "XDI",
-      "DY"
-    ],
-    "answer": 0,
-    "fact": "Decode each Morse group in order to obtain DI."
-  },
-  {
-    "id": "scc-117",
-    "q": "The terminal displays 8-bit ASCII value 01000100. Which letter is encoded?",
-    "options": [
-      "DY",
-      "DJ",
-      "DJX",
-      "XDJ"
-    ],
-    "answer": 1,
-    "fact": "The binary value represents ASCII letter D."
-  },
-  {
-    "id": "scc-118",
-    "q": "A hexadecimal ASCII clue reads 44. Which letter is encoded?",
-    "options": [
-      "XDK",
-      "DY",
-      "DK",
-      "DKX"
-    ],
-    "answer": 2,
-    "fact": "Hexadecimal 44 is the ASCII code for D."
-  },
-  {
-    "id": "scc-119",
-    "q": "Decode this classic multi-tap keypad sequence: 3 555.",
-    "options": [
-      "DLX",
-      "XDL",
-      "DY",
-      "DL"
-    ],
-    "answer": 3,
-    "fact": "Repeated keypad presses select the letters to spell DL."
-  },
-  {
-    "id": "scc-120",
-    "q": "The chamber uses ROT13. Decode \"QZ\".",
-    "options": [
-      "DM",
-      "DMX",
-      "XDM",
-      "DY"
-    ],
-    "answer": 0,
-    "fact": "Apply ROT13 again to recover DM."
-  },
-  {
-    "id": "scc-121",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"GQ\".",
-    "options": [
-      "DY",
-      "DN",
-      "DNX",
-      "XDN"
-    ],
-    "answer": 1,
-    "fact": "Shift each letter three places backward to recover DN."
-  },
-  {
-    "id": "scc-122",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"WL\".",
-    "options": [
-      "XDO",
-      "DY",
-      "DO",
-      "DOX"
-    ],
-    "answer": 2,
-    "fact": "Reflect each letter across the alphabet to recover DO."
-  },
-  {
-    "id": "scc-123",
-    "q": "The mirror cipher reverses the letters. Decode \"PD\".",
-    "options": [
-      "DPX",
-      "XDP",
-      "DY",
-      "DP"
-    ],
-    "answer": 3,
-    "fact": "Read the inscription from right to left to recover DP."
-  },
-  {
-    "id": "scc-124",
-    "q": "Using A=1 through Z=26, decode this sequence: 4-17.",
-    "options": [
-      "DQ",
-      "DQX",
-      "XDQ",
-      "DY"
-    ],
-    "answer": 0,
-    "fact": "Convert each number to its alphabet position; the result is DQ."
-  },
-  {
-    "id": "scc-125",
-    "q": "A Morse signal enters the chamber: -.. / .-.. Which word does it spell?",
-    "options": [
-      "DY",
-      "DR",
-      "DRX",
-      "XDR"
-    ],
-    "answer": 1,
-    "fact": "Decode each Morse group in order to obtain DR."
-  },
-  {
-    "id": "scc-126",
-    "q": "The terminal displays 8-bit ASCII value 01000100. Which letter is encoded?",
-    "options": [
-      "XDS",
-      "DY",
-      "DS",
-      "DSX"
-    ],
-    "answer": 2,
-    "fact": "The binary value represents ASCII letter D."
-  },
-  {
-    "id": "scc-127",
-    "q": "A hexadecimal ASCII clue reads 44. Which letter is encoded?",
-    "options": [
-      "DTX",
-      "XDT",
-      "DY",
-      "DT"
-    ],
-    "answer": 3,
-    "fact": "Hexadecimal 44 is the ASCII code for D."
-  },
-  {
-    "id": "scc-128",
-    "q": "Decode this classic multi-tap keypad sequence: 3 88.",
-    "options": [
-      "DU",
-      "DUX",
-      "XDU",
-      "DY"
-    ],
-    "answer": 0,
-    "fact": "Repeated keypad presses select the letters to spell DU."
-  },
-  {
-    "id": "scc-129",
-    "q": "The chamber uses ROT13. Decode \"QI\".",
-    "options": [
-      "DY",
-      "DV",
-      "DVX",
-      "XDV"
-    ],
-    "answer": 1,
-    "fact": "Apply ROT13 again to recover DV."
-  },
-  {
-    "id": "scc-130",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"GZ\".",
-    "options": [
-      "XDW",
-      "DY",
-      "DW",
-      "DWX"
-    ],
-    "answer": 2,
-    "fact": "Shift each letter three places backward to recover DW."
-  },
-  {
-    "id": "scc-131",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"WC\".",
-    "options": [
-      "DXX",
-      "XDX",
-      "DY",
-      "DX"
-    ],
-    "answer": 3,
-    "fact": "Reflect each letter across the alphabet to recover DX."
-  },
-  {
-    "id": "scc-132",
-    "q": "The mirror cipher reverses the letters. Decode \"YD\".",
-    "options": [
-      "DY",
-      "DYX",
-      "XDY",
-      "DY"
-    ],
-    "answer": 0,
-    "fact": "Read the inscription from right to left to recover DY."
-  },
-  {
-    "id": "scc-133",
-    "q": "Using A=1 through Z=26, decode this sequence: 4-26.",
-    "options": [
-      "DY",
-      "DZ",
-      "DZX",
-      "XDZ"
-    ],
-    "answer": 1,
-    "fact": "Convert each number to its alphabet position; the result is DZ."
-  },
-  {
-    "id": "scc-134",
-    "q": "A Morse signal enters the chamber: . / .-. Which word does it spell?",
-    "options": [
-      "XEA",
-      "EY",
-      "EA",
-      "EAX"
-    ],
-    "answer": 2,
-    "fact": "Decode each Morse group in order to obtain EA."
-  },
-  {
-    "id": "scc-135",
-    "q": "The terminal displays 8-bit ASCII value 01000101. Which letter is encoded?",
-    "options": [
-      "EBX",
-      "XEB",
-      "EY",
-      "EB"
-    ],
-    "answer": 3,
-    "fact": "The binary value represents ASCII letter E."
-  },
-  {
-    "id": "scc-136",
-    "q": "A hexadecimal ASCII clue reads 45. Which letter is encoded?",
-    "options": [
-      "EC",
-      "ECX",
-      "XEC",
-      "EY"
-    ],
-    "answer": 0,
-    "fact": "Hexadecimal 45 is the ASCII code for E."
-  },
-  {
-    "id": "scc-137",
-    "q": "Decode this classic multi-tap keypad sequence: 33 3.",
-    "options": [
-      "EY",
-      "ED",
-      "EDX",
-      "XED"
-    ],
-    "answer": 1,
-    "fact": "Repeated keypad presses select the letters to spell ED."
-  },
-  {
-    "id": "scc-138",
-    "q": "The chamber uses ROT13. Decode \"RR\".",
-    "options": [
-      "XEE",
-      "EY",
-      "EE",
-      "EEX"
-    ],
-    "answer": 2,
-    "fact": "Apply ROT13 again to recover EE."
-  },
-  {
-    "id": "scc-139",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"HI\".",
-    "options": [
-      "EFX",
-      "XEF",
-      "EY",
-      "EF"
-    ],
-    "answer": 3,
-    "fact": "Shift each letter three places backward to recover EF."
-  },
-  {
-    "id": "scc-140",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"VT\".",
-    "options": [
-      "EG",
-      "EGX",
-      "XEG",
-      "EY"
-    ],
-    "answer": 0,
-    "fact": "Reflect each letter across the alphabet to recover EG."
-  },
-  {
-    "id": "scc-141",
-    "q": "The mirror cipher reverses the letters. Decode \"HE\".",
-    "options": [
-      "EY",
-      "EH",
-      "EHX",
-      "XEH"
-    ],
-    "answer": 1,
-    "fact": "Read the inscription from right to left to recover EH."
-  },
-  {
-    "id": "scc-142",
-    "q": "Using A=1 through Z=26, decode this sequence: 5-9.",
-    "options": [
-      "XEI",
-      "EY",
-      "EI",
-      "EIX"
-    ],
-    "answer": 2,
-    "fact": "Convert each number to its alphabet position; the result is EI."
-  },
-  {
-    "id": "scc-143",
-    "q": "A Morse signal enters the chamber: . / .---. Which word does it spell?",
-    "options": [
-      "EJX",
-      "XEJ",
-      "EY",
-      "EJ"
-    ],
-    "answer": 3,
-    "fact": "Decode each Morse group in order to obtain EJ."
-  },
-  {
-    "id": "scc-144",
-    "q": "The terminal displays 8-bit ASCII value 01000101. Which letter is encoded?",
-    "options": [
-      "EK",
-      "EKX",
-      "XEK",
-      "EY"
-    ],
-    "answer": 0,
-    "fact": "The binary value represents ASCII letter E."
-  },
-  {
-    "id": "scc-145",
-    "q": "A hexadecimal ASCII clue reads 45. Which letter is encoded?",
-    "options": [
-      "EY",
-      "EL",
-      "ELX",
-      "XEL"
-    ],
-    "answer": 1,
-    "fact": "Hexadecimal 45 is the ASCII code for E."
-  },
-  {
-    "id": "scc-146",
-    "q": "Decode this classic multi-tap keypad sequence: 33 6.",
-    "options": [
-      "XEM",
-      "EY",
-      "EM",
-      "EMX"
-    ],
-    "answer": 2,
-    "fact": "Repeated keypad presses select the letters to spell EM."
-  },
-  {
-    "id": "scc-147",
-    "q": "The chamber uses ROT13. Decode \"RA\".",
-    "options": [
-      "ENX",
-      "XEN",
-      "EY",
-      "EN"
-    ],
-    "answer": 3,
-    "fact": "Apply ROT13 again to recover EN."
-  },
-  {
-    "id": "scc-148",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"HR\".",
-    "options": [
-      "EO",
-      "EOX",
-      "XEO",
-      "EY"
-    ],
-    "answer": 0,
-    "fact": "Shift each letter three places backward to recover EO."
-  },
-  {
-    "id": "scc-149",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"VK\".",
-    "options": [
-      "EY",
-      "EP",
-      "EPX",
-      "XEP"
-    ],
-    "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover EP."
-  },
-  {
-    "id": "scc-150",
-    "q": "The mirror cipher reverses the letters. Decode \"QE\".",
-    "options": [
-      "XEQ",
-      "EY",
-      "EQ",
-      "EQX"
-    ],
-    "answer": 2,
-    "fact": "Read the inscription from right to left to recover EQ."
-  },
-  {
-    "id": "scc-151",
-    "q": "Using A=1 through Z=26, decode this sequence: 5-18.",
-    "options": [
-      "ERX",
-      "XER",
-      "EY",
-      "ER"
-    ],
-    "answer": 3,
-    "fact": "Convert each number to its alphabet position; the result is ER."
-  },
-  {
-    "id": "scc-152",
-    "q": "A Morse signal enters the chamber: . / .... Which word does it spell?",
-    "options": [
-      "ES",
-      "ESX",
-      "XES",
-      "EY"
-    ],
-    "answer": 0,
-    "fact": "Decode each Morse group in order to obtain ES."
-  },
-  {
-    "id": "scc-153",
-    "q": "The terminal displays 8-bit ASCII value 01000101. Which letter is encoded?",
-    "options": [
-      "EY",
-      "ET",
-      "ETX",
-      "XET"
-    ],
-    "answer": 1,
-    "fact": "The binary value represents ASCII letter E."
-  },
-  {
-    "id": "scc-154",
-    "q": "A hexadecimal ASCII clue reads 45. Which letter is encoded?",
-    "options": [
-      "XEU",
-      "EY",
-      "EU",
-      "EUX"
-    ],
-    "answer": 2,
-    "fact": "Hexadecimal 45 is the ASCII code for E."
-  },
-  {
-    "id": "scc-155",
-    "q": "Decode this classic multi-tap keypad sequence: 33 888.",
-    "options": [
-      "EVX",
-      "XEV",
-      "EY",
-      "EV"
-    ],
-    "answer": 3,
-    "fact": "Repeated keypad presses select the letters to spell EV."
-  },
-  {
-    "id": "scc-156",
-    "q": "The chamber uses ROT13. Decode \"RJ\".",
-    "options": [
-      "EW",
-      "EWX",
-      "XEW",
-      "EY"
-    ],
-    "answer": 0,
-    "fact": "Apply ROT13 again to recover EW."
-  },
-  {
-    "id": "scc-157",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"HA\".",
-    "options": [
-      "EY",
-      "EX",
-      "EXX",
-      "XEX"
-    ],
-    "answer": 1,
-    "fact": "Shift each letter three places backward to recover EX."
-  },
-  {
-    "id": "scc-158",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"VB\".",
-    "options": [
-      "XEY",
-      "EY",
-      "EY",
-      "EYX"
-    ],
-    "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover EY."
-  },
-  {
-    "id": "scc-159",
-    "q": "The mirror cipher reverses the letters. Decode \"ZE\".",
-    "options": [
-      "EZX",
-      "XEZ",
-      "EY",
-      "EZ"
-    ],
-    "answer": 3,
-    "fact": "Read the inscription from right to left to recover EZ."
-  },
-  {
-    "id": "scc-160",
-    "q": "Using A=1 through Z=26, decode this sequence: 6-1.",
-    "options": [
-      "FA",
-      "FAX",
-      "XFA",
-      "FY"
-    ],
-    "answer": 0,
-    "fact": "Convert each number to its alphabet position; the result is FA."
-  },
-  {
-    "id": "scc-161",
-    "q": "A Morse signal enters the chamber: ..-. / -.... Which word does it spell?",
-    "options": [
-      "FY",
-      "FB",
-      "FBX",
-      "XFB"
-    ],
-    "answer": 1,
-    "fact": "Decode each Morse group in order to obtain FB."
-  },
-  {
-    "id": "scc-162",
-    "q": "The terminal displays 8-bit ASCII value 01000110. Which letter is encoded?",
-    "options": [
-      "XFC",
-      "FY",
-      "FC",
-      "FCX"
-    ],
-    "answer": 2,
-    "fact": "The binary value represents ASCII letter F."
-  },
-  {
-    "id": "scc-163",
-    "q": "A hexadecimal ASCII clue reads 46. Which letter is encoded?",
-    "options": [
-      "FDX",
-      "XFD",
-      "FY",
-      "FD"
-    ],
-    "answer": 3,
-    "fact": "Hexadecimal 46 is the ASCII code for F."
-  },
-  {
-    "id": "scc-164",
-    "q": "Decode this classic multi-tap keypad sequence: 333 33.",
-    "options": [
-      "FE",
-      "FEX",
-      "XFE",
-      "FY"
-    ],
-    "answer": 0,
-    "fact": "Repeated keypad presses select the letters to spell FE."
-  },
-  {
-    "id": "scc-165",
-    "q": "The chamber uses ROT13. Decode \"SS\".",
-    "options": [
-      "FY",
-      "FF",
-      "FFX",
-      "XFF"
-    ],
-    "answer": 1,
-    "fact": "Apply ROT13 again to recover FF."
-  },
-  {
-    "id": "scc-166",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"IJ\".",
-    "options": [
-      "XFG",
-      "FY",
-      "FG",
-      "FGX"
-    ],
-    "answer": 2,
-    "fact": "Shift each letter three places backward to recover FG."
-  },
-  {
-    "id": "scc-167",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"US\".",
-    "options": [
-      "FHX",
-      "XFH",
-      "FY",
-      "FH"
-    ],
-    "answer": 3,
-    "fact": "Reflect each letter across the alphabet to recover FH."
-  },
-  {
-    "id": "scc-168",
-    "q": "The mirror cipher reverses the letters. Decode \"IF\".",
-    "options": [
-      "FI",
-      "FIX",
-      "XFI",
-      "FY"
-    ],
-    "answer": 0,
-    "fact": "Read the inscription from right to left to recover FI."
-  },
-  {
-    "id": "scc-169",
-    "q": "Using A=1 through Z=26, decode this sequence: 6-10.",
-    "options": [
-      "FY",
-      "FJ",
-      "FJX",
-      "XFJ"
-    ],
-    "answer": 1,
-    "fact": "Convert each number to its alphabet position; the result is FJ."
-  },
-  {
-    "id": "scc-170",
-    "q": "A Morse signal enters the chamber: ..-. / -.-. Which word does it spell?",
-    "options": [
-      "XFK",
-      "FY",
-      "FK",
-      "FKX"
-    ],
-    "answer": 2,
-    "fact": "Decode each Morse group in order to obtain FK."
-  },
-  {
-    "id": "scc-171",
-    "q": "The terminal displays 8-bit ASCII value 01000110. Which letter is encoded?",
-    "options": [
-      "FLX",
-      "XFL",
-      "FY",
-      "FL"
-    ],
-    "answer": 3,
-    "fact": "The binary value represents ASCII letter F."
-  },
-  {
-    "id": "scc-172",
-    "q": "A hexadecimal ASCII clue reads 46. Which letter is encoded?",
-    "options": [
-      "FM",
-      "FMX",
-      "XFM",
-      "FY"
-    ],
-    "answer": 0,
-    "fact": "Hexadecimal 46 is the ASCII code for F."
-  },
-  {
-    "id": "scc-173",
-    "q": "Decode this classic multi-tap keypad sequence: 333 66.",
-    "options": [
-      "FY",
-      "FN",
-      "FNX",
-      "XFN"
-    ],
-    "answer": 1,
-    "fact": "Repeated keypad presses select the letters to spell FN."
-  },
-  {
-    "id": "scc-174",
-    "q": "The chamber uses ROT13. Decode \"SB\".",
-    "options": [
-      "XFO",
-      "FY",
-      "FO",
-      "FOX"
-    ],
-    "answer": 2,
-    "fact": "Apply ROT13 again to recover FO."
-  },
-  {
-    "id": "scc-175",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"IS\".",
-    "options": [
-      "FPX",
-      "XFP",
-      "FY",
-      "FP"
-    ],
-    "answer": 3,
-    "fact": "Shift each letter three places backward to recover FP."
-  },
-  {
-    "id": "scc-176",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"UJ\".",
-    "options": [
-      "FQ",
-      "FQX",
-      "XFQ",
-      "FY"
-    ],
-    "answer": 0,
-    "fact": "Reflect each letter across the alphabet to recover FQ."
-  },
-  {
-    "id": "scc-177",
-    "q": "The mirror cipher reverses the letters. Decode \"RF\".",
-    "options": [
-      "FY",
-      "FR",
-      "FRX",
-      "XFR"
-    ],
-    "answer": 1,
-    "fact": "Read the inscription from right to left to recover FR."
-  },
-  {
-    "id": "scc-178",
-    "q": "Using A=1 through Z=26, decode this sequence: 6-19.",
-    "options": [
-      "XFS",
-      "FY",
-      "FS",
-      "FSX"
-    ],
-    "answer": 2,
-    "fact": "Convert each number to its alphabet position; the result is FS."
-  },
-  {
-    "id": "scc-179",
-    "q": "A Morse signal enters the chamber: ..-. / -. Which word does it spell?",
-    "options": [
-      "FTX",
-      "XFT",
-      "FY",
-      "FT"
-    ],
-    "answer": 3,
-    "fact": "Decode each Morse group in order to obtain FT."
-  },
-  {
-    "id": "scc-180",
-    "q": "The terminal displays 8-bit ASCII value 01000110. Which letter is encoded?",
-    "options": [
-      "FU",
-      "FUX",
-      "XFU",
-      "FY"
-    ],
-    "answer": 0,
-    "fact": "The binary value represents ASCII letter F."
-  },
-  {
-    "id": "scc-181",
-    "q": "A hexadecimal ASCII clue reads 46. Which letter is encoded?",
-    "options": [
-      "FY",
-      "FV",
-      "FVX",
-      "XFV"
-    ],
-    "answer": 1,
-    "fact": "Hexadecimal 46 is the ASCII code for F."
-  },
-  {
-    "id": "scc-182",
-    "q": "Decode this classic multi-tap keypad sequence: 333 9.",
-    "options": [
-      "XFW",
-      "FY",
-      "FW",
-      "FWX"
-    ],
-    "answer": 2,
-    "fact": "Repeated keypad presses select the letters to spell FW."
-  },
-  {
-    "id": "scc-183",
-    "q": "The chamber uses ROT13. Decode \"SK\".",
-    "options": [
-      "FXX",
-      "XFX",
-      "FY",
-      "FX"
-    ],
-    "answer": 3,
-    "fact": "Apply ROT13 again to recover FX."
-  },
-  {
-    "id": "scc-184",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"IB\".",
-    "options": [
-      "FY",
-      "FYX",
-      "XFY",
-      "FY"
-    ],
-    "answer": 0,
-    "fact": "Shift each letter three places backward to recover FY."
-  },
-  {
-    "id": "scc-185",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"UA\".",
-    "options": [
-      "FY",
-      "FZ",
-      "FZX",
-      "XFZ"
-    ],
-    "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover FZ."
-  },
-  {
-    "id": "scc-186",
-    "q": "The mirror cipher reverses the letters. Decode \"AG\".",
-    "options": [
-      "XGA",
-      "GY",
-      "GA",
-      "GAX"
-    ],
-    "answer": 2,
-    "fact": "Read the inscription from right to left to recover GA."
-  },
-  {
-    "id": "scc-187",
-    "q": "Using A=1 through Z=26, decode this sequence: 7-2.",
-    "options": [
-      "GBX",
-      "XGB",
-      "GY",
-      "GB"
-    ],
-    "answer": 3,
-    "fact": "Convert each number to its alphabet position; the result is GB."
-  },
-  {
-    "id": "scc-188",
-    "q": "A Morse signal enters the chamber: --. / -.-.. Which word does it spell?",
-    "options": [
-      "GC",
-      "GCX",
-      "XGC",
-      "GY"
-    ],
-    "answer": 0,
-    "fact": "Decode each Morse group in order to obtain GC."
-  },
-  {
-    "id": "scc-189",
-    "q": "The terminal displays 8-bit ASCII value 01000111. Which letter is encoded?",
-    "options": [
-      "GY",
-      "GD",
-      "GDX",
-      "XGD"
-    ],
-    "answer": 1,
-    "fact": "The binary value represents ASCII letter G."
-  },
-  {
-    "id": "scc-190",
-    "q": "A hexadecimal ASCII clue reads 47. Which letter is encoded?",
-    "options": [
-      "XGE",
-      "GY",
-      "GE",
-      "GEX"
-    ],
-    "answer": 2,
-    "fact": "Hexadecimal 47 is the ASCII code for G."
-  },
-  {
-    "id": "scc-191",
-    "q": "Decode this classic multi-tap keypad sequence: 4 333.",
-    "options": [
-      "GFX",
-      "XGF",
-      "GY",
-      "GF"
-    ],
-    "answer": 3,
-    "fact": "Repeated keypad presses select the letters to spell GF."
-  },
-  {
-    "id": "scc-192",
-    "q": "The chamber uses ROT13. Decode \"TT\".",
-    "options": [
-      "GG",
-      "GGX",
-      "XGG",
-      "GY"
-    ],
-    "answer": 0,
-    "fact": "Apply ROT13 again to recover GG."
-  },
-  {
-    "id": "scc-193",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"JK\".",
-    "options": [
-      "GY",
-      "GH",
-      "GHX",
-      "XGH"
-    ],
-    "answer": 1,
-    "fact": "Shift each letter three places backward to recover GH."
-  },
-  {
-    "id": "scc-194",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"TR\".",
-    "options": [
-      "XGI",
-      "GY",
-      "GI",
-      "GIX"
-    ],
-    "answer": 2,
-    "fact": "Reflect each letter across the alphabet to recover GI."
-  },
-  {
-    "id": "scc-195",
-    "q": "The mirror cipher reverses the letters. Decode \"JG\".",
-    "options": [
-      "GJX",
-      "XGJ",
-      "GY",
-      "GJ"
-    ],
-    "answer": 3,
-    "fact": "Read the inscription from right to left to recover GJ."
-  },
-  {
-    "id": "scc-196",
-    "q": "Using A=1 through Z=26, decode this sequence: 7-11.",
-    "options": [
-      "GK",
-      "GKX",
-      "XGK",
-      "GY"
-    ],
-    "answer": 0,
-    "fact": "Convert each number to its alphabet position; the result is GK."
-  },
-  {
-    "id": "scc-197",
-    "q": "A Morse signal enters the chamber: --. / .-... Which word does it spell?",
-    "options": [
-      "GY",
-      "GL",
-      "GLX",
-      "XGL"
-    ],
-    "answer": 1,
-    "fact": "Decode each Morse group in order to obtain GL."
-  },
-  {
-    "id": "scc-198",
-    "q": "The terminal displays 8-bit ASCII value 01000111. Which letter is encoded?",
-    "options": [
-      "XGM",
-      "GY",
-      "GM",
-      "GMX"
-    ],
-    "answer": 2,
-    "fact": "The binary value represents ASCII letter G."
-  },
-  {
-    "id": "scc-199",
-    "q": "A hexadecimal ASCII clue reads 47. Which letter is encoded?",
-    "options": [
-      "GNX",
-      "XGN",
-      "GY",
-      "GN"
-    ],
-    "answer": 3,
-    "fact": "Hexadecimal 47 is the ASCII code for G."
-  },
-  {
-    "id": "scc-200",
-    "q": "Decode this classic multi-tap keypad sequence: 4 666.",
-    "options": [
-      "GO",
-      "GOX",
-      "XGO",
-      "GY"
-    ],
-    "answer": 0,
-    "fact": "Repeated keypad presses select the letters to spell GO."
-  },
-  {
-    "id": "scc-201",
-    "q": "The chamber uses ROT13. Decode \"TC\".",
-    "options": [
-      "GY",
-      "GP",
-      "GPX",
-      "XGP"
-    ],
-    "answer": 1,
-    "fact": "Apply ROT13 again to recover GP."
-  },
-  {
-    "id": "scc-202",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"JT\".",
-    "options": [
-      "XGQ",
-      "GY",
-      "GQ",
-      "GQX"
-    ],
-    "answer": 2,
-    "fact": "Shift each letter three places backward to recover GQ."
-  },
-  {
-    "id": "scc-203",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"TI\".",
-    "options": [
-      "GRX",
-      "XGR",
-      "GY",
-      "GR"
-    ],
-    "answer": 3,
-    "fact": "Reflect each letter across the alphabet to recover GR."
-  },
-  {
-    "id": "scc-204",
-    "q": "The mirror cipher reverses the letters. Decode \"SG\".",
-    "options": [
-      "GS",
-      "GSX",
-      "XGS",
-      "GY"
-    ],
-    "answer": 0,
-    "fact": "Read the inscription from right to left to recover GS."
-  },
-  {
-    "id": "scc-205",
-    "q": "Using A=1 through Z=26, decode this sequence: 7-20.",
-    "options": [
-      "GY",
-      "GT",
-      "GTX",
-      "XGT"
-    ],
-    "answer": 1,
-    "fact": "Convert each number to its alphabet position; the result is GT."
-  },
-  {
-    "id": "scc-206",
-    "q": "A Morse signal enters the chamber: --. / ..-. Which word does it spell?",
-    "options": [
-      "XGU",
-      "GY",
-      "GU",
-      "GUX"
-    ],
-    "answer": 2,
-    "fact": "Decode each Morse group in order to obtain GU."
-  },
-  {
-    "id": "scc-207",
-    "q": "The terminal displays 8-bit ASCII value 01000111. Which letter is encoded?",
-    "options": [
-      "GVX",
-      "XGV",
-      "GY",
-      "GV"
-    ],
-    "answer": 3,
-    "fact": "The binary value represents ASCII letter G."
-  },
-  {
-    "id": "scc-208",
-    "q": "A hexadecimal ASCII clue reads 47. Which letter is encoded?",
-    "options": [
-      "GW",
-      "GWX",
-      "XGW",
-      "GY"
-    ],
-    "answer": 0,
-    "fact": "Hexadecimal 47 is the ASCII code for G."
-  },
-  {
     "id": "scc-209",
-    "q": "Decode this classic multi-tap keypad sequence: 4 99.",
+    "q": "Hexadecimal terminal: ASCII code 53 represents which first letter of the hidden word? (Seal 206)",
     "options": [
-      "GY",
-      "GX",
-      "GXX",
-      "XGX"
+      "HIDDEN",
+      "SECRET",
+      "TOWER",
+      "BRIDGE"
     ],
     "answer": 1,
-    "fact": "Repeated keypad presses select the letters to spell GX."
+    "fact": "Hexadecimal 53 is the ASCII code for S."
   },
   {
     "id": "scc-210",
-    "q": "The chamber uses ROT13. Decode \"TL\".",
+    "q": "Hexadecimal terminal: ASCII code 4C represents which first letter of the hidden word? (Seal 207)",
     "options": [
-      "XGY",
-      "GY",
-      "GY",
-      "GYX"
+      "GARDEN",
+      "MESSAGE",
+      "LOCK",
+      "STONE"
     ],
-    "answer": 1,
-    "fact": "Apply ROT13 again to recover GY."
+    "answer": 2,
+    "fact": "Hexadecimal 4C is the ASCII code for L."
   },
   {
     "id": "scc-211",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"JC\".",
+    "q": "Hexadecimal terminal: ASCII code 53 represents which first letter of the hidden word? (Seal 208)",
     "options": [
-      "GZX",
-      "XGZ",
-      "GY",
-      "GZ"
+      "NORTH",
+      "MIRROR",
+      "NUMBER",
+      "SAFE"
     ],
     "answer": 3,
-    "fact": "Shift each letter three places backward to recover GZ."
+    "fact": "Hexadecimal 53 is the ASCII code for S."
   },
   {
     "id": "scc-212",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"SZ\".",
+    "q": "Hexadecimal terminal: ASCII code 52 represents which first letter of the hidden word? (Seal 209)",
     "options": [
-      "HA",
-      "HAX",
-      "XHA",
-      "HY"
+      "RIDDLE",
+      "EAST",
+      "SILVER",
+      "SIGNAL"
     ],
     "answer": 0,
-    "fact": "Reflect each letter across the alphabet to recover HA."
+    "fact": "Hexadecimal 52 is the ASCII code for R."
   },
   {
     "id": "scc-213",
-    "q": "The mirror cipher reverses the letters. Decode \"BH\".",
+    "q": "Hexadecimal terminal: ASCII code 50 represents which first letter of the hidden word? (Seal 210)",
     "options": [
-      "HY",
-      "HB",
-      "HBX",
-      "XHB"
+      "LAMP",
+      "PUZZLE",
+      "WEST",
+      "GOLD"
     ],
     "answer": 1,
-    "fact": "Read the inscription from right to left to recover HB."
+    "fact": "Hexadecimal 50 is the ASCII code for P."
   },
   {
     "id": "scc-214",
-    "q": "Using A=1 through Z=26, decode this sequence: 8-3.",
+    "q": "Hexadecimal terminal: ASCII code 53 represents which first letter of the hidden word? (Seal 211)",
     "options": [
-      "XHC",
-      "HY",
-      "HC",
-      "HCX"
+      "CROWN",
+      "CODE",
+      "SHADOW",
+      "SOUTH"
     ],
     "answer": 2,
-    "fact": "Convert each number to its alphabet position; the result is HC."
+    "fact": "Hexadecimal 53 is the ASCII code for S."
   },
   {
     "id": "scc-215",
-    "q": "A Morse signal enters the chamber: .... / -... Which word does it spell?",
+    "q": "Hexadecimal terminal: ASCII code 4E represents which first letter of the hidden word? (Seal 212)",
     "options": [
-      "HDX",
-      "XHD",
-      "HY",
-      "HD"
+      "RIVER",
+      "KNIGHT",
+      "KEY",
+      "NIGHT"
     ],
     "answer": 3,
-    "fact": "Decode each Morse group in order to obtain HD."
+    "fact": "Hexadecimal 4E is the ASCII code for N."
   },
   {
     "id": "scc-216",
-    "q": "The terminal displays 8-bit ASCII value 01001000. Which letter is encoded?",
+    "q": "Hexadecimal terminal: ASCII code 54 represents which first letter of the hidden word? (Seal 213)",
     "options": [
-      "HE",
-      "HEX",
-      "XHE",
-      "HY"
+      "TOWER",
+      "BRIDGE",
+      "CASTLE",
+      "VAULT"
     ],
     "answer": 0,
-    "fact": "The binary value represents ASCII letter H."
+    "fact": "Hexadecimal 54 is the ASCII code for T."
   },
   {
     "id": "scc-217",
-    "q": "A hexadecimal ASCII clue reads 48. Which letter is encoded?",
+    "q": "Hexadecimal terminal: ASCII code 53 represents which first letter of the hidden word? (Seal 214)",
     "options": [
-      "HY",
-      "HF",
-      "HFX",
-      "XHF"
+      "CLUE",
+      "STONE",
+      "GARDEN",
+      "HIDDEN"
     ],
     "answer": 1,
-    "fact": "Hexadecimal 48 is the ASCII code for H."
+    "fact": "Hexadecimal 53 is the ASCII code for S."
   },
   {
     "id": "scc-218",
-    "q": "Decode this classic multi-tap keypad sequence: 44 4.",
+    "q": "Hexadecimal terminal: ASCII code 4E represents which first letter of the hidden word? (Seal 215)",
     "options": [
-      "XHG",
-      "HY",
-      "HG",
-      "HGX"
+      "MESSAGE",
+      "CRYPT",
+      "NORTH",
+      "MIRROR"
     ],
     "answer": 2,
-    "fact": "Repeated keypad presses select the letters to spell HG."
+    "fact": "Hexadecimal 4E is the ASCII code for N."
   },
   {
     "id": "scc-219",
-    "q": "The chamber uses ROT13. Decode \"UU\".",
+    "q": "Hexadecimal terminal: ASCII code 45 represents which first letter of the hidden word? (Seal 216)",
     "options": [
-      "HHX",
-      "XHH",
-      "HY",
-      "HH"
+      "SILVER",
+      "NUMBER",
+      "CIPHER",
+      "EAST"
     ],
     "answer": 3,
-    "fact": "Apply ROT13 again to recover HH."
+    "fact": "Hexadecimal 45 is the ASCII code for E."
   },
   {
     "id": "scc-220",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"KL\".",
+    "q": "Hexadecimal terminal: ASCII code 57 represents which first letter of the hidden word? (Seal 217)",
     "options": [
-      "HI",
-      "HIX",
-      "XHI",
-      "HY"
+      "WEST",
+      "GOLD",
+      "SIGNAL",
+      "SECRET"
     ],
     "answer": 0,
-    "fact": "Shift each letter three places backward to recover HI."
+    "fact": "Hexadecimal 57 is the ASCII code for W."
   },
   {
     "id": "scc-221",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"SQ\".",
+    "q": "Hexadecimal terminal: ASCII code 53 represents which first letter of the hidden word? (Seal 218)",
     "options": [
-      "HY",
-      "HJ",
-      "HJX",
-      "XHJ"
+      "LOCK",
+      "SOUTH",
+      "CROWN",
+      "LAMP"
     ],
     "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover HJ."
+    "fact": "Hexadecimal 53 is the ASCII code for S."
   },
   {
     "id": "scc-222",
-    "q": "The mirror cipher reverses the letters. Decode \"KH\".",
+    "q": "Hexadecimal terminal: ASCII code 52 represents which first letter of the hidden word? (Seal 219)",
     "options": [
-      "XHK",
-      "HY",
-      "HK",
-      "HKX"
+      "CODE",
+      "SAFE",
+      "RIVER",
+      "KNIGHT"
     ],
     "answer": 2,
-    "fact": "Read the inscription from right to left to recover HK."
+    "fact": "Hexadecimal 52 is the ASCII code for R."
   },
   {
     "id": "scc-223",
-    "q": "Using A=1 through Z=26, decode this sequence: 8-12.",
+    "q": "Hexadecimal terminal: ASCII code 42 represents which first letter of the hidden word? (Seal 220)",
     "options": [
-      "HLX",
-      "XHL",
-      "HY",
-      "HL"
+      "CASTLE",
+      "KEY",
+      "RIDDLE",
+      "BRIDGE"
     ],
     "answer": 3,
-    "fact": "Convert each number to its alphabet position; the result is HL."
+    "fact": "Hexadecimal 42 is the ASCII code for B."
   },
   {
     "id": "scc-224",
-    "q": "A Morse signal enters the chamber: .... / --. Which word does it spell?",
+    "q": "Hexadecimal terminal: ASCII code 47 represents which first letter of the hidden word? (Seal 221)",
     "options": [
-      "HM",
-      "HMX",
-      "XHM",
-      "HY"
+      "GARDEN",
+      "HIDDEN",
+      "VAULT",
+      "PUZZLE"
     ],
     "answer": 0,
-    "fact": "Decode each Morse group in order to obtain HM."
+    "fact": "Hexadecimal 47 is the ASCII code for G."
   },
   {
     "id": "scc-225",
-    "q": "The terminal displays 8-bit ASCII value 01001000. Which letter is encoded?",
+    "q": "Hexadecimal terminal: ASCII code 4D represents which first letter of the hidden word? (Seal 222)",
     "options": [
-      "HY",
-      "HN",
-      "HNX",
-      "XHN"
+      "SHADOW",
+      "MIRROR",
+      "MESSAGE",
+      "CLUE"
     ],
     "answer": 1,
-    "fact": "The binary value represents ASCII letter H."
+    "fact": "Hexadecimal 4D is the ASCII code for M."
   },
   {
     "id": "scc-226",
-    "q": "A hexadecimal ASCII clue reads 48. Which letter is encoded?",
+    "q": "Hexadecimal terminal: ASCII code 53 represents which first letter of the hidden word? (Seal 223)",
     "options": [
-      "XHO",
-      "HY",
-      "HO",
-      "HOX"
+      "CRYPT",
+      "NIGHT",
+      "SILVER",
+      "NUMBER"
     ],
     "answer": 2,
-    "fact": "Hexadecimal 48 is the ASCII code for H."
+    "fact": "Hexadecimal 53 is the ASCII code for S."
   },
   {
     "id": "scc-227",
-    "q": "Decode this classic multi-tap keypad sequence: 44 7.",
+    "q": "Hexadecimal terminal: ASCII code 47 represents which first letter of the hidden word? (Seal 224)",
     "options": [
-      "HPX",
-      "XHP",
-      "HY",
-      "HP"
+      "SIGNAL",
+      "CIPHER",
+      "TOWER",
+      "GOLD"
     ],
     "answer": 3,
-    "fact": "Repeated keypad presses select the letters to spell HP."
+    "fact": "Hexadecimal 47 is the ASCII code for G."
   },
   {
     "id": "scc-228",
-    "q": "The chamber uses ROT13. Decode \"UD\".",
+    "q": "Hexadecimal terminal: ASCII code 43 represents which first letter of the hidden word? (Seal 225)",
     "options": [
-      "HQ",
-      "HQX",
-      "XHQ",
-      "HY"
+      "CROWN",
+      "LAMP",
+      "SECRET",
+      "STONE"
     ],
     "answer": 0,
-    "fact": "Apply ROT13 again to recover HQ."
+    "fact": "Hexadecimal 43 is the ASCII code for C."
   },
   {
     "id": "scc-229",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"KU\".",
+    "q": "Hexadecimal terminal: ASCII code 4B represents which first letter of the hidden word? (Seal 226)",
     "options": [
-      "HY",
-      "HR",
-      "HRX",
-      "XHR"
+      "NORTH",
+      "KNIGHT",
+      "CODE",
+      "LOCK"
     ],
     "answer": 1,
-    "fact": "Shift each letter three places backward to recover HR."
+    "fact": "Hexadecimal 4B is the ASCII code for K."
   },
   {
     "id": "scc-230",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"SH\".",
+    "q": "Hexadecimal terminal: ASCII code 43 represents which first letter of the hidden word? (Seal 227)",
     "options": [
-      "XHS",
-      "HY",
-      "HS",
-      "HSX"
+      "SAFE",
+      "EAST",
+      "CASTLE",
+      "KEY"
     ],
     "answer": 2,
-    "fact": "Reflect each letter across the alphabet to recover HS."
+    "fact": "Hexadecimal 43 is the ASCII code for C."
   },
   {
     "id": "scc-231",
-    "q": "The mirror cipher reverses the letters. Decode \"TH\".",
+    "q": "Hexadecimal terminal: ASCII code 48 represents which first letter of the hidden word? (Seal 228)",
     "options": [
-      "HTX",
-      "XHT",
-      "HY",
-      "HT"
-    ],
-    "answer": 3,
-    "fact": "Read the inscription from right to left to recover HT."
-  },
-  {
-    "id": "scc-232",
-    "q": "Using A=1 through Z=26, decode this sequence: 8-21.",
-    "options": [
-      "HU",
-      "HUX",
-      "XHU",
-      "HY"
-    ],
-    "answer": 0,
-    "fact": "Convert each number to its alphabet position; the result is HU."
-  },
-  {
-    "id": "scc-233",
-    "q": "A Morse signal enters the chamber: .... / ...-. Which word does it spell?",
-    "options": [
-      "HY",
-      "HV",
-      "HVX",
-      "XHV"
-    ],
-    "answer": 1,
-    "fact": "Decode each Morse group in order to obtain HV."
-  },
-  {
-    "id": "scc-234",
-    "q": "The terminal displays 8-bit ASCII value 01001000. Which letter is encoded?",
-    "options": [
-      "XHW",
-      "HY",
-      "HW",
-      "HWX"
-    ],
-    "answer": 2,
-    "fact": "The binary value represents ASCII letter H."
-  },
-  {
-    "id": "scc-235",
-    "q": "A hexadecimal ASCII clue reads 48. Which letter is encoded?",
-    "options": [
-      "HXX",
-      "XHX",
-      "HY",
-      "HX"
+      "VAULT",
+      "RIDDLE",
+      "WEST",
+      "HIDDEN"
     ],
     "answer": 3,
     "fact": "Hexadecimal 48 is the ASCII code for H."
   },
   {
-    "id": "scc-236",
-    "q": "Decode this classic multi-tap keypad sequence: 44 999.",
+    "id": "scc-232",
+    "q": "Hexadecimal terminal: ASCII code 4D represents which first letter of the hidden word? (Seal 229)",
     "options": [
-      "HY",
-      "HYX",
-      "XHY",
-      "HY"
+      "MESSAGE",
+      "CLUE",
+      "PUZZLE",
+      "SOUTH"
     ],
     "answer": 0,
-    "fact": "Repeated keypad presses select the letters to spell HY."
+    "fact": "Hexadecimal 4D is the ASCII code for M."
+  },
+  {
+    "id": "scc-233",
+    "q": "Hexadecimal terminal: ASCII code 4E represents which first letter of the hidden word? (Seal 230)",
+    "options": [
+      "RIVER",
+      "NUMBER",
+      "CRYPT",
+      "SHADOW"
+    ],
+    "answer": 1,
+    "fact": "Hexadecimal 4E is the ASCII code for N."
+  },
+  {
+    "id": "scc-234",
+    "q": "Hexadecimal terminal: ASCII code 53 represents which first letter of the hidden word? (Seal 231)",
+    "options": [
+      "NIGHT",
+      "BRIDGE",
+      "SIGNAL",
+      "CIPHER"
+    ],
+    "answer": 2,
+    "fact": "Hexadecimal 53 is the ASCII code for S."
+  },
+  {
+    "id": "scc-235",
+    "q": "Multi-tap keypad: decode the sequence 555 2 6 7 to reveal the chamber word. (Seal 232)",
+    "options": [
+      "LOCK",
+      "STONE",
+      "MIRROR",
+      "LAMP"
+    ],
+    "answer": 3,
+    "fact": "Repeated keypad presses select the letters that spell LAMP."
+  },
+  {
+    "id": "scc-236",
+    "q": "Multi-tap keypad: decode the sequence 222 666 3 33 to reveal the chamber word. (Seal 233)",
+    "options": [
+      "CODE",
+      "SAFE",
+      "NORTH",
+      "SILVER"
+    ],
+    "answer": 0,
+    "fact": "Repeated keypad presses select the letters that spell CODE."
   },
   {
     "id": "scc-237",
-    "q": "The chamber uses ROT13. Decode \"UM\".",
+    "q": "Multi-tap keypad: decode the sequence 55 33 999 to reveal the chamber word. (Seal 234)",
     "options": [
-      "HY",
-      "HZ",
-      "HZX",
-      "XHZ"
+      "GOLD",
+      "KEY",
+      "RIDDLE",
+      "EAST"
     ],
     "answer": 1,
-    "fact": "Apply ROT13 again to recover HZ."
+    "fact": "Repeated keypad presses select the letters that spell KEY."
   },
   {
     "id": "scc-238",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"LD\".",
+    "q": "Multi-tap keypad: decode the sequence 888 2 88 555 8 to reveal the chamber word. (Seal 235)",
     "options": [
-      "XIA",
-      "IY",
-      "IA",
-      "IAX"
+      "WEST",
+      "CROWN",
+      "VAULT",
+      "PUZZLE"
     ],
     "answer": 2,
-    "fact": "Shift each letter three places backward to recover IA."
+    "fact": "Repeated keypad presses select the letters that spell VAULT."
   },
   {
     "id": "scc-239",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"RY\".",
+    "q": "Multi-tap keypad: decode the sequence 222 555 88 33 to reveal the chamber word. (Seal 236)",
     "options": [
-      "IBX",
-      "XIB",
-      "IY",
-      "IB"
+      "SHADOW",
+      "SOUTH",
+      "KNIGHT",
+      "CLUE"
     ],
     "answer": 3,
-    "fact": "Reflect each letter across the alphabet to recover IB."
+    "fact": "Repeated keypad presses select the letters that spell CLUE."
   },
   {
     "id": "scc-240",
-    "q": "The mirror cipher reverses the letters. Decode \"CI\".",
+    "q": "Multi-tap keypad: decode the sequence 222 777 999 7 8 to reveal the chamber word. (Seal 237)",
     "options": [
-      "IC",
-      "ICX",
-      "XIC",
-      "IY"
+      "CRYPT",
+      "NIGHT",
+      "RIVER",
+      "CASTLE"
     ],
     "answer": 0,
-    "fact": "Read the inscription from right to left to recover IC."
+    "fact": "Repeated keypad presses select the letters that spell CRYPT."
   },
   {
     "id": "scc-241",
-    "q": "Using A=1 through Z=26, decode this sequence: 9-4.",
+    "q": "Multi-tap keypad: decode the sequence 222 444 7 44 33 777 to reveal the chamber word. (Seal 238)",
     "options": [
-      "IY",
-      "ID",
-      "IDX",
-      "XID"
+      "HIDDEN",
+      "CIPHER",
+      "TOWER",
+      "BRIDGE"
     ],
     "answer": 1,
-    "fact": "Convert each number to its alphabet position; the result is ID."
+    "fact": "Repeated keypad presses select the letters that spell CIPHER."
   },
   {
     "id": "scc-242",
-    "q": "A Morse signal enters the chamber: .. / .. Which word does it spell?",
+    "q": "Multi-tap keypad: decode the sequence 7777 33 222 777 33 8 to reveal the chamber word. (Seal 239)",
     "options": [
-      "XIE",
-      "IY",
-      "IE",
-      "IEX"
+      "GARDEN",
+      "MESSAGE",
+      "SECRET",
+      "STONE"
     ],
     "answer": 2,
-    "fact": "Decode each Morse group in order to obtain IE."
+    "fact": "Repeated keypad presses select the letters that spell SECRET."
   },
   {
     "id": "scc-243",
-    "q": "The terminal displays 8-bit ASCII value 01001001. Which letter is encoded?",
+    "q": "Multi-tap keypad: decode the sequence 555 666 222 55 to reveal the chamber word. (Seal 240)",
     "options": [
-      "IFX",
-      "XIF",
-      "IY",
-      "IF"
+      "NORTH",
+      "MIRROR",
+      "NUMBER",
+      "LOCK"
     ],
     "answer": 3,
-    "fact": "The binary value represents ASCII letter I."
+    "fact": "Repeated keypad presses select the letters that spell LOCK."
   },
   {
     "id": "scc-244",
-    "q": "A hexadecimal ASCII clue reads 49. Which letter is encoded?",
+    "q": "Multi-tap keypad: decode the sequence 7777 2 333 33 to reveal the chamber word. (Seal 241)",
     "options": [
-      "IG",
-      "IGX",
-      "XIG",
-      "IY"
+      "SAFE",
+      "EAST",
+      "SILVER",
+      "SIGNAL"
     ],
     "answer": 0,
-    "fact": "Hexadecimal 49 is the ASCII code for I."
+    "fact": "Repeated keypad presses select the letters that spell SAFE."
   },
   {
     "id": "scc-245",
-    "q": "Decode this classic multi-tap keypad sequence: 444 44.",
+    "q": "Multi-tap keypad: decode the sequence 777 444 3 3 555 33 to reveal the chamber word. (Seal 242)",
     "options": [
-      "IY",
-      "IH",
-      "IHX",
-      "XIH"
+      "LAMP",
+      "RIDDLE",
+      "WEST",
+      "GOLD"
     ],
     "answer": 1,
-    "fact": "Repeated keypad presses select the letters to spell IH."
+    "fact": "Repeated keypad presses select the letters that spell RIDDLE."
   },
   {
     "id": "scc-246",
-    "q": "The chamber uses ROT13. Decode \"VV\".",
+    "q": "Multi-tap keypad: decode the sequence 7 88 9999 9999 555 33 to reveal the chamber word. (Seal 243)",
     "options": [
-      "XII",
-      "IY",
-      "II",
-      "IIX"
+      "CROWN",
+      "CODE",
+      "PUZZLE",
+      "SOUTH"
     ],
     "answer": 2,
-    "fact": "Apply ROT13 again to recover II."
+    "fact": "Repeated keypad presses select the letters that spell PUZZLE."
   },
   {
     "id": "scc-247",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"LM\".",
+    "q": "Multi-tap keypad: decode the sequence 7777 44 2 3 666 9 to reveal the chamber word. (Seal 244)",
     "options": [
-      "IJX",
-      "XIJ",
-      "IY",
-      "IJ"
+      "RIVER",
+      "KNIGHT",
+      "KEY",
+      "SHADOW"
     ],
     "answer": 3,
-    "fact": "Shift each letter three places backward to recover IJ."
+    "fact": "Repeated keypad presses select the letters that spell SHADOW."
   },
   {
     "id": "scc-248",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"RP\".",
+    "q": "Multi-tap keypad: decode the sequence 66 444 4 44 8 to reveal the chamber word. (Seal 245)",
     "options": [
-      "IK",
-      "IKX",
-      "XIK",
-      "IY"
+      "NIGHT",
+      "BRIDGE",
+      "CASTLE",
+      "VAULT"
     ],
     "answer": 0,
-    "fact": "Reflect each letter across the alphabet to recover IK."
+    "fact": "Repeated keypad presses select the letters that spell NIGHT."
   },
   {
     "id": "scc-249",
-    "q": "The mirror cipher reverses the letters. Decode \"LI\".",
+    "q": "Multi-tap keypad: decode the sequence 8 666 9 33 777 to reveal the chamber word. (Seal 246)",
     "options": [
-      "IY",
-      "IL",
-      "ILX",
-      "XIL"
+      "CLUE",
+      "TOWER",
+      "GARDEN",
+      "HIDDEN"
     ],
     "answer": 1,
-    "fact": "Read the inscription from right to left to recover IL."
+    "fact": "Repeated keypad presses select the letters that spell TOWER."
   },
   {
     "id": "scc-250",
-    "q": "Using A=1 through Z=26, decode this sequence: 9-13.",
+    "q": "Multi-tap keypad: decode the sequence 7777 8 666 66 33 to reveal the chamber word. (Seal 247)",
     "options": [
-      "XIM",
-      "IY",
-      "IM",
-      "IMX"
+      "MESSAGE",
+      "CRYPT",
+      "STONE",
+      "MIRROR"
     ],
     "answer": 2,
-    "fact": "Convert each number to its alphabet position; the result is IM."
+    "fact": "Repeated keypad presses select the letters that spell STONE."
   },
   {
     "id": "scc-251",
-    "q": "A Morse signal enters the chamber: .. / -.. Which word does it spell?",
+    "q": "Multi-tap keypad: decode the sequence 66 666 777 8 44 to reveal the chamber word. (Seal 248)",
     "options": [
-      "INX",
-      "XIN",
-      "IY",
-      "IN"
+      "SILVER",
+      "NUMBER",
+      "CIPHER",
+      "NORTH"
     ],
     "answer": 3,
-    "fact": "Decode each Morse group in order to obtain IN."
+    "fact": "Repeated keypad presses select the letters that spell NORTH."
   },
   {
     "id": "scc-252",
-    "q": "The terminal displays 8-bit ASCII value 01001001. Which letter is encoded?",
+    "q": "Multi-tap keypad: decode the sequence 33 2 7777 8 to reveal the chamber word. (Seal 249)",
     "options": [
-      "IO",
-      "IOX",
-      "XIO",
-      "IY"
+      "EAST",
+      "GOLD",
+      "SIGNAL",
+      "SECRET"
     ],
     "answer": 0,
-    "fact": "The binary value represents ASCII letter I."
+    "fact": "Repeated keypad presses select the letters that spell EAST."
   },
   {
     "id": "scc-253",
-    "q": "A hexadecimal ASCII clue reads 49. Which letter is encoded?",
+    "q": "Multi-tap keypad: decode the sequence 9 33 7777 8 to reveal the chamber word. (Seal 250)",
     "options": [
-      "IY",
-      "IP",
-      "IPX",
-      "XIP"
+      "LOCK",
+      "WEST",
+      "CROWN",
+      "LAMP"
     ],
     "answer": 1,
-    "fact": "Hexadecimal 49 is the ASCII code for I."
+    "fact": "Repeated keypad presses select the letters that spell WEST."
   },
   {
     "id": "scc-254",
-    "q": "Decode this classic multi-tap keypad sequence: 444 77.",
+    "q": "Multi-tap keypad: decode the sequence 7777 666 88 8 44 to reveal the chamber word. (Seal 251)",
     "options": [
-      "XIQ",
-      "IY",
-      "IQ",
-      "IQX"
+      "CODE",
+      "SAFE",
+      "SOUTH",
+      "KNIGHT"
     ],
     "answer": 2,
-    "fact": "Repeated keypad presses select the letters to spell IQ."
+    "fact": "Repeated keypad presses select the letters that spell SOUTH."
   },
   {
     "id": "scc-255",
-    "q": "The chamber uses ROT13. Decode \"VE\".",
+    "q": "Multi-tap keypad: decode the sequence 777 444 888 33 777 to reveal the chamber word. (Seal 252)",
     "options": [
-      "IRX",
-      "XIR",
-      "IY",
-      "IR"
+      "CASTLE",
+      "KEY",
+      "RIDDLE",
+      "RIVER"
     ],
     "answer": 3,
-    "fact": "Apply ROT13 again to recover IR."
+    "fact": "Repeated keypad presses select the letters that spell RIVER."
   },
   {
     "id": "scc-256",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"LV\".",
+    "q": "Multi-tap keypad: decode the sequence 22 777 444 3 4 33 to reveal the chamber word. (Seal 253)",
     "options": [
-      "IS",
-      "ISX",
-      "XIS",
-      "IY"
+      "BRIDGE",
+      "HIDDEN",
+      "VAULT",
+      "PUZZLE"
     ],
     "answer": 0,
-    "fact": "Shift each letter three places backward to recover IS."
+    "fact": "Repeated keypad presses select the letters that spell BRIDGE."
   },
   {
     "id": "scc-257",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"RG\".",
+    "q": "Multi-tap keypad: decode the sequence 4 2 777 3 33 66 to reveal the chamber word. (Seal 254)",
     "options": [
-      "IY",
-      "IT",
-      "ITX",
-      "XIT"
+      "SHADOW",
+      "GARDEN",
+      "MESSAGE",
+      "CLUE"
     ],
     "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover IT."
+    "fact": "Repeated keypad presses select the letters that spell GARDEN."
   },
   {
     "id": "scc-258",
-    "q": "The mirror cipher reverses the letters. Decode \"UI\".",
+    "q": "Multi-tap keypad: decode the sequence 6 444 777 777 666 777 to reveal the chamber word. (Seal 255)",
     "options": [
-      "XIU",
-      "IY",
-      "IU",
-      "IUX"
+      "CRYPT",
+      "NIGHT",
+      "MIRROR",
+      "NUMBER"
     ],
     "answer": 2,
-    "fact": "Read the inscription from right to left to recover IU."
+    "fact": "Repeated keypad presses select the letters that spell MIRROR."
   },
   {
     "id": "scc-259",
-    "q": "Using A=1 through Z=26, decode this sequence: 9-22.",
+    "q": "Multi-tap keypad: decode the sequence 7777 444 555 888 33 777 to reveal the chamber word. (Seal 256)",
     "options": [
-      "IVX",
-      "XIV",
-      "IY",
-      "IV"
+      "SIGNAL",
+      "CIPHER",
+      "TOWER",
+      "SILVER"
     ],
     "answer": 3,
-    "fact": "Convert each number to its alphabet position; the result is IV."
+    "fact": "Repeated keypad presses select the letters that spell SILVER."
   },
   {
     "id": "scc-260",
-    "q": "A Morse signal enters the chamber: .. / .--. Which word does it spell?",
+    "q": "Multi-tap keypad: decode the sequence 4 666 555 3 to reveal the chamber word. (Seal 257)",
     "options": [
-      "IW",
-      "IWX",
-      "XIW",
-      "IY"
+      "GOLD",
+      "LAMP",
+      "SECRET",
+      "STONE"
     ],
     "answer": 0,
-    "fact": "Decode each Morse group in order to obtain IW."
+    "fact": "Repeated keypad presses select the letters that spell GOLD."
   },
   {
     "id": "scc-261",
-    "q": "The terminal displays 8-bit ASCII value 01001001. Which letter is encoded?",
+    "q": "Multi-tap keypad: decode the sequence 222 777 666 9 66 to reveal the chamber word. (Seal 258)",
     "options": [
-      "IY",
-      "IX",
-      "IXX",
-      "XIX"
+      "NORTH",
+      "CROWN",
+      "CODE",
+      "LOCK"
     ],
     "answer": 1,
-    "fact": "The binary value represents ASCII letter I."
+    "fact": "Repeated keypad presses select the letters that spell CROWN."
   },
   {
     "id": "scc-262",
-    "q": "A hexadecimal ASCII clue reads 49. Which letter is encoded?",
+    "q": "Multi-tap keypad: decode the sequence 55 66 444 4 44 8 to reveal the chamber word. (Seal 259)",
     "options": [
-      "XIY",
-      "IY",
-      "IY",
-      "IYX"
+      "SAFE",
+      "EAST",
+      "KNIGHT",
+      "KEY"
     ],
-    "answer": 1,
-    "fact": "Hexadecimal 49 is the ASCII code for I."
+    "answer": 2,
+    "fact": "Repeated keypad presses select the letters that spell KNIGHT."
   },
   {
     "id": "scc-263",
-    "q": "Decode this classic multi-tap keypad sequence: 444 9999.",
+    "q": "Multi-tap keypad: decode the sequence 222 2 7777 8 555 33 to reveal the chamber word. (Seal 260)",
     "options": [
-      "IZX",
-      "XIZ",
-      "IY",
-      "IZ"
+      "VAULT",
+      "RIDDLE",
+      "WEST",
+      "CASTLE"
     ],
     "answer": 3,
-    "fact": "Repeated keypad presses select the letters to spell IZ."
+    "fact": "Repeated keypad presses select the letters that spell CASTLE."
   },
   {
     "id": "scc-264",
-    "q": "The chamber uses ROT13. Decode \"WN\".",
+    "q": "Multi-tap keypad: decode the sequence 44 444 3 3 33 66 to reveal the chamber word. (Seal 261)",
     "options": [
-      "JA",
-      "JAX",
-      "XJA",
-      "JY"
+      "HIDDEN",
+      "CLUE",
+      "PUZZLE",
+      "SOUTH"
     ],
     "answer": 0,
-    "fact": "Apply ROT13 again to recover JA."
+    "fact": "Repeated keypad presses select the letters that spell HIDDEN."
   },
   {
     "id": "scc-265",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"ME\".",
+    "q": "Multi-tap keypad: decode the sequence 6 33 7777 7777 2 4 33 to reveal the chamber word. (Seal 262)",
     "options": [
-      "JY",
-      "JB",
-      "JBX",
-      "XJB"
+      "RIVER",
+      "MESSAGE",
+      "CRYPT",
+      "SHADOW"
     ],
     "answer": 1,
-    "fact": "Shift each letter three places backward to recover JB."
+    "fact": "Repeated keypad presses select the letters that spell MESSAGE."
   },
   {
     "id": "scc-266",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"QX\".",
+    "q": "Multi-tap keypad: decode the sequence 66 88 6 22 33 777 to reveal the chamber word. (Seal 263)",
     "options": [
-      "XJC",
-      "JY",
-      "JC",
-      "JCX"
+      "NIGHT",
+      "BRIDGE",
+      "NUMBER",
+      "CIPHER"
     ],
     "answer": 2,
-    "fact": "Reflect each letter across the alphabet to recover JC."
+    "fact": "Repeated keypad presses select the letters that spell NUMBER."
   },
   {
     "id": "scc-267",
-    "q": "The mirror cipher reverses the letters. Decode \"DJ\".",
+    "q": "Multi-tap keypad: decode the sequence 7777 444 4 66 2 555 to reveal the chamber word. (Seal 264)",
     "options": [
-      "JDX",
-      "XJD",
-      "JY",
-      "JD"
+      "SECRET",
+      "TOWER",
+      "GARDEN",
+      "SIGNAL"
     ],
     "answer": 3,
-    "fact": "Read the inscription from right to left to recover JD."
+    "fact": "Repeated keypad presses select the letters that spell SIGNAL."
   },
   {
     "id": "scc-268",
-    "q": "Using A=1 through Z=26, decode this sequence: 10-5.",
+    "q": "ROT13 cipher: decode \"YNZC\" to reveal the chamber word. (Seal 265)",
     "options": [
-      "JE",
-      "JEX",
-      "XJE",
-      "JY"
+      "LAMP",
+      "SAFE",
+      "NORTH",
+      "SILVER"
     ],
     "answer": 0,
-    "fact": "Convert each number to its alphabet position; the result is JE."
+    "fact": "Apply ROT13 once more to recover LAMP."
   },
   {
     "id": "scc-269",
-    "q": "A Morse signal enters the chamber: .--- / ..-.. Which word does it spell?",
+    "q": "ROT13 cipher: decode \"PBQR\" to reveal the chamber word. (Seal 266)",
     "options": [
-      "JY",
-      "JF",
-      "JFX",
-      "XJF"
+      "GOLD",
+      "CODE",
+      "RIDDLE",
+      "EAST"
     ],
     "answer": 1,
-    "fact": "Decode each Morse group in order to obtain JF."
+    "fact": "Apply ROT13 once more to recover CODE."
   },
   {
     "id": "scc-270",
-    "q": "The terminal displays 8-bit ASCII value 01001010. Which letter is encoded?",
+    "q": "ROT13 cipher: decode \"XRL\" to reveal the chamber word. (Seal 267)",
     "options": [
-      "XJG",
-      "JY",
-      "JG",
-      "JGX"
+      "WEST",
+      "CROWN",
+      "KEY",
+      "PUZZLE"
     ],
     "answer": 2,
-    "fact": "The binary value represents ASCII letter J."
+    "fact": "Apply ROT13 once more to recover KEY."
   },
   {
     "id": "scc-271",
-    "q": "A hexadecimal ASCII clue reads 4A. Which letter is encoded?",
+    "q": "ROT13 cipher: decode \"INHYG\" to reveal the chamber word. (Seal 268)",
     "options": [
-      "JHX",
-      "XJH",
-      "JY",
-      "JH"
+      "SHADOW",
+      "SOUTH",
+      "KNIGHT",
+      "VAULT"
     ],
     "answer": 3,
-    "fact": "Hexadecimal 4A is the ASCII code for J."
+    "fact": "Apply ROT13 once more to recover VAULT."
   },
   {
     "id": "scc-272",
-    "q": "Decode this classic multi-tap keypad sequence: 5 444.",
+    "q": "ROT13 cipher: decode \"PYHR\" to reveal the chamber word. (Seal 269)",
     "options": [
-      "JI",
-      "JIX",
-      "XJI",
-      "JY"
+      "CLUE",
+      "NIGHT",
+      "RIVER",
+      "CASTLE"
     ],
     "answer": 0,
-    "fact": "Repeated keypad presses select the letters to spell JI."
+    "fact": "Apply ROT13 once more to recover CLUE."
   },
   {
     "id": "scc-273",
-    "q": "The chamber uses ROT13. Decode \"WW\".",
+    "q": "ROT13 cipher: decode \"PELCG\" to reveal the chamber word. (Seal 270)",
     "options": [
-      "JY",
-      "JJ",
-      "JJX",
-      "XJJ"
+      "HIDDEN",
+      "CRYPT",
+      "TOWER",
+      "BRIDGE"
     ],
     "answer": 1,
-    "fact": "Apply ROT13 again to recover JJ."
+    "fact": "Apply ROT13 once more to recover CRYPT."
   },
   {
     "id": "scc-274",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"MN\".",
+    "q": "ROT13 cipher: decode \"PVCURE\" to reveal the chamber word. (Seal 271)",
     "options": [
-      "XJK",
-      "JY",
-      "JK",
-      "JKX"
+      "GARDEN",
+      "MESSAGE",
+      "CIPHER",
+      "STONE"
     ],
     "answer": 2,
-    "fact": "Shift each letter three places backward to recover JK."
+    "fact": "Apply ROT13 once more to recover CIPHER."
   },
   {
     "id": "scc-275",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"QO\".",
+    "q": "ROT13 cipher: decode \"FRPERG\" to reveal the chamber word. (Seal 272)",
     "options": [
-      "JLX",
-      "XJL",
-      "JY",
-      "JL"
+      "NORTH",
+      "MIRROR",
+      "NUMBER",
+      "SECRET"
     ],
     "answer": 3,
-    "fact": "Reflect each letter across the alphabet to recover JL."
+    "fact": "Apply ROT13 once more to recover SECRET."
   },
   {
     "id": "scc-276",
-    "q": "The mirror cipher reverses the letters. Decode \"MJ\".",
+    "q": "ROT13 cipher: decode \"YBPX\" to reveal the chamber word. (Seal 273)",
     "options": [
-      "JM",
-      "JMX",
-      "XJM",
-      "JY"
+      "LOCK",
+      "EAST",
+      "SILVER",
+      "SIGNAL"
     ],
     "answer": 0,
-    "fact": "Read the inscription from right to left to recover JM."
+    "fact": "Apply ROT13 once more to recover LOCK."
   },
   {
     "id": "scc-277",
-    "q": "Using A=1 through Z=26, decode this sequence: 10-14.",
+    "q": "ROT13 cipher: decode \"FNSR\" to reveal the chamber word. (Seal 274)",
     "options": [
-      "JY",
-      "JN",
-      "JNX",
-      "XJN"
+      "LAMP",
+      "SAFE",
+      "WEST",
+      "GOLD"
     ],
     "answer": 1,
-    "fact": "Convert each number to its alphabet position; the result is JN."
+    "fact": "Apply ROT13 once more to recover SAFE."
   },
   {
     "id": "scc-278",
-    "q": "A Morse signal enters the chamber: .--- / ---. Which word does it spell?",
+    "q": "ROT13 cipher: decode \"EVQQYR\" to reveal the chamber word. (Seal 275)",
     "options": [
-      "XJO",
-      "JY",
-      "JO",
-      "JOX"
+      "CROWN",
+      "CODE",
+      "RIDDLE",
+      "SOUTH"
     ],
     "answer": 2,
-    "fact": "Decode each Morse group in order to obtain JO."
+    "fact": "Apply ROT13 once more to recover RIDDLE."
   },
   {
     "id": "scc-279",
-    "q": "The terminal displays 8-bit ASCII value 01001010. Which letter is encoded?",
+    "q": "ROT13 cipher: decode \"CHMMYR\" to reveal the chamber word. (Seal 276)",
     "options": [
-      "JPX",
-      "XJP",
-      "JY",
-      "JP"
+      "RIVER",
+      "KNIGHT",
+      "KEY",
+      "PUZZLE"
     ],
     "answer": 3,
-    "fact": "The binary value represents ASCII letter J."
+    "fact": "Apply ROT13 once more to recover PUZZLE."
   },
   {
     "id": "scc-280",
-    "q": "A hexadecimal ASCII clue reads 4A. Which letter is encoded?",
+    "q": "ROT13 cipher: decode \"FUNQBJ\" to reveal the chamber word. (Seal 277)",
     "options": [
-      "JQ",
-      "JQX",
-      "XJQ",
-      "JY"
+      "SHADOW",
+      "BRIDGE",
+      "CASTLE",
+      "VAULT"
     ],
     "answer": 0,
-    "fact": "Hexadecimal 4A is the ASCII code for J."
+    "fact": "Apply ROT13 once more to recover SHADOW."
   },
   {
     "id": "scc-281",
-    "q": "Decode this classic multi-tap keypad sequence: 5 777.",
+    "q": "ROT13 cipher: decode \"AVTUG\" to reveal the chamber word. (Seal 278)",
     "options": [
-      "JY",
-      "JR",
-      "JRX",
-      "XJR"
+      "CLUE",
+      "NIGHT",
+      "GARDEN",
+      "HIDDEN"
     ],
     "answer": 1,
-    "fact": "Repeated keypad presses select the letters to spell JR."
+    "fact": "Apply ROT13 once more to recover NIGHT."
   },
   {
     "id": "scc-282",
-    "q": "The chamber uses ROT13. Decode \"WF\".",
+    "q": "ROT13 cipher: decode \"GBJRE\" to reveal the chamber word. (Seal 279)",
     "options": [
-      "XJS",
-      "JY",
-      "JS",
-      "JSX"
+      "MESSAGE",
+      "CRYPT",
+      "TOWER",
+      "MIRROR"
     ],
     "answer": 2,
-    "fact": "Apply ROT13 again to recover JS."
+    "fact": "Apply ROT13 once more to recover TOWER."
   },
   {
     "id": "scc-283",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"MW\".",
+    "q": "ROT13 cipher: decode \"FGBAR\" to reveal the chamber word. (Seal 280)",
     "options": [
-      "JTX",
-      "XJT",
-      "JY",
-      "JT"
+      "SILVER",
+      "NUMBER",
+      "CIPHER",
+      "STONE"
     ],
     "answer": 3,
-    "fact": "Shift each letter three places backward to recover JT."
+    "fact": "Apply ROT13 once more to recover STONE."
   },
   {
     "id": "scc-284",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"QF\".",
+    "q": "ROT13 cipher: decode \"ABEGU\" to reveal the chamber word. (Seal 281)",
     "options": [
-      "JU",
-      "JUX",
-      "XJU",
-      "JY"
+      "NORTH",
+      "GOLD",
+      "SIGNAL",
+      "SECRET"
     ],
     "answer": 0,
-    "fact": "Reflect each letter across the alphabet to recover JU."
+    "fact": "Apply ROT13 once more to recover NORTH."
   },
   {
     "id": "scc-285",
-    "q": "The mirror cipher reverses the letters. Decode \"VJ\".",
+    "q": "ROT13 cipher: decode \"RNFG\" to reveal the chamber word. (Seal 282)",
     "options": [
-      "JY",
-      "JV",
-      "JVX",
-      "XJV"
+      "LOCK",
+      "EAST",
+      "CROWN",
+      "LAMP"
     ],
     "answer": 1,
-    "fact": "Read the inscription from right to left to recover JV."
+    "fact": "Apply ROT13 once more to recover EAST."
   },
   {
     "id": "scc-286",
-    "q": "Using A=1 through Z=26, decode this sequence: 10-23.",
+    "q": "ROT13 cipher: decode \"JRFG\" to reveal the chamber word. (Seal 283)",
     "options": [
-      "XJW",
-      "JY",
-      "JW",
-      "JWX"
+      "CODE",
+      "SAFE",
+      "WEST",
+      "KNIGHT"
     ],
     "answer": 2,
-    "fact": "Convert each number to its alphabet position; the result is JW."
+    "fact": "Apply ROT13 once more to recover WEST."
   },
   {
     "id": "scc-287",
-    "q": "A Morse signal enters the chamber: .--- / -..-. Which word does it spell?",
+    "q": "ROT13 cipher: decode \"FBHGU\" to reveal the chamber word. (Seal 284)",
     "options": [
-      "JXX",
-      "XJX",
-      "JY",
-      "JX"
+      "CASTLE",
+      "KEY",
+      "RIDDLE",
+      "SOUTH"
     ],
     "answer": 3,
-    "fact": "Decode each Morse group in order to obtain JX."
+    "fact": "Apply ROT13 once more to recover SOUTH."
   },
   {
     "id": "scc-288",
-    "q": "The terminal displays 8-bit ASCII value 01001010. Which letter is encoded?",
+    "q": "ROT13 cipher: decode \"EVIRE\" to reveal the chamber word. (Seal 285)",
     "options": [
-      "JY",
-      "JYX",
-      "XJY",
-      "JY"
+      "RIVER",
+      "HIDDEN",
+      "VAULT",
+      "PUZZLE"
     ],
     "answer": 0,
-    "fact": "The binary value represents ASCII letter J."
+    "fact": "Apply ROT13 once more to recover RIVER."
   },
   {
     "id": "scc-289",
-    "q": "A hexadecimal ASCII clue reads 4A. Which letter is encoded?",
+    "q": "ROT13 cipher: decode \"OEVQTR\" to reveal the chamber word. (Seal 286)",
     "options": [
-      "JY",
-      "JZ",
-      "JZX",
-      "XJZ"
+      "SHADOW",
+      "BRIDGE",
+      "MESSAGE",
+      "CLUE"
     ],
     "answer": 1,
-    "fact": "Hexadecimal 4A is the ASCII code for J."
+    "fact": "Apply ROT13 once more to recover BRIDGE."
   },
   {
     "id": "scc-290",
-    "q": "Decode this classic multi-tap keypad sequence: 55 2.",
+    "q": "ROT13 cipher: decode \"TNEQRA\" to reveal the chamber word. (Seal 287)",
     "options": [
-      "XKA",
-      "KY",
-      "KA",
-      "KAX"
+      "CRYPT",
+      "NIGHT",
+      "GARDEN",
+      "NUMBER"
     ],
     "answer": 2,
-    "fact": "Repeated keypad presses select the letters to spell KA."
+    "fact": "Apply ROT13 once more to recover GARDEN."
   },
   {
     "id": "scc-291",
-    "q": "The chamber uses ROT13. Decode \"XO\".",
+    "q": "ROT13 cipher: decode \"ZVEEBE\" to reveal the chamber word. (Seal 288)",
     "options": [
-      "KBX",
-      "XKB",
-      "KY",
-      "KB"
+      "SIGNAL",
+      "CIPHER",
+      "TOWER",
+      "MIRROR"
     ],
     "answer": 3,
-    "fact": "Apply ROT13 again to recover KB."
+    "fact": "Apply ROT13 once more to recover MIRROR."
   },
   {
     "id": "scc-292",
-    "q": "Caesar cipher shifts each letter three places forward. Decode \"NF\".",
+    "q": "ROT13 cipher: decode \"FVYIRE\" to reveal the chamber word. (Seal 289)",
     "options": [
-      "KC",
-      "KCX",
-      "XKC",
-      "KY"
+      "SILVER",
+      "LAMP",
+      "SECRET",
+      "STONE"
     ],
     "answer": 0,
-    "fact": "Shift each letter three places backward to recover KC."
+    "fact": "Apply ROT13 once more to recover SILVER."
   },
   {
     "id": "scc-293",
-    "q": "Atbash pairs A with Z, B with Y, and so on. Decode \"PW\".",
+    "q": "ROT13 cipher: decode \"TBYQ\" to reveal the chamber word. (Seal 290)",
     "options": [
-      "KY",
-      "KD",
-      "KDX",
-      "XKD"
+      "NORTH",
+      "GOLD",
+      "CODE",
+      "LOCK"
     ],
     "answer": 1,
-    "fact": "Reflect each letter across the alphabet to recover KD."
+    "fact": "Apply ROT13 once more to recover GOLD."
   },
   {
     "id": "scc-294",
-    "q": "The mirror cipher reverses the letters. Decode \"EK\".",
+    "q": "ROT13 cipher: decode \"PEBJA\" to reveal the chamber word. (Seal 291)",
     "options": [
-      "XKE",
-      "KY",
-      "KE",
-      "KEX"
+      "SAFE",
+      "EAST",
+      "CROWN",
+      "KEY"
     ],
     "answer": 2,
-    "fact": "Read the inscription from right to left to recover KE."
+    "fact": "Apply ROT13 once more to recover CROWN."
   },
   {
     "id": "scc-295",
-    "q": "Using A=1 through Z=26, decode this sequence: 11-6.",
+    "q": "ROT13 cipher: decode \"XAVTUG\" to reveal the chamber word. (Seal 292)",
     "options": [
-      "KFX",
-      "XKF",
-      "KY",
-      "KF"
+      "VAULT",
+      "RIDDLE",
+      "WEST",
+      "KNIGHT"
     ],
     "answer": 3,
-    "fact": "Convert each number to its alphabet position; the result is KF."
+    "fact": "Apply ROT13 once more to recover KNIGHT."
   },
   {
     "id": "scc-296",
-    "q": "A Morse signal enters the chamber: -.- / --.. Which word does it spell?",
+    "q": "ROT13 cipher: decode \"PNFGYR\" to reveal the chamber word. (Seal 293)",
     "options": [
-      "KG",
-      "KGX",
-      "XKG",
-      "KY"
+      "CASTLE",
+      "CLUE",
+      "PUZZLE",
+      "SOUTH"
     ],
     "answer": 0,
-    "fact": "Decode each Morse group in order to obtain KG."
+    "fact": "Apply ROT13 once more to recover CASTLE."
   },
   {
     "id": "scc-297",
-    "q": "The terminal displays 8-bit ASCII value 01001011. Which letter is encoded?",
+    "q": "ROT13 cipher: decode \"UVQQRA\" to reveal the chamber word. (Seal 294)",
     "options": [
-      "KY",
-      "KH",
-      "KHX",
-      "XKH"
+      "RIVER",
+      "HIDDEN",
+      "CRYPT",
+      "SHADOW"
     ],
     "answer": 1,
-    "fact": "The binary value represents ASCII letter K."
+    "fact": "Apply ROT13 once more to recover HIDDEN."
   },
   {
     "id": "scc-298",
-    "q": "A hexadecimal ASCII clue reads 4B. Which letter is encoded?",
+    "q": "ROT13 cipher: decode \"ZRFFNTR\" to reveal the chamber word. (Seal 295)",
     "options": [
-      "XKI",
-      "KY",
-      "KI",
-      "KIX"
+      "NIGHT",
+      "BRIDGE",
+      "MESSAGE",
+      "CIPHER"
     ],
     "answer": 2,
-    "fact": "Hexadecimal 4B is the ASCII code for K."
+    "fact": "Apply ROT13 once more to recover MESSAGE."
   },
   {
     "id": "scc-299",
-    "q": "Decode this classic multi-tap keypad sequence: 55 5.",
+    "q": "ROT13 cipher: decode \"AHZORE\" to reveal the chamber word. (Seal 296)",
     "options": [
-      "KJX",
-      "XKJ",
-      "KY",
-      "KJ"
+      "SECRET",
+      "TOWER",
+      "GARDEN",
+      "NUMBER"
     ],
     "answer": 3,
-    "fact": "Repeated keypad presses select the letters to spell KJ."
+    "fact": "Apply ROT13 once more to recover NUMBER."
   },
   {
     "id": "scc-300",
-    "q": "The chamber uses ROT13. Decode \"XX\".",
+    "q": "ROT13 cipher: decode \"FVTANY\" to reveal the chamber word. (Seal 297)",
     "options": [
-      "KK",
-      "KKX",
-      "XKK",
-      "KY"
+      "SIGNAL",
+      "LOCK",
+      "STONE",
+      "MIRROR"
     ],
     "answer": 0,
-    "fact": "Apply ROT13 again to recover KK."
+    "fact": "Apply ROT13 once more to recover SIGNAL."
   }
 ];
