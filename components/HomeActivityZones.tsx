@@ -26,10 +26,21 @@ const entertainmentGroups = [
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const activeZoneRef = useRef<number | null>(null);
+  const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    const handleMobileBack = () => { if (activeZoneRef.current !== null) window.location.replace("/"); };
+    const handleMobileBack = () => {
+      if (activeQuizGameRef.current !== null) {
+        activeQuizGameRef.current = null;
+        setActiveQuizGame(null);
+        return;
+      }
+      if (activeZoneRef.current !== null) {
+        activeZoneRef.current = null;
+        setActiveZone(null);
+      }
+    };
     window.addEventListener("popstate", handleMobileBack);
     return () => window.removeEventListener("popstate", handleMobileBack);
   }, []);
@@ -37,9 +48,16 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     if (activeZoneRef.current === null) window.history.pushState({ shoppersOceanZone: true }, "", window.location.href);
     activeZoneRef.current = index;
     setActiveZone(index);
+    activeQuizGameRef.current = null;
     setActiveQuizGame(null);
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
+  const openGame = (gameId: string) => {
+    window.history.pushState({ shoppersOceanZone: true, shoppersOceanGame: gameId }, "", window.location.href);
+    activeQuizGameRef.current = gameId;
+    setActiveQuizGame(gameId);
+  };
+  const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
   const playZoneTap = () => { try { const audio = new Audio("/Tap.mp3"); audio.volume = 0.85; void audio.play().catch(() => {}); } catch {} };
   const selected = activeZone === null ? null : zones[activeZone];
 
@@ -97,7 +115,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { activeZoneRef.current = null; setActiveZone(null); setActiveQuizGame(null); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button><button type="button" onClick={() => { window.location.assign("/"); }} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">⌂ Home</button></div>
+              <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (activeQuizGameRef.current !== null) { window.history.back(); return; } if (activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button><button type="button" onClick={() => { window.location.assign("/"); }} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">⌂ Home</button></div>
               <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
             </div>
             {selected.action === "games" && (
@@ -127,7 +145,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                         {id:"records",icon:"🏆",title:"World Records Quiz",note:"Fifty curated record questions",tone:"from-orange-600 to-red-800"},
                         {id:"science",icon:"🔬",title:"Science Quiz",note:"Explore every branch of science",tone:"from-cyan-600 to-blue-800"}
                       ].map((game,index)=>(
-                        <button key={game.id} type="button" onClick={()=>setActiveQuizGame(game.id)} className={"group relative min-h-40 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br "+game.tone+" p-5 text-left text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200"}>
+                        <button key={game.id} type="button" onClick={()=>openGame(game.id)} className={"group relative min-h-40 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br "+game.tone+" p-5 text-left text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200"}>
                           <span className="absolute -right-3 -top-5 text-8xl opacity-20 transition group-hover:scale-110">{game.icon}</span>
                           <span className="relative text-3xl">{game.icon}</span>
                           <span className="relative mt-3 block text-base font-black leading-6">{String(index+1).padStart(2,"0")}. {game.title}</span>
@@ -139,22 +157,22 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                   </>
                 ) : (
                   <div ref={gameTargetRef}>
-                    {activeQuizGame==="word" && <EntertainmentHub key="word" userId={userId} visibleGroupIds={["word-playground"]} initialGroupId="word-playground" initialGame="hidden" autoStart onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="brain" && <EntertainmentHub key="brain" userId={userId} visibleGroupIds={["brain-logic"]} initialGroupId="brain-logic" initialGame="sequence" autoStart onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="riddle" && <EntertainmentHub key="riddle" userId={userId} visibleGroupIds={["riddle-corner"]} initialGroupId="riddle-corner" initialGame="riddle" autoStart onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="science" && <EntertainmentHub key="science" userId={userId} visibleGroupIds={["quiz-arena"]} initialGroupId="quiz-arena" initialGame="quiz" autoStart onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="internet" && <DigitalDiscoveryHub key="internet" userId={userId} initialAreaId="internet" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="ai" && <DigitalDiscoveryHub key="ai" userId={userId} initialAreaId="artificial-intelligence" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="cyber" && <DigitalDiscoveryHub key="cyber" userId={userId} initialAreaId="cyber-detective" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="tech" && <DigitalDiscoveryHub key="tech" userId={userId} initialAreaId="technology-history" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="locked" && <MysteryMansion key="locked" userId={userId} initialGameId="locked" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="codes" && <MysteryMansion key="codes" userId={userId} initialGameId="codes" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="deception" && <MysteryMansion key="deception" userId={userId} initialGameId="deception" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="pattern" && <PuzzleUniverse key="pattern" userId={userId} initialGameId="pattern" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="geo" && <WorldExplorer key="geo" userId={userId} initialGameId="geo" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="culture" && <WorldExplorer key="culture" userId={userId} initialGameId="culture" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="landmark" && <WorldExplorer key="landmark" userId={userId} initialGameId="landmark" onExit={()=>setActiveQuizGame(null)} />}
-                    {activeQuizGame==="records" && <WorldRecordsArena key="records" userId={userId} onExit={()=>setActiveQuizGame(null)} />}
+                    {activeQuizGame==="word" && <EntertainmentHub key="word" userId={userId} visibleGroupIds={["word-playground"]} initialGroupId="word-playground" initialGame="hidden" autoStart onExit={exitGame} />}
+                    {activeQuizGame==="brain" && <EntertainmentHub key="brain" userId={userId} visibleGroupIds={["brain-logic"]} initialGroupId="brain-logic" initialGame="sequence" autoStart onExit={exitGame} />}
+                    {activeQuizGame==="riddle" && <EntertainmentHub key="riddle" userId={userId} visibleGroupIds={["riddle-corner"]} initialGroupId="riddle-corner" initialGame="riddle" autoStart onExit={exitGame} />}
+                    {activeQuizGame==="science" && <EntertainmentHub key="science" userId={userId} visibleGroupIds={["quiz-arena"]} initialGroupId="quiz-arena" initialGame="quiz" autoStart onExit={exitGame} />}
+                    {activeQuizGame==="internet" && <DigitalDiscoveryHub key="internet" userId={userId} initialAreaId="internet" onExit={exitGame} />}
+                    {activeQuizGame==="ai" && <DigitalDiscoveryHub key="ai" userId={userId} initialAreaId="artificial-intelligence" onExit={exitGame} />}
+                    {activeQuizGame==="cyber" && <DigitalDiscoveryHub key="cyber" userId={userId} initialAreaId="cyber-detective" onExit={exitGame} />}
+                    {activeQuizGame==="tech" && <DigitalDiscoveryHub key="tech" userId={userId} initialAreaId="technology-history" onExit={exitGame} />}
+                    {activeQuizGame==="locked" && <MysteryMansion key="locked" userId={userId} initialGameId="locked" onExit={exitGame} />}
+                    {activeQuizGame==="codes" && <MysteryMansion key="codes" userId={userId} initialGameId="codes" onExit={exitGame} />}
+                    {activeQuizGame==="deception" && <MysteryMansion key="deception" userId={userId} initialGameId="deception" onExit={exitGame} />}
+                    {activeQuizGame==="pattern" && <PuzzleUniverse key="pattern" userId={userId} initialGameId="pattern" onExit={exitGame} />}
+                    {activeQuizGame==="geo" && <WorldExplorer key="geo" userId={userId} initialGameId="geo" onExit={exitGame} />}
+                    {activeQuizGame==="culture" && <WorldExplorer key="culture" userId={userId} initialGameId="culture" onExit={exitGame} />}
+                    {activeQuizGame==="landmark" && <WorldExplorer key="landmark" userId={userId} initialGameId="landmark" onExit={exitGame} />}
+                    {activeQuizGame==="records" && <WorldRecordsArena key="records" userId={userId} onExit={exitGame} />}
                   </div>
                 )}
               </div>
