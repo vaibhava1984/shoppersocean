@@ -11,8 +11,7 @@ const today=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10); /
 const sectionDailyRemaining=(section:string,used:Record<string,number>)=>{if(section==="memory-observation"){return Math.max(0,3-(used.jigsaw??0));}return section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(used.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(used[t]??0)),0);};
 async function claimChallenge(db:D1Database,userId:string,type:string,challenge:string,playedAt:string){
  if(!challenge)return true;
- const cutoff=new Date(Date.now()-365*86400000).toISOString();
- const row=await db.prepare("INSERT INTO game_challenge_history(user_id,game_type_id,challenge_id,played_at) VALUES(?,?,?,?) ON CONFLICT(user_id,game_type_id,challenge_id) DO UPDATE SET played_at=excluded.played_at WHERE game_challenge_history.played_at <= ? RETURNING played_at").bind(userId,type,challenge,playedAt,cutoff).first<any>();
+ const row=await db.prepare("INSERT INTO game_challenge_history(user_id,game_type_id,challenge_id,played_at) VALUES(?,?,?,?) ON CONFLICT(user_id,game_type_id,challenge_id) DO NOTHING RETURNING played_at").bind(userId,type,challenge,playedAt).first<any>();
  return Boolean(row);
 }
 export async function GET(req:Request){return handle(req,false)}
@@ -64,12 +63,12 @@ async function handle(req:Request,consume:boolean){
      // Reservations are temporary, not consumed questions. Let a new visit reclaim an abandoned one.
      await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).run();
     }
-    const playedAt=new Date().toISOString(),cutoff=new Date(Date.now()-365*86400000).toISOString();
+    const playedAt=new Date().toISOString();
     const prior=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).first<any>();
     const priorQuestion=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,"__question__",questionText).first<any>();
     const rawQuestion=typeof body.challengeQuestion==="string"?body.challengeQuestion.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,240):"";
-    const priorLegacyQuestion=rawQuestion.length>=8?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND played_at>? AND instr(lower(challenge_id),lower(?))>0 LIMIT 1").bind(user.id,cutoff,rawQuestion).first<any>():null;
-    if(type!=="daily"&&((prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)||(priorQuestion&&Date.now()-Date.parse(priorQuestion.played_at)<365*86400000)||priorLegacyQuestion)){
+    const priorLegacyQuestion=rawQuestion.length>=8?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND instr(lower(challenge_id),lower(?))>0 LIMIT 1").bind(user.id,rawQuestion).first<any>():null;
+    if(prior||priorQuestion||priorLegacyQuestion){
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
     await db.prepare("INSERT OR REPLACE INTO game_question_reservations(user_id,game_type_id,challenge_id,question_text,session_id,reserved_at) VALUES(?,?,?,?,?,?)").bind(user.id,type,challenge,questionText,reservationSessionId,playedAt).run();
@@ -99,8 +98,8 @@ async function handle(req:Request,consume:boolean){
     const prior=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).first<any>();
     const priorQuestion=questionText?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,"__question__",questionText).first<any>():null;
     const rawQuestion=typeof body.challengeQuestion==="string"?body.challengeQuestion.trim().slice(0,240):"";
-    const priorLegacyQuestion=rawQuestion.length>=8?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND played_at>? AND instr(lower(challenge_id),lower(?))>0 LIMIT 1").bind(user.id,new Date(Date.now()-365*86400000).toISOString(),rawQuestion).first<any>():null;
-    if(!previewMode&&type!=="daily"&&((prior&&Date.now()-Date.parse(prior.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorQuestion&&Date.now()-Date.parse(priorQuestion.played_at)<365*86400000)||(!isReservedForCurrentSession&&priorLegacyQuestion))){
+    const priorLegacyQuestion=rawQuestion.length>=8?await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND instr(lower(challenge_id),lower(?))>0 LIMIT 1").bind(user.id,rawQuestion).first<any>():null;
+    if(!previewMode&&((prior)||(!isReservedForCurrentSession&&priorQuestion)||(!isReservedForCurrentSession&&priorLegacyQuestion))){
      await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
