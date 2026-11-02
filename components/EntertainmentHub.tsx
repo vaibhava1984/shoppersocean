@@ -47,46 +47,49 @@ const getGameAudioContext=()=>{if(typeof window==="undefined")return null;const 
 const loadGameSound=(kind:GameSoundKind)=>{const context=getGameAudioContext();if(!context)return Promise.resolve(null);if(gameSoundBuffers[kind])return Promise.resolve(gameSoundBuffers[kind]!);if(!gameSoundLoads[kind])gameSoundLoads[kind]=fetch(gameSoundPaths[kind],{cache:"force-cache"}).then(response=>{if(!response.ok)throw new Error("Sound file unavailable: "+gameSoundPaths[kind]);return response.arrayBuffer();}).then(bytes=>context.decodeAudioData(bytes)).then(buffer=>{gameSoundBuffers[kind]=buffer;return buffer;}).catch(error=>{console.error("Game sound failed to load:",kind,error);return null;});return gameSoundLoads[kind]!;};
 const primeGameSounds=()=>{const context=getGameAudioContext();if(!context)return;void context.resume().catch(error=>console.error("Game audio could not start:",error));for(const kind of Object.keys(gameSoundPaths) as GameSoundKind[])void loadGameSound(kind);};
 const playGameSound=(kind:GameSoundKind,enabled=true)=>{if(!enabled)return;if(kind==="lose"){playFallbackGameSound("lose");return;}const context=getGameAudioContext();if(!context){playFallbackGameSound(kind);return;}void (async()=>{try{if(context.state!=="running")await context.resume();const buffer=gameSoundBuffers[kind]??await loadGameSound(kind);if(!buffer){playFallbackGameSound(kind);return;}const source=context.createBufferSource();const gain=context.createGain();source.buffer=buffer;gain.gain.value=0.85;source.connect(gain);gain.connect(context.destination);source.start(0);}catch(error){console.error("Game sound playback failed:",error);playFallbackGameSound(kind);}})();};
-function PremiumTicTacToe({onStart,soundOn}:{onStart:(id:string)=>Promise<boolean>;soundOn:boolean}){
+function PremiumTicTacToe({onStart,playSound,soundOn}:{onStart:(id:string)=>Promise<boolean>;playSound:(kind:GameSoundKind,enabled?:boolean)=>void;soundOn:boolean}){
  const [cells,setCells]=useState<(string|null)[]>(Array(9).fill(null));
- const [message,setMessage]=useState("Your turn — tap an empty square.");
+ const [message,setMessage]=useState("Your turn — tap any empty square.");
  const [finished,setFinished]=useState(false),[claimed,setClaimed]=useState(false),[muted,setMuted]=useState(false),[busy,setBusy]=useState(false);
- const round=useRef("tic:"+Date.now()+":"+Math.random()),busyRef=useRef(false),audioRef=useRef<AudioContext|null>(null);
+ const round=useRef("tic:"+Date.now()+":"+Math.random()),busyRef=useRef(false);
  const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
- const winner=(b:(string|null)[])=>lines.map(l=>b[l[0]]&&b[l[0]]===b[l[1]]&&b[l[0]]===b[l[2]]?b[l[0]]:null).find(Boolean)??null;
- const playTone=(kind:"human"|"computer"|"win"|"lose")=>{
-  if(muted||!soundOn||typeof window==="undefined")return;
-  try{
-   const Ctx=window.AudioContext||(window as Window & {webkitAudioContext?:typeof AudioContext}).webkitAudioContext;
-   if(!Ctx)return;
-   const ctx=audioRef.current??(audioRef.current=new Ctx());
-   const begin=()=>{const now=ctx.currentTime;const notes=kind==="human"?[740,1110]:kind==="computer"?[392,587]:kind==="win"?[523,659,784,1047]:[294,220];
-    notes.forEach((hz,i)=>{const osc=ctx.createOscillator(),gain=ctx.createGain(),at=now+i*.085;osc.type=kind==="human"?"sine":"triangle";osc.frequency.setValueAtTime(hz,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.16,at+.015);gain.gain.exponentialRampToValueAtTime(.0001,at+.23);osc.connect(gain);gain.connect(ctx.destination);osc.start(at);osc.stop(at+.24);});
-   };
-   if(ctx.state==="suspended")void ctx.resume().then(begin).catch(()=>{});else begin();
-  }catch{}
+ const winner=(board:(string|null)[])=>lines.map(line=>board[line[0]]&&board[line[0]]===board[line[1]]&&board[line[0]]===board[line[2]]?board[line[0]]:null).find(Boolean)??null;
+ const sound=(kind:GameSoundKind)=>playSound(kind,soundOn&&!muted);
+ const aiMove=(board:(string|null)[])=>{
+  const score=(state:(string|null)[],player:"X"|"O"):number=>{const won=winner(state);if(won)return won==="O"?10:-10;if(state.every(Boolean))return 0;const scores:number[]=[];state.forEach((value,index)=>{if(value)return;const next=[...state];next[index]=player;scores.push(score(next,player==="O"?"X":"O"));});return player==="O"?Math.max(...scores):Math.min(...scores);};
+  const moves=board.map((value,index)=>{if(value)return null;const next=[...board];next[index]="O";return {index,value:score(next,"X")};}).filter((move):move is {index:number;value:number}=>move!==null);
+  const best=Math.max(...moves.map(move=>move.value));return moves.find(move=>move.value===best)?.index;
  };
- const aiMove=(b:(string|null)[])=>{const scoreMove=(s:(string|null)[],p:string):number=>{const w=winner(s);if(w)return w==="O"?10:-10;if(s.every(Boolean))return 0;const vals:number[]=[];s.forEach((v,i)=>{if(v)return;const n=[...s];n[i]=p;vals.push(scoreMove(n,p==="O"?"X":"O"));});return p==="O"?Math.max(...vals):Math.min(...vals);};const opts=b.map((v,i)=>{if(v)return null;const n=[...b];n[i]="O";return {i,score:scoreMove(n,"X")};}).filter((v):v is {i:number;score:number}=>v!==null);const best=Math.max(...opts.map(x=>x.score)),good=opts.filter(x=>x.score===best);return good[Math.floor(Math.random()*good.length)]?.i;};
- const play=async(i:number)=>{
-  if(busyRef.current||finished||cells[i])return;
+ const play=async(index:number)=>{
+  if(busyRef.current||finished||cells[index])return;
   busyRef.current=true;setBusy(true);
-  const next=[...cells];next[i]="X";setCells(next);setMessage("Your move placed!");playTone("human");
   try{
-   if(!claimed){const allowed=await onStart(round.current);if(!allowed){setCells(Array(9).fill(null));setMessage("Your play could not be verified. Please try again.");return;}setClaimed(true);}
-   if(winner(next)){setFinished(true);setMessage("You win! A brilliant three in a row! 🎉");playTone("win");return;}
-   if(next.every(Boolean)){setFinished(true);setMessage("It's a draw! Well played.");return;}
-   await new Promise(resolve=>window.setTimeout(resolve,420));
-   const after=[...next],ai=aiMove(after);if(ai!==undefined)after[ai]="O";setCells(after);playTone("computer");
-   if(winner(after)){setFinished(true);setMessage("Computer wins this round. Try again!");playTone("lose");}
-   else if(after.every(Boolean)){setFinished(true);setMessage("It's a draw! Well played.");}
+   // Verify the round before changing the board. Failed quota/network checks never
+   // leave a temporary mark that disappears, and successful marks remain in place.
+   if(!claimed){setMessage("Starting your game…");const allowed=await onStart(round.current);if(!allowed){setMessage("This round could not be started. Please try again.");return;}setClaimed(true);}
+   const next=[...cells];next[index]="X";setCells(next);sound("tap");
+   if(winner(next)){setFinished(true);setMessage("You win! A brilliant three in a row! 🎉");sound("win");return;}
+   if(next.every(Boolean)){setFinished(true);setMessage("It’s a draw! Well played.");sound("win");return;}
+   setMessage("Computer is thinking…");
+   await new Promise(resolve=>window.setTimeout(resolve,380));
+   const after=[...next],computerIndex=aiMove(after);if(computerIndex!==undefined)after[computerIndex]="O";setCells(after);sound("tap");
+   if(winner(after)){setFinished(true);setMessage("Computer wins this round. Try again!");sound("lose");}
+   else if(after.every(Boolean)){setFinished(true);setMessage("It’s a draw! Well played.");sound("win");}
    else setMessage("Your turn — choose another square.");
-  }catch{setCells(Array(9).fill(null));setMessage("Unable to verify this round. Please try again.");}
+  }catch{setMessage("Connection problem. Your board is unchanged; tap a square to retry.");}
   finally{busyRef.current=false;setBusy(false);}
  };
- const restart=()=>{if(busyRef.current)return;setCells(Array(9).fill(null));setFinished(false);setClaimed(false);setMessage("Your turn — tap an empty square.");round.current="tic:"+Date.now()+":"+Math.random();playTone("human");};
- return <section className="mx-auto flex w-full max-w-2xl flex-row items-center gap-2 overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-br from-indigo-950 via-violet-900 to-fuchsia-900 p-2 text-white shadow-2xl sm:gap-4 sm:p-4">
-  <div className="w-[68%] min-w-0 rounded-2xl border border-white/20 bg-white/10 p-1.5 shadow-inner sm:p-3"><div className="grid grid-cols-3 gap-1.5 sm:gap-2">{cells.map((v,i)=><button key={i} type="button" data-tic-cell aria-label={"Square "+(i+1)+(v?", "+v:", empty")} disabled={Boolean(v)||finished||busy} onClick={()=>void play(i)} className={"flex aspect-square min-w-0 items-center justify-center rounded-lg border-2 border-white/55 bg-gradient-to-br from-white via-sky-50 to-indigo-100 text-3xl font-black not-italic shadow-[0_4px_0_rgba(15,23,42,.3)] transition duration-200 hover:border-amber-300 active:scale-90 sm:rounded-2xl sm:text-6xl "+(v==="X"?"text-cyan-600":v==="O"?"text-fuchsia-600":"text-slate-300")}>{v==="X"?"✕":v==="O"?"◯":""}</button>)}</div></div>
-  <div className="flex w-[32%] min-w-0 flex-col justify-center gap-2 py-1 sm:gap-4"><div><p className="text-[10px] font-black uppercase tracking-wider text-cyan-200 sm:text-xs">Your turn</p><p aria-live="polite" className="mt-1 break-words text-xs font-extrabold leading-snug not-italic text-white sm:mt-2 sm:text-base">{message}</p></div><div className="flex flex-col gap-2"><button type="button" disabled={busy} onClick={restart} className="rounded-full bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 px-1.5 py-2 text-[10px] font-black not-italic text-indigo-950 shadow-lg disabled:opacity-50 sm:px-3 sm:py-2.5 sm:text-sm">↻ {finished?"Play Again":"Restart"}</button><button type="button" onClick={()=>setMuted(v=>!v)} aria-pressed={!muted} className="rounded-full border border-white/35 bg-white/10 px-1.5 py-2 text-[10px] font-bold not-italic text-white sm:px-3 sm:py-2.5 sm:text-sm">{muted?"🔇 Sound Off":"🔊 Sound On"}</button></div><p className="text-[9px] font-semibold leading-snug not-italic text-violet-200 sm:text-xs">You are ✕ · Computer is ◯</p></div>
+ const restart=()=>{if(busyRef.current)return;setCells(Array(9).fill(null));setFinished(false);setClaimed(false);setMessage("Your turn — tap any empty square.");round.current="tic:"+Date.now()+":"+Math.random();sound("tap");};
+ return <section className="mx-auto flex w-full max-w-none flex-col gap-4 overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-br from-indigo-950 via-violet-900 to-fuchsia-900 p-3 text-white shadow-2xl sm:gap-5 sm:p-5">
+  <div className="w-full rounded-2xl border border-white/20 bg-white/10 p-2 shadow-inner sm:p-3">
+   <div className="grid w-full grid-cols-3 gap-2 sm:gap-3">
+    {cells.map((value,index)=><button key={index} type="button" data-tic-cell aria-label={"Square "+(index+1)+(value?", "+value:", empty")} disabled={Boolean(value)||finished||busy} onClick={()=>void play(index)} className={"flex aspect-square w-full min-w-0 items-center justify-center rounded-xl border-2 border-white/60 bg-gradient-to-br from-white via-sky-50 to-indigo-100 text-[clamp(2.8rem,13vw,6.5rem)] font-black not-italic leading-none shadow-[0_5px_0_rgba(15,23,42,.32)] transition duration-200 hover:border-amber-300 active:scale-95 disabled:cursor-default sm:rounded-2xl "+(value==="X"?"text-cyan-600":value==="O"?"text-fuchsia-600":"text-slate-300")}>{value==="X"?"✕":value==="O"?"◯":""}</button>)}
+   </div>
+  </div>
+  <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+   <div className="min-w-0 flex-1"><p className="text-xs font-black uppercase tracking-wider text-cyan-200">You are ✕ · Computer is ◯</p><p aria-live="polite" className="mt-1 break-words text-base font-extrabold leading-snug text-white sm:text-lg">{message}</p></div>
+   <div className="flex w-full gap-2 sm:w-auto"><button type="button" disabled={busy} onClick={restart} className="flex-1 rounded-full bg-gradient-to-r from-amber-300 via-yellow-400 to-orange-400 px-5 py-3 text-sm font-black not-italic text-indigo-950 shadow-lg disabled:opacity-50 sm:flex-none">{finished?"↻ Play Again":"↻ Restart"}</button><button type="button" onClick={()=>setMuted(value=>!value)} aria-pressed={!muted} className="flex-1 rounded-full border border-white/35 bg-white/10 px-5 py-3 text-sm font-bold not-italic text-white sm:flex-none">{muted?"🔇 Sound Off":"🔊 Sound On"}</button></div>
+  </div>
  </section>;
 }
 function ConnectFour({onMove,playSound}:{onMove:(roundId:string)=>Promise<boolean>;playSound:(kind:"correct"|"lose"|"tap"|"win",enabled?:boolean)=>void;soundOn:boolean}){const [cells,setCells]=useState<(string|null)[]>(Array(42).fill(null));const [message,setMessage]=useState("Your turn — connect four discs.");const [finished,setFinished]=useState(false);const [claimed,setClaimed]=useState(false);const roundId=useRef("connect:"+Date.now()+":"+Math.random());const won=(b:(string|null)[],p:string)=>{for(let r=0;r<6;r++)for(let c=0;c<7;c++)for(const d of [[0,1],[1,0],[1,1],[1,-1]]){const line=[];for(let k=0;k<4;k++){const rr=r+d[0]*k,cc=c+d[1]*k;if(rr<0||rr>=6||cc<0||cc>=7)break;line.push(b[rr*7+cc]);}if(line.length===4&&line.every(x=>x===p))return true;}return false;};const drop=async(col:number)=>{if(finished)return;const next=[...cells];let row=-1;for(let r=5;r>=0;r--)if(!next[r*7+col]){row=r;break;}if(row<0)return;if(!claimed){if(!await onMove(roundId.current))return;setClaimed(true);}next[row*7+col]="🔴";if(won(next,"🔴")){setCells(next);setMessage("You connected four — brilliant!");setFinished(true);playSound("win");return;}const empty=next.map((v,i)=>v===null?i:-1).filter(i=>i>=0);if(!empty.length){setCells(next);setMessage("A draw!");setFinished(true);return;}let move=-1;for(const token of ["🟡","🔴"]){for(const i of empty){const test=[...next];test[i]=token;if(won(test,token)){move=i;break;}}if(move>=0)break;}if(move<0){const cols=[3,2,4,1,5,0,6].filter(c=>next[c]===null||[0,1,2,3,4,5].some(r=>next[r*7+c]===null));const c=cols[Math.floor(Math.random()*cols.length)];for(let r=5;r>=0;r--)if(!next[r*7+c]){move=r*7+c;break;}}if(move>=0)next[move]="🟡";setCells(next);if(won(next,"🟡")){setMessage("The computer connected four. Try another strategy.");setFinished(true);playSound("lose");}else{setMessage("Your turn — look for a line of four.");playSound("tap");}};return <div className="max-w-xl"><h3 className="text-xl font-black">Connect Four</h3><p className="my-2 text-sm text-slate-600">Tap a column to drop a disc. Connect four horizontally, vertically, or diagonally.</p><div className="grid grid-cols-7 gap-1 rounded-2xl bg-blue-700 p-2">{Array.from({length:42},(_,i)=><button key={i} disabled={finished||Boolean(cells[i])} onClick={()=>void drop(i%7)} className="aspect-square rounded-full border border-blue-900/20 bg-white text-base sm:text-xl">{cells[i]??""}</button>)}</div><p className="my-3 text-sm font-bold text-slate-800">{message}</p>{finished&&<button className="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-extrabold text-white" onClick={()=>{setCells(Array(42).fill(null));setMessage("Your turn — connect four discs.");setFinished(false);setClaimed(false);roundId.current="connect:"+Date.now()+":"+Math.random();}}>Play another round</button>}</div>;}
