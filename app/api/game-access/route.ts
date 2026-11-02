@@ -26,6 +26,10 @@ async function handle(req:Request,consume:boolean){
   await db.prepare("CREATE TABLE IF NOT EXISTS game_subscriber_usage_by_type(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,usage_date TEXT NOT NULL,plays_used INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(user_id,game_type_id,usage_date))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_challenge_history(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,challenge_id TEXT NOT NULL,played_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id,challenge_id))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_question_reservations(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,challenge_id TEXT NOT NULL,question_text TEXT NOT NULL,session_id TEXT NOT NULL,reserved_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id,challenge_id))").run();
+  // Reservations are short-lived display locks. Clean abandoned locks, then enforce one active copy of a question per user across every game.
+  await db.prepare("DELETE FROM game_question_reservations WHERE reserved_at < ?").bind(new Date(Date.now()-30*60*1000).toISOString()).run();
+  await db.prepare("DELETE FROM game_question_reservations WHERE rowid NOT IN (SELECT MIN(rowid) FROM game_question_reservations GROUP BY user_id,question_text)").run();
+  await db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS game_question_reservations_user_question_unique ON game_question_reservations(user_id,question_text)").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_picture_pair_quota_reset_v2(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS user_subscriptions(user_id TEXT PRIMARY KEY,status TEXT NOT NULL DEFAULT 'inactive',started_at TEXT,expires_at TEXT,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
   const acct=await db.prepare("SELECT role,email,full_name FROM users WHERE id=? LIMIT 1").bind(user.id).first<any>();
@@ -60,8 +64,7 @@ async function handle(req:Request,consume:boolean){
     const existing=await db.prepare("SELECT question_text,session_id FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? LIMIT 1").bind(user.id,type,challenge).first<any>();
     if(existing){
      if(String(existing.session_id)===reservationSessionId&&String(existing.question_text)===questionText)return NextResponse.json({reserved:true},{headers});
-     // Reservations are temporary, not consumed questions. Let a new visit reclaim an abandoned one.
-     await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).run();
+     return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
     const playedAt=new Date().toISOString();
     const prior=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).first<any>();
@@ -71,7 +74,9 @@ async function handle(req:Request,consume:boolean){
     if(prior||priorQuestion||priorLegacyQuestion){
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
-    await db.prepare("INSERT OR REPLACE INTO game_question_reservations(user_id,game_type_id,challenge_id,question_text,session_id,reserved_at) VALUES(?,?,?,?,?,?)").bind(user.id,type,challenge,questionText,reservationSessionId,playedAt).run();
+    await db.prepare("INSERT OR IGNORE INTO game_question_reservations(user_id,game_type_id,challenge_id,question_text,session_id,reserved_at) VALUES(?,?,?,?,?,?)").bind(user.id,type,challenge,questionText,reservationSessionId,playedAt).run();
+    const acquired=await db.prepare("SELECT 1 AS ok FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? AND question_text=? AND session_id=? LIMIT 1").bind(user.id,type,challenge,questionText,reservationSessionId).first<any>();
+    if(!acquired)return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     return NextResponse.json({reserved:true},{headers});
    }
    const activeReservation=questionText&&reservationSessionId?await db.prepare("SELECT question_text FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? AND session_id=? LIMIT 1").bind(user.id,type,challenge,reservationSessionId).first<any>():null;
@@ -114,7 +119,7 @@ async function handle(req:Request,consume:boolean){
     freeTrialsUsed=Number(trial.trials_used??0);
    }
    const playedAt=new Date().toISOString();
-   if(!previewMode&&type!=="daily"&&((challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt))||(questionText&&!await claimChallenge(db,user.id,"__question__",questionText,playedAt)))){
+   if(!previewMode&&((challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt))||(questionText&&!await claimChallenge(db,user.id,"__question__",questionText,playedAt)))){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
     if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
     return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
