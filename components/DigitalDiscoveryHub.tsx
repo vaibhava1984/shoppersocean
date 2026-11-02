@@ -6,6 +6,7 @@ import GameQuotaPopup from "@/components/GameQuotaPopup";
 import Link from "next/link";
 import { internetQuestionBank } from "@/components/internetQuestionBank";
 import { artificialIntelligenceQuestionBank } from "@/components/artificialIntelligenceQuestionBank";
+import { cyberDetectiveQuestionBank } from "@/components/cyberDetectiveQuestionBank";
 
 type Question = { id:string; q:string; options:string[]; answer:number; fact:string };
 type Area = { id:string; type:string; icon:string; title:string; intro:string; tone:string; questions:Question[] };
@@ -38,7 +39,7 @@ const areas: Area[] = [
 {id:"ai-09",q:"Which is an example of a narrow AI task?",options:["Recognising faces in images","Having every human ability","Knowing everything without data","Feeling emotions exactly like a person"],answer:0,fact:"Most deployed AI is specialised for particular tasks rather than possessing general human-level abilities."},
 {id:"ai-10",q:"What is an important responsible-AI practice?",options:["Protecting personal data and checking for bias","Sharing private data publicly","Assuming every output is fair","Removing human oversight from every decision"],answer:0,fact:"Privacy, fairness, transparency and human oversight are important parts of responsible AI."}
 ]},
-{ id:"cyber-detective",type:"cyber-detective",icon:"🕵️",title:"Cyber Detective",intro:"Investigate digital clues and make safer online decisions.",tone:"from-emerald-600 to-teal-500",questions:[
+{ id:"cyber-detective",type:"cyber-detective",icon:"🕵️",title:"Cyber Detective",intro:"Investigate digital clues and make safer online decisions.",tone:"from-emerald-600 to-teal-500",questions:[...cyberDetectiveQuestionBank,
 {id:"cy-01",q:"A message says your bank account will close unless you click a strange link immediately. What is the safest move?",options:["Open the link quickly","Contact the bank through its official app or number","Reply with your password","Forward it to everyone"],answer:1,fact:"Urgency and unexpected links are common phishing tactics. Verify through a trusted channel."},
 {id:"cy-02",q:"Which password is generally strongest?",options:["password123","Your name and birthday","A long, unique passphrase","The same password used everywhere"],answer:2,fact:"Use long unique passwords and a password manager; never reuse an important password."},
 {id:"cy-03",q:"What does multi-factor authentication add?",options:["A second verification step","A brighter screen","Extra phone storage","Faster charging"],answer:0,fact:"MFA makes account access harder for attackers who obtain only your password."},
