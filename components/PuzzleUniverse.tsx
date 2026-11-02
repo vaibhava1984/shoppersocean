@@ -167,7 +167,7 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
           </button>
         ))}
       </div>
-      <p className="relative mt-5 text-center text-[10px] text-fuchsia-200/70">Admin preview · Starter puzzles · Full question banks follow after section testing</p>
+      <p className="relative mt-5 text-center text-[10px] text-fuchsia-200/70">Choose a puzzle room and test your skills.</p>
     </div>
   );
   if (!active) return <div className="rounded-2xl border border-fuchsia-200 bg-fuchsia-50 p-6 text-center font-bold text-fuchsia-900">Opening Pattern Master…</div>;
@@ -181,7 +181,7 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
         <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
           <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Quiz World</button>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{isAdmin ? "ADMIN PREVIEW" : isSubscribed ? "SUBSCRIBER" : String(quota ?? "…") + " free questions left"}</span>
+            <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{!quotaReady ? "Checking quota…" : String(quota ?? 0) + " / " + (isAdmin || isSubscribed ? 10 : 3) + (isAdmin || isSubscribed ? " plays left today" : " free trials left")}</span>
             <button onClick={() => setSoundOn(value => !value)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn ? "🔊 Sound on" : "🔇 Sound off"}</button>
           </div>
         </div>
