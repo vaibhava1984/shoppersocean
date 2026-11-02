@@ -8,7 +8,6 @@ import TestimonialSection from './components/TestimonialSection';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer"
 import HeroSection from "@/components/HeroSection";
-import AdminZonePreview from "@/components/AdminZonePreview";
 
 export const dynamic = 'force-dynamic';
 
@@ -50,7 +49,6 @@ export default async function LandingPage() {
           imageAlt="Shoppers Ocean featured hero image"
         />
       </div>
-      <AdminZonePreview userId={user?.id ?? null} />
 
       {!isAdmin && <section className="relative overflow-hidden border-y border-blue-100 bg-gradient-to-r from-white via-blue-50 to-cyan-50 py-10 sm:py-12">
         <div className="container mx-auto flex flex-col items-center justify-between gap-5 px-4 text-center sm:flex-row sm:px-6 sm:text-left lg:px-8">
