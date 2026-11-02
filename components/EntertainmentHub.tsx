@@ -143,7 +143,7 @@ export default function EntertainmentHub({userId,visibleGroupIds,initialGroupId,
    .then(async response=>{const data=await response.json();if(!live)return;
     if(data.repeated){
      repeatedQuestionSkips.current+=1;
-     if(repeatedQuestionSkips.current>100){setQuestionReservationError("No fresh questions are currently available in this section. Please try another game section.");return;}
+     if(repeatedQuestionSkips.current>350){setQuestionReservationError("No fresh questions are currently available in this section. Please try another game section.");return;}
      setReservedQuestionKey("");challengeConsumed.current="";CH(null);R("");H(false);REV(false);SP(null);
      if(game==="quiz")advanceQuiz();
      else if(game==="worldquiz")setWorldQi(v=>v+1);
