@@ -2,6 +2,7 @@ import { DAILY_GK_QUESTIONS, getDailyGKQuestion, getDailyGKOptions } from "@/lib
 import { WORD_QUIZ_BANK } from "@/data/word-quiz-bank";
 import { ODD_ONE_OUT_BANK } from "@/data/brain-logic-bank";
 import { RIDDLE_CORNER_BANK } from "@/data/riddle-corner-bank";
+import { scienceQuizExtra } from "@/lib/science-quiz-extra";
 export { getDailyGKQuestion };
 export type Puzzle = { id:string; question:string; answer:string; clue?:string; pattern?:string; options?:string[]; correctIndex?:number; explanation?:string; topic?:string };
 const DAY_MS=86400000;
@@ -3804,17 +3805,25 @@ const extendedQuizBank:ExtendedQuizItem[]=[
 {id:"planetary-rings",q:"What are Saturn's prominent rings made mainly of?",a:"Numerous pieces of ice and rocky material",o:["Numerous pieces of ice and rocky material","A solid metal hoop","Clouds of burning gas only","A continuous ocean surrounding the planet"],topic:"Astronomy"}
 ];
 export function getQuizPuzzle(date:string,slot:number):Puzzle & {options:string[];correctIndex:number;topic:string}{
- const seed=seedFor(date,slot),scienceQuestions=DAILY_GK_QUESTIONS.filter(item=>item.id.startsWith("science-"));
+ const seed=seedFor(date,slot);
+ const scienceQuestions=DAILY_GK_QUESTIONS.filter(item=>item.id.startsWith("science-"));
  const scienceTopics=new Set(["Nature","Earth Science","Weather","Ecology","Human Body","Biology","Environment","Food Science","Everyday Science","Climate","Astronomy"]);
  const scienceExtendedQuizBank=extendedQuizBank.filter(item=>scienceTopics.has(item.topic));
- const total=scienceQuestions.length+scienceExtendedQuizBank.length,index=((seed%total)+total)%total;
- if(index>=scienceQuestions.length){
-  const item=scienceExtendedQuizBank[index-scienceQuestions.length],options=shuffled(item.o,seed+211);
-  return {id:"quiz:"+item.id,question:item.q,answer:item.a,options,correctIndex:options.indexOf(item.a),topic:item.topic};
- }
- const item=scienceQuestions[index],pool=scienceQuestions.map(x=>x.answer).filter(x=>x!==item.answer);
- const options=shuffled([item.answer,...shuffled([...new Set(pool)],seed+73).slice(0,3)],seed+211);
- return {id:"quiz:"+item.id,question:item.question,answer:item.answer,options,correctIndex:options.indexOf(item.answer),topic:"Science"};
+ const base=[...scienceQuestions.map((item,i)=>({id:"daily-science-"+i,q:item.question,a:item.answer,topic:"Science"})),...scienceExtendedQuizBank.map(item=>({id:item.id,q:item.q,a:item.a,topic:item.topic}))];
+ const extra=scienceQuizExtra.slice(0,145);
+ const bank=[...base,...extra];
+ const unique=new Map<string,typeof bank[number]>();
+ for(const item of bank) unique.set(item.q.trim().toLowerCase(),item);
+ const questions=[...unique.values()];
+ const index=((Math.max(0,Math.floor(slot))%questions.length)+questions.length)%questions.length;
+ const item=questions[index];
+ const norm=(v:string)=>v.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+ const related=questions.filter(x=>x.topic===item.topic&&norm(x.a)!==norm(item.a)).map(x=>x.a);
+ const fallback=questions.filter(x=>norm(x.a)!==norm(item.a)).map(x=>x.a);
+ const distractors=[...new Set(related.length>=3?related:fallback)].slice(0,3);
+ while(distractors.length<3){distractors.push(["Matter","Energy","Force","Organism","Molecule","Radiation"][(distractors.length+seed)%6]);}
+ const options=shuffled([item.a,...distractors],seed+211);
+ return {id:"quiz:"+item.id,question:item.q,answer:item.a,options,correctIndex:options.indexOf(item.a),topic:item.topic};
 }
 export function getWorldKnowledgeQuiz(date:string,slot:number):Puzzle & {options:string[];correctIndex:number;topic:string}{
  const seed=seedFor(date,slot),question=getDailyGKQuestion(new Date(date+"T00:00:00Z"),slot),options=getDailyGKOptions(question,seed);
