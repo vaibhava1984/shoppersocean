@@ -26,6 +26,7 @@ const entertainmentGroups = [
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const activeZoneRef = useRef<number | null>(null);
+  const activityTargetRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const handleMobileBack = () => { if (activeZoneRef.current !== null) window.location.replace("/"); };
     window.addEventListener("popstate", handleMobileBack);
@@ -40,6 +41,17 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
   const playZoneTap = () => { try { const audio = new Audio("/Tap.mp3"); audio.volume = 0.85; void audio.play().catch(() => {}); } catch {} };
   const selected = activeZone === null ? null : zones[activeZone];
+
+  useEffect(() => {
+    if (activeZone === null) return;
+    const frame = window.requestAnimationFrame(() => {
+      const target = activityTargetRef.current;
+      if (!target) return;
+      const top = target.getBoundingClientRect().top + window.scrollY - 88;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeZone, activeQuizGame]);
 
   return (
     <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub]")) return; playZoneTap(); }} className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
@@ -82,7 +94,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
             <p className="mt-5 text-center text-[10px] font-medium text-slate-400">Choose any zone to begin exploring.</p>
           </>
         ) : (
-          <div className="min-h-[55vh] rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
+          <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
               <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { activeZoneRef.current = null; setActiveZone(null); setActiveQuizGame(null); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button><button type="button" onClick={() => { window.location.assign("/"); }} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">⌂ Home</button></div>
               <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
@@ -125,7 +137,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                     </div>
                   </>
                 ) : (
-                  <div>
+                  <div ref={activityTargetRef}>
                     {activeQuizGame==="word" && <EntertainmentHub key="word" userId={userId} visibleGroupIds={["word-playground"]} initialGroupId="word-playground" initialGame="hidden" autoStart onExit={()=>setActiveQuizGame(null)} />}
                     {activeQuizGame==="brain" && <EntertainmentHub key="brain" userId={userId} visibleGroupIds={["brain-logic"]} initialGroupId="brain-logic" initialGame="sequence" autoStart onExit={()=>setActiveQuizGame(null)} />}
                     {activeQuizGame==="riddle" && <EntertainmentHub key="riddle" userId={userId} visibleGroupIds={["riddle-corner"]} initialGroupId="riddle-corner" initialGame="riddle" autoStart onExit={()=>setActiveQuizGame(null)} />}
@@ -147,13 +159,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               </div>
             )}
             {selected.action === "classic-games" && (
-              <EntertainmentHub userId={userId} visibleGroupIds={["classic-games"]} />
+              <div ref={activityTargetRef}><EntertainmentHub userId={userId} visibleGroupIds={["classic-games"]} /></div>
             )}
             {selected.action === "brain-battle-arena" && (
-              <BrainBattleArena userId={userId} />
+              <div ref={activityTargetRef}><BrainBattleArena userId={userId} /></div>
             )}
             {selected.action === "learning" && (
-              <div>
+              <div ref={activityTargetRef}>
                 <div className="mb-4 rounded-2xl bg-gradient-to-r from-emerald-700 via-teal-700 to-cyan-800 p-4 text-white">
                   <h3 className="text-xl font-black">English Master Quiz</h3>
                   <p className="mt-1 text-sm text-emerald-100">Your existing English quiz is retained here without changing its question bank or quota system.</p>
