@@ -33,7 +33,7 @@ banks.push(Array.from({length:30},(_,i)=>{
   return make(91+i,`Among ${count} identical-looking coins, one is heavier. With a balance scale, what is the best first move to locate it efficiently?`,a,[a,"Weigh every coin together on one pan","Compare only two randomly chosen coins","Place all coins on the scale one at a time"],"A three-way split lets the balance identify which group contains the heavier coin, or shows it is in the unweighed group.");
 }));
 banks.push(Array.from({length:30},(_,i)=>{
-  const n=20+i, tens=Math.floor(n/10), ones=n%10, rev=ones*10+tens, sum=tens+ones, diff=n-rev;
+  const tens=2+(i%7), ones=(i*3+1)%tens, n=tens*10+ones, rev=ones*10+tens, sum=tens+ones, diff=n-rev;
   const opts=[n,n+9,n-9,rev].filter((v,j,a)=>v>=10&&v<=99&&a.indexOf(v)===j);
   while(opts.length<4)opts.push(n+11+opts.length*10);
   return make(121+i,`I am a two-digit number. My digits add to ${sum}; the tens digit is greater than the ones digit; reversing the digits makes the number ${diff} smaller. What am I?`,String(n),opts.slice(0,4).map(String),`The digits are ${tens} and ${ones}. Reversing ${n} gives ${rev}, which is ${diff} less.`);
