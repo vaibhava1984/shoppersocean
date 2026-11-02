@@ -110,7 +110,9 @@ const entries: Entry[] = [
 ["widespread","found or happening over a large area","common","limited","Change and quantity"],
 ["withhold","refuse to give or grant something","retain","provide","Actions and movement"],
 ["yield","give way or surrender","submit","resist","Actions and movement"],
-["zeal","great energy or enthusiasm","passion","apathy","Feelings and character"]
+["zeal","great energy or enthusiasm","passion","apathy","Feelings and character"],
+["vulnerable","open to being harmed or easily affected","exposed","protected","Description"],
+["abrupt","sudden and unexpected","sudden","gradual","Time and history"]
 ].map(([word,meaning,synonym,antonym,topic]) => ({word,meaning,synonym,antonym,topic}));
 
 function hash(value: string): number {
