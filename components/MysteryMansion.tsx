@@ -69,5 +69,5 @@ export default function MysteryMansion({userId,initialGameId,onExit}:{userId:str
    <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="text-xs font-semibold text-slate-500">{!reserved?"Preparing a fresh case…":choice===null?"Choose your deduction or skip this case.":"Case recorded · Next mystery in 5 seconds"}</span><button disabled={!reserved||choice!==null||!quotaReady||noQuota||noDaily} onClick={()=>record(true,null)} className="rounded-xl border border-amber-300 bg-gradient-to-r from-amber-400 to-orange-500 px-5 py-2.5 text-sm font-black text-slate-950 shadow-md transition hover:scale-[1.03] disabled:opacity-50">⏭ Skip case</button></div>
    {message&&<div aria-live="polite" className="mt-4 rounded-2xl border border-violet-200 bg-gradient-to-r from-violet-50 to-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">{message}</div>}
   </div>}
- <GameQuotaPopup open={quotaReady && quota===0 && !isAdmin && !isSubscribed} resetKey={active?.id??''} /></div>;
+ <GameQuotaPopup open={quotaReady && quota===0 && !isAdmin} isSubscribed={isSubscribed} resetKey={active?.id??''} /></div>;
 }
