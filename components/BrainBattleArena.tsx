@@ -89,7 +89,7 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
   useEffect(()=>{
     if(!userId)return;
     let live=true;
-    fetch("/api/game-access",{cache:"no-store"}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error||"Could not check access.");if(!live)return;setAdmin(Boolean(d.isAdmin));setSubscribed(Boolean(d.isSubscribed));setDailyQuota(Math.max(0,10-Number(d.usedByType?.["master-deception-case"]??0)));setFreeTrials(d.isAdmin||d.isSubscribed?null:Math.max(0,3-Number(d.freeUsedBySection?.["brain-battle-arena"]??0)));setQuota(d.isAdmin||d.isSubscribed?(d.remainingByType?.["master-deception-case"]??0):(d.remainingBySection?.["brain-battle-arena"]??0));}).catch(e=>{if(live)setError(e instanceof Error?e.message:"Could not verify access.");});
+    fetch("/api/game-access",{cache:"no-store"}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error||"Could not check access.");if(!live)return;setAdmin(Boolean(d.isAdmin));setSubscribed(Boolean(d.isSubscribed));setDailyQuota(Math.max(0,10-Number(d.usedByType?.["brain-battle"]??0)));setFreeTrials(d.isAdmin||d.isSubscribed?null:Math.max(0,3-Number(d.freeUsedBySection?.["brain-battle-arena"]??0)));setQuota(d.isAdmin||d.isSubscribed?(d.remainingByType?.["brain-battle"]??0):(d.remainingBySection?.["brain-battle-arena"]??0));}).catch(e=>{if(live)setError(e instanceof Error?e.message:"Could not verify access.");});
     return()=>{live=false;};
   },[userId]);
 
@@ -102,7 +102,7 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
       for(const candidate of candidates){
         if(!live)return;
         try{
-          const r=await fetch("/api/game-access",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"brain-battle-arena",gameTypeId:"master-deception-case",challengeId:candidate.id,challengeQuestion:candidate.scenario+" "+candidate.question,reserveQuestion:true,reservationSessionId:session.current,previewMode:preview})});
+          const r=await fetch("/api/game-access",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"brain-battle-arena",gameTypeId:"brain-battle",challengeId:candidate.id,challengeQuestion:candidate.scenario+" "+candidate.question,reserveQuestion:true,reservationSessionId:session.current,previewMode:preview})});
           const d=await r.json();
           if(r.status===409&&d.skipQuestion)continue;
           if(!r.ok)throw new Error(d.error||"Could not prepare this challenge.");
@@ -123,7 +123,7 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
     playSound(index===question.answer?"correct":"wrong");
     setChoice(index);setFinished(true);setFeedback("Checking your reasoning…");
     try{
-      const r=await fetch("/api/game-access",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"brain-battle-arena",gameTypeId:"master-deception-case",challengeId:question.id,challengeQuestion:question.scenario+" "+question.question,reservationSessionId:session.current,previewMode:preview})});
+      const r=await fetch("/api/game-access",{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"brain-battle-arena",gameTypeId:"brain-battle",challengeId:question.id,challengeQuestion:question.scenario+" "+question.question,reservationSessionId:session.current,previewMode:preview})});
       const d=await r.json();
       if(!r.ok)throw new Error(d.error||"Could not record this attempt.");
       setQuota(admin||subscribed?d.remaining:d.sectionRemaining);setDailyQuota(d.remaining);if(!admin&&!subscribed)setFreeTrials(d.freeTrialsRemaining??null);
@@ -142,7 +142,7 @@ export default function BrainBattleArena({userId}:{userId:string|null}) {
     </div>
     <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/5 p-3">
       <span className="text-xs font-black uppercase tracking-wider text-cyan-100">Real-life brain challenge · Question {round+1}</span>
-      <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={()=>{setSoundOn(v=>!v);if(!soundOn)playSound("tap");}} className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"}</button><span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{String(dailyQuota??"…")} / 10 TODAY</span>{!admin&&!subscribed&&<span className="rounded-full border border-amber-200/50 bg-amber-300/15 px-3 py-2 text-xs font-black">{String(freeTrials??"…")} / 3 FREE TRIALS</span>}{(admin||subscribed)&&<span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{admin?"ADMIN PREVIEW":"SUBSCRIBER"}</span>}</div>
+      <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={()=>{setSoundOn(v=>!v);if(!soundOn)playSound("tap");}} className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"}</button><span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{String(dailyQuota??"…")} / 10 TODAY</span>{!admin&&!subscribed&&<span className="rounded-full border border-amber-200/50 bg-amber-300/15 px-3 py-2 text-xs font-black">{String(freeTrials??"…")} / 3 FREE TRIALS</span>}{(admin||subscribed)&&<span className="rounded-full border border-white/30 bg-black/20 px-3 py-2 text-xs font-black">{admin?"ADMIN · 10 DAILY PLAYS":"SUBSCRIBER · 10 DAILY PLAYS"}</span>}</div>
     </div>
     {error&&<div className="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-bold text-rose-800">{error}</div>}
     {exhausted&&<div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Your three free trials in Brain Battle Arena have been used. Subscribe to continue.</div>}
