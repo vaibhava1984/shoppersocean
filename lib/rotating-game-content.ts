@@ -1,6 +1,7 @@
 import { DAILY_GK_QUESTIONS, getDailyGKQuestion, getDailyGKOptions } from "@/lib/daily-knowledge";
 import { WORD_QUIZ_BANK } from "@/data/word-quiz-bank";
 import { BRAIN_LOGICAL_RIDDLES, ODD_ONE_OUT_BANK } from "@/data/brain-logic-bank";
+import { RIDDLE_CORNER_BANK } from "@/data/riddle-corner-bank";
 export { getDailyGKQuestion };
 export type Puzzle = { id:string; question:string; answer:string; clue?:string; pattern?:string; options?:string[]; correctIndex?:number; explanation?:string; topic?:string };
 const DAY_MS=86400000;
@@ -3869,9 +3870,9 @@ export function getLogicRiddlePuzzle(date:string,slot:number):Puzzle & {options:
  const seed=seedFor(date,slot),index=((seed%logicRiddleBank.length)+logicRiddleBank.length)%logicRiddleBank.length,item=logicRiddleBank[index],options=shuffled(item.o,seed+71);
  return {id:"logic-riddle:"+index,question:item.q,answer:item.a,options,correctIndex:options.indexOf(item.a),explanation:item.e,topic:"Logic"};
 }
-export function getRiddlePuzzle(date:string,slot:number):Puzzle & {explanation:string}{
- const seed=seedFor(date,slot),index=((Math.floor(seed)%BRAIN_LOGICAL_RIDDLES.length)+BRAIN_LOGICAL_RIDDLES.length)%BRAIN_LOGICAL_RIDDLES.length,item=BRAIN_LOGICAL_RIDDLES[index];
- return {id:"riddle:"+index+":"+item.q,question:item.q,answer:item.a,explanation:item.e,options:shuffled(item.o,seed+41)};
+export function getRiddlePuzzle(date:string,slot:number):Puzzle & {options:string[];correctIndex:number;explanation:string}{
+ const seed=seedFor(date,slot),index=((Math.floor(seed)%RIDDLE_CORNER_BANK.length)+RIDDLE_CORNER_BANK.length)%RIDDLE_CORNER_BANK.length,item=RIDDLE_CORNER_BANK[index],options=shuffled(item.o,seed+41);
+ return {id:item.id,question:item.q,answer:item.a,options,correctIndex:options.indexOf(item.a),explanation:item.e,topic:"Riddle Corner"};
 }
 export function getSpotPuzzle(date:string,slot:number):{id:string;size:number;target:number;targetIcon:number;baseIcon:number}{
  const seed=seedFor(date,slot),size=seed%3===0?36:25,target=(hash(seed+77)%(size));
