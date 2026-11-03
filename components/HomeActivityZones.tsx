@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { createPortal } from "react-dom";
 import EntertainmentHub from "@/components/EntertainmentHub";
 import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
@@ -15,7 +14,6 @@ const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
   { icon: "🎮", name: "Quiz World", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "A collection of quizzes, mysteries, technology and world challenges", action: "games" },
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
-  { icon: "🎮", name: "Classic Games", tone: "from-violet-500 via-purple-600 to-indigo-800", action: "classic-games" },
   { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "One challenging real-life reasoning MCQ game", action: "brain-battle-arena" },
 ];
 
@@ -54,29 +52,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(null);
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
-  const [classicGameRunning, setClassicGameRunning] = useState(false);
-  const [classicGamePortal, setClassicGamePortal] = useState<HTMLElement | null>(null);
-  useEffect(() => {
-    if (!classicGameRunning) { setClassicGamePortal(null); return; }
-    const host = document.createElement("div");
-    host.id = "classic-game-overlay-root";
-    Object.assign(host.style, { position: "fixed", inset: "0", width: "100vw", height: "100dvh", minHeight: "100vh", zIndex: "2147483647", background: "#090d24", isolation: "isolate" });
-    const previous = Array.from(document.body.children).filter((node) => node !== host).map((node) => ({ node: node as HTMLElement, visibility: (node as HTMLElement).style.visibility, pointerEvents: (node as HTMLElement).style.pointerEvents }));
-    previous.forEach(({ node }) => { node.style.visibility = "hidden"; node.style.pointerEvents = "none"; });
-    const oldBodyOverflow = document.body.style.overflow;
-    const oldHtmlOverflow = document.documentElement.style.overflow;
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-    document.body.appendChild(host);
-    setClassicGamePortal(host);
-    return () => {
-      setClassicGamePortal(null);
-      previous.forEach(({ node, visibility, pointerEvents }) => { node.style.visibility = visibility; node.style.pointerEvents = pointerEvents; });
-      document.body.style.overflow = oldBodyOverflow;
-      document.documentElement.style.overflow = oldHtmlOverflow;
-      host.remove();
-    };
-  }, [classicGameRunning]);
   const openGame = (gameId: string) => {
     window.history.pushState({ shoppersOceanZone: true, shoppersOceanGame: gameId }, "", window.location.href);
     activeQuizGameRef.current = gameId;
@@ -143,12 +118,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
           </>
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
-            {!(selected.action === "classic-games" && classicGameRunning) && (
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (activeQuizGameRef.current !== null) { window.history.back(); return; } if (activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button><a href="/" className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110" aria-label="Go to homepage">⌂ Home</a></div>
                 <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
-              </div>
-            )}
+            </div>
             {selected.action === "games" && (
               <div>
                 {!activeQuizGame ? (
@@ -204,50 +177,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                     {activeQuizGame==="culture" && <WorldExplorer key="culture" userId={userId} initialGameId="culture" onExit={exitGame} />}
                     {activeQuizGame==="landmark" && <WorldExplorer key="landmark" userId={userId} initialGameId="landmark" onExit={exitGame} />}
                     {activeQuizGame==="records" && <WorldRecordsArena key="records" userId={userId} onExit={exitGame} />}
-                  </div>
-                )}
-              </div>
-            )}
-            {selected.action === "classic-games" && (
-              <div ref={activityTargetRef} className="rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-4 shadow-xl sm:p-5">
-                <h3 className="mb-4 text-xl font-black text-indigo-950 sm:text-2xl">🎮 Classic Games</h3>
-                {!userId ? (
-                  <div className="flex min-h-48 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 text-center text-white">
-                    <h4 className="text-xl font-black">Login Required</h4>
-                    <p className="mt-2 text-sm text-slate-200">Please sign in or create an account to play Classic Games.</p>
-                    <div className="mt-5 flex flex-wrap justify-center gap-3">
-                      <Link href="/login?type=signup" className="rounded-full border border-emerald-300 bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg">Sign Up</Link>
-                      <Link href="/login" className="rounded-full border border-green-300 bg-green-700 px-5 py-2.5 text-sm font-bold text-white shadow-lg">Sign In</Link>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="rounded-2xl border border-white/70 bg-white/70 p-3 shadow-md">
-                    {!classicGameRunning ? (
-                      <button type="button" onClick={() => setClassicGameRunning(true)} className="grid w-full grid-cols-[3.5rem_minmax(0,1fr)] items-center gap-x-3 gap-y-2 rounded-xl border border-indigo-200 bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-3 text-left text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl sm:flex sm:min-h-24 sm:gap-4 sm:p-4">
-                        <span className="row-span-2 flex h-14 w-14 items-center justify-center rounded-xl border border-white/30 bg-white/15 text-3xl">🧩</span>
-                        <span className="min-w-0">
-                          <span className="block break-words text-base font-black leading-tight sm:text-lg">Color Blocks Collapse</span>
-                          <span className="mt-1 block text-xs font-semibold leading-4 text-white/85">Tap to play</span>
-                        </span>
-                        <span className="col-start-2 inline-flex w-fit items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black sm:ml-auto">PLAY →</span>
-                      </button>
-                    ) : (
-                      classicGamePortal ? createPortal(
-                        <div className="fixed inset-0 z-[2147483000] flex min-w-0 w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 p-2 sm:p-4" style={{ touchAction: "pan-y" }}>
-                          <div className="mb-2 flex w-full max-w-6xl shrink-0 items-center justify-between gap-2 sm:mb-3">
-                            <span className="min-w-0 truncate text-sm font-black text-white sm:text-base">🧩 Color Blocks Collapse</span>
-                            <div className="flex shrink-0 items-center gap-2">
-                              <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-3 py-2 text-xs font-black text-white shadow-lg sm:px-4 sm:text-sm">← Back</button>
-                              <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-3 py-2 text-xs font-black text-white shadow-lg sm:px-4 sm:text-sm">■ Stop</button>
-                            </div>
-                          </div>
-                          <div className="mx-auto min-w-0 w-full overflow-hidden rounded-xl border-2 border-sky-300 bg-black shadow-2xl" style={{ width: "min(94vw, 1100px, calc((100svh - 82px) * 1.7778))", maxWidth: "100%", aspectRatio: "16 / 9", flex: "0 1 auto", touchAction: "pan-y" }}>
-                            <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block h-full w-full border-0" loading="eager" scrolling="no" allow="autoplay *; fullscreen; gamepad; picture-in-picture" allowFullScreen style={{ touchAction: "pan-y" }} />
-                          </div>
-                        </div>,
-                        classicGamePortal
-                      ) : null
-                    )}
                   </div>
                 )}
               </div>
