@@ -8,7 +8,6 @@ import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
-import TicTacToeGame from "@/components/TicTacToeGame";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -30,7 +29,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  const [classicGame, setClassicGame] = useState<"tic-tac-toe" | null>("tic-tac-toe");
   useEffect(() => {
     const handleMobileBack = () => {
       if (activeQuizGameRef.current !== null) {
@@ -180,23 +178,12 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               </div>
             )}
             {selected.action === "classic-games" && (
-              <div ref={activityTargetRef} className="w-full">
-                {classicGame === "tic-tac-toe" ? (
-                  <TicTacToeGame onExit={() => setClassicGame(null)} />
-                ) : (
-                  <div className="rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-4 shadow-xl sm:p-7">
-                    <div className="mb-5 text-center">
-                      <p className="text-xs font-black uppercase tracking-[.24em] text-indigo-600">Timeless games for endless fun</p>
-                      <h3 className="mt-1 text-2xl font-black text-indigo-950 sm:text-3xl">🎮 Classic Games</h3>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                      <button onClick={() => setClassicGame("tic-tac-toe")} className="rounded-2xl border-2 border-sky-200 bg-gradient-to-b from-blue-700 to-indigo-900 p-3 text-center text-white shadow-lg transition hover:-translate-y-1">
-                        <span className="block text-4xl">❌⭕</span><span className="mt-2 block text-sm font-black sm:text-base">Tic Tac Toe</span><span className="mt-2 inline-block rounded-full bg-gradient-to-b from-lime-400 to-green-600 px-4 py-1.5 text-xs font-black text-white shadow">Play Now</span>
-                      </button>
-
-                    </div>
-                  </div>
-                )}
+              <div ref={activityTargetRef} className="w-full rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-4 shadow-xl sm:p-7">
+                <div className="mb-5 text-center">
+                  <p className="text-xs font-black uppercase tracking-[.24em] text-indigo-600">Timeless games for endless fun</p>
+                  <h3 className="mt-1 text-2xl font-black text-indigo-950 sm:text-3xl">🎮 Classic Games</h3>
+                  <p className="mt-3 text-sm font-semibold text-indigo-800">More classic games coming soon.</p>
+                </div>
               </div>
             )}
             {selected.action === "brain-battle-arena" && (
