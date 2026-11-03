@@ -57,7 +57,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [classicGameRunning, setClassicGameRunning] = useState(false);
   const classicGameHostRef = useRef<HTMLDivElement | null>(null);
   const [classicGameHostRect, setClassicGameHostRect] = useState<{ top: number; left: number; width: number } | null>(null);
-  const [classicLandscapeInline, setClassicLandscapeInline] = useState(false);
   const [isLandscape, setIsLandscape] = useState(false);
   useEffect(() => {
     const media = window.matchMedia("(orientation: landscape)");
@@ -223,7 +222,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                   </div>
                 ) : (
                   <div ref={classicGameHostRef} className="rounded-2xl border border-white/70 bg-white/70 p-3 shadow-md">
-                    <button type="button" onClick={() => { setClassicGameRunning(true); setClassicLandscapeInline(false); }} className="group flex min-h-24 w-full items-center gap-4 rounded-xl border border-indigo-200 bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-4 text-left text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl">
+                    <button type="button" onClick={() => { setClassicGameRunning(true); }} className="group flex min-h-24 w-full items-center gap-4 rounded-xl border border-indigo-200 bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-4 text-left text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl">
                       <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-white/30 bg-white/15 text-3xl">🧩</span>
                       <span className="min-w-0 flex-1">
                         <span className="block text-lg font-black">Color Blocks Collapse</span>
