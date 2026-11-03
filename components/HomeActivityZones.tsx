@@ -213,7 +213,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                         <span className="col-start-2 inline-flex w-fit items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black sm:ml-auto">PLAY →</span>
                       </button>
                     ) : (
-                      {portalReady ? createPortal(
+                      portalReady ? createPortal(
                         <div className="fixed inset-0 z-[2147483000] flex min-w-0 w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 p-2 sm:p-4" style={{ touchAction: "pan-y" }}>
                           <div className="mb-2 flex w-full max-w-6xl shrink-0 items-center justify-between gap-2 sm:mb-3">
                             <span className="min-w-0 truncate text-sm font-black text-white sm:text-base">🧩 Color Blocks Collapse</span>
