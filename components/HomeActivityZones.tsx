@@ -58,7 +58,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [classicLandscapeInline, setClassicLandscapeInline] = useState(false);
   const [isLandscape, setIsLandscape] = useState(false);
   useEffect(() => {
-    const media = window.matchMedia("(orientation: landscape) and (max-height: 600px)");
+    const media = window.matchMedia("(orientation: landscape)");
     const update = () => setIsLandscape(media.matches);
     update();
     media.addEventListener?.("change", update);
@@ -257,17 +257,17 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       </div>
 
       {selected?.action === "classic-games" && !!userId && isLandscape && !classicLandscapeInline && typeof document !== "undefined" && createPortal(
-        <div className="fixed inset-0 z-[2147483000] flex h-[100dvh] w-screen flex-col items-center justify-center overflow-y-auto overscroll-contain bg-slate-950 px-3 py-3" style={{ touchAction: "pan-y" }}>
+        <div className="fixed inset-0 z-[2147483000] flex h-[100dvh] w-screen flex-col items-center justify-start overflow-y-auto overscroll-y-contain bg-slate-950 px-2 py-3" style={{ touchAction: "pan-y", WebkitOverflowScrolling: "touch" }}>
           <div className="mb-3 flex w-full max-w-[1280px] shrink-0 items-center justify-between gap-3">
             <button type="button" onClick={() => setClassicLandscapeInline(true)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Classic Games zone</button>
             {classicGameRunning && <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-5 py-2.5 text-sm font-black text-white shadow-lg">■ Stop</button>}
           </div>
           {classicGameRunning ? (
-            <div className="w-full max-w-[1280px] shrink-0 overflow-hidden rounded-2xl border-[3px] border-sky-300 bg-slate-950 shadow-2xl">
+            <div className="w-[94%] max-w-[1280px] shrink-0 overflow-hidden rounded-2xl border-[3px] border-sky-300 bg-slate-950 shadow-2xl">
               <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block aspect-video w-full border-0" loading="eager" scrolling="no" allow="fullscreen; autoplay" allowFullScreen />
             </div>
           ) : (
-            <div className="flex aspect-video w-full max-w-[1280px] shrink-0 items-center justify-center rounded-2xl border-[3px] border-sky-300 bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 shadow-2xl">
+            <div className="flex aspect-video w-[94%] max-w-[1280px] shrink-0 items-center justify-center rounded-2xl border-[3px] border-sky-300 bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 shadow-2xl">
               <button type="button" onClick={() => setClassicGameRunning(true)} className="rounded-full border border-emerald-200/70 bg-gradient-to-r from-emerald-500 to-green-700 px-6 py-3 text-sm font-extrabold tracking-wide text-white shadow-[0_0_28px_rgba(16,185,129,.35)] transition hover:scale-105 hover:brightness-110">▶ START GAME</button>
             </div>
           )}
