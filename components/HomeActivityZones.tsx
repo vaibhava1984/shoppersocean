@@ -227,7 +227,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                           </div>
                         </div>,
                         document.body
-                      ) : null}
+                      ) : null
                     )}
                   </div>
                 )}
