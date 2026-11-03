@@ -178,9 +178,32 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               </div>
             )}
             {selected.action === "classic-games" && (
-              <div ref={activityTargetRef} className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 to-indigo-50 p-8 text-center">
-                <h3 className="text-xl font-black text-indigo-900">Classic Games</h3>
-                <p className="mt-2 text-sm text-slate-600">More classic games coming soon.</p>
+              <div ref={activityTargetRef} className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 via-white to-indigo-50 p-4 shadow-sm sm:p-6">
+                <div className="mx-auto max-w-[760px]">
+                  <div className="mb-4 text-center">
+                    <div className="text-4xl" aria-hidden="true">🃏</div>
+                    <h3 className="mt-2 text-2xl font-black text-indigo-950">Solitaire (Klondike)</h3>
+                    <p className="mt-1 text-sm leading-6 text-slate-600">Enjoy the classic card game. The original ExeBrowser game is loaded below.</p>
+                  </div>
+                  <div className="w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+                    <iframe
+                      src="https://exebrowser.com/embed/solitaire-open/"
+                      title="Solitaire (Klondike) by ExeBrowser"
+                      width="100%"
+                      height="600"
+                      loading="lazy"
+                      allow="fullscreen"
+                      className="block w-full border-0"
+                      style={{ height: "600px", maxWidth: "760px" }}
+                    />
+                  </div>
+                  <p className="mt-3 text-center text-xs leading-5 text-slate-500">
+                    Solitaire (Klondike) by{" "}
+                    <a href="https://exebrowser.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-indigo-700 underline underline-offset-2 hover:text-indigo-900">ExeBrowser</a>
+                    {" · "}
+                    <a href="https://exebrowser.com/run/solitaire-open/" target="_blank" rel="noopener noreferrer" className="font-semibold text-indigo-700 underline underline-offset-2 hover:text-indigo-900">Open game in a new tab</a>
+                  </p>
+                </div>
               </div>
             )}
             {selected.action === "brain-battle-arena" && (
