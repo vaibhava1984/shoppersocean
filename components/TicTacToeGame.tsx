@@ -149,6 +149,7 @@ export default function TicTacToeGame({ onExit }: { onExit?: () => void }) {
         .ocean-ttt { background:linear-gradient(180deg,#60c8ff 0%,#bcecff 47%,#b7f17d 72%,#4dbb50 100%); font-family:Trebuchet MS,Arial,sans-serif; font-style:normal; }
         .ocean-ttt * { font-style:normal; }
         @media (max-width:700px) {
+          .ocean-ttt { height:min(76svh,620px)!important; min-height:420px!important; aspect-ratio:auto!important; }
           .ocean-ttt > div.relative { min-height:0!important; height:100%; padding:5px!important; }
           .ocean-ttt > div.relative > div:first-of-type { gap:4px!important; }
           .ocean-ttt > div.relative > div:first-of-type > button { padding:4px 7px!important; font-size:9px!important; white-space:nowrap; }
