@@ -149,33 +149,34 @@ export default function TicTacToeGame({ onExit }: { onExit?: () => void }) {
         .ocean-ttt { background:linear-gradient(180deg,#60c8ff 0%,#bcecff 47%,#b7f17d 72%,#4dbb50 100%); font-family:Trebuchet MS,Arial,sans-serif; font-style:normal; }
         .ocean-ttt * { font-style:normal; }
         @media (max-width:700px) {
-          .ocean-ttt { height:min(76svh,620px)!important; min-height:420px!important; aspect-ratio:auto!important; }
-          .ocean-ttt > div.relative { min-height:0!important; height:100%; padding:5px!important; }
-          .ocean-ttt > div.relative > div:first-of-type { gap:4px!important; }
-          .ocean-ttt > div.relative > div:first-of-type > button { padding:4px 7px!important; font-size:9px!important; white-space:nowrap; }
-          .ocean-ttt > div.relative > div:first-of-type > div:nth-child(2) { padding:3px 7px!important; }
-          .ocean-ttt > div.relative > div:first-of-type h2 { font-size:clamp(11px,3.4vw,16px)!important; line-height:1.1!important; }
-          .ocean-ttt > div.relative > div:first-of-type > div:last-child { padding:3px!important; }
-          .ocean-ttt > div.relative > div:first-of-type > div:last-child p { font-size:7px!important; }
-          .ocean-ttt > div.relative > div:first-of-type > div:last-child button { padding:3px 5px!important; font-size:7px!important; }
-          .ocean-ttt .grid.flex-1 { grid-template-columns:minmax(0,.72fr) minmax(0,2.4fr) minmax(0,.72fr)!important; gap:4px!important; min-height:0!important; }
-          .ocean-ttt .grid.flex-1 > div:first-child,.ocean-ttt .grid.flex-1 > div:last-child { min-width:0!important; }
-          .ocean-ttt .ocean-cheer,.ocean-ttt .ocean-robot-bob { font-size:clamp(17px,6vw,28px)!important; line-height:1!important; }
-          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) { padding:3px!important; border-width:1px!important; border-radius:8px!important; }
-          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) p { font-size:7px!important; line-height:1.1!important; }
-          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) > div { width:22px!important; height:22px!important; margin-top:2px!important; border-radius:5px!important; }
+          .ocean-ttt { height:auto!important; min-height:0!important; aspect-ratio:auto!important; overflow:visible!important; }
+          .ocean-ttt > div.relative { min-height:0!important; height:auto!important; padding:8px!important; }
+          .ocean-ttt > div.relative > div:first-of-type { gap:5px!important; align-items:center!important; }
+          .ocean-ttt > div.relative > div:first-of-type > button { padding:6px 8px!important; font-size:10px!important; line-height:1.1!important; white-space:nowrap; }
+          .ocean-ttt > div.relative > div:first-of-type > div:nth-child(2) { padding:4px 7px!important; }
+          .ocean-ttt > div.relative > div:first-of-type h2 { font-size:clamp(14px,4vw,19px)!important; line-height:1.1!important; }
+          .ocean-ttt > div.relative > div:first-of-type > div:last-child { padding:4px!important; }
+          .ocean-ttt > div.relative > div:first-of-type > div:last-child p { font-size:8px!important; }
+          .ocean-ttt > div.relative > div:first-of-type > div:last-child button { padding:4px 6px!important; font-size:8px!important; }
+          .ocean-ttt .grid.flex-1 { grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important; grid-template-rows:auto auto!important; align-content:start!important; align-items:stretch!important; gap:8px!important; min-height:0!important; margin-top:8px!important; }
+          .ocean-ttt .grid.flex-1 > div:first-child { grid-column:1!important; grid-row:1!important; flex-direction:row!important; justify-content:flex-start!important; gap:6px!important; min-width:0!important; }
+          .ocean-ttt .grid.flex-1 > div:last-child { grid-column:2!important; grid-row:1!important; flex-direction:row!important; justify-content:flex-end!important; gap:6px!important; min-width:0!important; }
+          .ocean-ttt .ocean-cheer,.ocean-ttt .ocean-robot-bob { display:none!important; }
+          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) { display:flex!important; flex:1 1 auto!important; align-items:center!important; justify-content:space-between!important; gap:5px!important; width:auto!important; max-width:none!important; min-width:0!important; margin:0!important; padding:5px 7px!important; border-width:2px!important; border-radius:10px!important; box-shadow:0 2px 0 #78350f!important; }
+          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) p { font-size:10px!important; line-height:1.1!important; }
+          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) > div { width:25px!important; height:25px!important; flex:0 0 25px!important; margin:0!important; border-radius:6px!important; }
           .ocean-ttt .grid.flex-1 > div > div:nth-child(2) > div svg { width:85%!important; height:85%!important; }
-          .ocean-ttt .grid.flex-1 > div:nth-child(2) { min-width:0!important; max-width:none!important; }
-          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:first-child { margin-bottom:3px!important; padding:3px 5px!important; font-size:8px!important; line-height:1.15!important; }
-          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:nth-child(2) { border-width:3px!important; border-radius:10px!important; padding:3px!important; box-shadow:0 4px 0 #854d0e!important; }
-          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:nth-child(2) > div { gap:3px!important; padding:3px!important; border-radius:6px!important; }
-          .ocean-ttt .grid.flex-1 > div:nth-child(2) button { border-width:1px!important; border-radius:5px!important; }
-          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:last-child { margin-top:4px!important; }
-          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:last-child button { padding:3px 10px!important; font-size:9px!important; line-height:1.1!important; border-width:1px!important; }
-          .ocean-ttt > div.relative > div:last-child { margin-top:3px!important; gap:3px!important; }
-          .ocean-ttt > div.relative > div:last-child > div { padding:3px 6px!important; border-width:1px!important; border-radius:7px!important; }
-          .ocean-ttt > div.relative > div:last-child span { font-size:8px!important; }
-          .ocean-ttt > div.relative > div:last-child > div:last-child { font-size:8px!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) { grid-column:1 / -1!important; grid-row:2!important; min-width:0!important; max-width:390px!important; width:100%!important; margin:0 auto!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:first-child { margin-bottom:6px!important; padding:7px 8px!important; font-size:11px!important; line-height:1.2!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:nth-child(2) { border-width:5px!important; border-radius:16px!important; padding:5px!important; box-shadow:0 6px 0 #854d0e!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:nth-child(2) > div { gap:5px!important; padding:5px!important; border-radius:10px!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) button { border-width:2px!important; border-radius:10px!important; min-height:0!important; aspect-ratio:1/1!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:last-child { margin-top:10px!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:last-child button { padding:8px 20px!important; font-size:13px!important; line-height:1.1!important; border-width:2px!important; }
+          .ocean-ttt > div.relative > div:last-child { margin-top:10px!important; gap:6px!important; }
+          .ocean-ttt > div.relative > div:last-child > div { padding:6px 9px!important; border-width:1px!important; border-radius:9px!important; }
+          .ocean-ttt > div.relative > div:last-child span { font-size:10px!important; }
+          .ocean-ttt > div.relative > div:last-child > div:last-child { font-size:10px!important; }
         }
         @media (prefers-reduced-motion: reduce) { .ocean-mark-draw,.ocean-cell-pop,.ocean-robot-bob,.ocean-cheer {animation:none!important} }
       `}</style>
