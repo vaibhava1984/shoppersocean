@@ -26,7 +26,7 @@ const entertainmentGroups = [
 
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | null>(null);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null | false>(null);
   const activeZoneRef = useRef<number | null>(null);
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
@@ -189,14 +189,40 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
             )}
             {selected.action === "classic-games" && (
               <div ref={activityTargetRef} className="flex w-full items-center justify-center">
-                {classicGameStarted !== "tic-tac-toe" ? (
-                  <button
-                    type="button"
-                    onClick={() => setClassicGameStarted("tic-tac-toe")}
-                    className="rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-8 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
-                  >
-                    ❌⭕ &nbsp; Play Tic Tac Toe
-                  </button>
+                {classicGameStarted === null || classicGameStarted === false ? (
+                  <div className="grid w-full max-w-xl grid-cols-1 gap-4 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={() => setClassicGameStarted("tic-tac-toe")}
+                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
+                    >
+                      ❌⭕ &nbsp; Play Tic Tac Toe
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setClassicGameStarted("solitaire")}
+                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200"
+                    >
+                      🃏 &nbsp; Play Solitaire
+                    </button>
+                  </div>
+                ) : classicGameStarted === "solitaire" ? (
+                  <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
+                    <iframe
+                      src="https://solitaire-online.com/embed/klondike.html?draw=1&amp;theme=green&amp;v=embedauto1"
+                      title="Free Klondike Solitaire — Solitaire Online"
+                      width="800"
+                      height="640"
+                      className="block w-full rounded-xl border-0"
+                      style={{ width: "100%", height: "640px" }}
+                      loading="lazy"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                    />
+                    <p className="my-2 text-center text-xs leading-5 text-slate-600">
+                      Played on <a href="https://solitaire-online.com/?utm_source=solitaire_widget&amp;utm_medium=referral&amp;utm_campaign=embed" target="_blank" rel="nofollow noopener" className="text-emerald-700 underline">solitaire-online.com</a>
+                    </p>
+                  </div>
                 ) : (
                   <div className="flex min-h-[420px] w-full items-start justify-center rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
                     <iframe
