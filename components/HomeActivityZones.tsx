@@ -27,10 +27,11 @@ const entertainmentGroups = [
 
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "dkm" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | "dkm" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire"; sessionId: string; consumed: boolean } | null>(null);
+  const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire" | "dkm"; sessionId: string; consumed: boolean } | null>(null);
+  const dkmGameMountRef = useRef<HTMLDivElement | null>(null);
   const enterSolitaireLandscape = () => {
     const orientation = screen.orientation;
     if (typeof document !== "undefined" && !document.fullscreenElement && document.documentElement.requestFullscreen) {
@@ -70,7 +71,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
             }
           }).catch(error => console.error("Classic game quota recording failed:", error));
         }
-        if (classicGameStartedRef.current === "solitaire") leaveSolitaireLandscape();
+        if (classicGameStartedRef.current === "solitaire" || classicGameStartedRef.current === "dkm") leaveSolitaireLandscape();
         classicGameStartedRef.current = false;
         classicGameSessionRef.current = null;
         classicGameInteractedRef.current = false;
@@ -106,10 +107,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "solitaire") => {
+  const openClassicGame = async (game: "tic-tac-toe" | "solitaire" | "dkm") => {
     if (!userId) { window.location.assign("/login"); return; }
-    if (game === "solitaire") enterSolitaireLandscape();
-    const gameType = game === "solitaire" ? "solitaire" : "tic";
+    if (game === "solitaire" || game === "dkm") enterSolitaireLandscape();
+    const gameType = game === "solitaire" ? "solitaire" : game === "dkm" ? "dkm" : "tic";
     const sessionKey = "shoppersOcean:classic-session:" + userId + ":" + gameType;
     try {
       const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
@@ -118,16 +119,16 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       let remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
       setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
 
-      if (remaining <= 0) { if (gameType === "solitaire") leaveSolitaireLandscape(); setClassicQuotaPopup(true); return; }
+      if (remaining <= 0) { if (gameType === "solitaire" || gameType === "dkm") leaveSolitaireLandscape(); setClassicQuotaPopup(true); return; }
 
       // Solitaire uses the website quota at launch. The external Klondike embed does not
       // expose trustworthy cross-origin move events, so charge exactly once when opened.
-      if (gameType === "solitaire") {
-        const sessionId = "solitaire-open:" + Date.now() + ":" + Math.random().toString(36).slice(2);
+      if (gameType === "solitaire" || gameType === "dkm") {
+        const sessionId = gameType + "-open:" + Date.now() + ":" + Math.random().toString(36).slice(2);
         const chargeResponse = await fetch("/api/game-access", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sectionId: "classic-games", gameTypeId: "solitaire", challengeId: sessionId })
+          body: JSON.stringify({ sectionId: "classic-games", gameTypeId: gameType, challengeId: sessionId })
         });
         const chargeData = await chargeResponse.json();
         if (!chargeResponse.ok) {
@@ -136,7 +137,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
           return;
         }
         remaining = Number(chargeData.remaining ?? Math.max(0, remaining - 1));
-        setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, solitaire: remaining } }));
+        setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [gameType]: remaining } }));
       }
 
       const classicSessionToken = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
@@ -145,8 +146,19 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       classicGameSessionRef.current = gameType === "tic" ? { gameType, sessionId: classicSessionToken, consumed: false } : null;
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
       classicGameStartedRef.current = game; setClassicGameStarted(game);
-    } catch (error) { if (game === "solitaire") leaveSolitaireLandscape(); console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
+    } catch (error) { if (game === "solitaire" || game === "dkm") leaveSolitaireLandscape(); console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
   };
+  useEffect(() => {
+    if (classicGameStarted !== "dkm" || !dkmGameMountRef.current) return;
+    const mount = dkmGameMountRef.current;
+    mount.innerHTML = "";
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://dkmgames.com/embed?id=47223wr";
+    script.async = true;
+    mount.appendChild(script);
+    return () => { mount.innerHTML = ""; };
+  }, [classicGameStarted]);
   useEffect(() => {
     if (selected?.action !== "classic-games" || !userId) return;
     let live = true;
@@ -303,6 +315,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                     >
                       🃏 &nbsp; Play Solitaire
                     </button>
+                    <button type="button" onClick={() => void openClassicGame("dkm")} className="rounded-2xl border border-white/30 bg-gradient-to-r from-cyan-600 via-blue-700 to-indigo-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110">🎮 &nbsp; Play New Game</button>
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
                   <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
@@ -328,6 +341,11 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                         allow="autoplay; fullscreen"
                       />
                     </div>
+                  </div>
+                ) : classicGameStarted === "dkm" ? (
+                  <div className="flex min-h-[70dvh] w-full flex-col gap-2 rounded-2xl bg-slate-950 p-2 sm:p-4">
+                    <div className="rounded-xl bg-white px-3 py-2 text-xs font-extrabold text-slate-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.dkm ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} plays left today`}</div>
+                    <div ref={dkmGameMountRef} className="min-h-[60dvh] w-full flex-1 overflow-hidden rounded-xl bg-black" />
                   </div>
                 ) : (
                   <div className="flex min-h-[420px] w-full flex-col items-center justify-start gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
