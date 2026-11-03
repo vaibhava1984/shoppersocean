@@ -31,6 +31,20 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
   const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire"; sessionId: string; consumed: boolean } | null>(null);
+  const enterSolitaireLandscape = () => {
+    const orientation = screen.orientation;
+    if (typeof document !== "undefined" && !document.fullscreenElement && document.documentElement.requestFullscreen) {
+      void document.documentElement.requestFullscreen().then(() => orientation?.lock?.("landscape")).catch(() => {});
+    } else {
+      void orientation?.lock?.("landscape").catch(() => {});
+    }
+  };
+  const leaveSolitaireLandscape = () => {
+    try { screen.orientation?.unlock?.(); } catch {}
+    if (typeof document !== "undefined" && document.fullscreenElement) {
+      void document.exitFullscreen().catch(() => {});
+    }
+  };
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
   const activeZoneRef = useRef<number | null>(null);
@@ -56,6 +70,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
             }
           }).catch(error => console.error("Classic game quota recording failed:", error));
         }
+        if (classicGameStartedRef.current === "solitaire") leaveSolitaireLandscape();
         classicGameStartedRef.current = false;
         classicGameSessionRef.current = null;
         classicGameInteractedRef.current = false;
@@ -93,6 +108,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
   const openClassicGame = async (game: "tic-tac-toe" | "solitaire") => {
     if (!userId) { window.location.assign("/login"); return; }
+    if (game === "solitaire") enterSolitaireLandscape();
     const gameType = game === "solitaire" ? "solitaire" : "tic";
     const sessionKey = "shoppersOcean:classic-session:" + userId + ":" + gameType;
     try {
@@ -102,7 +118,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       let remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
       setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
 
-      if (remaining <= 0) { setClassicQuotaPopup(true); return; }
+      if (remaining <= 0) { if (gameType === "solitaire") leaveSolitaireLandscape(); setClassicQuotaPopup(true); return; }
 
       // Solitaire uses the website quota at launch. The external Klondike embed does not
       // expose trustworthy cross-origin move events, so charge exactly once when opened.
@@ -115,6 +131,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         });
         const chargeData = await chargeResponse.json();
         if (!chargeResponse.ok) {
+          leaveSolitaireLandscape();
           setClassicQuotaPopup(true);
           return;
         }
@@ -128,7 +145,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       classicGameSessionRef.current = gameType === "tic" ? { gameType, sessionId: classicSessionToken, consumed: false } : null;
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
       classicGameStartedRef.current = game; setClassicGameStarted(game);
-    } catch (error) { console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
+    } catch (error) { if (game === "solitaire") leaveSolitaireLandscape(); console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
   };
   useEffect(() => {
     if (selected?.action !== "classic-games" || !userId) return;
