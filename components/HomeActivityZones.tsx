@@ -79,16 +79,24 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
       const quotaData = await quotaResponse.json();
       if (!quotaResponse.ok) throw new Error(quotaData.error || "Quota could not be verified.");
+      let remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
       setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
-      if (Number(quotaData.remainingByType?.[gameType] ?? 0) <= 0) { setClassicQuotaPopup(true); return; }
+
       let previous: { sessionId?: string; played?: boolean } | null = null;
       try { const raw = window.localStorage.getItem(sessionKey); previous = raw ? JSON.parse(raw) : null; } catch { previous = null; }
+
+      // Charge the previous loaded game session before deciding whether another game can start.
       if (previous?.played && previous.sessionId) {
         const response = await fetch("/api/game-access", { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: gameType, challengeId: previous.sessionId }) });
         const data = await response.json();
-        if (!response.ok) { if (response.status === 403) setClassicQuotaPopup(true); else throw new Error(data.error || "Your completed game could not be recorded."); return; }
-        setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [gameType]: Number(data.remaining ?? 0) }, loading: false }));
+        if (!response.ok) { if (response.status === 403) setClassicQuotaPopup(true); else throw new Error(data.error || "Your played game could not be recorded."); return; }
+        remaining = Number(data.remaining ?? Math.max(0, remaining - 1));
+        setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [gameType]: remaining }, loading: false }));
+        window.localStorage.removeItem(sessionKey);
       }
+
+      if (remaining <= 0) { setClassicQuotaPopup(true); return; }
+
       const nextSessionId = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
       window.localStorage.setItem(sessionKey, JSON.stringify({ sessionId: nextSessionId, played: false }));
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
@@ -269,7 +277,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       referrerPolicy="strict-origin-when-cross-origin"
                       sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
                       allow="autoplay; fullscreen"
-                      onPointerDown={() => {
+                      onLoad={() => {
                         try {
                           const key = "shoppersOcean:classic-session:" + userId + ":solitaire";
                           const session = JSON.parse(window.localStorage.getItem(key) || "null");
@@ -295,7 +303,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       style={{ width: "min(350px, 100%)", height: "360px" }}
                       loading="lazy"
                       allow="autoplay; fullscreen"
-                      onPointerDown={() => {
+                      onLoad={() => {
                         try {
                           const key = "shoppersOcean:classic-session:" + userId + ":tic";
                           const session = JSON.parse(window.localStorage.getItem(key) || "null");
