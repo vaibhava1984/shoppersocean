@@ -40,6 +40,11 @@ async function handle(req:Request,consume:boolean){
   // One-time correction for the site owner only: the old Picture Pair build allowed one attempt.
   // Reset only this account's jigsaw usage for today; no other account or game quota is touched.
   if(String(acct?.email??user.email).trim().toLowerCase()===ADMIN_EMAIL){
+   const solitaireReset=await db.prepare("CREATE TABLE IF NOT EXISTS game_solitaire_admin_reset_v1(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
+   const solitaireResetClaim=await db.prepare("INSERT OR IGNORE INTO game_solitaire_admin_reset_v1(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
+   if(solitaireResetClaim){
+    await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND game_type_id='solitaire' AND usage_date=?").bind(user.id,date).run();
+   }
    const reset=await db.prepare("INSERT OR IGNORE INTO game_picture_pair_quota_reset_v2(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
    if(reset){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND game_type_id='jigsaw' AND usage_date=?").bind(user.id,date).run();
