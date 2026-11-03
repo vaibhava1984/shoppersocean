@@ -315,7 +315,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                     >
                       🃏 &nbsp; Play Solitaire
                     </button>
-                    <button type="button" onClick={() => void openClassicGame("dkm")} className="rounded-2xl border border-white/30 bg-gradient-to-r from-cyan-600 via-blue-700 to-indigo-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110">🎮 &nbsp; Play New Game</button>
+                    <button type="button" onClick={() => void openClassicGame("dkm")} className="rounded-2xl border border-white/30 bg-gradient-to-r from-cyan-600 via-blue-700 to-indigo-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110">🎮 &nbsp; Play DKM Game</button>
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
                   <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
