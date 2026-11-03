@@ -195,7 +195,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                     allowFullScreen
                   />
                 </div>
-                </div>
               </div>
             )}
             {selected.action === "brain-battle-arena" && (
