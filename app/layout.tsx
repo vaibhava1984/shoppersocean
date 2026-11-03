@@ -1,11 +1,13 @@
 import "./globals.css";
 import InteractionFeedback from "@/components/InteractionFeedback";
 import SessionTimeout from "@/components/SessionTimeout";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 // Canonical public origin and default social-sharing preview.
 const defaultUrl = "https://shoppersocean.com";
 const socialImage = "/1.jpg?rev=2";
+
+export const viewport: Viewport = { width: "device-width", initialScale: 1, maximumScale: 5, userScalable: true };
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
