@@ -47,6 +47,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
+  const [trivioRemaining, setTrivioRemaining] = useState(0);
+  const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
+  const trivioConsumedRef = useRef(false);
   const activeZoneRef = useRef<number | null>(null);
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
@@ -247,7 +250,8 @@ useEffect(() => {
                         {id:"culture",icon:"🎎",title:"The World Culture Challenge",note:"Discover cultures and traditions",tone:"from-fuchsia-600 to-indigo-900"},
                         {id:"landmark",icon:"🏛️",title:"The Landmark Adventure",note:"Recognise world landmarks",tone:"from-amber-500 to-rose-700"},
                         {id:"records",icon:"🏆",title:"World Records Quiz",note:"Fifty curated record questions",tone:"from-orange-600 to-red-800"},
-                        {id:"science",icon:"🔬",title:"Science Quiz",note:"Explore every branch of science",tone:"from-cyan-600 to-blue-800"}
+                        {id:"science",icon:"🔬",title:"Science Quiz",note:"Explore every branch of science",tone:"from-cyan-600 to-blue-800"},
+                        {id:"trivio",icon:"🎉",title:"Fun Trivia Questions",note:"Play 100 fun trivia questions",tone:"from-pink-600 to-violet-800"}
                       ].map((game,index)=>(
                         <button key={game.id} type="button" onClick={()=>openGame(game.id)} className={"group relative min-h-40 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br "+game.tone+" p-5 text-left text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200"}>
                           <span className="absolute -right-3 -top-5 text-8xl opacity-20 transition group-hover:scale-110">{game.icon}</span>
@@ -277,6 +281,31 @@ useEffect(() => {
                     {activeQuizGame==="culture" && <WorldExplorer key="culture" userId={userId} initialGameId="culture" onExit={exitGame} />}
                     {activeQuizGame==="landmark" && <WorldExplorer key="landmark" userId={userId} initialGameId="landmark" onExit={exitGame} />}
                     {activeQuizGame==="records" && <WorldRecordsArena key="records" userId={userId} onExit={exitGame} />}
+                    {activeQuizGame==="trivio" && (
+                      <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-violet-50 p-2 sm:p-4">
+                        <div className="mb-3 rounded-xl border border-violet-200 bg-white px-3 py-2 text-center text-xs font-extrabold text-violet-900">
+                          {trivioQuotaLoading ? "Checking quota…" : `${trivioRemaining} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
+                        </div>
+                        <iframe
+                          src="https://trivio.net/embed/quiz/fun-trivia-questions-with-answers/"
+                          title="100 Fun Trivia Questions With Answers"
+                          className="block w-full rounded-2xl border border-violet-100"
+                          style={{ height: "640px" }}
+                          loading="lazy"
+                          onLoad={() => {
+                            trivioConsumedRef.current = false;
+                            setTrivioQuotaLoading(true);
+                            fetch("/api/game-access", { cache: "no-store" }).then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota unavailable"); setTrivioRemaining(Number(data.remainingByType?.trivio ?? 0)); setClassicQuota(current => ({ ...current, isAdmin: Boolean(data.isAdmin), isSubscribed: Boolean(data.isSubscribed) })); }).catch(error => console.error("Trivio quota check failed:", error)).finally(() => setTrivioQuotaLoading(false));
+                          }}
+                          onFocus={() => {
+                            if (trivioConsumedRef.current || trivioQuotaLoading || trivioRemaining <= 0) return;
+                            trivioConsumedRef.current = true;
+                            const challengeId = "trivio-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+                            void fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "quiz-world", gameTypeId: "trivio", challengeId }) }).then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota could not be recorded"); setTrivioRemaining(Number(data.remaining ?? 0)); }).catch(error => { trivioConsumedRef.current = false; console.error("Trivio quota recording failed:", error); });
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
