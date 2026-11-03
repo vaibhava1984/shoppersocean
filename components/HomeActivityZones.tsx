@@ -209,15 +209,15 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                         <span className="col-start-2 inline-flex w-fit items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black sm:ml-auto">PLAY →</span>
                       </button>
                     ) : (
-                      <div className="flex min-w-0 w-full max-w-full flex-col items-center gap-3 overflow-x-hidden rounded-xl bg-slate-950 p-2 sm:p-3" style={{ touchAction: "pan-y" }}>
-                        <div className="flex w-full max-w-5xl items-center justify-between gap-2">
+                      <div className="fixed inset-0 z-[9999] flex min-w-0 w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 p-2 sm:p-4" style={{ touchAction: "pan-y" }}>
+                        <div className="mb-2 flex w-full max-w-6xl shrink-0 items-center justify-between gap-2 sm:mb-3">
                           <span className="min-w-0 truncate text-sm font-black text-white sm:text-base">🧩 Color Blocks Collapse</span>
                           <div className="flex shrink-0 items-center gap-2">
                             <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-3 py-2 text-xs font-black text-white shadow-lg sm:px-4 sm:text-sm">← Back</button>
                             <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-3 py-2 text-xs font-black text-white shadow-lg sm:px-4 sm:text-sm">■ Stop</button>
                           </div>
                         </div>
-                        <div className="mx-auto min-w-0 w-full max-w-full overflow-hidden rounded-xl border-2 border-sky-300 bg-black shadow-2xl" style={{ width: "100%", maxWidth: "min(100%, 900px, calc((100svh - 150px) * 1.7778))", aspectRatio: "16 / 9", flex: "0 1 auto", touchAction: "pan-y" }}>
+                        <div className="mx-auto min-w-0 w-full overflow-hidden rounded-xl border-2 border-sky-300 bg-black shadow-2xl" style={{ width: "min(94vw, 1100px, calc((100svh - 82px) * 1.7778))", maxWidth: "100%", aspectRatio: "16 / 9", flex: "0 1 auto", touchAction: "pan-y" }}>
                           <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block h-full w-full border-0" loading="eager" scrolling="no" allow="autoplay *; fullscreen; gamepad; picture-in-picture" allowFullScreen style={{ touchAction: "pan-y" }} />
                         </div>
                       </div>
