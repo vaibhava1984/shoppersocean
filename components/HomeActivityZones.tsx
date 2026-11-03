@@ -270,10 +270,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         </div>,
         document.body
       )}
-          <div className="h-8 w-full shrink-0" aria-hidden="true" />
-        </div>,
-        document.body
-      )}
     </section>
   );
 }
