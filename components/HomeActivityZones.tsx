@@ -10,7 +10,6 @@ import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
-import ArcheryWorldTour from "@/components/ArcheryWorldTour";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -28,7 +27,7 @@ const entertainmentGroups = [
 
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "archery" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null | false>(false);
   const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | "archery" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
   const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire"; sessionId: string; consumed: boolean } | null>(null);
@@ -107,10 +106,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "solitaire" | "archery") => {
+  const openClassicGame = async (game: "tic-tac-toe" | "solitaire") => {
     if (!userId) { window.location.assign("/login"); return; }
     if (game === "solitaire") enterSolitaireLandscape();
-    const gameType = game === "solitaire" ? "solitaire" : game === "archery" ? "archery" : "tic";
+    const gameType = game === "solitaire" ? "solitaire" : "tic";
     const sessionKey = "shoppersOcean:classic-session:" + userId + ":" + gameType;
     try {
       const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
@@ -122,7 +121,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       if (remaining <= 0) { if (gameType === "solitaire") leaveSolitaireLandscape(); setClassicQuotaPopup(true); return; }
 
       // External games do not expose reliable cross-origin move events, so charge once on launch.
-      if (gameType === "solitaire" || gameType === "archery") {
+      if (gameType === "solitaire") {
         const sessionId = gameType + "-open:" + Date.now() + ":" + Math.random().toString(36).slice(2);
         const chargeResponse = await fetch("/api/game-access", {
           method: "POST",
@@ -303,20 +302,6 @@ useEffect(() => {
                     >
                       🃏 &nbsp; Play Solitaire
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => void openClassicGame("archery")}
-                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-sky-600 via-blue-700 to-indigo-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110"
-                    >
-                      🏹 &nbsp; Play Archery World Tour
-                    </button>
-                  </div>
-                ) : classicGameStarted === "archery" ? (
-                  <div className="w-full space-y-2">
-                    <div className="rounded-xl border border-sky-300/30 bg-white px-3 py-2 text-center text-xs font-extrabold text-slate-900">
-                      {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.archery ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
-                    </div>
-                    <ArcheryWorldTour />
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
                   <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
