@@ -120,10 +120,12 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
           </>
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (activeQuizGameRef.current !== null) { window.history.back(); return; } if (activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button><a href="/"  className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110" aria-label="Go to homepage">⌂ Home</a></div>
-              <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
-            </div>
+            {!(selected.action === "classic-games" && classicGameRunning) && (
+              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (activeQuizGameRef.current !== null) { window.history.back(); return; } if (activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button><a href="/" className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110" aria-label="Go to homepage">⌂ Home</a></div>
+                <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
+              </div>
+            )}
             {selected.action === "games" && (
               <div>
                 {!activeQuizGame ? (
@@ -207,7 +209,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                         <span className="col-start-2 inline-flex w-fit items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black sm:ml-auto">PLAY →</span>
                       </button>
                     ) : (
-                      <div className="flex w-full flex-col items-center gap-3 rounded-xl bg-slate-950 p-2 sm:p-3">
+                      <div className="flex min-w-0 w-full max-w-full flex-col items-center gap-3 overflow-x-hidden rounded-xl bg-slate-950 p-2 sm:p-3" style={{ touchAction: "pan-y" }}>
                         <div className="flex w-full max-w-5xl items-center justify-between gap-2">
                           <span className="min-w-0 truncate text-sm font-black text-white sm:text-base">🧩 Color Blocks Collapse</span>
                           <div className="flex shrink-0 items-center gap-2">
@@ -215,8 +217,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                             <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-3 py-2 text-xs font-black text-white shadow-lg sm:px-4 sm:text-sm">■ Stop</button>
                           </div>
                         </div>
-                        <div className="mx-auto w-full max-w-5xl overflow-hidden rounded-xl border-2 border-sky-300 bg-black shadow-2xl" style={{ width: "min(94vw, 900px, calc((100dvh - 145px) * 1.7778))", aspectRatio: "16 / 9" }}>
-                          <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block h-full w-full border-0" loading="eager" scrolling="no" allow="autoplay; fullscreen; gamepad" allowFullScreen style={{ touchAction: "pan-y" }} />
+                        <div className="mx-auto min-w-0 w-full max-w-full overflow-hidden rounded-xl border-2 border-sky-300 bg-black shadow-2xl" style={{ width: "100%", maxWidth: "min(100%, 900px, calc((100svh - 150px) * 1.7778))", aspectRatio: "16 / 9", flex: "0 1 auto", touchAction: "pan-y" }}>
+                          <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block h-full w-full border-0" loading="eager" scrolling="no" allow="autoplay *; fullscreen; gamepad; picture-in-picture" allowFullScreen style={{ touchAction: "pan-y" }} />
                         </div>
                       </div>
                     )}
