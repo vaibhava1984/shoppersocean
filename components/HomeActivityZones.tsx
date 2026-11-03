@@ -182,7 +182,19 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                 <div className="mb-5 text-center">
                   <p className="text-xs font-black uppercase tracking-[.24em] text-indigo-600">Timeless games for endless fun</p>
                   <h3 className="mt-1 text-2xl font-black text-indigo-950 sm:text-3xl">🎮 Classic Games</h3>
-                  <p className="mt-3 text-sm font-semibold text-indigo-800">More classic games coming soon.</p>
+                  <p className="mt-3 text-sm font-semibold text-indigo-800">Play classic games right here.</p>
+                </div>
+                <div className="mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-indigo-200 bg-slate-950 shadow-2xl">
+                  <iframe
+                    src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html"
+                    title="Color Blocks Collapse"
+                    className="block h-[min(82svh,900px)] min-h-[620px] w-full border-0 sm:h-[800px]"
+                    loading="lazy"
+                    scrolling="no"
+                    allow="fullscreen; autoplay"
+                    allowFullScreen
+                  />
+                </div>
                 </div>
               </div>
             )}
