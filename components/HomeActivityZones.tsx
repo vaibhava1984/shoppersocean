@@ -54,7 +54,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(null);
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
-  const [classicGameRunning, setClassicGameRunning] = useState(true);
+  const [classicGameRunning, setClassicGameRunning] = useState(false);
+  const classicGameHostRef = useRef<HTMLDivElement | null>(null);
+  const [classicGameHostRect, setClassicGameHostRect] = useState<{ top: number; left: number; width: number } | null>(null);
   const [classicLandscapeInline, setClassicLandscapeInline] = useState(false);
   const [isLandscape, setIsLandscape] = useState(false);
   useEffect(() => {
@@ -65,12 +67,19 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     return () => media.removeEventListener?.("change", update);
   }, []);
   useEffect(() => {
-    const active = activeZone !== null && zones[activeZone]?.action === "classic-games" && !!userId && isLandscape && !classicLandscapeInline;
-    document.body.classList.toggle("classic-landscape-playing", active);
-    if (active) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-    return () => { document.body.classList.remove("classic-landscape-playing"); document.body.style.overflow = ""; };
-  }, [activeZone, userId, isLandscape, classicLandscapeInline]);
+    const updateHostRect = () => {
+      const node = classicGameHostRef.current;
+      if (!node) return;
+      const rect = node.getBoundingClientRect();
+      setClassicGameHostRect({ top: rect.top + window.scrollY, left: rect.left + window.scrollX, width: rect.width });
+    };
+    if (classicGameRunning && activeZone !== null && zones[activeZone]?.action === "classic-games" && !isLandscape) {
+      updateHostRect();
+      window.addEventListener("resize", updateHostRect);
+      window.addEventListener("scroll", updateHostRect, true);
+      return () => { window.removeEventListener("resize", updateHostRect); window.removeEventListener("scroll", updateHostRect, true); };
+    }
+  }, [classicGameRunning, activeZone, isLandscape]);
   const openGame = (gameId: string) => {
     window.history.pushState({ shoppersOceanZone: true, shoppersOceanGame: gameId }, "", window.location.href);
     activeQuizGameRef.current = gameId;
@@ -200,46 +209,32 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                 )}
               </div>
             )}
-            {selected.action === "classic-games" && (isLandscape && userId && !classicLandscapeInline ? (
-              <div ref={activityTargetRef} className="min-h-[55vh] rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-6 text-center text-slate-800">Classic Games is open in landscape mode.</div>
-            ) : (
-              <div ref={activityTargetRef} className="classic-game-fullscreen relative w-full rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-3 shadow-xl sm:p-5">
-
-                <div className="classic-game-portrait-header mb-3 flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-[.2em] text-indigo-600">Timeless games for endless fun</p>
-                    <h3 className="mt-1 text-xl font-black text-indigo-950 sm:text-2xl">🎮 Color Blocks Collapse</h3>
-                  </div>
-                  {classicGameRunning && userId && <button type="button" onClick={() => setClassicGameRunning(false)} className="min-h-10 rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-5 py-2 text-sm font-black text-white shadow-md">■ Stop game</button>}
-                </div>
+            {selected.action === "classic-games" && (
+              <div ref={activityTargetRef} className="rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-4 shadow-xl sm:p-5">
+                <h3 className="mb-4 text-xl font-black text-indigo-950 sm:text-2xl">🎮 Classic Games</h3>
                 {!userId ? (
-                  <div className="flex aspect-[16/9] w-full flex-col items-center justify-center rounded-xl bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 text-center text-white">
-                    <h4 className="text-xl font-black sm:text-2xl">Login Required</h4>
-                    <p className="mt-2 max-w-md text-sm text-slate-200">Please sign in or create an account to play Classic Games.</p>
+                  <div className="flex min-h-48 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 text-center text-white">
+                    <h4 className="text-xl font-black">Login Required</h4>
+                    <p className="mt-2 text-sm text-slate-200">Please sign in or create an account to play Classic Games.</p>
                     <div className="mt-5 flex flex-wrap justify-center gap-3">
                       <Link href="/login?type=signup" className="rounded-full border border-emerald-300 bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg">Sign Up</Link>
                       <Link href="/login" className="rounded-full border border-green-300 bg-green-700 px-5 py-2.5 text-sm font-bold text-white shadow-lg">Sign In</Link>
                     </div>
                   </div>
-                ) : classicGameRunning ? (
-                  <div className="classic-game-frame w-full overflow-hidden rounded-xl border-2 border-sky-200 bg-slate-950 shadow-xl">
-                    <iframe
-                      src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html"
-                      title="Color Blocks Collapse"
-                      className="block aspect-[16/9] w-full border-0"
-                      loading="eager"
-                      scrolling="no"
-                      allow="fullscreen; autoplay"
-                      allowFullScreen
-                    />
-                  </div>
                 ) : (
-                  <div className="classic-game-start-screen flex aspect-[16/9] w-full items-center justify-center rounded-xl bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5">
-                    <button type="button" onClick={() => setClassicGameRunning(true)} className="rounded-full border border-emerald-200/70 bg-gradient-to-r from-emerald-500 to-green-700 px-6 py-3 text-sm font-extrabold tracking-wide text-white shadow-[0_0_28px_rgba(16,185,129,.35)] transition hover:scale-105 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200">▶ START GAME</button>
+                  <div ref={classicGameHostRef} className="rounded-2xl border border-white/70 bg-white/70 p-3 shadow-md">
+                    <button type="button" onClick={() => { setClassicGameRunning(true); setClassicLandscapeInline(false); }} className="group flex min-h-24 w-full items-center gap-4 rounded-xl border border-indigo-200 bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-4 text-left text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl">
+                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-white/30 bg-white/15 text-3xl">🧩</span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-lg font-black">Color Blocks Collapse</span>
+                        <span className="mt-1 block text-xs font-semibold text-white/85">Tap to play</span>
+                      </span>
+                      <span className="rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black">PLAY →</span>
+                    </button>
                   </div>
                 )}
               </div>
-            ))}
+            )}
             {selected.action === "brain-battle-arena" && (
               <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={exitGame} /></div>
             )}
@@ -256,21 +251,26 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         )}
       </div>
 
-      {selected?.action === "classic-games" && !!userId && isLandscape && !classicLandscapeInline && typeof document !== "undefined" && createPortal(
-        <div className="fixed inset-0 z-[2147483000] flex h-[100dvh] w-screen flex-col items-center justify-start overflow-y-auto overscroll-y-contain bg-slate-950 px-2 py-3" style={{ touchAction: "pan-y", WebkitOverflowScrolling: "touch" }}>
+      {selected?.action === "classic-games" && !!userId && classicGameRunning && typeof document !== "undefined" && createPortal(
+        <div
+          className={isLandscape
+            ? "fixed inset-0 z-[2147483000] flex h-[100dvh] w-screen flex-col items-center justify-start overflow-y-auto overscroll-y-contain bg-slate-950 px-3 py-3"
+            : "absolute z-[2147483000] flex flex-col items-center rounded-2xl border-2 border-sky-300 bg-slate-950 p-3 shadow-2xl"}
+          style={isLandscape
+            ? { touchAction: "pan-y", WebkitOverflowScrolling: "touch" }
+            : { top: classicGameHostRect?.top ?? 0, left: classicGameHostRect?.left ?? 0, width: classicGameHostRect?.width ?? "100%", minHeight: 180 }}
+        >
           <div className="mb-3 flex w-full max-w-[1280px] shrink-0 items-center justify-between gap-3">
-            <button type="button" onClick={() => setClassicLandscapeInline(true)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Classic Games zone</button>
-            {classicGameRunning && <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-5 py-2.5 text-sm font-black text-white shadow-lg">■ Stop</button>}
+            <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-2.5 text-sm font-black text-white shadow-lg">← Back to Classic Games</button>
+            <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-2.5 text-sm font-black text-white shadow-lg">■ Stop</button>
           </div>
-          {classicGameRunning ? (
-            <div className="w-[94%] max-w-[1280px] shrink-0 overflow-hidden rounded-2xl border-[3px] border-sky-300 bg-slate-950 shadow-2xl">
-              <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block aspect-video w-full border-0" loading="eager" scrolling="no" allow="fullscreen; autoplay" allowFullScreen />
-            </div>
-          ) : (
-            <div className="flex aspect-video w-[94%] max-w-[1280px] shrink-0 items-center justify-center rounded-2xl border-[3px] border-sky-300 bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 shadow-2xl">
-              <button type="button" onClick={() => setClassicGameRunning(true)} className="rounded-full border border-emerald-200/70 bg-gradient-to-r from-emerald-500 to-green-700 px-6 py-3 text-sm font-extrabold tracking-wide text-white shadow-[0_0_28px_rgba(16,185,129,.35)] transition hover:scale-105 hover:brightness-110">▶ START GAME</button>
-            </div>
-          )}
+          <div className={isLandscape ? "w-[94%] max-w-[1280px] shrink-0 overflow-hidden rounded-2xl border-[3px] border-sky-300 bg-slate-950 shadow-2xl" : "w-full max-w-[1280px] shrink-0 overflow-hidden rounded-xl border-2 border-sky-300 bg-slate-950 shadow-2xl"}>
+            <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block aspect-video w-full border-0" loading="eager" scrolling="no" allow="fullscreen; autoplay" allowFullScreen />
+          </div>
+          {isLandscape && <div className="h-8 w-full shrink-0" aria-hidden="true" />}
+        </div>,
+        document.body
+      )}
           <div className="h-8 w-full shrink-0" aria-hidden="true" />
         </div>,
         document.body
