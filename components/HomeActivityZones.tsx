@@ -85,8 +85,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       // External cross-origin game embeds do not expose a verified move event.
       // Never charge a session based on stale localStorage or merely opening the game.
       // Use a versioned key so any old "played" marker from earlier implementations is ignored.
-      const nextSessionId = "classic-game-session-v2:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
-      window.localStorage.setItem(sessionKey + ":v2", JSON.stringify({ sessionId: nextSessionId, played: false }));
+      const nextSessionIdV2 = "classic-game-session-v2:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
+      window.localStorage.setItem(sessionKey + ":v2", JSON.stringify({ sessionId: nextSessionIdV2, played: false }));
 
       if (remaining <= 0) { setClassicQuotaPopup(true); return; }
 
