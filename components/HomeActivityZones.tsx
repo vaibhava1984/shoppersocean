@@ -26,7 +26,7 @@ const entertainmentGroups = [
 
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
-  const [classicGameStarted, setClassicGameStarted] = useState(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null>(null);
   const activeZoneRef = useRef<number | null>(null);
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
@@ -191,28 +191,74 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               <div className="flex min-h-[420px] w-full flex-col items-center justify-center gap-5 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-5 sm:p-8">
                 {!classicGameStarted ? (
                   <>
-                    <div className="text-6xl" aria-hidden="true">🎮</div>
-                    <h3 className="text-center text-2xl font-black text-slate-800">Tic Tac Toe</h3>
-                    <p className="max-w-sm text-center text-sm text-slate-600">Ready for a quick game?</p>
-                    <button
-                      type="button"
-                      onClick={() => setClassicGameStarted(true)}
-                      className="rounded-full border border-white/40 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-600 px-8 py-4 text-base font-black text-white shadow-xl transition hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
-                    >
-                      Play Tic Tac Toe
-                    </button>
+                    <div className="text-6xl" aria-hidden="true">🎲</div>
+                    <h3 className="text-center text-2xl font-black text-slate-800">Classic Games</h3>
+                    <p className="max-w-sm text-center text-sm text-slate-600">Choose a game to play.</p>
+                    <div className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+                      <button
+                        type="button"
+                        onClick={() => setClassicGameStarted("tic-tac-toe")}
+                        className="flex-1 rounded-full border border-white/40 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-600 px-6 py-4 text-base font-black text-white shadow-xl transition hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
+                      >
+                        Play Tic Tac Toe
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setClassicGameStarted("solitaire")}
+                        className="flex-1 rounded-full border border-white/40 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-700 px-6 py-4 text-base font-black text-white shadow-xl transition hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200"
+                      >
+                        Play Solitaire
+                      </button>
+                    </div>
                   </>
                 ) : (
-                  <iframe
-                    src="https://solitaires-online.com/tic-tac-toe/#id=47ylono0ne,no-nav,no-article,no-feedback,no-ads"
-                    title="Tic-Tac-Toe game"
-                    width="350"
-                    height="360"
-                    className="block max-w-full rounded-xl border-0"
-                    style={{ width: "min(350px, 100%)", height: "360px" }}
-                    loading="lazy"
-                    allow="fullscreen"
-                  />
+                  <div className="w-full">
+                    <button
+                      type="button"
+                      onClick={() => setClassicGameStarted(null)}
+                      className="mb-4 rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-100"
+                    >
+                      ← Back to Classic Games
+                    </button>
+                    {classicGameStarted === "tic-tac-toe" ? (
+                      <div className="flex justify-center">
+                        <iframe
+                          src="https://solitaires-online.com/tic-tac-toe/#id=47ylono0ne,no-nav,no-article,no-feedback,no-ads"
+                          title="Tic-Tac-Toe game"
+                          width="350"
+                          height="360"
+                          className="block max-w-full rounded-xl border-0"
+                          style={{ width: "min(350px, 100%)", height: "360px" }}
+                          loading="lazy"
+                          allow="fullscreen"
+                        />
+                      </div>
+                    ) : (
+                      <div id="solitaire_embed" className="w-full">
+                        <style>{`
+                          #solitaire_embed > .solitaire-embed-frame { position:relative; padding-bottom:75%; border-radius:var(--radius-md, 6px); overflow:hidden; }
+                          #solitaire_embed iframe { width:100%; height:100%; position:absolute; left:0; top:0; border:0; }
+                          @media (max-width:800px) { #solitaire_embed > .solitaire-embed-frame { padding-bottom:90%; } }
+                          @media (max-width:568px) { #solitaire_embed > .solitaire-embed-frame { padding-bottom:100%; } }
+                          @media (max-width:414px) { #solitaire_embed > .solitaire-embed-frame { padding-bottom:120%; } }
+                        `}</style>
+                        <div className="solitaire-embed-frame">
+                          <iframe
+                            src="https://online-solitaire.com/u2pt6sc6nx"
+                            title="Play Klondike (Turn 3) Solitaire"
+                            width="100%"
+                            height="100%"
+                            loading="lazy"
+                            allowFullScreen={false}
+                          />
+                          <div className="pointer-events-none absolute inset-0 rounded-md shadow-[inset_0_0_0_1px_rgba(0,0,0,0.25)]" />
+                        </div>
+                        <p className="m-0 w-full text-center text-sm leading-10 text-slate-700">
+                          Try <a className="font-semibold text-blue-700 underline" href="https://online-solitaire.com/golf-solitaire" target="_blank" rel="noopener noreferrer">Golf Solitaire</a> or <a className="font-semibold text-blue-700 underline" href="https://online-solitaire.com/spider-solitaire" target="_blank" rel="noopener noreferrer">Spider Solitaire</a> if you like <a className="font-semibold text-blue-700 underline" href="https://online-solitaire.com" target="_blank" rel="noopener noreferrer">Solitaire</a>.
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             )}
