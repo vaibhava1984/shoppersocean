@@ -211,8 +211,9 @@ export default function ArcheryWorldTour() {
         });
         if (round.aiming && round.aimPoint) {
           const pull = round.aimPoint.clone().sub(new THREE.Vector3(-2.05, 1.45, .25));
-          const middle = new THREE.Vector3(-2.05, 1.45, .25).add(pull.clone().multiplyScalar(.22));
-          const positions = new Float32Array([0,-1.2,.02, middle.x + 2.5 - (-2.5), middle.y - 1.55, .02, 0,1.2,.02]);
+          const middleX = .55 + pull.x * .18;
+          const middleY = pull.y * .18;
+          const positions = new Float32Array([0,-1.2,.02, middleX, middleY, .12, 0,1.2,.02]);
           refs.string.geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
           refs.string.geometry.attributes.position.needsUpdate = true;
           refs.string.geometry.computeBoundingSphere();
