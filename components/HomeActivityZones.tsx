@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import EntertainmentHub from "@/components/EntertainmentHub";
 import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
@@ -55,6 +56,21 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
   const [classicGameRunning, setClassicGameRunning] = useState(true);
   const [classicLandscapeInline, setClassicLandscapeInline] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia("(orientation: landscape) and (max-height: 600px)");
+    const update = () => setIsLandscape(media.matches);
+    update();
+    media.addEventListener?.("change", update);
+    return () => media.removeEventListener?.("change", update);
+  }, []);
+  useEffect(() => {
+    const active = activeZone !== null && zones[activeZone]?.action === "classic-games" && !!userId && isLandscape && !classicLandscapeInline;
+    document.body.classList.toggle("classic-landscape-playing", active);
+    if (active) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.classList.remove("classic-landscape-playing"); document.body.style.overflow = ""; };
+  }, [activeZone, userId, isLandscape, classicLandscapeInline]);
   const openGame = (gameId: string) => {
     window.history.pushState({ shoppersOceanZone: true, shoppersOceanGame: gameId }, "", window.location.href);
     activeQuizGameRef.current = gameId;
@@ -81,15 +97,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
       <style jsx global>{`@keyframes liveZoneZoom{0%{opacity:0;transform:scale(.55)}65%{opacity:1;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}
 @media (orientation: landscape) and (max-height: 600px) {
-  .classic-game-fullscreen:not(.classic-game-inline-mode) { position: fixed !important; inset: 0 !important; z-index: 99999 !important; width: 100vw !important; height: 100dvh !important; max-width: none !important; border: 0 !important; border-radius: 0 !important; padding: 12px !important; margin: 0 !important; background: #080d20 !important; display: flex !important; flex-direction: column !important; justify-content: center !important; }
-  .classic-game-fullscreen:not(.classic-game-inline-mode) .classic-game-portrait-header { display: none !important; }
-  .classic-game-fullscreen:not(.classic-game-inline-mode) .classic-game-frame, .classic-game-fullscreen:not(.classic-game-inline-mode) .classic-game-start-screen { width: min(100%, 1280px) !important; height: auto !important; max-height: calc(100dvh - 76px) !important; aspect-ratio: 16 / 9 !important; border: 3px solid rgba(125,211,252,.8) !important; border-radius: 16px !important; margin: 0 auto !important; }
-  .classic-game-fullscreen:not(.classic-game-inline-mode) .classic-game-frame iframe { width: 100% !important; height: 100% !important; aspect-ratio: 16 / 9 !important; }
-  .classic-game-fullscreen:not(.classic-game-inline-mode) .classic-game-landscape-controls { display: flex !important; position: relative !important; inset: auto !important; width: min(100%, 1280px) !important; margin: 0 auto 10px !important; }
-  .classic-game-inline-mode { position: relative !important; inset: auto !important; z-index: auto !important; width: auto !important; height: auto !important; max-width: none !important; border: 1px solid #bae6fd !important; border-radius: 24px !important; padding: 12px !important; margin: 0 !important; background: linear-gradient(135deg,#e0f2fe,#eff6ff,#e0e7ff) !important; display: block !important; }
-  .classic-game-inline-mode .classic-game-portrait-header { display: flex !important; }
-  .classic-game-inline-mode .classic-game-landscape-controls { display: none !important; }
-  .classic-game-inline-mode .classic-game-frame, .classic-game-inline-mode .classic-game-start-screen { width: 100% !important; height: auto !important; max-height: none !important; aspect-ratio: 16 / 9 !important; border-radius: 12px !important; }
+
 }
 .classic-game-landscape-controls { display: none; }`}</style>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -192,8 +200,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                 )}
               </div>
             )}
-            {selected.action === "classic-games" && (
-              <div ref={activityTargetRef} className={`classic-game-fullscreen relative w-full rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-3 shadow-xl sm:p-5${classicLandscapeInline ? " classic-game-inline-mode" : ""}`}>
+            {selected.action === "classic-games" && (isLandscape && userId && !classicLandscapeInline ? (
+              <div ref={activityTargetRef} className="min-h-[55vh] rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-6 text-center text-slate-800">Classic Games is open in landscape mode.</div>
+            ) : (
+              <div ref={activityTargetRef} className="classic-game-fullscreen relative w-full rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-3 shadow-xl sm:p-5">
 
                 <div className="classic-game-portrait-header mb-3 flex flex-wrap items-center justify-between gap-3">
                   <div>
@@ -202,10 +212,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                   </div>
                   {classicGameRunning && userId && <button type="button" onClick={() => setClassicGameRunning(false)} className="min-h-10 rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-5 py-2 text-sm font-black text-white shadow-md">■ Stop game</button>}
                 </div>
-                {classicGameRunning && userId && !classicLandscapeInline && <div className="classic-game-landscape-controls absolute left-3 right-3 top-3 z-20 items-center justify-between gap-3">
-                  <button type="button" onClick={() => setClassicLandscapeInline(true)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-2 text-sm font-black text-white shadow-lg">← Back</button>
-                  <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-2 text-sm font-black text-white shadow-lg">■ Stop</button>
-                </div>}
                 {!userId ? (
                   <div className="flex aspect-[16/9] w-full flex-col items-center justify-center rounded-xl bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 text-center text-white">
                     <h4 className="text-xl font-black sm:text-2xl">Login Required</h4>
@@ -233,7 +239,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                   </div>
                 )}
               </div>
-            )}
+            ))}
             {selected.action === "brain-battle-arena" && (
               <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={exitGame} /></div>
             )}
@@ -249,6 +255,26 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
           </div>
         )}
       </div>
+
+      {selected?.action === "classic-games" && !!userId && isLandscape && !classicLandscapeInline && typeof document !== "undefined" && createPortal(
+        <div className="fixed inset-0 z-[2147483000] flex h-[100dvh] w-screen flex-col items-center justify-center overflow-y-auto overscroll-contain bg-slate-950 px-3 py-3" style={{ touchAction: "pan-y" }}>
+          <div className="mb-3 flex w-full max-w-[1280px] shrink-0 items-center justify-between gap-3">
+            <button type="button" onClick={() => setClassicLandscapeInline(true)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Classic Games zone</button>
+            {classicGameRunning && <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-5 py-2.5 text-sm font-black text-white shadow-lg">■ Stop</button>}
+          </div>
+          {classicGameRunning ? (
+            <div className="w-full max-w-[1280px] shrink-0 overflow-hidden rounded-2xl border-[3px] border-sky-300 bg-slate-950 shadow-2xl">
+              <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block aspect-video w-full border-0" loading="eager" scrolling="no" allow="fullscreen; autoplay" allowFullScreen />
+            </div>
+          ) : (
+            <div className="flex aspect-video w-full max-w-[1280px] shrink-0 items-center justify-center rounded-2xl border-[3px] border-sky-300 bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5 shadow-2xl">
+              <button type="button" onClick={() => setClassicGameRunning(true)} className="rounded-full border border-emerald-200/70 bg-gradient-to-r from-emerald-500 to-green-700 px-6 py-3 text-sm font-extrabold tracking-wide text-white shadow-[0_0_28px_rgba(16,185,129,.35)] transition hover:scale-105 hover:brightness-110">▶ START GAME</button>
+            </div>
+          )}
+          <div className="h-8 w-full shrink-0" aria-hidden="true" />
+        </div>,
+        document.body
+      )}
     </section>
   );
 }
