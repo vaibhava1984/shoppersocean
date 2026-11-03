@@ -29,6 +29,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null | false>(false);
   const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | null | false>(false);
+  const classicGameInteractedRef = useRef(false);
+  const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
   const activeZoneRef = useRef<number | null>(null);
@@ -38,7 +40,25 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   useEffect(() => {
     const handleMobileBack = () => {
       if (classicGameStartedRef.current) {
+        const session = classicGameSessionRef.current;
+        if (session && classicGameInteractedRef.current && !session.consumed) {
+          session.consumed = true;
+          void fetch("/api/game-access", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId })
+          }).then(async response => {
+            const data = await response.json();
+            if (response.ok) {
+              setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: data.remaining } }));
+            } else {
+              console.error("Classic game quota could not be recorded:", data.error);
+            }
+          }).catch(error => console.error("Classic game quota recording failed:", error));
+        }
         classicGameStartedRef.current = false;
+        classicGameSessionRef.current = null;
+        classicGameInteractedRef.current = false;
         setClassicGameStarted(false);
         return;
       }
@@ -92,6 +112,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
 
       const classicSessionToken = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
       window.localStorage.setItem(sessionKey, JSON.stringify({ sessionId: classicSessionToken, played: false }));
+      classicGameInteractedRef.current = false;
+      classicGameSessionRef.current = { gameType, sessionId: classicSessionToken, consumed: false };
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
       classicGameStartedRef.current = game; setClassicGameStarted(game);
     } catch (error) { console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
@@ -270,6 +292,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       referrerPolicy="strict-origin-when-cross-origin"
                       sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
                       allow="autoplay; fullscreen"
+                      onFocus={() => { classicGameInteractedRef.current = true; }}
                     />
                     <p className="my-2 text-center text-xs leading-5 text-slate-600">
                       Played on <a href="https://solitaire-online.com/?utm_source=solitaire_widget&amp;utm_medium=referral&amp;utm_campaign=embed" target="_blank" rel="nofollow noopener" className="text-emerald-700 underline">solitaire-online.com</a>
@@ -289,6 +312,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       style={{ width: "min(350px, 100%)", height: "360px" }}
                       loading="lazy"
                       allow="autoplay; fullscreen"
+                      onFocus={() => { classicGameInteractedRef.current = true; }}
                     />
                   </div>
                 )}
