@@ -30,7 +30,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  const [classicGame, setClassicGame] = useState<"tic-tac-toe" | "solitaire" | null>("tic-tac-toe");
+  const [classicGame, setClassicGame] = useState<"tic-tac-toe" | null>("tic-tac-toe");
   useEffect(() => {
     const handleMobileBack = () => {
       if (activeQuizGameRef.current !== null) {
@@ -183,17 +183,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               <div ref={activityTargetRef} className="w-full">
                 {classicGame === "tic-tac-toe" ? (
                   <TicTacToeGame onExit={() => setClassicGame(null)} />
-                ) : classicGame === "solitaire" ? (
-                  <div className="rounded-3xl border border-violet-200 bg-gradient-to-br from-violet-50 via-white to-indigo-50 p-4 shadow-sm sm:p-6">
-                    <div className="mb-4 flex items-center justify-between gap-3">
-                      <button type="button" onClick={() => setClassicGame(null)} className="rounded-full bg-gradient-to-r from-indigo-700 to-blue-600 px-4 py-2 text-sm font-black text-white shadow">← Back to Classic Games</button>
-                      <h3 className="text-lg font-black text-indigo-950 sm:text-2xl">Solitaire (Klondike)</h3>
-                    </div>
-                    <div className="mx-auto w-full max-w-[760px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
-                      <iframe src="https://exebrowser.com/embed/solitaire-open/" title="Solitaire (Klondike) by ExeBrowser" width="100%" height="600" loading="lazy" allow="fullscreen" className="block w-full border-0" style={{height:"600px",maxWidth:"760px"}} />
-                    </div>
-                    <p className="mt-3 text-center text-xs text-slate-500">Solitaire (Klondike) by <a href="https://exebrowser.com/" target="_blank" rel="noopener noreferrer" className="font-bold text-indigo-700 underline">ExeBrowser</a> · <a href="https://exebrowser.com/run/solitaire-open/" target="_blank" rel="noopener noreferrer" className="font-bold text-indigo-700 underline">Open in a new tab</a></p>
-                  </div>
                 ) : (
                   <div className="rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-4 shadow-xl sm:p-7">
                     <div className="mb-5 text-center">
@@ -204,9 +193,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       <button onClick={() => setClassicGame("tic-tac-toe")} className="rounded-2xl border-2 border-sky-200 bg-gradient-to-b from-blue-700 to-indigo-900 p-3 text-center text-white shadow-lg transition hover:-translate-y-1">
                         <span className="block text-4xl">❌⭕</span><span className="mt-2 block text-sm font-black sm:text-base">Tic Tac Toe</span><span className="mt-2 inline-block rounded-full bg-gradient-to-b from-lime-400 to-green-600 px-4 py-1.5 text-xs font-black text-white shadow">Play Now</span>
                       </button>
-                      <button onClick={() => setClassicGame("solitaire")} className="rounded-2xl border-2 border-emerald-200 bg-gradient-to-b from-emerald-700 to-green-950 p-3 text-center text-white shadow-lg transition hover:-translate-y-1">
-                        <span className="block text-4xl">🃏</span><span className="mt-2 block text-sm font-black sm:text-base">Solitaire</span><span className="mt-2 inline-block rounded-full bg-gradient-to-b from-lime-400 to-green-600 px-4 py-1.5 text-xs font-black text-white shadow">Play Now</span>
-                      </button>
+
                     </div>
                   </div>
                 )}
