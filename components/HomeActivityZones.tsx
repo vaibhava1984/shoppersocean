@@ -9,6 +9,7 @@ import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
+import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 
 const zones = [
@@ -294,27 +295,17 @@ useEffect(() => {
                     {activeQuizGame==="landmark" && <WorldExplorer key="landmark" userId={userId} initialGameId="landmark" onExit={exitGame} />}
                     {activeQuizGame==="records" && <WorldRecordsArena key="records" userId={userId} onExit={exitGame} />}
                     {activeQuizGame==="trivio" && (
-                      <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-violet-50 p-2 sm:p-4">
-                        <div className="mb-3 rounded-xl border border-violet-200 bg-white px-3 py-2 text-center text-xs font-extrabold text-violet-900">
-                          {trivioQuotaLoading ? "Checking quota…" : `${trivioRemaining} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
-                        </div>
+                      <div className="w-full">
                         {trivioQuotaLoading ? (
                           <p className="rounded-xl bg-white p-6 text-center text-sm font-bold text-violet-800">Checking your daily quota…</p>
                         ) : trivioRemaining <= 0 ? (
                           <p className="rounded-xl bg-white p-6 text-center text-sm font-bold text-violet-800">Your daily quota for this quiz is over. Please visit tomorrow.</p>
                         ) : (
-                          <iframe
-                            src="https://trivio.net/embed/quiz/fun-trivia-questions-with-answers/"
-                            title="100 Fun Trivia Questions With Answers"
-                            className="block w-full rounded-2xl border border-violet-100"
-                            style={{ height: "640px" }}
-                            loading="lazy"
-                            onFocus={() => {
-                              if (trivioConsumedRef.current || trivioQuotaLoading || trivioRemaining <= 0) return;
-                              trivioConsumedRef.current = true;
-                              const challengeId = "trivio-" + Date.now() + "-" + Math.random().toString(36).slice(2);
-                              void fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "quiz-world", gameTypeId: "trivio", challengeId }) }).then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota could not be recorded"); setTrivioRemaining(Number(data.remaining ?? 0)); }).catch(error => { trivioConsumedRef.current = false; console.error("Trivio quota recording failed:", error); });
-                            }}
+                          <NativeTriviaQuiz
+                            userId={userId}
+                            remaining={trivioRemaining}
+                            onRemainingChange={setTrivioRemaining}
+                            onExit={exitGame}
                           />
                         )}
                       </div>
