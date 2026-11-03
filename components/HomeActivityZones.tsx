@@ -277,15 +277,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       referrerPolicy="strict-origin-when-cross-origin"
                       sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
                       allow="autoplay; fullscreen"
-                      onFocus={() => {
-                        // Loading the external iframe is not a play. Mark only after
-                        // the player actually enters its browsing area.
-                        try {
-                          const key = "shoppersOcean:classic-session:" + userId + ":solitaire";
-                          const session = JSON.parse(window.localStorage.getItem(key) || "null");
-                          if (session?.sessionId) window.localStorage.setItem(key, JSON.stringify({ ...session, played: true }));
-                        } catch {}
-                      }}
                     />
                     <p className="my-2 text-center text-xs leading-5 text-slate-600">
                       Played on <a href="https://solitaire-online.com/?utm_source=solitaire_widget&amp;utm_medium=referral&amp;utm_campaign=embed" target="_blank" rel="nofollow noopener" className="text-emerald-700 underline">solitaire-online.com</a>
@@ -305,13 +296,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       style={{ width: "min(350px, 100%)", height: "360px" }}
                       loading="lazy"
                       allow="autoplay; fullscreen"
-                      onLoad={() => {
-                        try {
-                          const key = "shoppersOcean:classic-session:" + userId + ":tic";
-                          const session = JSON.parse(window.localStorage.getItem(key) || "null");
-                          if (session?.sessionId) window.localStorage.setItem(key, JSON.stringify({ ...session, played: true }));
-                        } catch {}
-                      }}
                     />
                   </div>
                 )}
