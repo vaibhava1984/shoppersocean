@@ -52,6 +52,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(null);
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
+  const [classicGameRunning, setClassicGameRunning] = useState(true);
   const openGame = (gameId: string) => {
     window.history.pushState({ shoppersOceanZone: true, shoppersOceanGame: gameId }, "", window.location.href);
     activeQuizGameRef.current = gameId;
@@ -178,23 +179,39 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               </div>
             )}
             {selected.action === "classic-games" && (
-              <div ref={activityTargetRef} className="w-full rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-4 shadow-xl sm:p-7">
-                <div className="mb-5 text-center">
-                  <p className="text-xs font-black uppercase tracking-[.24em] text-indigo-600">Timeless games for endless fun</p>
-                  <h3 className="mt-1 text-2xl font-black text-indigo-950 sm:text-3xl">🎮 Classic Games</h3>
-                  <p className="mt-3 text-sm font-semibold text-indigo-800">Play classic games right here.</p>
+              <div ref={activityTargetRef} className="w-full rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-3 shadow-xl sm:p-5">
+                <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-[.2em] text-indigo-600">Timeless games for endless fun</p>
+                    <h3 className="mt-1 text-xl font-black text-indigo-950 sm:text-2xl">🎮 Color Blocks Collapse</h3>
+                  </div>
+                  {classicGameRunning ? (
+                    <button type="button" onClick={() => setClassicGameRunning(false)} className="min-h-11 rounded-full border border-rose-300 bg-gradient-to-r from-rose-600 to-red-700 px-5 py-2.5 text-sm font-black text-white shadow-md">■ Stop game</button>
+                  ) : (
+                    <button type="button" onClick={() => setClassicGameRunning(true)} className="min-h-11 rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-700 px-5 py-2.5 text-sm font-black text-white shadow-md">▶ Start game</button>
+                  )}
                 </div>
-                <div className="mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-indigo-200 bg-slate-950 shadow-2xl">
-                  <iframe
-                    src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html"
-                    title="Color Blocks Collapse"
-                    className="block h-[min(82svh,900px)] min-h-[620px] w-full border-0 sm:h-[800px]"
-                    loading="lazy"
-                    scrolling="no"
-                    allow="fullscreen; autoplay"
-                    allowFullScreen
-                  />
-                </div>
+                {classicGameRunning ? (
+                  <div className="w-full overflow-hidden rounded-xl border border-indigo-200 bg-slate-950 shadow-xl">
+                    <iframe
+                      src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html"
+                      title="Color Blocks Collapse"
+                      className="block aspect-[16/9] w-full border-0"
+                      loading="lazy"
+                      scrolling="no"
+                      allow="fullscreen; autoplay"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : (
+                  <div className="flex aspect-[16/9] w-full flex-col items-center justify-center rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-950 to-slate-900 p-5 text-center text-white">
+                    <span className="text-4xl" aria-hidden="true">⏸️</span>
+                    <p className="mt-2 text-lg font-black">Game stopped</p>
+                    <p className="mt-1 text-sm text-indigo-200">The game is paused and the page is ready to scroll.</p>
+                  </div>
+                )}
+                <p className="mt-2 text-center text-[11px] font-semibold text-indigo-800">The game fits the mobile screen width in landscape layout. Swipe outside the game frame to scroll the page.</p>
+                <div aria-label="Page scrolling area" className="mt-2 h-5 w-full touch-pan-y rounded-full bg-indigo-200/70" />
               </div>
             )}
             {selected.action === "brain-battle-arena" && (
