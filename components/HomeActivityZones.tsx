@@ -26,7 +26,7 @@ const entertainmentGroups = [
 
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null>(null);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | null>(null);
   const activeZoneRef = useRef<number | null>(null);
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
@@ -188,76 +188,48 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={exitGame} /></div>
             )}
             {selected.action === "classic-games" && (
-              <div className="flex min-h-[420px] w-full flex-col items-center justify-center gap-5 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-5 sm:p-8">
+              <div>
                 {!classicGameStarted ? (
                   <>
-                    <div className="text-6xl" aria-hidden="true">🎲</div>
-                    <h3 className="text-center text-2xl font-black text-slate-800">Classic Games</h3>
-                    <p className="max-w-sm text-center text-sm text-slate-600">Choose a game to play.</p>
-                    <div className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+                    <div className="mb-5 rounded-2xl bg-gradient-to-r from-orange-600 via-rose-600 to-pink-700 p-4 text-white">
+                      <h3 className="text-xl font-black">Classic Games</h3>
+                      <p className="mt-1 text-sm text-rose-100">Choose a classic game and start playing.</p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       <button
                         type="button"
                         onClick={() => setClassicGameStarted("tic-tac-toe")}
-                        className="flex-1 rounded-full border border-white/40 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-600 px-6 py-4 text-base font-black text-white shadow-xl transition hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
+                        className="group relative min-h-40 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-orange-500 via-rose-600 to-pink-700 p-5 text-left text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
                       >
-                        Play Tic Tac Toe
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setClassicGameStarted("solitaire")}
-                        className="flex-1 rounded-full border border-white/40 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-700 px-6 py-4 text-base font-black text-white shadow-xl transition hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200"
-                      >
-                        Play Solitaire
+                        <span className="absolute -right-3 -top-5 text-8xl opacity-20 transition group-hover:scale-110">❎</span>
+                        <span className="relative text-3xl">❎</span>
+                        <span className="relative mt-3 block text-base font-black leading-6">01. Tic Tac Toe</span>
+                        <span className="relative mt-1 block text-xs leading-5 text-white/90">A timeless two-player strategy game.</span>
+                        <span className="relative mt-3 inline-flex rounded-full border border-white/40 bg-white/20 px-3 py-1.5 text-[10px] font-extrabold">Play now →</span>
                       </button>
                     </div>
                   </>
                 ) : (
-                  <div className="w-full">
+                  <div ref={gameTargetRef} className="w-full rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-5">
                     <button
                       type="button"
                       onClick={() => setClassicGameStarted(null)}
-                      className="mb-4 rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-slate-100"
+                      className="mb-4 rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110"
                     >
                       ← Back to Classic Games
                     </button>
-                    {classicGameStarted === "tic-tac-toe" ? (
-                      <div className="flex justify-center">
-                        <iframe
-                          src="https://solitaires-online.com/tic-tac-toe/#id=47ylono0ne,no-nav,no-article,no-feedback,no-ads"
-                          title="Tic-Tac-Toe game"
-                          width="350"
-                          height="360"
-                          className="block max-w-full rounded-xl border-0"
-                          style={{ width: "min(350px, 100%)", height: "360px" }}
-                          loading="lazy"
-                          allow="fullscreen"
-                        />
-                      </div>
-                    ) : (
-                      <div id="solitaire_embed" className="w-full">
-                        <style>{`
-                          #solitaire_embed > .solitaire-embed-frame { position:relative; padding-bottom:75%; border-radius:var(--radius-md, 6px); overflow:hidden; }
-                          #solitaire_embed iframe { width:100%; height:100%; position:absolute; left:0; top:0; border:0; }
-                          @media (max-width:800px) { #solitaire_embed > .solitaire-embed-frame { padding-bottom:90%; } }
-                          @media (max-width:568px) { #solitaire_embed > .solitaire-embed-frame { padding-bottom:100%; } }
-                          @media (max-width:414px) { #solitaire_embed > .solitaire-embed-frame { padding-bottom:120%; } }
-                        `}</style>
-                        <div className="solitaire-embed-frame">
-                          <iframe
-                            src="https://online-solitaire.com/u2pt6sc6nx"
-                            title="Play Klondike (Turn 3) Solitaire"
-                            width="100%"
-                            height="100%"
-                            loading="lazy"
-                            allowFullScreen={false}
-                          />
-                          <div className="pointer-events-none absolute inset-0 rounded-md shadow-[inset_0_0_0_1px_rgba(0,0,0,0.25)]" />
-                        </div>
-                        <p className="m-0 w-full text-center text-sm leading-10 text-slate-700">
-                          Try <a className="font-semibold text-blue-700 underline" href="https://online-solitaire.com/golf-solitaire" target="_blank" rel="noopener noreferrer">Golf Solitaire</a> or <a className="font-semibold text-blue-700 underline" href="https://online-solitaire.com/spider-solitaire" target="_blank" rel="noopener noreferrer">Spider Solitaire</a> if you like <a className="font-semibold text-blue-700 underline" href="https://online-solitaire.com" target="_blank" rel="noopener noreferrer">Solitaire</a>.
-                        </p>
-                      </div>
-                    )}
+                    <div className="flex justify-center">
+                      <iframe
+                        src="https://solitaires-online.com/tic-tac-toe/#id=47ylono0ne,no-nav,no-article,no-feedback,no-ads"
+                        title="Tic-Tac-Toe game"
+                        width="350"
+                        height="360"
+                        className="block max-w-full rounded-xl border-0"
+                        style={{ width: "min(350px, 100%)", height: "360px" }}
+                        loading="lazy"
+                        allow="fullscreen"
+                      />
+                    </div>
                   </div>
                 )}
               </div>
