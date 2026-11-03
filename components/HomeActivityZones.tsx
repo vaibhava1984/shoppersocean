@@ -74,39 +74,26 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const openClassicGame = async (game: "tic-tac-toe" | "solitaire") => {
     if (!userId) { window.location.assign("/login"); return; }
     const gameType = game === "solitaire" ? "solitaire" : "tic";
+    const sessionKey = "shoppersOcean:classic-session:" + userId + ":" + gameType;
     try {
       const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
       const quotaData = await quotaResponse.json();
       if (!quotaResponse.ok) throw new Error(quotaData.error || "Quota could not be verified.");
       setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
-      const remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
-      if (remaining <= 0) {
-        setClassicQuotaPopup(true);
-        return;
+      if (Number(quotaData.remainingByType?.[gameType] ?? 0) <= 0) { setClassicQuotaPopup(true); return; }
+      let previous: { sessionId?: string; played?: boolean } | null = null;
+      try { const raw = window.localStorage.getItem(sessionKey); previous = raw ? JSON.parse(raw) : null; } catch { previous = null; }
+      if (previous?.played && previous.sessionId) {
+        const response = await fetch("/api/game-access", { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: gameType, challengeId: previous.sessionId }) });
+        const data = await response.json();
+        if (!response.ok) { if (response.status === 403) setClassicQuotaPopup(true); else throw new Error(data.error || "Your completed game could not be recorded."); return; }
+        setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [gameType]: Number(data.remaining ?? 0) }, loading: false }));
       }
-      const response = await fetch("/api/game-access", {
-        method: "POST", cache: "no-store",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sectionId: "classic-games",
-          gameTypeId: gameType,
-          challengeId: "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2)
-        })
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        if (response.status === 403) setClassicQuotaPopup(true);
-        else throw new Error(data.error || "Your game could not be started.");
-        return;
-      }
-      setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [gameType]: Number(data.remaining ?? 0) }, loading: false }));
+      const nextSessionId = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
+      window.localStorage.setItem(sessionKey, JSON.stringify({ sessionId: nextSessionId, played: false }));
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
-      classicGameStartedRef.current = game;
-      setClassicGameStarted(game);
-    } catch (error) {
-      console.error("Classic game quota check failed:", error);
-      setClassicQuota(current => ({ ...current, loading: false }));
-    }
+      classicGameStartedRef.current = game; setClassicGameStarted(game);
+    } catch (error) { console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
   };
   useEffect(() => {
     if (selected?.action !== "classic-games" || !userId) return;
@@ -282,6 +269,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       referrerPolicy="strict-origin-when-cross-origin"
                       sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
                       allow="autoplay; fullscreen"
+                      onPointerDown={() => {
+                        try {
+                          const key = "shoppersOcean:classic-session:" + userId + ":solitaire";
+                          const session = JSON.parse(window.localStorage.getItem(key) || "null");
+                          if (session?.sessionId) window.localStorage.setItem(key, JSON.stringify({ ...session, played: true }));
+                        } catch {}
+                      }}
                     />
                     <p className="my-2 text-center text-xs leading-5 text-slate-600">
                       Played on <a href="https://solitaire-online.com/?utm_source=solitaire_widget&amp;utm_medium=referral&amp;utm_campaign=embed" target="_blank" rel="nofollow noopener" className="text-emerald-700 underline">solitaire-online.com</a>
@@ -301,6 +295,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       style={{ width: "min(350px, 100%)", height: "360px" }}
                       loading="lazy"
                       allow="autoplay; fullscreen"
+                      onPointerDown={() => {
+                        try {
+                          const key = "shoppersOcean:classic-session:" + userId + ":tic";
+                          const session = JSON.parse(window.localStorage.getItem(key) || "null");
+                          if (session?.sessionId) window.localStorage.setItem(key, JSON.stringify({ ...session, played: true }));
+                        } catch {}
+                      }}
                     />
                   </div>
                 )}
