@@ -188,8 +188,29 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={exitGame} /></div>
             )}
             {selected.action === "classic-games" && (
-              <div ref={activityTargetRef}>
-                <EntertainmentHub userId={userId} visibleGroupIds={["classic-games"]} initialGroupId="classic-games" embedded />
+              <div ref={activityTargetRef} className="flex w-full items-center justify-center">
+                {classicGameStarted !== "tic-tac-toe" ? (
+                  <button
+                    type="button"
+                    onClick={() => setClassicGameStarted("tic-tac-toe")}
+                    className="rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-8 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
+                  >
+                    ❌⭕ &nbsp; Play Tic Tac Toe
+                  </button>
+                ) : (
+                  <div className="flex min-h-[420px] w-full items-start justify-center rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
+                    <iframe
+                      src="https://solitaires-online.com/tic-tac-toe/#id=47ylono0ne,no-nav,no-article,no-feedback,no-ads"
+                      title="Tic-Tac-Toe game"
+                      width="350"
+                      height="360"
+                      className="block max-w-full rounded-xl border-0"
+                      style={{ width: "min(350px, 100%)", height: "360px" }}
+                      loading="lazy"
+                      allow="fullscreen"
+                    />
+                  </div>
+                )}
               </div>
             )}
             {selected.action === "learning" && (
