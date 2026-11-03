@@ -31,8 +31,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => { setPortalReady(true); }, []);
-
   useEffect(() => {
     const handleMobileBack = () => {
       if (activeQuizGameRef.current !== null) {
@@ -57,7 +55,28 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
   const [classicGameRunning, setClassicGameRunning] = useState(false);
-  const [portalReady, setPortalReady] = useState(false);
+  const [classicGamePortal, setClassicGamePortal] = useState<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!classicGameRunning) { setClassicGamePortal(null); return; }
+    const host = document.createElement("div");
+    host.id = "classic-game-overlay-root";
+    Object.assign(host.style, { position: "fixed", inset: "0", width: "100vw", height: "100dvh", minHeight: "100vh", zIndex: "2147483647", background: "#090d24", isolation: "isolate" });
+    const previous = Array.from(document.body.children).filter((node) => node !== host).map((node) => ({ node: node as HTMLElement, visibility: (node as HTMLElement).style.visibility, pointerEvents: (node as HTMLElement).style.pointerEvents }));
+    previous.forEach(({ node }) => { node.style.visibility = "hidden"; node.style.pointerEvents = "none"; });
+    const oldBodyOverflow = document.body.style.overflow;
+    const oldHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.body.appendChild(host);
+    setClassicGamePortal(host);
+    return () => {
+      setClassicGamePortal(null);
+      previous.forEach(({ node, visibility, pointerEvents }) => { node.style.visibility = visibility; node.style.pointerEvents = pointerEvents; });
+      document.body.style.overflow = oldBodyOverflow;
+      document.documentElement.style.overflow = oldHtmlOverflow;
+      host.remove();
+    };
+  }, [classicGameRunning]);
   const openGame = (gameId: string) => {
     window.history.pushState({ shoppersOceanZone: true, shoppersOceanGame: gameId }, "", window.location.href);
     activeQuizGameRef.current = gameId;
@@ -213,7 +232,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                         <span className="col-start-2 inline-flex w-fit items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black sm:ml-auto">PLAY →</span>
                       </button>
                     ) : (
-                      portalReady ? createPortal(
+                      classicGamePortal ? createPortal(
                         <div className="fixed inset-0 z-[2147483000] flex min-w-0 w-full flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 p-2 sm:p-4" style={{ touchAction: "pan-y" }}>
                           <div className="mb-2 flex w-full max-w-6xl shrink-0 items-center justify-between gap-2 sm:mb-3">
                             <span className="min-w-0 truncate text-sm font-black text-white sm:text-base">🧩 Color Blocks Collapse</span>
@@ -226,7 +245,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                             <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block h-full w-full border-0" loading="eager" scrolling="no" allow="autoplay *; fullscreen; gamepad; picture-in-picture" allowFullScreen style={{ touchAction: "pan-y" }} />
                           </div>
                         </div>,
-                        document.body
+                        classicGamePortal
                       ) : null
                     )}
                   </div>
