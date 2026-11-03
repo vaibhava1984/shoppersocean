@@ -243,7 +243,7 @@ useEffect(() => {
                   <>
                     <div className="mb-5 rounded-2xl bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-4 text-white">
                       <h3 className="text-xl font-black">Quiz World</h3>
-                      <p className="mt-1 text-sm text-violet-100">Choose any game and enter it directly. All 16 games are displayed together.</p>
+                      <p className="mt-1 text-sm text-violet-100">Choose any game and enter it directly. All games are displayed together.</p>
                     </div>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       {[
