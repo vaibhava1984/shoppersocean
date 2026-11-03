@@ -77,7 +77,15 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub]")) return; playZoneTap(); }} className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
-      <style jsx global>{`@keyframes liveZoneZoom{0%{opacity:0;transform:scale(.55)}65%{opacity:1;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}`}</style>
+      <style jsx global>{`@keyframes liveZoneZoom{0%{opacity:0;transform:scale(.55)}65%{opacity:1;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}
+@media (orientation: landscape) and (max-height: 600px) {
+  .classic-game-fullscreen { position: fixed !important; inset: 0 !important; z-index: 99999 !important; width: 100vw !important; height: 100dvh !important; max-width: none !important; border: 0 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; background: #080d20 !important; }
+  .classic-game-portrait-header { display: none !important; }
+  .classic-game-frame, .classic-game-start-screen { width: 100vw !important; height: 100dvh !important; aspect-ratio: auto !important; border: 0 !important; border-radius: 0 !important; }
+  .classic-game-frame iframe { width: 100% !important; height: 100% !important; aspect-ratio: auto !important; }
+  .classic-game-landscape-controls { display: flex !important; }
+}
+.classic-game-landscape-controls { display: none; }`}</style>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {!selected ? (
           <>
@@ -180,14 +188,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
             )}
             {selected.action === "classic-games" && (
               <div ref={activityTargetRef} className="classic-game-fullscreen relative w-full rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-3 shadow-xl sm:p-5">
-                <style jsx global>{`@media (orientation: landscape) and (max-height: 600px) {
-                  .classic-game-fullscreen { position: fixed !important; inset: 0 !important; z-index: 99999 !important; width: 100vw !important; height: 100dvh !important; max-width: none !important; border: 0 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; background: #080d20 !important; }
-                  .classic-game-portrait-header { display: none !important; }
-                  .classic-game-frame, .classic-game-start-screen { width: 100vw !important; height: 100dvh !important; aspect-ratio: auto !important; border: 0 !important; border-radius: 0 !important; }
-                  .classic-game-frame iframe { width: 100% !important; height: 100% !important; aspect-ratio: auto !important; }
-                  .classic-game-landscape-controls { display: flex !important; }
-                }
-                .classic-game-landscape-controls { display: none; }`}</style>
+
                 <div className="classic-game-portrait-header mb-3 flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-[.2em] text-indigo-600">Timeless games for endless fun</p>
