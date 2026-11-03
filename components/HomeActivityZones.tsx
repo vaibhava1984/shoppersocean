@@ -119,6 +119,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     return () => { live = false; };
   }, [activeZone, userId]);
   const playZoneTap = () => { try { const audio = new Audio("/Tap.mp3"); audio.volume = 0.85; void audio.play().catch(() => {}); } catch {} };
+  useEffect(() => { if (!classicQuotaPopup) return; const timer = window.setTimeout(() => setClassicQuotaPopup(false), 5200); return () => window.clearTimeout(timer); }, [classicQuotaPopup]);
   const selected = activeZone === null ? null : zones[activeZone];
 
   useEffect(() => {
