@@ -10,7 +10,6 @@ import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
-import LocalSolitaire from "@/components/LocalSolitaire";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -103,13 +102,25 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       let remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
       setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
 
-      // External cross-origin game embeds do not expose a verified move event.
-      // Never charge a session based on stale localStorage or merely opening the game.
-      // Use a versioned key so any old "played" marker from earlier implementations is ignored.
-      const nextSessionIdV2 = "classic-game-session-v2:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
-      window.localStorage.setItem(sessionKey + ":v2", JSON.stringify({ sessionId: nextSessionIdV2, played: false }));
-
       if (remaining <= 0) { setClassicQuotaPopup(true); return; }
+
+      // Solitaire uses the website quota at launch. The external Klondike embed does not
+      // expose trustworthy cross-origin move events, so charge exactly once when opened.
+      if (gameType === "solitaire") {
+        const sessionId = "solitaire-open:" + Date.now() + ":" + Math.random().toString(36).slice(2);
+        const chargeResponse = await fetch("/api/game-access", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sectionId: "classic-games", gameTypeId: "solitaire", challengeId: sessionId })
+        });
+        const chargeData = await chargeResponse.json();
+        if (!chargeResponse.ok) {
+          setClassicQuotaPopup(true);
+          return;
+        }
+        remaining = Number(chargeData.remaining ?? Math.max(0, remaining - 1));
+        setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, solitaire: remaining } }));
+      }
 
       const classicSessionToken = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
       window.localStorage.setItem(sessionKey, JSON.stringify({ sessionId: classicSessionToken, played: false }));
@@ -282,10 +293,18 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <span>Klondike · Draw 1</span>
                     </div>
-                    <LocalSolitaire
-                      userId={userId}
-                      onQuotaUpdate={(remaining) => setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, solitaire: remaining } }))}
-                    />
+                    <div className="w-full overflow-hidden rounded-xl bg-emerald-900">
+                      <iframe
+                        src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
+                        title="Klondike Solitaire"
+                        width="800"
+                        height="640"
+                        className="block w-full border-0"
+                        style={{ minHeight: "min(80vh, 640px)", height: "640px" }}
+                        loading="lazy"
+                        allow="autoplay; fullscreen"
+                      />
+                    </div>
                   </div>
                 ) : (
                   <div className="flex min-h-[420px] w-full flex-col items-center justify-start gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
