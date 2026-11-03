@@ -159,6 +159,18 @@ useEffect(() => {
       .catch(error => { console.error("Classic Games quota meter failed:", error); if (live) setClassicQuota(current => ({ ...current, loading: false })); });
     return () => { live = false; };
   }, [activeZone, userId]);
+  useEffect(() => {
+    if (activeQuizGame !== "trivio" || !userId) return;
+    let live = true;
+    trivioConsumedRef.current = false;
+    setTrivioQuotaLoading(true);
+    fetch("/api/game-access", { cache: "no-store" })
+      .then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota unavailable"); return data; })
+      .then(data => { if (live) { setTrivioRemaining(Number(data.remainingByType?.trivio ?? 0)); setClassicQuota(current => ({ ...current, isAdmin: Boolean(data.isAdmin), isSubscribed: Boolean(data.isSubscribed) })); } })
+      .catch(error => console.error("Trivio quota check failed:", error))
+      .finally(() => { if (live) setTrivioQuotaLoading(false); });
+    return () => { live = false; };
+  }, [activeQuizGame, userId]);
   const playZoneTap = () => { try { const audio = new Audio("/Tap.mp3"); audio.volume = 0.85; void audio.play().catch(() => {}); } catch {} };
   useEffect(() => { if (!classicQuotaPopup) return; const timer = window.setTimeout(() => setClassicQuotaPopup(false), 5200); return () => window.clearTimeout(timer); }, [classicQuotaPopup]);
   const selected = activeZone === null ? null : zones[activeZone];
@@ -286,24 +298,25 @@ useEffect(() => {
                         <div className="mb-3 rounded-xl border border-violet-200 bg-white px-3 py-2 text-center text-xs font-extrabold text-violet-900">
                           {trivioQuotaLoading ? "Checking quota…" : `${trivioRemaining} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
                         </div>
-                        <iframe
-                          src="https://trivio.net/embed/quiz/fun-trivia-questions-with-answers/"
-                          title="100 Fun Trivia Questions With Answers"
-                          className="block w-full rounded-2xl border border-violet-100"
-                          style={{ height: "640px" }}
-                          loading="lazy"
-                          onLoad={() => {
-                            trivioConsumedRef.current = false;
-                            setTrivioQuotaLoading(true);
-                            fetch("/api/game-access", { cache: "no-store" }).then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota unavailable"); setTrivioRemaining(Number(data.remainingByType?.trivio ?? 0)); setClassicQuota(current => ({ ...current, isAdmin: Boolean(data.isAdmin), isSubscribed: Boolean(data.isSubscribed) })); }).catch(error => console.error("Trivio quota check failed:", error)).finally(() => setTrivioQuotaLoading(false));
-                          }}
-                          onFocus={() => {
-                            if (trivioConsumedRef.current || trivioQuotaLoading || trivioRemaining <= 0) return;
-                            trivioConsumedRef.current = true;
-                            const challengeId = "trivio-" + Date.now() + "-" + Math.random().toString(36).slice(2);
-                            void fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "quiz-world", gameTypeId: "trivio", challengeId }) }).then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota could not be recorded"); setTrivioRemaining(Number(data.remaining ?? 0)); }).catch(error => { trivioConsumedRef.current = false; console.error("Trivio quota recording failed:", error); });
-                          }}
-                        />
+                        {trivioQuotaLoading ? (
+                          <p className="rounded-xl bg-white p-6 text-center text-sm font-bold text-violet-800">Checking your daily quota…</p>
+                        ) : trivioRemaining <= 0 ? (
+                          <p className="rounded-xl bg-white p-6 text-center text-sm font-bold text-violet-800">Your daily quota for this quiz is over. Please visit tomorrow.</p>
+                        ) : (
+                          <iframe
+                            src="https://trivio.net/embed/quiz/fun-trivia-questions-with-answers/"
+                            title="100 Fun Trivia Questions With Answers"
+                            className="block w-full rounded-2xl border border-violet-100"
+                            style={{ height: "640px" }}
+                            loading="lazy"
+                            onFocus={() => {
+                              if (trivioConsumedRef.current || trivioQuotaLoading || trivioRemaining <= 0) return;
+                              trivioConsumedRef.current = true;
+                              const challengeId = "trivio-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+                              void fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "quiz-world", gameTypeId: "trivio", challengeId }) }).then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota could not be recorded"); setTrivioRemaining(Number(data.remaining ?? 0)); }).catch(error => { trivioConsumedRef.current = false; console.error("Trivio quota recording failed:", error); });
+                            }}
+                          />
+                        )}
                       </div>
                     )}
                   </div>
