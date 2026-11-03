@@ -216,7 +216,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                           </div>
                         </div>
                         <div className="mx-auto w-full max-w-5xl overflow-hidden rounded-xl border-2 border-sky-300 bg-black shadow-2xl" style={{ width: "min(94vw, 900px, calc((100dvh - 145px) * 1.7778))", aspectRatio: "16 / 9" }}>
-                          <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block h-full w-full border-0" loading="eager" scrolling="no" allow="autoplay; fullscreen; gamepad" allowFullScreen />
+                          <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block h-full w-full border-0" loading="eager" scrolling="no" allow="autoplay; fullscreen; gamepad" allowFullScreen style={{ touchAction: "pan-y" }} />
                         </div>
                       </div>
                     )}
