@@ -13,7 +13,7 @@ const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
   { icon: "🎮", name: "Quiz World", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "A collection of quizzes, mysteries, technology and world challenges", action: "games" },
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
-  { icon: "🎮", name: "Classic Games", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "Play Solitaire (Klondike) and explore more classic games", action: "classic-games" },
+  { icon: "🎮", name: "Classic Games", tone: "from-violet-500 via-purple-600 to-indigo-800", action: "classic-games" },
   { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "One challenging real-life reasoning MCQ game", action: "brain-battle-arena" },
 ];
 
@@ -105,7 +105,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                     <span className="rounded-full border border-white/30 bg-black/15 px-2 py-1 text-[9px] font-black tracking-wide text-white">#{String(index + 1).padStart(2, "0")}</span>
                   </span>
                   <span className="relative mt-4 block text-2xl font-black tracking-tight text-white drop-shadow">{zone.name}</span>
-                  <span className="relative mt-2 block max-w-[18rem] text-sm font-semibold leading-6 text-white/90">{zone.note ?? "Under construction"}</span>
+                  {zone.note && <span className="relative mt-2 block max-w-[18rem] text-sm font-semibold leading-6 text-white/90">{zone.note}</span>}
                   {zone.action && <span className="relative mt-4 inline-flex rounded-full border border-white/30 bg-white/15 px-3.5 py-2 text-sm font-extrabold text-white shadow-sm backdrop-blur-sm">Open zone →</span>}
                 </button>
               ))}
