@@ -293,14 +293,21 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <span>Klondike · Draw 1</span>
                     </div>
-                    <div className="w-full overflow-hidden rounded-xl bg-emerald-900">
+                    <div
+                      className="w-full overflow-auto rounded-xl bg-emerald-900"
+                      style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}
+                    >
                       <iframe
                         src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
-                        title="Klondike Solitaire"
+                        title="Klondike Solitaire — pinch to zoom"
                         width="800"
                         height="640"
                         className="block w-full border-0"
-                        style={{ minHeight: "min(80vh, 640px)", height: "640px" }}
+                        style={{
+                          minHeight: "min(80vh, 640px)",
+                          height: "640px",
+                          touchAction: "pan-x pan-y pinch-zoom",
+                        }}
                         loading="lazy"
                         allow="autoplay; fullscreen"
                       />
