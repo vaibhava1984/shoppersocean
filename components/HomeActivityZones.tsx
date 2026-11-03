@@ -189,7 +189,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
             )}
             {selected.action === "classic-games" && (
               <div ref={activityTargetRef}>
-                <EntertainmentHub userId={userId} visibleGroupIds={["classic-games"]} embedded />
+                <EntertainmentHub userId={userId} visibleGroupIds={["classic-games"]} initialGroupId="classic-games" embedded />
               </div>
             )}
             {selected.action === "learning" && (
