@@ -78,11 +78,6 @@ export default function NativeTriviaQuiz({ userId, remaining, onRemainingChange,
 
   return (
     <div className="mx-auto w-full max-w-3xl">
-      <div className="mb-4 rounded-2xl border border-violet-200 bg-white px-5 py-4 text-center text-slate-800 shadow">
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-violet-700">INTERACTIVE</p>
-        <h2 className="mt-1 text-lg font-black sm:text-xl">100 Fun Trivia Questions With Answers (Tested on Friends)</h2>
-        <p className="mt-1 text-sm text-slate-600">10 multiple-choice questions from this guide. No signup — see your score at the end.</p>
-      </div>
       <section className="mx-auto w-full overflow-hidden rounded-3xl border border-violet-200 bg-white text-slate-900 shadow-2xl">
       <header className="bg-gradient-to-r from-violet-700 via-fuchsia-700 to-indigo-800 px-5 py-5 text-white sm:px-7">
         <div className="flex items-center justify-between gap-3">
