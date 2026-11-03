@@ -9,6 +9,7 @@ import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
+import GameQuotaPopup from "@/components/GameQuotaPopup";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -26,13 +27,21 @@ const entertainmentGroups = [
 
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null | false>(null);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | null | false>(false);
+  const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
+  const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
   const activeZoneRef = useRef<number | null>(null);
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const handleMobileBack = () => {
+      if (classicGameStartedRef.current) {
+        classicGameStartedRef.current = false;
+        setClassicGameStarted(false);
+        return;
+      }
       if (activeQuizGameRef.current !== null) {
         activeQuizGameRef.current = null;
         setActiveQuizGame(null);
@@ -50,6 +59,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     if (activeZoneRef.current === null) window.history.pushState({ shoppersOceanZone: true }, "", window.location.href);
     activeZoneRef.current = index;
     setActiveZone(index);
+    classicGameStartedRef.current = false;
     setClassicGameStarted(false);
     activeQuizGameRef.current = null;
     setActiveQuizGame(null);
@@ -61,6 +71,53 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
+  const openClassicGame = async (game: "tic-tac-toe" | "solitaire") => {
+    if (!userId) { window.location.assign("/login"); return; }
+    const gameType = game === "solitaire" ? "solitaire" : "tic";
+    try {
+      const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
+      const quotaData = await quotaResponse.json();
+      if (!quotaResponse.ok) throw new Error(quotaData.error || "Quota could not be verified.");
+      setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
+      const remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
+      if (remaining <= 0) {
+        setClassicQuotaPopup(true);
+        return;
+      }
+      const response = await fetch("/api/game-access", {
+        method: "POST", cache: "no-store",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sectionId: "classic-games",
+          gameTypeId: gameType,
+          challengeId: "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2)
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        if (response.status === 403) setClassicQuotaPopup(true);
+        else throw new Error(data.error || "Your game could not be started.");
+        return;
+      }
+      setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [gameType]: Number(data.remaining ?? 0) }, loading: false }));
+      window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
+      classicGameStartedRef.current = game;
+      setClassicGameStarted(game);
+    } catch (error) {
+      console.error("Classic game quota check failed:", error);
+      setClassicQuota(current => ({ ...current, loading: false }));
+    }
+  };
+  useEffect(() => {
+    if (selected?.action !== "classic-games" || !userId) return;
+    let live = true;
+    setClassicQuota(current => ({ ...current, loading: true }));
+    fetch("/api/game-access", { cache: "no-store" })
+      .then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota could not be verified."); return data; })
+      .then(data => { if (live) setClassicQuota({ remainingByType: data.remainingByType ?? {}, isAdmin: Boolean(data.isAdmin), isSubscribed: Boolean(data.isSubscribed), loading: false }); })
+      .catch(error => { console.error("Classic Games quota meter failed:", error); if (live) setClassicQuota(current => ({ ...current, loading: false })); });
+    return () => { live = false; };
+  }, [activeZone, userId]);
   const playZoneTap = () => { try { const audio = new Audio("/Tap.mp3"); audio.volume = 0.85; void audio.play().catch(() => {}); } catch {} };
   const selected = activeZone === null ? null : zones[activeZone];
 
@@ -76,6 +133,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   }, [activeZone, activeQuizGame]);
 
   return (
+    <>
     <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub]")) return; playZoneTap(); }} className="relative overflow-hidden border-y border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-9 sm:py-12">
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
@@ -122,8 +180,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (activeQuizGameRef.current !== null) { window.history.back(); return; } if (activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">← Back to all zones</button><a href="/" className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110" aria-label="Go to homepage">⌂ Home</a></div>
-                <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>
+                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null) { window.history.back(); return; } if (activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null ? "← Back" : "← Back to all zones"}</button></div>
+                {activeQuizGame === null && !classicGameStarted && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>
             {selected.action === "games" && (
               <div>
@@ -193,14 +251,14 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                   <div className="grid w-full max-w-xl grid-cols-1 gap-4 sm:grid-cols-2">
                     <button
                       type="button"
-                      onClick={() => setClassicGameStarted("tic-tac-toe")}
+                      onClick={() => void openClassicGame("tic-tac-toe")}
                       className="rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
                     >
                       ❌⭕ &nbsp; Play Tic Tac Toe
                     </button>
                     <button
                       type="button"
-                      onClick={() => setClassicGameStarted("solitaire")}
+                      onClick={() => void openClassicGame("solitaire")}
                       className="rounded-2xl border border-white/30 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200"
                     >
                       🃏 &nbsp; Play Solitaire
@@ -208,6 +266,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
                   <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-extrabold text-emerald-900">
+                      <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
+                      <span>🔊 Sound enabled</span>
+                    </div>
                     <iframe
                       src="https://solitaire-online.com/embed/klondike.html?draw=1&amp;theme=green&amp;v=embedauto1"
                       title="Free Klondike Solitaire — Solitaire Online"
@@ -218,13 +280,17 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       loading="lazy"
                       referrerPolicy="strict-origin-when-cross-origin"
                       sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                      allow="autoplay; fullscreen"
                     />
                     <p className="my-2 text-center text-xs leading-5 text-slate-600">
                       Played on <a href="https://solitaire-online.com/?utm_source=solitaire_widget&amp;utm_medium=referral&amp;utm_campaign=embed" target="_blank" rel="nofollow noopener" className="text-emerald-700 underline">solitaire-online.com</a>
                     </p>
                   </div>
                 ) : (
-                  <div className="flex min-h-[420px] w-full items-start justify-center rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
+                  <div className="flex min-h-[420px] w-full flex-col items-center justify-start gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
+                    <div className="w-full max-w-md rounded-xl border border-sky-200 bg-white px-3 py-2 text-center text-xs font-extrabold text-sky-900">
+                      {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
+                    </div>
                     <iframe
                       src="https://solitaires-online.com/tic-tac-toe/#id=47ylono0ne,no-nav,no-article,no-feedback,no-ads"
                       title="Tic-Tac-Toe game"
@@ -233,7 +299,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       className="block max-w-full rounded-xl border-0"
                       style={{ width: "min(350px, 100%)", height: "360px" }}
                       loading="lazy"
-                      allow="fullscreen"
+                      allow="autoplay; fullscreen"
                     />
                   </div>
                 )}
@@ -253,5 +319,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       </div>
 
     </section>
+    <GameQuotaPopup open={classicQuotaPopup} isSubscribed={classicQuota.isSubscribed} resetKey="classic-games" />
+    </>
   );
 }
