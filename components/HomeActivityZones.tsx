@@ -27,10 +27,10 @@ const entertainmentGroups = [
 
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "archery" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | "archery" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire" | "archery"; sessionId: string; consumed: boolean } | null>(null);
+  const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire"; sessionId: string; consumed: boolean } | null>(null);
   const enterSolitaireLandscape = () => {
     const orientation = screen.orientation;
     if (typeof document !== "undefined" && !document.fullscreenElement && document.documentElement.requestFullscreen) {
@@ -106,10 +106,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "solitaire" | "archery") => {
+  const openClassicGame = async (game: "tic-tac-toe" | "solitaire") => {
     if (!userId) { window.location.assign("/login"); return; }
     if (game === "solitaire") enterSolitaireLandscape();
-    const gameType = game === "solitaire" ? "solitaire" : game === "archery" ? "archery" : "tic";
+    const gameType = game === "solitaire" ? "solitaire" : "tic";
     const sessionKey = "shoppersOcean:classic-session:" + userId + ":" + gameType;
     try {
       const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
@@ -121,7 +121,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       if (remaining <= 0) { if (gameType === "solitaire") leaveSolitaireLandscape(); setClassicQuotaPopup(true); return; }
 
       // External games do not expose reliable cross-origin move events, so charge once on launch.
-      if (gameType === "solitaire" || gameType === "archery") {
+      if (gameType === "solitaire") {
         const sessionId = gameType + "-open:" + Date.now() + ":" + Math.random().toString(36).slice(2);
         const chargeResponse = await fetch("/api/game-access", {
           method: "POST",
@@ -302,29 +302,6 @@ useEffect(() => {
                     >
                       🃏 &nbsp; Play Solitaire
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => void openClassicGame("archery")}
-                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-violet-600 via-purple-700 to-indigo-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-200"
-                    >
-                      🏹 &nbsp; Archery World Tour
-                    </button>
-                  </div>
-                ) : classicGameStarted === "archery" ? (
-                  <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-violet-50 p-2 sm:p-4">
-                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-violet-200 bg-white px-3 py-2 text-xs font-extrabold text-violet-900">
-                      <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.archery ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
-                      <span>Archery World Tour</span>
-                    </div>
-                    <iframe
-                      src="https://play.famobi.com/archery-world-tour"
-                      title="Archery World Tour"
-                      className="block w-full rounded-xl border-0"
-                      style={{ height: "min(82vh, 760px)", minHeight: "560px" }}
-                      loading="lazy"
-                      allow="autoplay; fullscreen; gamepad"
-                      allowFullScreen
-                    />
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
                   <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
