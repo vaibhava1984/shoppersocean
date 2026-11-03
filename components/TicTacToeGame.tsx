@@ -136,7 +136,7 @@ export default function TicTacToeGame({ onExit }: { onExit?: () => void }) {
   };
 
   return (
-    <div className="ocean-ttt relative isolate min-h-[min(720px,calc(100svh-150px))] overflow-hidden rounded-[28px] border-[5px] border-sky-300 shadow-[0_22px_55px_rgba(8,47,73,.28)]">
+    <div className="ocean-ttt relative isolate aspect-video w-full min-h-0 overflow-hidden rounded-2xl border-[3px] border-sky-300 shadow-[0_12px_28px_rgba(8,47,73,.22)]">
       <style jsx global>{`
         @keyframes oceanMarkDraw { to { stroke-dashoffset: 0; } }
         .ocean-mark-draw { animation: oceanMarkDraw .42s cubic-bezier(.2,.8,.2,1) forwards; }
@@ -148,7 +148,34 @@ export default function TicTacToeGame({ onExit }: { onExit?: () => void }) {
         .ocean-cheer { animation:oceanCheer 2s ease-in-out infinite; }
         .ocean-ttt { background:linear-gradient(180deg,#60c8ff 0%,#bcecff 47%,#b7f17d 72%,#4dbb50 100%); font-family:Trebuchet MS,Arial,sans-serif; font-style:normal; }
         .ocean-ttt * { font-style:normal; }
-        @media (orientation:portrait) and (max-width:700px) { .ocean-ttt { width:100svh; height:100vw; min-height:100vw!important; transform:rotate(90deg); transform-origin:top left; position:relative; left:100%; } .ocean-ttt > div.relative { min-height:100%!important; padding:8px!important; } .ocean-ttt .grid.flex-1 { gap:6px!important; } .ocean-ttt .ocean-cheer,.ocean-ttt .ocean-robot-bob { font-size:2.6rem!important; } .ocean-ttt .mt-3.flex-1 { margin-top:4px!important; } }
+        @media (max-width:700px) {
+          .ocean-ttt > div.relative { min-height:0!important; height:100%; padding:5px!important; }
+          .ocean-ttt > div.relative > div:first-of-type { gap:4px!important; }
+          .ocean-ttt > div.relative > div:first-of-type > button { padding:4px 7px!important; font-size:9px!important; white-space:nowrap; }
+          .ocean-ttt > div.relative > div:first-of-type > div:nth-child(2) { padding:3px 7px!important; }
+          .ocean-ttt > div.relative > div:first-of-type h2 { font-size:clamp(11px,3.4vw,16px)!important; line-height:1.1!important; }
+          .ocean-ttt > div.relative > div:first-of-type > div:last-child { padding:3px!important; }
+          .ocean-ttt > div.relative > div:first-of-type > div:last-child p { font-size:7px!important; }
+          .ocean-ttt > div.relative > div:first-of-type > div:last-child button { padding:3px 5px!important; font-size:7px!important; }
+          .ocean-ttt .grid.flex-1 { grid-template-columns:minmax(0,.72fr) minmax(0,2.4fr) minmax(0,.72fr)!important; gap:4px!important; min-height:0!important; }
+          .ocean-ttt .grid.flex-1 > div:first-child,.ocean-ttt .grid.flex-1 > div:last-child { min-width:0!important; }
+          .ocean-ttt .ocean-cheer,.ocean-ttt .ocean-robot-bob { font-size:clamp(17px,6vw,28px)!important; line-height:1!important; }
+          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) { padding:3px!important; border-width:1px!important; border-radius:8px!important; }
+          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) p { font-size:7px!important; line-height:1.1!important; }
+          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) > div { width:22px!important; height:22px!important; margin-top:2px!important; border-radius:5px!important; }
+          .ocean-ttt .grid.flex-1 > div > div:nth-child(2) > div svg { width:85%!important; height:85%!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) { min-width:0!important; max-width:none!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:first-child { margin-bottom:3px!important; padding:3px 5px!important; font-size:8px!important; line-height:1.15!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:nth-child(2) { border-width:3px!important; border-radius:10px!important; padding:3px!important; box-shadow:0 4px 0 #854d0e!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:nth-child(2) > div { gap:3px!important; padding:3px!important; border-radius:6px!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) button { border-width:1px!important; border-radius:5px!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:last-child { margin-top:4px!important; }
+          .ocean-ttt .grid.flex-1 > div:nth-child(2) > div:last-child button { padding:3px 10px!important; font-size:9px!important; line-height:1.1!important; border-width:1px!important; }
+          .ocean-ttt > div.relative > div:last-child { margin-top:3px!important; gap:3px!important; }
+          .ocean-ttt > div.relative > div:last-child > div { padding:3px 6px!important; border-width:1px!important; border-radius:7px!important; }
+          .ocean-ttt > div.relative > div:last-child span { font-size:8px!important; }
+          .ocean-ttt > div.relative > div:last-child > div:last-child { font-size:8px!important; }
+        }
         @media (prefers-reduced-motion: reduce) { .ocean-mark-draw,.ocean-cell-pop,.ocean-robot-bob,.ocean-cheer {animation:none!important} }
       `}</style>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -159,7 +186,7 @@ export default function TicTacToeGame({ onExit }: { onExit?: () => void }) {
         <span className="absolute left-[4%] top-[24%] text-5xl opacity-60">☁️</span><span className="absolute right-[5%] top-[18%] text-6xl opacity-60">☁️</span>
         <span className="absolute bottom-3 left-4 text-3xl">🌼</span><span className="absolute bottom-4 right-6 text-3xl">🌷</span><span className="absolute bottom-7 left-[24%] text-2xl">🌸</span>
       </div>
-      <div className="relative flex min-h-[inherit] flex-col p-3 sm:p-5">
+      <div className="relative flex h-full min-h-0 flex-col p-3 sm:p-5">
         <div className="flex items-center justify-between gap-2">
           <button onClick={onExit} className="rounded-full border-2 border-sky-200 bg-gradient-to-b from-blue-500 to-blue-800 px-3 py-2 text-xs font-black text-white shadow-[0_4px_0_#164a8b] sm:px-5 sm:text-sm">← Back to Games</button>
           <div className="rounded-full border-2 border-fuchsia-200 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-700 px-5 py-2 text-center shadow-[0_5px_0_#65218e] sm:px-10">
@@ -173,7 +200,7 @@ export default function TicTacToeGame({ onExit }: { onExit?: () => void }) {
             </div>
           </div>
         </div>
-        <div className="mt-3 grid flex-1 grid-cols-[minmax(82px,1fr)_minmax(220px,2.2fr)_minmax(82px,1fr)] items-center gap-2 sm:gap-5">
+        <div className="mt-3 grid flex-1 grid-cols-[minmax(0,1fr)_minmax(0,2.2fr)_minmax(0,1fr)] items-center gap-2 sm:gap-5">
           <div className="flex flex-col items-center justify-center">
             <div className="ocean-cheer text-5xl drop-shadow-md sm:text-7xl">🧒🏻</div>
             <div className="mt-1 w-full max-w-[150px] rounded-2xl border-[3px] border-amber-700 bg-gradient-to-b from-amber-400 to-amber-700 p-2 text-center shadow-[0_5px_0_#78350f]">
@@ -182,7 +209,7 @@ export default function TicTacToeGame({ onExit }: { onExit?: () => void }) {
               <p className="mt-1 text-[10px] font-bold text-white/95 sm:text-xs">Player 1</p>
             </div>
           </div>
-          <div className="mx-auto w-full max-w-[530px]">
+          <div className="mx-auto w-full min-w-0 max-w-[530px]">
             <div className="mb-2 rounded-full border border-white/80 bg-white/75 px-3 py-2 text-center text-xs font-black text-indigo-950 shadow sm:text-sm" aria-live="polite">{thinking ? "🤔 " : finished ? "🏆 " : "✨ "}{message}</div>
             <div className="rounded-[28px] border-[7px] border-amber-600 bg-gradient-to-br from-amber-300 via-orange-400 to-amber-700 p-2 shadow-[0_12px_0_#854d0e,0_18px_28px_rgba(75,35,5,.3)] sm:p-3">
               <div className="grid aspect-square grid-cols-3 gap-2 rounded-2xl bg-amber-900/35 p-1.5 sm:gap-3 sm:p-2">
