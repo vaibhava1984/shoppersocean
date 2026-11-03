@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 type Suit = "♠" | "♥" | "♦" | "♣";
 type Card = { id: string; rank: number; suit: Suit; faceUp: boolean };
@@ -29,13 +29,16 @@ export default function LocalSolitaire({ userId, onQuotaUpdate }: { userId: stri
   const [foundations, setFoundations] = useState<Card[][]>(deal.foundations);
   const [selected, setSelected] = useState<Source | null>(null);
   const [busy, setBusy] = useState(false);
+  const busyRef = useRef(false);
+  const moveCountRef = useRef(0);
   const [message, setMessage] = useState("");
   const [moves, setMoves] = useState(0);
   const [challengeId, setChallengeId] = useState(() => crypto.randomUUID());
 
   const chargeFirstMove = async () => {
-    if (moves > 0) return true;
-    if (busy) return false;
+    if (moveCountRef.current > 0) return true;
+    if (busyRef.current) return false;
+    busyRef.current = true;
     setBusy(true);
     try {
       const response = await fetch("/api/game-access", {
@@ -49,13 +52,14 @@ export default function LocalSolitaire({ userId, onQuotaUpdate }: { userId: stri
     } catch {
       setMessage("Could not verify your quota. Please try again.");
       return false;
-    } finally { setBusy(false); }
+    } finally { busyRef.current = false; setBusy(false); }
   };
 
   const commitMove = async (change: () => void) => {
     if (busy || !(await chargeFirstMove())) return;
+    moveCountRef.current += 1;
     change();
-    setMoves(value => value + 1);
+    setMoves(moveCountRef.current);
     setMessage("");
   };
 
@@ -133,7 +137,7 @@ export default function LocalSolitaire({ userId, onQuotaUpdate }: { userId: stri
   const newGame = () => {
     const next = makeDeal();
     setStock(next.stock); setWaste([]); setPiles(next.piles); setFoundations(next.foundations);
-    setSelected(null); setMoves(0); setMessage(""); setChallengeId(crypto.randomUUID()); setDealKey(value => value + 1);
+    setSelected(null); moveCountRef.current = 0; setMoves(0); setMessage(""); setChallengeId(crypto.randomUUID()); setDealKey(value => value + 1);
   };
   const renderCard = (card: Card, active: boolean, onClick: () => void, stack = false) => (
     <button key={card.id} type="button" onClick={onClick} aria-label={card.faceUp ? label(card.rank) + " of " + card.suit : "Face-down card"}
