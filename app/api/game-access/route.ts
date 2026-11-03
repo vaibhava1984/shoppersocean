@@ -45,6 +45,11 @@ async function handle(req:Request,consume:boolean){
    if(solitaireResetClaim){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND game_type_id='solitaire' AND usage_date=?").bind(user.id,date).run();
    }
+   const archeryReset=await db.prepare("CREATE TABLE IF NOT EXISTS game_archery_admin_reset_v1(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
+   const archeryResetClaim=await db.prepare("INSERT OR IGNORE INTO game_archery_admin_reset_v1(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
+   if(archeryResetClaim){
+    await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND game_type_id='archery' AND usage_date=?").bind(user.id,date).run();
+   }
    const reset=await db.prepare("INSERT OR IGNORE INTO game_picture_pair_quota_reset_v2(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
    if(reset){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND game_type_id='jigsaw' AND usage_date=?").bind(user.id,date).run();
