@@ -50,7 +50,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
-  const trivioConsumedRef = useRef(false);
   const activeZoneRef = useRef<number | null>(null);
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
@@ -163,7 +162,6 @@ useEffect(() => {
   useEffect(() => {
     if (activeQuizGame !== "trivio" || !userId) return;
     let live = true;
-    trivioConsumedRef.current = false;
     setTrivioQuotaLoading(true);
     fetch("/api/game-access", { cache: "no-store" })
       .then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota unavailable"); return data; })
