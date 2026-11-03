@@ -95,8 +95,6 @@ export default function TicTacToeGame({ onExit }: { onExit?: () => void }) {
   const [lastMove, setLastMove] = useState<number | null>(null);
   const [round, setRound] = useState(1);
   const timerRef = useRef<number | null>(null);
-  const boardRef = useRef(board);
-  boardRef.current = board;
   const result = winner(board);
   const draw = !result && board.every(Boolean);
   const finished = Boolean(result || draw);
@@ -150,6 +148,7 @@ export default function TicTacToeGame({ onExit }: { onExit?: () => void }) {
         .ocean-cheer { animation:oceanCheer 2s ease-in-out infinite; }
         .ocean-ttt { background:linear-gradient(180deg,#60c8ff 0%,#bcecff 47%,#b7f17d 72%,#4dbb50 100%); font-family:Trebuchet MS,Arial,sans-serif; font-style:normal; }
         .ocean-ttt * { font-style:normal; }
+        @media (orientation:portrait) and (max-width:700px) { .ocean-ttt { width:100svh; height:100vw; min-height:100vw!important; transform:rotate(90deg); transform-origin:top left; position:relative; left:100%; } .ocean-ttt > div.relative { min-height:100%!important; padding:8px!important; } .ocean-ttt .grid.flex-1 { gap:6px!important; } .ocean-ttt .ocean-cheer,.ocean-ttt .ocean-robot-bob { font-size:2.6rem!important; } .ocean-ttt .mt-3.flex-1 { margin-top:4px!important; } }
         @media (prefers-reduced-motion: reduce) { .ocean-mark-draw,.ocean-cell-pop,.ocean-robot-bob,.ocean-cheer {animation:none!important} }
       `}</style>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
