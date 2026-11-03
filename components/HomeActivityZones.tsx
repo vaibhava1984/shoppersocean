@@ -28,7 +28,7 @@ const entertainmentGroups = [
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "archery" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | "archery" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
   const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire"; sessionId: string; consumed: boolean } | null>(null);
   const enterSolitaireLandscape = () => {
@@ -130,7 +130,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         });
         const chargeData = await chargeResponse.json();
         if (!chargeResponse.ok) {
-          leaveSolitaireLandscape();
+          if (gameType === "solitaire") leaveSolitaireLandscape();
           setClassicQuotaPopup(true);
           return;
         }
