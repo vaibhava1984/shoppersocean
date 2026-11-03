@@ -363,7 +363,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       </div>
 
     </section>
-    <GameQuotaPopup open={classicQuotaPopup} isSubscribed={classicQuota.isSubscribed} resetKey="classic-games" />
+    <GameQuotaPopup open={classicQuotaPopup} isSubscribed={classicQuota.isAdmin || classicQuota.isSubscribed} resetKey="classic-games" />
     </>
   );
 }
