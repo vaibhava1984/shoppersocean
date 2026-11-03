@@ -277,7 +277,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                       referrerPolicy="strict-origin-when-cross-origin"
                       sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
                       allow="autoplay; fullscreen"
-                      onLoad={() => {
+                      onFocus={() => {
+                        // Loading the external iframe is not a play. Mark only after
+                        // the player actually enters its browsing area.
                         try {
                           const key = "shoppersOcean:classic-session:" + userId + ":solitaire";
                           const session = JSON.parse(window.localStorage.getItem(key) || "null");
