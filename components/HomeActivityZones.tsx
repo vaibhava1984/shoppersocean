@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { createPortal } from "react-dom";
 import EntertainmentHub from "@/components/EntertainmentHub";
 import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryMansion from "@/components/MysteryMansion";
@@ -55,30 +54,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
   const [classicGameRunning, setClassicGameRunning] = useState(false);
-  const classicGameHostRef = useRef<HTMLDivElement | null>(null);
-  const [classicGameHostRect, setClassicGameHostRect] = useState<{ top: number; left: number; width: number } | null>(null);
-  const [isLandscape, setIsLandscape] = useState(false);
-  useEffect(() => {
-    const media = window.matchMedia("(orientation: landscape)");
-    const update = () => setIsLandscape(media.matches);
-    update();
-    media.addEventListener?.("change", update);
-    return () => media.removeEventListener?.("change", update);
-  }, []);
-  useEffect(() => {
-    const updateHostRect = () => {
-      const node = classicGameHostRef.current;
-      if (!node) return;
-      const rect = node.getBoundingClientRect();
-      setClassicGameHostRect({ top: rect.top + window.scrollY, left: rect.left + window.scrollX, width: rect.width });
-    };
-    if (classicGameRunning && activeZone !== null && zones[activeZone]?.action === "classic-games" && !isLandscape) {
-      updateHostRect();
-      window.addEventListener("resize", updateHostRect);
-      window.addEventListener("scroll", updateHostRect, true);
-      return () => { window.removeEventListener("resize", updateHostRect); window.removeEventListener("scroll", updateHostRect, true); };
-    }
-  }, [classicGameRunning, activeZone, isLandscape]);
   const openGame = (gameId: string) => {
     window.history.pushState({ shoppersOceanZone: true, shoppersOceanGame: gameId }, "", window.location.href);
     activeQuizGameRef.current = gameId;
@@ -221,15 +196,30 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                     </div>
                   </div>
                 ) : (
-                  <div ref={classicGameHostRef} className="rounded-2xl border border-white/70 bg-white/70 p-3 shadow-md">
-                    <button type="button" onClick={() => { setClassicGameRunning(true); }} className="group flex min-h-24 w-full items-center gap-4 rounded-xl border border-indigo-200 bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-4 text-left text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl">
-                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-white/30 bg-white/15 text-3xl">🧩</span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block text-lg font-black">Color Blocks Collapse</span>
-                        <span className="mt-1 block text-xs font-semibold text-white/85">Tap to play</span>
-                      </span>
-                      <span className="rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black">PLAY →</span>
-                    </button>
+                  <div className="rounded-2xl border border-white/70 bg-white/70 p-3 shadow-md">
+                    {!classicGameRunning ? (
+                      <button type="button" onClick={() => setClassicGameRunning(true)} className="grid w-full grid-cols-[3.5rem_minmax(0,1fr)] items-center gap-x-3 gap-y-2 rounded-xl border border-indigo-200 bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-3 text-left text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl sm:flex sm:min-h-24 sm:gap-4 sm:p-4">
+                        <span className="row-span-2 flex h-14 w-14 items-center justify-center rounded-xl border border-white/30 bg-white/15 text-3xl">🧩</span>
+                        <span className="min-w-0">
+                          <span className="block break-words text-base font-black leading-tight sm:text-lg">Color Blocks Collapse</span>
+                          <span className="mt-1 block text-xs font-semibold leading-4 text-white/85">Tap to play</span>
+                        </span>
+                        <span className="col-start-2 inline-flex w-fit items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black sm:ml-auto">PLAY →</span>
+                      </button>
+                    ) : (
+                      <div className="flex w-full flex-col items-center gap-3 rounded-xl bg-slate-950 p-2 sm:p-3">
+                        <div className="flex w-full max-w-5xl items-center justify-between gap-2">
+                          <span className="min-w-0 truncate text-sm font-black text-white sm:text-base">🧩 Color Blocks Collapse</span>
+                          <div className="flex shrink-0 items-center gap-2">
+                            <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-3 py-2 text-xs font-black text-white shadow-lg sm:px-4 sm:text-sm">← Back</button>
+                            <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-3 py-2 text-xs font-black text-white shadow-lg sm:px-4 sm:text-sm">■ Stop</button>
+                          </div>
+                        </div>
+                        <div className="mx-auto w-full max-w-5xl overflow-hidden rounded-xl border-2 border-sky-300 bg-black shadow-2xl" style={{ width: "min(94vw, 900px, calc((100dvh - 145px) * 1.7778))", aspectRatio: "16 / 9" }}>
+                          <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block h-full w-full border-0" loading="eager" scrolling="no" allow="autoplay; fullscreen; gamepad" allowFullScreen />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -250,26 +240,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         )}
       </div>
 
-      {selected?.action === "classic-games" && !!userId && classicGameRunning && typeof document !== "undefined" && createPortal(
-        <div
-          className={isLandscape
-            ? "fixed inset-0 z-[2147483000] flex h-[100dvh] w-screen flex-col items-center justify-start overflow-y-auto overscroll-y-contain bg-slate-950 px-3 py-3"
-            : "absolute z-[2147483000] flex flex-col items-center rounded-2xl border-2 border-sky-300 bg-slate-950 p-3 shadow-2xl"}
-          style={isLandscape
-            ? { touchAction: "pan-y", WebkitOverflowScrolling: "touch" }
-            : { top: classicGameHostRect?.top ?? 0, left: classicGameHostRect?.left ?? 0, width: classicGameHostRect?.width ?? "100%", minHeight: 180 }}
-        >
-          <div className="mb-3 flex w-full max-w-[1280px] shrink-0 items-center justify-between gap-3">
-            <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-2.5 text-sm font-black text-white shadow-lg">← Back to Classic Games</button>
-            <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-2.5 text-sm font-black text-white shadow-lg">■ Stop</button>
-          </div>
-          <div className={isLandscape ? "w-[94%] max-w-[1280px] shrink-0 overflow-hidden rounded-2xl border-[3px] border-sky-300 bg-slate-950 shadow-2xl" : "w-full max-w-[1280px] shrink-0 overflow-hidden rounded-xl border-2 border-sky-300 bg-slate-950 shadow-2xl"}>
-            <iframe src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html" title="Color Blocks Collapse" className="block aspect-video w-full border-0" loading="eager" scrolling="no" allow="fullscreen; autoplay" allowFullScreen />
-          </div>
-          {isLandscape && <div className="h-8 w-full shrink-0" aria-hidden="true" />}
-        </div>,
-        document.body
-      )}
     </section>
   );
 }
