@@ -82,18 +82,11 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       let remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
       setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
 
-      let previous: { sessionId?: string; played?: boolean } | null = null;
-      try { const raw = window.localStorage.getItem(sessionKey); previous = raw ? JSON.parse(raw) : null; } catch { previous = null; }
-
-      // Charge the previous loaded game session before deciding whether another game can start.
-      if (previous?.played && previous.sessionId) {
-        const response = await fetch("/api/game-access", { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: gameType, challengeId: previous.sessionId }) });
-        const data = await response.json();
-        if (!response.ok) { if (response.status === 403) setClassicQuotaPopup(true); else throw new Error(data.error || "Your played game could not be recorded."); return; }
-        remaining = Number(data.remaining ?? Math.max(0, remaining - 1));
-        setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [gameType]: remaining }, loading: false }));
-        window.localStorage.removeItem(sessionKey);
-      }
+      // External cross-origin game embeds do not expose a verified move event.
+      // Never charge a session based on stale localStorage or merely opening the game.
+      // Use a versioned key so any old "played" marker from earlier implementations is ignored.
+      const nextSessionId = "classic-game-session-v2:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
+      window.localStorage.setItem(sessionKey + ":v2", JSON.stringify({ sessionId: nextSessionId, played: false }));
 
       if (remaining <= 0) { setClassicQuotaPopup(true); return; }
 
