@@ -295,7 +295,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                     </div>
                     <div
                       className="w-full overflow-auto rounded-xl bg-emerald-900"
-                      style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}
+                      style={{ WebkitOverflowScrolling: "touch" }}
                     >
                       <iframe
                         src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
@@ -306,7 +306,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                         style={{
                           minHeight: "min(80vh, 640px)",
                           height: "640px",
-                          touchAction: "pan-x pan-y pinch-zoom",
                         }}
                         loading="lazy"
                         allow="autoplay; fullscreen"
