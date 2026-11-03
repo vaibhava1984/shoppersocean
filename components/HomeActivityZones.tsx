@@ -90,8 +90,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
 
       if (remaining <= 0) { setClassicQuotaPopup(true); return; }
 
-      const nextSessionId = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
-      window.localStorage.setItem(sessionKey, JSON.stringify({ sessionId: nextSessionId, played: false }));
+      const classicSessionToken = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
+      window.localStorage.setItem(sessionKey, JSON.stringify({ sessionId: classicSessionToken, played: false }));
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
       classicGameStartedRef.current = game; setClassicGameStarted(game);
     } catch (error) { console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
