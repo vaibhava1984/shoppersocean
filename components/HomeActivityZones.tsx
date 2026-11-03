@@ -27,10 +27,10 @@ const entertainmentGroups = [
 
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire"; sessionId: string; consumed: boolean } | null>(null);
+  const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire" | "chess"; sessionId: string; consumed: boolean } | null>(null);
   const enterSolitaireLandscape = () => {
     const orientation = screen.orientation;
     if (typeof document !== "undefined" && !document.fullscreenElement && document.documentElement.requestFullscreen) {
@@ -106,10 +106,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "solitaire") => {
+  const openClassicGame = async (game: "tic-tac-toe" | "solitaire" | "chess") => {
     if (!userId) { window.location.assign("/login"); return; }
     if (game === "solitaire") enterSolitaireLandscape();
-    const gameType = game === "solitaire" ? "solitaire" : "tic";
+    const gameType = game === "solitaire" ? "solitaire" : game === "chess" ? "chess" : "tic";
     const sessionKey = "shoppersOcean:classic-session:" + userId + ":" + gameType;
     try {
       const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
@@ -141,7 +141,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       const classicSessionToken = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
       window.localStorage.setItem(sessionKey, JSON.stringify({ sessionId: classicSessionToken, played: false }));
       classicGameInteractedRef.current = false;
-      classicGameSessionRef.current = gameType === "tic" ? { gameType, sessionId: classicSessionToken, consumed: false } : null;
+      classicGameSessionRef.current = gameType === "tic" || gameType === "chess" ? { gameType, sessionId: classicSessionToken, consumed: false } : null;
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
       classicGameStartedRef.current = game; setClassicGameStarted(game);
     } catch (error) { if (game === "solitaire") leaveSolitaireLandscape(); console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
@@ -297,6 +297,13 @@ useEffect(() => {
                     </button>
                     <button
                       type="button"
+                      onClick={() => void openClassicGame("chess")}
+                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-sky-600 via-blue-700 to-indigo-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200"
+                    >
+                      ♟️ &nbsp; Play Chess
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => void openClassicGame("solitaire")}
                       className="rounded-2xl border border-white/30 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200"
                     >
@@ -327,6 +334,21 @@ useEffect(() => {
                         allow="autoplay; fullscreen"
                       />
                     </div>
+                  </div>
+                ) : classicGameStarted === "chess" ? (
+                  <div className="flex min-h-[550px] w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
+                    <div className="w-full max-w-md rounded-xl border border-sky-200 bg-white px-3 py-2 text-center text-xs font-extrabold text-sky-900">
+                      {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
+                    </div>
+                    <iframe
+                      src="https://playpager.com/embed/chess/index.html"
+                      title="Online Chess Game"
+                      className="block w-full max-w-full border-0"
+                      style={{ height: "550px", overflow: "hidden" }}
+                      scrolling="no"
+                      loading="lazy"
+                      onFocus={() => { classicGameInteractedRef.current = true; }}
+                    />
                   </div>
                 ) : (
                   <div className="flex min-h-[420px] w-full flex-col items-center justify-start gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
