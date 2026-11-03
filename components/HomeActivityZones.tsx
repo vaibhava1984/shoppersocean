@@ -179,39 +179,43 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
               </div>
             )}
             {selected.action === "classic-games" && (
-              <div ref={activityTargetRef} className="w-full rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-3 shadow-xl sm:p-5">
-                <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <div ref={activityTargetRef} className="classic-game-fullscreen relative w-full rounded-3xl border border-sky-200 bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-3 shadow-xl sm:p-5">
+                <style jsx global>{`@media (orientation: landscape) and (max-height: 600px) {
+                  .classic-game-fullscreen { position: fixed !important; inset: 0 !important; z-index: 99999 !important; width: 100vw !important; height: 100dvh !important; max-width: none !important; border: 0 !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; background: #080d20 !important; }
+                  .classic-game-portrait-header { display: none !important; }
+                  .classic-game-frame, .classic-game-start-screen { width: 100vw !important; height: 100dvh !important; aspect-ratio: auto !important; border: 0 !important; border-radius: 0 !important; }
+                  .classic-game-frame iframe { width: 100% !important; height: 100% !important; aspect-ratio: auto !important; }
+                  .classic-game-landscape-controls { display: flex !important; }
+                }
+                .classic-game-landscape-controls { display: none; }`}</style>
+                <div className="classic-game-portrait-header mb-3 flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-[.2em] text-indigo-600">Timeless games for endless fun</p>
                     <h3 className="mt-1 text-xl font-black text-indigo-950 sm:text-2xl">🎮 Color Blocks Collapse</h3>
                   </div>
-                  {classicGameRunning ? (
-                    <button type="button" onClick={() => setClassicGameRunning(false)} className="min-h-11 rounded-full border border-rose-300 bg-gradient-to-r from-rose-600 to-red-700 px-5 py-2.5 text-sm font-black text-white shadow-md">■ Stop game</button>
-                  ) : (
-                    <button type="button" onClick={() => setClassicGameRunning(true)} className="min-h-11 rounded-full border border-emerald-300 bg-gradient-to-r from-emerald-600 to-teal-700 px-5 py-2.5 text-sm font-black text-white shadow-md">▶ Start game</button>
-                  )}
+                  <button type="button" onClick={() => setClassicGameRunning(false)} className="min-h-11 rounded-full border border-rose-300 bg-gradient-to-r from-rose-600 to-red-700 px-5 py-2.5 text-sm font-black text-white shadow-md">■ Stop game</button>
+                </div>
+                <div className="classic-game-landscape-controls absolute left-3 right-3 top-3 z-20 items-center justify-between gap-3">
+                  <button type="button" onClick={() => window.history.back()} className="rounded-full border border-white/30 bg-slate-950/80 px-4 py-2 text-sm font-black text-white shadow-lg backdrop-blur">← Back</button>
+                  <button type="button" onClick={() => setClassicGameRunning(false)} className="rounded-full border border-rose-300 bg-rose-700/90 px-4 py-2 text-sm font-black text-white shadow-lg">■ Stop</button>
                 </div>
                 {classicGameRunning ? (
-                  <div className="w-full overflow-hidden rounded-xl border border-indigo-200 bg-slate-950 shadow-xl">
+                  <div className="classic-game-frame w-full overflow-hidden rounded-xl bg-slate-950 shadow-xl">
                     <iframe
                       src="https://myhiddengame.com/html5games/2024/color-blocks-collapse/index.html"
                       title="Color Blocks Collapse"
                       className="block aspect-[16/9] w-full border-0"
-                      loading="lazy"
+                      loading="eager"
                       scrolling="no"
                       allow="fullscreen; autoplay"
                       allowFullScreen
                     />
                   </div>
                 ) : (
-                  <div className="flex aspect-[16/9] w-full flex-col items-center justify-center rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-950 to-slate-900 p-5 text-center text-white">
-                    <span className="text-4xl" aria-hidden="true">⏸️</span>
-                    <p className="mt-2 text-lg font-black">Game stopped</p>
-                    <p className="mt-1 text-sm text-indigo-200">The game is paused and the page is ready to scroll.</p>
+                  <div className="classic-game-start-screen flex aspect-[16/9] w-full items-center justify-center rounded-xl bg-gradient-to-br from-indigo-950 via-slate-900 to-blue-950 p-5">
+                    <button type="button" onClick={() => setClassicGameRunning(true)} className="rounded-full border border-white/40 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-600 px-10 py-5 text-lg font-black tracking-wide text-white shadow-[0_0_45px_rgba(59,130,246,.5)] transition hover:scale-105 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200">▶ START GAME</button>
                   </div>
                 )}
-                <p className="mt-2 text-center text-[11px] font-semibold text-indigo-800">The game fits the mobile screen width in landscape layout. Swipe outside the game frame to scroll the page.</p>
-                <div aria-label="Page scrolling area" className="mt-2 h-5 w-full touch-pan-y rounded-full bg-indigo-200/70" />
               </div>
             )}
             {selected.action === "brain-battle-arena" && (
