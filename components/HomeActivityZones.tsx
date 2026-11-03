@@ -185,6 +185,20 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
             {selected.action === "brain-battle-arena" && (
               <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={exitGame} /></div>
             )}
+            {selected.action === "classic-games" && (
+              <div className="flex min-h-[420px] w-full items-start justify-center rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
+                <iframe
+                  src="https://solitaires-online.com/tic-tac-toe/#id=47ylono0ne,no-nav,no-article,no-feedback,no-ads"
+                  title="Tic-Tac-Toe game"
+                  width="350"
+                  height="360"
+                  className="block max-w-full rounded-xl border-0"
+                  style={{ width: "min(350px, 100%)", height: "360px" }}
+                  loading="lazy"
+                  allow="fullscreen"
+                />
+              </div>
+            )}
             {selected.action === "learning" && (
               <div ref={activityTargetRef}>
                 <div className="mb-4 rounded-2xl bg-gradient-to-r from-emerald-700 via-teal-700 to-cyan-800 p-4 text-white">
