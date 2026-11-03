@@ -10,6 +10,7 @@ import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
+import LocalSolitaire from "@/components/LocalSolitaire";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -113,7 +114,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       const classicSessionToken = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
       window.localStorage.setItem(sessionKey, JSON.stringify({ sessionId: classicSessionToken, played: false }));
       classicGameInteractedRef.current = false;
-      classicGameSessionRef.current = { gameType, sessionId: classicSessionToken, consumed: false };
+      classicGameSessionRef.current = gameType === "tic" ? { gameType, sessionId: classicSessionToken, consumed: false } : null;
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
       classicGameStartedRef.current = game; setClassicGameStarted(game);
     } catch (error) { console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
@@ -279,24 +280,12 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
                   <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-extrabold text-emerald-900">
                       <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
-                      <span>🔊 Sound enabled</span>
+                      <span>Klondike · Draw 1</span>
                     </div>
-                    <iframe
-                      src="https://solitaire-online.com/embed/klondike.html?draw=1&amp;theme=green&amp;v=embedauto1"
-                      title="Free Klondike Solitaire — Solitaire Online"
-                      width="800"
-                      height="640"
-                      className="block w-full rounded-xl border-0"
-                      style={{ width: "100%", height: "640px" }}
-                      loading="lazy"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-                      allow="autoplay; fullscreen"
-                      onFocus={() => { classicGameInteractedRef.current = true; }}
+                    <LocalSolitaire
+                      userId={userId}
+                      onQuotaUpdate={(remaining) => setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, solitaire: remaining } }))}
                     />
-                    <p className="my-2 text-center text-xs leading-5 text-slate-600">
-                      Played on <a href="https://solitaire-online.com/?utm_source=solitaire_widget&amp;utm_medium=referral&amp;utm_campaign=embed" target="_blank" rel="nofollow noopener" className="text-emerald-700 underline">solitaire-online.com</a>
-                    </p>
                   </div>
                 ) : (
                   <div className="flex min-h-[420px] w-full flex-col items-center justify-start gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
