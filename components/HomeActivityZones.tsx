@@ -10,6 +10,7 @@ import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
+import ArcheryWorldTour from "@/components/ArcheryWorldTour";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -311,20 +312,11 @@ useEffect(() => {
                     </button>
                   </div>
                 ) : classicGameStarted === "archery" ? (
-                  <div className="w-full rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-2 sm:p-4">
-                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-sky-300/30 bg-white px-3 py-2 text-xs font-extrabold text-slate-900">
-                      <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.archery ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
-                      <span>Archery World Tour</span>
+                  <div className="w-full space-y-2">
+                    <div className="rounded-xl border border-sky-300/30 bg-white px-3 py-2 text-center text-xs font-extrabold text-slate-900">
+                      {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.archery ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
                     </div>
-                    <iframe
-                      src="https://play.famobi.com/archery-world-tour"
-                      title="Archery World Tour"
-                      className="block w-full rounded-xl border-0 bg-black"
-                      style={{ height: "min(78dvh, 760px)", minHeight: "520px" }}
-                      loading="lazy"
-                      allow="autoplay; fullscreen; gamepad"
-                      allowFullScreen
-                    />
+                    <ArcheryWorldTour />
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
                   <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
