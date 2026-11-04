@@ -91,20 +91,18 @@ function ColourfulTicTacToe({ quotaText, onPlayed }: { quotaText: string; onPlay
     if (mode!=="computer" || turn!=="O" || finished) return;
     setThinking(true);
     const timer=window.setTimeout(()=>{
-      setBoard(current=>{
-        if (ticWinner(current) || current.every(Boolean)) return current;
-        const move=ticBestMove(current,difficulty);
-        if (move<0) return current;
-        const next=[...current]; next[move]="O";
-        const result=ticWinner(next);
-        if (result==="O") setScores(score=>({...score,opponent:score.opponent+1}));
-        else if (!result && next.every(Boolean)) setScores(score=>({...score,draws:score.draws+1}));
-        return next;
-      });
+      if (ticWinner(board) || board.every(Boolean)) { setThinking(false); return; }
+      const move=ticBestMove(board,difficulty);
+      if (move<0) { setThinking(false); return; }
+      const next=[...board]; next[move]="O";
+      const result=ticWinner(next);
+      if (result==="O") setScores(score=>({...score,opponent:score.opponent+1}));
+      else if (!result && next.every(Boolean)) setScores(score=>({...score,draws:score.draws+1}));
+      setBoard(next);
       setTurn("X"); setThinking(false);
-    }, mode==="computer" ? 420 : 0);
+    },420);
     return ()=>window.clearTimeout(timer);
-  },[mode,turn,finished,difficulty]);
+  },[mode,turn,finished,difficulty,board]);
 
   const playCell=(index:number)=>{
     if (board[index] || finished || thinking || (mode==="computer" && turn!=="X")) return;
