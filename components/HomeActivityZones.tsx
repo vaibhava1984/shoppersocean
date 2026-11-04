@@ -332,7 +332,7 @@ useEffect(() => {
 @media (orientation: landscape) and (max-height: 600px) {
 
 }
-.classic-solitaire-frame { height: 640px; min-height: 640px; }\n@media (orientation: landscape) { .classic-solitaire-frame { height: min(72dvh, 430px) !important; min-height: min(72dvh, 430px) !important; max-height: 430px; } }\n.classic-game-landscape-controls { display: none; }
+.classic-solitaire-frame { height: min(78vw, 420px); min-height: 280px; max-height: 420px; }\n@media (orientation: landscape) { .classic-solitaire-frame { height: min(72dvh, 430px) !important; min-height: 260px !important; max-height: 430px; } }\n.classic-game-landscape-controls { display: none; }
 `}</style>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {!selected ? (
@@ -370,7 +370,7 @@ useEffect(() => {
             <p className="mt-5 text-center text-[10px] font-medium text-slate-400">Choose any zone to begin exploring.</p>
           </>
         ) : (
-          <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-y", WebkitOverflowScrolling: "touch" }}>
+          <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={async () => { if (classicGameStartedRef.current) { const session=classicGameSessionRef.current; const mustCharge=session && classicGameInteractedRef.current; if (mustCharge && session && !session.consumed) await consumeClassicAttempt(session); window.history.back(); return; } if (activeQuizGameRef.current !== null || activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null ? "← Back" : "← Back to all zones"}</button></div>
                 {activeQuizGame === null && !classicGameStarted && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
@@ -488,7 +488,7 @@ useEffect(() => {
                     </div>
                     <div
                       className="relative w-full overflow-auto rounded-xl bg-emerald-900"
-                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", height: "640px" }}
+                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", height: "min(80vw, 430px)", maxHeight: "430px" }}
                     >
                       <iframe
                         src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
@@ -496,7 +496,7 @@ useEffect(() => {
                         width="800"
                         height="640"
                         className="classic-solitaire-frame block w-full border-0"
-                        style={{ minHeight: "640px", height: "640px", width: "100%", touchAction: "pinch-zoom" }}
+                        style={{ minHeight: "280px", height: "min(78vw, 420px)", maxHeight: "420px", width: "100%", touchAction: "pan-x pan-y pinch-zoom" }}
                         loading="lazy"
                         allow="autoplay; fullscreen"
                         onFocus={() => { classicGameInteractedRef.current = true; }}
@@ -506,28 +506,28 @@ useEffect(() => {
                     </div>
                   </div>
                 ) : classicGameStarted === "chess" ? (
-                  <div className="flex min-h-[550px] w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6" style={{ touchAction: "pan-y", WebkitOverflowScrolling: "touch" }}>
+                  <div className="flex min-h-0 w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6" style={{ touchAction: "pan-y", WebkitOverflowScrolling: "touch" }}>
                     <div className="flex w-full flex-wrap items-center justify-between gap-2 rounded-xl border border-sky-200 bg-white px-3 py-2">
                       <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setChessPaused(value => !value)} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-white">{chessPaused ? "▶ Resume" : "Ⅱ Pause"}</button>
-                        <button type="button" onClick={() => { setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
+                        <button type="button" onClick={async () => { const session=classicGameSessionRef.current; if(session && classicGameInteractedRef.current && !session.consumed){ const allowed=await consumeClassicAttempt(session); if(!allowed)return; } startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
-                    <div className="relative h-[70vh] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
-                      <div className="grid min-h-[760px] w-full grid-cols-[24px_minmax(0,1fr)_24px]">
-                        <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-y", writingMode: "vertical-rl" }}>↕</div>
+                    <div className="relative h-[min(76vw,480px)] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
+                      <div className="grid min-h-0 w-full grid-cols-[12px_minmax(0,1fr)_12px]">
+                        <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-x pan-y pinch-zoom", writingMode: "vertical-rl" }}>↕</div>
                         <iframe
                         key={chessInstance}
                         src="https://playpager.com/embed/chess/index.html"
                         title="Online Chess Game"
                         className="block w-full max-w-full border-0"
-                        style={{ height: "760px", overflow: "auto", pointerEvents: chessPaused ? "none" : "auto", touchAction: "pan-y" }}
+                        style={{ height: "min(76vw,480px)", minHeight: "280px", maxHeight: "480px", overflow: "auto", pointerEvents: chessPaused ? "none" : "auto", touchAction: "pan-x pan-y pinch-zoom" }}
                         scrolling="yes"
                         loading="lazy"
                         onFocus={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}
                       />
-                        <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-y", writingMode: "vertical-rl" }}>↕</div>
+                        <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-x pan-y pinch-zoom", writingMode: "vertical-rl" }}>↕</div>
                       </div>
                       {chessPaused && <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/85 text-2xl font-black text-white">Game Paused</div>}
                     </div>
