@@ -222,6 +222,19 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     classicGameSessionRef.current = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameInteractedRef.current = false;
   };
+  const registerClassicInteraction = async () => {
+    const session = classicGameSessionRef.current;
+    if (!session || session.consumed || classicGameInteractedRef.current) return;
+    classicGameInteractedRef.current = true;
+    const allowed = await consumeClassicAttempt(session);
+    if (!allowed && classicGameSessionRef.current === session) classicGameInteractedRef.current = false;
+  };
+  const startChargedClassicRestart = async (gameType: "solitaire" | "chess") => {
+    const session = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
+    classicGameSessionRef.current = session;
+    classicGameInteractedRef.current = true;
+    return await consumeClassicAttempt(session);
+  };
   useEffect(() => {
     const handleMobileBack = async () => {
       if (classicGameStartedRef.current) {
@@ -491,7 +504,7 @@ useEffect(() => {
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-extrabold text-emerald-900">
                       <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <span>Klondike · Draw 1</span>
-                      <button type="button" onClick={async()=>{startNextClassicAttempt("solitaire");const session=classicGameSessionRef.current;if(!session)return;const allowed=await consumeClassicAttempt(session);if(allowed)setSolitaireInstance(v=>v+1);}} className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-black text-white">↻ New Deal</button>
+                      <button type="button" onClick={async()=>{if(await startChargedClassicRestart("solitaire"))setSolitaireInstance(v=>v+1);}} className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-black text-white">↻ New Deal</button>
                     </div>
                     <div
                       className="relative w-full overflow-auto rounded-xl bg-emerald-900"
@@ -506,9 +519,9 @@ useEffect(() => {
                         style={{ minHeight: "280px", height: "min(78vw, 420px)", maxHeight: "420px", width: "100%", touchAction: "pan-x pan-y pinch-zoom" }}
                         loading="lazy"
                         allow="autoplay; fullscreen"
-                        onFocus={() => { classicGameInteractedRef.current = true; }}
-                        onPointerDown={() => { classicGameInteractedRef.current = true; }}
-                        onTouchStart={() => { classicGameInteractedRef.current = true; }}
+                        onFocus={() => { void registerClassicInteraction(); }}
+                         onPointerDown={() => { void registerClassicInteraction(); }}
+                         onTouchStart={() => { void registerClassicInteraction(); }}
                       />
                     </div>
                   </div>
@@ -518,7 +531,7 @@ useEffect(() => {
                       <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setChessPaused(value => !value)} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-white">{chessPaused ? "▶ Resume" : "Ⅱ Pause"}</button>
-                        <button type="button" onClick={async () => { startNextClassicAttempt("chess"); const session=classicGameSessionRef.current; if(!session)return; const allowed=await consumeClassicAttempt(session); if(!allowed)return; setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
+                        <button type="button" onClick={async () => { if(!await startChargedClassicRestart("chess"))return; setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
                     <div className="relative h-[min(76vw,480px)] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
@@ -532,7 +545,9 @@ useEffect(() => {
                         style={{ height: "min(76vw,480px)", minHeight: "280px", maxHeight: "480px", overflow: "auto", pointerEvents: chessPaused ? "none" : "auto", touchAction: "pan-x pan-y pinch-zoom" }}
                         scrolling="yes"
                         loading="lazy"
-                        onFocus={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}
+                        onFocus={() => { if (!chessPaused) void registerClassicInteraction(); }}
+                         onPointerDown={() => { if (!chessPaused) void registerClassicInteraction(); }}
+                         onTouchStart={() => { if (!chessPaused) void registerClassicInteraction(); }}
                       />
                         <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-x pan-y pinch-zoom", writingMode: "vertical-rl" }}>↕</div>
                       </div>
