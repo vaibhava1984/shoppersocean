@@ -233,7 +233,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     const session = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameSessionRef.current = session;
     classicGameInteractedRef.current = true;
-    return await consumeClassicAttempt(session);
+    const allowed = await consumeClassicAttempt(session);
+    if (!allowed) classicGameInteractedRef.current = false;
+    return allowed;
   };
   useEffect(() => {
     const handleMobileBack = async () => {
