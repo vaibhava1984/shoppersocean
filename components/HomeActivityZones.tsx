@@ -194,7 +194,17 @@ useEffect(() => {
 @media (orientation: landscape) and (max-height: 600px) {
 
 }
-.classic-game-landscape-controls { display: none; }`}</style>
+.classic-game-landscape-controls { display: none; }
+.greenfoot-mobile-frame { width: 640px; height: 560px; overflow: hidden; flex: none; }
+.greenfoot-mobile-iframe { width: 640px; height: 560px; transform-origin: top left; }
+@media (max-width: 480px) {
+  .greenfoot-mobile-frame { width: calc(100vw - 32px); height: 302px; }
+  .greenfoot-mobile-iframe { transform: scale(.54); }
+}
+@media (max-width: 360px) {
+  .greenfoot-mobile-frame { height: 269px; }
+  .greenfoot-mobile-iframe { transform: scale(.48); }
+}`}</style>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {!selected ? (
           <>
@@ -399,18 +409,6 @@ useEffect(() => {
                         onFocus={() => { classicGameInteractedRef.current = true; }}
                       />
                     </div>
-                    <style jsx>{`
-                      .greenfoot-mobile-frame { width: 640px; height: 560px; overflow: hidden; flex: none; }
-                      .greenfoot-mobile-iframe { width: 640px; height: 560px; transform-origin: top left; }
-                      @media (max-width: 480px) {
-                        .greenfoot-mobile-frame { width: calc(100vw - 32px); height: 302px; }
-                        .greenfoot-mobile-iframe { transform: scale(.54); }
-                      }
-                      @media (max-width: 360px) {
-                        .greenfoot-mobile-frame { height: 269px; }
-                        .greenfoot-mobile-iframe { transform: scale(.48); }
-                      }
-                    `}</style>
                   </div>
                 )}
               </div>
