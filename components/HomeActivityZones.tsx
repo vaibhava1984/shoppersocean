@@ -206,7 +206,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
   const consumeClassicAttempt = async (session: { gameType: "tic" | "solitaire" | "chess"; sessionId: string; consumed: boolean }) => {
-    if (session.consumed) return true;
+    if (session.consumed) return false;
     session.consumed = true;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
@@ -516,7 +516,7 @@ useEffect(() => {
                         <button type="button" onClick={async () => { const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (!allowed) return; startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
-                    <div className="relative w-full overflow-auto rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }} onPointerDown={() => { classicGameInteractedRef.current = true; }}>
+                    <div className="relative w-full overflow-auto rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }} onPointerDown={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}>
                       <iframe
                         key={chessInstance}
                         src="https://playpager.com/embed/chess/index.html"
