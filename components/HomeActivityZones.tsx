@@ -387,12 +387,16 @@ useEffect(() => {
                       {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
                     </div>
                     <iframe
-                      src="https://solitaires-online.com/tic-tac-toe/#id=47ylono0ne,no-nav,no-article,no-feedback,no-ads"
-                      title="Tic-Tac-Toe game"
-                      width="350"
-                      height="360"
-                      className="block max-w-full rounded-xl border-0"
-                      style={{ width: "min(350px, 100%)", height: "360px" }}
+                      src="https://zv1y2i8p.play.gamezop.com/g/H1WmafkP9JQ"
+                      title="Tic Tac Toe"
+                      seamless="seamless"
+                      allowTransparency={true}
+                      allowFullScreen={true}
+                      frameBorder={0}
+                      width="100%"
+                      height="100%"
+                      className="block w-full rounded-xl border-0"
+                      style={{ width: "100%", height: "420px", border: 0 }}
                       loading="lazy"
                       allow="autoplay; fullscreen"
                       onFocus={() => { classicGameInteractedRef.current = true; }}
