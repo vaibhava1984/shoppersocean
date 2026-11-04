@@ -382,22 +382,35 @@ useEffect(() => {
                     />
                   </div>
                 ) : (
-                  <div className="flex w-full flex-col items-center justify-start gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-2 sm:p-4">
+                  <div className="flex w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-2 sm:p-4">
                     <div className="w-full max-w-md rounded-xl border border-sky-200 bg-white px-3 py-2 text-center text-xs font-extrabold text-sky-900">
                       {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
                     </div>
-                    <iframe
-                      src="https://www.greenfoot.org/scenarios/26532?embed=true"
-                      title="Tic Tac Toe"
-                      width="100%"
-                      height="340"
-                      frameBorder={0}
-                      className="block h-[340px] w-full max-w-[760px] rounded-xl border-0 sm:h-[420px]"
-                      style={{ width: "100%", height: "340px", maxWidth: "760px", border: 0 }}
-                      loading="lazy"
-                      allow="fullscreen"
-                      onFocus={() => { classicGameInteractedRef.current = true; }}
-                    />
+                    <div className="greenfoot-mobile-frame">
+                      <iframe
+                        src="https://www.greenfoot.org/scenarios/26532?embed=true"
+                        title="Tic Tac Toe"
+                        width="640"
+                        height="560"
+                        frameBorder={0}
+                        className="greenfoot-mobile-iframe block rounded-xl border-0"
+                        loading="lazy"
+                        allow="fullscreen"
+                        onFocus={() => { classicGameInteractedRef.current = true; }}
+                      />
+                    </div>
+                    <style jsx>{`
+                      .greenfoot-mobile-frame { width: 640px; height: 560px; overflow: hidden; flex: none; }
+                      .greenfoot-mobile-iframe { width: 640px; height: 560px; transform-origin: top left; }
+                      @media (max-width: 480px) {
+                        .greenfoot-mobile-frame { width: calc(100vw - 32px); height: 302px; }
+                        .greenfoot-mobile-iframe { transform: scale(.54); }
+                      }
+                      @media (max-width: 360px) {
+                        .greenfoot-mobile-frame { height: 269px; }
+                        .greenfoot-mobile-iframe { transform: scale(.48); }
+                      }
+                    `}</style>
                   </div>
                 )}
               </div>
