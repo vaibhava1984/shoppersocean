@@ -434,7 +434,6 @@ useEffect(() => {
                         {id:"landmark",icon:"🏛️",title:"The Landmark Adventure",note:"Recognise world landmarks",tone:"from-amber-500 to-rose-700"},
                         {id:"records",icon:"🏆",title:"World Records Quiz",note:"Fifty curated record questions",tone:"from-orange-600 to-red-800"},
                         {id:"science",icon:"🔬",title:"Science Quiz",note:"Explore every branch of science",tone:"from-cyan-600 to-blue-800"},
-                        {id:"trivio",icon:"🎉",title:"Fun Trivia Questions",note:"Play 100 fun trivia questions",tone:"from-pink-600 to-violet-800"}
                       ].map((game,index)=>(
                         <button key={game.id} type="button" onClick={()=>openGame(game.id)} className={"group relative min-h-40 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br "+game.tone+" p-5 text-left text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200"}>
                           <span className="absolute -right-3 -top-5 text-8xl opacity-20 transition group-hover:scale-110">{game.icon}</span>
@@ -497,20 +496,6 @@ useEffect(() => {
                       className="rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
                     >
                       ❌⭕ &nbsp; Play Tic Tac Toe
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => void openClassicGame("chess")}
-                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-sky-600 via-blue-700 to-indigo-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200"
-                    >
-                      ♟️ &nbsp; Play Chess
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => void openClassicGame("solitaire")}
-                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200"
-                    >
-                      🃏 &nbsp; Play Solitaire
                     </button>
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
