@@ -487,7 +487,7 @@ useEffect(() => {
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-extrabold text-emerald-900">
                       <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <span>Klondike · Draw 1</span>
-                      <button type="button" onClick={async()=>{const session=classicGameSessionRef.current;if(!session||session.consumed)return;const allowed=await consumeClassicAttempt(session);if(allowed){startNextClassicAttempt("solitaire");setSolitaireInstance(v=>v+1);}}} className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-black text-white">↻ New Deal</button>
+                      <button type="button" onClick={async()=>{const session=classicGameSessionRef.current;if(!session||session.consumed||!classicGameInteractedRef.current)return;const allowed=await consumeClassicAttempt(session);if(allowed){startNextClassicAttempt("solitaire");setSolitaireInstance(v=>v+1);}}} className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-black text-white">↻ New Deal</button>
                     </div>
                     <div
                       className="relative w-full overflow-auto rounded-xl bg-emerald-900"
@@ -514,7 +514,7 @@ useEffect(() => {
                       <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setChessPaused(value => !value)} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-white">{chessPaused ? "▶ Resume" : "Ⅱ Pause"}</button>
-                        <button type="button" onClick={async () => { const session=classicGameSessionRef.current; if(!session||session.consumed)return; const allowed=await consumeClassicAttempt(session); if(!allowed)return; startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
+                        <button type="button" onClick={async () => { const session=classicGameSessionRef.current; if(!session||session.consumed||!classicGameInteractedRef.current)return; const allowed=await consumeClassicAttempt(session); if(!allowed)return; startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
                     <div className="relative h-[min(76vw,480px)] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
