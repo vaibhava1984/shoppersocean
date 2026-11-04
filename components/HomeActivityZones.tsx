@@ -75,7 +75,7 @@ function ticBestMove(board: TicMark[], difficulty: TicDifficulty): number {
   return best;
 }
 
-function ColourfulTicTacToe({ quotaText, onPlayed }: { quotaText: string; onPlayed: () => void }) {
+function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: string; onPlayed: () => void; onNewGame: (finished: boolean) => void }) {
   const [mode,setMode]=useState<TicMode>("computer");
   const [difficulty,setDifficulty]=useState<TicDifficulty>("medium");
   const [board,setBoard]=useState<TicMark[]>(Array(9).fill(null));
@@ -172,7 +172,7 @@ function ColourfulTicTacToe({ quotaText, onPlayed }: { quotaText: string; onPlay
         </button>)}
       </div>
       <div className="mt-4 flex items-center justify-center gap-3">
-        <button type="button" onClick={resetBoard} className="min-h-14 w-full max-w-[300px] rounded-full border-4 border-green-300 bg-gradient-to-b from-lime-400 to-green-600 px-5 py-3 text-lg font-black text-white shadow-[0_5px_0_#16803a] transition hover:brightness-105 active:translate-y-1 active:shadow-none">↻ New Game</button>
+        <button type="button" onClick={()=>{onNewGame(finished);resetBoard();}} className="min-h-14 w-full max-w-[300px] rounded-full border-4 border-green-300 bg-gradient-to-b from-lime-400 to-green-600 px-5 py-3 text-lg font-black text-white shadow-[0_5px_0_#16803a] transition hover:brightness-105 active:translate-y-1 active:shadow-none">↻ New Game</button>
       </div>
       <div className="mt-3 flex items-center justify-between gap-2 text-[11px] font-bold text-slate-600"><span>Draws: {scores.draws}</span><span className="rounded-full bg-white/80 px-3 py-1 text-center text-blue-800">{quotaText}</span></div>
     </div>
@@ -186,12 +186,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const classicGameInteractedRef = useRef(false);
   const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire" | "chess"; sessionId: string; consumed: boolean } | null>(null);
   const enterSolitaireLandscape = () => {
-    const orientation = screen.orientation;
-    if (typeof document !== "undefined" && !document.fullscreenElement && document.documentElement.requestFullscreen) {
-      void document.documentElement.requestFullscreen().then(() => orientation?.lock?.("landscape")).catch(() => {});
-    } else {
-      void orientation?.lock?.("landscape").catch(() => {});
-    }
+    try { void screen.orientation?.lock?.("landscape").catch(() => {}); } catch {}
   };
   const leaveSolitaireLandscape = () => {
     try { screen.orientation?.unlock?.(); } catch {}
@@ -201,35 +196,39 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
+  const [chessPaused, setChessPaused] = useState(false);
+  const [chessInstance, setChessInstance] = useState(0);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
   const activeZoneRef = useRef<number | null>(null);
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
+  const consumeClassicAttempt = async (session: { gameType: "tic" | "solitaire" | "chess"; sessionId: string; consumed: boolean }) => {
+    if (session.consumed) return true;
+    session.consumed = true;
+    try {
+      const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
+      const data = await response.json();
+      if (!response.ok) { setClassicQuotaPopup(true); return false; }
+      setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: Number(data.remaining ?? 0) } }));
+      return true;
+    } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
+  };
+  const startNextClassicAttempt = (gameType: "tic" | "solitaire" | "chess") => {
+    classicGameSessionRef.current = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
+    classicGameInteractedRef.current = false;
+  };
   useEffect(() => {
     const handleMobileBack = () => {
       if (classicGameStartedRef.current) {
         const session = classicGameSessionRef.current;
-        if (session && classicGameInteractedRef.current && !session.consumed) {
-          session.consumed = true;
-          void fetch("/api/game-access", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId })
-          }).then(async response => {
-            const data = await response.json();
-            if (response.ok) {
-              setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: data.remaining } }));
-            } else {
-              console.error("Classic game quota could not be recorded:", data.error);
-            }
-          }).catch(error => console.error("Classic game quota recording failed:", error));
-        }
+        if (session && classicGameInteractedRef.current && !session.consumed) void consumeClassicAttempt(session);
         if (classicGameStartedRef.current === "solitaire") leaveSolitaireLandscape();
         classicGameStartedRef.current = false;
         classicGameSessionRef.current = null;
         classicGameInteractedRef.current = false;
+        setChessPaused(false);
         setClassicGameStarted(false);
         return;
       }
@@ -276,28 +275,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
 
       if (remaining <= 0) { if (gameType === "solitaire") leaveSolitaireLandscape(); setClassicQuotaPopup(true); return; }
 
-      // External games do not expose reliable cross-origin move events, so charge once on launch.
-      if (gameType === "solitaire") {
-        const sessionId = gameType + "-open:" + Date.now() + ":" + Math.random().toString(36).slice(2);
-        const chargeResponse = await fetch("/api/game-access", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sectionId: "classic-games", gameTypeId: gameType, challengeId: sessionId })
-        });
-        const chargeData = await chargeResponse.json();
-        if (!chargeResponse.ok) {
-          if (gameType === "solitaire") leaveSolitaireLandscape();
-          setClassicQuotaPopup(true);
-          return;
-        }
-        remaining = Number(chargeData.remaining ?? Math.max(0, remaining - 1));
-        setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [gameType]: remaining } }));
-      }
-
-      const classicSessionToken = "classic-game-session:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2);
-      window.localStorage.setItem(sessionKey, JSON.stringify({ sessionId: classicSessionToken, played: false }));
-      classicGameInteractedRef.current = false;
-      classicGameSessionRef.current = gameType === "tic" || gameType === "chess" ? { gameType, sessionId: classicSessionToken, consumed: false } : null;
+      startNextClassicAttempt(gameType);
+      setChessPaused(false);
+      setChessInstance(0);
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
       classicGameStartedRef.current = game; setClassicGameStarted(game);
     } catch (error) { if (game === "solitaire") leaveSolitaireLandscape(); console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
@@ -502,8 +482,9 @@ useEffect(() => {
                       <span>Klondike · Draw 1</span>
                     </div>
                     <div
-                      className="w-full overflow-auto rounded-xl bg-emerald-900"
-                      style={{ WebkitOverflowScrolling: "touch" }}
+                      className="relative w-full overflow-auto rounded-xl bg-emerald-900"
+                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y" }}
+                      onPointerDown={() => { classicGameInteractedRef.current = true; }}
                     >
                       <iframe
                         src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
@@ -512,8 +493,9 @@ useEffect(() => {
                         height="640"
                         className="block w-full border-0"
                         style={{
-                          minHeight: "min(80vh, 640px)",
-                          height: "640px",
+                          minHeight: "min(72dvh, 430px)",
+                          height: "min(72dvh, 430px)",
+                          maxHeight: "430px",
                         }}
                         loading="lazy"
                         allow="autoplay; fullscreen"
@@ -522,23 +504,32 @@ useEffect(() => {
                   </div>
                 ) : classicGameStarted === "chess" ? (
                   <div className="flex min-h-[550px] w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
-                    <div className="w-full max-w-md rounded-xl border border-sky-200 bg-white px-3 py-2 text-center text-xs font-extrabold text-sky-900">
-                      {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
+                    <div className="flex w-full flex-wrap items-center justify-between gap-2 rounded-xl border border-sky-200 bg-white px-3 py-2">
+                      <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
+                      <div className="flex gap-2">
+                        <button type="button" onClick={() => setChessPaused(value => !value)} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-white">{chessPaused ? "▶ Resume" : "Ⅱ Pause"}</button>
+                        <button type="button" onClick={async () => { const session=classicGameSessionRef.current; if (session) await consumeClassicAttempt(session); startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
+                      </div>
                     </div>
-                    <iframe
-                      src="https://playpager.com/embed/chess/index.html"
-                      title="Online Chess Game"
-                      className="block w-full max-w-full border-0"
-                      style={{ height: "550px", overflow: "hidden" }}
-                      scrolling="no"
-                      loading="lazy"
-                      onFocus={() => { classicGameInteractedRef.current = true; }}
-                    />
+                    <div className="relative w-full overflow-auto rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }} onPointerDown={() => { classicGameInteractedRef.current = true; }}>
+                      <iframe
+                        key={chessInstance}
+                        src="https://playpager.com/embed/chess/index.html"
+                        title="Online Chess Game"
+                        className="block w-full max-w-full border-0"
+                        style={{ height: "550px", overflow: "hidden", pointerEvents: chessPaused ? "none" : "auto" }}
+                        scrolling="no"
+                        loading="lazy"
+                        onFocus={() => { classicGameInteractedRef.current = true; }}
+                      />
+                      {chessPaused && <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/85 text-2xl font-black text-white">Game Paused</div>}
+                    </div>
                   </div>
                 ) : (
                   <ColourfulTicTacToe
                     quotaText={classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
                     onPlayed={() => { classicGameInteractedRef.current = true; }}
+                    onNewGame={async (wasFinished) => { if (!wasFinished) return; const session=classicGameSessionRef.current; if (session) await consumeClassicAttempt(session); startNextClassicAttempt("tic"); }}
                   />
                 )}
               </div>
