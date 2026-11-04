@@ -503,7 +503,7 @@ useEffect(() => {
                     </div>
                     <div
                       className="relative w-full overflow-auto rounded-xl bg-emerald-900"
-                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y" }}
+                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y", height: `${640 * solitaireZoom}px` }}
                     >
                       <iframe
                         src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
@@ -533,7 +533,7 @@ useEffect(() => {
                         src="https://playpager.com/embed/chess/index.html"
                         title="Online Chess Game"
                         className="block w-full max-w-full border-0"
-                        style={{ height: "550px", overflow: "hidden", pointerEvents: chessPaused ? "none" : "auto" }}
+                        style={{ height: "550px", overflow: "hidden", pointerEvents: chessPaused ? "none" : "auto", touchAction: "pan-y" }}
                         scrolling="no"
                         loading="lazy"
                         onFocus={() => { classicGameInteractedRef.current = true; }}
