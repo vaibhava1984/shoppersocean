@@ -66,13 +66,7 @@ export default function NativeChessBoard({ paused, onFirstMove }: Props) {
     }
   };
 
-  const reset = () => {
-    setGame(new Chess());
-    setSelected(null);
-    setTargets([]);
-    setCharged(false);
-    setMessage("White to move");
-  };
+
 
   return (
     <div className="mx-auto w-full max-w-[560px] overflow-hidden rounded-2xl border border-amber-950/40 bg-gradient-to-br from-[#25170f] via-[#59371f] to-[#1d140f] p-3 shadow-[0_18px_45px_rgba(0,0,0,.38)] sm:p-5">
@@ -104,7 +98,7 @@ export default function NativeChessBoard({ paused, onFirstMove }: Props) {
       </div>
       {paused && <div className="mt-3 rounded-lg bg-black/60 py-2 text-center text-sm font-black text-white">Game Paused</div>}
       <div className="mt-3 flex items-center justify-between gap-2 text-[10px] font-bold text-amber-100/80"><span>Tap a piece, then its highlighted square.</span><span>{game.history().length} moves</span></div>
-      <button type="button" onClick={reset} className="mt-3 w-full rounded-lg border border-amber-200/30 bg-gradient-to-b from-[#d7a65f] to-[#8d572d] px-4 py-2.5 text-sm font-black text-[#25170f] shadow-md">New Board (practice only)</button>
+
     </div>
   );
 }
