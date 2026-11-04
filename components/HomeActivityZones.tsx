@@ -208,7 +208,14 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
       const data = await response.json();
-      if (!response.ok) { setClassicQuotaPopup(true); return false; }
+      if (!response.ok) {
+        setClassicQuotaPopup(true);
+        if (session.gameType === "solitaire" || session.gameType === "chess") {
+          classicGameStartedRef.current = false;
+          setClassicGameStarted(false);
+        }
+        return false;
+      }
       session.consumed = true;
       const remaining = Number(data.remaining ?? 0);
       setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: remaining } }));
@@ -285,27 +292,32 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     const gameType = game === "solitaire" ? "solitaire" : game === "chess" ? "chess" : "tic";
     setClassicGameOpening(true);
     try {
+      // Check the current balance before showing the game, but charge only when
+      // the player actually interacts with the game (or starts a new deal/restart).
       const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
       const quotaData = await quotaResponse.json();
       if (!quotaResponse.ok) throw new Error(quotaData.error || "Quota could not be verified.");
-      let remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
+      const remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
       setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
-
-      if (remaining <= 0) { if (gameType === "solitaire") leaveSolitaireLandscape(); setClassicGameOpening(false); setClassicQuotaPopup(true); return; }
-
-      startNextClassicAttempt(gameType);
-      const openingSession = classicGameSessionRef.current;
-      if (!openingSession || !(await consumeClassicAttempt(openingSession))) {
+      if (remaining <= 0) {
         if (gameType === "solitaire") leaveSolitaireLandscape();
         setClassicGameOpening(false);
+        setClassicQuotaPopup(true);
         return;
       }
+      startNextClassicAttempt(gameType);
       setChessPaused(false);
       setChessInstance(0);
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
-      classicGameStartedRef.current = game; setClassicGameStarted(game);
+      classicGameStartedRef.current = game;
+      setClassicGameStarted(game);
       setClassicGameOpening(false);
-    } catch (error) { if (game === "solitaire") leaveSolitaireLandscape(); setClassicGameOpening(false); console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
+    } catch (error) {
+      if (game === "solitaire") leaveSolitaireLandscape();
+      setClassicGameOpening(false);
+      console.error("Classic game quota check failed:", error);
+      setClassicQuota(current => ({ ...current, loading: false }));
+    }
   };
 useEffect(() => {
     if (selected?.action !== "classic-games" || !userId) return;
