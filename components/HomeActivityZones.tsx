@@ -11,6 +11,7 @@ import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
+import NativeChessBoard from "@/components/NativeChessBoard";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -231,10 +232,12 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const registerClassicInteraction = async () => {
     const session = classicGameSessionRef.current;
-    if (!session || session.consumed || classicGameInteractedRef.current) return;
+    if (!session) return false;
+    if (session.consumed || classicGameInteractedRef.current) return true;
     classicGameInteractedRef.current = true;
     const allowed = await consumeClassicAttempt(session);
     if (!allowed && classicGameSessionRef.current === session) classicGameInteractedRef.current = false;
+    return allowed;
   };
   const startChargedClassicRestart = async (gameType: "solitaire" | "chess") => {
     const session = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
@@ -533,25 +536,7 @@ useEffect(() => {
                         <button type="button" onClick={async () => { if(!await startChargedClassicRestart("chess"))return; setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
-                    <div className="relative h-[min(76vw,480px)] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
-                      <div className="grid min-h-0 w-full grid-cols-[12px_minmax(0,1fr)_12px]">
-                        <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-x pan-y pinch-zoom", writingMode: "vertical-rl" }}>↕</div>
-                        <iframe
-                        key={chessInstance}
-                        src="https://playpager.com/embed/chess/index.html"
-                        title="Online Chess Game"
-                        className="block w-full max-w-full border-0"
-                        style={{ height: "min(76vw,480px)", minHeight: "280px", maxHeight: "480px", overflow: "auto", pointerEvents: chessPaused ? "none" : "auto", touchAction: "pan-x pan-y pinch-zoom" }}
-                        scrolling="yes"
-                        loading="lazy"
-                        onFocus={() => { if (!chessPaused) void registerClassicInteraction(); }}
-                         onPointerDown={() => { if (!chessPaused) void registerClassicInteraction(); }}
-                         onTouchStart={() => { if (!chessPaused) void registerClassicInteraction(); }}
-                      />
-                        <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-x pan-y pinch-zoom", writingMode: "vertical-rl" }}>↕</div>
-                      </div>
-                      {chessPaused && <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/85 text-2xl font-black text-white">Game Paused</div>}
-                    </div>
+                    <NativeChessBoard key={chessInstance} paused={chessPaused} onFirstMove={registerClassicInteraction} />
                   </div>
                 ) : (
                   <ColourfulTicTacToe
