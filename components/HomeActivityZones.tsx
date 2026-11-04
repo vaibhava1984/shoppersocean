@@ -190,9 +190,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const leaveSolitaireLandscape = () => {
     try { screen.orientation?.unlock?.(); } catch {}
-    if (typeof document !== "undefined" && document.fullscreenElement) {
-      void document.exitFullscreen().catch(() => {});
-    }
   };
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
@@ -332,7 +329,7 @@ useEffect(() => {
 @media (orientation: landscape) and (max-height: 600px) {
 
 }
-.classic-game-landscape-controls { display: none; }
+.classic-solitaire-frame { height: 640px; min-height: 640px; }\n@media (orientation: landscape) { .classic-solitaire-frame { height: min(72dvh, 430px) !important; min-height: min(72dvh, 430px) !important; max-height: 430px; } }\n.classic-game-landscape-controls { display: none; }
 `}</style>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {!selected ? (
@@ -496,12 +493,8 @@ useEffect(() => {
                         title="Klondike Solitaire — pinch to zoom"
                         width="800"
                         height="640"
-                        className="block w-full border-0"
-                        style={{
-                          minHeight: "min(72dvh, 430px)",
-                          height: "min(72dvh, 430px)",
-                          maxHeight: "430px",
-                        }}
+                        className="classic-solitaire-frame block w-full border-0"
+                        style={{ minHeight: "640px", height: "640px" }}
                         loading="lazy"
                         allow="autoplay; fullscreen"
                       />
