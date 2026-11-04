@@ -196,6 +196,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [classicGameOpening, setClassicGameOpening] = useState(false);
   const [chessPaused, setChessPaused] = useState(false);
   const [chessInstance, setChessInstance] = useState(0);
+  const [solitaireInstance, setSolitaireInstance] = useState(0);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
   const activeZoneRef = useRef<number | null>(null);
@@ -204,11 +205,11 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
   const consumeClassicAttempt = async (session: { gameType: "tic" | "solitaire" | "chess"; sessionId: string; consumed: boolean }) => {
     if (session.consumed) return false;
-    session.consumed = true;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
       const data = await response.json();
       if (!response.ok) { setClassicQuotaPopup(true); return false; }
+      session.consumed = true;
       const remaining = Number(data.remaining ?? 0);
       setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: remaining } }));
       // A successful POST has already consumed the attempt. Allow that final
@@ -373,7 +374,7 @@ useEffect(() => {
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={async () => { if (classicGameStartedRef.current) { const session=classicGameSessionRef.current; if (session && classicGameInteractedRef.current && !session.consumed) await consumeClassicAttempt(session); window.history.back(); return; } if (activeQuizGameRef.current !== null || activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null ? "← Back" : "← Back to all zones"}</button></div>
+                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={async () => { if (classicGameStartedRef.current) { const session=classicGameSessionRef.current; if (session && classicGameInteractedRef.current && !session.consumed) { const charged=await consumeClassicAttempt(session); if(!charged) return; } window.history.back(); return; } if (activeQuizGameRef.current !== null || activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null ? "← Back" : "← Back to all zones"}</button></div>
                 {activeQuizGame === null && !classicGameStarted && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>
             {selected.action === "games" && (
@@ -482,10 +483,11 @@ useEffect(() => {
                     </button>
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
-                  <div className="mx-auto w-full max-w-[480px] rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4" onPointerDownCapture={() => { classicGameInteractedRef.current = true; }} onTouchStartCapture={() => { classicGameInteractedRef.current = true; }} onFocusCapture={() => { classicGameInteractedRef.current = true; }}>
+                  <div className="mx-auto w-full max-w-[480px] rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-extrabold text-emerald-900">
                       <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <span>Klondike · Draw 1</span>
+                      <button type="button" onClick={async()=>{const session=classicGameSessionRef.current;if(!session||session.consumed)return;const allowed=await consumeClassicAttempt(session);if(allowed){startNextClassicAttempt("solitaire");setSolitaireInstance(v=>v+1);}}} className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-black text-white">↻ New Deal</button>
                     </div>
                     <div
                       className="relative w-full overflow-auto rounded-xl bg-emerald-900"
@@ -507,12 +509,12 @@ useEffect(() => {
                     </div>
                   </div>
                 ) : classicGameStarted === "chess" ? (
-                  <div className="flex min-h-0 w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }} onPointerDownCapture={() => { if (!chessPaused) classicGameInteractedRef.current = true; }} onTouchStartCapture={() => { if (!chessPaused) classicGameInteractedRef.current = true; }} onFocusCapture={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}>
+                  <div className="flex min-h-0 w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }} >
                     <div className="flex w-full flex-wrap items-center justify-between gap-2 rounded-xl border border-sky-200 bg-white px-3 py-2">
                       <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setChessPaused(value => !value)} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-white">{chessPaused ? "▶ Resume" : "Ⅱ Pause"}</button>
-                        <button type="button" onClick={async () => { const session=classicGameSessionRef.current; if(session && classicGameInteractedRef.current && !session.consumed){ const allowed=await consumeClassicAttempt(session); if(!allowed)return; } startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
+                        <button type="button" onClick={async () => { const session=classicGameSessionRef.current; if(!session||session.consumed)return; const allowed=await consumeClassicAttempt(session); if(!allowed)return; startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
                     <div className="relative h-[min(76vw,480px)] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
