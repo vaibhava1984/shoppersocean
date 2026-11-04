@@ -26,6 +26,132 @@ const entertainmentGroups = [
   "riddle-corner",
 ];
 
+
+type TicMark = "X" | "O" | null;
+type TicMode = "computer" | "local";
+type TicDifficulty = "easy" | "medium" | "hard";
+
+function ticWinner(board: TicMark[]): TicMark {
+  const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  for (const [a,b,c] of lines) if (board[a] && board[a] === board[b] && board[a] === board[c]) return board[a];
+  return null;
+}
+
+function ticBestMove(board: TicMark[], difficulty: TicDifficulty): number {
+  const empty = board.map((v,i) => v === null ? i : -1).filter(i => i >= 0);
+  if (!empty.length) return -1;
+  const winAt = (cells: TicMark[], mark: TicMark) => empty.find(i => { const next=[...cells]; next[i]=mark; return ticWinner(next) === mark; });
+  if (difficulty === "easy") return empty[Math.floor(Math.random()*empty.length)];
+  const winning = winAt(board, "O");
+  if (winning !== undefined) return winning;
+  const blocking = winAt(board, "X");
+  if (blocking !== undefined) return blocking;
+  if (difficulty === "medium") {
+    if (board[4] === null) return 4;
+    const corners = [0,2,6,8].filter(i => board[i] === null);
+    if (corners.length) return corners[Math.floor(Math.random()*corners.length)];
+    return empty[Math.floor(Math.random()*empty.length)];
+  }
+  const minimax = (cells: TicMark[], isMax: boolean, depth: number): number => {
+    const winner = ticWinner(cells);
+    if (winner === "O") return 10-depth;
+    if (winner === "X") return depth-10;
+    const slots = cells.map((v,i)=>v===null?i:-1).filter(i=>i>=0);
+    if (!slots.length) return 0;
+    let best = isMax ? -Infinity : Infinity;
+    for (const i of slots) {
+      const next=[...cells]; next[i]=isMax?"O":"X";
+      const value=minimax(next,!isMax,depth+1);
+      best=isMax?Math.max(best,value):Math.min(best,value);
+    }
+    return best;
+  };
+  let bestScore=-Infinity, best=empty[0];
+  for (const i of empty) {
+    const next=[...board]; next[i]="O";
+    const score=minimax(next,false,0);
+    if (score>bestScore) { bestScore=score; best=i; }
+  }
+  return best;
+}
+
+function ColourfulTicTacToe({ quotaText, onPlayed }: { quotaText: string; onPlayed: () => void }) {
+  const [mode,setMode]=useState<TicMode>("computer");
+  const [difficulty,setDifficulty]=useState<TicDifficulty>("medium");
+  const [board,setBoard]=useState<TicMark[]>(Array(9).fill(null));
+  const [turn,setTurn]=useState<TicMark>("X");
+  const [scores,setScores]=useState({ player:0, opponent:0, draws:0 });
+  const [thinking,setThinking]=useState(false);
+  const winner=ticWinner(board);
+  const draw=!winner && board.every(Boolean);
+  const finished=Boolean(winner || draw);
+  const resetBoard=()=>{ setBoard(Array(9).fill(null)); setTurn("X"); setThinking(false); };
+
+  useEffect(()=>{
+    if (mode!=="computer" || turn!=="O" || finished) return;
+    setThinking(true);
+    const timer=window.setTimeout(()=>{
+      setBoard(current=>{
+        if (ticWinner(current) || current.every(Boolean)) return current;
+        const move=ticBestMove(current,difficulty);
+        if (move<0) return current;
+        const next=[...current]; next[move]="O";
+        const result=ticWinner(next);
+        if (result==="O") setScores(score=>({...score,opponent:score.opponent+1}));
+        else if (!result && next.every(Boolean)) setScores(score=>({...score,draws:score.draws+1}));
+        return next;
+      });
+      setTurn("X"); setThinking(false);
+    }, mode==="computer" ? 420 : 0);
+    return ()=>window.clearTimeout(timer);
+  },[mode,turn,finished,difficulty]);
+
+  const playCell=(index:number)=>{
+    if (board[index] || finished || thinking || (mode==="computer" && turn!=="X")) return;
+    onPlayed();
+    const next=[...board]; next[index]=turn;
+    const result=ticWinner(next);
+    if (result==="X") setScores(score=>({...score,player:score.player+1}));
+    else if (!result && next.every(Boolean)) setScores(score=>({...score,draws:score.draws+1}));
+    setBoard(next);
+    setTurn(turn==="X"?"O":"X");
+  };
+  const chooseMode=(next:TicMode)=>{setMode(next);resetBoard();};
+  const status=winner ? (winner==="X"?"❌ X wins!":"⭕ O wins!") : draw ? "It's a draw!" : thinking ? "Computer is thinking…" : mode==="computer" ? (turn==="X"?"Your turn — play X":"Computer's turn — O") : (turn==="X"?"Player X's turn":"Player O's turn");
+
+  return (
+    <div className="mx-auto w-full max-w-[560px] overflow-hidden rounded-[28px] border-[5px] border-white bg-gradient-to-br from-[#fff9e8] via-[#fffdf6] to-[#ffedb8] p-3 shadow-[0_14px_40px_rgba(30,64,175,.24)] sm:p-5">
+      <div className="text-center">
+        <h2 className="text-[clamp(2rem,9vw,3.5rem)] font-black leading-none tracking-tight text-transparent" style={{backgroundImage:"linear-gradient(180deg,#ffdf36 5%,#ff8b00 48%,#f04428 100%)",WebkitBackgroundClip:"text",filter:"drop-shadow(0 3px 0 #1454bb)"}}>
+          Tic Tac Toe
+        </h2>
+        <p className="mt-2 text-xs font-extrabold uppercase tracking-[.18em] text-blue-800">Play • Think • Win</p>
+      </div>
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        <button type="button" onClick={()=>chooseMode("computer")} aria-pressed={mode==="computer"} className={`min-h-12 rounded-2xl border-2 px-2 py-3 text-sm font-black transition active:scale-[.98] ${mode==="computer"?"border-blue-500 bg-gradient-to-b from-sky-400 to-blue-600 text-white shadow-lg":"border-slate-200 bg-white text-slate-600"}`}>🤖 Vs Computer</button>
+        <button type="button" onClick={()=>chooseMode("local")} aria-pressed={mode==="local"} className={`min-h-12 rounded-2xl border-2 px-2 py-3 text-sm font-black transition active:scale-[.98] ${mode==="local"?"border-blue-500 bg-gradient-to-b from-sky-400 to-blue-600 text-white shadow-lg":"border-slate-200 bg-white text-slate-600"}`}>👥 Local 2 Player</button>
+      </div>
+      {mode==="computer" && <div className="mt-3 grid grid-cols-3 rounded-full border-2 border-white bg-blue-50 p-1">
+        {(["easy","medium","hard"] as TicDifficulty[]).map(level=><button key={level} type="button" onClick={()=>{setDifficulty(level);resetBoard();}} aria-pressed={difficulty===level} className={`min-h-10 rounded-full px-1 text-xs font-black capitalize transition ${difficulty===level?"bg-gradient-to-b from-sky-400 to-blue-600 text-white shadow-md":"text-slate-500"}`}>{level}</button>)}
+      </div>}
+      <div className="mt-3 grid grid-cols-2 gap-2 rounded-2xl border-2 border-amber-200 bg-gradient-to-r from-blue-50 to-orange-50 p-3">
+        <div className="text-center"><div className="text-2xl font-black text-blue-600">✕ <span className="text-base text-slate-700"> {mode==="computer"?"You":"Player X"}</span></div><div className="text-2xl font-black text-blue-800">{scores.player}</div></div>
+        <div className="border-l-2 border-amber-300 text-center"><div className="text-2xl font-black text-red-500">◯ <span className="text-base text-slate-700">{mode==="computer"?"Computer":"Player O"}</span></div><div className="text-2xl font-black text-red-700">{scores.opponent}</div></div>
+      </div>
+      <div role="status" aria-live="polite" className={`my-3 min-h-10 rounded-xl px-2 py-2 text-center text-sm font-black ${finished?"bg-amber-100 text-amber-800":"bg-blue-50 text-blue-800"}`}>{status}</div>
+      <div className="mx-auto grid aspect-square w-full max-w-[430px] grid-cols-3 gap-[5px] rounded-[22px] bg-blue-700 p-[5px] shadow-[0_8px_0_#1749a4,0_14px_22px_rgba(30,64,175,.22)]">
+        {board.map((mark,index)=><button key={index} type="button" onClick={()=>playCell(index)} disabled={Boolean(mark)||finished||thinking||(mode==="computer"&&turn!=="X")} aria-label={`Cell ${index+1}${mark?", "+mark:" empty"}`} className="flex min-h-0 min-w-0 items-center justify-center rounded-[15px] bg-gradient-to-br from-white to-slate-100 text-[clamp(3rem,17vw,6rem)] font-black leading-none shadow-inner transition enabled:active:scale-95 enabled:hover:bg-white disabled:cursor-default">
+          {mark==="X" ? <span className="text-blue-600 drop-shadow-[0_3px_0_#9ccfff]">×</span> : mark==="O" ? <span className="text-red-500 drop-shadow-[0_3px_0_#ffc1b7]">○</span> : <span className="opacity-0">·</span>}
+        </button>)}
+      </div>
+      <div className="mt-4 flex items-center justify-center gap-3">
+        <button type="button" onClick={resetBoard} className="min-h-14 w-full max-w-[300px] rounded-full border-4 border-green-300 bg-gradient-to-b from-lime-400 to-green-600 px-5 py-3 text-lg font-black text-white shadow-[0_5px_0_#16803a] transition hover:brightness-105 active:translate-y-1 active:shadow-none">↻ New Game</button>
+      </div>
+      <div className="mt-3 flex items-center justify-between gap-2 text-[11px] font-bold text-slate-600"><span>Draws: {scores.draws}</span><span className="rounded-full bg-white/80 px-3 py-1 text-center text-blue-800">{quotaText}</span></div>
+    </div>
+  );
+}
+
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
@@ -195,16 +321,7 @@ useEffect(() => {
 
 }
 .classic-game-landscape-controls { display: none; }
-.greenfoot-mobile-frame { width: 640px; height: 560px; overflow: hidden; flex: none; }
-.greenfoot-mobile-iframe { width: 640px; height: 560px; transform-origin: top left; }
-@media (max-width: 480px) {
-  .greenfoot-mobile-frame { width: calc(100vw - 32px); height: 302px; }
-  .greenfoot-mobile-iframe { transform: scale(.54); }
-}
-@media (max-width: 360px) {
-  .greenfoot-mobile-frame { height: 269px; }
-  .greenfoot-mobile-iframe { transform: scale(.48); }
-}`}</style>
+`}</style>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {!selected ? (
           <>
@@ -392,24 +509,10 @@ useEffect(() => {
                     />
                   </div>
                 ) : (
-                  <div className="flex w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-2 sm:p-4">
-                    <div className="w-full max-w-md rounded-xl border border-sky-200 bg-white px-3 py-2 text-center text-xs font-extrabold text-sky-900">
-                      {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
-                    </div>
-                    <div className="greenfoot-mobile-frame">
-                      <iframe
-                        src="https://www.greenfoot.org/scenarios/26532?embed=true"
-                        title="Tic Tac Toe"
-                        width="640"
-                        height="560"
-                        frameBorder={0}
-                        className="greenfoot-mobile-iframe block rounded-xl border-0"
-                        loading="lazy"
-                        allow="fullscreen"
-                        onFocus={() => { classicGameInteractedRef.current = true; }}
-                      />
-                    </div>
-                  </div>
+                  <ColourfulTicTacToe
+                    quotaText={classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
+                    onPlayed={() => { classicGameInteractedRef.current = true; }}
+                  />
                 )}
               </div>
             )}
