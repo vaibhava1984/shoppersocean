@@ -222,20 +222,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     classicGameInteractedRef.current = false;
   };
   useEffect(() => {
-    if (classicGameStarted !== "solitaire" && classicGameStarted !== "chess") return;
-    const detectEmbeddedGameFocus = () => {
-      window.setTimeout(() => {
-        const focusedFrame = document.activeElement;
-        if (focusedFrame instanceof HTMLIFrameElement && (focusedFrame.title.includes("Klondike Solitaire") || focusedFrame.title.includes("Online Chess"))) {
-          if (classicGameStarted !== "chess" || !chessPaused) classicGameInteractedRef.current = true;
-        }
-      }, 0);
-    };
-    window.addEventListener("blur", detectEmbeddedGameFocus);
-    return () => window.removeEventListener("blur", detectEmbeddedGameFocus);
-  }, [classicGameStarted, chessPaused]);
-
-  useEffect(() => {
     const handleMobileBack = async () => {
       if (classicGameStartedRef.current) {
         const session = classicGameSessionRef.current;
@@ -528,8 +514,10 @@ useEffect(() => {
                         <button type="button" onClick={async () => { const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (!allowed) return; startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
-                    <div className="relative h-[70vh] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y", overscrollBehaviorY: "contain" }} onPointerDown={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}>
-                      <iframe
+                    <div className="relative h-[70vh] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
+                      <div className="grid min-h-[760px] w-full grid-cols-[24px_minmax(0,1fr)_24px]">
+                        <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-y", writingMode: "vertical-rl" }}>↕</div>
+                        <iframe
                         key={chessInstance}
                         src="https://playpager.com/embed/chess/index.html"
                         title="Online Chess Game"
@@ -537,10 +525,10 @@ useEffect(() => {
                         style={{ height: "760px", overflow: "auto", pointerEvents: chessPaused ? "none" : "auto", touchAction: "pan-y" }}
                         scrolling="yes"
                         loading="lazy"
-                        onFocus={() => { classicGameInteractedRef.current = true; }}
-                        onPointerDown={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}
-                        onTouchStart={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}
+                        onFocus={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}
                       />
+                        <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-y", writingMode: "vertical-rl" }}>↕</div>
+                      </div>
                       {chessPaused && <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/85 text-2xl font-black text-white">Game Paused</div>}
                     </div>
                   </div>
