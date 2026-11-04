@@ -387,18 +387,15 @@ useEffect(() => {
                       {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
                     </div>
                     <iframe
-                      src="https://zv1y2i8p.play.gamezop.com/g/H1WmafkP9JQ"
-                      title="Tic Tac Toe"
-                      seamless="seamless"
-                      allowTransparency={true}
-                      allowFullScreen={true}
-                      frameBorder={0}
+                      src="https://tictoe.org/embed/tic-tac-toe"
+                      title="Play Tic Tac Toe — TicToe.org"
                       width="100%"
-                      height="100%"
+                      height="480"
+                      frameBorder={0}
                       className="block w-full rounded-xl border-0"
-                      style={{ width: "100%", height: "420px", border: 0 }}
+                      style={{ width: "100%", height: "480px", border: 0 }}
                       loading="lazy"
-                      allow="autoplay; fullscreen"
+                      allow="fullscreen"
                       onFocus={() => { classicGameInteractedRef.current = true; }}
                     />
                   </div>
