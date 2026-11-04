@@ -14,7 +14,8 @@ const glyph: Record<string, string> = {
 };
 
 export default function NativeChessBoard({ paused, onFirstMove }: Props) {
-  const [game, setGame] = useState(() => new Chess());
+  const [game] = useState(() => new Chess());
+  const [, setRevision] = useState(0);
   const [selected, setSelected] = useState<Square | null>(null);
   const [targets, setTargets] = useState<Square[]>([]);
   const [charged, setCharged] = useState(false);
@@ -59,7 +60,7 @@ export default function NativeChessBoard({ paused, onFirstMove }: Props) {
       setMessage(game.isCheckmate() ? `${next} is checkmated — game over` : game.isDraw() ? "Draw — game over" : game.isCheck() ? `${next} is in check` : `${next} to move`);
       setSelected(null);
       setTargets([]);
-      setGame(new Chess(game.fen()));
+      setRevision(value => value + 1);
     } catch {
       setSelected(null);
       setTargets([]);
