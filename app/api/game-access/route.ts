@@ -51,6 +51,15 @@ async function handle(req:Request,consume:boolean){
     await db.prepare("UPDATE game_free_trials_by_section SET trials_used=0,updated_at=? WHERE user_id=? AND section_id='memory-observation'").bind(new Date().toISOString(),user.id).run();
    }
   }
+  // Restore the site owner's Chess and Solitaire test allowance once per game day.
+  // This resets only these two classic-game counters for the admin account.
+  if(admin){
+   await db.prepare("CREATE TABLE IF NOT EXISTS game_classic_admin_test_reset_v1(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
+   const resetClaim=await db.prepare("INSERT OR IGNORE INTO game_classic_admin_test_reset_v1(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
+   if(resetClaim){
+    await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND usage_date=? AND game_type_id IN ('chess','solitaire')").bind(user.id,date).run();
+   }
+  }
   if(consume){
    let body:any={};try{body=await req.json()}catch{}
    const section=body.sectionId,type=body.gameTypeId,challenge=typeof body.challengeId==="string"?body.challengeId.slice(0,160):"",questionText=typeof body.challengeQuestion==="string"?body.challengeQuestion.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300):"";
