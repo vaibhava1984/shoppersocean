@@ -196,7 +196,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [classicGameOpening, setClassicGameOpening] = useState(false);
   const [chessPaused, setChessPaused] = useState(false);
   const [chessInstance, setChessInstance] = useState(0);
-    const [trivioRemaining, setTrivioRemaining] = useState(0);
+  const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
   const activeZoneRef = useRef<number | null>(null);
   const activeQuizGameRef = useRef<string | null>(null);
@@ -528,14 +528,14 @@ useEffect(() => {
                         <button type="button" onClick={async () => { const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (!allowed) return; startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
-                    <div className="relative w-full overflow-auto rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }} onPointerDown={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}>
+                    <div className="relative h-[70vh] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y", overscrollBehaviorY: "contain" }} onPointerDown={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}>
                       <iframe
                         key={chessInstance}
                         src="https://playpager.com/embed/chess/index.html"
                         title="Online Chess Game"
                         className="block w-full max-w-full border-0"
-                        style={{ height: "550px", overflow: "hidden", pointerEvents: chessPaused ? "none" : "auto", touchAction: "pan-y" }}
-                        scrolling="no"
+                        style={{ height: "760px", overflow: "auto", pointerEvents: chessPaused ? "none" : "auto", touchAction: "pan-y" }}
+                        scrolling="yes"
                         loading="lazy"
                         onFocus={() => { classicGameInteractedRef.current = true; }}
                         onPointerDown={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}
