@@ -82,9 +82,37 @@ function ColourfulTicTacToe({ quotaText, onPlayed }: { quotaText: string; onPlay
   const [turn,setTurn]=useState<TicMark>("X");
   const [scores,setScores]=useState({ player:0, opponent:0, draws:0 });
   const [thinking,setThinking]=useState(false);
+  const audioContextRef=useRef<AudioContext|null>(null);
   const winner=ticWinner(board);
   const draw=!winner && board.every(Boolean);
   const finished=Boolean(winner || draw);
+  const playMoveTone=()=>{
+    try {
+      const AudioContextClass=window.AudioContext||(window as Window & {webkitAudioContext?:typeof AudioContext}).webkitAudioContext;
+      if(!AudioContextClass)return;
+      const context=audioContextRef.current??new AudioContextClass();
+      audioContextRef.current=context;
+      if(context.state==="suspended")void context.resume();
+      const now=context.currentTime;
+      const oscillator=context.createOscillator();
+      const overtone=context.createOscillator();
+      const gain=context.createGain();
+      oscillator.type="sine"; overtone.type="triangle";
+      oscillator.frequency.setValueAtTime(690,now);
+      oscillator.frequency.exponentialRampToValueAtTime(930,now+0.075);
+      overtone.frequency.setValueAtTime(1380,now);
+      gain.gain.setValueAtTime(0.0001,now);
+      gain.gain.exponentialRampToValueAtTime(0.13,now+0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001,now+0.18);
+      oscillator.connect(gain); overtone.connect(gain); gain.connect(context.destination);
+      oscillator.start(now); overtone.start(now);
+      oscillator.stop(now+0.19); overtone.stop(now+0.19);
+    } catch(error) { console.error("Tic Tac Toe touch sound unavailable:",error); }
+  };
+  const playResultTone=(kind:"win"|"lose")=>{
+    try { const audio=new Audio(kind==="win"?"/correct.mp3":"/Lose.mp3"); audio.volume=0.85; void audio.play().catch(error=>console.error("Tic Tac Toe result tone unavailable:",error)); }
+    catch(error) { console.error("Tic Tac Toe result tone unavailable:",error); }
+  };
   const resetBoard=()=>{ setBoard(Array(9).fill(null)); setTurn("X"); setThinking(false); };
 
   useEffect(()=>{
@@ -96,20 +124,21 @@ function ColourfulTicTacToe({ quotaText, onPlayed }: { quotaText: string; onPlay
       if (move<0) { setThinking(false); return; }
       const next=[...board]; next[move]="O";
       const result=ticWinner(next);
-      if (result==="O") setScores(score=>({...score,opponent:score.opponent+1}));
+      if (result==="O") { setScores(score=>({...score,opponent:score.opponent+1})); playResultTone("lose"); }
       else if (!result && next.every(Boolean)) setScores(score=>({...score,draws:score.draws+1}));
       setBoard(next);
       setTurn("X"); setThinking(false);
-    },420);
+    },850+Math.floor(Math.random()*551));
     return ()=>window.clearTimeout(timer);
   },[mode,turn,finished,difficulty,board]);
 
   const playCell=(index:number)=>{
     if (board[index] || finished || thinking || (mode==="computer" && turn!=="X")) return;
     onPlayed();
+    playMoveTone();
     const next=[...board]; next[index]=turn;
     const result=ticWinner(next);
-    if (result==="X") setScores(score=>({...score,player:score.player+1}));
+    if (result==="X") { setScores(score=>({...score,player:score.player+1})); playResultTone("win"); }
     else if (!result && next.every(Boolean)) setScores(score=>({...score,draws:score.draws+1}));
     setBoard(next);
     setTurn(turn==="X"?"O":"X");
@@ -138,8 +167,8 @@ function ColourfulTicTacToe({ quotaText, onPlayed }: { quotaText: string; onPlay
       </div>
       <div role="status" aria-live="polite" className={`my-3 min-h-10 rounded-xl px-2 py-2 text-center text-sm font-black ${finished?"bg-amber-100 text-amber-800":"bg-blue-50 text-blue-800"}`}>{status}</div>
       <div className="mx-auto grid aspect-square w-full max-w-[430px] grid-cols-3 gap-[5px] rounded-[22px] bg-blue-700 p-[5px] shadow-[0_8px_0_#1749a4,0_14px_22px_rgba(30,64,175,.22)]">
-        {board.map((mark,index)=><button key={index} type="button" onClick={()=>playCell(index)} disabled={Boolean(mark)||finished||thinking||(mode==="computer"&&turn!=="X")} aria-label={`Cell ${index+1}${mark?", "+mark:" empty"}`} className="flex min-h-0 min-w-0 items-center justify-center rounded-[15px] bg-gradient-to-br from-white to-slate-100 text-[clamp(3rem,17vw,6rem)] font-black leading-none shadow-inner transition enabled:active:scale-95 enabled:hover:bg-white disabled:cursor-default">
-          {mark==="X" ? <span className="text-blue-600 drop-shadow-[0_3px_0_#9ccfff]">×</span> : mark==="O" ? <span className="text-red-500 drop-shadow-[0_3px_0_#ffc1b7]">○</span> : <span className="opacity-0">·</span>}
+        {board.map((mark,index)=><button data-tic-cell key={index} type="button" onClick={()=>playCell(index)} disabled={Boolean(mark)||finished||thinking||(mode==="computer"&&turn!=="X")} aria-label={`Cell ${index+1}${mark?", "+mark:" empty"}`} className="flex min-h-0 min-w-0 items-center justify-center rounded-[15px] bg-gradient-to-br from-white to-slate-100 text-[clamp(3rem,17vw,6rem)] font-black leading-none shadow-inner transition enabled:active:scale-95 enabled:hover:bg-white disabled:cursor-default">
+          {mark==="X" ? <span className="tic-mark-x text-blue-600 drop-shadow-[0_3px_0_#9ccfff]">×</span> : mark==="O" ? <span className="tic-mark-o text-red-500 drop-shadow-[0_3px_0_#ffc1b7]">○</span> : <span className="opacity-0">·</span>}
         </button>)}
       </div>
       <div className="mt-4 flex items-center justify-center gap-3">
@@ -311,10 +340,10 @@ useEffect(() => {
 
   return (
     <>
-    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub]")) return; playZoneTap(); }} className={`${activeQuizGame !== null || Boolean(classicGameStarted) ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
+    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeQuizGame !== null || Boolean(classicGameStarted) ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
-      <style jsx global>{`@keyframes liveZoneZoom{0%{opacity:0;transform:scale(.55)}65%{opacity:1;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}
+      <style jsx global>{`@keyframes liveZoneZoom{0%{opacity:0;transform:scale(.55)}65%{opacity:1;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}\n@keyframes ticMarkPop{0%{opacity:0;transform:scale(.25) rotate(-24deg)}65%{opacity:1;transform:scale(1.18) rotate(5deg)}100%{opacity:1;transform:scale(1) rotate(0)}}\n.tic-mark-x,.tic-mark-o{display:inline-block;animation:ticMarkPop .34s cubic-bezier(.2,.8,.2,1) both;transform-origin:center;}
 @media (orientation: landscape) and (max-height: 600px) {
 
 }
