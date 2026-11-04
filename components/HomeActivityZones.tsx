@@ -511,7 +511,7 @@ useEffect(() => {
                       <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setChessPaused(value => !value)} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-white">{chessPaused ? "▶ Resume" : "Ⅱ Pause"}</button>
-                        <button type="button" onClick={async () => { const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (!allowed) return; startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
+                        <button type="button" onClick={() => { setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
                     <div className="relative h-[70vh] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
