@@ -481,14 +481,14 @@ useEffect(() => {
                     </button>
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
-                  <div className="mx-auto w-full max-w-[480px] rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
+                  <div className="mx-auto w-full max-w-[480px] rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4" onPointerDownCapture={() => { classicGameInteractedRef.current = true; }} onTouchStartCapture={() => { classicGameInteractedRef.current = true; }} onFocusCapture={() => { classicGameInteractedRef.current = true; }}>
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-extrabold text-emerald-900">
                       <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <span>Klondike · Draw 1</span>
                     </div>
                     <div
                       className="relative w-full overflow-auto rounded-xl bg-emerald-900"
-                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", height: "min(80vw, 430px)", maxHeight: "430px" }}
+                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", height: "min(80vw, 430px)", maxHeight: "430px" }} onPointerDownCapture={() => { classicGameInteractedRef.current = true; }} onTouchStartCapture={() => { classicGameInteractedRef.current = true; }}
                     >
                       <iframe
                         src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
@@ -506,7 +506,7 @@ useEffect(() => {
                     </div>
                   </div>
                 ) : classicGameStarted === "chess" ? (
-                  <div className="flex min-h-0 w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6" style={{ touchAction: "pan-y", WebkitOverflowScrolling: "touch" }}>
+                  <div className="flex min-h-0 w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }} onPointerDownCapture={() => { if (!chessPaused) classicGameInteractedRef.current = true; }} onTouchStartCapture={() => { if (!chessPaused) classicGameInteractedRef.current = true; }} onFocusCapture={() => { if (!chessPaused) classicGameInteractedRef.current = true; }}>
                     <div className="flex w-full flex-wrap items-center justify-between gap-2 rounded-xl border border-sky-200 bg-white px-3 py-2">
                       <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <div className="flex gap-2">
@@ -514,7 +514,7 @@ useEffect(() => {
                         <button type="button" onClick={async () => { const session=classicGameSessionRef.current; if(session && classicGameInteractedRef.current && !session.consumed){ const allowed=await consumeClassicAttempt(session); if(!allowed)return; } startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
-                    <div className="relative h-[min(76vw,480px)] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
+                    <div className="relative h-[min(76vw,480px)] w-full overflow-y-auto overflow-x-hidden rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", overscrollBehaviorY: "contain" }}>
                       <div className="grid min-h-0 w-full grid-cols-[12px_minmax(0,1fr)_12px]">
                         <div aria-hidden="true" className="flex items-center justify-center bg-sky-100 text-sky-700" style={{ touchAction: "pan-x pan-y pinch-zoom", writingMode: "vertical-rl" }}>↕</div>
                         <iframe
