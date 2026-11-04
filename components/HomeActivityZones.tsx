@@ -492,11 +492,32 @@ useEffect(() => {
             {selected.action === "classic-games" && (
               <div ref={activityTargetRef} className="flex w-full items-center justify-center">
                 {classicGameStarted === null || classicGameStarted === false ? (
-                  <div className="grid w-full max-w-xl grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={() => void openClassicGame("chess")}
+                      disabled={classicGameOpening}
+                      className="rounded-2xl border border-amber-200/40 bg-gradient-to-br from-[#25170f] via-[#694326] to-[#21140d] px-6 py-6 text-left text-lg font-black text-amber-50 shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-200 disabled:opacity-60"
+                    >
+                      <span className="block text-3xl">♔ ♕ ♖</span>
+                      <span className="mt-2 block">Play Chess</span>
+                      <span className="mt-1 block text-xs font-semibold text-amber-200">Classic board · Two sides</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => void openClassicGame("solitaire")}
+                      disabled={classicGameOpening}
+                      className="rounded-2xl border border-emerald-200/40 bg-gradient-to-br from-emerald-950 via-emerald-800 to-teal-950 px-6 py-6 text-left text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200 disabled:opacity-60"
+                    >
+                      <span className="block text-3xl">🂡 🂱 🃑</span>
+                      <span className="mt-2 block">Play Solitaire</span>
+                      <span className="mt-1 block text-xs font-semibold text-emerald-100">Klondike · Draw 1</span>
+                    </button>
                     <button
                       type="button"
                       onClick={() => void openClassicGame("tic-tac-toe")}
-                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200"
+                      disabled={classicGameOpening}
+                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:col-span-2"
                     >
                       ❌⭕ &nbsp; Play Tic Tac Toe
                     </button>
