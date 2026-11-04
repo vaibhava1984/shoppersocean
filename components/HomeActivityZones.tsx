@@ -387,8 +387,8 @@ useEffect(() => {
                       {classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
                     </div>
                     <iframe
-                      src="https://tictoe.org/embed/tic-tac-toe"
-                      title="Play Tic Tac Toe — TicToe.org"
+                      src="https://www.greenfoot.org/scenarios/26532?embed=true"
+                      title="Tic Tac Toe"
                       width="100%"
                       height="480"
                       frameBorder={0}
