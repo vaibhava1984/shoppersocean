@@ -225,10 +225,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     const handleMobileBack = async () => {
       if (classicGameStartedRef.current) {
         const session = classicGameSessionRef.current;
-        // Entering a classic game creates one billable attempt. Always consume it
-        // when the player exits; embedded cross-origin games do not reliably
-        // propagate their internal pointer/touch events to the parent page.
-        if (session && !session.consumed) await consumeClassicAttempt(session);
+        // Charge only after the embedded game has received focus (an actual
+        // entry/interaction), never for opening a game and immediately going back.
+        if (session && classicGameInteractedRef.current && !session.consumed) await consumeClassicAttempt(session);
         if (classicGameStartedRef.current === "solitaire") leaveSolitaireLandscape();
         classicGameStartedRef.current = false;
         classicGameSessionRef.current = null;
@@ -374,7 +373,7 @@ useEffect(() => {
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={async () => { if (classicGameStartedRef.current) { const session=classicGameSessionRef.current; if (session && !session.consumed) await consumeClassicAttempt(session); window.history.back(); return; } if (activeQuizGameRef.current !== null || activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null ? "← Back" : "← Back to all zones"}</button></div>
+                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={async () => { if (classicGameStartedRef.current) { const session=classicGameSessionRef.current; if (session && classicGameInteractedRef.current && !session.consumed) await consumeClassicAttempt(session); window.history.back(); return; } if (activeQuizGameRef.current !== null || activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null ? "← Back" : "← Back to all zones"}</button></div>
                 {activeQuizGame === null && !classicGameStarted && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>
             {selected.action === "games" && (
