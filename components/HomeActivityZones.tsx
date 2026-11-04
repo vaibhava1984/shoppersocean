@@ -211,7 +211,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       if (!response.ok) { setClassicQuotaPopup(true); return false; }
       const remaining = Number(data.remaining ?? 0);
       setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: remaining } }));
-      if (remaining <= 0) { setClassicQuotaPopup(true); return false; }
+      // A successful POST has already consumed the attempt. Allow that final
+      // permitted attempt to start even when the returned balance is now zero.
+      // The next attempt request will be rejected by the API and show the popup.
       return true;
     } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
   };
@@ -497,6 +499,7 @@ useEffect(() => {
                         style={{ minHeight: "640px", height: "640px" }}
                         loading="lazy"
                         allow="autoplay; fullscreen"
+                        onFocus={() => { classicGameInteractedRef.current = true; }}
                       />
                     </div>
                   </div>
