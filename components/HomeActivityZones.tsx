@@ -491,7 +491,7 @@ useEffect(() => {
                     </div>
                     <div
                       className="relative w-full overflow-auto rounded-xl bg-emerald-900"
-                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", height: "min(80vw, 430px)", maxHeight: "430px" }} onPointerDownCapture={() => { classicGameInteractedRef.current = true; }} onTouchStartCapture={() => { classicGameInteractedRef.current = true; }}
+                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", height: "min(80vw, 430px)", maxHeight: "430px" }}
                     >
                       <iframe
                         src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
