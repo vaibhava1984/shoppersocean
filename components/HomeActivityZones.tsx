@@ -185,8 +185,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
   const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire" | "chess"; sessionId: string; consumed: boolean } | null>(null);
-  const enterSolitaireLandscape = () => {
-    try { void screen.orientation?.lock?.("landscape").catch(() => {}); } catch {}
+  const enterSolitairePortrait = () => {
+    try { void screen.orientation?.lock?.("portrait").catch(() => {}); } catch {}
   };
   const leaveSolitaireLandscape = () => {
     try { screen.orientation?.unlock?.(); } catch {}
@@ -196,6 +196,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [classicGameOpening, setClassicGameOpening] = useState(false);
   const [chessPaused, setChessPaused] = useState(false);
   const [chessInstance, setChessInstance] = useState(0);
+  const [solitaireZoom, setSolitaireZoom] = useState(1);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
   const activeZoneRef = useRef<number | null>(null);
@@ -222,10 +223,25 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     classicGameInteractedRef.current = false;
   };
   useEffect(() => {
-    const handleMobileBack = () => {
+    if (classicGameStarted !== "solitaire" && classicGameStarted !== "chess") return;
+    const detectEmbeddedGameFocus = () => {
+      window.setTimeout(() => {
+        const focusedFrame = document.activeElement;
+        if (focusedFrame instanceof HTMLIFrameElement && (focusedFrame.title.includes("Klondike Solitaire") || focusedFrame.title.includes("Online Chess"))) {
+          if (classicGameStarted !== "chess" || !chessPaused) classicGameInteractedRef.current = true;
+        }
+      }, 0);
+    };
+    window.addEventListener("blur", detectEmbeddedGameFocus);
+    return () => window.removeEventListener("blur", detectEmbeddedGameFocus);
+  }, [classicGameStarted, chessPaused]);
+
+  useEffect(() => {
+    const handleMobileBack = async () => {
       if (classicGameStartedRef.current) {
         const session = classicGameSessionRef.current;
-        if (session && classicGameInteractedRef.current && !session.consumed) void consumeClassicAttempt(session);
+        const mustCharge = session && (session.gameType === "chess" || classicGameInteractedRef.current);
+        if (mustCharge && session && !session.consumed) await consumeClassicAttempt(session);
         if (classicGameStartedRef.current === "solitaire") leaveSolitaireLandscape();
         classicGameStartedRef.current = false;
         classicGameSessionRef.current = null;
@@ -265,7 +281,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
   const openClassicGame = async (game: "tic-tac-toe" | "solitaire" | "chess") => {
     if (!userId) { window.location.assign("/login"); return; }
-    if (game === "solitaire") enterSolitaireLandscape();
+    if (game === "solitaire") { enterSolitairePortrait(); setSolitaireZoom(1); }
     const gameType = game === "solitaire" ? "solitaire" : game === "chess" ? "chess" : "tic";
     setClassicGameOpening(true);
     try {
@@ -369,9 +385,9 @@ useEffect(() => {
             <p className="mt-5 text-center text-[10px] font-medium text-slate-400">Choose any zone to begin exploring.</p>
           </>
         ) : (
-          <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7">
+          <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-y", WebkitOverflowScrolling: "touch" }}>
             <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null) { window.history.back(); return; } if (activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null ? "← Back" : "← Back to all zones"}</button></div>
+                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={async () => { if (classicGameStartedRef.current) { const session=classicGameSessionRef.current; const mustCharge=session && (session.gameType === "chess" || classicGameInteractedRef.current); if (mustCharge && session && !session.consumed) await consumeClassicAttempt(session); window.history.back(); return; } if (activeQuizGameRef.current !== null || activeZoneRef.current !== null) window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null ? "← Back" : "← Back to all zones"}</button>{classicGameStarted === "solitaire" && <div className="flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 p-1" aria-label="Solitaire board zoom controls"><button type="button" onClick={() => setSolitaireZoom(value => Math.max(0.8, Math.round((value - 0.1) * 10) / 10))} disabled={solitaireZoom <= 0.8} aria-label="Zoom out" className="h-9 w-9 rounded-full bg-white text-xl font-black text-emerald-800 shadow disabled:opacity-40">−</button><button type="button" onClick={() => setSolitaireZoom(value => Math.min(1.5, Math.round((value + 0.1) * 10) / 10))} disabled={solitaireZoom >= 1.5} aria-label="Zoom in" className="h-9 w-9 rounded-full bg-white text-xl font-black text-emerald-800 shadow disabled:opacity-40">＋</button></div>}</div>
                 {activeQuizGame === null && !classicGameStarted && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>
             {selected.action === "games" && (
@@ -480,7 +496,7 @@ useEffect(() => {
                     </button>
                   </div>
                 ) : classicGameStarted === "solitaire" ? (
-                  <div className="w-full rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
+                  <div className="mx-auto w-full max-w-[480px] rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-extrabold text-emerald-900">
                       <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <span>Klondike · Draw 1</span>
@@ -488,7 +504,6 @@ useEffect(() => {
                     <div
                       className="relative w-full overflow-auto rounded-xl bg-emerald-900"
                       style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y" }}
-                      onPointerDown={() => { classicGameInteractedRef.current = true; }}
                     >
                       <iframe
                         src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
@@ -496,7 +511,7 @@ useEffect(() => {
                         width="800"
                         height="640"
                         className="classic-solitaire-frame block w-full border-0"
-                        style={{ minHeight: "640px", height: "640px" }}
+                        style={{ minHeight: "640px", height: "640px", width: "100%", transform: `scale(${solitaireZoom})`, transformOrigin: "top left" }}
                         loading="lazy"
                         allow="autoplay; fullscreen"
                         onFocus={() => { classicGameInteractedRef.current = true; }}
@@ -504,7 +519,7 @@ useEffect(() => {
                     </div>
                   </div>
                 ) : classicGameStarted === "chess" ? (
-                  <div className="flex min-h-[550px] w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6">
+                  <div className="flex min-h-[550px] w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6" style={{ touchAction: "pan-y", WebkitOverflowScrolling: "touch" }}>
                     <div className="flex w-full flex-wrap items-center justify-between gap-2 rounded-xl border border-sky-200 bg-white px-3 py-2">
                       <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <div className="flex gap-2">
