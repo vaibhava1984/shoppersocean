@@ -75,7 +75,7 @@ function ticBestMove(board: TicMark[], difficulty: TicDifficulty): number {
   return best;
 }
 
-function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: string; onPlayed: () => void; onNewGame: (finished: boolean) => void }) {
+function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: string; onPlayed: () => void; onNewGame: (finished: boolean) => Promise<boolean> }) {
   const [mode,setMode]=useState<TicMode>("computer");
   const [difficulty,setDifficulty]=useState<TicDifficulty>("medium");
   const [board,setBoard]=useState<TicMark[]>(Array(9).fill(null));
@@ -172,7 +172,7 @@ function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: str
         </button>)}
       </div>
       <div className="mt-4 flex items-center justify-center gap-3">
-        <button type="button" onClick={()=>{onNewGame(finished);resetBoard();}} className="min-h-14 w-full max-w-[300px] rounded-full border-4 border-green-300 bg-gradient-to-b from-lime-400 to-green-600 px-5 py-3 text-lg font-black text-white shadow-[0_5px_0_#16803a] transition hover:brightness-105 active:translate-y-1 active:shadow-none">↻ New Game</button>
+        <button type="button" onClick={async()=>{if (!(await onNewGame(finished))) return; resetBoard();}} className="min-h-14 w-full max-w-[300px] rounded-full border-4 border-green-300 bg-gradient-to-b from-lime-400 to-green-600 px-5 py-3 text-lg font-black text-white shadow-[0_5px_0_#16803a] transition hover:brightness-105 active:translate-y-1 active:shadow-none">↻ New Game</button>
       </div>
       <div className="mt-3 flex items-center justify-between gap-2 text-[11px] font-bold text-slate-600"><span>Draws: {scores.draws}</span><span className="rounded-full bg-white/80 px-3 py-1 text-center text-blue-800">{quotaText}</span></div>
     </div>
@@ -196,6 +196,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
+  const [classicGameOpening, setClassicGameOpening] = useState(false);
   const [chessPaused, setChessPaused] = useState(false);
   const [chessInstance, setChessInstance] = useState(0);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
@@ -211,7 +212,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
       const data = await response.json();
       if (!response.ok) { setClassicQuotaPopup(true); return false; }
-      setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: Number(data.remaining ?? 0) } }));
+      const remaining = Number(data.remaining ?? 0);
+      setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: remaining } }));
+      if (remaining <= 0) { setClassicQuotaPopup(true); return false; }
       return true;
     } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
   };
@@ -265,7 +268,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     if (!userId) { window.location.assign("/login"); return; }
     if (game === "solitaire") enterSolitaireLandscape();
     const gameType = game === "solitaire" ? "solitaire" : game === "chess" ? "chess" : "tic";
-    const sessionKey = "shoppersOcean:classic-session:" + userId + ":" + gameType;
+    setClassicGameOpening(true);
     try {
       const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
       const quotaData = await quotaResponse.json();
@@ -273,14 +276,15 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       let remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
       setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
 
-      if (remaining <= 0) { if (gameType === "solitaire") leaveSolitaireLandscape(); setClassicQuotaPopup(true); return; }
+      if (remaining <= 0) { if (gameType === "solitaire") leaveSolitaireLandscape(); setClassicGameOpening(false); setClassicQuotaPopup(true); return; }
 
       startNextClassicAttempt(gameType);
       setChessPaused(false);
       setChessInstance(0);
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
       classicGameStartedRef.current = game; setClassicGameStarted(game);
-    } catch (error) { if (game === "solitaire") leaveSolitaireLandscape(); console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
+      setClassicGameOpening(false);
+    } catch (error) { if (game === "solitaire") leaveSolitaireLandscape(); setClassicGameOpening(false); console.error("Classic game quota check failed:", error); setClassicQuota(current => ({ ...current, loading: false })); }
   };
 useEffect(() => {
     if (selected?.action !== "classic-games" || !userId) return;
@@ -320,7 +324,8 @@ useEffect(() => {
 
   return (
     <>
-    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeQuizGame !== null || Boolean(classicGameStarted) ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
+    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeQuizGame !== null || Boolean(classicGameStarted) || classicGameOpening ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
+      {classicGameOpening && <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950 text-lg font-black text-white">Opening game…</div>}
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
       <style jsx global>{`@keyframes liveZoneZoom{0%{opacity:0;transform:scale(.55)}65%{opacity:1;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}\n@keyframes ticMarkPop{0%{opacity:0;transform:scale(.25) rotate(-24deg)}65%{opacity:1;transform:scale(1.18) rotate(5deg)}100%{opacity:1;transform:scale(1) rotate(0)}}\n.tic-mark-x,.tic-mark-o{display:inline-block;animation:ticMarkPop .34s cubic-bezier(.2,.8,.2,1) both;transform-origin:center;}
@@ -508,7 +513,7 @@ useEffect(() => {
                       <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
                       <div className="flex gap-2">
                         <button type="button" onClick={() => setChessPaused(value => !value)} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-white">{chessPaused ? "▶ Resume" : "Ⅱ Pause"}</button>
-                        <button type="button" onClick={async () => { const session=classicGameSessionRef.current; if (session) await consumeClassicAttempt(session); startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
+                        <button type="button" onClick={async () => { const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (!allowed) return; startNextClassicAttempt("chess"); setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
                       </div>
                     </div>
                     <div className="relative w-full overflow-auto rounded-xl" style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }} onPointerDown={() => { classicGameInteractedRef.current = true; }}>
@@ -529,7 +534,7 @@ useEffect(() => {
                   <ColourfulTicTacToe
                     quotaText={classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
                     onPlayed={() => { classicGameInteractedRef.current = true; }}
-                    onNewGame={async (wasFinished) => { if (!wasFinished) return; const session=classicGameSessionRef.current; if (session) await consumeClassicAttempt(session); startNextClassicAttempt("tic"); }}
+                    onNewGame={async (wasFinished) => { if (!wasFinished && !classicGameInteractedRef.current) return true; const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (allowed) startNextClassicAttempt("tic"); return allowed; }}
                   />
                 )}
               </div>
