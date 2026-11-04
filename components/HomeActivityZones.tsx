@@ -11,7 +11,6 @@ import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
-import NativeChessBoard from "@/components/NativeChessBoard";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -492,72 +491,15 @@ useEffect(() => {
             {selected.action === "classic-games" && (
               <div ref={activityTargetRef} className="flex w-full items-center justify-center">
                 {classicGameStarted === null || classicGameStarted === false ? (
-                  <div className="grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
-                    <button
-                      type="button"
-                      onClick={() => void openClassicGame("chess")}
-                      disabled={classicGameOpening}
-                      className="rounded-2xl border border-amber-200/40 bg-gradient-to-br from-[#25170f] via-[#694326] to-[#21140d] px-6 py-6 text-left text-lg font-black text-amber-50 shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-200 disabled:opacity-60"
-                    >
-                      <span className="block text-3xl">♔ ♕ ♖</span>
-                      <span className="mt-2 block">Play Chess</span>
-                      <span className="mt-1 block text-xs font-semibold text-amber-200">Classic board · Two sides</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => void openClassicGame("solitaire")}
-                      disabled={classicGameOpening}
-                      className="rounded-2xl border border-emerald-200/40 bg-gradient-to-br from-emerald-950 via-emerald-800 to-teal-950 px-6 py-6 text-left text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200 disabled:opacity-60"
-                    >
-                      <span className="block text-3xl">🂡 🂱 🃑</span>
-                      <span className="mt-2 block">Play Solitaire</span>
-                      <span className="mt-1 block text-xs font-semibold text-emerald-100">Klondike · Draw 1</span>
-                    </button>
+                  <div className="w-full max-w-2xl">
                     <button
                       type="button"
                       onClick={() => void openClassicGame("tic-tac-toe")}
                       disabled={classicGameOpening}
-                      className="rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-6 py-5 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:col-span-2"
+                      className="w-full rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-6 py-6 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60"
                     >
                       ❌⭕ &nbsp; Play Tic Tac Toe
                     </button>
-                  </div>
-                ) : classicGameStarted === "solitaire" ? (
-                  <div className="mx-auto w-full max-w-[480px] rounded-2xl bg-gradient-to-br from-slate-50 via-white to-emerald-50 p-2 sm:p-4">
-                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-extrabold text-emerald-900">
-                      <span>{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.solitaire ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
-                      <span>Klondike · Draw 1</span>
-                      <button type="button" onClick={async()=>{if(await startChargedClassicRestart("solitaire"))setSolitaireInstance(v=>v+1);}} className="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-black text-white">↻ New Deal</button>
-                    </div>
-                    <div
-                      className="relative w-full overflow-auto rounded-xl bg-emerald-900"
-                      style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-x pan-y pinch-zoom", height: "min(80vw, 430px)", maxHeight: "430px" }}
-                    >
-                      <iframe
-                        src="https://solitaire-online.com/embed/klondike.html?draw=1&theme=green&v=embedauto1"
-                        title="Klondike Solitaire"
-                        width="800"
-                        height="640"
-                        className="classic-solitaire-frame block w-full border-0"
-                        style={{ minHeight: "280px", height: "min(78vw, 420px)", maxHeight: "420px", width: "100%", touchAction: "pan-x pan-y pinch-zoom" }}
-                        loading="lazy"
-                        allow="autoplay; fullscreen"
-                        onFocus={() => { void registerClassicInteraction(); }}
-                         onPointerDown={() => { void registerClassicInteraction(); }}
-                         onTouchStart={() => { void registerClassicInteraction(); }}
-                      />
-                    </div>
-                  </div>
-                ) : classicGameStarted === "chess" ? (
-                  <div className="flex min-h-0 w-full flex-col items-center gap-3 rounded-2xl bg-gradient-to-br from-slate-50 via-white to-sky-50 p-3 sm:p-6" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }} >
-                    <div className="flex w-full flex-wrap items-center justify-between gap-2 rounded-xl border border-sky-200 bg-white px-3 py-2">
-                      <span className="text-xs font-extrabold text-sky-900">{classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.chess ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}</span>
-                      <div className="flex gap-2">
-                        <button type="button" onClick={() => setChessPaused(value => !value)} className="rounded-lg bg-amber-500 px-3 py-2 text-xs font-black text-white">{chessPaused ? "▶ Resume" : "Ⅱ Pause"}</button>
-                        <button type="button" onClick={async () => { if(!await startChargedClassicRestart("chess"))return; setChessInstance(value => value + 1); setChessPaused(false); }} className="rounded-lg bg-sky-700 px-3 py-2 text-xs font-black text-white">↻ Restart Game</button>
-                      </div>
-                    </div>
-                    <NativeChessBoard key={chessInstance} paused={chessPaused} onFirstMove={registerClassicInteraction} />
                   </div>
                 ) : (
                   <ColourfulTicTacToe
