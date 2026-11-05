@@ -39,7 +39,9 @@ export default function PremiumMarbleChess({ quotaText, initialAttemptCharged, o
   const [fen, setFen] = useState(gameRef.current.fen());
   const [thinking, setThinking] = useState(false);
   const [message, setMessage] = useState("Your move — White plays first");
-  const audioRef = useRef<AudioContext | null>(null);\n  const attemptChargedRef = useRef(initialAttemptCharged);\n  const quotaPendingRef = useRef(false);
+  const audioRef = useRef<AudioContext | null>(null);
+  const attemptChargedRef = useRef(initialAttemptCharged);
+  const quotaPendingRef = useRef(false);
   const tone = useCallback((capture: boolean) => {
     try {
       const Ctx = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
