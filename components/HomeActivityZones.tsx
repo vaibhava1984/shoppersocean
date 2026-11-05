@@ -309,10 +309,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         return;
       }
       startNextClassicAttempt(gameType);
-      if (gameType === "chess") {
-        const session = classicGameSessionRef.current;
-        if (!session || !(await consumeClassicAttempt(session))) { setClassicGameOpening(false); return; }
-      }
       setChessPaused(false);
       setChessInstance(0);
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
@@ -522,6 +518,7 @@ useEffect(() => {
                   <PremiumMarbleChess
                     key={chessInstance}
                     quotaText={classicQuota.loading ? "Checking quota…" : String(classicQuota.remainingByType.chess ?? 0) + " / " + (classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3) + " attempts remaining today"}
+                    onFirstMove={registerClassicInteraction}
                     onNewBattle={async () => {
                       const allowed = await startChargedClassicRestart("chess");
                       if (allowed) setChessInstance(value => value + 1);
