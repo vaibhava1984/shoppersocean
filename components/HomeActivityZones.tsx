@@ -518,6 +518,7 @@ useEffect(() => {
                   <PremiumMarbleChess
                     key={chessInstance}
                     quotaText={classicQuota.loading ? "Checking quota…" : String(classicQuota.remainingByType.chess ?? 0) + " / " + (classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3) + " attempts remaining today"}
+                    initialAttemptCharged={chessInstance > 0}
                     onFirstMove={registerClassicInteraction}
                     onNewBattle={async () => {
                       const allowed = await startChargedClassicRestart("chess");
