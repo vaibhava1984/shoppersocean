@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { Chessboard } from "react-chessboard";
 
-type Props = { quotaText: string; onFirstMove: () => Promise<boolean>; onNewBattle: () => Promise<boolean> };
+type Props = { quotaText: string; initialAttemptCharged: boolean; onFirstMove: () => Promise<boolean>; onNewBattle: () => Promise<boolean> };
 const values: Record<string, number> = { p:100, n:320, b:330, r:500, q:900, k:20000 };
 function evaluate(game: Chess) {
   return game.board().flat().reduce((score, piece) => score + (piece ? (piece.color === "w" ? 1 : -1) * values[piece.type] : 0), 0);
@@ -34,12 +34,12 @@ function chooseMove(game: Chess) {
   }
   return best;
 }
-export default function PremiumMarbleChess({ quotaText, onFirstMove, onNewBattle }: Props) {
+export default function PremiumMarbleChess({ quotaText, initialAttemptCharged, onFirstMove, onNewBattle }: Props) {
   const gameRef = useRef(new Chess());
   const [fen, setFen] = useState(gameRef.current.fen());
   const [thinking, setThinking] = useState(false);
   const [message, setMessage] = useState("Your move — White plays first");
-  const audioRef = useRef<AudioContext | null>(null);\n  const attemptChargedRef = useRef(false);\n  const quotaPendingRef = useRef(false);
+  const audioRef = useRef<AudioContext | null>(null);\n  const attemptChargedRef = useRef(initialAttemptCharged);\n  const quotaPendingRef = useRef(false);
   const tone = useCallback((capture: boolean) => {
     try {
       const Ctx = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
@@ -118,7 +118,7 @@ export default function PremiumMarbleChess({ quotaText, onFirstMove, onNewBattle
         <p className="mt-1 text-xs font-bold uppercase tracking-[.22em] text-cyan-200">Challenge the computer</p>
       </div>
       <div className="rounded-2xl border-[5px] border-[#62d9d0] p-1 shadow-[0_0_22px_rgba(45,212,191,.35)]">
-        <Chessboard options={{ position: fen, onPieceDrop, boardOrientation: "white", animationDuration: 220, darkSquareStyle: { backgroundColor: "#1b4d3e" }, lightSquareStyle: { backgroundColor: "#7a4b8c" } }} />
+        <Chessboard position={fen} onPieceDrop={onPieceDrop} boardOrientation="white" animationDuration={220} customDarkSquareStyle={{ backgroundColor: "#1b4d3e" }} customLightSquareStyle={{ backgroundColor: "#7a4b8c" }} autoPromoteToQueen={true} />
       </div>
       <div role="status" aria-live="polite" className="mt-4 rounded-xl bg-slate-800 px-3 py-3 text-center text-sm font-bold text-cyan-100">{thinking ? "Computer is thinking…" : message}</div>
       <button type="button" onClick={() => void newBattle()} disabled={thinking} className="mt-4 min-h-12 w-full rounded-full border border-cyan-200 bg-gradient-to-r from-cyan-600 to-violet-700 px-5 py-3 font-black text-white shadow-lg transition hover:brightness-110 disabled:opacity-60">↻ New Battle</button>
