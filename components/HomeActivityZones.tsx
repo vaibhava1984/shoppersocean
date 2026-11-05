@@ -12,6 +12,7 @@ import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 import PremiumMarbleChess from "@/components/PremiumMarbleChess";
+import PremiumMarbleChess from "@/components/PremiumMarbleChess";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -498,6 +499,7 @@ useEffect(() => {
                 {classicGameStarted === null || classicGameStarted === false ? (
                   <div className="w-full max-w-2xl">
                     <div className="grid w-full max-w-2xl gap-3">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <button
                       type="button"
                       onClick={() => void openClassicGame("tic-tac-toe")}
