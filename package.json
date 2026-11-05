@@ -42,7 +42,8 @@
     "tailwindcss": "3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.3.3",
-    "chess.js": "^1.4.0"
+    "chess.js": "^1.4.0",
+    "react-chessboard": "^4.7.3"
   },
   "devDependencies": {
     "@types/node": "20.11.5",
