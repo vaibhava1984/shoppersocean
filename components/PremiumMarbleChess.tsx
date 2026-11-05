@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { Chessboard } from "react-chessboard";
 
-type Props = { quotaText: string; onNewBattle: () => Promise<boolean> };
+type Props = { quotaText: string; onFirstMove: () => Promise<boolean>; onNewBattle: () => Promise<boolean> };
 const values: Record<string, number> = { p:100, n:320, b:330, r:500, q:900, k:20000 };
 function evaluate(game: Chess) {
   return game.board().flat().reduce((score, piece) => score + (piece ? (piece.color === "w" ? 1 : -1) * values[piece.type] : 0), 0);
@@ -34,12 +34,12 @@ function chooseMove(game: Chess) {
   }
   return best;
 }
-export default function PremiumMarbleChess({ quotaText, onNewBattle }: Props) {
+export default function PremiumMarbleChess({ quotaText, onFirstMove, onNewBattle }: Props) {
   const gameRef = useRef(new Chess());
   const [fen, setFen] = useState(gameRef.current.fen());
   const [thinking, setThinking] = useState(false);
   const [message, setMessage] = useState("Your move — White plays first");
-  const audioRef = useRef<AudioContext | null>(null);
+  const audioRef = useRef<AudioContext | null>(null);\n  const attemptChargedRef = useRef(false);\n  const quotaPendingRef = useRef(false);
   const tone = useCallback((capture: boolean) => {
     try {
       const Ctx = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
@@ -59,28 +59,53 @@ export default function PremiumMarbleChess({ quotaText, onNewBattle }: Props) {
     setMessage(game.isCheckmate() ? "Checkmate!" : game.isDraw() ? "Draw game" : game.isCheck() ? "Check!" : game.turn() === "w" ? "Your move — White" : "Computer is thinking…");
   }, []);
   const onPieceDrop = useCallback((source: Square, target: Square) => {
-    const game = gameRef.current;
-    if (thinking || game.turn() !== "w") return false;
-    try {
-      const move = game.move({ from: source, to: target, promotion: "q" });
-      if (!move) return false;
+    const current = gameRef.current;
+    if (thinking || current.turn() !== "w" || current.isGameOver() || quotaPendingRef.current) return false;
+    // Validate the move on a copy first, so illegal moves never consume quota.
+    const candidate = new Chess(current.fen());
+    let move;
+    try { move = candidate.move({ from: source, to: target, promotion: "q" }); }
+    catch { return false; }
+    if (!move) return false;
+    const commitMove = () => {
+      gameRef.current = candidate;
       tone(Boolean(move.captured));
-      updateStatus(game);
-      if (!game.isGameOver()) {
+      updateStatus(candidate);
+      if (!candidate.isGameOver()) {
         setThinking(true);
         window.setTimeout(() => {
-          const current = gameRef.current;
-          const aiMove = chooseMove(current);
-          if (aiMove) { const played = current.move(aiMove); tone(Boolean(played?.captured)); updateStatus(current); }
+          const liveGame = gameRef.current;
+          const aiMove = chooseMove(liveGame);
+          if (aiMove) {
+            const played = liveGame.move(aiMove);
+            tone(Boolean(played?.captured));
+            updateStatus(liveGame);
+          }
           setThinking(false);
         }, 450);
       }
-      return true;
-    } catch { return false; }
-  }, [thinking, tone, updateStatus]);
+    };
+    if (!attemptChargedRef.current) {
+      // react-chessboard v4 expects a synchronous boolean. Snap the piece back,
+      // charge asynchronously, then update the controlled FEN after approval.
+      quotaPendingRef.current = true;
+      void onFirstMove().then(allowed => {
+        if (allowed) { attemptChargedRef.current = true; commitMove(); }
+      }).catch(error => {
+        console.error("Chess quota check failed:", error);
+      }).finally(() => { quotaPendingRef.current = false; });
+      return false;
+    }
+    commitMove();
+    return true;
+  }, [thinking, tone, updateStatus, onFirstMove]);
   useEffect(() => () => { if (audioRef.current) void audioRef.current.close(); }, []);
   const newBattle = async () => {
-    if (!(await onNewBattle())) return;
+    // Restarting an untouched board is free; a played battle requires a new attempt.
+    if (attemptChargedRef.current && !(await onNewBattle())) return;
+    if (attemptChargedRef.current) attemptChargedRef.current = true;
+    else attemptChargedRef.current = false;
+    quotaPendingRef.current = false;
     gameRef.current = new Chess();
     setFen(gameRef.current.fen());
     setThinking(false);
@@ -93,7 +118,7 @@ export default function PremiumMarbleChess({ quotaText, onNewBattle }: Props) {
         <p className="mt-1 text-xs font-bold uppercase tracking-[.22em] text-cyan-200">Challenge the computer</p>
       </div>
       <div className="rounded-2xl border-[5px] border-[#62d9d0] p-1 shadow-[0_0_22px_rgba(45,212,191,.35)]">
-        <Chessboard position={fen} onPieceDrop={onPieceDrop} boardOrientation="white" animationDuration={220} customDarkSquareStyle={{ backgroundColor: "#1b4d3e" }} customLightSquareStyle={{ backgroundColor: "#7a4b8c" }} />
+        <Chessboard options={{ position: fen, onPieceDrop, boardOrientation: "white", animationDuration: 220, darkSquareStyle: { backgroundColor: "#1b4d3e" }, lightSquareStyle: { backgroundColor: "#7a4b8c" } }} />
       </div>
       <div role="status" aria-live="polite" className="mt-4 rounded-xl bg-slate-800 px-3 py-3 text-center text-sm font-bold text-cyan-100">{thinking ? "Computer is thinking…" : message}</div>
       <button type="button" onClick={() => void newBattle()} disabled={thinking} className="mt-4 min-h-12 w-full rounded-full border border-cyan-200 bg-gradient-to-r from-cyan-600 to-violet-700 px-5 py-3 font-black text-white shadow-lg transition hover:brightness-110 disabled:opacity-60">↻ New Battle</button>
