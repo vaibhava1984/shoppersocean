@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { Chessboard } from "react-chessboard";
 
-type Props = { quotaText: string; onNewBattle: () => Promise<boolean> };
+type Props = { quotaText: string; onMoveAttempt: () => Promise<boolean>; onNewBattle: () => Promise<boolean> };
 const values: Record<string, number> = { p:100, n:320, b:330, r:500, q:900, k:20000 };
 function evaluate(game: Chess) {
   return game.board().flat().reduce((score, piece) => score + (piece ? (piece.color === "w" ? 1 : -1) * values[piece.type] : 0), 0);
@@ -34,7 +34,7 @@ function chooseMove(game: Chess) {
   }
   return best;
 }
-export default function PremiumMarbleChess({ quotaText, onNewBattle }: Props) {
+export default function PremiumMarbleChess({ quotaText, onMoveAttempt, onNewBattle }: Props) {
   const gameRef = useRef(new Chess());
   const [fen, setFen] = useState(gameRef.current.fen());
   const [thinking, setThinking] = useState(false);
@@ -62,6 +62,7 @@ export default function PremiumMarbleChess({ quotaText, onNewBattle }: Props) {
     const game = gameRef.current;
     if (thinking || game.turn() !== "w") return false;
     try {
+      if (game.history().length === 0 && !(await onMoveAttempt())) return false;
       const move = game.move({ from: source, to: target, promotion: "q" });
       if (!move) return false;
       tone(Boolean(move.captured));
@@ -77,7 +78,7 @@ export default function PremiumMarbleChess({ quotaText, onNewBattle }: Props) {
       }
       return true;
     } catch { return false; }
-  }, [thinking, tone, updateStatus]);
+  }, [thinking, tone, updateStatus, onMoveAttempt]);
   useEffect(() => () => { if (audioRef.current) void audioRef.current.close(); }, []);
   const newBattle = async () => {
     if (!(await onNewBattle())) return;
