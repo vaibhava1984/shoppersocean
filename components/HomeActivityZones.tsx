@@ -449,36 +449,29 @@ useEffect(() => {
                   </>
                 ) : (
                   <div ref={gameTargetRef}>
-                    {activeQuizGame==="word" && <EntertainmentHub key="word" userId={userId} visibleGroupIds={["word-playground"]} initialGroupId="word-playground" initialGame="hidden" autoStart onExit={exitGame} embedded />}
-                    {activeQuizGame==="brain" && <EntertainmentHub key="brain" userId={userId} visibleGroupIds={["brain-logic"]} initialGroupId="brain-logic" initialGame="sequence" autoStart onExit={exitGame} embedded />}
-                    {activeQuizGame==="riddle" && <EntertainmentHub key="riddle" userId={userId} visibleGroupIds={["riddle-corner"]} initialGroupId="riddle-corner" initialGame="riddle" autoStart onExit={exitGame} embedded />}
-                    {activeQuizGame==="science" && <EntertainmentHub key="science" userId={userId} visibleGroupIds={["quiz-arena"]} initialGroupId="quiz-arena" initialGame="quiz" autoStart onExit={exitGame} embedded />}
-                    {activeQuizGame==="internet" && <DigitalDiscoveryHub key="internet" userId={userId} initialAreaId="internet" onExit={exitGame} />}
-                    {activeQuizGame==="ai" && <DigitalDiscoveryHub key="ai" userId={userId} initialAreaId="artificial-intelligence" onExit={exitGame} />}
-                    {activeQuizGame==="cyber" && <DigitalDiscoveryHub key="cyber" userId={userId} initialAreaId="cyber-detective" onExit={exitGame} />}
-                    {activeQuizGame==="tech" && <DigitalDiscoveryHub key="tech" userId={userId} initialAreaId="technology-history" onExit={exitGame} />}
-                    {activeQuizGame==="locked" && <MysteryMansion key="locked" userId={userId} initialGameId="locked" onExit={exitGame} />}
-                    {activeQuizGame==="codes" && <MysteryMansion key="codes" userId={userId} initialGameId="codes" onExit={exitGame} />}
-                    {activeQuizGame==="deception" && <MysteryMansion key="deception" userId={userId} initialGameId="deception" onExit={exitGame} />}
-                    {activeQuizGame==="pattern" && <PuzzleUniverse key="pattern" userId={userId} initialGameId="pattern" onExit={exitGame} />}
-                    {activeQuizGame==="geo" && <WorldExplorer key="geo" userId={userId} initialGameId="geo" onExit={exitGame} />}
-                    {activeQuizGame==="culture" && <WorldExplorer key="culture" userId={userId} initialGameId="culture" onExit={exitGame} />}
-                    {activeQuizGame==="landmark" && <WorldExplorer key="landmark" userId={userId} initialGameId="landmark" onExit={exitGame} />}
-                    {activeQuizGame==="records" && <WorldRecordsArena key="records" userId={userId} onExit={exitGame} />}
-                    {activeQuizGame==="trivio" && (
-                      <div className="w-full">
-                        {trivioQuotaLoading ? (
-                          <p className="rounded-xl bg-white p-6 text-center text-sm font-bold text-violet-800">Checking your daily quota…</p>
-                        ) : trivioRemaining <= 0 ? (
-                          <p className="rounded-xl bg-white p-6 text-center text-sm font-bold text-violet-800">Your daily quota for this quiz is over. Please visit tomorrow.</p>
-                        ) : (
-                          <NativeTriviaQuiz
-                            userId={userId}
-                            remaining={trivioRemaining}
-                            onRemainingChange={setTrivioRemaining}
-                            onExit={exitGame}
-                          />
-                        )}
+                    {activeQuizGame && (
+                      <div className="mx-auto w-full max-w-3xl rounded-2xl border border-indigo-200 bg-gradient-to-br from-slate-50 to-indigo-50 p-8 text-center shadow-sm">
+                        <div className="mb-3 text-4xl" aria-hidden="true">📘</div>
+                        <h3 className="text-2xl font-black text-indigo-950">
+                          {{
+                            word: "Word Playground",
+                            brain: "Brain and Logic Lab",
+                            riddle: "Riddle Corner",
+                            internet: "Secrets of the Internet",
+                            ai: "Artificial Intelligence",
+                            cyber: "Cyber Detective",
+                            tech: "Technology Through Time",
+                            locked: "The Locked Room Mystery",
+                            codes: "The Secret Code Chamber",
+                            deception: "The Master of Deception",
+                            pattern: "The Pattern Master",
+                            geo: "The Geography Quest",
+                            culture: "The World Culture Challenge",
+                            landmark: "The Landmark Adventure",
+                            records: "World Records Quiz",
+                            science: "Science Quiz"
+                          }[activeQuizGame] ?? "Quiz World"}
+                        </h3>
                       </div>
                     )}
                   </div>
