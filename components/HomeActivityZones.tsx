@@ -11,6 +11,7 @@ import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
+import PremiumMarbleChess from "@/components/PremiumMarbleChess";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -308,6 +309,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         return;
       }
       startNextClassicAttempt(gameType);
+      if (gameType === "chess") {
+        const session = classicGameSessionRef.current;
+        if (!session || !(await consumeClassicAttempt(session))) { setClassicGameOpening(false); return; }
+      }
       setChessPaused(false);
       setChessInstance(0);
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
@@ -492,6 +497,7 @@ useEffect(() => {
               <div ref={activityTargetRef} className="flex w-full items-center justify-center">
                 {classicGameStarted === null || classicGameStarted === false ? (
                   <div className="w-full max-w-2xl">
+                    <div className="grid w-full max-w-2xl gap-3">
                     <button
                       type="button"
                       onClick={() => void openClassicGame("tic-tac-toe")}
@@ -500,7 +506,26 @@ useEffect(() => {
                     >
                       ❌⭕ &nbsp; Play Tic Tac Toe
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => void openClassicGame("chess")}
+                      disabled={classicGameOpening}
+                      className="w-full rounded-2xl border border-cyan-200/50 bg-gradient-to-r from-emerald-800 via-teal-800 to-violet-900 px-6 py-6 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200 disabled:opacity-60"
+                    >
+                      ♟️ &nbsp; Play Marble Chess
+                    </button>
+                    </div>
                   </div>
+                ) : classicGameStarted === "chess" ? (
+                  <PremiumMarbleChess
+                    key={chessInstance}
+                    quotaText={classicQuota.loading ? "Checking quota…" : String(classicQuota.remainingByType.chess ?? 0) + " / " + (classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3) + " attempts remaining today"}
+                    onNewBattle={async () => {
+                      const allowed = await startChargedClassicRestart("chess");
+                      if (allowed) setChessInstance(value => value + 1);
+                      return allowed;
+                    }}
+                  />
                 ) : (
                   <ColourfulTicTacToe
                     quotaText={classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
