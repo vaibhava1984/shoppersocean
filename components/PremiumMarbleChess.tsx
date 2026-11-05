@@ -12,25 +12,25 @@ function evaluate(game: Chess) {
 function chooseMove(game: Chess) {
   const moves = game.moves({ verbose: true });
   if (!moves.length) return null;
-  let best = moves[0], bestScore = -Infinity;
+  let best = moves[0], bestScore = Infinity;
   for (const move of moves) {
     const copy = new Chess(game.fen());
     copy.move(move);
-    let score = -evaluate(copy);
-    if (copy.isCheckmate()) score += 100000;
+    let score = evaluate(copy);
+    if (copy.isCheckmate()) score = -100000;
     else {
       const replies = copy.moves({ verbose: true });
       if (replies.length) {
-        let worst = Infinity;
+        let strongestWhiteReply = -Infinity;
         for (const reply of replies) {
           const after = new Chess(copy.fen());
           after.move(reply);
-          worst = Math.min(worst, evaluate(after));
+          strongestWhiteReply = Math.max(strongestWhiteReply, evaluate(after));
         }
-        score = worst;
+        score = strongestWhiteReply;
       }
     }
-    if (score > bestScore) { bestScore = score; best = move; }
+    if (score < bestScore) { bestScore = score; best = move; }
   }
   return best;
 }
