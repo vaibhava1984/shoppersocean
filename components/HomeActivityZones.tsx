@@ -12,7 +12,6 @@ import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 import PremiumMarbleChess from "@/components/PremiumMarbleChess";
-import PremiumMarbleChess from "@/components/PremiumMarbleChess";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -516,6 +515,7 @@ useEffect(() => {
                     >
                       ♟️ &nbsp; Play Marble Chess
                     </button>
+                    </div>
                     </div>
                   </div>
                 ) : classicGameStarted === "chess" ? (
