@@ -162,7 +162,7 @@ export default function WorldRecordsArena({ userId, onExit }: { userId: string |
     </div>
     {accessError && <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
     {!userId && <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Sign in to receive your three free trials.</div>}
-    {noFree && <GameQuotaNotice title="Your three free trials in World Records Quiz are complete!" description="Subscribe to continue discovering extraordinary world records." />}
+    {noFree && <GameQuotaNotice isPrivileged={isAdmin || isSubscribed} />}
     {noDaily && <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's 10 plays for World Records Quiz are complete. Please return after the daily reset.</div>}
     {exhausted ? <div className="rounded-2xl border border-slate-200 bg-white p-7 text-center font-bold text-slate-800">You have completed all unique questions currently in this question bank.</div> : <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-orange-50 p-4 text-slate-900 shadow-lg sm:p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><span className="rounded-full bg-slate-900 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">Question {String(index+1).padStart(2,"0")} · {q.category}</span><span className="text-xs font-bold text-slate-500">{quotaReady ? String(quota ?? 0) + " remaining" : "Checking quota…"}</span></div>
@@ -171,5 +171,5 @@ export default function WorldRecordsArena({ userId, onExit }: { userId: string |
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="text-xs font-semibold text-slate-500">{!userId ? "Sign in to play." : !reserved ? "Preparing a fresh record question…" : choice===null ? "Choose the correct record-holder." : "Answer recorded · Next question shortly"}</span><button disabled={!reserved || choice!==null || noFree || noDaily || !userId} onClick={()=>answer(null)} className="rounded-xl border border-amber-300 bg-gradient-to-r from-amber-400 to-orange-500 px-5 py-2.5 text-sm font-black text-slate-950 shadow-md disabled:opacity-50">Skip question ⏭</button></div>
       {message && <div aria-live="polite" className="mt-4 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">{message}</div>}
     </div>}
-  <GameQuotaPopup open={(noFree || (quotaReady && quota===0)) && !isAdmin} isSubscribed={isSubscribed} resetKey={String(index)} /></div>;
+  <GameQuotaPopup open={quotaReady && quota===0} isPrivileged={isAdmin || isSubscribed} resetKey={String(index)} /></div>;
 }
