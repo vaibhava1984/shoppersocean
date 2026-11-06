@@ -113,7 +113,7 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
     const data=await response.json();
     if(!response.ok)throw new Error(data.error||"Quota unavailable");
     const privileged=Boolean(data.isAdmin||data.isSubscribed);
-    setQuota({remaining:Number(privileged?data.remainingByType?.["mystery-quiz"]??0:data.remainingBySection?.["mystery-quiz"]??0),limit:privileged?10:3,loading:false,isAdmin:Boolean(data.isAdmin),isSubscribed:Boolean(data.isSubscribed)});
+    const snapshot={remaining:Number(privileged?data.remainingByType?.["mystery-quiz"]??0:data.remainingBySection?.["mystery-quiz"]??0),limit:privileged?10:3,loading:false,isAdmin:Boolean(data.isAdmin),isSubscribed:Boolean(data.isSubscribed)};setQuota(snapshot);return snapshot;
   },[]);
   const reserveNext=useCallback(async()=>{
     if(!userId||busy)return;
