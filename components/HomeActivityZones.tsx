@@ -504,6 +504,7 @@ useEffect(() => {
                     onNewGame={async (wasFinished) => { if (!wasFinished && !classicGameInteractedRef.current) return true; const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (allowed) startNextClassicAttempt("tic"); return allowed; }}
                   />
                 )}
+                {!classicQuota.loading && Number(classicQuota.remainingByType.tic ?? 0) <= 0 && <div className="w-full max-w-2xl"><GameQuotaNotice isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} /></div>}
               </div>
             )}
             {selected.action === "learning" && (
