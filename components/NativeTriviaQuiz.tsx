@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Question = { question: string; options: string[]; answer: number; fact: string };
 
@@ -657,6 +657,200 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
       )}
       </section>
       
+    </div>
+  );
+}
+export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRemainingChange, onExit }: {
+  userId: string | null;
+  remaining: number;
+  quotaLimit: number;
+  onRemainingChange: (value: number) => void;
+  onExit: () => void;
+}) {
+  const [questionIndex, setQuestionIndex] = useState<number | null>(null);
+  const [chosen, setChosen] = useState<number | null>(null);
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [signInVisible, setSignInVisible] = useState(true);
+  const [reservationSessionId] = useState(() => "trivio-session-" + Date.now() + "-" + Math.random().toString(36).slice(2));
+  const question = questionIndex === null ? null : QUESTIONS[questionIndex];
+
+  useEffect(() => {
+    if (userId) return;
+    const timer = window.setTimeout(() => setSignInVisible(false), 5000);
+    return () => window.clearTimeout(timer);
+  }, [userId]);
+
+  const playTone = (correct: boolean) => {
+    try {
+      const audio = new Audio(correct ? "/correct.mp3" : "/Lose.mp3");
+      audio.volume = 0.85;
+      void audio.play().catch(() => {});
+    } catch {}
+  };
+
+  const reserveNextQuestion = async (excludeIndex: number | null = null) => {
+    if (!userId) return;
+    setLoading(true);
+    setErrorMessage("");
+    setQuestionIndex(null);
+    setChosen(null);
+    try {
+      const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
+      const quotaData = await quotaResponse.json();
+      if (!quotaResponse.ok) {
+        setErrorMessage(quotaData.error || "Please sign in to play.");
+        setLoading(false);
+        return;
+      }
+      const currentRemaining = Number(quotaData.remainingByType?.trivio ?? 0);
+      onRemainingChange(currentRemaining);
+      if (currentRemaining <= 0) {
+        setErrorMessage("Your daily quota on this section is over. Please visit tomorrow.");
+        setLoading(false);
+        return;
+      }
+
+      const candidates = QUESTIONS.map((_, i) => i).filter(i => i !== excludeIndex);
+      for (let i = candidates.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+      }
+      for (const candidateIndex of candidates) {
+        const candidate = QUESTIONS[candidateIndex];
+        const challengeId = "trivio-q-" + candidateIndex;
+        const response = await fetch("/api/game-access", {
+          method: "POST",
+          cache: "no-store",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sectionId: "quiz-world",
+            gameTypeId: "trivio",
+            challengeId,
+            challengeQuestion: candidate.question,
+            reserveQuestion: true,
+            reservationSessionId
+          })
+        });
+        const data = await response.json();
+        if (response.ok && data.reserved) {
+          setQuestionIndex(candidateIndex);
+          setLoading(false);
+          return;
+        }
+        if (response.status !== 409) {
+          setErrorMessage(data.error || "Questions could not be loaded. Please try again.");
+          setLoading(false);
+          return;
+        }
+      }
+      setErrorMessage("You have completed all available questions in this section. New questions will appear when more are added.");
+    } catch {
+      setErrorMessage("Questions could not be loaded. Please try again.");
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (userId) void reserveNextQuestion();
+    // The first question is selected once when the signed-in player enters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
+
+  const choose = async (option: number) => {
+    if (!question || chosen !== null || loading) return;
+    setLoading(true);
+    const challengeId = "trivio-q-" + questionIndex;
+    try {
+      const response = await fetch("/api/game-access", {
+        method: "POST",
+        cache: "no-store",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sectionId: "quiz-world",
+          gameTypeId: "trivio",
+          challengeId,
+          challengeQuestion: question.question,
+          reservationSessionId
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        onRemainingChange(Number(data.remaining ?? 0));
+        setErrorMessage(data.error || "Your quota could not be verified.");
+        setQuestionIndex(null);
+        setLoading(false);
+        return;
+      }
+      onRemainingChange(Number(data.remaining ?? Math.max(0, remaining - 1)));
+      setChosen(option);
+      setAnswered(value => value + 1);
+      const correct = option === question.answer;
+      if (correct) setScore(value => value + 1);
+      playTone(correct);
+    } catch {
+      setErrorMessage("Your answer could not be recorded. Please try again.");
+    }
+    setLoading(false);
+  };
+
+  if (!userId) return signInVisible ? (
+    <div className="fixed inset-0 z-[10060] flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm" role="alertdialog" aria-modal="true">
+      <div className="w-full max-w-md overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-2xl">
+        <div className="h-2 bg-gradient-to-r from-cyan-300 via-pink-500 to-violet-600" />
+        <div className="bg-gradient-to-br from-indigo-700 via-violet-600 to-fuchsia-600 px-6 py-7 text-center text-white">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 text-3xl shadow-lg">🔐</div>
+          <h3 className="mt-4 text-xl font-black">Please sign in to play</h3>
+          <p className="mt-2 text-sm text-white/85">Sign in to access questions and games on Shoppers Ocean.</p>
+          <a href="/login" className="mt-5 inline-flex rounded-full bg-white px-6 py-3 text-sm font-black text-indigo-700 shadow-lg">Sign in →</a>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
+  return (
+    <div className="mx-auto w-full max-w-3xl">
+      <section className="mx-auto w-full overflow-hidden rounded-3xl border border-violet-200 bg-white text-slate-900 shadow-2xl">
+        <header className="bg-gradient-to-r from-violet-700 via-fuchsia-700 to-indigo-800 px-5 py-5 text-white sm:px-7">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-xs font-black uppercase tracking-[0.2em] text-white/80">Quiz World · General Knowledge Quiz</span>
+            <span className="rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-extrabold">{remaining} plays left today</span>
+          </div>
+          <p className="mt-2 text-sm text-white/85">Choose the best answer</p>
+        </header>
+        {loading ? (
+          <div className="px-5 py-12 text-center font-bold text-violet-800">Loading your next question…</div>
+        ) : question ? (
+          <div className="p-5 sm:p-7">
+            <div className="mb-5 flex items-center justify-between text-xs font-extrabold text-slate-500">
+              <span>{Math.max(0, quotaLimit - remaining)} out of 10 qsns</span>
+              <span>SCORE: {score}</span>
+            </div>
+            <h3 className="mb-6 text-xl font-black leading-snug sm:text-2xl">{question.question}</h3>
+            <div className="grid gap-3">
+              {question.options.map((option, optionIndex) => {
+                const isCorrect = optionIndex === question.answer;
+                const isChosen = chosen === optionIndex;
+                const style = chosen === null ? "border-violet-200 bg-white hover:border-violet-500 hover:bg-violet-50" : isCorrect ? "border-emerald-500 bg-emerald-50 text-emerald-900" : isChosen ? "border-rose-500 bg-rose-50 text-rose-900" : "border-slate-200 bg-slate-50 text-slate-500";
+                return <button key={option} type="button" disabled={chosen !== null || loading} onClick={() => void choose(optionIndex)} className={"flex min-h-14 items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left font-bold transition " + style}><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-sm font-black text-violet-800">{String.fromCharCode(65 + optionIndex)}</span><span>{option}</span>{chosen !== null && isCorrect && <span className="ml-auto text-xl">✓</span>}{chosen !== null && isChosen && !isCorrect && <span className="ml-auto text-xl">✕</span>}</button>;
+              })}
+            </div>
+            {chosen !== null && <div className={"mt-5 rounded-2xl p-4 " + (chosen === question.answer ? "bg-emerald-50 text-emerald-900" : "bg-rose-50 text-rose-900")}>
+              <p className="font-black">{chosen === question.answer ? "Correct! 🎉" : `No !! The correct answer is (${String.fromCharCode(65 + question.answer)})`}</p>
+              {chosen === question.answer && <p className="mt-1 text-sm leading-6">{question.fact}</p>}
+              <button type="button" onClick={() => void reserveNextQuestion(questionIndex)} className="mt-4 rounded-xl bg-violet-700 px-5 py-2.5 text-sm font-extrabold text-white shadow hover:bg-violet-800">Next question →</button>
+            </div>}
+          </div>
+        ) : (
+          <div className="px-5 py-10 text-center">
+            <p className="font-bold text-slate-700">{errorMessage}</p>
+            {remaining > 0 && <button type="button" onClick={() => void reserveNextQuestion()} className="mt-4 rounded-xl bg-violet-700 px-5 py-2.5 font-extrabold text-white">Try again</button>}
+            <button type="button" onClick={onExit} className="mt-4 ml-2 rounded-xl border border-violet-200 px-5 py-2.5 font-extrabold text-violet-800">Back to Quiz World</button>
+          </div>
+        )}
+      </section>
     </div>
   );
 }
