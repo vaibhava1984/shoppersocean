@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
+import GameQuotaPopup from "@/components/GameQuotaPopup";
 
 type Question = { id:number; question:string; options:string[]; answer:number; explanation:string };
 const QUESTIONS: Question[] = [
@@ -112,7 +113,7 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
     const data=await response.json();
     if(!response.ok)throw new Error(data.error||"Quota unavailable");
     const privileged=Boolean(data.isAdmin||data.isSubscribed);
-    setQuota({remaining:Number(privileged?data.remainingByType?.["mystery-quiz"]??0:data.remainingBySection?.["mystery-quiz"]??0),limit:privileged?3:1,loading:false,isAdmin:Boolean(data.isAdmin),isSubscribed:Boolean(data.isSubscribed)});
+    setQuota({remaining:Number(privileged?data.remainingByType?.["mystery-quiz"]??0:data.remainingBySection?.["mystery-quiz"]??0),limit:privileged?10:3,loading:false,isAdmin:Boolean(data.isAdmin),isSubscribed:Boolean(data.isSubscribed)});
   },[]);
   const reserveNext=useCallback(async()=>{
     if(!userId||busy)return;
@@ -128,7 +129,7 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
         const response=await fetch("/api/game-access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"mystery-quiz",gameTypeId:"mystery-quiz",challengeId:"mystery-q-"+candidate.id,challengeQuestion:candidate.question,reserveQuestion:true,reservationSessionId})});
         const data=await response.json();
         if(response.ok&&data.reserved){selected=candidate;setSession(reservationSessionId);nextUsed=[...nextUsed,candidate.id];break;}
-        if(!data.repeated){if(response.status===403){setMessage(data.error||"Your quota on this section is exhausted. Please visit tomorrow.");}else{setMessage(data.error||"Unable to load the next question.");}break;}
+        if(!data.repeated){if(response.status===403){setMessage(data.freeTrialsExhausted ? "Your free quota for this section has been exhausted. Please subscribe to enjoy further." : "Your quota for this section today has been exhausted. Please visit tomorrow to play again.");}else{setMessage(data.error||"Unable to load the next question.");}break;}
         nextUsed=[...nextUsed,candidate.id];
       }
       setUsed(nextUsed);
@@ -145,7 +146,7 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
       const response=await fetch("/api/game-access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"mystery-quiz",gameTypeId:"mystery-quiz",challengeId:"mystery-q-"+question.id,challengeQuestion:question.question,reservationSessionId:session})});
       const data=await response.json();
       if(!response.ok){setMessage(data.error||"Your quota is exhausted.");setQuestion(null);await loadQuota();return;}
-      setQuota(current=>({...current,remaining:Number(data.sectionRemaining??data.remaining??0)}));
+      setQuota(current=>({...current,remaining:Number(current.isAdmin||current.isSubscribed?data.remaining??0:data.sectionRemaining??0)}));
       setAnswered(true);
       const correct=index===question.answer;
       if(correct){setFeedback("Correct! 🎉 "+question.explanation);const audio=new Audio("/correct.mp3");audio.volume=.85;void audio.play().catch(()=>{});timer.current=window.setTimeout(()=>void reserveNext(),5000);}
@@ -153,7 +154,7 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
     }catch(error){setMessage(error instanceof Error?error.message:"Could not submit your answer.");}
     finally{setBusy(false);}
   };
-  return <div className="mx-auto w-full max-w-3xl rounded-3xl border border-violet-200 bg-gradient-to-br from-white via-violet-50 to-indigo-100 p-4 shadow-xl sm:p-6">
+  return <><div className="mx-auto w-full max-w-3xl rounded-3xl border border-violet-200 bg-gradient-to-br from-white via-violet-50 to-indigo-100 p-4 shadow-xl sm:p-6">
     <div className="rounded-2xl bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-800 p-4 text-center text-white shadow-lg">
       <div className="text-3xl">🔎</div><h3 className="mt-1 text-2xl font-black">Mystery Quiz</h3>
       <p className="mt-1 text-xs font-bold text-violet-100">{quota.loading?"Checking quota…":quota.isAdmin||quota.isSubscribed?formatFreeQuotaLabel(quota.remaining, true, "quiz"):formatFreeQuotaLabel(quota.remaining, false, "quiz")}</p>
