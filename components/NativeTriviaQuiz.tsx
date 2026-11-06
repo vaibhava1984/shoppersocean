@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
+import GameQuotaPopup from "@/components/GameQuotaPopup";
 
 type Question = { question: string; options: string[]; answer: number; fact: string };
 
@@ -3266,7 +3267,7 @@ export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quot
       const currentRemaining = Number(quotaData.remainingByType?.trivio ?? 0);
       onRemainingChange(currentRemaining);
       if (currentRemaining <= 0) {
-        setErrorMessage("Your daily quota on this section is over. Please visit tomorrow.");
+        setErrorMessage(isPrivileged ? "Your quota for this section today has been exhausted. Please visit tomorrow to play again." : "Your free quota for this section has been exhausted. Please subscribe to enjoy further.");
         setLoading(false);
         return;
       }
