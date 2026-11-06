@@ -10,6 +10,7 @@ import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
+import RiddleCornerQuiz from "@/components/RiddleCornerQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 
 const zones = [
@@ -179,30 +180,6 @@ function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: str
   );
 }
 
-function RiddleCornerBankPending({ userId, onExit }: { userId: string | null; onExit: () => void }) {
-  const [quota, setQuota] = useState<number | null>(null);
-  const [daily, setDaily] = useState(false);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    let live = true;
-    fetch("/api/game-access", { cache: "no-store" }).then(r => r.json()).then(data => {
-      if (!live) return;
-      const privileged = Boolean(data.isAdmin || data.isSubscribed);
-      setDaily(privileged);
-      setQuota(privileged ? Number(data.remainingByType?.riddle ?? 0) : Number(data.remainingBySection?.["riddle-corner"] ?? 0));
-      setLoading(false);
-    }).catch(() => { if (live) { setQuota(null); setLoading(false); } });
-    return () => { live = false; };
-  }, []);
-  return <div className="mx-auto mt-5 w-full max-w-3xl rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-orange-50 p-6 text-center shadow-lg sm:p-9">
-    <div className="text-5xl" aria-hidden="true">💡</div>
-    <h3 className="mt-3 text-2xl font-black text-amber-950">Riddle Corner</h3>
-    <p className="mt-2 text-sm font-semibold text-slate-700">The question bank has not been added yet.</p>
-    <p className="mt-4 inline-flex rounded-full border border-amber-200 bg-white px-4 py-2 text-sm font-black text-amber-900">{loading ? "Checking quota…" : quota === null ? "Quota unavailable" : daily ? quota + " / 3 questions left today" : quota + " / 1 free attempt left"}</p>
-    <button type="button" onClick={onExit} className="mt-6 block mx-auto rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-3 text-sm font-black text-white shadow">← Back to Quiz World</button>
-  </div>;
-}
-
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
@@ -228,6 +205,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [chessInstance, setChessInstance] = useState(0);
   const [solitaireInstance, setSolitaireInstance] = useState(0);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
+  const [riddleRemaining, setRiddleRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
   const activeZoneRef = useRef<number | null>(null);
   const activeQuizGameRef = useRef<string | null>(null);
@@ -368,7 +346,7 @@ useEffect(() => {
     setTrivioQuotaLoading(true);
     fetch("/api/game-access", { cache: "no-store" })
       .then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota unavailable"); return data; })
-      .then(data => { if (live) { setTrivioRemaining(Number(data.remainingByType?.trivio ?? 0)); setClassicQuota(current => ({ ...current, isAdmin: Boolean(data.isAdmin), isSubscribed: Boolean(data.isSubscribed) })); } })
+      .then(data => { if (live) { setTrivioRemaining(Number(data.remainingByType?.trivio ?? 0)); setRiddleRemaining(Number(data.isAdmin || data.isSubscribed ? data.remainingByType?.riddle ?? 0 : data.remainingBySection?.["riddle-corner"] ?? 0)); setClassicQuota(current => ({ ...current, isAdmin: Boolean(data.isAdmin), isSubscribed: Boolean(data.isSubscribed) })); } })
       .catch(error => console.error("Trivio quota check failed:", error))
       .finally(() => { if (live) setTrivioQuotaLoading(false); });
     return () => { live = false; };
@@ -495,7 +473,7 @@ useEffect(() => {
                       </div>
                     )}
                     {activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} remaining={trivioRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
-                    {activeQuizGame === "riddle" && <RiddleCornerBankPending userId={userId} onExit={exitGame} />}
+                    {activeQuizGame === "riddle" && <RiddleCornerQuiz userId={userId} remaining={riddleRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 3 : 1} onRemainingChange={setRiddleRemaining} onExit={exitGame} />}
                     {activeQuizGame === "mystery" && <div className="mt-5"><MysteryMansion userId={userId} initialGameId="mystery-quiz" onExit={exitGame} /></div>}
                   </div>
                 )}
