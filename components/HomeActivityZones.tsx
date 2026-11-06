@@ -11,6 +11,7 @@ import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import RiddleCornerQuiz from "@/components/RiddleCornerQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
+import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 
 const zones = [
