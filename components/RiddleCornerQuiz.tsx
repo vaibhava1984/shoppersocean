@@ -162,6 +162,7 @@ export default function RiddleCornerQuiz({ userId, isPrivileged, remaining, quot
 
   if (!userId) return null;
   return (
+    <>
     <div className="mx-auto w-full max-w-3xl">
       <section className="mx-auto w-full overflow-hidden rounded-3xl border border-violet-200 bg-white text-slate-900 shadow-2xl">
         <header className="bg-gradient-to-r from-violet-700 via-fuchsia-700 to-indigo-800 px-5 py-5 text-white sm:px-7">
@@ -203,5 +204,7 @@ export default function RiddleCornerQuiz({ userId, isPrivileged, remaining, quot
         )}
       </section>
     </div>
+    <GameQuotaPopup open={!loading && remaining <= 0} isPrivileged={isPrivileged} resetKey="riddle-corner" />
+    </>
   );
 }
