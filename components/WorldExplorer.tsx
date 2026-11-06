@@ -6,6 +6,7 @@ import { landmarkAdventureQuestionBank } from "@/components/landmarkAdventureQue
 
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
+import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 
 type Question = { id: string; q: string; options: string[]; answer: number; fact: string; image?: string; alt?: string; };
 type Game = { id: string; type: string; icon: string; title: string; subtitle: string; tone: string; questions: Question[]; };
@@ -180,7 +181,7 @@ export default function WorldExplorer({ userId, initialGameId, onExit }: { userI
       <span className="absolute -right-4 -top-8 text-8xl opacity-20">{active.icon}</span>
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
         <button onClick={back} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Quiz World</button>
-        <div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{!quotaReady ? "Checking quota…" : String(quota ?? 0) + " / " + (isAdmin || isSubscribed ? 10 : 3) + (isAdmin || isSubscribed ? " plays left today" : " free trials left")}</span><button onClick={() => setSoundOn(v => !v)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn ? "🔊 Sound on" : "🔇 Sound off"}</button></div>
+        <div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{!quotaReady ? "Checking quota…" : formatFreeQuotaLabel(Number(quota ?? 0), isAdmin || isSubscribed, "quiz")}</span><button onClick={() => setSoundOn(v => !v)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn ? "🔊 Sound on" : "🔇 Sound off"}</button></div>
       </div>
       <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Quiz World · World Challenge {games.findIndex(g => g.id === active.id) + 1}</p><h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2><p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
     </div>
