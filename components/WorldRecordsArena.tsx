@@ -163,7 +163,7 @@ export default function WorldRecordsArena({ userId, onExit }: { userId: string |
     {accessError && <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
     {!userId && <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold text-amber-900">Sign in to receive your three free trials.</div>}
     {noFree && <GameQuotaNotice isPrivileged={isAdmin || isSubscribed} />}
-    {noDaily && <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's 10 plays for World Records Quiz are complete. Please return after the daily reset.</div>}
+    {noDaily && <GameQuotaNotice isPrivileged />}
     {exhausted ? <div className="rounded-2xl border border-slate-200 bg-white p-7 text-center font-bold text-slate-800">You have completed all unique questions currently in this question bank.</div> : <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-orange-50 p-4 text-slate-900 shadow-lg sm:p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><span className="rounded-full bg-slate-900 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">Question {String(index+1).padStart(2,"0")} · {q.category}</span><span className="text-xs font-bold text-slate-500">{quotaReady ? String(quota ?? 0) + " remaining" : "Checking quota…"}</span></div>
       <h3 className="text-lg font-extrabold leading-7 text-slate-900 sm:text-xl">{q.question}</h3>
