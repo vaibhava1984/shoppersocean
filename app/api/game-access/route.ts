@@ -95,6 +95,12 @@ async function handle(req:Request,consume:boolean){
     await db.prepare("INSERT OR IGNORE INTO game_question_reservations(user_id,game_type_id,challenge_id,question_text,session_id,reserved_at) VALUES(?,?,?,?,?,?)").bind(user.id,type,challenge,questionText,reservationSessionId,playedAt).run();
     const acquired=await db.prepare("SELECT 1 AS ok FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? AND question_text=? AND session_id=? LIMIT 1").bind(user.id,type,challenge,questionText,reservationSessionId).first<any>();
     if(!acquired)return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
+    // Persist exposure immediately so leaving before answering cannot make this question repeat.
+    const firstSeen=await claimChallenge(db,user.id,"__question__",questionText,playedAt);
+    if(!firstSeen){
+     await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? AND session_id=?").bind(user.id,type,challenge,reservationSessionId).run();
+     return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
+    }
     return NextResponse.json({reserved:true},{headers});
    }
    const activeReservation=questionText&&reservationSessionId?await db.prepare("SELECT question_text FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? AND session_id=? LIMIT 1").bind(user.id,type,challenge,reservationSessionId).first<any>():null;
@@ -137,7 +143,7 @@ async function handle(req:Request,consume:boolean){
     freeTrialsUsed=Number(trial.trials_used??0);
    }
    const playedAt=new Date().toISOString();
-   if(!previewMode&&((challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt))||(questionText&&!await claimChallenge(db,user.id,"__question__",questionText,playedAt)))){
+   if(!previewMode&&((challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt))||(questionText&&!isReservedForCurrentSession&&!await claimChallenge(db,user.id,"__question__",questionText,playedAt)))){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
     if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
     return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
