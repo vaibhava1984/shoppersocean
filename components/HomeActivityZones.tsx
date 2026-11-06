@@ -193,6 +193,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
+  const [signInPopup, setSignInPopup] = useState(false);
   const [classicGameOpening, setClassicGameOpening] = useState(false);
   const [chessPaused, setChessPaused] = useState(false);
   const [chessInstance, setChessInstance] = useState(0);
@@ -273,6 +274,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     return () => window.removeEventListener("popstate", handleMobileBack);
   }, []);
   const openZone = (index: number) => {
+    if (!userId && zones[index]?.action !== "books") { setSignInPopup(true); return; }
     if (activeZoneRef.current === null) window.history.pushState({ shoppersOceanZone: true }, "", window.location.href);
     activeZoneRef.current = index;
     setActiveZone(index);
@@ -283,13 +285,14 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
   const openGame = (gameId: string) => {
+    if (!userId) { setSignInPopup(true); return; }
     window.history.pushState({ shoppersOceanZone: true, shoppersOceanGame: gameId }, "", window.location.href);
     activeQuizGameRef.current = gameId;
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
   const openClassicGame = async (game: "tic-tac-toe" | "solitaire" | "chess") => {
-    if (!userId) { window.location.assign("/login"); return; }
+    if (!userId) { setSignInPopup(true); return; }
     if (game === "solitaire") { enterSolitairePortrait(); }
     const gameType = game === "solitaire" ? "solitaire" : game === "chess" ? "chess" : "tic";
     setClassicGameOpening(true);
@@ -344,6 +347,7 @@ useEffect(() => {
   }, [activeQuizGame, userId]);
   const playZoneTap = () => { try { const audio = new Audio("/Tap.mp3"); audio.volume = 0.85; void audio.play().catch(() => {}); } catch {} };
   useEffect(() => { if (!classicQuotaPopup) return; const timer = window.setTimeout(() => setClassicQuotaPopup(false), 5200); return () => window.clearTimeout(timer); }, [classicQuotaPopup]);
+  useEffect(() => { if (!signInPopup) return; const timer = window.setTimeout(() => setSignInPopup(false), 5000); return () => window.clearTimeout(timer); }, [signInPopup]);
   const selected = activeZone === null ? null : zones[activeZone];
 
   useEffect(() => {
@@ -523,6 +527,7 @@ useEffect(() => {
 
     </section>
     <GameQuotaPopup open={classicQuotaPopup} isSubscribed={classicQuota.isAdmin || classicQuota.isSubscribed} resetKey="classic-games" />
+    {signInPopup && <div className="fixed inset-0 z-[10060] flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm" role="alertdialog" aria-modal="true"><div className="w-full max-w-md overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-2xl"><div className="h-2 bg-gradient-to-r from-cyan-300 via-pink-500 to-violet-600"><div className="h-2 bg-gradient-to-r from-cyan-300 to-white/80" style={{animation:"popupCountdown 5s linear forwards"}} /></div><div className="bg-gradient-to-br from-indigo-700 via-violet-600 to-fuchsia-600 px-6 py-7 text-center text-white"><div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 text-3xl shadow-lg">🔐</div><h3 className="mt-4 text-xl font-black">Please sign in to play</h3><p className="mt-2 text-sm text-white/85">Sign in to access questions and games on Shoppers Ocean.</p><Link href="/login" className="mt-5 inline-flex rounded-full bg-white px-6 py-3 text-sm font-black text-indigo-700 shadow-lg">Sign in →</Link></div></div></div>}
     </>
   );
 }
