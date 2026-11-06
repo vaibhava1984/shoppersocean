@@ -227,7 +227,7 @@ export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: {
   :!quotaReady?<div className="rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center text-sm font-semibold text-slate-600">Checking your available quota…</div>
   :accessError?<div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center text-sm font-semibold text-amber-900">{accessError}</div>
   :noQuota?<GameQuotaNotice isPrivileged={isAdmin || isSubscribed} />
-  :dailyDone?<div className="rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center"><h4 className="text-xl font-black text-slate-900">Today's game quota is complete</h4><p className="mt-2 text-sm text-slate-600">Please return after the daily reset at 8:00 AM IST.</p></div>
+  :dailyDone?<GameQuotaNotice isPrivileged />
   :bankExhausted?<div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-7 text-center"><h4 className="text-xl font-black text-emerald-900">This game's available questions are complete</h4><p className="mt-2 text-sm text-emerald-800">{message}</p></div>
   :!question?<div className="rounded-2xl bg-slate-50 p-6">Loading your next question…</div>
   :<div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-xl sm:p-6">
