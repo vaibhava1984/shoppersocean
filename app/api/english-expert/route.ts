@@ -59,7 +59,7 @@ async function handle(req:Request,consume:boolean){
     return NextResponse.json({repeated:true,skipQuestion:true},{status:409,headers});
    }
    const claimed=await db.prepare("INSERT INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
-   if(!claimed)return NextResponse.json({error:"This question has already been attempted.",alreadyRecorded:true},{status:409,headers});
+   if(!claimed){const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}
    let row:any;
    if(subscribed||admin){
     row=await db.prepare("INSERT INTO english_expert_daily_usage(user_id,topic_id,usage_date,attempts_used) VALUES(?,?,?,1) ON CONFLICT(user_id,topic_id,usage_date) DO UPDATE SET attempts_used=attempts_used+1 WHERE english_expert_daily_usage.attempts_used<? RETURNING attempts_used").bind(user.id,topic,date,DAILY_LIMIT).first<any>();
