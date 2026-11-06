@@ -226,6 +226,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       session.consumed = true;
       const remaining = Number(data.remaining ?? 0);
       setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: remaining } }));
+      if (remaining <= 0) setClassicQuotaPopup(true);
       // A successful POST has already consumed the attempt. Allow that final
       // permitted attempt to start even when the returned balance is now zero.
       // The next attempt request will be rejected by the API and show the popup.
