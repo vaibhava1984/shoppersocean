@@ -277,6 +277,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       if (activeZoneRef.current !== null) {
         activeZoneRef.current = null;
         setActiveZone(null);
+        setEnglishTopicOpen(false);
       }
     };
     window.addEventListener("popstate", handleMobileBack);
@@ -286,6 +287,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     if (activeZoneRef.current === null) window.history.pushState({ shoppersOceanZone: true }, "", window.location.href);
     activeZoneRef.current = index;
     setActiveZone(index);
+    setEnglishTopicOpen(false);
     classicGameStartedRef.current = false;
     setClassicGameStarted(false);
     activeQuizGameRef.current = null;
