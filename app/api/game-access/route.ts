@@ -154,7 +154,7 @@ async function handle(req:Request,consume:boolean){
    const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
    const dailyRemaining=previewMode?limit:Math.max(0,limit-Number(changed.plays_used??0));
    const dailySectionRemaining=sectionDailyRemaining(section,usedTypes);
-   const sectionRemaining=admin||subscribed||section==="daily-challenge"?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,sectionFreeLimit(section)-(freeTrialsUsed??0)));
+   const sectionRemaining=admin||subscribed?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,sectionFreeLimit(section)-(freeTrialsUsed??0)));
    const remaining=admin||subscribed?dailyRemaining:Math.min(dailyRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    return NextResponse.json({sectionId:section,gameTypeId:type,remaining,sectionRemaining,isAdmin:admin,isSubscribed:subscribed,freeTrialsRemaining:freeTrialsUsed===null?undefined:Math.max(0,sectionFreeLimit(section)-freeTrialsUsed)},{headers});
   }
