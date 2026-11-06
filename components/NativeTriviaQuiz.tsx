@@ -652,7 +652,7 @@ export default function NativeTriviaQuiz({ userId, remaining, onRemainingChange,
             })}
           </div>
           {chosen !== null && <div className={"mt-5 rounded-2xl p-4 " + (chosen === question.answer ? "bg-emerald-50 text-emerald-900" : "bg-rose-50 text-rose-900")}>
-            <p className="font-black">{chosen === question.answer ? "Correct! 🎉" : "No !! The correct answer is (" + String.fromCharCode(65 + question.answer) + ")}</p>
+            <p className="font-black">{chosen === question.answer ? "Correct! 🎉" : "No !! The correct answer is (" + String.fromCharCode(65 + question.answer) + ")"}</p>
             {chosen === question.answer && <p className="mt-1 text-sm leading-6">{question.fact}</p> }
             <button type="button" onClick={next} className="mt-4 rounded-xl bg-violet-700 px-5 py-2.5 text-sm font-extrabold text-white shadow hover:bg-violet-800">{index === QUESTIONS.length - 1 ? "See my score" : "Next question →"}</button>
           </div>}
