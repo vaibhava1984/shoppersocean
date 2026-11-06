@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import EntertainmentHub from "@/components/EntertainmentHub";
 import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
-import MysteryMansion from "@/components/MysteryMansion";
+import MysteryQuiz from "@/components/MysteryQuiz";
 import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
 import BrainBattleArena from "@/components/BrainBattleArena";
@@ -474,7 +474,7 @@ useEffect(() => {
                     )}
                     {activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} remaining={trivioRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
                     {activeQuizGame === "riddle" && <RiddleCornerQuiz userId={userId} remaining={riddleRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 3 : 1} onRemainingChange={setRiddleRemaining} onExit={exitGame} />}
-                    {activeQuizGame === "mystery" && <div className="mt-5"><MysteryMansion userId={userId} initialGameId="mystery-quiz" onExit={exitGame} /></div>}
+                    {activeQuizGame === "mystery" && <div className="mt-5"><MysteryQuiz userId={userId} onExit={exitGame} /></div>}
                   </div>
                 )}
               </div>
