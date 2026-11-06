@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 
 type Question = { question: string; options: string[]; answer: number; fact: string };
 
@@ -3224,8 +3225,9 @@ const QUESTIONS: Question[] = [
   }
 ];
 
-export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRemainingChange, onExit }: {
+export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quotaLimit, onRemainingChange, onExit }: {
   userId: string | null;
+  isPrivileged: boolean;
   remaining: number;
   quotaLimit: number;
   onRemainingChange: (value: number) => void;
@@ -3292,6 +3294,7 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
         });
         const data = await response.json();
         if (response.ok && data.reserved) {
+          setChosen(null);
           setQuestionIndex(candidateIndex);
           setLoading(false);
           return;
@@ -3364,7 +3367,7 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
         <header className="bg-gradient-to-r from-violet-700 via-fuchsia-700 to-indigo-800 px-5 py-5 text-white sm:px-7">
           <div className="flex items-center justify-between gap-3">
             <span className="text-xs font-black uppercase tracking-[0.2em] text-white/80">Quiz World · General Knowledge Quiz</span>
-            <span className="rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-extrabold">{remaining} plays left today</span>
+            <span className="rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-extrabold">{formatFreeQuotaLabel(remaining, isPrivileged, "quiz")}</span>
           </div>
           <p className="mt-2 text-sm text-white/85">Choose the best answer</p>
         </header>
