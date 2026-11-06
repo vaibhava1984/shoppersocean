@@ -7,9 +7,9 @@ const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUE
 const NO_MORE_TODAY="Your today's quota on this section is exhausted. Please visit tomorrow.";
 const headers={"Cache-Control":"no-store"};
 const sectionFreeLimit=(_section:string)=>FREE_LIMIT;
-const typeLimit=(type:string)=>type==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT;
+const typeLimit=(_type:string)=>DAILY_LIMIT;
 const today=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10); // India day boundary: 08:00 IST (02:30 UTC).
-const sectionDailyRemaining=(section:string,used:Record<string,number>)=>{if(section==="memory-observation"){return Math.max(0,3-(used.jigsaw??0));}return section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(used.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(used[t]??0)),0);};
+const sectionDailyRemaining=(section:string,used:Record<string,number>)=>TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(used[t]??0)),0);
 async function claimChallenge(db:D1Database,userId:string,type:string,challenge:string,playedAt:string){
  if(!challenge)return true;
  const row=await db.prepare("INSERT INTO game_challenge_history(user_id,game_type_id,challenge_id,played_at) VALUES(?,?,?,?) ON CONFLICT(user_id,game_type_id,challenge_id) DO NOTHING RETURNING played_at").bind(userId,type,challenge,playedAt).first<any>();
@@ -108,7 +108,7 @@ async function handle(req:Request,consume:boolean){
    const isReservedForCurrentSession=Boolean(activeReservation&&String(activeReservation.question_text)===questionText);
    // Enforce the free section quota before touching daily usage; this prevents stale clients
    // from receiving another question after their free allowance has run out.
-   if(!admin&&!subscribed&&section!=="daily-challenge"){
+   if(!admin&&!subscribed){
     const freeRow=await db.prepare("SELECT trials_used FROM game_free_trials_by_section WHERE user_id=? AND section_id=? LIMIT 1").bind(user.id,section).first<any>();
     if(Number(freeRow?.trials_used??0)>=sectionFreeLimit(section)){
      return NextResponse.json({error:"Your free attempt in this section has been used. Subscribe to continue.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false,isAdmin:false},{status:403,headers});
@@ -164,8 +164,8 @@ async function handle(req:Request,consume:boolean){
   for(const s of SECTIONS)freeUsed[s]=0;for(const x of free.results??[])freeUsed[x.section_id]=Number(x.trials_used??0);for(const x of usage.results??[])usedByType[x.game_type_id]=Number(x.plays_used??0);
   for(const s of SECTIONS){
    const dailySection=sectionDailyRemaining(s,usedByType);
-   remainingBySection[s]=admin||s==="daily-challenge"||subscribed?dailySection:Math.min(dailySection,Math.max(0,sectionFreeLimit(s)-(freeUsed[s]??0)));
-   for(const t of TYPES[s])remainingByType[t]=Math.min(Math.max(0,typeLimit(t)-(usedByType[t]??0)),admin||subscribed||s==="daily-challenge"?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
+   remainingBySection[s]=admin||subscribed?dailySection:Math.min(dailySection,Math.max(0,sectionFreeLimit(s)-(freeUsed[s]??0)));
+   for(const t of TYPES[s])remainingByType[t]=Math.min(Math.max(0,typeLimit(t)-(usedByType[t]??0)),admin||subscribed?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
   }
   return NextResponse.json({isAdmin:admin,isSubscribed:subscribed,role:admin?"admin":subscribed?"subscriber":"free",remainingBySection,remainingByType,freeUsedBySection:freeUsed,usedByType,gameDay:date,resetTime:"08:00 Asia/Kolkata"},{headers});
  }catch(error){console.error("Game access check failed:",error);return NextResponse.json({error:"Game access could not be verified."},{status:503,headers})}
