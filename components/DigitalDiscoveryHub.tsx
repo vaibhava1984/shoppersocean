@@ -226,7 +226,7 @@ export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: {
   {!userId?<div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center"><h4 className="text-xl font-black text-amber-900">Sign in to start playing</h4><Link href="/login" className="mt-4 inline-flex rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-6 py-3 font-black text-slate-950 shadow">Sign In / Create Account →</Link></div>
   :!quotaReady?<div className="rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center text-sm font-semibold text-slate-600">Checking your available quota…</div>
   :accessError?<div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center text-sm font-semibold text-amber-900">{accessError}</div>
-  :noQuota?<GameQuotaNotice title="Your three free questions are complete!" description="Subscribe to continue exploring all four Digital Discovery games." />
+  :noQuota?<GameQuotaNotice isPrivileged={isAdmin || isSubscribed} />
   :dailyDone?<div className="rounded-2xl border border-slate-200 bg-slate-50 p-7 text-center"><h4 className="text-xl font-black text-slate-900">Today's game quota is complete</h4><p className="mt-2 text-sm text-slate-600">Please return after the daily reset at 8:00 AM IST.</p></div>
   :bankExhausted?<div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-7 text-center"><h4 className="text-xl font-black text-emerald-900">This game's available questions are complete</h4><p className="mt-2 text-sm text-emerald-800">{message}</p></div>
   :!question?<div className="rounded-2xl bg-slate-50 p-6">Loading your next question…</div>
@@ -242,5 +242,5 @@ export default function DigitalDiscoveryHub({ userId, initialAreaId, onExit }: {
    </div>
    {message&&<div role="status" aria-live="polite" className={`mt-4 rounded-2xl border p-4 text-sm leading-6 shadow-sm ${choice===question.answer?"border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-950":choice===-1?"border-amber-200 bg-gradient-to-r from-amber-50 to-yellow-50 text-amber-950":"border-rose-200 bg-gradient-to-r from-rose-50 to-pink-50 text-rose-950"}`}><p className="font-black">{choice===-1?"Question skipped":choice===question.answer?"Correct answer!":"Wrong answer"}</p><p className="mt-1">{message}</p><p className="mt-2 text-[11px] font-bold opacity-70">Next question in 5 seconds…</p></div>}
   </div>}
- <GameQuotaPopup open={(noQuota || (quotaReady && quota===0)) && !isAdmin} isSubscribed={isSubscribed} resetKey={active?.id??''} /></div>;
+ <GameQuotaPopup open={quotaReady && quota===0} isPrivileged={isAdmin || isSubscribed} resetKey={active?.id??''} /></div>;
 }
