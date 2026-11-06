@@ -46,17 +46,11 @@ async function handle(req:Request,consume:boolean){
    if(action==="reserve"){
     const totalQuestions=Number(body.totalQuestions);
     if(!Number.isInteger(totalQuestions)||totalQuestions<1||totalQuestions>1000||!questionId.startsWith(topic+":"))return NextResponse.json({error:"Invalid question rotation request."},{status:400,headers});
-    const now=new Date().toISOString();
-    const seen=await db.prepare("INSERT INTO english_expert_question_history_v2(user_id,question_id,first_seen_at) VALUES(?,?,?) ON CONFLICT(user_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,questionId,now).first<any>();
-    if(seen)return NextResponse.json({reserved:true,cycleReset:false},{headers});
-    const progress=await db.prepare("SELECT COUNT(*) AS total FROM english_expert_question_history_v2 WHERE user_id=? AND question_id LIKE ?").bind(user.id,topic+":%").first<any>();
-    const seenCount=Number(progress?.total??0);
-    if(seenCount>=totalQuestions){
-     await db.prepare("DELETE FROM english_expert_question_history_v2 WHERE user_id=? AND question_id LIKE ?").bind(user.id,topic+":%").run();
-     const restarted=await db.prepare("INSERT INTO english_expert_question_history_v2(user_id,question_id,first_seen_at) VALUES(?,?,?) ON CONFLICT(user_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,questionId,now).first<any>();
-     if(restarted)return NextResponse.json({reserved:true,cycleReset:true},{headers});
-    }
-    return NextResponse.json({repeated:true,skipQuestion:true},{status:409,headers});
+    // Exclude only questions this user has actually answered.
+    // Viewing a question does not mark it as attempted.
+    const attempted=await db.prepare("SELECT 1 AS attempted FROM english_expert_attempts WHERE user_id=? AND topic_id=? AND question_id=? LIMIT 1").bind(user.id,topic,questionId).first<any>();
+    if(attempted)return NextResponse.json({repeated:true,skipQuestion:true},{status:409,headers});
+    return NextResponse.json({reserved:true},{headers});
    }
    const claimed=await db.prepare("INSERT INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
    if(!claimed){const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}
