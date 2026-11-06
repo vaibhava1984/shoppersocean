@@ -428,22 +428,9 @@ useEffect(() => {
                     </div>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       {[
-                        {id:"word",icon:"🔤",title:"General Knowledge Quiz",note:"Word challenges",tone:"from-cyan-600 to-blue-700"},
-                        {id:"brain",icon:"🧠",title:"Brain and Logic Lab",note:"Logic and reasoning",tone:"from-fuchsia-600 to-purple-800"},
-                        {id:"riddle",icon:"💡",title:"Riddle Corner",note:"Riddles and brain teasers",tone:"from-amber-500 to-orange-700"},
-                        {id:"internet",icon:"🌐",title:"Secrets of the Internet",note:"Explore the connected world",tone:"from-blue-600 to-cyan-700"},
-                        {id:"ai",icon:"🤖",title:"Artificial Intelligence",note:"Discover intelligent systems",tone:"from-violet-600 to-fuchsia-700"},
-                        {id:"cyber",icon:"🕵️",title:"Cyber Detective",note:"Investigate digital clues",tone:"from-emerald-600 to-teal-800"},
-                        {id:"tech",icon:"🕰️",title:"Technology Through Time",note:"Explore landmark inventions",tone:"from-amber-600 to-orange-700"},
-                        {id:"locked",icon:"🗝️",title:"The Locked Room Mystery",note:"Solve the impossible-looking case",tone:"from-cyan-700 to-indigo-900"},
-                        {id:"codes",icon:"🔐",title:"The Secret Code Chamber",note:"Crack codes and hidden messages",tone:"from-violet-700 to-fuchsia-800"},
-                        {id:"deception",icon:"🎭",title:"The Master of Deception",note:"Expose contradictions",tone:"from-rose-600 to-purple-900"},
-                        {id:"pattern",icon:"🔷",title:"The Pattern Master",note:"Complete the sequence",tone:"from-cyan-600 to-indigo-800"},
-                        {id:"geo",icon:"🧭",title:"The Geography Quest",note:"Countries, flags and natural wonders",tone:"from-emerald-600 to-teal-800"},
-                        {id:"culture",icon:"🎎",title:"The World Culture Challenge",note:"Discover cultures and traditions",tone:"from-fuchsia-600 to-indigo-900"},
-                        {id:"landmark",icon:"🏛️",title:"The Landmark Adventure",note:"Recognise world landmarks",tone:"from-amber-500 to-rose-700"},
-                        {id:"records",icon:"🏆",title:"World Records Quiz",note:"Fifty curated record questions",tone:"from-orange-600 to-red-800"},
-                        {id:"science",icon:"🔬",title:"Science Quiz",note:"Explore every branch of science",tone:"from-cyan-600 to-blue-800"},
+                        {id:"word",icon:"🌍",title:"General Knowledge Quiz",note:"Discover facts about the world",tone:"from-cyan-600 to-blue-700"},
+                        {id:"riddle",icon:"💡",title:"Riddle Corner",note:"Solve clever riddles and brain teasers",tone:"from-amber-500 to-orange-700"},
+                        {id:"mystery",icon:"🔎",title:"Mystery Quiz",note:"Investigate clues and uncover answers",tone:"from-violet-600 to-indigo-800"},
                       ].map((game,index)=>(
                         <button key={game.id} type="button" onClick={()=>openGame(game.id)} className={"group relative min-h-40 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br "+game.tone+" p-5 text-left text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-200"}>
                           <span className="absolute -right-3 -top-5 text-8xl opacity-20 transition group-hover:scale-110">{game.icon}</span>
@@ -465,6 +452,7 @@ useEffect(() => {
                             word: "General Knowledge Quiz",
                             brain: "Brain and Logic Lab",
                             riddle: "Riddle Corner",
+                            mystery: "Mystery Quiz",
                             internet: "Secrets of the Internet",
                             ai: "Artificial Intelligence",
                             cyber: "Cyber Detective",
@@ -483,6 +471,8 @@ useEffect(() => {
                       </div>
                     )}
                     {activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} remaining={trivioRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
+                    {activeQuizGame === "riddle" && <div className="mt-5"><EntertainmentHub userId={userId} visibleGroupIds={["riddle-corner"]} initialGroupId="riddle-corner" initialGame="riddle" autoStart embedded onExit={exitGame} /></div>}
+                    {activeQuizGame === "mystery" && <div className="mt-5"><MysteryMansion userId={userId} initialGameId="mystery-quiz" onExit={exitGame} /></div>}
                   </div>
                 )}
               </div>
