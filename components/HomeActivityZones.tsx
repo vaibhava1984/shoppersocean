@@ -7,17 +7,16 @@ import DigitalDiscoveryHub from "@/components/DigitalDiscoveryHub";
 import MysteryQuiz from "@/components/MysteryQuiz";
 import PuzzleUniverse from "@/components/PuzzleUniverse";
 import WorldExplorer from "@/components/WorldExplorer";
-import BrainBattleArena from "@/components/BrainBattleArena";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import RiddleCornerQuiz from "@/components/RiddleCornerQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
+import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
   { icon: "🎮", name: "Quiz World", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "A collection of quizzes, mysteries, technology and world challenges", action: "games" },
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
-  { icon: "🏆", name: "Brain Battle Arena", tone: "from-yellow-500 to-amber-700", note: "One challenging real-life reasoning MCQ game", action: "brain-battle-arena" },
   { icon: "🎲", name: "Classic Games", tone: "from-orange-500 via-rose-600 to-pink-700", action: "classic-games" },
 ];
 
@@ -388,7 +387,7 @@ useEffect(() => {
                 <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore Our Worlds</h2>
                 <p className="mt-2 max-w-xl text-xs leading-5 text-slate-300 sm:text-sm">Choose a zone and enjoy its activities.</p>
               </div>
-              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">5 activity zones</span>
+              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">4 activity zones</span>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {zones.map((zone, index) => (
@@ -472,15 +471,12 @@ useEffect(() => {
                         </h3>
                       </div>
                     )}
-                    {activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} remaining={trivioRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
-                    {activeQuizGame === "riddle" && <RiddleCornerQuiz userId={userId} remaining={riddleRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 3 : 1} onRemainingChange={setRiddleRemaining} onExit={exitGame} />}
+                    {activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} remaining={trivioRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
+                    {activeQuizGame === "riddle" && <RiddleCornerQuiz userId={userId} isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} remaining={riddleRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 3 : 1} onRemainingChange={setRiddleRemaining} onExit={exitGame} />}
                     {activeQuizGame === "mystery" && <div className="mt-5"><MysteryQuiz userId={userId} onExit={exitGame} /></div>}
                   </div>
                 )}
               </div>
-            )}
-            {selected.action === "brain-battle-arena" && (
-              <div ref={activityTargetRef}><BrainBattleArena userId={userId} onExit={exitGame} /></div>
             )}
             {selected.action === "classic-games" && (
               <div ref={activityTargetRef} className="flex w-full items-center justify-center">
@@ -501,7 +497,7 @@ useEffect(() => {
                   </div>
                 ) : (
                   <ColourfulTicTacToe
-                    quotaText={classicQuota.loading ? "Checking quota…" : `${classicQuota.remainingByType.tic ?? 0} / ${classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} ${classicQuota.isAdmin || classicQuota.isSubscribed ? "plays left today" : "free plays left"}`}
+                    quotaText={classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.tic ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
                     onPlayed={() => { classicGameInteractedRef.current = true; }}
                     onNewGame={async (wasFinished) => { if (!wasFinished && !classicGameInteractedRef.current) return true; const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (allowed) startNextClassicAttempt("tic"); return allowed; }}
                   />
