@@ -1,0 +1,172 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+const QUESTIONS = [["I have keys but no locks. I have space but no room. You can enter, but you can't go outside. What am I?",["A piano","A computer keyboard","A map","A spaceship"],1,"A computer keyboard features keys, a spacebar, and an enter key, but has no physical rooms."],["What has to be broken before you can use it?",["A promise","An egg","A coconut","A glass window"],1,"An eggshell must be cracked open before you can cook or consume what is inside."],["I am full of holes, yet I still hold water. What am I?",["A fishing net","A sponge","A colander","A rain cloud"],1,"A sponge is filled with porous air pockets that trap and retain water."],["What goes up and down but never moves anywhere?",["An elevator","A temperature","A staircase","A seesaw"],2,"A staircase stays fixed in place while people use it to walk up or down."],["What has one eye, but cannot see anything at all?",["A storm","A sewing needle","A potato","A keyhole"],1,"A sewing needle features an eye through which thread passes, but it possesses no vision."],["What has a head and a tail, but no body?",["A coin","A snake","A comet","A hammer"],0,"A coin traditionally features a 'heads' side and a 'tails' side without any torso."],["What can travel all around the world while staying stuck in one corner?",["A compass","A postage stamp","An anchor","A globe"],1,"A postage stamp stays fixed in the corner of an envelope while traveling internationally."],["What has many teeth, but is completely unable to bite?",["A shark","A zipper","A comb","A saw"],2,"A hair comb has a row of teeth used for styling, not biting."],["What belongs to you, but everyone else uses it much more than you do?",["Your toothbrush","Your name","Your car","Your telephone number"],1,"Your name is yours, but it is primarily spoken and used by other people to refer to you."],["I am light as a feather, yet even the strongest person in the world cannot hold me for very long. What am I?",["A breath","Your breath","A bubble","A shadow"],1,"Holding your breath becomes physically impossible after a short duration due to biological reflex."],["What gets wetter and wetter the more it dries?",["A sponge","A towel","A raincoat","A river"],1,"A towel absorbs moisture from wet surfaces, making itself wetter as it dries other things."],["What has words, but never speaks a single sound?",["A diary","A book","A computer screen","A letter"],1,"A book contains written words and stories but requires a reader to make them sound."],["What has a thumb and four fingers, but absolutely no flesh, feathers, scales, or bone?",["A robot hand","A glove","An X-ray","A statue"],1,"A glove is shaped like a hand with fingers and a thumb, but is made entirely of fabric or leather."],["What can you catch, but never throw?",["A cold","A baseball","A falling star","A rumor"],0,"You can catch an illness like a cold, but it is not a physical object you can throw."],["What is dark by nature, but always gets brighter when light shines on it?",["A cave","A photograph","A chalkboard","The moon"],1,"A photographic negative or print reveals its clear image only when exposed to light."],["What is bought by the yard, but worn by the foot?",["Carpet","Shoes","Socks","Pants"],0,"Carpeting is traditionally sold by linear yards and laid down for feet to walk upon."],["What building has the most stories inside it?",["A skyscraper","A library","A courthouse","A school"],1,"A library contains thousands of books, and every book is filled with stories."],["What runs all around a garden, but never moves an inch?",["A garden hose","A fence","An ant","A path"],1,"A fence encloses or runs along the perimeter of a garden while remaining stationary."],["What has four fingers and a thumb, but has no blood or bones?",["A mannequin hand","A glove","A skeleton hand","A puppet"],1,"A glove has finger sleeves and a thumb compartment without biological tissue."],["What starts with the letter T, ends with T, and has T in it?",["A teapot","A tent","A trout","A tract"],0,"A teapot starts with T, ends with T, and literally contains 'T' (tea) inside it."],["If you drop me from the tallest skyscraper, I will surely break; but if you toss me into water, I will stay completely fine. What am I?",["A glass cup","A piece of paper","An egg","A feather"],1,"A sheet of paper flutters and will not shatter upon hitting the ground or water."],["What goes through cities and fields, but never moves?",["A highway","A river","A railway","A road"],3,"A road extends across cities and countryside landscapes without changing its geographic position."],["What has a neck, but no head?",["A shirt","A bottle","A guitar","A vase"],1,"A glass bottle features a narrow neck section leading up to the opening, but no head."],["What can fill an entire room without taking up any physical space?",["Light","Smoke","Sound","Air"],0,"Light illuminates every corner of a room instantly without occupying mass."],["What is so fragile that simply saying its name breaks it?",["Silence","Glass","Trust","A secret"],0,"The moment you speak aloud to name 'silence', you break it with sound."],["I have four legs in the morning, two legs at noon, and three legs in the evening. What am I?",["A dog","A human","A chair","An alien"],1,"A human crawls on all fours as an infant, walks on two legs as an adult, and uses a walking cane in old age."],["What is brown and sticky?",["Chocolate","Mud","A stick","Caramel"],2,"A stick is quite literally a wooden stick, which is brown and... a stick!"],["What invention lets you look straight through solid brick walls?",["X-rays","A window","A periscope","Glasses"],1,"A window built into a wall allows you to see right through it."],["What can you break without ever touching it or picking it up?",["A heart","A promise","A record","A glass"],1,"A promise or oath can be broken simply by failing to keep your word."],["What has to be fed constantly, but will die if you give it anything to drink?",["A fireplace","A plant","An engine","A monster"],0,"A fire needs a constant supply of wood to burn, but water will immediately extinguish it."],["What goes around the world while staying tucked inside a corner?",["A postage stamp","A compass","An envelope","A postcard"],0,"A postage stamp travels globally affixed to mail while staying in the upper corner."],["What has hands, but cannot clap?",["A clock","A statue","A mannequin","A robot"],0,"A clock has hour and minute hands that point to numbers, but it has no palms to clap."],["What is taken before you can ever get it?",["A photograph","A test","A breath","An oath"],0,"A photograph must be captured or 'taken' by a camera before you can possess the image."],["What has legs, but is unable to walk anywhere?",["A table","A dog","A pair of pants","A spider"],0,"A table stands on four legs to support items, but cannot move on its own."],["What has a bottom at the very top?",["A mountain","A pair of shoes","Your legs","A ladder"],1,"Your feet, which wear shoes at the bottom of your body, are positioned inside footwear."],["What has a single eye, but is completely blind?",["A hurricane","A potato","A sewing needle","A camera lens"],2,"A sewing needle has an eye opening, but no organic sight."],["What gets sharper the more you use it?",["A knife","Your brain","A pencil","Your wit"],1,"Your brain and mental sharpness improve with continuous learning and problem-solving."],["What can you keep after giving it away to someone else?",["Your word","Your money","Your secret","Your hat"],0,"You can give someone your word (a promise), yet still keep integrity if you stay true to it."],["What is always coming, but never actually arrives?",["Tomorrow","Winter","The future","Success"],0,"When tomorrow finally arrives, it becomes today, meaning 'tomorrow' is always a day away."],["What has a tongue, but cannot taste or speak?",["A shoe","A bell","A lizard","A snake"],0,"A shoe features a fabric tongue under the laces, but has no mouth or taste buds."],["What has an infinite number of keys, but opens not a single door?",["A piano","A key chain","A computer","A typewriter"],0,"A musical piano has white and black keys used for playing notes, not locks."],["What goes up when rain comes down?",["An umbrella","A kite","A thermometer","A river"],0,"An umbrella is raised upward over your head when rain starts falling."],["What has a spine, but no bones inside?",["A book","A jellyfish","A cactus","A fence"],0,"A book features a binding spine holding its pages together without any skeletal structure."],["What can you swallow that can also swallow you back?",["Water","Pride","Fear","A pill"],0,"You can drink (swallow) water, but a massive wave or flood can also swallow you."],["What has a thumb and four fingers, yet is not alive?",["A glove","A mannequin","A robot","A statue"],0,"A glove is designed with finger slots and a thumb slot while being inanimate."]].map(([question, options, answer, fact], index) => ({ id: index + 1, question, options, answer, fact }));
+
+export default function RiddleCornerQuiz({ userId, remaining, quotaLimit, onRemainingChange, onExit }: {
+  userId: string | null;
+  remaining: number;
+  quotaLimit: number;
+  onRemainingChange: (value: number) => void;
+  onExit: () => void;
+}) {
+  const [questionIndex, setQuestionIndex] = useState<number | null>(null);
+  const [chosen, setChosen] = useState<number | null>(null);
+  const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [reservationSessionId] = useState(() => "riddle-session-" + Date.now() + "-" + Math.random().toString(36).slice(2));
+  const question = questionIndex === null ? null : QUESTIONS[questionIndex];
+
+  const playTone = (correct: boolean) => {
+    try {
+      const audio = new Audio(correct ? "/correct.mp3" : "/Lose.mp3");
+      audio.volume = 0.85;
+      void audio.play().catch(() => {});
+    } catch {}
+  };
+
+  const reserveNextQuestion = async (excludeIndex: number | null = null) => {
+    if (!userId) return;
+    if (questionIndex === null) setLoading(true);
+    setErrorMessage("");
+    try {
+      const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
+      const quotaData = await quotaResponse.json();
+      if (!quotaResponse.ok) {
+        setErrorMessage(quotaData.error || "Please sign in to play.");
+        setLoading(false);
+        return;
+      }
+      const privileged = Boolean(quotaData.isAdmin || quotaData.isSubscribed);
+      const currentRemaining = Number(privileged ? quotaData.remainingByType?.riddle ?? 0 : quotaData.remainingBySection?.["riddle-corner"] ?? 0);
+      onRemainingChange(currentRemaining);
+      if (currentRemaining <= 0) {
+        setErrorMessage("Your daily quota on this section is over. Please visit tomorrow.");
+        setLoading(false);
+        return;
+      }
+
+      const candidates = QUESTIONS.map((_: any, i: number) => i).filter((i: number) => i !== excludeIndex);
+      for (let i = candidates.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+      }
+      for (const candidateIndex of candidates) {
+        const candidate = QUESTIONS[candidateIndex];
+        const response = await fetch("/api/game-access", {
+          method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sectionId: "riddle-corner", gameTypeId: "riddle",
+            challengeId: "riddle-q-" + candidate.id, challengeQuestion: candidate.question,
+            reserveQuestion: true, reservationSessionId
+          })
+        });
+        const data = await response.json();
+        if (response.ok && data.reserved) {
+          setQuestionIndex(candidateIndex);
+          setChosen(null);
+          setLoading(false);
+          return;
+        }
+        if (response.status !== 409) {
+          setErrorMessage(data.error || "Questions could not be loaded. Please try again.");
+          setLoading(false);
+          return;
+        }
+      }
+      setErrorMessage("You have completed all available riddles in this section. New riddles will appear when more are added.");
+    } catch {
+      setErrorMessage("Questions could not be loaded. Please try again.");
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (userId) void reserveNextQuestion();
+    // Load the first unseen riddle when the player enters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
+
+  const choose = async (option: number) => {
+    if (!question || chosen !== null || submitting) return;
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/game-access", {
+        method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sectionId: "riddle-corner", gameTypeId: "riddle",
+          challengeId: "riddle-q-" + question.id, challengeQuestion: question.question,
+          reservationSessionId
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        onRemainingChange(Number(data.sectionRemaining ?? data.remaining ?? 0));
+        setErrorMessage(data.error || "Your quota could not be verified.");
+        setSubmitting(false);
+        return;
+      }
+      const nextRemaining = Number(data.isAdmin || data.isSubscribed ? data.remaining ?? 0 : data.sectionRemaining ?? 0);
+      onRemainingChange(nextRemaining);
+      setChosen(option);
+      if (option === question.answer) {
+        setScore(value => value + 1);
+        playTone(true);
+        window.setTimeout(() => void reserveNextQuestion(question.id - 1), 5000);
+      } else {
+        playTone(false);
+      }
+    } catch {
+      setErrorMessage("Your answer could not be recorded. Please try again.");
+    }
+    setSubmitting(false);
+  };
+
+  if (!userId) return null;
+  return (
+    <div className="mx-auto w-full max-w-3xl">
+      <section className="mx-auto w-full overflow-hidden rounded-3xl border border-violet-200 bg-white text-slate-900 shadow-2xl">
+        <header className="bg-gradient-to-r from-violet-700 via-fuchsia-700 to-indigo-800 px-5 py-5 text-white sm:px-7">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-xs font-black uppercase tracking-[0.2em] text-white/80">Quiz World · Riddle Corner</span>
+            <span className="rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-extrabold">{remaining} plays left today</span>
+          </div>
+          <p className="mt-2 text-sm text-white/85">Choose the best answer</p>
+        </header>
+        {loading && !question ? (
+          <div className="px-5 py-12 text-center font-bold text-violet-800">Loading your next question…</div>
+        ) : question ? (
+          <div className="p-5 sm:p-7">
+            <div className="mb-5 flex items-center justify-between text-xs font-extrabold text-slate-500">
+              <span>{Math.max(0, quotaLimit - remaining)} out of {quotaLimit} qsns</span>
+              <span>SCORE: {score}</span>
+            </div>
+            <h3 className="mb-6 text-xl font-black leading-snug sm:text-2xl">{question.question}</h3>
+            <div className="grid gap-3">
+              {question.options.map((option: string, optionIndex: number) => {
+                const isCorrect = optionIndex === question.answer;
+                const isChosen = chosen === optionIndex;
+                const style = chosen === null ? "border-violet-200 bg-white hover:border-violet-500 hover:bg-violet-50" : isCorrect ? "border-emerald-500 bg-emerald-50 text-emerald-900" : isChosen ? "border-rose-500 bg-rose-50 text-rose-900" : "border-slate-200 bg-slate-50 text-slate-500";
+                return <button key={option} type="button" disabled={chosen !== null || submitting} onClick={() => void choose(optionIndex)} className={"flex min-h-14 items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left font-bold transition " + style}><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-sm font-black text-violet-800">{String.fromCharCode(65 + optionIndex)}</span><span>{option}</span>{chosen !== null && isCorrect && <span className="ml-auto text-xl">✓</span>}{chosen !== null && isChosen && !isCorrect && <span className="ml-auto text-xl">✕</span>}</button>;
+              })}
+            </div>
+            {chosen !== null && <div className={"mt-5 rounded-2xl p-4 " + (chosen === question.answer ? "bg-emerald-50 text-emerald-900" : "bg-rose-50 text-rose-900")}>
+              <p className="font-black">{chosen === question.answer ? "Correct! 🎉" : `No !! The correct answer is (${String.fromCharCode(65 + question.answer)})`}</p>
+              {chosen === question.answer && <p className="mt-1 text-sm leading-6">{question.fact}</p>}
+              {chosen !== question.answer && <button type="button" onClick={() => void reserveNextQuestion(question.id - 1)} className="mt-4 rounded-xl bg-violet-700 px-5 py-2.5 text-sm font-extrabold text-white shadow hover:bg-violet-800">Next question →</button>}
+            </div>}
+          </div>
+        ) : (
+          <div className="px-5 py-10 text-center">
+            <p className="font-bold text-slate-700">{errorMessage}</p>
+            {remaining > 0 && <button type="button" onClick={() => void reserveNextQuestion()} className="mt-4 rounded-xl bg-violet-700 px-5 py-2.5 font-extrabold text-white">Try again</button>}
+            <button type="button" onClick={onExit} className="mt-4 ml-2 rounded-xl border border-violet-200 px-5 py-2.5 font-extrabold text-violet-800">Back to Quiz World</button>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
