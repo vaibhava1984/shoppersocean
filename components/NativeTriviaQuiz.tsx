@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 type Question = { question: string; options: string[]; answer: number; fact: string };
 
@@ -557,9 +557,10 @@ const QUESTIONS: Question[] = [
   }
 ];
 
-export default function NativeTriviaQuiz({ userId, remaining, onRemainingChange, onExit }: {
+export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRemainingChange, onExit }: {
   userId: string | null;
   remaining: number;
+  quotaLimit: number;
   onRemainingChange: (value: number) => void;
   onExit: () => void;
 }) {
@@ -568,7 +569,6 @@ export default function NativeTriviaQuiz({ userId, remaining, onRemainingChange,
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const [busy, setBusy] = useState(false);
-  const consumed = useRef(false);
   const question = QUESTIONS[index];
 
   const playTone = (correct: boolean) => {
@@ -582,7 +582,7 @@ export default function NativeTriviaQuiz({ userId, remaining, onRemainingChange,
   const choose = async (option: number) => {
     if (chosen !== null || busy || finished) return;
     setBusy(true);
-    if (userId && !consumed.current) {
+    if (userId) {
       const challengeId = "trivio-native-" + Date.now() + "-" + Math.random().toString(36).slice(2);
       try {
         const response = await fetch("/api/game-access", {
@@ -597,7 +597,6 @@ export default function NativeTriviaQuiz({ userId, remaining, onRemainingChange,
           setBusy(false);
           return;
         }
-        consumed.current = true;
         onRemainingChange(Number(data.remaining ?? Math.max(0, remaining - 1)));
       } catch {
         setBusy(false);
@@ -624,8 +623,7 @@ export default function NativeTriviaQuiz({ userId, remaining, onRemainingChange,
           <span className="text-xs font-black uppercase tracking-[0.2em] text-white/80">Quiz World · General Knowledge Quiz</span>
           <span className="rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-extrabold">{remaining} plays left today</span>
         </div>
-        <h2 className="mt-2 text-2xl font-black sm:text-3xl">Fun Trivia Challenge</h2>
-        <p className="mt-1 text-sm text-white/85">50 questions · Choose the best answer</p>
+        <p className="mt-2 text-sm text-white/85">Choose the best answer</p>
       </header>
       {finished ? (
         <div className="px-5 py-10 text-center sm:px-8">
@@ -638,10 +636,9 @@ export default function NativeTriviaQuiz({ userId, remaining, onRemainingChange,
       ) : (
         <div className="p-5 sm:p-7">
           <div className="mb-5 flex items-center justify-between text-xs font-extrabold text-slate-500">
-            <span>QUESTION {index + 1} OF {QUESTIONS.length}</span>
+            <span>{Math.max(0, quotaLimit - remaining)} out of 10 qsns</span>
             <span>SCORE: {score}</span>
           </div>
-          <div className="mb-3 h-2 overflow-hidden rounded-full bg-violet-100"><div className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-violet-700 transition-all" style={{ width: ((index + 1) / QUESTIONS.length * 100) + "%" }} /></div>
           <h3 className="mb-6 text-xl font-black leading-snug sm:text-2xl">{question.question}</h3>
           <div className="grid gap-3">
             {question.options.map((option, optionIndex) => {
@@ -659,9 +656,7 @@ export default function NativeTriviaQuiz({ userId, remaining, onRemainingChange,
         </div>
       )}
       </section>
-      <a href="https://trivio.net/" target="_blank" rel="noopener noreferrer" className="mt-4 block rounded-2xl border border-violet-200 bg-white px-4 py-3 text-center text-sm font-bold text-violet-800 shadow transition hover:bg-violet-50">
-        🧠 100 Fun Trivia Questions With Answers (Tested on Friends) — more free trivia at Trivio.NET
-      </a>
+      
     </div>
   );
 }
