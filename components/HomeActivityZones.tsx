@@ -474,6 +474,7 @@ useEffect(() => {
                         </h3>
                       </div>
                     )}
+                    {activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} remaining={trivioRemaining} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
                   </div>
                 )}
               </div>
