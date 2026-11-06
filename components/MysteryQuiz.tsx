@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 
 type Question = { id:number; question:string; options:string[]; answer:number; explanation:string };
 const QUESTIONS: Question[] = [
@@ -155,7 +156,7 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
   return <div className="mx-auto w-full max-w-3xl rounded-3xl border border-violet-200 bg-gradient-to-br from-white via-violet-50 to-indigo-100 p-4 shadow-xl sm:p-6">
     <div className="rounded-2xl bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-800 p-4 text-center text-white shadow-lg">
       <div className="text-3xl">🔎</div><h3 className="mt-1 text-2xl font-black">Mystery Quiz</h3>
-      <p className="mt-1 text-xs font-bold text-violet-100">{quota.loading?"Checking quota…":quota.isAdmin||quota.isSubscribed?quota.remaining+" / 3 questions remaining today":quota.remaining+" / 1 free attempt remaining"}</p>
+      <p className="mt-1 text-xs font-bold text-violet-100">{quota.loading?"Checking quota…":quota.isAdmin||quota.isSubscribed?formatFreeQuotaLabel(quota.remaining, true, "quiz"):formatFreeQuotaLabel(quota.remaining, false, "quiz")}</p>
     </div>
     {question?<div className="mt-5">
       <div className="mb-3 flex items-center justify-between text-xs font-black text-violet-900"><span>CASE FILE #{String(question.id).padStart(2,"0")}</span><span>{used.length} / {QUESTIONS.length}</span></div>
