@@ -2761,6 +2761,202 @@ const QUESTIONS: Question[] = [
     ],
     "answer": 1,
     "fact": "The Moon is Earth's only natural satellite and the fifth largest moon in the solar system."
+  },
+  {
+    "id": 220,
+    "question": "Which 1927 science fiction silent film directed by Fritz Lang is widely regarded as a pioneering masterpiece of the genre?",
+    "options": ["Metropolis","A Trip to the Moon","Blade Runner","2001: A Space Odyssey"],
+    "answer": 0,
+    "fact": "Fritz Lang's German expressionist film Metropolis set groundbreaking visual and thematic standards for science fiction cinema."
+  },
+  {
+    "id": 221,
+    "question": "What is the name of the phenomenon where sound waves change frequency when the sound source moves relative to an observer?",
+    "options": ["Doppler effect","Cerenkov radiation","Photoelectric effect","Greenhouse effect"],
+    "answer": 0,
+    "fact": "The Doppler effect explains why the pitch of a siren changes as an emergency vehicle speeds past."
+  },
+  {
+    "id": 222,
+    "question": "Which famous board game was originally patented under the name 'The Landlord's Game' in 1904 to illustrate economic injustices?",
+    "options": ["Scrabble","Monopoly","Risk","Catan"],
+    "answer": 1,
+    "fact": "Elizabeth Magie originally designed The Landlord's Game to demonstrate the negative aspects of land monopolies, which later evolved into Monopoly."
+  },
+  {
+    "id": 223,
+    "question": "What is the term for a word that reads the same forwards and backwards, such as 'racecar' or 'kayak'?",
+    "options": ["Acronym","Anagram","Palindrome","Homonym"],
+    "answer": 2,
+    "fact": "A palindrome is a word, phrase, number, or other sequence of characters that reads the same backward as forward."
+  },
+  {
+    "id": 224,
+    "question": "Which marine animal possesses three hearts, blue blood, and a highly sophisticated nervous system?",
+    "options": ["Blue whale","Great white shark","Common octopus","Bottlenose dolphin"],
+    "answer": 2,
+    "fact": "Octopuses have three hearts (two pump blood through the gills, one through the body) and copper-based blue blood."
+  },
+  {
+    "id": 225,
+    "question": "Who invented the practical incandescent light bulb with a high-resistance carbon filament in 1879?",
+    "options": ["Nikola Tesla","Thomas Edison","Alexander Graham Bell","Guglielmo Marconi"],
+    "answer": 1,
+    "fact": "Thomas Edison and his research team successfully tested a long-burning incandescent lamp using a carbon filament."
+  },
+  {
+    "id": 226,
+    "question": "Which literary award is presented annually in the United Kingdom for the best full-length novel written in English?",
+    "options": ["Pulitzer Prize","The Booker Prize","Hugo Award","Nebula Award"],
+    "answer": 1,
+    "fact": "The Booker Prize is a prestigious literary prize awarded each year for a novel written in English and published in the UK."
+  },
+  {
+    "id": 227,
+    "question": "What optical illusion causes a shimmering pool of water to appear on a hot desert highway?",
+    "options": ["Mirage","Aurora","Halo","Rainbow"],
+    "answer": 0,
+    "fact": "A mirage is caused by the refraction of light through layers of air having different temperatures."
+  },
+  {
+    "id": 228,
+    "question": "Which classical composer continued to compose masterpieces even after becoming completely deaf?",
+    "options": ["Wolfgang Amadeus Mozart","Ludwig van Beethoven","Johann Sebastian Bach","Antonio Vivaldi"],
+    "answer": 1,
+    "fact": "Ludwig van Beethoven composed many of his greatest works, including his Ninth Symphony, while suffering from profound hearing loss."
+  },
+  {
+    "id": 229,
+    "question": "What is the primary ingredient used in traditional Japanese miso paste?",
+    "options": ["Rice flour","Fermented soybeans","Seaweed","Black sesame"],
+    "answer": 1,
+    "fact": "Miso is a traditional Japanese seasoning produced by fermenting soybeans with salt and koji fungus."
+  },
+  {
+    "id": 231,
+    "question": "What is the name of the imaginary boundary around a black hole beyond which nothing, not even light, can escape?",
+    "options": ["Accretion disk","Event horizon","Singularity","Photon sphere"],
+    "answer": 1,
+    "fact": "The event horizon marks the threshold where gravitational pull becomes infinite and inescapable."
+  },
+  {
+    "id": 232,
+    "question": "Which Renaissance polymath designed an armored vehicle that is considered an early precursor to the modern tank?",
+    "options": ["Galileo Galilei","Leonardo da Vinci","Johannes Kepler","Nicolaus Copernicus"],
+    "answer": 1,
+    "fact": "Leonardo da Vinci sketched a conical wooden cover reinforced with metal plates powered by internal crew hand cranks."
+  },
+  {
+    "id": 233,
+    "question": "What is the term for animals that are active primarily during twilight hours (dawn and dusk)?",
+    "options": ["Nocturnal","Diurnal","Crepuscular","Matutinal"],
+    "answer": 2,
+    "fact": "Crepuscular animals, such as rabbits and deer, adjust their hunting and foraging routines to twilight."
+  },
+  {
+    "id": 234,
+    "question": "Which American author wrote the classic dystopian novel 'Fahrenheit 451', published in 1953?",
+    "options": ["George Orwell","Ray Bradbury","Aldous Huxley","Philip K. Dick"],
+    "answer": 1,
+    "fact": "Ray Bradbury's Fahrenheit 451 depicts a future society where books are outlawed and burned."
+  },
+  {
+    "id": 235,
+    "question": "What is the scientific term for the process by which caterpillar larvae transform into adult butterflies?",
+    "options": ["Osmosis","Metamorphosis","Photosynthesis","Mitosis"],
+    "answer": 1,
+    "fact": "Metamorphosis is the biological process of physical development involving distinct structural changes."
+  },
+  {
+    "id": 236,
+    "question": "Which historic spacecraft carried human astronauts Neil Armstrong and Buzz Aldrin to the Moon's surface in 1969?",
+    "options": ["Apollo 11 Lunar Module Eagle","Vostok 1","Gemini 4","Sputnik 2"],
+    "answer": 0,
+    "fact": "The Apollo 11 Lunar Module, named Eagle, successfully landed in the Sea of Tranquility."
+  },
+  {
+    "id": 237,
+    "question": "What is the name of the scale used to measure the pungency or spicy heat of chili peppers?",
+    "options": ["Richter scale","Scoville scale","Mohs scale","Beaufort scale"],
+    "answer": 1,
+    "fact": "The Scoville scale measures capsaicin concentration, which determines chili pepper hotness."
+  },
+  {
+    "id": 238,
+    "question": "Which famous surrealist painter created 'The Persistence of Memory' featuring melting pocket watches?",
+    "options": ["Pablo Picasso","Salvador Dalí","Claude Monet","Henri Matisse"],
+    "answer": 1,
+    "fact": "Salvador Dalí's 1931 painting is an iconic work of Surrealism depicting soft, melting clocks."
+  },
+  {
+    "id": 239,
+    "question": "What type of celestial object is Halley's Comet?",
+    "options": ["Asteroid","Periodic comet","Meteoroid","Exoplanet"],
+    "answer": 1,
+    "fact": "Halley's Comet is a short-period comet visible from Earth every 75 to 76 years."
+  },
+  {
+    "id": 240,
+    "question": "Which ancient Greek mathematician famously shouted 'Eureka!' after discovering a method to measure volume by water displacement?",
+    "options": ["Pythagoras","Archimedes","Euclid","Socrates"],
+    "answer": 1,
+    "fact": "Archimedes realized that the volume of an irregular object could be calculated by measuring displaced water."
+  },
+  {
+    "id": 241,
+    "question": "What is the term for the geological epoch in which we currently live, characterized by human impact on Earth's ecosystems?",
+    "options": ["Pleistocene","Holocene","Jurassic","Cretaceous"],
+    "answer": 1,
+    "fact": "The Holocene epoch began approximately 11,700 years ago after the last glacial period."
+  },
+  {
+    "id": 242,
+    "question": "Which prominent Italian physicist formulated the laws of pendulum motion and defended heliocentrism?",
+    "options": ["Enrico Fermi","Galileo Galilei","Alessandro Volta","Evangelista Torricelli"],
+    "answer": 1,
+    "fact": "Galileo Galilei made foundational contributions to observational astronomy and classical physics."
+  },
+  {
+    "id": 243,
+    "question": "What is the primary pigment responsible for absorbing sunlight in green plant leaves?",
+    "options": ["Carotenoid","Chlorophyll","Anthocyanin","Melanin"],
+    "answer": 1,
+    "fact": "Chlorophyll absorbs light mostly in the blue and red portions of the electromagnetic spectrum."
+  },
+  {
+    "id": 244,
+    "question": "Which architectural style emerged in Europe during the mid-12th century, known for flying buttresses and pointed arches?",
+    "options": ["Romanesque","Gothic","Baroque","Neoclassical"],
+    "answer": 1,
+    "fact": "Gothic architecture flourished across Europe during the high and late medieval period."
+  },
+  {
+    "id": 245,
+    "question": "What is the name of the boundary layer separating the Earth's crust and mantle?",
+    "options": ["Lehmann discontinuity","Mohorovičić discontinuity (Moho)","Core-mantle boundary","Lithosphere"],
+    "answer": 1,
+    "fact": "The Mohorovičić discontinuity, or Moho, marks the transition between Earth's crust and denser mantle."
+  },
+  {
+    "id": 247,
+    "question": "What is the term for a star that suddenly increases significantly in brightness before fading back over time?",
+    "options": ["Pulsar","Nova","Quasar","Neutron star"],
+    "answer": 1,
+    "fact": "A nova is a powerful nuclear explosion on a white dwarf star that causes a temporary burst of light."
+  },
+  {
+    "id": 248,
+    "question": "Which literary masterpiece by Herman Melville features the obsessive quest of Captain Ahab?",
+    "options": ["The Odyssey","Moby-Dick","Treasure Island","Heart of Darkness"],
+    "answer": 1,
+    "fact": "Moby-Dick follows Ahab's vengeful hunt for the elusive white sperm whale."
+  },
+  {
+    "id": 249,
+    "question": "What is the name of the atmospheric phenomenon that produces curtains of colored light near Earth's polar regions?",
+    "options": ["Aurora (Polaris/Australis)","St. Elmo's fire","Zodiacal light","Airglow"],
+    "answer": 0,
+    "fact": "Auroras are caused by solar wind interactions with Earth's magnetosphere near the poles."
   }
 ];
 
