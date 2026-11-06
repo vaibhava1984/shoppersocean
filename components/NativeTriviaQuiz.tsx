@@ -1863,6 +1863,556 @@ const QUESTIONS: Question[] = [
     ],
     "answer": 2,
     "fact": "Aristotle studied under Plato and later tutored young Alexander the Great."
+  },
+  {
+    "question": "Which ancient civilization developed the administrative system known as satrapies across its vast empire?",
+    "options": [
+      "Roman Empire",
+      "Persian Empire",
+      "Ancient Egypt",
+      "Macedonian Empire"
+    ],
+    "answer": 1,
+    "fact": "The Achaemenid Persian Empire was divided into administrative provinces called satrapies, governed by satraps."
+  },
+  {
+    "question": "What is the primary mineral ore from which aluminium metal is commercially extracted?",
+    "options": [
+      "Hematite",
+      "Bauxite",
+      "Galena",
+      "Cinnabar"
+    ],
+    "answer": 1,
+    "fact": "Bauxite is the principal ore of aluminium, consisting mainly of hydrated aluminium oxides."
+  },
+  {
+    "question": "Which European city is home to the historic landmark known as the Atomium?",
+    "options": [
+      "Paris",
+      "Vienna",
+      "Brussels",
+      "Amsterdam"
+    ],
+    "answer": 2,
+    "fact": "The Atomium is an iconic 102-meter-tall building constructed in Brussels for the 1958 World's Fair."
+  },
+  {
+    "question": "What is the chemical symbol for tungsten, derived from its alternative name wolfram?",
+    "options": [
+      "Tg",
+      "W",
+      "Ts",
+      "V"
+    ],
+    "answer": 1,
+    "fact": "W is the chemical symbol for tungsten, stemming from the mineral wolframite."
+  },
+  {
+    "question": "Which famous ocean liner struck an iceberg and sank in the North Atlantic on its maiden voyage in 1912?",
+    "options": [
+      "RMS Lusitania",
+      "RMS Titanic",
+      "RMS Queen Mary",
+      "SS Great Eastern"
+    ],
+    "answer": 1,
+    "fact": "RMS Titanic sank on April 15, 1912, after colliding with an iceberg during its crossing from Southampton to New York City."
+  },
+  {
+    "question": "What is the capital city of Ethiopia?",
+    "options": [
+      "Nairobi",
+      "Addis Ababa",
+      "Khartoum",
+      "Mogadishu"
+    ],
+    "answer": 1,
+    "fact": "Addis Ababa is the bustling political capital and diplomatic headquarters of Ethiopia."
+  },
+  {
+    "question": "Which scientific principle explains why an object immersed in fluid experiences an upward buoyant force?",
+    "options": [
+      "Bernoulli's principle",
+      "Archimedes' principle",
+      "Pascal's law",
+      "Boyle's law"
+    ],
+    "answer": 1,
+    "fact": "Archimedes' principle states that the upward buoyant force exerted on a body immersed in a fluid is equal to the weight of the fluid displaced."
+  },
+  {
+    "question": "What is the chemical formula for methane gas?",
+    "options": [
+      "C2H6",
+      "CH4",
+      "C3H8",
+      "CO2"
+    ],
+    "answer": 1,
+    "fact": "Methane is a chemical compound consisting of one carbon atom and four hydrogen atoms (CH4)."
+  },
+  {
+    "question": "Which artistic style emerged in late 19th-century France, characterized by small, thin yet visible brush strokes?",
+    "options": [
+      "Cubism",
+      "Impressionism",
+      "Baroque",
+      "Surrealism"
+    ],
+    "answer": 1,
+    "fact": "Impressionism developed in Paris through artists like Claude Monet, focusing on accurate depiction of light and fleeting visual moments."
+  },
+  {
+    "question": "What is the capital city of Kazakhstan?",
+    "options": [
+      "Almaty",
+      "Astana",
+      "Tashkent",
+      "Bishkek"
+    ],
+    "answer": 1,
+    "fact": "Astana is the planned capital city of Kazakhstan, situated along the Ishim River in the country's north."
+  },
+  {
+    "question": "Which gas makes up the majority of the atmosphere of Mars?",
+    "options": [
+      "Oxygen",
+      "Nitrogen",
+      "Carbon dioxide",
+      "Methane"
+    ],
+    "answer": 2,
+    "fact": "The Martian atmosphere consists primarily of carbon dioxide (about 95%), along with nitrogen and argon."
+  },
+  {
+    "question": "What is the chemical symbol for lead?",
+    "options": [
+      "Le",
+      "Pb",
+      "Ld",
+      "Pd"
+    ],
+    "answer": 1,
+    "fact": "Pb is the chemical symbol for lead, derived from the Latin term plumbum."
+  },
+  {
+    "question": "Which famous mountain pass connects Pakistan and Afghanistan through the Hindu Kush mountain range?",
+    "options": [
+      "Khyber Pass",
+      "Bolan Pass",
+      "Khunjerab Pass",
+      "Lowari Pass"
+    ],
+    "answer": 0,
+    "fact": "The Khyber Pass is a historic mountain pass linking the northern borders of Pakistan with Afghanistan."
+  },
+  {
+    "question": "What is the capital city of Cuba?",
+    "options": [
+      "Santiago de Cuba",
+      "Havana",
+      "Camaguey",
+      "Varadero"
+    ],
+    "answer": 1,
+    "fact": "Havana is the cultural hub, major port, and capital city of Cuba."
+  },
+  {
+    "question": "Which vitamin is also known as ascorbic acid?",
+    "options": [
+      "Vitamin A",
+      "Vitamin B12",
+      "Vitamin C",
+      "Vitamin E"
+    ],
+    "answer": 2,
+    "fact": "Vitamin C is chemically known as ascorbic acid and functions as an essential antioxidant."
+  },
+  {
+    "question": "What is the chemical symbol for iodine?",
+    "options": [
+      "Io",
+      "Id",
+      "I",
+      "In"
+    ],
+    "answer": 2,
+    "fact": "I is the single-letter chemical symbol for the halogen element iodine."
+  },
+  {
+    "question": "Which dynasty ruled China during the construction of the Forbidden City in Beijing?",
+    "options": [
+      "Tang Dynasty",
+      "Song Dynasty",
+      "Ming Dynasty",
+      "Qing Dynasty"
+    ],
+    "answer": 2,
+    "fact": "The Ming Dynasty constructed the sprawling imperial palace complex known as the Forbidden City between 1406 and 1420."
+  },
+  {
+    "question": "What is the capital city of Kenya?",
+    "options": [
+      "Mombasa",
+      "Nairobi",
+      "Kisumu",
+      "Nakuru"
+    ],
+    "answer": 1,
+    "fact": "Nairobi is the flourishing capital and largest economic center of Kenya."
+  },
+  {
+    "question": "Which scientific instrument is utilized to measure extremely high temperatures remotely via thermal radiation?",
+    "options": [
+      "Pyrometer",
+      "Barometer",
+      "Hydrometer",
+      "Calorimeter"
+    ],
+    "answer": 0,
+    "fact": "A pyrometer is a type of remote-sensing thermometer used to measure high temperatures of distant surfaces."
+  },
+  {
+    "question": "What is the chemical symbol for zinc?",
+    "options": [
+      "Zi",
+      "Zn",
+      "Zc",
+      "Zk"
+    ],
+    "answer": 1,
+    "fact": "Zn is the chemical symbol for zinc, a lustrous bluish-white transition metal."
+  },
+  {
+    "question": "Which ocean basin is bounded by the Americas to the west and Europe and Africa to the east?",
+    "options": [
+      "Pacific Ocean",
+      "Indian Ocean",
+      "Atlantic Ocean",
+      "Arctic Ocean"
+    ],
+    "answer": 2,
+    "fact": "The Atlantic Ocean is the second largest of the world's oceanic divisions."
+  },
+  {
+    "question": "What is the capital city of Morocco?",
+    "options": [
+      "Casablanca",
+      "Marrakesh",
+      "Rabat",
+      "Fez"
+    ],
+    "answer": 2,
+    "fact": "Rabat is the administrative capital city of Morocco, located on the Atlantic coast."
+  },
+  {
+    "question": "Which famous English playwright and poet authored 'Romeo and Juliet' and 'Hamlet'?",
+    "options": [
+      "Christopher Marlowe",
+      "William Shakespeare",
+      "Ben Jonson",
+      "John Milton"
+    ],
+    "answer": 1,
+    "fact": "William Shakespeare is widely regarded as the greatest writer in the English language and world dramatist."
+  },
+  {
+    "question": "What is the chemical symbol for uranium?",
+    "options": [
+      "Ur",
+      "Un",
+      "U",
+      "Um"
+    ],
+    "answer": 2,
+    "fact": "U is the single-letter chemical symbol for uranium, a radioactive actinide metal."
+  },
+  {
+    "question": "Which ancient civilization created the monumental stone heads on Easter Island (Rapa Nui)?",
+    "options": [
+      "Inca civilization",
+      "Rapa Nui people",
+      "Polynesians",
+      "Maya civilization"
+    ],
+    "answer": 2,
+    "fact": "Polynesian settlers carved the iconic moai stone monoliths on Easter Island between 1250 and 1500 CE."
+  },
+  {
+    "question": "What is the capital city of Greece?",
+    "options": [
+      "Thessaloniki",
+      "Athens",
+      "Patras",
+      "Heraklion"
+    ],
+    "answer": 1,
+    "fact": "Athens is the historic capital and cultural heart of Greece."
+  },
+  {
+    "question": "Which layer of the Earth's atmosphere is closest to the planetary surface?",
+    "options": [
+      "Stratosphere",
+      "Mesosphere",
+      "Troposphere",
+      "Thermosphere"
+    ],
+    "answer": 2,
+    "fact": "The troposphere is the lowest layer of Earth's atmosphere, containing weather phenomena and most atmospheric mass."
+  },
+  {
+    "question": "What is the chemical symbol for titanium?",
+    "options": [
+      "Ti",
+      "Tn",
+      "Tm",
+      "Tt"
+    ],
+    "answer": 0,
+    "fact": "Ti is the chemical symbol for titanium, known for its high strength-to-weight ratio and corrosion resistance."
+  },
+  {
+    "question": "Which geographical feature forms a natural boundary between France and Spain?",
+    "options": [
+      "Alps",
+      "Pyrenees",
+      "Carpathians",
+      "Apennines"
+    ],
+    "answer": 1,
+    "fact": "The Pyrenees mountain range separates the Iberian Peninsula from the rest of continental Europe."
+  },
+  {
+    "question": "What is the capital city of Hungary?",
+    "options": [
+      "Prague",
+      "Bratislava",
+      "Budapest",
+      "Bucharest"
+    ],
+    "answer": 2,
+    "fact": "Budapest is the historic capital city of Hungary, traversed by the Danube River."
+  },
+  {
+    "question": "Which subatomic particle was discovered by J.J. Thomson in 1897?",
+    "options": [
+      "Proton",
+      "Neutron",
+      "Electron",
+      "Photon"
+    ],
+    "answer": 2,
+    "fact": "J.J. Thomson discovered the electron through his cathode ray tube experiments."
+  },
+  {
+    "question": "What is the capital city of Venezuela?",
+    "options": [
+      "Maracaibo",
+      "Caracas",
+      "Valencia",
+      "Barquisimeto"
+    ],
+    "answer": 1,
+    "fact": "Caracas is the cultural and political capital city of Venezuela."
+  },
+  {
+    "question": "Which chemical element has the highest melting point of all metals?",
+    "options": [
+      "Iron",
+      "Tungsten",
+      "Platinum",
+      "Chromium"
+    ],
+    "answer": 1,
+    "fact": "Tungsten has the highest melting point of all metallic elements at 3,422°C."
+  },
+  {
+    "question": "What is the capital city of Finland?",
+    "options": [
+      "Helsinki",
+      "Espoo",
+      "Tampere",
+      "Turku"
+    ],
+    "answer": 0,
+    "fact": "Helsinki is the northern European coastal capital and largest city of Finland."
+  },
+  {
+    "question": "Which ancient empire was centered in modern-day Peru before the Spanish conquest?",
+    "options": [
+      "Aztec Empire",
+      "Inca Empire",
+      "Maya Empire",
+      "Olmec Empire"
+    ],
+    "answer": 1,
+    "fact": "The Inca Empire was the largest empire in pre-Columbian America, centered in the Andean highlands."
+  },
+  {
+    "question": "What is the chemical symbol for nickel?",
+    "options": [
+      "N",
+      "Ne",
+      "Ni",
+      "Nl"
+    ],
+    "answer": 2,
+    "fact": "Ni is the chemical symbol for the silvery-white transition metal nickel."
+  },
+  {
+    "question": "Which European country is renowned for inventing porcelain in the West at Meissen?",
+    "options": [
+      "Italy",
+      "Germany",
+      "France",
+      "United Kingdom"
+    ],
+    "answer": 1,
+    "fact": "Germany established the first European hard-paste porcelain manufactory in Meissen during the early 18th century."
+  },
+  {
+    "question": "What is the capital city of Portugal?",
+    "options": [
+      "Porto",
+      "Lisbon",
+      "Coimbra",
+      "Braga"
+    ],
+    "answer": 1,
+    "fact": "Lisbon is the historic coastal capital and largest city of Portugal."
+  },
+  {
+    "question": "Which anatomical system includes the brain, spinal cord, and peripheral nerves?",
+    "options": [
+      "Circulatory system",
+      "Nervous system",
+      "Endocrine system",
+      "Lymphatic system"
+    ],
+    "answer": 1,
+    "fact": "The nervous system coordinates voluntary and involuntary actions and transmits signals across the body."
+  },
+  {
+    "question": "What is the chemical symbol for cobalt?",
+    "options": [
+      "Cb",
+      "Co",
+      "Ct",
+      "Cl"
+    ],
+    "answer": 1,
+    "fact": "Co is the chemical symbol for cobalt, a hard ferromagnetic transition metal."
+  },
+  {
+    "question": "Which famous scientist proposed the laws of planetary motion in the early 17th century?",
+    "options": [
+      "Nicolaus Copernicus",
+      "Johannes Kepler",
+      "Galileo Galilei",
+      "Isaac Newton"
+    ],
+    "answer": 1,
+    "fact": "Johannes Kepler formulated his three planetary motion laws based on meticulous astronomical observations."
+  },
+  {
+    "question": "What is the capital city of Austria?",
+    "options": [
+      "Salzburg",
+      "Graz",
+      "Vienna",
+      "Innsbruck"
+    ],
+    "answer": 2,
+    "fact": "Vienna is the historic capital city of Austria, celebrated for its imperial palaces and musical heritage."
+  },
+  {
+    "question": "Which desert covers much of northern Chile and is known as one of the driest places on Earth?",
+    "options": [
+      "Sahara Desert",
+      "Atacama Desert",
+      "Mojave Desert",
+      "Kalahari Desert"
+    ],
+    "answer": 1,
+    "fact": "The Atacama Desert is a plateau in South America stretching across northern Chile, renowned for extreme aridity."
+  },
+  {
+    "question": "What is the chemical symbol for platinum?",
+    "options": [
+      "Pl",
+      "Pt",
+      "Pm",
+      "Pr"
+    ],
+    "answer": 1,
+    "fact": "Pt is the chemical symbol for platinum, a dense, precious, and highly unreactive transition metal."
+  },
+  {
+    "question": "Which international financial institution is headquartered in Washington, D.C. alongside the IMF?",
+    "options": [
+      "World Bank",
+      "European Central Bank",
+      "Bank for International Settlements",
+      "Asian Development Bank"
+    ],
+    "answer": 0,
+    "fact": "The World Bank and International Monetary Fund (IMF) are sister organizations headquartered in Washington, D.C."
+  },
+  {
+    "question": "What is the capital city of Denmark?",
+    "options": [
+      "Aarhus",
+      "Odense",
+      "Copenhagen",
+      "Aalborg"
+    ],
+    "answer": 2,
+    "fact": "Copenhagen is the political and cultural capital city of Denmark."
+  },
+  {
+    "question": "Which gas is released by plants during daytime photosynthesis processes?",
+    "options": [
+      "Carbon dioxide",
+      "Oxygen",
+      "Nitrogen",
+      "Methane"
+    ],
+    "answer": 1,
+    "fact": "Green plants produce and release oxygen gas as a beneficial byproduct of photosynthesis."
+  },
+  {
+    "question": "What is the chemical symbol for silver?",
+    "options": [
+      "Si",
+      "Ag",
+      "Sr",
+      "Sv"
+    ],
+    "answer": 1,
+    "fact": "Ag stands for silver, derived from the Latin word argentum."
+  },
+  {
+    "question": "Which famous artist created the monumental painting 'The Night Watch' in 1642?",
+    "options": [
+      "Johannes Vermeer",
+      "Rembrandt van Rijn",
+      "Frans Hals",
+      "Jan Steen"
+    ],
+    "answer": 1,
+    "fact": "Rembrandt van Rijn completed his famous militia painting, commonly known as The Night Watch, in Amsterdam."
+  },
+  {
+    "question": "What is the capital city of New Zealand?",
+    "options": [
+      "Auckland",
+      "Christchurch",
+      "Wellington",
+      "Hamilton"
+    ],
+    "answer": 2,
+    "fact": "Wellington is the capital city of New Zealand, situated on the Cook Strait."
   }
 ];
 
