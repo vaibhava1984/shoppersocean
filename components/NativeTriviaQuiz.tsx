@@ -2957,6 +2957,270 @@ const QUESTIONS: Question[] = [
     "options": ["Aurora (Polaris/Australis)","St. Elmo's fire","Zodiacal light","Airglow"],
     "answer": 0,
     "fact": "Auroras are caused by solar wind interactions with Earth's magnetosphere near the poles."
+  },
+  {
+    "question": "Which popular sport uses a shuttlecock that players hit back and forth across a high net?",
+    "options": [
+      "Tennis",
+      "Badminton",
+      "Squash",
+      "Table tennis"
+    ],
+    "answer": 1,
+    "fact": "Badminton is a racket sport played using racquets to strike a shuttlecock across a net."
+  },
+  {
+    "question": "What is the name of the yellow part located in the center of a fresh chicken egg?",
+    "options": [
+      "Albumen",
+      "Yolk",
+      "Shell",
+      "Plasma"
+    ],
+    "answer": 1,
+    "fact": "The egg yolk is the nutrient-bearing portion inside an egg that feeds the developing embryo."
+  },
+  {
+    "question": "Which large mammal is famous for having a long trunk and large flappy ears?",
+    "options": [
+      "Hippopotamus",
+      "Rhinoceros",
+      "Elephant",
+      "Giraffe"
+    ],
+    "answer": 2,
+    "fact": "Elephants are the largest living land animals, easily recognized by their trunks and tusks."
+  },
+  {
+    "question": "How many players are on the field for a single standard soccer team during a match?",
+    "options": [
+      "9",
+      "10",
+      "11",
+      "12"
+    ],
+    "answer": 2,
+    "fact": "A standard association football (soccer) team fields 11 players on the pitch at any one time."
+  },
+  {
+    "question": "What primary color of light is combined with green and blue in standard television screens and computer monitors?",
+    "options": [
+      "Red",
+      "Yellow",
+      "Purple",
+      "Orange"
+    ],
+    "answer": 0,
+    "fact": "RGB (Red, Green, Blue) are the additive primary colors used in digital electronic displays."
+  },
+  {
+    "question": "Which sweet sticky substance is naturally made by honeybees from flower nectar?",
+    "options": [
+      "Molasses",
+      "Syrup",
+      "Honey",
+      "Nectarine"
+    ],
+    "answer": 2,
+    "fact": "Honeybees collect nectar, transform it through regurgitation and evaporation, and store it in wax honeycombs."
+  },
+  {
+    "question": "What is the common term for the freezing of water into solid ice?",
+    "options": [
+      "Evaporation",
+      "Melting",
+      "Solidification (Freezing)",
+      "Condensation"
+    ],
+    "answer": 2,
+    "fact": "Freezing or solidification is the phase transition where a liquid turns into a solid when cooled."
+  },
+  {
+    "question": "Which classic fairy tale character leaves behind a glass slipper at a royal ball?",
+    "options": [
+      "Sleeping Beauty",
+      "Cinderella",
+      "Snow White",
+      "Little Red Riding Hood"
+    ],
+    "answer": 1,
+    "fact": "Cinderella famously leaves a glass slipper behind on the palace stairs as midnight strikes."
+  },
+  {
+    "question": "What is the name of the toy consisting of a spool-like disk that spins up and down on a string?",
+    "options": [
+      "Frisbee",
+      "Yo-yo",
+      "Hula hoop",
+      "Boomerang"
+    ],
+    "answer": 1,
+    "fact": "A yo-yo is an ancient toy comprising an axle connected to two disks and a string wound around the axle."
+  },
+  {
+    "question": "Which seasonal fruit is round, typically red or green, and grows on trees in orchards?",
+    "options": [
+      "Banana",
+      "Apple",
+      "Pineapple",
+      "Mango"
+    ],
+    "answer": 1,
+    "fact": "Apples are one of the most widely cultivated tree fruits in temperate regions worldwide."
+  },
+  {
+    "question": "What natural weather event involves flashes of bright electrical discharge accompanied by loud thunder?",
+    "options": [
+      "Blizzard",
+      "Thunderstorm",
+      "Tornado",
+      "Drought"
+    ],
+    "answer": 1,
+    "fact": "A thunderstorm is characterized by the presence of lightning and thunder produced by convective clouds."
+  },
+  {
+    "question": "Which domestic pet is well known for purring, chasing mice, and landing neatly on its feet?",
+    "options": [
+      "Dog",
+      "Cat",
+      "Parrot",
+      "Hamster"
+    ],
+    "answer": 1,
+    "fact": "Cats are popular small carnivorous mammals domesticated by humans thousands of years ago."
+  },
+  {
+    "question": "What do you call a young dog or canine pup?",
+    "options": [
+      "Kitten",
+      "Puppy",
+      "Calf",
+      "Cub"
+    ],
+    "answer": 1,
+    "fact": "A puppy is a juvenile dog, usually weighing a few pounds depending on the breed."
+  },
+  {
+    "question": "Which metal is traditionally used to make wedding rings and shiny gold-colored jewelry?",
+    "options": [
+      "Iron",
+      "Gold",
+      "Lead",
+      "Tin"
+    ],
+    "answer": 1,
+    "fact": "Gold is a precious metal prized for its luster and resistance to corrosion over time."
+  },
+  {
+    "question": "What type of footwear is specially designed with wheels attached to the bottom for rolling around?",
+    "options": [
+      "Flip-flops",
+      "Roller skates",
+      "Hiking boots",
+      "Slippers"
+    ],
+    "answer": 1,
+    "fact": "Roller skates allow wearers to glide across smooth surfaces using attached wheels."
+  },
+  {
+    "question": "Which large yellow citrus fruit has a sour taste and is frequently squeezed to make lemonade?",
+    "options": [
+      "Lemon",
+      "Watermelon",
+      "Peach",
+      "Plum"
+    ],
+    "answer": 0,
+    "fact": "Lemons are acidic citrus fruits rich in vitamin C and culinary flavoring properties."
+  },
+  {
+    "question": "What instrument do musicians blow air into to produce notes using keys and valves, often associated with jazz music?",
+    "options": [
+      "Violin",
+      "Trumpet or Saxophone",
+      "Drum",
+      "Guitar"
+    ],
+    "answer": 1,
+    "fact": "Brass and woodwind instruments like trumpets and saxophones are staples of jazz and orchestral music."
+  },
+  {
+    "question": "Which vibrant red insect has small black spots on its shell and is considered lucky in many cultures?",
+    "options": [
+      "Mosquito",
+      "Ladybug (Ladybird)",
+      "Housefly",
+      "Cockroach"
+    ],
+    "answer": 1,
+    "fact": "Ladybugs are small beetles belonging to the family Coccinellidae, famous for their spotted wing covers."
+  },
+  {
+    "question": "What material is paper primarily manufactured from in modern industrial mills?",
+    "options": [
+      "Plastic",
+      "Wood pulp",
+      "Glass",
+      "Rubber"
+    ],
+    "answer": 1,
+    "fact": "Paper is typically produced from cellulose fibers derived from processed wood pulp."
+  },
+  {
+    "question": "Which breakfast food is made by cooking beaten eggs in a frying pan, often folded over fillings like cheese or vegetables?",
+    "options": [
+      "Omelette",
+      "Pancake",
+      "Waffle",
+      "Cereal"
+    ],
+    "answer": 0,
+    "fact": "An omelette is a classic dish prepared from beaten eggs fried quickly with butter or oil."
+  },
+  {
+    "question": "What is the bright white celestial body that lights up the night sky alongside stars?",
+    "options": [
+      "The Sun",
+      "The Moon",
+      "An asteroid",
+      "A comet"
+    ],
+    "answer": 1,
+    "fact": "The Moon is Earth's natural satellite, reflecting sunlight to illuminate night skies."
+  },
+  {
+    "question": "Which game requires players to take turns removing wooden blocks from a towering stack without letting it crash down?",
+    "options": [
+      "Chess",
+      "Checkers",
+      "Jenga",
+      "Scrabble"
+    ],
+    "answer": 2,
+    "fact": "Jenga is a popular physical skill game involving block tower balancing and steady hands."
+  },
+  {
+    "question": "What do caterpillars eventually transform into after resting inside a protective chrysalis or cocoon?",
+    "options": [
+      "Spider",
+      "Butterfly or Moth",
+      "Bee",
+      "Ant"
+    ],
+    "answer": 1,
+    "fact": "Larval caterpillars undergo complete metamorphosis to emerge as winged butterflies or moths."
+  },
+  {
+    "question": "What is the colorful arched phenomenon in the sky caused by sunlight shining through water droplets after rainfall?",
+    "options": [
+      "Rainbow",
+      "Eclipse",
+      "Meteor shower",
+      "Fog"
+    ],
+    "answer": 0,
+    "fact": "A rainbow is an optical and meteorological phenomenon caused by light refraction and reflection in water droplets."
   }
 ];
 
