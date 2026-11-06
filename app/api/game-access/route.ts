@@ -6,8 +6,8 @@ const TYPES:Record<string,string[]>={"quiz-world":["trivio"],"word-playground":[
 const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUESTION_LIMIT=1;
 const NO_MORE_TODAY="Your today's quota on this section is exhausted. Please visit tomorrow.";
 const headers={"Cache-Control":"no-store"};
-const sectionFreeLimit=(section:string)=>section==="riddle-corner"||section==="mystery-quiz"?1:FREE_LIMIT;
-const typeLimit=(type:string)=>type==="daily"?DAILY_QUESTION_LIMIT:type==="jigsaw"?3:type==="riddle"||type==="mystery-quiz"?3:DAILY_LIMIT;
+const sectionFreeLimit=(_section:string)=>FREE_LIMIT;
+const typeLimit=(type:string)=>type==="daily"?DAILY_QUESTION_LIMIT:DAILY_LIMIT;
 const today=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10); // India day boundary: 08:00 IST (02:30 UTC).
 const sectionDailyRemaining=(section:string,used:Record<string,number>)=>{if(section==="memory-observation"){return Math.max(0,3-(used.jigsaw??0));}return section==="daily-challenge"?Math.max(0,DAILY_QUESTION_LIMIT-(used.daily??0)):TYPES[section].reduce((n,t)=>n+Math.max(0,typeLimit(t)-(used[t]??0)),0);};
 async function claimChallenge(db:D1Database,userId:string,type:string,challenge:string,playedAt:string){
