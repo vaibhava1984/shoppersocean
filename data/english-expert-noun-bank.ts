@@ -4,554 +4,554 @@ import type { } from "react";
 type NounQuestion={q:string;o:string[];a:number;e:string};
 export const NOUN_QUESTION_BANK:NounQuestion[]=[
   {
-    "q": "Which word is an abstract noun?",
+    "q": "Choose the correct noun to fill in the blank:\nShe carried a heavy __________ filled with books and clothes.",
     "o": [
-      "courage",
-      "wool",
       "suitcase",
-      "the students' projects"
+      "wrapper",
+      "packet",
+      "envelope"
     ],
     "a": 0,
-    "e": "courage names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which option names a quality, feeling, or idea?",
+    "q": "Identify the noun in the following sentence:\nThe bright sun warmed the cold earth.",
     "o": [
-      "the neighbours' garden",
-      "honesty",
-      "glass",
-      "flower"
-    ],
-    "a": 1,
-    "e": "honesty names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which noun cannot be experienced as a physical object?",
-    "o": [
-      "pencil",
-      "the farmer's tractor",
-      "curiosity",
-      "aluminium"
-    ],
-    "a": 2,
-    "e": "curiosity names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which word is an abstract noun?",
-    "o": [
-      "flour",
-      "bottle",
-      "my sister's diary",
-      "patience"
+      "bright",
+      "warmed",
+      "cold",
+      "earth"
     ],
     "a": 3,
-    "e": "patience names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which option names a quality, feeling, or idea?",
+    "q": "Choose the correct noun to fill in the blank:\nThe doctor checked his __________ to see if he had a fever.",
     "o": [
-      "wisdom",
-      "iron",
-      "question",
-      "the ladies' room"
+      "breath",
+      "pulse",
+      "sound",
+      "touch"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "Identify the abstract noun in this group of words:",
+    "o": [
+      "Window",
+      "Courage",
+      "Bottle",
+      "Ledger"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nPlease switch off the __________ when you leave the room.",
+    "o": [
+      "light",
+      "shine",
+      "beam",
+      "glow"
     ],
     "a": 0,
-    "e": "wisdom names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which noun cannot be experienced as a physical object?",
+    "q": "Identify the collective noun in the following sentence:\nA large fleet of ships sailed across the blue ocean.",
     "o": [
-      "the twins' bedroom",
-      "freedom",
-      "clay",
-      "island"
+      "ships",
+      "fleet",
+      "ocean",
+      "blue"
     ],
     "a": 1,
-    "e": "freedom names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which word is an abstract noun?",
+    "q": "Choose the correct noun to fill in the blank:\nThe mechanic used a sharp __________ to tighten the loose screw.",
     "o": [
-      "document",
-      "the witness's statement",
-      "justice",
-      "cement"
+      "hammer",
+      "driver",
+      "wrench",
+      "pliers"
     ],
     "a": 2,
-    "e": "justice names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which option names a quality, feeling, or idea?",
+    "q": "Identify the proper noun in the sentence:\nMy uncle travelled to London last winter.",
     "o": [
-      "salt",
-      "photograph",
-      "the dog's collar",
-      "kindness"
+      "uncle",
+      "winter",
+      "London",
+      "travel"
     ],
-    "a": 3,
-    "e": "kindness names an idea, feeling, or quality rather than a physical object."
+    "a": 2,
+    "e": ""
   },
   {
-    "q": "Which noun cannot be experienced as a physical object?",
+    "q": "Choose the correct noun to fill in the blank:\nThe old man lost his __________ while walking in the crowded market.",
     "o": [
-      "loyalty",
-      "silver",
-      "letter",
-      "the company's policy"
+      "wallet",
+      "pocket",
+      "luggage",
+      "baggage"
     ],
     "a": 0,
-    "e": "loyalty names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which word is an abstract noun?",
+    "q": "Identify the noun that names a feeling or idea:",
     "o": [
-      "the country's flag",
-      "bravery",
-      "marble",
-      "student"
+      "Pencil",
+      "Honesty",
+      "Garden",
+      "Ticket"
     ],
     "a": 1,
-    "e": "bravery names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which option names a quality, feeling, or idea?",
+    "q": "Choose the correct noun to fill in the blank:\nThe pilot made a safe landing despite the heavy __________.",
     "o": [
-      "umbrella",
-      "the cat's whiskers",
-      "childhood",
-      "leather"
-    ],
-    "a": 2,
-    "e": "childhood names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which noun cannot be experienced as a physical object?",
-    "o": [
-      "oil",
-      "journey",
-      "James's bicycle",
-      "friendship"
-    ],
-    "a": 3,
-    "e": "friendship names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which word is an abstract noun?",
-    "o": [
-      "anger",
-      "linen",
-      "chair",
-      "the fox's den"
+      "storm",
+      "drizzle",
+      "mist",
+      "shower"
     ],
     "a": 0,
-    "e": "anger names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which option names a quality, feeling, or idea?",
+    "q": "Identify the common noun in the list:",
     "o": [
-      "the horse's saddle",
-      "hope",
-      "silk",
-      "candle"
-    ],
-    "a": 1,
-    "e": "hope names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which noun cannot be experienced as a physical object?",
-    "o": [
-      "proposal",
-      "the ship's captain",
-      "fear",
-      "steel"
+      "Everest",
+      "Pacific",
+      "Mountain",
+      "Monday"
     ],
     "a": 2,
-    "e": "fear names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which word is an abstract noun?",
+    "q": "Choose the correct noun to fill in the blank:\nThe chef added a pinch of __________ to improve the taste.",
     "o": [
-      "coal",
-      "cup",
-      "the girl's bag",
-      "beauty"
-    ],
-    "a": 3,
-    "e": "beauty names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which option names a quality, feeling, or idea?",
-    "o": [
-      "knowledge",
-      "paper",
-      "idea",
-      "the workers' union"
-    ],
-    "a": 0,
-    "e": "knowledge names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which noun cannot be experienced as a physical object?",
-    "o": [
-      "the boss's office",
-      "generosity",
-      "cotton",
-      "window"
-    ],
-    "a": 1,
-    "e": "generosity names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which word is an abstract noun?",
-    "o": [
-      "machine",
-      "the author's notes",
-      "confidence",
-      "wood"
-    ],
-    "a": 2,
-    "e": "confidence names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which option names a quality, feeling, or idea?",
-    "o": [
-      "concrete",
-      "stone",
-      "the musicians' instruments",
-      "ambition"
-    ],
-    "a": 3,
-    "e": "ambition names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which noun cannot be experienced as a physical object?",
-    "o": [
-      "peace",
       "sugar",
-      "coin",
-      "the birds' nests"
-    ],
-    "a": 0,
-    "e": "peace names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which word is an abstract noun?",
-    "o": [
-      "the men's team",
-      "poverty",
-      "copper",
-      "key"
-    ],
-    "a": 1,
-    "e": "poverty names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which option names a quality, feeling, or idea?",
-    "o": [
-      "camera",
-      "the dentist's clinic",
-      "strength",
-      "granite"
-    ],
-    "a": 2,
-    "e": "strength names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which noun cannot be experienced as a physical object?",
-    "o": [
-      "rubber",
-      "medal",
-      "the girls' school",
-      "imagination"
+      "spice",
+      "flavor",
+      "salt"
     ],
     "a": 3,
-    "e": "imagination names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which word is an abstract noun?",
+    "q": "Identify the noun in the sentence:\nHonesty is always the best policy.",
     "o": [
-      "truth",
-      "water",
-      "mistake",
-      "the children's toys"
-    ],
-    "a": 0,
-    "e": "truth names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which option names a quality, feeling, or idea?",
-    "o": [
-      "the actors' dressing room",
-      "pride",
-      "gold",
-      "apple"
-    ],
-    "a": 1,
-    "e": "pride names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which noun cannot be experienced as a physical object?",
-    "o": [
-      "planet",
-      "the players' jerseys",
-      "jealousy",
-      "plastic"
+      "always",
+      "best",
+      "honesty",
+      "policy"
     ],
     "a": 2,
-    "e": "jealousy names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which word is an abstract noun?",
+    "q": "Choose the correct noun to fill in the blank:\nShe keeps her important documents inside a locked __________.",
     "o": [
-      "bronze",
-      "recipe",
-      "the customers' orders",
-      "gratitude"
-    ],
-    "a": 3,
-    "e": "gratitude names an idea, feeling, or quality rather than a physical object."
-  },
-  {
-    "q": "Which option names a quality, feeling, or idea?",
-    "o": [
-      "discipline",
-      "petrol",
-      "song",
-      "the teachers' lounge"
+      "drawer",
+      "shelf",
+      "pocket",
+      "counter"
     ],
     "a": 0,
-    "e": "discipline names an idea, feeling, or quality rather than a physical object."
+    "e": ""
   },
   {
-    "q": "Which noun cannot be experienced as a physical object?",
+    "q": "Identify the countable noun from the options below:",
     "o": [
-      "the baby's blanket",
-      "compassion",
-      "copper",
+      "Water",
+      "Chair",
+      "Sugar",
+      "Rice"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nThe angry dog let out a loud __________.",
+    "o": [
+      "bark",
+      "bite",
+      "jump",
+      "run"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the uncountable noun from the options below:",
+    "o": [
+      "Apple",
+      "Milk",
+      "Coin",
+      "Shoe"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nHe forgot his house __________ on the kitchen table.",
+    "o": [
+      "lock",
+      "key",
+      "latch",
+      "bolt"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "Identify the material noun in the sentence:\nThe statue was carved out of solid marble.",
+    "o": [
+      "statue",
+      "solid",
+      "marble",
+      "carved"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nShe opened her __________ to check the list of items to buy.",
+    "o": [
+      "diary",
+      "paper",
+      "letter",
       "ticket"
     ],
-    "a": 1,
-    "e": "compassion names an idea, feeling, or quality rather than a physical object."
+    "a": 0,
+    "e": ""
   },
   {
-    "q": "Which option is the specific name of a person, place, or institution?",
+    "q": "Identify the plural noun in the list:",
     "o": [
-      "water",
+      "Child",
+      "Mouse",
+      "Teeth",
+      "Foot"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nThe actor forgot his __________ during the middle of the play.",
+    "o": [
+      "lines",
+      "words",
+      "speech",
+      "talk"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the singular noun in the list:",
+    "o": [
+      "Men",
+      "Geese",
+      "Leaf",
+      "Women"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nPlease write your name at the top of the __________.",
+    "o": [
+      "page",
+      "sheet",
+      "cover",
+      "leaf"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the collective noun for a group of singers:",
+    "o": [
+      "Crowd",
+      "Choir",
+      "Pack",
+      "Swarm"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nThe traveler checked into a hotel room to get some __________.",
+    "o": [
+      "rest",
+      "break",
+      "pause",
+      "halt"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the abstract noun in the sentence:\nHer beauty caught everyone's attention instantly.",
+    "o": [
+      "beauty",
+      "everyone",
+      "attention",
+      "instantly"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nThe loud __________ made everyone jump in surprise.",
+    "o": [
+      "noise",
+      "sound",
+      "tone",
+      "pitch"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the noun acting as the subject:\nThe train arrived at the station on time.",
+    "o": [
+      "train",
+      "station",
+      "time",
+      "arrived"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nHe took a quick __________ of water after running the race.",
+    "o": [
+      "sip",
+      "bite",
+      "drop",
+      "taste"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the proper noun in the options:",
+    "o": [
+      "Country",
+      "River",
+      "India",
+      "City"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nThe farmer drove his __________ across the muddy field.",
+    "o": [
+      "tractor",
+      "engine",
+      "truck",
+      "vehicle"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the noun that refers to a group of cattle:",
+    "o": [
+      "Flock",
+      "Herd",
+      "Pride",
+      "Litter"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nShe wore a silver __________ around her neck.",
+    "o": [
+      "ring",
+      "chain",
+      "band",
+      "loop"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "Identify the common noun in the sentence:\nMy sister bought a new laptop yesterday.",
+    "o": [
+      "sister",
+      "bought",
+      "new",
+      "yesterday"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nThe hunter aimed his __________ at the running deer.",
+    "o": [
+      "gun",
+      "bow",
+      "stick",
+      "rod"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the abstract noun from the list:",
+    "o": [
+      "Childhood",
+      "Chair",
+      "Castle",
+      "Canvas"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nHe spoke with great __________ during the presentation.",
+    "o": [
+      "voice",
+      "tone",
       "confidence",
-      "Aarav",
-      "moonlight"
+      "sound"
     ],
     "a": 2,
-    "e": "Aarav is a specific name and is therefore a proper noun."
+    "e": ""
   },
   {
-    "q": "Which noun should begin with a capital letter because it names something particular?",
+    "q": "Identify the plural form of \"ox\":",
     "o": [
-      "snowflake",
-      "news",
-      "pride",
-      "Nairobi"
-    ],
-    "a": 3,
-    "e": "Nairobi is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which word is a proper noun?",
-    "o": [
-      "Monday",
-      "bus stop",
-      "jewellery",
-      "curiosity"
-    ],
-    "a": 0,
-    "e": "Monday is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which option is the specific name of a person, place, or institution?",
-    "o": [
-      "bravery",
-      "January",
-      "living room",
-      "information"
+      "Oxes",
+      "Oxen",
+      "Oxies",
+      "Ox"
     ],
     "a": 1,
-    "e": "January is a specific name and is therefore a proper noun."
+    "e": ""
   },
   {
-    "q": "Which noun should begin with a capital letter because it names something particular?",
+    "q": "Choose the correct noun to fill in the blank:\nThe baker pulled a fresh loaf of __________ from the oven.",
     "o": [
-      "rice",
-      "knowledge",
-      "Amazon",
-      "classroom"
+      "bread",
+      "cake",
+      "bun",
+      "crust"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the compound noun in the list:",
+    "o": [
+      "Window",
+      "Sunflower",
+      "Garden",
+      "Flower"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "Choose the correct noun to fill in the blank:\nShe tied her hair neatly with a cloth __________.",
+    "o": [
+      "band",
+      "tie",
+      "strip",
+      "string"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "Identify the masculine noun from the options:",
+    "o": [
+      "Actress",
+      "Queen",
+      "Nephew",
+      "Hen"
     ],
     "a": 2,
-    "e": "Amazon is a specific name and is therefore a proper noun."
+    "e": ""
   },
   {
-    "q": "Which word is a proper noun?",
+    "q": "Choose the correct noun to fill in the blank:\nThe postman delivered a heavy __________ to our door.",
     "o": [
-      "bookshelf",
-      "knowledge",
-      "imagination",
-      "Himalayas"
-    ],
-    "a": 3,
-    "e": "Himalayas is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which option is the specific name of a person, place, or institution?",
-    "o": [
-      "Saraswati",
-      "firefighter",
-      "accommodation",
-      "courage"
-    ],
-    "a": 0,
-    "e": "Saraswati is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which noun should begin with a capital letter because it names something particular?",
-    "o": [
-      "kindness",
-      "Pacific",
-      "mother-in-law",
-      "equipment"
+      "letter",
+      "parcel",
+      "paper",
+      "card"
     ],
     "a": 1,
-    "e": "Pacific is a specific name and is therefore a proper noun."
+    "e": ""
   },
   {
-    "q": "Which word is a proper noun?",
+    "q": "Identify the feminine noun from the options:",
     "o": [
-      "machinery",
-      "fear",
-      "Oxford",
-      "airport"
+      "Actor",
+      "Bull",
+      "Niece",
+      "Drake"
     ],
     "a": 2,
-    "e": "Oxford is a specific name and is therefore a proper noun."
+    "e": ""
   },
   {
-    "q": "Which option is the specific name of a person, place, or institution?",
+    "q": "Choose the correct noun to fill in the blank:\nHe lit a __________ to see his way in the dark basement.",
     "o": [
-      "teacup",
-      "weather",
-      "poverty",
-      "Diwali"
-    ],
-    "a": 3,
-    "e": "Diwali is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which noun should begin with a capital letter because it names something particular?",
-    "o": [
-      "Venus",
-      "newspaper",
-      "permission",
-      "discipline"
+      "torch",
+      "lamp",
+      "bulb",
+      "flame"
     ],
     "a": 0,
-    "e": "Venus is a specific name and is therefore a proper noun."
+    "e": ""
   },
   {
-    "q": "Which word is a proper noun?",
+    "q": "Identify the noun indicating a profession:",
     "o": [
-      "freedom",
-      "Japan",
-      "ice cream",
-      "furniture"
-    ],
-    "a": 1,
-    "e": "Japan is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which option is the specific name of a person, place, or institution?",
-    "o": [
-      "homework",
-      "anger",
-      "Meera",
-      "raincoat"
+      "School",
+      "Hospital",
+      "Dentist",
+      "Office"
     ],
     "a": 2,
-    "e": "Meera is a specific name and is therefore a proper noun."
+    "e": ""
   },
   {
-    "q": "Which noun should begin with a capital letter because it names something particular?",
+    "q": "Choose the correct noun to fill in the blank:\nThe wind blew away the last __________ from the tree.",
     "o": [
-      "keyboard",
-      "flour",
-      "ambition",
-      "Thames"
-    ],
-    "a": 3,
-    "e": "Thames is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which word is a proper noun?",
-    "o": [
-      "Microsoft",
-      "haircut",
-      "scenery",
-      "jealousy"
-    ],
-    "a": 0,
-    "e": "Microsoft is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which option is the specific name of a person, place, or institution?",
-    "o": [
-      "patience",
-      "Kerala",
-      "washing machine",
-      "soap"
+      "branch",
+      "leaf",
+      "root",
+      "bark"
     ],
     "a": 1,
-    "e": "Kerala is a specific name and is therefore a proper noun."
+    "e": ""
   },
   {
-    "q": "Which noun should begin with a capital letter because it names something particular?",
+    "q": "Identify the noun in the following sentence:\nSuccess requires patience and hard work.",
     "o": [
-      "research",
-      "childhood",
-      "Einstein",
-      "toothbrush"
+      "requires",
+      "hard",
+      "success",
+      "work"
     ],
     "a": 2,
-    "e": "Einstein is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which word is a proper noun?",
-    "o": [
-      "football",
-      "milk",
-      "generosity",
-      "Friday"
-    ],
-    "a": 3,
-    "e": "Friday is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which option is the specific name of a person, place, or institution?",
-    "o": [
-      "Africa",
-      "seashore",
-      "progress",
-      "truth"
-    ],
-    "a": 0,
-    "e": "Africa is a specific name and is therefore a proper noun."
-  },
-  {
-    "q": "Which noun should begin with a capital letter because it names something particular?",
-    "o": [
-      "honesty",
-      "Taj Mahal",
-      "swimming pool",
-      " stationery"
-    ],
-    "a": 1,
-    "e": "Taj Mahal is a specific name and is therefore a proper noun."
+    "e": ""
   },
   {
     "q": "Which word is a proper noun?",
