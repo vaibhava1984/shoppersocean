@@ -558,10 +558,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which ancient civilization built the monumental city of Machu Picchu high in the Andes?",
     "options": [
-          "Aztec",
-          "Mayan",
-          "Inca",
-          "Olmec"
+      "Aztec",
+      "Mayan",
+      "Inca",
+      "Olmec"
     ],
     "answer": 2,
     "fact": "The Inca Empire constructed Machu Picchu in the 15th century as a royal estate and sanctuary."
@@ -569,10 +569,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the primary mineral component found in limestone rocks?",
     "options": [
-          "Quartz",
-          "Calcite",
-          "Feldspar",
-          "Gypsum"
+      "Quartz",
+      "Calcite",
+      "Feldspar",
+      "Gypsum"
     ],
     "answer": 1,
     "fact": "Limestone is a sedimentary rock composed primarily of calcite (calcium carbonate)."
@@ -580,10 +580,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which international organization has its headquarters in Geneva, Switzerland?",
     "options": [
-          "United Nations",
-          "World Health Organization",
-          "World Bank",
-          "International Monetary Fund"
+      "United Nations",
+      "World Health Organization",
+      "World Bank",
+      "International Monetary Fund"
     ],
     "answer": 1,
     "fact": "The World Health Organization (WHO), a specialized agency of the UN, is headquartered in Geneva."
@@ -591,10 +591,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the powerhouse organelle responsible for cellular energy production?",
     "options": [
-          "Ribosome",
-          "Nucleus",
-          "Mitochondria",
-          "Golgi apparatus"
+      "Ribosome",
+      "Nucleus",
+      "Mitochondria",
+      "Golgi apparatus"
     ],
     "answer": 2,
     "fact": "Mitochondria generate most of the chemical energy needed to power cellular biochemical reactions."
@@ -602,10 +602,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which European country is renowned for its fjords and coastal archipelagos?",
     "options": [
-          "Sweden",
-          "Finland",
-          "Norway",
-          "Denmark"
+      "Sweden",
+      "Finland",
+      "Norway",
+      "Denmark"
     ],
     "answer": 2,
     "fact": "Norway features thousands of dramatic, glacier-carved fjords along its extensive western coastline."
@@ -613,10 +613,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical symbol for iron?",
     "options": [
-          "Ir",
-          "In",
-          "Fe",
-          "Fi"
+      "Ir",
+      "In",
+      "Fe",
+      "Fi"
     ],
     "answer": 2,
     "fact": "Fe stands for iron, derived from the Latin word ferrum."
@@ -624,10 +624,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which literary work begins with the famous line, 'It was the best of times, it was the worst of times'?",
     "options": [
-          "Moby-Dick",
-          "A Tale of Two Cities",
-          "War and Peace",
-          "Pride and Prejudice"
+      "Moby-Dick",
+      "A Tale of Two Cities",
+      "War and Peace",
+      "Pride and Prejudice"
     ],
     "answer": 1,
     "fact": "Charles Dickens opened his 1859 historical novel A Tale of Two Cities with this iconic antithesis."
@@ -635,10 +635,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Argentina?",
     "options": [
-          "Santiago",
-          "Buenos Aires",
-          "Lima",
-          "Bogota"
+      "Santiago",
+      "Buenos Aires",
+      "Lima",
+      "Bogota"
     ],
     "answer": 1,
     "fact": "Buenos Aires is the primate city and capital of Argentina."
@@ -646,10 +646,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which vitamin is predominantly produced in the human skin through ultraviolet light exposure?",
     "options": [
-          "Vitamin A",
-          "Vitamin C",
-          "Vitamin D",
-          "Vitamin K"
+      "Vitamin A",
+      "Vitamin C",
+      "Vitamin D",
+      "Vitamin K"
     ],
     "answer": 2,
     "fact": "The human body synthesizes Vitamin D when bare skin is exposed to UVB rays from the sun."
@@ -657,10 +657,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the longest river on the African continent?",
     "options": [
-          "Congo River",
-          "Niger River",
-          "Nile River",
-          "Zambezi River"
+      "Congo River",
+      "Niger River",
+      "Nile River",
+      "Zambezi River"
     ],
     "answer": 2,
     "fact": "The Nile River is widely accepted as the longest river in the world, flowing northward through Africa."
@@ -668,10 +668,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which celestial body is classified as a dwarf planet located in the Kuiper Belt?",
     "options": [
-          "Titan",
-          "Pluto",
-          "Europa",
-          "Ganymede"
+      "Titan",
+      "Pluto",
+      "Europa",
+      "Ganymede"
     ],
     "answer": 1,
     "fact": "Pluto was reclassified as a dwarf planet by the International Astronomical Union in 2006."
@@ -679,10 +679,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical symbol for potassium?",
     "options": [
-          "Po",
-          "Pt",
-          "K",
-          "Pm"
+      "Po",
+      "Pt",
+      "K",
+      "Pm"
     ],
     "answer": 2,
     "fact": "K is the chemical symbol for potassium, derived from the Neo-Latin word kalium."
@@ -690,10 +690,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which artist created the monumental mural painting 'Guernica' in 1937?",
     "options": [
-          "Claude Monet",
-          "Pablo Picasso",
-          "Salvador Dali",
-          "Henri Matisse"
+      "Claude Monet",
+      "Pablo Picasso",
+      "Salvador Dali",
+      "Henri Matisse"
     ],
     "answer": 1,
     "fact": "Pablo Picasso painted Guernica as a powerful anti-war statement reflecting the bombing of a Basque town."
@@ -701,10 +701,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of New Zealand?",
     "options": [
-          "Auckland",
-          "Christchurch",
-          "Wellington",
-          "Hamilton"
+      "Auckland",
+      "Christchurch",
+      "Wellington",
+      "Hamilton"
     ],
     "answer": 2,
     "fact": "Wellington is the capital city and second-most populous urban area of New Zealand."
@@ -712,10 +712,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which gas is primarily responsible for the greenhouse effect on Venus?",
     "options": [
-          "Methane",
-          "Carbon dioxide",
-          "Water vapor",
-          "Ozone"
+      "Methane",
+      "Carbon dioxide",
+      "Water vapor",
+      "Ozone"
     ],
     "answer": 1,
     "fact": "Venus has a thick atmosphere of carbon dioxide that traps heat through an extreme greenhouse effect."
@@ -723,10 +723,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the primary language spoken in Mexico?",
     "options": [
-          "Portuguese",
-          "Spanish",
-          "English",
-          "French"
+      "Portuguese",
+      "Spanish",
+      "English",
+      "French"
     ],
     "answer": 1,
     "fact": "Spanish is the national and most widely spoken language in Mexico."
@@ -734,10 +734,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which bone is the longest and strongest human bone located in the leg?",
     "options": [
-          "Tibia",
-          "Fibula",
-          "Femur",
-          "Humerus"
+      "Tibia",
+      "Fibula",
+      "Femur",
+      "Humerus"
     ],
     "answer": 2,
     "fact": "The femur (thigh bone) is the longest, heaviest, and strongest skeletal bone in the human body."
@@ -745,10 +745,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Turkey?",
     "options": [
-          "Istanbul",
-          "Ankara",
-          "Izmir",
-          "Antalya"
+      "Istanbul",
+      "Ankara",
+      "Izmir",
+      "Antalya"
     ],
     "answer": 1,
     "fact": "Ankara is the capital city of Turkey, located in the central Anatolia region."
@@ -756,10 +756,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which scientific instrument is used to measure humidity in the atmosphere?",
     "options": [
-          "Barometer",
-          "Anemometer",
-          "Hygrometer",
-          "Altimeter"
+      "Barometer",
+      "Anemometer",
+      "Hygrometer",
+      "Altimeter"
     ],
     "answer": 2,
     "fact": "A hygrometer is an instrument used to gauge the amount of humidity and water vapor in air."
@@ -767,10 +767,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical symbol for silver?",
     "options": [
-          "Si",
-          "Ag",
-          "Sr",
-          "Sn"
+      "Si",
+      "Ag",
+      "Sr",
+      "Sn"
     ],
     "answer": 1,
     "fact": "Ag denotes silver, stemming from the Latin word argentum."
@@ -778,10 +778,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which composer wrote the famous 'Fifth Symphony', featuring the iconic opening motif?",
     "options": [
-          "Wolfgang Amadeus Mozart",
-          "Ludwig van Beethoven",
-          "Johann Sebastian Bach",
-          "Frédéric Chopin"
+      "Wolfgang Amadeus Mozart",
+      "Ludwig van Beethoven",
+      "Johann Sebastian Bach",
+      "Frédéric Chopin"
     ],
     "answer": 1,
     "fact": "Ludwig van Beethoven composed his Symphony No. 5 in C minor between 1804 and 1808."
@@ -789,10 +789,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Greece?",
     "options": [
-          "Thessaloniki",
-          "Athens",
-          "Patras",
-          "Heraklion"
+      "Thessaloniki",
+      "Athens",
+      "Patras",
+      "Heraklion"
     ],
     "answer": 1,
     "fact": "Athens is the historic capital and largest city of Greece."
@@ -800,10 +800,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which layer of the atmosphere contains the ozone layer that absorbs UV radiation?",
     "options": [
-          "Troposphere",
-          "Stratosphere",
-          "Mesosphere",
-          "Thermosphere"
+      "Troposphere",
+      "Stratosphere",
+      "Mesosphere",
+      "Thermosphere"
     ],
     "answer": 1,
     "fact": "The stratosphere houses the ozone layer, which filters out harmful ultraviolet radiation from the sun."
@@ -811,10 +811,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical formula for ordinary table salt?",
     "options": [
-          "HCl",
-          "NaOH",
-          "NaCl",
-          "KCl"
+      "HCl",
+      "NaOH",
+      "NaCl",
+      "KCl"
     ],
     "answer": 2,
     "fact": "Sodium chloride (NaCl) is the ionic compound commonly known as table salt."
@@ -822,10 +822,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which country spans across two continents (Europe and Asia)?",
     "options": [
-          "Egypt",
-          "Turkey",
-          "Mexico",
-          "Australia"
+      "Egypt",
+      "Turkey",
+      "Mexico",
+      "Australia"
     ],
     "answer": 1,
     "fact": "Turkey spans across Eastern Europe and Western Asia, with Istanbul bridging the Bosporus strait."
@@ -833,10 +833,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of South Africa (administrative seat)?",
     "options": [
-          "Johannesburg",
-          "Cape Town",
-          "Pretoria",
-          "Durban"
+      "Johannesburg",
+      "Cape Town",
+      "Pretoria",
+      "Durban"
     ],
     "answer": 2,
     "fact": "Pretoria serves as the executive and administrative capital city of South Africa."
@@ -844,10 +844,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which animal is classified as the largest land mammal on Earth?",
     "options": [
-          "White Rhinoceros",
-          "African Bush Elephant",
-          "Hippopotamus",
-          "Giraffe"
+      "White Rhinoceros",
+      "African Bush Elephant",
+      "Hippopotamus",
+      "Giraffe"
     ],
     "answer": 1,
     "fact": "The African bush elephant is the largest living terrestrial animal."
@@ -855,10 +855,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical symbol for mercury?",
     "options": [
-          "Mg",
-          "Mn",
-          "Hg",
-          "Me"
+      "Mg",
+      "Mn",
+      "Hg",
+      "Me"
     ],
     "answer": 2,
     "fact": "Hg is the chemical symbol for mercury, derived from hydrargyrum (liquid silver)."
@@ -866,10 +866,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which ancient structure was built as a tomb for the Mughal emperor Shah Jahan's wife?",
     "options": [
-          "Red Fort",
-          "Qutub Minar",
-          "Taj Mahal",
-          "Fatehpur Sikri"
+      "Red Fort",
+      "Qutub Minar",
+      "Taj Mahal",
+      "Fatehpur Sikri"
     ],
     "answer": 2,
     "fact": "The Taj Mahal in Agra was commissioned by Shah Jahan as a mausoleum for his beloved wife Mumtaz Mahal."
@@ -877,10 +877,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Sweden?",
     "options": [
-          "Oslo",
-          "Copenhagen",
-          "Stockholm",
-          "Helsinki"
+      "Oslo",
+      "Copenhagen",
+      "Stockholm",
+      "Helsinki"
     ],
     "answer": 2,
     "fact": "Stockholm is the capital and most populous urban area of Sweden."
@@ -888,10 +888,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which chemical element is primarily used in pencils instead of lead?",
     "options": [
-          "Sulfur",
-          "Graphite",
-          "Phosphorus",
-          "Silicon"
+      "Sulfur",
+      "Graphite",
+      "Phosphorus",
+      "Silicon"
     ],
     "answer": 1,
     "fact": "Pencils contain non-toxic graphite mixed with clay, not poisonous lead."
@@ -899,10 +899,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Kenya?",
     "options": [
-          "Mombasa",
-          "Nairobi",
-          "Kisumu",
-          "Nakuru"
+      "Mombasa",
+      "Nairobi",
+      "Kisumu",
+      "Nakuru"
     ],
     "answer": 1,
     "fact": "Nairobi is the vibrant capital and largest city of Kenya."
@@ -910,10 +910,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which ocean lies between Africa, Australia, Southern Asia, and Antarctica?",
     "options": [
-          "Atlantic Ocean",
-          "Pacific Ocean",
-          "Indian Ocean",
-          "Arctic Ocean"
+      "Atlantic Ocean",
+      "Pacific Ocean",
+      "Indian Ocean",
+      "Arctic Ocean"
     ],
     "answer": 2,
     "fact": "The Indian Ocean is the third largest of the world's oceanic divisions."
@@ -921,10 +921,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the hardest mineral known on the Mohs hardness scale?",
     "options": [
-          "Corundum",
-          "Topaz",
-          "Diamond",
-          "Quartz"
+      "Corundum",
+      "Topaz",
+      "Diamond",
+      "Quartz"
     ],
     "answer": 2,
     "fact": "Diamond ranks at the absolute top (10) of the Mohs scale of mineral hardness."
@@ -932,10 +932,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which famous scientist formulated the theory of evolution by natural selection?",
     "options": [
-          "Gregor Mendel",
-          "Charles Darwin",
-          "Louis Pasteur",
-          "Alfred Russel Wallace"
+      "Gregor Mendel",
+      "Charles Darwin",
+      "Louis Pasteur",
+      "Alfred Russel Wallace"
     ],
     "answer": 1,
     "fact": "Charles Darwin outlined the principles of natural selection in his landmark 1859 book On the Origin of Species."
@@ -943,10 +943,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Norway?",
     "options": [
-          "Stockholm",
-          "Copenhagen",
-          "Oslo",
-          "Bergen"
+      "Stockholm",
+      "Copenhagen",
+      "Oslo",
+      "Bergen"
     ],
     "answer": 2,
     "fact": "Oslo is the capital and most populous city of Norway."
@@ -954,10 +954,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which gas is released during photosynthesis by green plants?",
     "options": [
-          "Carbon dioxide",
-          "Nitrogen",
-          "Oxygen",
-          "Hydrogen"
+      "Carbon dioxide",
+      "Nitrogen",
+      "Oxygen",
+      "Hydrogen"
     ],
     "answer": 2,
     "fact": "Plants release oxygen as a metabolic byproduct during the light-dependent reactions of photosynthesis."
@@ -965,10 +965,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical symbol for tin?",
     "options": [
-          "Ti",
-          "Tn",
-          "Sn",
-          "St"
+      "Ti",
+      "Tn",
+      "Sn",
+      "St"
     ],
     "answer": 2,
     "fact": "Sn is the chemical symbol for tin, derived from the Latin word stannum."
@@ -976,10 +976,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which desert covers a large portion of northern Africa?",
     "options": [
-          "Kalahari Desert",
-          "Sahara Desert",
-          "Namib Desert",
-          "Gobi Desert"
+      "Kalahari Desert",
+      "Sahara Desert",
+      "Namib Desert",
+      "Gobi Desert"
     ],
     "answer": 1,
     "fact": "The Sahara Desert is the largest hot desert on Earth, spanning across North Africa."
@@ -987,10 +987,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Portugal?",
     "options": [
-          "Porto",
-          "Lisbon",
-          "Coimbra",
-          "Faro"
+      "Porto",
+      "Lisbon",
+      "Coimbra",
+      "Faro"
     ],
     "answer": 1,
     "fact": "Lisbon is the coastal capital and largest city of Portugal."
@@ -998,10 +998,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which subatomic particle carries a negative electrical charge?",
     "options": [
-          "Proton",
-          "Neutron",
-          "Electron",
-          "Positron"
+      "Proton",
+      "Neutron",
+      "Electron",
+      "Positron"
     ],
     "answer": 2,
     "fact": "Electrons are stable subatomic particles with a negative elementary electric charge."
@@ -1009,10 +1009,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Ireland?",
     "options": [
-          "Cork",
-          "Galway",
-          "Dublin",
-          "Limerick"
+      "Cork",
+      "Galway",
+      "Dublin",
+      "Limerick"
     ],
     "answer": 2,
     "fact": "Dublin is the historic capital and largest city of the Republic of Ireland."
@@ -1020,10 +1020,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which instrument is used to measure atmospheric air pressure?",
     "options": [
-          "Thermometer",
-          "Barometer",
-          "Anemometer",
-          "Hydrometer"
+      "Thermometer",
+      "Barometer",
+      "Anemometer",
+      "Hydrometer"
     ],
     "answer": 1,
     "fact": "A barometer measures air pressure, aiding significantly in weather forecasting."
@@ -1031,10 +1031,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical symbol for sodium?",
     "options": [
-          "So",
-          "Sd",
-          "Na",
-          "Nm"
+      "So",
+      "Sd",
+      "Na",
+      "Nm"
     ],
     "answer": 2,
     "fact": "Na stands for sodium, originating from the Latin natrium."
@@ -1042,10 +1042,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which country is renowned for inventing paper currency during the Tang and Song dynasties?",
     "options": [
-          "India",
-          "China",
-          "Egypt",
-          "Mesopotamia"
+      "India",
+      "China",
+      "Egypt",
+      "Mesopotamia"
     ],
     "answer": 1,
     "fact": "Imperial China pioneered the use of paper bank notes during the Tang and Song dynasties."
@@ -1053,10 +1053,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Finland?",
     "options": [
-          "Helsinki",
-          "Turku",
-          "Tampere",
-          "Oulu"
+      "Helsinki",
+      "Turku",
+      "Tampere",
+      "Oulu"
     ],
     "answer": 0,
     "fact": "Helsinki is the northern European capital and largest city of Finland."
@@ -1064,10 +1064,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which planet in our solar system has the most prominent system of rings?",
     "options": [
-          "Jupiter",
-          "Saturn",
-          "Uranus",
-          "Neptune"
+      "Jupiter",
+      "Saturn",
+      "Uranus",
+      "Neptune"
     ],
     "answer": 1,
     "fact": "Saturn is encircled by extensive and bright ice particle rings."
@@ -1075,10 +1075,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical symbol for lead?",
     "options": [
-          "Le",
-          "Pb",
-          "Ld",
-          "Pd"
+      "Le",
+      "Pb",
+      "Ld",
+      "Pd"
     ],
     "answer": 1,
     "fact": "Pb is the chemical symbol for lead, derived from the Latin term plumbum."
@@ -1086,10 +1086,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which architectural wonder was originally built as a Roman temple to all the gods?",
     "options": [
-          "Colosseum",
-          "Pantheon",
-          "Parthenon",
-          "Roman Forum"
+      "Colosseum",
+      "Pantheon",
+      "Parthenon",
+      "Roman Forum"
     ],
     "answer": 1,
     "fact": "The Pantheon in Rome was commissioned by Marcus Agrippa during the reign of Augustus as a temple to all gods."
@@ -1097,10 +1097,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Denmark?",
     "options": [
-          "Aarhus",
-          "Odense",
-          "Copenhagen",
-          "Aalborg"
+      "Aarhus",
+      "Odense",
+      "Copenhagen",
+      "Aalborg"
     ],
     "answer": 2,
     "fact": "Copenhagen is the cultural and political capital city of Denmark."
@@ -1108,10 +1108,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which chemical element has the highest melting point of all pure elements?",
     "options": [
-          "Iron",
-          "Tungsten",
-          "Platinum",
-          "Titanium"
+      "Iron",
+      "Tungsten",
+      "Platinum",
+      "Titanium"
     ],
     "answer": 1,
     "fact": "Tungsten possesses the highest melting point of any metallic element at 3,422 degrees Celsius."
@@ -1119,10 +1119,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Poland?",
     "options": [
-          "Krakow",
-          "Warsaw",
-          "Gdansk",
-          "Wroclaw"
+      "Krakow",
+      "Warsaw",
+      "Gdansk",
+      "Wroclaw"
     ],
     "answer": 1,
     "fact": "Warsaw is the capital and largest metropolis of Poland."
@@ -1130,10 +1130,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which scientist discovered penicillin in 1928, revolutionizing medicine?",
     "options": [
-          "Louis Pasteur",
-          "Alexander Fleming",
-          "Edward Jenner",
-          "Robert Koch"
+      "Louis Pasteur",
+      "Alexander Fleming",
+      "Edward Jenner",
+      "Robert Koch"
     ],
     "answer": 1,
     "fact": "Sir Alexander Fleming discovered the antibiotic substance penicillin from the fungus Penicillium notatum."
@@ -1141,10 +1141,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical symbol for gold?",
     "options": [
-          "Ag",
-          "Au",
-          "Gd",
-          "Go"
+      "Ag",
+      "Au",
+      "Gd",
+      "Go"
     ],
     "answer": 1,
     "fact": "Au represents gold, coming from the Latin word aurum."
@@ -1152,10 +1152,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which mountain range separates Europe from Asia?",
     "options": [
-          "Alps",
-          "Himalayas",
-          "Ural Mountains",
-          "Andes"
+      "Alps",
+      "Himalayas",
+      "Ural Mountains",
+      "Andes"
     ],
     "answer": 2,
     "fact": "The Ural Mountains run roughly north-to-south through western Russia, acting as a natural continental divider."
@@ -1163,10 +1163,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Austria?",
     "options": [
-          "Salzburg",
-          "Graz",
-          "Vienna",
-          "Innsbruck"
+      "Salzburg",
+      "Graz",
+      "Vienna",
+      "Innsbruck"
     ],
     "answer": 2,
     "fact": "Vienna is the historic capital and cultural center of Austria."
@@ -1174,10 +1174,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which organ in the human body is primarily responsible for filtering waste from the blood?",
     "options": [
-          "Liver",
-          "Kidneys",
-          "Pancreas",
-          "Spleen"
+      "Liver",
+      "Kidneys",
+      "Pancreas",
+      "Spleen"
     ],
     "answer": 1,
     "fact": "The kidneys filter blood to remove waste products and excess fluid, forming urine."
@@ -1185,10 +1185,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the chemical symbol for copper?",
     "options": [
-          "Co",
-          "Cu",
-          "Cp",
-          "Cr"
+      "Co",
+      "Cu",
+      "Cp",
+      "Cr"
     ],
     "answer": 1,
     "fact": "Cu is derived from cuprum, the ancient Latin word for copper."
@@ -1196,10 +1196,10 @@ const QUESTIONS: Question[] = [
   {
     "question": "Which ancient civilization constructed the city of Petra carved directly into pink sandstone cliffs?",
     "options": [
-          "Babylonians",
-          "Nabateans",
-          "Phoenicians",
-          "Assyrians"
+      "Babylonians",
+      "Nabateans",
+      "Phoenicians",
+      "Assyrians"
     ],
     "answer": 1,
     "fact": "The Nabateans carved the magnificent rose-red city of Petra out of Jordanian rock cliffs."
@@ -1207,13 +1207,662 @@ const QUESTIONS: Question[] = [
   {
     "question": "What is the capital city of Switzerland?",
     "options": [
-          "Zurich",
-          "Geneva",
-          "Bern",
-          "Basel"
+      "Zurich",
+      "Geneva",
+      "Bern",
+      "Basel"
     ],
     "answer": 2,
     "fact": "Bern is the federal city (de facto capital) of Switzerland."
+  },
+  {
+    "question": "Which musical term indicates a piece should be played very loudly?",
+    "options": [
+      "Piano",
+      "Forte",
+      "Staccato",
+      "Legato"
+    ],
+    "answer": 1,
+    "fact": "Forte is an Italian musical term meaning loud or strong, whereas piano means soft."
+  },
+  {
+    "question": "What is the primary gaseous component of Jupiter's atmosphere?",
+    "options": [
+      "Carbon dioxide",
+      "Nitrogen",
+      "Hydrogen and Helium",
+      "Oxygen"
+    ],
+    "answer": 2,
+    "fact": "Jupiter is a gas giant composed primarily of hydrogen and helium, much like the Sun."
+  },
+  {
+    "question": "Which famous Renaissance scientist was tried by the Inquisition for supporting heliocentrism?",
+    "options": [
+      "Johannes Kepler",
+      "Galileo Galilei",
+      "Nicolaus Copernicus",
+      "René Descartes"
+    ],
+    "answer": 1,
+    "fact": "Galileo Galilei was tried and placed under house arrest for advocating that Earth orbits the Sun."
+  },
+  {
+    "question": "What is the national currency of Switzerland?",
+    "options": [
+      "Euro",
+      "Swiss Franc",
+      "Krone",
+      "Pound sterling"
+    ],
+    "answer": 1,
+    "fact": "The Swiss franc is the official currency and legal tender of Switzerland and Liechtenstein."
+  },
+  {
+    "question": "Which architectural order of ancient Greece features ornate scrolls or volutes on its capitals?",
+    "options": [
+      "Doric",
+      "Ionic",
+      "Corinthian",
+      "Tuscan"
+    ],
+    "answer": 1,
+    "fact": "The Ionic order is easily recognized by its graceful scroll-like ornamental carvings on column capitals."
+  },
+  {
+    "question": "What is the chemical symbol for silicon?",
+    "options": [
+      "Si",
+      "Sl",
+      "Sn",
+      "So"
+    ],
+    "answer": 0,
+    "fact": "Si is the chemical symbol for silicon, a vital semiconductor used extensively in computer chips."
+  },
+  {
+    "question": "Which bird is famous for its ability to mimic human speech and environmental sounds?",
+    "options": [
+      "Penguin",
+      "Parrot",
+      "Ostrich",
+      "Flamingo"
+    ],
+    "answer": 1,
+    "fact": "Parrots possess specialized vocal organs and neural circuitry allowing them to mimic human words."
+  },
+  {
+    "question": "What is the capital city of Colombia?",
+    "options": [
+      "Medellin",
+      "Cali",
+      "Bogota",
+      "Cartagena"
+    ],
+    "answer": 2,
+    "fact": "Bogota is the high-altitude capital and largest urban metropolis of Colombia."
+  },
+  {
+    "question": "Which international prize is awarded annually in Stockholm, Sweden, for cultural and scientific achievements?",
+    "options": [
+      "Pulitzer Prize",
+      "Nobel Prize",
+      "Booker Prize",
+      "Turing Award"
+    ],
+    "answer": 1,
+    "fact": "The Nobel Prizes are awarded annually in accordance with the will of Alfred Nobel."
+  },
+  {
+    "question": "What is the chemical formula for ammonia?",
+    "options": [
+      "NH3",
+      "H2O",
+      "CH4",
+      "NaCl"
+    ],
+    "answer": 0,
+    "fact": "Ammonia is a compound of nitrogen and hydrogen with the formula NH3."
+  },
+  {
+    "question": "Which strait separates Europe from Africa at the mouth of the Mediterranean Sea?",
+    "options": [
+      "Strait of Malacca",
+      "Strait of Gibraltar",
+      "Bering Strait",
+      "English Channel"
+    ],
+    "answer": 1,
+    "fact": "The Strait of Gibraltar connects the Atlantic Ocean to the Mediterranean Sea between Spain and Morocco."
+  },
+  {
+    "question": "What is the largest internal organ in the human body?",
+    "options": [
+      "Heart",
+      "Brain",
+      "Liver",
+      "Lungs"
+    ],
+    "answer": 2,
+    "fact": "The liver is the body's largest internal solid organ, performing hundreds of vital functions."
+  },
+  {
+    "question": "Which dynasty built the majority of the existing Great Wall of China?",
+    "options": [
+      "Han Dynasty",
+      "Ming Dynasty",
+      "Tang Dynasty",
+      "Qin Dynasty"
+    ],
+    "answer": 1,
+    "fact": "The Ming Dynasty constructed most of the famous brick and stone fortifications seen today."
+  },
+  {
+    "question": "What is the capital city of Malaysia?",
+    "options": [
+      "Penang",
+      "Johor Bahru",
+      "Kuala Lumpur",
+      "Malacca"
+    ],
+    "answer": 2,
+    "fact": "Kuala Lumpur is the federal capital and financial epicenter of Malaysia."
+  },
+  {
+    "question": "Which chemical element has the highest electrical conductivity at room temperature?",
+    "options": [
+      "Copper",
+      "Gold",
+      "Silver",
+      "Aluminum"
+    ],
+    "answer": 2,
+    "fact": "Pure silver exhibits the highest electrical and thermal conductivity of all known elements."
+  },
+  {
+    "question": "What is the deepest freshwater lake in the world, located in Siberia?",
+    "options": [
+      "Lake Superior",
+      "Lake Victoria",
+      "Lake Baikal",
+      "Lake Tanganyika"
+    ],
+    "answer": 2,
+    "fact": "Lake Baikal is the world's oldest and deepest freshwater lake, containing roughly 20% of unfrozen surface fresh water."
+  },
+  {
+    "question": "Which artistic movement was pioneered by Salvador Dalí and Pablo Picasso?",
+    "options": [
+      "Impressionism",
+      "Surrealism and Cubism",
+      "Baroque",
+      "Neoclassicism"
+    ],
+    "answer": 1,
+    "fact": "Salvador Dalí was a master of Surrealism, while Pablo Picasso co-founded Cubism."
+  },
+  {
+    "question": "What is the chemical symbol for phosphorus?",
+    "options": [
+      "Ph",
+      "P",
+      "Ps",
+      "Pr"
+    ],
+    "answer": 1,
+    "fact": "P is the single-letter chemical symbol for phosphorus."
+  },
+  {
+    "question": "Which ancient empire was ruled by figures such as Julius Caesar and Augustus?",
+    "options": [
+      "Roman Empire",
+      "Ottoman Empire",
+      "Persian Empire",
+      "Byzantine Empire"
+    ],
+    "answer": 0,
+    "fact": "The Roman Empire spanned centuries across Europe, North Africa, and the Middle East."
+  },
+  {
+    "question": "What is the capital city of the Philippines?",
+    "options": [
+      "Cebu City",
+      "Davao",
+      "Manila",
+      "Quezon City"
+    ],
+    "answer": 2,
+    "fact": "Manila is the densely populated capital city of the Philippines on the island of Luzon."
+  },
+  {
+    "question": "Which gas accounts for the distinctive reddish-orange color of nebulas and planetary atmospheres?",
+    "options": [
+      "Nitrogen",
+      "Hydrogen",
+      "Neon",
+      "Helium"
+    ],
+    "answer": 1,
+    "fact": "Hydrogen gas glowing under stellar radiation emits a signature red spectral line (H-alpha)."
+  },
+  {
+    "question": "What is the capital city of Chile?",
+    "options": [
+      "Valparaiso",
+      "Santiago",
+      "Concepcion",
+      "Antofagasta"
+    ],
+    "answer": 1,
+    "fact": "Santiago is the sprawling capital and cultural center of Chile."
+  },
+  {
+    "question": "Which famous mathematician formulated the theorem relating the sides of a right triangle ($a^2 + b^2 = c^2)?",
+    "options": [
+      "Archimedes",
+      "Pythagoras",
+      "Euclid",
+      "Fibonacci"
+    ],
+    "answer": 1,
+    "fact": "The Pythagorean theorem is a fundamental relation in Euclidean geometry among the three sides of a right triangle."
+  },
+  {
+    "question": "What is the chemical symbol for magnesium?",
+    "options": [
+      "Ma",
+      "Mn",
+      "Mg",
+      "Ms"
+    ],
+    "answer": 2,
+    "fact": "Mg is the chemical symbol for magnesium, an alkaline earth metal."
+  },
+  {
+    "question": "Which continent is completely devoid of any permanent human countries or settlements?",
+    "options": [
+      "Australia",
+      "Antarctica",
+      "Africa",
+      "South America"
+    ],
+    "answer": 1,
+    "fact": "Antarctica is governed internationally by the Antarctic Treaty System and has no sovereign countries."
+  },
+  {
+    "question": "What is the capital city of Vietnam?",
+    "options": [
+      "Ho Chi Minh City",
+      "Da Nang",
+      "Hanoi",
+      "Hue"
+    ],
+    "answer": 2,
+    "fact": "Hanoi is the historic capital city of Vietnam."
+  },
+  {
+    "question": "Which layer of Earth's interior is composed of liquid iron and nickel?",
+    "options": [
+      "Inner core",
+      "Outer core",
+      "Mantle",
+      "Crust"
+    ],
+    "answer": 1,
+    "fact": "The outer core is a fluid layer composed mostly of iron and nickel lying above Earth's solid inner core."
+  },
+  {
+    "question": "What is the chemical symbol for sulfur?",
+    "options": [
+      "Su",
+      "Sf",
+      "S",
+      "Sl"
+    ],
+    "answer": 2,
+    "fact": "S is the chemical symbol for sulfur, a bright yellow non-metal."
+  },
+  {
+    "question": "Which iconic structure was designed by Gustave Eiffel for the 1889 World's Fair?",
+    "options": [
+      "Statue of Liberty",
+      "Eiffel Tower",
+      "Colosseum",
+      "Tower Bridge"
+    ],
+    "answer": 1,
+    "fact": "The Eiffel Tower in Paris was constructed as the entrance arch for the 1889 Exposition Universelle."
+  },
+  {
+    "question": "What is the capital city of Indonesia?",
+    "options": [
+      "Bali",
+      "Surabaya",
+      "Jakarta",
+      "Bandung"
+    ],
+    "answer": 2,
+    "fact": "Jakarta is the sprawling capital and economic center of Indonesia."
+  },
+  {
+    "question": "Which subatomic particle has no electrical charge (is neutral)?",
+    "options": [
+      "Proton",
+      "Electron",
+      "Neutron",
+      "Positron"
+    ],
+    "answer": 2,
+    "fact": "Neutrons are subatomic particles found in atomic nuclei with a net charge of zero."
+  },
+  {
+    "question": "What is the capital city of Pakistan?",
+    "options": [
+      "Karachi",
+      "Lahore",
+      "Islamabad",
+      "Peshawar"
+    ],
+    "answer": 2,
+    "fact": "Islamabad is the federal capital city of Pakistan, built during the 1960s."
+  },
+  {
+    "question": "Which medical pioneer developed the first successful polio vaccine in the 1950s?",
+    "options": [
+      "Louis Pasteur",
+      "Jonas Salk",
+      "Alexander Fleming",
+      "Edward Jenner"
+    ],
+    "answer": 1,
+    "fact": "Dr. Jonas Salk developed the inactivated polio vaccine, dramatically reducing paralytic polio cases worldwide."
+  },
+  {
+    "question": "What is the chemical symbol for aluminium?",
+    "options": [
+      "Al",
+      "Am",
+      "Au",
+      "An"
+    ],
+    "answer": 0,
+    "fact": "Al is the chemical symbol for aluminium, a lightweight silvery-white metal."
+  },
+  {
+    "question": "Which famous canal links the Mediterranean Sea to the Red Sea?",
+    "options": [
+      "Panama Canal",
+      "Suez Canal",
+      "Kiel Canal",
+      "Corinth Canal"
+    ],
+    "answer": 1,
+    "fact": "The Suez Canal in Egypt provides a direct maritime shortcut between Europe and Asia."
+  },
+  {
+    "question": "What is the capital city of Nigeria?",
+    "options": [
+      "Lagos",
+      "Abuja",
+      "Kano",
+      "Ibadan"
+    ],
+    "answer": 1,
+    "fact": "Abuja is the planned capital city of Nigeria, replacing Lagos in 1991."
+  },
+  {
+    "question": "Which celestial event occurs when the Moon passes directly between the Earth and the Sun?",
+    "options": [
+      "Lunar eclipse",
+      "Solar eclipse",
+      "Equinox",
+      "Solstice"
+    ],
+    "answer": 1,
+    "fact": "A solar eclipse occurs when the Moon blocks all or part of the Sun's light from Earth's viewpoint."
+  },
+  {
+    "question": "What is the chemical symbol for calcium?",
+    "options": [
+      "Cl",
+      "Ca",
+      "Cm",
+      "Cc"
+    ],
+    "answer": 1,
+    "fact": "Ca is the chemical symbol for calcium, essential for bone health and cellular signaling."
+  },
+  {
+    "question": "Which famous waterfall sits on the border between the United States and Canada?",
+    "options": [
+      "Victoria Falls",
+      "Angel Falls",
+      "Niagara Falls",
+      "Iguazu Falls"
+    ],
+    "answer": 2,
+    "fact": "Niagara Falls comprises three majestic waterfalls spanning the border of New York and Ontario."
+  },
+  {
+    "question": "What is the capital city of Bangladesh?",
+    "options": [
+      "Chittagong",
+      "Sylhet",
+      "Dhaka",
+      "Rajshahi"
+    ],
+    "answer": 2,
+    "fact": "Dhaka is the densely populated political and cultural capital of Bangladesh."
+  },
+  {
+    "question": "Which scientific law states that energy cannot be created or destroyed, only transformed?",
+    "options": [
+      "Newton's first law",
+      "Conservation of energy (First law of thermodynamics)",
+      "Ohm's law",
+      "Archimedes' principle"
+    ],
+    "answer": 1,
+    "fact": "The law of conservation of energy mandates that total energy in an isolated system remains constant."
+  },
+  {
+    "question": "What is the capital city of Peru?",
+    "options": [
+      "Cuzco",
+      "Arequipa",
+      "Lima",
+      "Trujillo"
+    ],
+    "answer": 2,
+    "fact": "Lima is the historic coastal capital and largest city of Peru."
+  },
+  {
+    "question": "Which animal group includes frogs, toads, and salamanders?",
+    "options": [
+      "Reptiles",
+      "Amphibians",
+      "Mammals",
+      "Fish"
+    ],
+    "answer": 1,
+    "fact": "Amphibians are ectothermic tetrapod vertebrates that typically undergo metamorphosis from aquatic larvae."
+  },
+  {
+    "question": "What is the chemical symbol for neon?",
+    "options": [
+      "No",
+      "Ne",
+      "N",
+      "Ni"
+    ],
+    "answer": 1,
+    "fact": "Ne is the chemical symbol for neon, a noble gas known for glowing reddish-orange in high-voltage signs."
+  },
+  {
+    "question": "Which ancient Mesopotamian epic is considered one of the earliest surviving works of literature?",
+    "options": [
+      "Odyssey",
+      "Epic of Gilgamesh",
+      "Iliad",
+      "Aeneid"
+    ],
+    "answer": 1,
+    "fact": "The Epic of Gilgamesh is an epic poem from ancient Mesopotamia dating back to the Third Dynasty of Ur."
+  },
+  {
+    "question": "What is the capital city of Ukraine?",
+    "options": [
+      "Lviv",
+      "Odessa",
+      "Kyiv",
+      "Kharkiv"
+    ],
+    "answer": 2,
+    "fact": "Kyiv is the historic capital and largest city of Ukraine along the Dnieper River."
+  },
+  {
+    "question": "Which organelle in plant cells is responsible for carrying out photosynthesis?",
+    "options": [
+      "Mitochondria",
+      "Ribosome",
+      "Chloroplast",
+      "Lysosome"
+    ],
+    "answer": 2,
+    "fact": "Chloroplasts capture sunlight energy and convert it into chemical energy storage during photosynthesis."
+  },
+  {
+    "question": "What is the chemical symbol for nitrogen?",
+    "options": [
+      "Ni",
+      "Nt",
+      "N",
+      "Na"
+    ],
+    "answer": 2,
+    "fact": "N is the single-letter chemical symbol for nitrogen."
+  },
+  {
+    "question": "Which mountain range features Mount Blanc as its highest peak in Western Europe?",
+    "options": [
+      "Pyrenees",
+      "Alps",
+      "Carpathians",
+      "Apennines"
+    ],
+    "answer": 1,
+    "fact": "The Alps form the highest and most extensive mountain range system situated entirely in Europe."
+  },
+  {
+    "question": "What is the capital city of Romania?",
+    "options": [
+      "Cluj-Napoca",
+      "Timisoara",
+      "Bucharest",
+      "Iasi"
+    ],
+    "answer": 2,
+    "fact": "Bucharest is the financial, industrial, and cultural capital city of Romania."
+  },
+  {
+    "question": "Which chemical element is liquid at standard room temperature and pressure alongside mercury?",
+    "options": [
+      "Bromine",
+      "Gallium",
+      "Cesium",
+      "Francium"
+    ],
+    "answer": 0,
+    "fact": "Bromine is a heavy reddish-brown liquid halogen at room conditions."
+  },
+  {
+    "question": "What is the capital city of Iran?",
+    "options": [
+      "Shiraz",
+      "Isfahan",
+      "Tehran",
+      "Tabriz"
+    ],
+    "answer": 2,
+    "fact": "Tehran is the bustling capital metropolis of Iran at the foot of the Alborz mountain range."
+  },
+  {
+    "question": "Which famous astronomer proposed the three laws of planetary motion?",
+    "options": [
+      "Nicolaus Copernicus",
+      "Johannes Kepler",
+      "Galileo Galilei",
+      "Ptolemy"
+    ],
+    "answer": 1,
+    "fact": "Johannes Kepler formulated his laws of planetary motion describing the orbits of planets around the Sun."
+  },
+  {
+    "question": "What is the chemical symbol for platinum?",
+    "options": [
+      "Pl",
+      "Pt",
+      "Pm",
+      "Pr"
+    ],
+    "answer": 1,
+    "fact": "Pt is the chemical symbol for platinum, a dense, malleable precious transition metal."
+  },
+  {
+    "question": "Which historic wall was built across northern Britain by the Roman Empire?",
+    "options": [
+      "Antonine Wall",
+      "Hadrian's Wall",
+      "Offa's Dyke",
+      "Aurelian Walls"
+    ],
+    "answer": 1,
+    "fact": "Hadrian's Wall was a defensive fortification built by Roman troops under Emperor Hadrian."
+  },
+  {
+    "question": "What is the capital city of Iraq?",
+    "options": [
+      "Basra",
+      "Mosul",
+      "Baghdad",
+      "Erbil"
+    ],
+    "answer": 2,
+    "fact": "Baghdad is the historic capital city of Iraq located along the Tigris River."
+  },
+  {
+    "question": "Which blood cells are primarily responsible for fighting infections in the human immune system?",
+    "options": [
+      "Red blood cells",
+      "White blood cells (Leukocytes)",
+      "Platelets",
+      "Plasma cells"
+    ],
+    "answer": 1,
+    "fact": "White blood cells protect the body against both infectious disease and foreign invaders."
+  },
+  {
+    "question": "What is the chemical symbol for hydrogen?",
+    "options": [
+      "Hy",
+      "Hd",
+      "H",
+      "Ho"
+    ],
+    "answer": 2,
+    "fact": "H is the chemical symbol for hydrogen."
+  },
+  {
+    "question": "Which ancient Greek philosopher tutored Alexander the Great?",
+    "options": [
+      "Socrates",
+      "Plato",
+      "Aristotle",
+      "Pythagoras"
+    ],
+    "answer": 2,
+    "fact": "Aristotle studied under Plato and later tutored young Alexander the Great."
   }
 ];
 
