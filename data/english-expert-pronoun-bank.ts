@@ -550,4 +550,555 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "a": 2,
     "e": ""
   }
+,
+  {
+    "q": "51. The principal called Amit and __________ to her office.",
+    "o": [
+      "I",
+      "me",
+      "my",
+      "mine"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "52. Identify the pronoun in the following sentence:\nEveryone enjoyed the music at the party.",
+    "o": [
+      "music",
+      "party",
+      "Everyone",
+      "enjoyed"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "53. This house is very old, but __________ roof was recently repaired.",
+    "o": [
+      "it",
+      "its",
+      "it's",
+      "their"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "54. Identify the possessive pronoun from the options:",
+    "o": [
+      "Her",
+      "Hers",
+      "She",
+      "Herself"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "55. Please tell __________ the truth about what happened yesterday.",
+    "o": [
+      "we",
+      "us",
+      "our",
+      "ours"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "56. Identify the reflexive pronoun in the sentence:\nShe blamed herself for losing the match.",
+    "o": [
+      "matched",
+      "losing",
+      "herself",
+      "blamed"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "57. __________ of the two brothers won the running race?",
+    "o": [
+      "Who",
+      "Which",
+      "What",
+      "Whose"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "58. Identify the pronoun in the sentence:\nIs this bicycle yours or his?",
+    "o": [
+      "bicycle",
+      "old",
+      "yours",
+      "bicycle"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "59. The teacher told the students to complete the assignment by __________.",
+    "o": [
+      "them",
+      "themselves",
+      "their",
+      "theirs"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "60. Identify the relative pronoun in the sentence:\nThe girl who won the prize is my cousin.",
+    "o": [
+      "girl",
+      "cousin",
+      "who",
+      "prize"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "61. __________ have completed our project ahead of schedule.",
+    "o": [
+      "Us",
+      "We",
+      "Our",
+      "Ours"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "62. Identify the indefinite pronoun in the options:",
+    "o": [
+      "These",
+      "Someone",
+      "Himself",
+      "Which"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "63. He is taller than __________.",
+    "o": [
+      "I",
+      "me",
+      "my",
+      "mine"
+    ],
+    "a": 0,
+    "e": "Formal grammar: \"than I am\""
+  },
+  {
+    "q": "64. Identify the pronoun in the sentence:\nNothing is impossible if you try hard.",
+    "o": [
+      "impossible",
+      "hard",
+      "Nothing",
+      "try"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "65. She bought a new dress for __________.",
+    "o": [
+      "herself",
+      "her",
+      "she",
+      "hers"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "66. Identify the demonstrative pronoun in the sentence:\nThis is the best movie I have ever watched.",
+    "o": [
+      "movie",
+      "best",
+      "watched",
+      "This"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "67. __________ are the keys you were looking for.",
+    "o": [
+      "This",
+      "That",
+      "These",
+      "It"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "68. Identify the interrogative pronoun in the options:",
+    "o": [
+      "Something",
+      "Whose",
+      "Myself",
+      "Those"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "69. The dog wagged __________ tail happily when its owner arrived.",
+    "o": [
+      "it",
+      "its",
+      "it's",
+      "their"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "70. Identify the pronoun in the sentence:\nDoes anyone know the answer to this riddle?",
+    "o": [
+      "riddle",
+      "answer",
+      "anyone",
+      "know"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "71. Mother gave __________ a new watch for my birthday.",
+    "o": [
+      "I",
+      "me",
+      "my",
+      "mine"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "72. Identify the plural pronoun from the options:",
+    "o": [
+      "He",
+      "She",
+      "They",
+      "It"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "73. The heavy bag was carried by __________ alone.",
+    "o": [
+      "he",
+      "him",
+      "his",
+      "himself"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "74. Identify the pronoun in the sentence:\nFew survived the terrible storm at sea.",
+    "o": [
+      "storm",
+      "terrible",
+      "Few",
+      "sea"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "75. Neither of the answers __________ correct.",
+    "o": [
+      "is",
+      "are",
+      "were",
+      "have"
+    ],
+    "a": 0,
+    "e": "Focusing on the pronoun subject 'Neither'"
+  },
+  {
+    "q": "76. Identify the relative pronoun in the sentence:\nThe car that I bought last week is very fast.",
+    "o": [
+      "car",
+      "fast",
+      "that",
+      "week"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "77. Rahul and __________ went to the market to buy fruits.",
+    "o": [
+      "me",
+      "I",
+      "my",
+      "mine"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "78. Identify the pronoun in the sentence:\nSomebody left the tap running in the bathroom.",
+    "o": [
+      "bathroom",
+      "running",
+      "Somebody",
+      "tap"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "79. Please hand this letter to _________ when you see him.",
+    "o": [
+      "he",
+      "him",
+      "his",
+      "himself"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "80. Identify the personal pronoun in the sentence:\nIt is raining heavily outside.",
+    "o": [
+      "heavily",
+      "outside",
+      "raining",
+      "It"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "81. __________ book is this lying on the table?",
+    "o": [
+      "Who",
+      "Whom",
+      "Whose",
+      "Which"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "82. Identify the pronoun in the sentence:\nWe must protect ourselves from the cold wind.",
+    "o": [
+      "wind",
+      "cold",
+      "ourselves",
+      "protect"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "83. She gave __________ a wonderful gift on my birthday.",
+    "o": [
+      "I",
+      "me",
+      "my",
+      "mine"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "84. Identify the demonstrative pronoun in the options:",
+    "o": [
+      "Who",
+      "Those",
+      "Everyone",
+      "Myself"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "85. Each of the girls received __________ own prize.",
+    "o": [
+      "her",
+      "their",
+      "our",
+      "your"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "86. Identify the pronoun in the sentence:\nWhatever you decide is fine with me.",
+    "o": [
+      "fine",
+      "decide",
+      "Whatever",
+      "me"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "87. The manager congratulated __________ on completing the project on time.",
+    "o": [
+      "we",
+      "us",
+      "our",
+      "ours"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "88. Identify the indefinite pronoun in the sentence:\nAll were invited to the grand celebration.",
+    "o": [
+      "grand",
+      "celebration",
+      "All",
+      "invited"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "89. He solved the difficult puzzle all by __________.",
+    "o": [
+      "himself",
+      "him",
+      "his",
+      "he"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "90. Identify the singular pronoun from the options:",
+    "o": [
+      "We",
+      "They",
+      "He",
+      "You"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "91. __________ is a great place to spend the summer holidays.",
+    "o": [
+      "This",
+      "These",
+      "They",
+      "We"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "92. Identify the pronoun in the sentence:\nNone of the students failed the exam.",
+    "o": [
+      "exam",
+      "students",
+      "failed",
+      "None"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "93. Father asked my brother and __________ to wash the car.",
+    "o": [
+      "I",
+      "me",
+      "my",
+      "mine"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "94. Identify the relative pronoun in the sentence:\nThe man whom you met yesterday is our principal.",
+    "o": [
+      "man",
+      "principal",
+      "whom",
+      "yesterday"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "95. __________ painted this beautiful picture on the wall?",
+    "o": [
+      "Who",
+      "Whom",
+      "Whose",
+      "Which"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "96. Identify the pronoun in the sentence:\nSomething is moving behind the bushes.",
+    "o": [
+      "bushes",
+      "moving",
+      "Something",
+      "behind"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "97. The cat hurt __________ leg while jumping over the fence.",
+    "o": [
+      "it",
+      "its",
+      "it's",
+      "their"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "98. Identify the pronoun in the sentence:\nBoth of the brothers are talented musicians.",
+    "o": [
+      "musicians",
+      "brothers",
+      "Both",
+      "talented"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "99. She looked at __________ in the mirror before leaving the house.",
+    "o": [
+      "her",
+      "herself",
+      "she",
+      "hers"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "100. Identify the pronoun in the following sentence:\nEverything is ready for the grand opening tomorrow.",
+    "o": [
+      "grand",
+      "opening",
+      "Everything",
+      "tomorrow"
+    ],
+    "a": 2,
+    "e": ""
+  }
 ];
