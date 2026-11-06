@@ -186,8 +186,8 @@ export default function WorldExplorer({ userId, initialGameId, onExit }: { userI
       <p className="relative mt-5 text-xs font-bold uppercase tracking-[.2em] text-white/80">Quiz World · World Challenge {games.findIndex(g => g.id === active.id) + 1}</p><h2 className="relative mt-1 text-2xl font-black sm:text-3xl">{active.title}</h2><p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
     </div>
     {accessError && <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
-    {noQuota && <GameQuotaNotice title="Your three free trials are complete!" description="Subscribe to continue exploring and unlock every world." />}
-    {noDaily && <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's quota for this game is complete. Please return after the daily reset.</div>}
+    {noQuota && <GameQuotaNotice isPrivileged={isAdmin || isSubscribed} />}
+    {noDaily && <GameQuotaNotice isPrivileged />}
     {exhausted && <div className="rounded-xl border border-violet-200 bg-violet-50 p-5 text-center text-sm font-bold text-violet-900">You have completed every currently available starter question in this game. The full picture and question bank will be added in the next content stage.</div>}
     {!noQuota && !noDaily && !exhausted && question && <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-emerald-50 p-4 shadow-lg sm:p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2"><span className="rounded-full bg-slate-900 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-white">Discovery {String(index + 1).padStart(2, "0")}</span><span className="text-xs font-bold text-slate-500">{quotaReady ? formatFreeQuotaLabel(Number(quota ?? 0), isAdmin || isSubscribed, "quiz") : "Checking quota…"}</span></div>
@@ -197,5 +197,5 @@ export default function WorldExplorer({ userId, initialGameId, onExit }: { userI
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3"><span className="text-xs font-semibold text-slate-500">{!reserved ? "Preparing your discovery…" : choice === null ? "Observe, identify or skip this question." : "Answer recorded · Next discovery in 5 seconds"}</span><button disabled={!reserved || choice !== null || !quotaReady || noQuota || noDaily} onClick={() => record(true, null)} className="rounded-xl border border-amber-300 bg-gradient-to-r from-amber-400 to-orange-500 px-5 py-2.5 text-sm font-black text-slate-950 shadow-md transition hover:scale-[1.03] disabled:opacity-50">⏭ Skip question</button></div>
       {message && <div aria-live="polite" className="mt-4 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">{message}</div>}
     </div>}
-  <GameQuotaPopup open={(noQuota || (quotaReady && quota===0)) && !isAdmin} isSubscribed={isSubscribed} resetKey={active?.id??''} /></div>;
+  <GameQuotaPopup open={quotaReady && quota===0} isPrivileged={isAdmin || isSubscribed} resetKey={active?.id??''} /></div>;
 }
