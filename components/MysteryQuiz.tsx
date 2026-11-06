@@ -145,7 +145,7 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
     try{
       const response=await fetch("/api/game-access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"mystery-quiz",gameTypeId:"mystery-quiz",challengeId:"mystery-q-"+question.id,challengeQuestion:question.question,reservationSessionId:session})});
       const data=await response.json();
-      if(!response.ok){setMessage(data.error||"Your quota is exhausted.");setQuestion(null);await loadQuota();return;}
+      if(!response.ok){setMessage(data.freeTrialsExhausted?"Your free quota for this section has been exhausted. Please subscribe to enjoy further.":"Your quota for this section today has been exhausted. Please visit tomorrow to play again.");setQuestion(null);await loadQuota();return;}
       setQuota(current=>({...current,remaining:Number(current.isAdmin||current.isSubscribed?data.remaining??0:data.sectionRemaining??0)}));
       setAnswered(true);
       const correct=index===question.answer;
