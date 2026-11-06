@@ -548,5 +548,555 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     ],
     "a": 2,
     "e": ""
+  },
+  {
+    "q": "51. Choose the correct adjective to fill in the blank:\nThis is the __________ book I have ever read on this subject.",
+    "o": [
+      "interesting",
+      "more interesting",
+      "most interesting",
+      "interestingly"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "52. Identify the adjective in the following sentence:\nThe blind man crossed the busy street safely.",
+    "o": [
+      "street",
+      "safely",
+      "busy",
+      "crossed"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "53. Choose the correct adjective to fill in the blank:\nHe has __________ money left in his wallet to buy a ticket.",
+    "o": [
+      "few",
+      "little",
+      "many",
+      "several"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "54. Identify the quantitative adjective in the sentence:\nShe bought six fresh apples from the local market.",
+    "o": [
+      "fresh",
+      "local",
+      "six",
+      "market"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "55. Choose the correct adjective to fill in the blank:\nThe soup tastes much __________ than the one we had yesterday.",
+    "o": [
+      "good",
+      "better",
+      "best",
+      "well"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "56. Identify the adjective in the sentence:\nAn honest person is respected by everyone in society.",
+    "o": [
+      "respected",
+      "society",
+      "honest",
+      "everyone"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "57. Choose the correct adjective to fill in the blank:\nThere are __________ days left before our summer vacation begins.",
+    "o": [
+      "much",
+      "little",
+      "a few",
+      "less"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "58. Identify the adjective in the sentence:\nThe dark clouds gathered quickly across the western sky.",
+    "o": [
+      "dark",
+      "quickly",
+      "gathered",
+      "sky"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "59. Choose the correct adjective to fill in the blank:\nOf all the students in the class, Rohan is the __________.",
+    "o": [
+      "intelligent",
+      "more intelligent",
+      "most intelligent",
+      "intelligently"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "60. Identify the possessive adjective in the sentence:\nOur school library has a large collection of books.",
+    "o": [
+      "school",
+      "Our",
+      "collection",
+      "books"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "61. Choose the correct adjective to fill in the blank:\nPlease pour me __________ water in this glass.",
+    "o": [
+      "some",
+      "many",
+      "few",
+      "several"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "62. Identify the adjective in the sentence:\nThe young boy climbed up the tall coconut tree.",
+    "o": [
+      "climbed",
+      "coconut",
+      "young",
+      "tree"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "63. Choose the correct adjective to fill in the blank:\nThis suitcase is __________ than the one I packed yesterday.",
+    "o": [
+      "light",
+      "lighter",
+      "lightest",
+      "lightly"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "64. Identify the demonstrative adjective in the sentence:\nThose mangoes hanging on the tree look very sweet.",
+    "o": [
+      "mangoes",
+      "tree",
+      "Those",
+      "sweet"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "65. Choose the correct adjective to fill in the blank:\nHe does not make __________ mistakes when writing essays.",
+    "o": [
+      "much",
+      "many",
+      "little",
+      "a little"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "66. Identify the adjective in the sentence:\nA gentle breeze blew across the calm lake.",
+    "o": [
+      "gentle",
+      "breeze",
+      "calm",
+      "Both A and C"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "67. Choose the correct adjective to fill in the blank:\nShe wore a __________ necklace made of genuine pearls.",
+    "o": [
+      "shining",
+      "shiny",
+      "shinily",
+      "shine"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "68. Identify the interrogative adjective in the sentence:\nWhose pen is lying on the teacher's desk?",
+    "o": [
+      "pen",
+      "desk",
+      "Whose",
+      "teacher's"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "69. Choose the correct adjective to fill in the blank:\nIt was the __________ experience of my entire life.",
+    "o": [
+      "bad",
+      "worse",
+      "worst",
+      "badly"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "70. Identify the adjective in the sentence:\nThe loyal dog guarded the house all night.",
+    "o": [
+      "loyal",
+      "dog",
+      "house",
+      "night"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "71. Choose the correct adjective to fill in the blank:\nCan you lend me __________ money until tomorrow?",
+    "o": [
+      "many",
+      "some",
+      "few",
+      "several"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "72. Identify the adjective in the sentence:\nThe tired children fell asleep quickly on the sofa.",
+    "o": [
+      "quick",
+      "tired",
+      "sofa",
+      "asleep"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "73. Choose the correct adjective to fill in the blank:\nThis is a __________ problem that requires careful attention.",
+    "o": [
+      "complex",
+      "complexly",
+      "complexity",
+      "complexer"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "74. Identify the adjective in the sentence:\nThe bright sun shone brightly in the clear sky.",
+    "o": [
+      "shone",
+      "brightly",
+      "clear",
+      "sun"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "75. Choose the correct adjective to fill in the blank:\nHe is __________ than his elder brother.",
+    "o": [
+      "tall",
+      "taller",
+      "tallest",
+      "tallish"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "76. Identify the adjective in the sentence:\nThe stray cat mewed softly at our back door.",
+    "o": [
+      "stray",
+      "softly",
+      "back",
+      "Both A and C"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "77. Choose the correct adjective to fill in the blank:\nThere is __________ hope of finding the lost keys now.",
+    "o": [
+      "many",
+      "few",
+      "little",
+      "fewer"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "78. Identify the adjective in the sentence:\nThe wooden chair broke under the heavy weight.",
+    "o": [
+      "wooden",
+      "heavy",
+      "weight",
+      "Both A and B"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "79. Choose the correct adjective to fill in the blank:\nShe is the __________ girl in our neighborhood.",
+    "o": [
+      "kind",
+      "kinder",
+      "kindest",
+      "kindly"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "80. Identify the adjective in the sentence:\nA strong wind knocked down several weak trees.",
+    "o": [
+      "strong",
+      "weak",
+      "trees",
+      "Both A and B"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "81. Choose the correct adjective to fill in the blank:\nPlease speak in a __________ voice inside the library.",
+    "o": [
+      "low",
+      "lower",
+      "lowest",
+      "lowly"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "82. Identify the adjective in the sentence:\nThe clever student solved the difficult math puzzle easily.",
+    "o": [
+      "clever",
+      "difficult",
+      "math",
+      "All of these"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "83. Choose the correct adjective to fill in the blank:\nHe has __________ friends in this new city.",
+    "o": [
+      "much",
+      "little",
+      "few",
+      "less"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "84. Identify the adjective in the sentence:\nThe blue bird sat on the garden wall.",
+    "o": [
+      "blue",
+      "bird",
+      "garden",
+      "wall"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "85. Choose the correct adjective to fill in the blank:\nThis road is __________ than the highway route.",
+    "o": [
+      "narrow",
+      "narrower",
+      "narrowest",
+      "narrowly"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "86. Identify the adjective in the sentence:\nThe delicious food was prepared by my mother.",
+    "o": [
+      "food",
+      "delicious",
+      "prepared",
+      "mother"
+    ],
+    "a": 1,
+    "e": ""
+  },
+  {
+    "q": "87. Choose the correct adjective to fill in the blank:\nWe had a __________ time visiting the historical museum.",
+    "o": [
+      "wonderful",
+      "wonderfully",
+      "wonder",
+      "wondering"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "88. Identify the adjective in the sentence:\nThe angry dog barked fiercely at the mailman.",
+    "o": [
+      "angry",
+      "fiercely",
+      "mailman",
+      "barked"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "89. Choose the correct adjective to fill in the blank:\nShe bought a __________ dress for the wedding ceremony.",
+    "o": [
+      "costly",
+      "cost",
+      "costing",
+      "costlier"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "90. Identify the adjective in the sentence:\nThe deep well contains cool and clean water.",
+    "o": [
+      "deep",
+      "cool",
+      "clean",
+      "All of these"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "91. Choose the correct adjective to fill in the blank:\nHe is the __________ player in our school cricket team.",
+    "o": [
+      "good",
+      "better",
+      "best",
+      "well"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "92. Identify the adjective in the sentence:\nThe heavy rain ruined our weekend plans.",
+    "o": [
+      "heavy",
+      "rain",
+      "weekend",
+      "Both A and C"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "93. Choose the correct adjective to fill in the blank:\nPlease give me __________ time to finish this project.",
+    "o": [
+      "a little",
+      "a few",
+      "many",
+      "few"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "94. Identify the adjective in the sentence:\nThe brave firefighter saved the cat from the burning building.",
+    "o": [
+      "brave",
+      "burning",
+      "building",
+      "Both A and B"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "95. Choose the correct adjective to fill in the blank:\nThis box is too __________ for me to lift.",
+    "o": [
+      "heavy",
+      "heavier",
+      "heaviest",
+      "heavily"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "96. Identify the adjective in the sentence:\nThe sweet aroma of fresh coffee filled the morning air.",
+    "o": [
+      "sweet",
+      "fresh",
+      "morning",
+      "All of these"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "97. Choose the correct adjective to fill in the blank:\nHe is a __________ person who always helps the needy.",
+    "o": [
+      "generous",
+      "generously",
+      "generosity",
+      "generosities"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
+    "q": "98. Identify the adjective in the sentence:\nThe quiet night was interrupted by a loud noise.",
+    "o": [
+      "quiet",
+      "loud",
+      "noise",
+      "Both A and B"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "99. Choose the correct adjective to fill in the blank:\nShe is wearing a __________ ring on her finger.",
+    "o": [
+      "gold",
+      "golden",
+      "goldish",
+      "Both A and B"
+    ],
+    "a": 3,
+    "e": ""
+  },
+  {
+    "q": "100. Identify the adjective in the following sentence:\nThe fast train reached the central station on time.",
+    "o": [
+      "fast",
+      "central",
+      "station",
+      "Both A and B"
+    ],
+    "a": 3,
+    "e": ""
   }
 ];
