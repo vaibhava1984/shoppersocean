@@ -140,7 +140,7 @@ export default function RiddleCornerQuiz({ userId, isPrivileged, remaining, quot
       const data = await response.json();
       if (!response.ok) {
         onRemainingChange(Number(data.sectionRemaining ?? data.remaining ?? 0));
-        setErrorMessage(data.error || "Your quota could not be verified.");
+        setErrorMessage(isPrivileged ? "Your quota for this section today has been exhausted. Please visit tomorrow to play again." : "Your free quota for this section has been exhausted. Please subscribe to enjoy further.");
         setSubmitting(false);
         return;
       }
