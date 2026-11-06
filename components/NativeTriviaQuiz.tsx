@@ -568,6 +568,7 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
   const [chosen, setChosen] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [reservationSessionId] = useState(() => "trivio-session-" + Date.now() + "-" + Math.random().toString(36).slice(2));
   const question = questionIndex === null ? null : QUESTIONS[questionIndex];
@@ -582,10 +583,9 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
 
   const reserveNextQuestion = async (excludeIndex: number | null = null) => {
     if (!userId) return;
-    setLoading(true);
+    // Keep the current question visible while the next unseen question is reserved.
+    if (questionIndex === null) setLoading(true);
     setErrorMessage("");
-    setQuestionIndex(null);
-    setChosen(null);
     try {
       const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
       const quotaData = await quotaResponse.json();
@@ -649,8 +649,8 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
   }, [userId]);
 
   const choose = async (option: number) => {
-    if (!question || chosen !== null || loading) return;
-    setLoading(true);
+    if (!question || chosen !== null || submitting) return;
+    setSubmitting(true);
     const challengeId = "trivio-q-" + questionIndex;
     try {
       const response = await fetch("/api/game-access", {
@@ -669,8 +669,7 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
       if (!response.ok) {
         onRemainingChange(Number(data.remaining ?? 0));
         setErrorMessage(data.error || "Your quota could not be verified.");
-        setQuestionIndex(null);
-        setLoading(false);
+        setSubmitting(false);
         return;
       }
       onRemainingChange(Number(data.remaining ?? Math.max(0, remaining - 1)));
@@ -687,7 +686,7 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
     } catch {
       setErrorMessage("Your answer could not be recorded. Please try again.");
     }
-    setLoading(false);
+    setSubmitting(false);
   };
 
   if (!userId) return null;
@@ -702,7 +701,7 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
           </div>
           <p className="mt-2 text-sm text-white/85">Choose the best answer</p>
         </header>
-        {loading ? (
+        {loading && !question ? (
           <div className="px-5 py-12 text-center font-bold text-violet-800">Loading your next question…</div>
         ) : question ? (
           <div className="p-5 sm:p-7">
@@ -716,7 +715,7 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
                 const isCorrect = optionIndex === question.answer;
                 const isChosen = chosen === optionIndex;
                 const style = chosen === null ? "border-violet-200 bg-white hover:border-violet-500 hover:bg-violet-50" : isCorrect ? "border-emerald-500 bg-emerald-50 text-emerald-900" : isChosen ? "border-rose-500 bg-rose-50 text-rose-900" : "border-slate-200 bg-slate-50 text-slate-500";
-                return <button key={option} type="button" disabled={chosen !== null || loading} onClick={() => void choose(optionIndex)} className={"flex min-h-14 items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left font-bold transition " + style}><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-sm font-black text-violet-800">{String.fromCharCode(65 + optionIndex)}</span><span>{option}</span>{chosen !== null && isCorrect && <span className="ml-auto text-xl">✓</span>}{chosen !== null && isChosen && !isCorrect && <span className="ml-auto text-xl">✕</span>}</button>;
+                return <button key={option} type="button" disabled={chosen !== null || submitting} onClick={() => void choose(optionIndex)} className={"flex min-h-14 items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left font-bold transition " + style}><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-sm font-black text-violet-800">{String.fromCharCode(65 + optionIndex)}</span><span>{option}</span>{chosen !== null && isCorrect && <span className="ml-auto text-xl">✓</span>}{chosen !== null && isChosen && !isCorrect && <span className="ml-auto text-xl">✕</span>}</button>;
               })}
             </div>
             {chosen !== null && <div className={"mt-5 rounded-2xl p-4 " + (chosen === question.answer ? "bg-emerald-50 text-emerald-900" : "bg-rose-50 text-rose-900")}>
