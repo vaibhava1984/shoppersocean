@@ -194,8 +194,8 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
         <p className="relative mt-1 text-sm text-white/90">{active.subtitle}</p>
       </div>
       {accessError && <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-800">{accessError}</div>}
-      {noQuota && <GameQuotaNotice title="Your three free trials in Puzzle Universe are complete!" description="Subscribe to continue solving puzzles and unlock every challenge." />}
-      {noDaily && <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm font-bold text-sky-900">Today's quota for this room is complete. Please return after the daily reset.</div>}
+      {noQuota && <GameQuotaNotice isPrivileged={isAdmin || isSubscribed} />}
+      {noDaily && <GameQuotaNotice isPrivileged />}
       {exhausted && <div className="rounded-xl border border-violet-200 bg-violet-50 p-5 text-center text-sm font-bold text-violet-900">You have completed every currently available starter puzzle in this room. More puzzles will be added during the question-bank stage.</div>}
       {!noQuota && !noDaily && !exhausted && question && (
         <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-fuchsia-50 p-4 shadow-lg sm:p-6">
@@ -218,6 +218,6 @@ export default function PuzzleUniverse({ userId, initialGameId, onExit }: { user
           {message && <div aria-live="polite" className="mt-4 rounded-2xl border border-violet-200 bg-gradient-to-r from-violet-50 to-amber-50 p-4 text-sm font-semibold leading-6 text-slate-800">{message}</div>}
         </div>
       )}
-    <GameQuotaPopup open={(noQuota || (quotaReady && quota===0)) && !isAdmin} isSubscribed={isSubscribed} resetKey={active?.id??''} /></div>
+    <GameQuotaPopup open={quotaReady && quota===0} isPrivileged={isAdmin || isSubscribed} resetKey={active?.id??''} /></div>
   );
 }
