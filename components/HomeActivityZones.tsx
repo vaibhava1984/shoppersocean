@@ -420,7 +420,7 @@ useEffect(() => {
                     </div>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       {[
-                        {id:"word",icon:"🔤",title:"Word Playground",note:"Word challenges",tone:"from-cyan-600 to-blue-700"},
+                        {id:"word",icon:"🔤",title:"General Knowledge Quiz",note:"Word challenges",tone:"from-cyan-600 to-blue-700"},
                         {id:"brain",icon:"🧠",title:"Brain and Logic Lab",note:"Logic and reasoning",tone:"from-fuchsia-600 to-purple-800"},
                         {id:"riddle",icon:"💡",title:"Riddle Corner",note:"Riddles and brain teasers",tone:"from-amber-500 to-orange-700"},
                         {id:"internet",icon:"🌐",title:"Secrets of the Internet",note:"Explore the connected world",tone:"from-blue-600 to-cyan-700"},
@@ -454,7 +454,7 @@ useEffect(() => {
                         <div className="mb-3 text-4xl" aria-hidden="true">📘</div>
                         <h3 className="text-2xl font-black text-indigo-950">
                           {{
-                            word: "Word Playground",
+                            word: "General Knowledge Quiz",
                             brain: "Brain and Logic Lab",
                             riddle: "Riddle Corner",
                             internet: "Secrets of the Internet",
