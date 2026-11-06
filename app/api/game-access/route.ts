@@ -4,7 +4,7 @@ export const dynamic = "force-dynamic";
 const SECTIONS=["quiz-world","word-playground","brain-logic","quiz-arena","world-knowledge-quiz","riddle-corner","daily-challenge","memory-observation","classic-games","digital-discovery-hub","mystery-mansion","puzzle-universe","world-explorer","creative-studio","mind-lab","world-records-arena","mystery-quiz"];
 const TYPES:Record<string,string[]>={"quiz-world":["trivio"],"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"world-knowledge-quiz":["worldquiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot","jigsaw"],"classic-games":["tic","solitaire","chess","connect","ludo","snakes"],"digital-discovery-hub":["internet","artificial-intelligence","cyber-detective","technology-history","quiz"],"mystery-mansion":["crime-scene","locked-room","secret-code","master-deception","riddle"],"puzzle-universe":["pattern-master","missing-piece","word-puzzle","sequence"],"world-explorer":["geography-quest","world-culture","landmark-adventure","worldquiz"],"creative-studio":["design-detective","pixel-artist","storyboard-challenge","odd"],"mind-lab":["mind-memory","mind-pattern","mind-focus","mind-logic","mind-speed","mind-spatial","worldquiz"],"world-records-arena":["world-records","quiz"],"mystery-quiz":["mystery-quiz"]};
 const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10, DAILY_QUESTION_LIMIT=1;
-const NO_MORE_TODAY="Your today's quota on this section is exhausted. Please visit tomorrow.";
+const NO_MORE_TODAY="Your quota for this section today has been exhausted. Please visit tomorrow to play again.";
 const headers={"Cache-Control":"no-store"};
 const sectionFreeLimit=(_section:string)=>FREE_LIMIT;
 const typeLimit=(_type:string)=>DAILY_LIMIT;
@@ -111,7 +111,7 @@ async function handle(req:Request,consume:boolean){
    if(!admin&&!subscribed){
     const freeRow=await db.prepare("SELECT trials_used FROM game_free_trials_by_section WHERE user_id=? AND section_id=? LIMIT 1").bind(user.id,section).first<any>();
     if(Number(freeRow?.trials_used??0)>=sectionFreeLimit(section)){
-     return NextResponse.json({error:"Your free attempt in this section has been used. Subscribe to continue.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false,isAdmin:false},{status:403,headers});
+     return NextResponse.json({error:"Your free quota for this section has been exhausted. Please subscribe to enjoy further.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false,isAdmin:false},{status:403,headers});
     }
    }
    // Check the section's daily quota before duplicate-history checks so exhausted sections stop immediately.
@@ -135,11 +135,11 @@ async function handle(req:Request,consume:boolean){
     }
    }
    let freeTrialsUsed:number|null=null;
-   if(!admin&&!subscribed&&section!=="daily-challenge"){
+   if(!admin&&!subscribed){
     const trial=await db.prepare("INSERT INTO game_free_trials_by_section(user_id,section_id,trials_used,updated_at) VALUES(?,?,1,?) ON CONFLICT(user_id,section_id) DO UPDATE SET trials_used=trials_used+1,updated_at=excluded.updated_at WHERE game_free_trials_by_section.trials_used < ? RETURNING trials_used").bind(user.id,section,new Date().toISOString(),sectionFreeLimit(section)).first<any>();
     if(!trial){
      await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
-     return NextResponse.json({error:"Your three free trials in this section have been used. Subscribe to continue.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false},{status:403,headers});
+     return NextResponse.json({error:"Your free quota for this section has been exhausted. Please subscribe to enjoy further.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false},{status:403,headers});
     }
     freeTrialsUsed=Number(trial.trials_used??0);
    }
@@ -155,7 +155,7 @@ async function handle(req:Request,consume:boolean){
    const dailyRemaining=previewMode?limit:Math.max(0,limit-Number(changed.plays_used??0));
    const dailySectionRemaining=sectionDailyRemaining(section,usedTypes);
    const sectionRemaining=admin||subscribed||section==="daily-challenge"?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,sectionFreeLimit(section)-(freeTrialsUsed??0)));
-   const remaining=admin||subscribed||section==="daily-challenge"?dailyRemaining:Math.min(dailyRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
+   const remaining=admin||subscribed?dailyRemaining:Math.min(dailyRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    return NextResponse.json({sectionId:section,gameTypeId:type,remaining,sectionRemaining,isAdmin:admin,isSubscribed:subscribed,freeTrialsRemaining:freeTrialsUsed===null?undefined:Math.max(0,sectionFreeLimit(section)-freeTrialsUsed)},{headers});
   }
   const free=await db.prepare("SELECT section_id,trials_used FROM game_free_trials_by_section WHERE user_id=?").bind(user.id).all<any>();
