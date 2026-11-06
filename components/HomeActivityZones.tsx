@@ -509,10 +509,6 @@ useEffect(() => {
             )}
             {selected.action === "learning" && (
               <div ref={activityTargetRef}>
-                <div className="mb-4 rounded-2xl bg-gradient-to-r from-emerald-700 via-teal-700 to-cyan-800 p-4 text-white">
-                  <h3 className="text-xl font-black">English Master Quiz</h3>
-                  <p className="mt-1 text-sm text-emerald-100">Your existing English quiz is retained here without changing its question bank or quota system.</p>
-                </div>
                 <EntertainmentHub userId={userId} visibleGroupIds={["english-expert"]} embedded />
               </div>
             )}
