@@ -146,6 +146,16 @@ export default function RiddleCornerQuiz({ userId, isPrivileged, remaining, quot
       }
       const nextRemaining = Number(data.isAdmin || data.isSubscribed ? data.remaining ?? 0 : data.sectionRemaining ?? 0);
       onRemainingChange(nextRemaining);
+      if (nextRemaining <= 0) {
+        const correct = option === question.answer;
+        if (correct) setScore(value => value + 1);
+        playTone(correct);
+        setQuestionIndex(null);
+        setChosen(null);
+        setErrorMessage(isPrivileged ? "Your quota for this section today has been exhausted. Please visit tomorrow to play again." : "Your free quota for this section has been exhausted. Please subscribe to enjoy further.");
+        setSubmitting(false);
+        return;
+      }
       setChosen(option);
       if (option === question.answer) {
         setScore(value => value + 1);
