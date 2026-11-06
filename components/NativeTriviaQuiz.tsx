@@ -569,15 +569,8 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [signInVisible, setSignInVisible] = useState(true);
   const [reservationSessionId] = useState(() => "trivio-session-" + Date.now() + "-" + Math.random().toString(36).slice(2));
   const question = questionIndex === null ? null : QUESTIONS[questionIndex];
-
-  useEffect(() => {
-    if (userId) return;
-    const timer = window.setTimeout(() => setSignInVisible(false), 5000);
-    return () => window.clearTimeout(timer);
-  }, [userId]);
 
   const playTone = (correct: boolean) => {
     try {
@@ -683,27 +676,21 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
       onRemainingChange(Number(data.remaining ?? Math.max(0, remaining - 1)));
       setChosen(option);
       const correct = option === question.answer;
-      if (correct) setScore(value => value + 1);
-      playTone(correct);
+      if (correct) {
+        setScore(value => value + 1);
+        playTone(true);
+        // Keep the correct-answer feedback visible briefly, then move forward automatically.
+        window.setTimeout(() => void reserveNextQuestion(questionIndex), 5000);
+      } else {
+        playTone(false);
+      }
     } catch {
       setErrorMessage("Your answer could not be recorded. Please try again.");
     }
     setLoading(false);
   };
 
-  if (!userId) return signInVisible ? (
-    <div className="fixed inset-0 z-[10060] flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm" role="alertdialog" aria-modal="true">
-      <div className="w-full max-w-md overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-2xl">
-        <div className="h-2 bg-gradient-to-r from-cyan-300 via-pink-500 to-violet-600" />
-        <div className="bg-gradient-to-br from-indigo-700 via-violet-600 to-fuchsia-600 px-6 py-7 text-center text-white">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 text-3xl shadow-lg">🔐</div>
-          <h3 className="mt-4 text-xl font-black">Please sign in to play</h3>
-          <p className="mt-2 text-sm text-white/85">Sign in to access questions and games on Shoppers Ocean.</p>
-          <a href="/login" className="mt-5 inline-flex rounded-full bg-white px-6 py-3 text-sm font-black text-indigo-700 shadow-lg">Sign in →</a>
-        </div>
-      </div>
-    </div>
-  ) : null;
+  if (!userId) return null;
 
   return (
     <div className="mx-auto w-full max-w-3xl">
@@ -735,7 +722,7 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
             {chosen !== null && <div className={"mt-5 rounded-2xl p-4 " + (chosen === question.answer ? "bg-emerald-50 text-emerald-900" : "bg-rose-50 text-rose-900")}>
               <p className="font-black">{chosen === question.answer ? "Correct! 🎉" : `No !! The correct answer is (${String.fromCharCode(65 + question.answer)})`}</p>
               {chosen === question.answer && <p className="mt-1 text-sm leading-6">{question.fact}</p>}
-              <button type="button" onClick={() => void reserveNextQuestion(questionIndex)} className="mt-4 rounded-xl bg-violet-700 px-5 py-2.5 text-sm font-extrabold text-white shadow hover:bg-violet-800">Next question →</button>
+              {chosen !== question.answer && <button type="button" onClick={() => void reserveNextQuestion(questionIndex)} className="mt-4 rounded-xl bg-violet-700 px-5 py-2.5 text-sm font-extrabold text-white shadow hover:bg-violet-800">Next question →</button>}
             </div>}
           </div>
         ) : (
