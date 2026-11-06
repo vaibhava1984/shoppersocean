@@ -51,7 +51,7 @@ export default async function LandingPage() {
         />
       </div>
 
-      <HomeActivityZones userId={user?.id ?? null} />
+      <HomeActivityZones key={user?.id ?? "guest"} userId={user?.id ?? null} />
 
       <div><AuthorApplicationBanner /></div>
       <section className="py-20 bg-white">
