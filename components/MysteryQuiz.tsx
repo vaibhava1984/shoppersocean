@@ -119,7 +119,8 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
     if(!userId||busy)return;
     setBusy(true);setFeedback(null);setAnswered(false);setMessage("");
     try{
-      await loadQuota();
+      const currentQuota=await loadQuota();
+      if(currentQuota.remaining<=0){setQuestion(null);setMessage(currentQuota.isAdmin||currentQuota.isSubscribed?"Your quota for this section today has been exhausted. Please visit tomorrow to play again.":"Your free quota for this section has been exhausted. Please subscribe to enjoy further.");return;}
       const candidates=QUESTIONS.filter(q=>!used.includes(q.id));
       const pool=candidates.length?candidates:QUESTIONS;
       let selected:Question|null=null;
