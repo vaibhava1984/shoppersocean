@@ -167,5 +167,5 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
       {answered&&!feedback?.startsWith("Correct!")&&<button type="button" onClick={()=>void reserveNext()} disabled={busy} className="mt-4 min-h-12 w-full rounded-full bg-gradient-to-r from-violet-700 to-indigo-700 px-5 py-3 text-sm font-black text-white shadow-lg disabled:opacity-60">Next question →</button>}
     </div>:<div className="mt-5 rounded-2xl border border-violet-200 bg-white p-6 text-center"><p className="font-bold text-slate-700">{busy?"Preparing your next case…":message||"Loading Mystery Quiz…"}</p></div>}
     <div className="mt-5 flex justify-center"><button type="button" onClick={onExit} className="rounded-full border border-violet-300 bg-white px-5 py-2.5 text-sm font-black text-violet-800 shadow-sm">← Back to Quiz World</button></div>
-  </div>;
+  </div><GameQuotaPopup open={!quota.loading && quota.remaining<=0} isPrivileged={quota.isAdmin||quota.isSubscribed} resetKey="mystery-quiz" /></>;
 }
