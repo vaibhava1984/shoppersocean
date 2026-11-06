@@ -1,6 +1,6 @@
 export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string }[] = [
   {
-    q: "1. Choose the correct verb to fill in the blank:",
+    q: "1. Choose the correct verb to fill in the blank:\nEvery morning, the children __________ in the neighborhood park.",
     o: ["play", "plays", "playing", "played"],
     a: 0,
     e: ""
@@ -12,7 +12,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "3. Choose the correct verb to fill in the blank:",
+    q: "3. Choose the correct verb to fill in the blank:\nHe __________ his car to office every single day.",
     o: ["drive", "drives", "driving", "driven"],
     a: 1,
     e: ""
@@ -24,7 +24,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "5. Choose the correct verb to fill in the blank:",
+    q: "5. Choose the correct verb to fill in the blank:\nYesterday, we __________ a very interesting movie at the theater.",
     o: ["watch", "watches", "watched", "watching"],
     a: 2,
     e: ""
@@ -36,7 +36,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "7. Choose the correct verb to fill in the blank:",
+    q: "7. Choose the correct verb to fill in the blank:\nWater __________ at 100 degrees Celsius under normal pressure.",
     o: ["boil", "boils", "boiling", "boiled"],
     a: 1,
     e: ""
@@ -48,7 +48,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "9. Choose the correct verb to fill in the blank:",
+    q: "9. Choose the correct verb to fill in the blank:\nShe __________ a song for the annual school function last week.",
     o: ["sing", "sings", "sang", "sung"],
     a: 2,
     e: ""
@@ -60,7 +60,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "11. Choose the correct verb to fill in the blank:",
+    q: "11. Choose the correct verb to fill in the blank:\nIf you run fast, you __________ catch the morning train.",
     o: ["will", "would", "could", "shall"],
     a: 0,
     e: ""
@@ -72,7 +72,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "13. Choose the correct verb to fill in the blank:",
+    q: "13. Choose the correct verb to fill in the blank:\nHe has already __________ his lunch before noon.",
     o: ["eat", "ate", "eaten", "eating"],
     a: 2,
     e: ""
@@ -84,7 +84,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "15. Choose the correct verb to fill in the blank:",
+    q: "15. Choose the correct verb to fill in the blank:\nPlease __________ the door when you enter the room.",
     o: ["close", "closes", "closed", "closing"],
     a: 0,
     e: ""
@@ -96,7 +96,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "17. Choose the correct verb to fill in the blank:",
+    q: "17. Choose the correct verb to fill in the blank:\nShe __________ how to play the piano very well.",
     o: ["know", "knows", "knowing", "known"],
     a: 1,
     e: ""
@@ -108,7 +108,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "19. Choose the correct verb to fill in the blank:",
+    q: "19. Choose the correct verb to fill in the blank:\nThey __________ cricket in the playground right now.",
     o: ["play", "plays", "are playing", "played"],
     a: 2,
     e: ""
@@ -120,7 +120,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "21. Choose the correct verb to fill in the blank:",
+    q: "21. Choose the correct verb to fill in the blank:\nHe __________ his keys somewhere in the office yesterday.",
     o: ["lose", "loses", "lost", "losing"],
     a: 2,
     e: ""
@@ -132,7 +132,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "23. Choose the correct verb to fill in the blank:",
+    q: "23. Choose the correct verb to fill in the blank:\nShe __________ to the market to buy fresh vegetables.",
     o: ["go", "goes", "going", "gone"],
     a: 1,
     e: ""
@@ -144,7 +144,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "25. Choose the correct verb to fill in the blank:",
+    q: "25. Choose the correct verb to fill in the blank:\nBy next month, we __________ our new house.",
     o: ["finish", "finished", "will finish", "finishing"],
     a: 2,
     e: ""
@@ -156,7 +156,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "27. Choose the correct verb to fill in the blank:",
+    q: "27. Choose the correct verb to fill in the blank:\nCan you __________ me lift this heavy wooden table?",
     o: ["help", "helps", "helped", "helping"],
     a: 0,
     e: ""
@@ -168,7 +168,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "29. Choose the correct verb to fill in the blank:",
+    q: "29. Choose the correct verb to fill in the blank:\nShe __________ her homework before her friends arrived.",
     o: ["finish", "finishes", "had finished", "finishing"],
     a: 2,
     e: ""
@@ -180,7 +180,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "31. Choose the correct verb to fill in the blank:",
+    q: "31. Choose the correct verb to fill in the blank:\nHe __________ a new bicycle for his birthday last week.",
     o: ["buy", "buys", "bought", "buying"],
     a: 2,
     e: ""
@@ -204,7 +204,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "35. Choose the correct verb to fill in the blank:",
+    q: "35. Choose the correct verb to fill in the blank:\nPlease __________ your hand if you know the correct answer.",
     o: ["raise", "raises", "raised", "raising"],
     a: 0,
     e: ""
@@ -216,7 +216,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "37. Choose the correct verb to fill in the blank:",
+    q: "37. Choose the correct verb to fill in the blank:\nWe __________ English grammar rules in class every day.",
     o: ["learn", "learns", "learning", "learned"],
     a: 0,
     e: ""
@@ -228,7 +228,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "39. Choose the correct verb to fill in the blank:",
+    q: "39. Choose the correct verb to fill in the blank:\nShe __________ her umbrella at home and got wet in the rain.",
     o: ["leave", "leaves", "left", "leaving"],
     a: 2,
     e: ""
@@ -240,7 +240,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "41. Choose the correct verb to fill in the blank:",
+    q: "41. Choose the correct verb to fill in the blank:\nHe __________ to music while studying for his exams.",
     o: ["listen", "listens", "listening", "listened"],
     a: 1,
     e: ""
@@ -252,7 +252,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "43. Choose the correct verb to fill in the blank:",
+    q: "43. Choose the correct verb to fill in the blank:\nThey __________ a football match on television right now.",
     o: ["watch", "watched", "are watching", "watches"],
     a: 2,
     e: ""
@@ -264,7 +264,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "45. Choose the correct verb to fill in the blank:",
+    q: "45. Choose the correct verb to fill in the blank:\nShe __________ a beautiful picture in her art notebook.",
     o: ["draw", "draws", "drawing", "drawn"],
     a: 1,
     e: ""
@@ -276,7 +276,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: ""
   },
   {
-    q: "47. Choose the correct verb to fill in the blank:",
+    q: "47. Choose the correct verb to fill in the blank:\nI __________ my teeth twice every day to keep them clean.",
     o: ["brush", "brushes", "brushed", "brushing"],
     a: 0,
     e: ""
@@ -288,7 +288,7 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
     e: "A (listening / listened) -> A (listened)"
   },
   {
-    q: "49. Choose the correct verb to fill in the blank:",
+    q: "49. Choose the correct verb to fill in the blank:\nHe __________ his office uniform before going to work.",
     o: ["wear", "wears", "wearing", "wore"],
     a: 1,
     e: ""
