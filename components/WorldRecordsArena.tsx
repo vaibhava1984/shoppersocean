@@ -4,6 +4,7 @@ import { worldRecordsQuestionBank } from "@/components/worldRecordsQuestionBank"
 
 import { useEffect, useRef, useState } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
+import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 
 type RecordQuestion = { id: string; category: string; question: string; options: string[]; answer: number; fact: string };
 
@@ -148,7 +149,7 @@ export default function WorldRecordsArena({ userId, onExit }: { userId: string |
       <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
         <button type="button" onClick={()=>onExit?.()} className="rounded-full border border-white/50 bg-white/20 px-5 py-2.5 text-sm font-black text-white shadow-lg">← Back to Quiz World</button>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{quotaReady ? String(quota ?? 0) + " / " + (isAdmin || isSubscribed ? 10 : 3) + (isAdmin || isSubscribed ? " plays left today" : " free trials left") : "Checking quota…"}</span>
+          <span className="rounded-full border border-white/30 bg-black/15 px-3 py-2 text-xs font-black">{quotaReady ? formatFreeQuotaLabel(Number(quota ?? 0), isAdmin || isSubscribed, "quiz") : "Checking quota…"}</span>
           <button type="button" onClick={()=>setSoundOn(v=>!v)} className="rounded-full border border-white/40 bg-white/15 px-3 py-2 text-xs font-bold">{soundOn ? "🔊 Sound on" : "🔇 Sound off"}</button>
         </div>
       </div>
