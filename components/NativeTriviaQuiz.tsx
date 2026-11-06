@@ -3343,7 +3343,18 @@ export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quot
         setSubmitting(false);
         return;
       }
-      onRemainingChange(Number(data.remaining ?? Math.max(0, remaining - 1)));
+      const nextRemaining = Number(data.remaining ?? Math.max(0, remaining - 1));
+      onRemainingChange(nextRemaining);
+      if (nextRemaining <= 0) {
+        const correct = option === question.answer;
+        if (correct) setScore(value => value + 1);
+        playTone(correct);
+        setQuestionIndex(null);
+        setChosen(null);
+        setErrorMessage(isPrivileged ? "Your quota for this section today has been exhausted. Please visit tomorrow to play again." : "Your free quota for this section has been exhausted. Please subscribe to enjoy further.");
+        setSubmitting(false);
+        return;
+      }
       setChosen(option);
       const correct = option === question.answer;
       if (correct) {
