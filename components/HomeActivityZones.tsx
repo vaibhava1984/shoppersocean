@@ -332,7 +332,7 @@ useEffect(() => {
     return () => { live = false; };
   }, [activeZone, userId]);
   useEffect(() => {
-    if (activeQuizGame !== "trivio" || !userId) return;
+    if (activeQuizGame !== "word" || !userId) return;
     let live = true;
     setTrivioQuotaLoading(true);
     fetch("/api/game-access", { cache: "no-store" })
@@ -474,7 +474,7 @@ useEffect(() => {
                         </h3>
                       </div>
                     )}
-                    {activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} remaining={trivioRemaining} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
+                    {activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} remaining={trivioRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
                   </div>
                 )}
               </div>
