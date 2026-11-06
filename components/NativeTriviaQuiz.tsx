@@ -670,7 +670,6 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
   const [questionIndex, setQuestionIndex] = useState<number | null>(null);
   const [chosen, setChosen] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [answered, setAnswered] = useState(0);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [signInVisible, setSignInVisible] = useState(true);
@@ -786,7 +785,6 @@ export default function NativeTriviaQuiz({ userId, remaining, quotaLimit, onRema
       }
       onRemainingChange(Number(data.remaining ?? Math.max(0, remaining - 1)));
       setChosen(option);
-      setAnswered(value => value + 1);
       const correct = option === question.answer;
       if (correct) setScore(value => value + 1);
       playTone(correct);
