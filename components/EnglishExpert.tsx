@@ -7,6 +7,7 @@ import {ADVERB_QUESTION_BANK} from "@/data/english-expert-adverb-bank";
 import {ARTICLE_QUESTION_BANK} from "@/data/english-expert-article-bank";
 import {INTERJECTION_QUESTION_BANK} from "@/data/english-expert-interjection-bank";
 import {HELPING_VERB_QUESTION_BANK} from "@/data/english-expert-helping-verbs-bank";
+import {MODAL_VERBS_QUESTION_BANK} from "@/data/english-expert-modal-verbs-bank";
 import {CONJUNCTION_QUESTION_BANK} from "@/data/english-expert-conjunctions-bank";
 import {CONDITIONALS_QUESTION_BANK} from "@/data/english-expert-conditionals-bank";
 import {CAUSATIVE_VERBS_QUESTION_BANK} from "@/data/english-expert-causative-verbs-bank";
@@ -31,7 +32,7 @@ const TOPICS:Topic[]=[
 {id:"articles",name:"Articles",definition:"Articles are the words a, an, and the. Placed before nouns, they signal whether we are speaking generally or referring to someone or something particular.",bank:ARTICLE_QUESTION_BANK},
 {id:"interjection",name:"Interjection",definition:"An interjection is a word or brief expression that gives immediate voice to a feeling or reaction—such as surprise, delight, pain, or sorrow.",bank:INTERJECTION_QUESTION_BANK},{id:"helping-verbs",name:"Helping Verbs",definition:"Helping verbs accompany a main verb to form tenses, questions, negatives, and expressions of possibility, permission, necessity, or ability.",bank:HELPING_VERB_QUESTION_BANK},
 {id:"subject-verb-agreement",name:"Subject-Verb Agreement",definition:"Subject–verb agreement is the rule of grammatical harmony: a verb must match its subject in number and person so that the sentence reads clearly and correctly.",bank:SUBJECT_VERB_AGREEMENT_QUESTION_BANK},
-{id:"modal-verbs",name:"Modal Verbs",definition:"Modal verbs are helping verbs that express the speaker’s attitude towards an action, including ability, permission, possibility, advice, obligation, and certainty.",bank:[]},
+{id:"modal-verbs",name:"Modal Verbs",definition:"Modal verbs are helping verbs that express the speaker’s attitude towards an action, including ability, permission, possibility, advice, obligation, and certainty.",bank:MODAL_VERBS_QUESTION_BANK},
 {id:"past-tense",name:"Past Tense",definition:"The past tense places an action, event, or state in a time already gone, allowing us to describe what happened or existed before now.",bank:PAST_TENSE_QUESTION_BANK},
 {id:"present-tense",name:"Present Tense",definition:"The present tense expresses what is happening now, what happens as a habit, and what remains true as a fact or general truth.",bank:PRESENT_TENSE_QUESTION_BANK},
 {id:"future-tense",name:"Future Tense",definition:"The future tense looks towards what is yet to come, expressing actions, events, intentions, or possibilities expected after the present.",bank:FUTURE_TENSE_QUESTION_BANK},
