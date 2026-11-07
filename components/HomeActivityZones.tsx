@@ -198,6 +198,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
+  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "solitaire" | "chess" | null>(null);
   const [signInPopup, setSignInPopup] = useState(false);
   useEffect(() => {
     if (!signInPopup) return;
@@ -323,6 +324,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
   const openClassicGame = async (game: "tic-tac-toe" | "solitaire" | "chess") => {
+    setClassicQuotaNoticeFor(null);
     if (!userId) { setSignInPopup(true); return; }
     if (game === "solitaire") { enterSolitairePortrait(); }
     const gameType = game === "solitaire" ? "solitaire" : game === "chess" ? "chess" : "tic";
@@ -338,7 +340,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       if (remaining <= 0) {
         if (gameType === "solitaire") leaveSolitaireLandscape();
         setClassicGameOpening(false);
-        setClassicQuotaPopup(true);
+        setClassicQuotaNoticeFor(gameType);
         return;
       }
       startNextClassicAttempt(gameType);
@@ -500,7 +502,7 @@ useEffect(() => {
                     onNewGame={async (wasFinished) => { if (!wasFinished && !classicGameInteractedRef.current) return true; const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (allowed) startNextClassicAttempt("tic"); return allowed; }}
                   />
                 )}
-                {!classicQuota.loading && Number(classicQuota.remainingByType.tic ?? 0) <= 0 && <div className="w-full max-w-2xl"><GameQuotaNotice isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} /></div>}
+                {classicQuotaNoticeFor !== null && <div className="w-full max-w-2xl"><GameQuotaNotice isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} /></div>}
               </div>
             )}
             {selected.action === "learning" && (
