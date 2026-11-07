@@ -298,8 +298,7 @@ export const ARTICLE_QUESTION_BANK: { q: string; o: string[]; a: number; e: stri
     o: ["a","an","the","no article"],
     a: 2,
     e: "Superlative adjectives (like 'best') require the definite article 'the'.",
-  }
-],
+  },
   {
     q: "Choose the correct article for the blank: 'She has been appointed as ___ Chairperson of the board.'",
     o: ["a","an","the","no article"],
