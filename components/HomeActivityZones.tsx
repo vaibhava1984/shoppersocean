@@ -184,6 +184,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const [englishTopicOpen, setEnglishTopicOpen] = useState(false);
   const [englishAcademyEntered, setEnglishAcademyEntered] = useState(false);
+  const englishAcademyEnteredRef = useRef(false);
+  const englishTopicOpenRef = useRef(false);
   const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
   const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
@@ -275,7 +277,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         setActiveQuizGame(null);
         return;
       }
-      if (englishAcademyEntered && !englishTopicOpen) {
+      if (englishAcademyEnteredRef.current && !englishTopicOpenRef.current) {
+        englishAcademyEnteredRef.current = false;
         setEnglishAcademyEntered(false);
         return;
       }
@@ -283,7 +286,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         activeZoneRef.current = null;
         setActiveZone(null);
         setEnglishTopicOpen(false);
+        englishTopicOpenRef.current = false;
         setEnglishAcademyEntered(false);
+        englishAcademyEnteredRef.current = false;
       }
     };
     window.addEventListener("popstate", handleMobileBack);
@@ -294,7 +299,9 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     activeZoneRef.current = index;
     setActiveZone(index);
     setEnglishTopicOpen(false);
+    englishTopicOpenRef.current = false;
     setEnglishAcademyEntered(false);
+    englishAcademyEnteredRef.current = false;
     classicGameStartedRef.current = false;
     setClassicGameStarted(false);
     activeQuizGameRef.current = null;
@@ -493,13 +500,13 @@ useEffect(() => {
               <div ref={activityTargetRef} className="w-full" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button"); if (button?.textContent?.trim() === "← Back" && event.currentTarget.querySelector('h4[style*="scroll-margin-top"]')) { event.preventDefault(); event.stopPropagation(); window.history.back(); } }}>
                 {!englishAcademyEntered ? (
                   <div className="mx-auto w-full max-w-md">
-                    <button type="button" onClick={() => { window.history.pushState({ shoppersOceanLearning: true }, "", window.location.href); setEnglishAcademyEntered(true); }} className="group w-full rounded-2xl border border-sky-300 bg-gradient-to-br from-sky-100 via-white to-violet-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200">
+                    <button type="button" onClick={() => { window.history.pushState({ shoppersOceanLearning: true }, "", window.location.href); englishAcademyEnteredRef.current = true; setEnglishAcademyEntered(true); }} className="group w-full rounded-2xl border border-sky-300 bg-gradient-to-br from-sky-100 via-white to-violet-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200">
                       <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📘</span><span className="rounded-full bg-white/80 px-3 py-1 text-xs font-bold text-slate-600">Open →</span></span>
                       <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-blue-700">English Master Quiz</span>
                     </button>
                   </div>
                 ) : (
-                  <EntertainmentHub userId={userId} visibleGroupIds={["english-expert"]} initialGroupId="english-expert" autoStart embedded onTopicQuotaChange={(topic) => setEnglishTopicOpen(Boolean(topic))} />
+                  <EntertainmentHub userId={userId} visibleGroupIds={["english-expert"]} initialGroupId="english-expert" autoStart embedded onTopicQuotaChange={(topic) => { englishTopicOpenRef.current = Boolean(topic); setEnglishTopicOpen(Boolean(topic)); }} />
                 )}
               </div>
             )}
