@@ -1,4 +1,4 @@
-export const INTERJECTION_QUESTION_BANK: { q: string; o: string[]; a: number; e: string }[] = 
+export const INTERJECTION_QUESTION_BANK: { q: string; o: string[]; a: number; e: string }[] = [
   {
     q: "Which interjection is most commonly used to express sudden pain or sharp physical discomfort?",
     o: ["Ouch","Wow","Hooray","Alas"],
