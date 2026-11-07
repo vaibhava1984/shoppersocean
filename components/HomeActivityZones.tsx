@@ -477,16 +477,16 @@ useEffect(() => {
               </div>
             )}
             {selected.action === "classic-games" && (
-              <div ref={activityTargetRef} className="flex w-full items-center justify-center">
+              <div ref={activityTargetRef} className="flex w-full min-w-0 flex-col items-center justify-center gap-4">
                 {classicGameStarted === null || classicGameStarted === false ? (
-                  <div className="w-full max-w-2xl">
+                  <div className="w-full min-w-0 max-w-2xl">
                     <div className="grid w-full max-w-2xl gap-3">
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <button
                       type="button"
                       onClick={() => void openClassicGame("tic-tac-toe")}
                       disabled={classicGameOpening}
-                      className="w-full rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-6 py-6 text-lg font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60"
+                      className="flex min-h-14 w-full min-w-0 items-center justify-center whitespace-nowrap rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-4 py-4 text-base font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg"
                     >
                       ❌⭕ &nbsp; Play Tic Tac Toe
                     </button>
