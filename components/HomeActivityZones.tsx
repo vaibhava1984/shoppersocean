@@ -277,6 +277,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         setActiveQuizGame(null);
         return;
       }
+      if (englishAcademyEnteredRef.current && englishTopicOpenRef.current) {
+        // Let EnglishExpert handle question-page Back; otherwise return from the definition to the topic list.
+        if (document.querySelector('[data-entertainment-hub] h4[style*="scroll-margin-top"]')) return;
+        englishTopicOpenRef.current = false;
+        setEnglishTopicOpen(false);
+        return;
+      }
       if (englishAcademyEnteredRef.current && !englishTopicOpenRef.current) {
         englishAcademyEnteredRef.current = false;
         setEnglishAcademyEntered(false);
