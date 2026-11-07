@@ -3377,13 +3377,7 @@ export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quot
     <>
     <div className="mx-auto w-full max-w-3xl">
       <section className="mx-auto w-full overflow-hidden rounded-3xl border border-violet-200 bg-white text-slate-900 shadow-2xl">
-        <header className="bg-gradient-to-r from-violet-700 via-fuchsia-700 to-indigo-800 px-5 py-5 text-white sm:px-7">
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-xs font-black uppercase tracking-[0.2em] text-white/80">Quiz World · General Knowledge Quiz</span>
-            <span className="rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-extrabold">{formatFreeQuotaLabel(remaining, isPrivileged, "quiz")}</span>
-          </div>
-          <p className="mt-2 text-sm text-white/85">Choose the best answer</p>
-        </header>
+        <div className="flex justify-end px-5 pt-4 sm:px-7"><span className="rounded-full border border-emerald-200 bg-gradient-to-r from-emerald-50 to-cyan-50 px-4 py-2 text-xs font-black text-emerald-900">{formatFreeQuotaLabel(remaining, isPrivileged, "quiz")}</span></div>
         {loading && !question ? (
           <div className="px-5 py-12 text-center font-bold text-violet-800">Loading your next question…</div>
         ) : question ? (
@@ -3397,7 +3391,7 @@ export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quot
               {question.options.map((option, optionIndex) => {
                 const isCorrect = optionIndex === question.answer;
                 const isChosen = chosen === optionIndex;
-                const style = chosen === null ? "border-violet-200 bg-white hover:border-violet-500 hover:bg-violet-50" : isCorrect ? "border-emerald-500 bg-emerald-50 text-emerald-900" : isChosen ? "border-rose-500 bg-rose-50 text-rose-900" : "border-slate-200 bg-slate-50 text-slate-500";
+                const style = chosen === null ? ["border-sky-400 bg-gradient-to-br from-sky-100 to-cyan-200 text-sky-950 hover:border-sky-600","border-violet-400 bg-gradient-to-br from-violet-100 to-fuchsia-200 text-violet-950 hover:border-violet-600","border-amber-400 bg-gradient-to-br from-amber-100 to-yellow-200 text-amber-950 hover:border-amber-600","border-emerald-400 bg-gradient-to-br from-emerald-100 to-lime-200 text-emerald-950 hover:border-emerald-600"][optionIndex%4] : isCorrect ? "border-emerald-600 bg-gradient-to-br from-emerald-100 to-green-200 text-emerald-950" : isChosen ? "border-rose-600 bg-gradient-to-br from-rose-100 to-pink-200 text-rose-950" : "border-slate-200 bg-slate-50 text-slate-500";
                 return <button key={option} type="button" disabled={chosen !== null || submitting} onClick={() => void choose(optionIndex)} className={"flex min-h-14 items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left font-bold transition " + style}><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-violet-100 text-sm font-black text-violet-800">{String.fromCharCode(65 + optionIndex)}</span><span>{option}</span>{chosen !== null && isCorrect && <span className="ml-auto text-xl">✓</span>}{chosen !== null && isChosen && !isCorrect && <span className="ml-auto text-xl">✕</span>}</button>;
               })}
             </div>

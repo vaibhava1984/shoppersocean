@@ -98,7 +98,7 @@ const QUESTIONS: Question[] = [
 {id:90,question:"A wealthy gemstone merchant was found murdered in his secure showroom. A rare ruby pendant was missing. His business partner claimed he was asleep in his apartment upstairs. The detective examined the showroom's ceiling fire sprinkler head above the display case and arrested the partner. What did the sprinkler head reveal?",options:["A small piece of clear nylon fishing line was tied around the thermal glass bulb of the sprinkler, used to trigger a localized artificial heat source that masked the time of a chemical fire.","The sprinkler system was rusted.","The showroom had a water leak.","The merchant loved indoor plants."],answer:0,explanation:"Rigging fire suppression systems with mechanical triggers or heat sources is a calculated tactic used by criminals to create chaos or obscure forensic evidence."}
 ];
 
-export default function MysteryQuiz({ userId, onExit }: { userId: string | null; onExit: () => void }) {
+export default function MysteryQuiz({ userId }: { userId: string | null; onExit: () => void }) {
   const [quota,setQuota]=useState({remaining:0,limit:3,loading:true,isAdmin:false,isSubscribed:false});
   const [question,setQuestion]=useState<Question|null>(null);
   const [feedback,setFeedback]=useState<string|null>(null);
@@ -164,17 +164,13 @@ export default function MysteryQuiz({ userId, onExit }: { userId: string | null;
     finally{setBusy(false);}
   };
   return <><div className="mx-auto w-full max-w-3xl rounded-3xl border border-violet-200 bg-gradient-to-br from-white via-violet-50 to-indigo-100 p-4 shadow-xl sm:p-6">
-    <div className="rounded-2xl bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-800 p-4 text-center text-white shadow-lg">
-      <div className="text-3xl">🔎</div><h3 className="mt-1 text-2xl font-black">Mystery Quiz</h3>
-      <p className="mt-1 text-xs font-bold text-violet-100">{quota.loading?"Checking quota…":quota.isAdmin||quota.isSubscribed?formatFreeQuotaLabel(quota.remaining, true, "quiz"):formatFreeQuotaLabel(quota.remaining, false, "quiz")}</p>
-    </div>
+    <div className="flex justify-end"><span className="rounded-full border border-emerald-200 bg-gradient-to-r from-emerald-50 to-cyan-50 px-4 py-2 text-xs font-black text-emerald-950">{quota.loading?"Checking quota…":quota.isAdmin||quota.isSubscribed?formatFreeQuotaLabel(quota.remaining, true, "quiz"):formatFreeQuotaLabel(quota.remaining, false, "quiz")}</span></div>
     {question?<div className="mt-5">
       <div className="mb-3 flex items-center justify-between text-xs font-black text-violet-900"><span>CASE FILE #{String(question.id).padStart(2,"0")}</span><span>{used.length} / {QUESTIONS.length}</span></div>
-      <div className="rounded-2xl border border-violet-200 bg-white p-4 text-sm font-semibold leading-7 text-slate-800 shadow-sm sm:p-5">{question.question}</div>
-      <div className="mt-4 grid gap-3">{question.options.map((option,index)=><button key={index} type="button" disabled={answered||busy} onClick={()=>void answer(index)} className="flex min-h-14 items-start gap-3 rounded-xl border-2 border-violet-200 bg-white p-3 text-left text-sm font-bold text-slate-800 shadow-sm transition hover:border-indigo-500 hover:bg-indigo-50 disabled:cursor-default disabled:opacity-80"><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-indigo-700 text-xs font-black text-white">{String.fromCharCode(65+index)}</span><span className="pt-0.5">{option}</span></button>)}</div>
+      <div className="rounded-2xl border border-violet-300 bg-white p-4 text-sm font-extrabold leading-7 text-slate-950 shadow-sm sm:p-5">{question.question}</div>
+      <div className="mt-4 grid gap-3">{question.options.map((option,index)=>{const palette=["border-sky-400 bg-gradient-to-br from-sky-100 to-cyan-200 text-sky-950 hover:border-sky-600","border-violet-400 bg-gradient-to-br from-violet-100 to-fuchsia-200 text-violet-950 hover:border-violet-600","border-amber-400 bg-gradient-to-br from-amber-100 to-yellow-200 text-amber-950 hover:border-amber-600","border-emerald-400 bg-gradient-to-br from-emerald-100 to-lime-200 text-emerald-950 hover:border-emerald-600"];return <button key={index} type="button" disabled={answered||busy} onClick={()=>void answer(index)} className={`flex min-h-14 items-start gap-3 rounded-xl border-2 p-3 text-left text-sm font-extrabold shadow-sm transition disabled:cursor-default disabled:opacity-90 ${palette[index]}`}><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-950 text-xs font-black text-white">{String.fromCharCode(65+index)}</span><span className="pt-0.5">{option}</span></button>;})}</div>
       {feedback&&<div role="status" aria-live="polite" className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-4 text-center text-sm font-black leading-6 text-slate-900">{feedback}</div>}
       {answered&&!feedback?.startsWith("Correct!")&&<button type="button" onClick={()=>void reserveNext()} disabled={busy} className="mt-4 min-h-12 w-full rounded-full bg-gradient-to-r from-violet-700 to-indigo-700 px-5 py-3 text-sm font-black text-white shadow-lg disabled:opacity-60">Next question →</button>}
     </div>:<div className="mt-5 rounded-2xl border border-violet-200 bg-white p-6 text-center"><p className="font-bold text-slate-700">{busy?"Preparing your next case…":message||"Loading Mystery Quiz…"}</p></div>}
-    <div className="mt-5 flex justify-center"><button type="button" onClick={onExit} className="rounded-full border border-violet-300 bg-white px-5 py-2.5 text-sm font-black text-violet-800 shadow-sm">← Back to Quiz World</button></div>
   </div><GameQuotaPopup open={!quota.loading && quota.remaining<=0} isPrivileged={quota.isAdmin||quota.isSubscribed} resetKey="mystery-quiz" /></>;
 }

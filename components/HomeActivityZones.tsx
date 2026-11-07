@@ -422,16 +422,12 @@ useEffect(() => {
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
             {!englishTopicOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button></div>
-                {activeQuizGame === null && !classicGameStarted && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
+                {activeQuizGame === null && !classicGameStarted && selected.action !== "games" && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>            )}
             {selected.action === "games" && (
               <div>
                 {!activeQuizGame ? (
                   <>
-                    <div className="mb-5 rounded-2xl bg-gradient-to-r from-violet-700 via-indigo-700 to-blue-700 p-4 text-white">
-                      <h3 className="text-xl font-black">Quiz World</h3>
-                      <p className="mt-1 text-sm text-violet-100">Choose any game and enter it directly. All games are displayed together.</p>
-                    </div>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                       {[
                         {id:"word",icon:"🌍",title:"General Knowledge Quiz",note:"Discover facts about the world",tone:"from-cyan-600 to-blue-700"},
@@ -449,34 +445,7 @@ useEffect(() => {
                     </div>
                   </>
                 ) : (
-                  <div ref={gameTargetRef}>
-                    {activeQuizGame && (
-                      <div className="mx-auto w-full max-w-3xl rounded-2xl border border-indigo-200 bg-gradient-to-br from-slate-50 to-indigo-50 p-8 text-center shadow-sm">
-                        <div className="mb-3 text-4xl" aria-hidden="true">📘</div>
-                        <h3 className="text-2xl font-black text-indigo-950">
-                          {{
-                            word: "General Knowledge Quiz",
-                            brain: "Brain and Logic Lab",
-                            riddle: "Riddle Corner",
-                            mystery: "Mystery Quiz",
-                            internet: "Secrets of the Internet",
-                            ai: "Artificial Intelligence",
-                            cyber: "Cyber Detective",
-                            tech: "Technology Through Time",
-                            locked: "The Locked Room Mystery",
-                            codes: "The Secret Code Chamber",
-                            deception: "The Master of Deception",
-                            pattern: "The Pattern Master",
-                            geo: "The Geography Quest",
-                            culture: "The World Culture Challenge",
-                            landmark: "The Landmark Adventure",
-                            records: "World Records Quiz",
-                            science: "Science Quiz"
-                          }[activeQuizGame] ?? "Quiz World"}
-                        </h3>
-                      </div>
-                    )}
-                    {activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} remaining={trivioRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
+                  <div ref={gameTargetRef}>{activeQuizGame === "word" && <div className="mt-5"><NativeTriviaQuiz userId={userId} isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} remaining={trivioRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 10 : 3} onRemainingChange={setTrivioRemaining} onExit={exitGame} /></div>}
                     {activeQuizGame === "riddle" && <RiddleCornerQuiz userId={userId} isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} remaining={riddleRemaining} quotaLimit={classicQuota.isAdmin || classicQuota.isSubscribed ? 3 : 1} onRemainingChange={setRiddleRemaining} onExit={exitGame} />}
                     {activeQuizGame === "mystery" && <div className="mt-5"><MysteryQuiz userId={userId} onExit={exitGame} /></div>}
                   </div>
@@ -512,7 +481,7 @@ useEffect(() => {
             )}
             {selected.action === "learning" && (
               <div ref={activityTargetRef}>
-                <EntertainmentHub userId={userId} visibleGroupIds={["english-expert"]} embedded onTopicQuotaChange={(topic) => setEnglishTopicOpen(Boolean(topic))} />
+                <EntertainmentHub userId={userId} visibleGroupIds={["english-expert"]} initialGroupId="english-expert" embedded onTopicQuotaChange={(topic) => setEnglishTopicOpen(Boolean(topic))} />
               </div>
             )}
           </div>
