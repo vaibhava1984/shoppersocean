@@ -1,4 +1,4 @@
-export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK: { q: string; o: string[]; a: number; e: string }[] = [[
+export const SUBJECT_VERB_AGREEMENT_QUESTION_BANK: { q: string; o: string[]; a: number; e: string }[] = [
 {q:"Choose the correct verb to fill in the blank: 'Every student and teacher in the department ___ required to submit an annual report.'",o:["is","are","were","have been"],a:0,e:"When 'each' or 'every' precedes compound subjects joined by 'and', the subject is treated as singular, requiring a singular verb ('is')."},
 {q:"Identify the correct verb form: 'Neither the project manager nor the developers ___ aware of the sudden server outage.'",o:["was","were","is","has been"],a:1,e:"When subjects are joined by 'neither... nor', the verb agrees with the closer subject ('developers', which is plural)."},
 {q:"Which option correctly completes the sentence? 'The collection of rare manuscripts ___ exhibited in the main hall.'",o:["is","are","were","have"],a:0,e:"The true subject is the singular noun 'collection', not the prepositional object 'manuscripts', requiring a singular verb."},
