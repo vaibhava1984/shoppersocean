@@ -304,6 +304,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   }, []);
   const openZone = (index: number) => {
     if (activeZoneRef.current === null) window.history.pushState({ shoppersOceanZone: true }, "", window.location.href);
+    setClassicQuotaNoticeFor(null);
     activeZoneRef.current = index;
     setActiveZone(index);
     setEnglishTopicOpen(false);
