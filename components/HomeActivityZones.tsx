@@ -183,6 +183,7 @@ function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: str
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const [englishTopicOpen, setEnglishTopicOpen] = useState(false);
+  const [englishAcademyEntered, setEnglishAcademyEntered] = useState(false);
   const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
   const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
@@ -274,10 +275,15 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         setActiveQuizGame(null);
         return;
       }
+      if (englishAcademyEntered && !englishTopicOpen) {
+        setEnglishAcademyEntered(false);
+        return;
+      }
       if (activeZoneRef.current !== null) {
         activeZoneRef.current = null;
         setActiveZone(null);
         setEnglishTopicOpen(false);
+        setEnglishAcademyEntered(false);
       }
     };
     window.addEventListener("popstate", handleMobileBack);
@@ -288,6 +294,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     activeZoneRef.current = index;
     setActiveZone(index);
     setEnglishTopicOpen(false);
+    setEnglishAcademyEntered(false);
     classicGameStartedRef.current = false;
     setClassicGameStarted(false);
     activeQuizGameRef.current = null;
@@ -382,6 +389,9 @@ useEffect(() => {
 
 }
 .classic-solitaire-frame { height: min(78vw, 420px); min-height: 280px; max-height: 420px; }\n@media (orientation: landscape) { .classic-solitaire-frame { height: min(72dvh, 430px) !important; min-height: 260px !important; max-height: 430px; } }\n.classic-game-landscape-controls { display: none; }
+[data-entertainment-hub] div.flex.items-start.gap-3.rounded-xl.border-violet-200 { display: block !important; width: 100%; }
+[data-entertainment-hub] div.flex.items-start.gap-3.rounded-xl.border-violet-200 > span { display: inline-flex; max-width: 100%; }
+[data-entertainment-hub] div.flex.items-start.gap-3.rounded-xl.border-violet-200 > p { display: block; width: 100%; margin-top: .6rem; white-space: normal; overflow-wrap: anywhere; line-height: 1.75; }
 `}</style>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {!selected ? (
@@ -421,7 +431,7 @@ useEffect(() => {
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
             {!englishTopicOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button></div>
+                <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null || englishAcademyEntered || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button></div>
                 {activeQuizGame === null && !classicGameStarted && selected.action !== "games" && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>            )}
             {selected.action === "games" && (
@@ -480,8 +490,17 @@ useEffect(() => {
               </div>
             )}
             {selected.action === "learning" && (
-              <div ref={activityTargetRef}>
-                <EntertainmentHub userId={userId} visibleGroupIds={["english-expert"]} initialGroupId="english-expert" embedded onTopicQuotaChange={(topic) => setEnglishTopicOpen(Boolean(topic))} />
+              <div ref={activityTargetRef} className="w-full" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button"); if (button?.textContent?.trim() === "← Back" && event.currentTarget.querySelector('h4[style*="scroll-margin-top"]')) { event.preventDefault(); event.stopPropagation(); window.history.back(); } }}>
+                {!englishAcademyEntered ? (
+                  <div className="mx-auto w-full max-w-md">
+                    <button type="button" onClick={() => { window.history.pushState({ shoppersOceanLearning: true }, "", window.location.href); setEnglishAcademyEntered(true); }} className="group w-full rounded-2xl border border-sky-300 bg-gradient-to-br from-sky-100 via-white to-violet-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200">
+                      <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📘</span><span className="rounded-full bg-white/80 px-3 py-1 text-xs font-bold text-slate-600">Open →</span></span>
+                      <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-blue-700">English Master Quiz</span>
+                    </button>
+                  </div>
+                ) : (
+                  <EntertainmentHub userId={userId} visibleGroupIds={["english-expert"]} initialGroupId="english-expert" autoStart embedded onTopicQuotaChange={(topic) => setEnglishTopicOpen(Boolean(topic))} />
+                )}
               </div>
             )}
           </div>
