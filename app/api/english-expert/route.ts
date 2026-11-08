@@ -61,7 +61,7 @@ async function handle(req:Request,consume:boolean){
     await db.prepare("INSERT INTO english_expert_pending_questions(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id) DO UPDATE SET question_id=excluded.question_id,created_at=excluded.created_at").bind(user.id,topic,questionId,new Date().toISOString()).run();
     return NextResponse.json({reserved:true,pendingQuestionId:questionId},{headers});
    }
-   const claimed=await db.prepare("INSERT INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
+   const claimed=await db.prepare("INSERT INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
    if(!claimed){await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=? AND question_id=?").bind(user.id,topic,questionId).run();const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}
    let row:any;
    if(subscribed||admin){
