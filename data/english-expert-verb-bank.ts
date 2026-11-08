@@ -1,14 +1,14 @@
 export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string }[] = [
   {
     q: "1. Choose the correct verb to fill in the blank:\nEvery morning, the children __________ in the neighborhood park.",
-    o: ["play", "plays", "playing", "played"],
-    a: 0,
+    o: ["played", "plays", "playing", "play"],
+    a: 3,
     e: ""
   },
   {
     q: "2. Identify the main verb in the following sentence:\nShe is writing a letter to her grandmother.",
-    o: ["She", "writing", "letter", "grandmother"],
-    a: 1,
+    o: ["She", "letter", "writing", "grandmother"],
+    a: 2,
     e: ""
   },
   {
@@ -25,26 +25,26 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "5. Choose the correct verb to fill in the blank:\nYesterday, we __________ a very interesting movie at the theater.",
-    o: ["watch", "watches", "watched", "watching"],
-    a: 2,
+    o: ["watched", "watches", "watch", "watching"],
+    a: 0,
     e: ""
   },
   {
     q: "6. Identify the verb in the following sentence:\nThe barking dog chased the thief down the street.",
-    o: ["barking", "chased", "thief", "street"],
-    a: 1,
+    o: ["chased", "barking", "thief", "street"],
+    a: 0,
     e: ""
   },
   {
     q: "7. Choose the correct verb to fill in the blank:\nWater __________ at 100 degrees Celsius under normal pressure.",
-    o: ["boil", "boils", "boiling", "boiled"],
-    a: 1,
+    o: ["boil", "boiling", "boils", "boiled"],
+    a: 2,
     e: ""
   },
   {
     q: "8. Identify the linking verb in the sentence:\nThe soup smells absolutely delicious this evening.",
-    o: ["soup", "delicious", "smells", "evening"],
-    a: 2,
+    o: ["soup", "delicious", "evening", "smells"],
+    a: 3,
     e: ""
   },
   {
@@ -55,8 +55,8 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "10. Identify the verb in the sentence:\nBirds fly high up in the blue sky.",
-    o: ["Birds", "fly", "high", "blue"],
-    a: 1,
+    o: ["Birds", "high", "fly", "blue"],
+    a: 2,
     e: ""
   },
   {
@@ -67,14 +67,14 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "12. Identify the past participle form in the list:",
-    o: ["Eat", "Ate", "Eaten", "Eating"],
-    a: 2,
+    o: ["Eat", "Eaten", "Ate", "Eating"],
+    a: 1,
     e: ""
   },
   {
     q: "13. Choose the correct verb to fill in the blank:\nHe has already __________ his lunch before noon.",
-    o: ["eat", "ate", "eaten", "eating"],
-    a: 2,
+    o: ["eat", "ate", "eating", "eaten"],
+    a: 3,
     e: ""
   },
   {
@@ -85,32 +85,32 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "15. Choose the correct verb to fill in the blank:\nPlease __________ the door when you enter the room.",
-    o: ["close", "closes", "closed", "closing"],
-    a: 0,
+    o: ["closes", "close", "closed", "closing"],
+    a: 1,
     e: ""
   },
   {
     q: "16. Identify the modal verb in the sentence:\nYou must wear a helmet while riding a motorcycle.",
-    o: ["wear", "helmet", "must", "riding"],
-    a: 2,
+    o: ["wear", "helmet", "riding", "must"],
+    a: 3,
     e: ""
   },
   {
     q: "17. Choose the correct verb to fill in the blank:\nShe __________ how to play the piano very well.",
-    o: ["know", "knows", "knowing", "known"],
-    a: 1,
+    o: ["know", "knowing", "knows", "known"],
+    a: 2,
     e: ""
   },
   {
     q: "18. Identify the verb in the sentence:\nThe sun shines brightly in the summer afternoon.",
-    o: ["bright", "shines", "afternoon", "summer"],
-    a: 1,
+    o: ["shines", "bright", "afternoon", "summer"],
+    a: 0,
     e: ""
   },
   {
     q: "19. Choose the correct verb to fill in the blank:\nThey __________ cricket in the playground right now.",
-    o: ["play", "plays", "are playing", "played"],
-    a: 2,
+    o: ["play", "plays", "played", "are playing"],
+    a: 3,
     e: ""
   },
   {
@@ -121,14 +121,14 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "21. Choose the correct verb to fill in the blank:\nHe __________ his keys somewhere in the office yesterday.",
-    o: ["lose", "loses", "lost", "losing"],
-    a: 2,
+    o: ["lost", "loses", "lose", "losing"],
+    a: 0,
     e: ""
   },
   {
     q: "22. Identify the verb in the sentence:\nThe clever cat caught a small mouse.",
-    o: ["cat", "caught", "mouse", "small"],
-    a: 1,
+    o: ["caught", "cat", "mouse", "small"],
+    a: 0,
     e: ""
   },
   {
@@ -139,20 +139,20 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "24. Identify the transitive verb in the sentence:\nThe teacher read a story to the students.",
-    o: ["read", "story", "students", "teacher"],
-    a: 0,
+    o: ["teacher", "story", "students", "read"],
+    a: 3,
     e: ""
   },
   {
     q: "25. Choose the correct verb to fill in the blank:\nBy next month, we __________ our new house.",
-    o: ["finish", "finished", "will finish", "finishing"],
-    a: 2,
+    o: ["finish", "will finish", "finished", "finishing"],
+    a: 1,
     e: ""
   },
   {
     q: "26. Identify the verb in the sentence:\nThe heavy rain ruined our weekend plans.",
-    o: ["heavy", "rain", "ruined", "plans"],
-    a: 2,
+    o: ["heavy", "ruined", "rain", "plans"],
+    a: 1,
     e: ""
   },
   {
@@ -163,44 +163,44 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "28. Identify the verb in the sentence:\nAn honest man never tells a lie.",
-    o: ["honest", "tells", "lie", "man"],
-    a: 1,
-    e: ""
-  },
-  {
-    q: "29. Choose the correct verb to fill in the blank:\nShe __________ her homework before her friends arrived.",
-    o: ["finish", "finishes", "had finished", "finishing"],
-    a: 2,
-    e: ""
-  },
-  {
-    q: "30. Identify the verb in the sentence:\nThe flowers bloom beautifully in the spring season.",
-    o: ["bloom", "beautiful", "flowers", "season"],
+    o: ["tells", "honest", "lie", "man"],
     a: 0,
     e: ""
   },
   {
+    q: "29. Choose the correct verb to fill in the blank:\nShe __________ her homework before her friends arrived.",
+    o: ["had finished", "finishes", "finish", "finishing"],
+    a: 0,
+    e: ""
+  },
+  {
+    q: "30. Identify the verb in the sentence:\nThe flowers bloom beautifully in the spring season.",
+    o: ["season", "beautiful", "flowers", "bloom"],
+    a: 3,
+    e: ""
+  },
+  {
     q: "31. Choose the correct verb to fill in the blank:\nHe __________ a new bicycle for his birthday last week.",
-    o: ["buy", "buys", "bought", "buying"],
-    a: 2,
+    o: ["buy", "buys", "buying", "bought"],
+    a: 3,
     e: ""
   },
   {
     q: "32. Identify the auxiliary verb in the sentence:\nAre you coming to the party tonight?",
-    o: ["coming", "party", "Are", "tonight"],
-    a: 2,
+    o: ["coming", "party", "tonight", "Are"],
+    a: 3,
     e: ""
   },
   {
     q: "33. Choose the correct verb to fill in the blank:\nMother __________ a delicious cake for the celebration.",
-    o: ["bake", "bakes", "baked", "baking"],
-    a: 2,
+    o: ["bake", "baked", "bakes", "baking"],
+    a: 1,
     e: "*(or bakes depending on tense, let's use context: \"Mother baked a delicious cake yesterday.\")* Let's use: \"Mother baked a delicious cake for dinner yesterday.\""
   },
   {
     q: "34. Identify the verb in the sentence:\nThe wind blows fiercely across the open fields.",
-    o: ["wind", "blows", "fiercely", "fields"],
-    a: 1,
+    o: ["wind", "fiercely", "blows", "fields"],
+    a: 2,
     e: ""
   },
   {
@@ -217,8 +217,8 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "37. Choose the correct verb to fill in the blank:\nWe __________ English grammar rules in class every day.",
-    o: ["learn", "learns", "learning", "learned"],
-    a: 0,
+    o: ["learned", "learns", "learning", "learn"],
+    a: 3,
     e: ""
   },
   {
@@ -229,8 +229,8 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "39. Choose the correct verb to fill in the blank:\nShe __________ her umbrella at home and got wet in the rain.",
-    o: ["leave", "leaves", "left", "leaving"],
-    a: 2,
+    o: ["leave", "left", "leaves", "leaving"],
+    a: 1,
     e: ""
   },
   {
@@ -247,20 +247,20 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "42. Identify the verb in the sentence:\nThe gentle breeze cooled the warm summer evening.",
-    o: ["breeze", "cooled", "summer", "evening"],
-    a: 1,
+    o: ["cooled", "breeze", "summer", "evening"],
+    a: 0,
     e: ""
   },
   {
     q: "43. Choose the correct verb to fill in the blank:\nThey __________ a football match on television right now.",
-    o: ["watch", "watched", "are watching", "watches"],
-    a: 2,
+    o: ["are watching", "watched", "watch", "watches"],
+    a: 0,
     e: ""
   },
   {
     q: "44. Identify the verb in the sentence:\nA sharp knife cuts through vegetables easily.",
-    o: ["sharp", "knife", "cuts", "easily"],
-    a: 2,
+    o: ["sharp", "cuts", "knife", "easily"],
+    a: 1,
     e: ""
   },
   {
@@ -277,32 +277,32 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "47. Choose the correct verb to fill in the blank:\nI __________ my teeth twice every day to keep them clean.",
-    o: ["brush", "brushes", "brushed", "brushing"],
-    a: 0,
+    o: ["brushed", "brushes", "brush", "brushing"],
+    a: 2,
     e: ""
   },
   {
     q: "48. Identify the verb in the sentence:\nThe students listened carefully to the teacher's instructions.",
-    o: ["listened", "carefully", "instructions", "students"],
-    a: 0,
+    o: ["carefully", "listened", "instructions", "students"],
+    a: 1,
     e: "A (listening / listened) -> A (listened)"
   },
   {
     q: "49. Choose the correct verb to fill in the blank:\nHe __________ his office uniform before going to work.",
-    o: ["wear", "wears", "wearing", "wore"],
-    a: 1,
+    o: ["wear", "wearing", "wears", "wore"],
+    a: 2,
     e: ""
   },
   {
     q: "50. Identify the verb in the following sentence:\nSuccess requires patience, dedication, and hard work.",
-    o: ["success", "patience", "requires", "work"],
-    a: 2,
+    o: ["success", "patience", "work", "requires"],
+    a: 3,
     e: ""
   },
   {
     q: "51. Choose the correct verb to fill in the blank:\nShe __________ a delicious cake for her brother's birthday yesterday.",
-    o: ["bake","bakes","baked","baking"],
-    a: 2,
+    o: ["baked","bakes","bake","baking"],
+    a: 0,
     e: ""
   },
   {
@@ -313,8 +313,8 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "53. Choose the correct verb to fill in the blank:\nHe __________ his bicycle to school every morning.",
-    o: ["ride","rides","rode","riding"],
-    a: 1,
+    o: ["ride","riding","rode","rides"],
+    a: 3,
     e: ""
   },
   {
@@ -325,62 +325,62 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "55. Choose the correct verb to fill in the blank:\nPlease __________ the window to let some fresh air inside.",
-    o: ["open","opens","opened","opening"],
-    a: 0,
+    o: ["opened","opens","open","opening"],
+    a: 2,
     e: ""
   },
   {
     q: "56. Identify the verb in the sentence:\nThe hungry cat drank all the milk in the bowl.",
-    o: ["hungry","drank","milk","bowl"],
-    a: 1,
+    o: ["hungry","bowl","milk","drank"],
+    a: 3,
     e: ""
   },
   {
     q: "57. Choose the correct verb to fill in the blank:\nBy the time we reached the station, the train had already __________.",
-    o: ["leave","leaves","left","leaving"],
-    a: 2,
+    o: ["leave","leaves","leaving","left"],
+    a: 3,
     e: ""
   },
   {
     q: "58. Identify the linking verb in the sentence:\nThe milk tastes a bit sour this morning.",
-    o: ["milk","sour","tastes","morning"],
-    a: 2,
-    e: ""
-  },
-  {
-    q: "59. Choose the correct verb to fill in the blank:\nShe __________ a letter to her friend in London last week.",
-    o: ["write","writes","wrote","written"],
-    a: 2,
-    e: ""
-  },
-  {
-    q: "60. Identify the verb in the sentence:\nRivers flow continuously toward the vast ocean.",
-    o: ["rivers","flow","vast","ocean"],
-    a: 1,
-    e: ""
-  },
-  {
-    q: "61. Choose the correct verb to fill in the blank:\nIf you practice every day, you __________ improve your English speaking skills.",
-    o: ["will","would","could","shall"],
+    o: ["tastes","sour","milk","morning"],
     a: 0,
     e: ""
   },
   {
-    q: "62. Identify the past participle form from the list:",
-    o: ["Write","Wrote","Written","Writing"],
+    q: "59. Choose the correct verb to fill in the blank:\nShe __________ a letter to her friend in London last week.",
+    o: ["write","writes","written","wrote"],
+    a: 3,
+    e: ""
+  },
+  {
+    q: "60. Identify the verb in the sentence:\nRivers flow continuously toward the vast ocean.",
+    o: ["rivers","vast","flow","ocean"],
     a: 2,
+    e: ""
+  },
+  {
+    q: "61. Choose the correct verb to fill in the blank:\nIf you practice every day, you __________ improve your English speaking skills.",
+    o: ["shall","would","could","will"],
+    a: 3,
+    e: ""
+  },
+  {
+    q: "62. Identify the past participle form from the list:",
+    o: ["Write","Written","Wrote","Writing"],
+    a: 1,
     e: ""
   },
   {
     q: "63. Choose the correct verb to fill in the blank:\nHe has already __________ his breakfast before leaving the house.",
-    o: ["finish","finishes","finished","finishing"],
-    a: 2,
+    o: ["finish","finished","finishes","finishing"],
+    a: 1,
     e: ""
   },
   {
     q: "64. Identify the verb in the sentence:\nThe tired traveler rested under the shade of a big tree.",
-    o: ["traveler","rested","shade","tree"],
-    a: 1,
+    o: ["rested","traveler","shade","tree"],
+    a: 0,
     e: ""
   },
   {
@@ -415,8 +415,8 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "70. Identify the verb indicating physical action:",
-    o: ["Hope","Jump","Believe","Know"],
-    a: 1,
+    o: ["Jump","Hope","Believe","Know"],
+    a: 0,
     e: ""
   },
   {
@@ -427,20 +427,20 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "72. Identify the verb in the sentence:\nThe brave firefighter rescued the cat from the tree.",
-    o: ["brave","firefighter","rescued","tree"],
-    a: 2,
+    o: ["brave","rescued","firefighter","tree"],
+    a: 1,
     e: ""
   },
   {
     q: "73. Choose the correct verb to fill in the blank:\nShe __________ to the temple every single Friday evening.",
-    o: ["go","goes","went","gone"],
-    a: 1,
+    o: ["go","gone","went","goes"],
+    a: 3,
     e: ""
   },
   {
     q: "74. Identify the transitive verb in the sentence:\nThe gardener watered the plants in the garden.",
-    o: ["gardener","watered","plants","garden"],
-    a: 1,
+    o: ["gardener","plants","watered","garden"],
+    a: 2,
     e: ""
   },
   {
@@ -451,68 +451,68 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "76. Identify the verb in the sentence:\nThe loud noise startled the sleeping dog.",
-    o: ["loud","noise","startled","dog"],
-    a: 2,
+    o: ["loud","noise","dog","startled"],
+    a: 3,
     e: ""
   },
   {
     q: "77. Choose the correct verb to fill in the blank:\nCan you __________ me carry this heavy suitcase upstairs?",
-    o: ["help","helps","helped","helping"],
-    a: 0,
+    o: ["helped","helps","help","helping"],
+    a: 2,
     e: ""
   },
   {
     q: "78. Identify the verb in the sentence:\nAn honest person never speaks a falsehood.",
-    o: ["honest","speaks","falsehood","person"],
-    a: 1,
+    o: ["honest","falsehood","speaks","person"],
+    a: 2,
     e: ""
   },
   {
     q: "79. Choose the correct verb to fill in the blank:\nShe __________ her homework before her mother returned home.",
-    o: ["finish","finishes","had finished","finishing"],
-    a: 2,
+    o: ["finish","had finished","finishes","finishing"],
+    a: 1,
     e: ""
   },
   {
     q: "80. Identify the verb in the sentence:\nSpring flowers bloom brightly in the garden.",
-    o: ["spring","bloom","bright","garden"],
-    a: 1,
-    e: ""
-  },
-  {
-    q: "81. Choose the correct verb to fill in the blank:\nHe __________ a new smartphone for his hard work.",
-    o: ["win","wins","won","winning"],
-    a: 2,
-    e: ""
-  },
-  {
-    q: "82. Identify the auxiliary verb in the sentence:\nAre you attending the seminar this afternoon?",
-    o: ["attending","seminar","Are","afternoon"],
-    a: 2,
-    e: ""
-  },
-  {
-    q: "83. Choose the correct verb to fill in the blank:\nMother __________ hot soup for dinner on cold winter nights.",
-    o: ["prepare","prepares","prepared","preparing"],
-    a: 1,
-    e: ""
-  },
-  {
-    q: "84. Identify the verb in the sentence:\nStrong winds blow across the valley during winter.",
-    o: ["strong","blow","valley","winter"],
-    a: 1,
-    e: ""
-  },
-  {
-    q: "85. Choose the correct verb to fill in the blank:\nPlease __________ your hand if you have a question.",
-    o: ["raise","raises","raised","raising"],
+    o: ["bloom","spring","bright","garden"],
     a: 0,
     e: ""
   },
   {
-    q: "86. Identify the verb in the sentence:\nThe baby cried loudly when he dropped his toy.",
-    o: ["cried","loudly","dropped","Both A and C"],
+    q: "81. Choose the correct verb to fill in the blank:\nHe __________ a new smartphone for his hard work.",
+    o: ["win","wins","winning","won"],
     a: 3,
+    e: ""
+  },
+  {
+    q: "82. Identify the auxiliary verb in the sentence:\nAre you attending the seminar this afternoon?",
+    o: ["attending","seminar","afternoon","Are"],
+    a: 3,
+    e: ""
+  },
+  {
+    q: "83. Choose the correct verb to fill in the blank:\nMother __________ hot soup for dinner on cold winter nights.",
+    o: ["prepare","prepared","prepares","preparing"],
+    a: 2,
+    e: ""
+  },
+  {
+    q: "84. Identify the verb in the sentence:\nStrong winds blow across the valley during winter.",
+    o: ["blow","strong","valley","winter"],
+    a: 0,
+    e: ""
+  },
+  {
+    q: "85. Choose the correct verb to fill in the blank:\nPlease __________ your hand if you have a question.",
+    o: ["raising","raises","raised","raise"],
+    a: 3,
+    e: ""
+  },
+  {
+    q: "86. Identify the verb in the sentence:\nThe baby cried loudly when he dropped his toy.",
+    o: ["cried","Both A and C","dropped","loudly"],
+    a: 1,
     e: ""
   },
   {
@@ -523,32 +523,32 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "88. Identify the verb in the sentence:\nThe kind old lady gave us delicious cookies.",
-    o: ["kind","gave","cookies","delicious"],
-    a: 1,
-    e: ""
-  },
-  {
-    q: "89. Choose the correct verb to fill in the blank:\nShe __________ her umbrella in the taxi by mistake.",
-    o: ["leave","leaves","left","leaving"],
+    o: ["kind","cookies","gave","delicious"],
     a: 2,
     e: ""
   },
   {
-    q: "90. Identify the verb in the sentence:\nSudden lightning flashed across the dark night sky.",
-    o: ["sudden","flashed","dark","sky"],
+    q: "89. Choose the correct verb to fill in the blank:\nShe __________ her umbrella in the taxi by mistake.",
+    o: ["leave","left","leaves","leaving"],
     a: 1,
+    e: ""
+  },
+  {
+    q: "90. Identify the verb in the sentence:\nSudden lightning flashed across the dark night sky.",
+    o: ["sudden","sky","dark","flashed"],
+    a: 3,
     e: ""
   },
   {
     q: "91. Choose the correct verb to fill in the blank:\nHe __________ to classical music while working on his computer.",
-    o: ["listen","listens","listened","listening"],
-    a: 1,
+    o: ["listens","listen","listened","listening"],
+    a: 0,
     e: ""
   },
   {
     q: "92. Identify the verb in the sentence:\nThe cool breeze refreshed everyone in the afternoon heat.",
-    o: ["breeze","refreshed","afternoon","heat"],
-    a: 1,
+    o: ["refreshed","breeze","afternoon","heat"],
+    a: 0,
     e: ""
   },
   {
@@ -559,44 +559,44 @@ export const VERB_QUESTION_BANK: { q: string; o: string[]; a: number; e: string 
   },
   {
     q: "94. Identify the verb in the sentence:\nA sharp knife cuts vegetables very easily.",
-    o: ["sharp","knife","cuts","easily"],
-    a: 2,
+    o: ["sharp","knife","easily","cuts"],
+    a: 3,
     e: ""
   },
   {
     q: "95. Choose the correct verb to fill in the blank:\nShe __________ a beautiful sketch in her art book.",
-    o: ["draw","draws","drew","drawn"],
-    a: 1,
+    o: ["draws","draw","drew","drawn"],
+    a: 0,
     e: ""
   },
   {
     q: "96. Identify the verb in the sentence:\nThe express train arrived at the station right on time.",
-    o: ["train","station","arrived","time"],
-    a: 2,
-    e: ""
-  },
-  {
-    q: "97. Choose the correct verb to fill in the blank:\nI __________ my teeth every morning and evening.",
-    o: ["brush","brushes","brushed","brushing"],
-    a: 0,
-    e: ""
-  },
-  {
-    q: "98. Identify the verb in the sentence:\nThe students listened attentively to the teacher's lecture.",
-    o: ["listened","attentively","teacher's","lecture"],
-    a: 0,
-    e: ""
-  },
-  {
-    q: "99. Choose the correct verb to fill in the blank:\nHe __________ his formal suit before leaving for the meeting.",
-    o: ["wear","wears","wore","wearing"],
+    o: ["train","arrived","station","time"],
     a: 1,
     e: ""
   },
   {
-    q: "100. Identify the verb in the following sentence:\nHard work and dedication lead to ultimate success.",
-    o: ["work","dedication","lead","success"],
+    q: "97. Choose the correct verb to fill in the blank:\nI __________ my teeth every morning and evening.",
+    o: ["brushing","brushes","brushed","brush"],
+    a: 3,
+    e: ""
+  },
+  {
+    q: "98. Identify the verb in the sentence:\nThe students listened attentively to the teacher's lecture.",
+    o: ["teacher's","attentively","listened","lecture"],
     a: 2,
+    e: ""
+  },
+  {
+    q: "99. Choose the correct verb to fill in the blank:\nHe __________ his formal suit before leaving for the meeting.",
+    o: ["wear","wearing","wore","wears"],
+    a: 3,
+    e: ""
+  },
+  {
+    q: "100. Identify the verb in the following sentence:\nHard work and dedication lead to ultimate success.",
+    o: ["work","lead","dedication","success"],
+    a: 1,
     e: ""
   }
 ];
