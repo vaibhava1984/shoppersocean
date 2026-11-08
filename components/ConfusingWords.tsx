@@ -9,7 +9,36 @@ type WordPair = { id: string; title: string; difference: string; examples: { lab
 // New entries can be appended here as the word-pair batches are provided.
 
 function highlightComparedWords(text: string, words: string[]) {
-  const terms = words.filter(Boolean).map(word => word.replace(/[.*+?^${}()|[\]\\]/g, "\\const WORD_PAIRS: WordPair[] = ["));
+  const terms = words.filter(Boolean);
+  const parts: React.ReactNode[] = [];
+  const lowerText = text.toLowerCase();
+  const isWordChar = (char: string) => /[A-Za-z0-9]/.test(char);
+  let cursor = 0;
+  while (cursor < text.length) {
+    let bestStart = -1;
+    let bestWord = "";
+    for (const word of terms) {
+      let position = lowerText.indexOf(word.toLowerCase(), cursor);
+      while (position !== -1) {
+        const before = position > 0 ? text[position - 1] : "";
+        const after = text[position + word.length] ?? "";
+        if (!isWordChar(before) && !isWordChar(after)) {
+          if (bestStart === -1 || position < bestStart) { bestStart = position; bestWord = word; }
+          break;
+        }
+        position = lowerText.indexOf(word.toLowerCase(), position + 1);
+      }
+    }
+    if (bestStart === -1) { parts.push(text.slice(cursor)); break; }
+    if (bestStart > cursor) parts.push(text.slice(cursor, bestStart));
+    const matched = text.slice(bestStart, bestStart + bestWord.length);
+    parts.push(<strong key={bestStart} className="font-extrabold">{matched}</strong>);
+    cursor = bestStart + bestWord.length;
+  }
+  return parts;
+}
+
+const WORD_PAIRS: WordPair[] = ["));
   if (!terms.length) return text;
   const expression = new RegExp(`(?<![A-Za-z0-9])(${terms.join("|")})(?![A-Za-z0-9])`, "gi");
   return text.split(expression).map((part, index) =>
