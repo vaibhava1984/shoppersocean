@@ -3,34 +3,34 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "Choose the correct pronoun to fill in the blank:\nRohan forgot to bring __________ umbrella to school today.",
     "o": [
-      "his",
       "her",
+      "his",
       "their",
       "our"
     ],
-    "a": 0,
+    "a": 1,
     "e": ""
   },
   {
     "q": "Identify the pronoun in the following sentence:\nShe loves reading books in the library.",
     "o": [
       "loves",
-      "reading",
       "She",
+      "reading",
       "library"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "Choose the correct pronoun to fill in the blank:\nPlease give that book back to __________, as I need it for studying.",
     "o": [
-      "I",
       "me",
+      "I",
       "my",
       "mine"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
@@ -47,89 +47,89 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "Choose the correct pronoun to fill in the blank:\nNeither of the boys brought __________ jacket.",
     "o": [
-      "his",
+      "your",
       "their",
       "our",
-      "your"
+      "his"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
     "q": "Identify the reflexive pronoun in the following sentence:\nHe cooked the entire meal by __________.",
     "o": [
-      "himself",
-      "him",
       "his",
+      "him",
+      "himself",
       "he"
     ],
-    "a": 0,
+    "a": 2,
     "e": ""
   },
   {
     "q": "Choose the correct pronoun to fill in the blank:\n__________ are going to the market to buy fresh vegetables.",
     "o": [
-      "We",
       "Us",
+      "We",
       "Our",
       "Ours"
     ],
-    "a": 0,
+    "a": 1,
     "e": ""
   },
   {
     "q": "Identify the pronoun in the sentence:\nThis is the house where I was born.",
     "o": [
-      "house",
+      "This",
       "born",
       "where",
-      "This"
+      "house"
     ],
-    "a": 3,
+    "a": 0,
     "e": ""
   },
   {
     "q": "Choose the correct pronoun to fill in the blank:\nThe teacher asked __________ why we were late.",
     "o": [
       "we",
-      "us",
       "our",
+      "us",
       "ours"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
     "q": "Identify the relative pronoun in the sentence:\nThe man who helped me yesterday is a doctor.",
     "o": [
       "man",
-      "who",
       "doctor",
+      "who",
       "yesterday"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
     "q": "Choose the correct pronoun to fill in the blank:\nAll students must submit __________ projects by Friday.",
     "o": [
-      "his",
-      "her",
       "their",
+      "her",
+      "his",
       "your"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
     "q": "Identify the personal pronoun in the sentence:\nThey are playing football in the rain.",
     "o": [
       "playing",
-      "football",
       "They",
+      "football",
       "rain"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
@@ -157,12 +157,12 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "Choose the correct pronoun to fill in the blank:\n__________ left the front gate wide open?",
     "o": [
-      "Who",
-      "Whom",
       "Whose",
+      "Whom",
+      "Who",
       "Which"
     ],
-    "a": 0,
+    "a": 2,
     "e": ""
   },
   {
@@ -180,11 +180,11 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "Choose the correct pronoun to fill in the blank:\nAnita and __________ went to the park together.",
     "o": [
       "me",
-      "I",
       "my",
+      "I",
       "mine"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
@@ -202,11 +202,11 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "Choose the correct pronoun to fill in the blank:\nBetween you and __________, I think the plan will fail.",
     "o": [
       "I",
-      "me",
+      "mine",
       "my",
-      "mine"
+      "me"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
@@ -246,11 +246,11 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "Choose the correct pronoun to fill in the blank:\nShe cut __________ while chopping vegetables for dinner.",
     "o": [
       "her",
-      "herself",
+      "himself",
       "him",
-      "himself"
+      "herself"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
@@ -258,10 +258,10 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "blue",
       "car",
-      "parked",
-      "ours"
+      "ours",
+      "parked"
     ],
-    "a": 3,
+    "a": 2,
     "e": ""
   },
   {
@@ -279,22 +279,22 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "Identify the pronoun in the sentence:\nEverything is ready for the party tonight.",
     "o": [
       "party",
-      "ready",
       "Everything",
+      "ready",
       "tonight"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "Choose the correct pronoun to fill in the blank:\nThe manager wanted to speak to __________ about the report.",
     "o": [
       "he",
-      "him",
+      "himself",
       "his",
-      "himself"
+      "him"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
@@ -311,23 +311,23 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "Choose the correct pronoun to fill in the blank:\n__________ is a beautiful painting hanging on the wall.",
     "o": [
-      "This",
       "These",
+      "This",
       "They",
       "We"
     ],
-    "a": 0,
+    "a": 1,
     "e": ""
   },
   {
     "q": "Identify the pronoun in the sentence:\nWho told you this secret?",
     "o": [
       "secret",
-      "told",
       "Who",
+      "told",
       "this"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
@@ -345,22 +345,22 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "Identify the indefinite pronoun in the sentence:\nDoes anybody have a spare pen?",
     "o": [
       "spare",
-      "pen",
       "anybody",
+      "pen",
       "have"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "Choose the correct pronoun to fill in the blank:\nMy brother and __________ enjoy playing cricket on weekends.",
     "o": [
-      "me",
       "I",
+      "me",
       "mine",
       "myself"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
@@ -377,34 +377,34 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "Choose the correct pronoun to fill in the blank:\nOf all the dresses, __________ one do you like the best?",
     "o": [
-      "what",
       "which",
+      "what",
       "who",
       "whose"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
     "q": "Identify the personal pronoun in the sentence:\nWe finished our homework before sunset.",
     "o": [
       "homework",
-      "sunset",
       "We",
+      "sunset",
       "finished"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "Choose the correct pronoun to fill in the blank:\nGive the file to _________ when she arrives at the office.",
     "o": [
       "she",
-      "her",
       "hers",
+      "her",
       "herself"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
@@ -412,43 +412,43 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "shoes",
       "buy",
-      "Those",
-      "want"
-    ],
-    "a": 2,
-    "e": ""
-  },
-  {
-    "q": "Choose the correct pronoun to fill in the blank:\n__________ knows the answer to this tricky question.",
-    "o": [
-      "Anyone",
-      "Nobody",
-      "Someone",
-      "All of these"
+      "want",
+      "Those"
     ],
     "a": 3,
     "e": ""
   },
   {
+    "q": "Choose the correct pronoun to fill in the blank:\n__________ knows the answer to this tricky question.",
+    "o": [
+      "All of these",
+      "Nobody",
+      "Someone",
+      "Anyone"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
     "q": "Identify the pronoun in the sentence:\nSomeone left their umbrella on the front desk.",
     "o": [
-      "desk",
-      "front",
       "Someone",
+      "front",
+      "desk",
       "umbrella"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
     "q": "Choose the correct pronoun to fill in the blank:\nThe cat cleaned __________ fur after eating the fish.",
     "o": [
       "it",
-      "its",
+      "their",
       "it's",
-      "their"
+      "its"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
@@ -456,32 +456,32 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "notebook",
       "table",
-      "Whose",
-      "lying"
+      "lying",
+      "Whose"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
     "q": "Choose the correct pronoun to fill in the blank:\nThe principal praised __________ for winning the spelling bee.",
     "o": [
       "he",
-      "him",
       "his",
+      "him",
       "himself"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
     "q": "Identify the pronoun in the sentence:\nEach of the players received a gold medal.",
     "o": [
-      "players",
-      "gold",
       "Each",
+      "gold",
+      "players",
       "medal"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
@@ -498,12 +498,12 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "Identify the relative pronoun in the sentence:\nThe book that is on the table belongs to me.",
     "o": [
-      "book",
-      "table",
       "that",
+      "table",
+      "book",
       "belongs"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
@@ -522,10 +522,10 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "together",
       "stop",
-      "Nothing",
-      "work"
+      "work",
+      "Nothing"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
@@ -543,11 +543,11 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "Identify the pronoun in the following sentence:\nThey cleaned the whole room by themselves.",
     "o": [
       "room",
-      "whole",
       "themselves",
+      "whole",
       "cleaned"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   }
 ,
@@ -577,44 +577,44 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "53. This house is very old, but __________ roof was recently repaired.",
     "o": [
       "it",
-      "its",
+      "their",
       "it's",
-      "their"
+      "its"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "54. Identify the possessive pronoun from the options:",
     "o": [
-      "Her",
       "Hers",
+      "Her",
       "She",
       "Herself"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
     "q": "55. Please tell __________ the truth about what happened yesterday.",
     "o": [
-      "we",
       "us",
+      "we",
       "our",
       "ours"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
     "q": "56. Identify the reflexive pronoun in the sentence:\nShe blamed herself for losing the match.",
     "o": [
       "matched",
-      "losing",
       "herself",
+      "losing",
       "blamed"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
@@ -631,23 +631,23 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "58. Identify the pronoun in the sentence:\nIs this bicycle yours or his?",
     "o": [
-      "bicycle",
-      "old",
       "yours",
+      "old",
+      "bicycle",
       "bicycle"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
     "q": "59. The teacher told the students to complete the assignment by __________.",
     "o": [
       "them",
-      "themselves",
+      "theirs",
       "their",
-      "theirs"
+      "themselves"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
@@ -655,32 +655,32 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "girl",
       "cousin",
-      "who",
-      "prize"
+      "prize",
+      "who"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
     "q": "61. __________ have completed our project ahead of schedule.",
     "o": [
       "Us",
-      "We",
       "Our",
+      "We",
       "Ours"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
     "q": "62. Identify the indefinite pronoun in the options:",
     "o": [
       "These",
-      "Someone",
+      "Which",
       "Himself",
-      "Which"
+      "Someone"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
@@ -708,12 +708,12 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "65. She bought a new dress for __________.",
     "o": [
-      "herself",
+      "hers",
       "her",
       "she",
-      "hers"
+      "herself"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
@@ -721,10 +721,10 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "movie",
       "best",
-      "watched",
-      "This"
+      "This",
+      "watched"
     ],
-    "a": 3,
+    "a": 2,
     "e": ""
   },
   {
@@ -742,66 +742,66 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "68. Identify the interrogative pronoun in the options:",
     "o": [
       "Something",
-      "Whose",
+      "Those",
       "Myself",
-      "Those"
+      "Whose"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "69. The dog wagged __________ tail happily when its owner arrived.",
     "o": [
       "it",
-      "its",
+      "their",
       "it's",
-      "their"
+      "its"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "70. Identify the pronoun in the sentence:\nDoes anyone know the answer to this riddle?",
     "o": [
-      "riddle",
-      "answer",
       "anyone",
+      "answer",
+      "riddle",
       "know"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
     "q": "71. Mother gave __________ a new watch for my birthday.",
     "o": [
-      "I",
       "me",
+      "I",
       "my",
       "mine"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
     "q": "72. Identify the plural pronoun from the options:",
     "o": [
-      "He",
-      "She",
       "They",
+      "She",
+      "He",
       "It"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
     "q": "73. The heavy bag was carried by __________ alone.",
     "o": [
-      "he",
       "him",
+      "he",
       "his",
       "himself"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
@@ -818,12 +818,12 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "75. Neither of the answers __________ correct.",
     "o": [
-      "is",
-      "are",
       "were",
+      "are",
+      "is",
       "have"
     ],
-    "a": 0,
+    "a": 2,
     "e": "Focusing on the pronoun subject 'Neither'"
   },
   {
@@ -831,10 +831,10 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "car",
       "fast",
-      "that",
-      "week"
+      "week",
+      "that"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
@@ -851,23 +851,23 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "78. Identify the pronoun in the sentence:\nSomebody left the tap running in the bathroom.",
     "o": [
-      "bathroom",
-      "running",
       "Somebody",
+      "running",
+      "bathroom",
       "tap"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
     "q": "79. Please hand this letter to _________ when you see him.",
     "o": [
       "he",
-      "him",
       "his",
+      "him",
       "himself"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
@@ -884,12 +884,12 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
   {
     "q": "81. __________ book is this lying on the table?",
     "o": [
-      "Who",
-      "Whom",
       "Whose",
+      "Whom",
+      "Who",
       "Which"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
@@ -897,10 +897,10 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "wind",
       "cold",
-      "ourselves",
-      "protect"
+      "protect",
+      "ourselves"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
@@ -918,44 +918,44 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "84. Identify the demonstrative pronoun in the options:",
     "o": [
       "Who",
-      "Those",
+      "Myself",
       "Everyone",
-      "Myself"
+      "Those"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "85. Each of the girls received __________ own prize.",
     "o": [
-      "her",
       "their",
+      "her",
       "our",
       "your"
     ],
-    "a": 0,
+    "a": 1,
     "e": ""
   },
   {
     "q": "86. Identify the pronoun in the sentence:\nWhatever you decide is fine with me.",
     "o": [
       "fine",
-      "decide",
       "Whatever",
+      "decide",
       "me"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "87. The manager congratulated __________ on completing the project on time.",
     "o": [
-      "we",
       "us",
+      "we",
       "our",
       "ours"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
@@ -963,43 +963,43 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "grand",
       "celebration",
-      "All",
-      "invited"
+      "invited",
+      "All"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
     "q": "89. He solved the difficult puzzle all by __________.",
     "o": [
-      "himself",
+      "he",
       "him",
       "his",
-      "he"
+      "himself"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
     "q": "90. Identify the singular pronoun from the options:",
     "o": [
       "We",
-      "They",
       "He",
+      "They",
       "You"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "91. __________ is a great place to spend the summer holidays.",
     "o": [
-      "This",
+      "We",
       "These",
       "They",
-      "We"
+      "This"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
@@ -1007,32 +1007,32 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "o": [
       "exam",
       "students",
-      "failed",
-      "None"
+      "None",
+      "failed"
     ],
-    "a": 3,
+    "a": 2,
     "e": ""
   },
   {
     "q": "93. Father asked my brother and __________ to wash the car.",
     "o": [
       "I",
-      "me",
+      "mine",
       "my",
-      "mine"
+      "me"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "94. Identify the relative pronoun in the sentence:\nThe man whom you met yesterday is our principal.",
     "o": [
       "man",
-      "principal",
       "whom",
+      "principal",
       "yesterday"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
@@ -1061,44 +1061,44 @@ export const PRONOUN_QUESTION_BANK: PronounQuestion[] = [
     "q": "97. The cat hurt __________ leg while jumping over the fence.",
     "o": [
       "it",
-      "its",
+      "their",
       "it's",
-      "their"
+      "its"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "98. Identify the pronoun in the sentence:\nBoth of the brothers are talented musicians.",
     "o": [
-      "musicians",
-      "brothers",
       "Both",
+      "brothers",
+      "musicians",
       "talented"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
     "q": "99. She looked at __________ in the mirror before leaving the house.",
     "o": [
       "her",
-      "herself",
+      "hers",
       "she",
-      "hers"
+      "herself"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "100. Identify the pronoun in the following sentence:\nEverything is ready for the grand opening tomorrow.",
     "o": [
-      "grand",
-      "opening",
       "Everything",
+      "opening",
+      "grand",
       "tomorrow"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   }
 ];
