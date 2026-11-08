@@ -3299,8 +3299,16 @@ export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quot
         });
         const data = await response.json();
         if (response.ok && data.reserved) {
+          const resumedIndex = data.resumed && typeof data.challengeId === "string"
+            ? Number(data.challengeId.replace("trivio-q-", ""))
+            : candidateIndex;
+          if (!Number.isInteger(resumedIndex) || resumedIndex < 0 || resumedIndex >= QUESTIONS.length) {
+            setErrorMessage("Your saved question could not be restored. Please try again.");
+            setLoading(false);
+            return;
+          }
           setChosen(null);
-          setQuestionIndex(candidateIndex);
+          setQuestionIndex(resumedIndex);
           setLoading(false);
           return;
         }
