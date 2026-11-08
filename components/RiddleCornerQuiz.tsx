@@ -99,6 +99,7 @@ export default function RiddleCornerQuiz({ userId, isPrivileged, remaining, quot
           body: JSON.stringify({
             sectionId: "riddle-corner", gameTypeId: "riddle",
             challengeId: "riddle-q-" + candidate.id, challengeQuestion: candidate.question,
+            legacyChallengeIds: QUESTIONS.filter((item: any) => item.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300) === candidate.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300)).map((item: any) => "riddle-q-" + item.id),
             reserveQuestion: true, reservationSessionId
           })
         });
@@ -117,7 +118,8 @@ export default function RiddleCornerQuiz({ userId, isPrivileged, remaining, quot
       }
       const bankQuestionPairs = QUESTIONS.map((item: any) => ({
         challengeId: "riddle-q-" + item.id,
-        questionKey: item.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300)
+        questionKey: item.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300),
+        legacyChallengeIds: QUESTIONS.filter((other: any) => other.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300) === item.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300)).map((other: any) => "riddle-q-" + other.id)
       })).filter((item: any, index: number, all: any[]) => all.findIndex(other => other.questionKey === item.questionKey) === index);
       const resetResponse = await fetch("/api/game-access", {
         method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" },
