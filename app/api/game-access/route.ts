@@ -74,8 +74,11 @@ async function handle(req:Request,consume:boolean){
     if(!pairs.length)return NextResponse.json({error:"Invalid question bank."},{status:400,headers});
     for(const pair of pairs){
      const key=String(pair.questionKey).normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300);
-     const done=await db.prepare("SELECT 1 AS ok FROM game_answered_questions WHERE user_id=? AND section_id=? AND question_key=? UNION ALL SELECT 1 AS ok FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=? LIMIT 1").bind(user.id,section,key,user.id,type,String(pair.challengeId).slice(0,160)).first<any>();
-     if(!done)return NextResponse.json({bankReset:false,bankComplete:false},{headers});
+     const aliases=Array.isArray(pair.legacyChallengeIds)?pair.legacyChallengeIds.filter((x:any)=>typeof x==="string").map((x:string)=>x.slice(0,160)): [String(pair.challengeId).slice(0,160)];
+     const placeholders=aliases.map(()=>"?").join(",");
+     const legacy=aliases.length?await db.prepare("SELECT 1 AS ok FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id IN ("+placeholders+") LIMIT 1").bind(user.id,type,...aliases).first<any>():null;
+     const done=await db.prepare("SELECT 1 AS ok FROM game_answered_questions WHERE user_id=? AND section_id=? AND question_key=?").bind(user.id,section,key).first<any>();
+     if(!done&&!legacy)return NextResponse.json({bankReset:false,bankComplete:false},{headers});
     }
     const keys=[...new Set(pairs.map((x:any)=>String(x.questionKey).normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)))];
     const placeholders=keys.map(()=>"?").join(",");
@@ -99,7 +102,10 @@ async function handle(req:Request,consume:boolean){
     const playedAt=new Date().toISOString();
     const prior=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).first<any>();
     const priorQuestion=await db.prepare("SELECT answered_at FROM game_answered_questions WHERE user_id=? AND section_id=? AND question_key=?").bind(user.id,section,questionText).first<any>();
-    if(prior||priorQuestion){
+    const aliases=Array.isArray(body.legacyChallengeIds)?body.legacyChallengeIds.filter((x:any)=>typeof x==="string").map((x:string)=>x.slice(0,160)).slice(0,30):[];
+    const aliasPlaceholders=aliases.map(()=>"?").join(",");
+    const priorAlias=aliases.length?await db.prepare("SELECT 1 AS ok FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id IN ("+aliasPlaceholders+") LIMIT 1").bind(user.id,type,...aliases).first<any>():null;
+    if(prior||priorQuestion||priorAlias){
      await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).run();
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
