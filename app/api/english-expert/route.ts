@@ -4,6 +4,16 @@ export const dynamic="force-dynamic";
 const ADMIN_EMAIL="kochimonu@gmail.com",FREE_LIMIT=3,DAILY_LIMIT=10;
 const TOPICS=["noun","pronoun","adjective","verb","adverb","articles","interjection","helping-verbs","modal-verbs","past-tense","present-tense","future-tense","conjunctions","conditionals","causative-verbs","punctuation","active-passive","direct-indirect","subject-verb-agreement","idioms-phrases"];
 const headers={"Cache-Control":"no-store"};
+function normalizeQuestionIds(primary:string,legacy:any):string[]{
+ const values=[primary,...(Array.isArray(legacy)?legacy:[])].filter((v):v is string=>typeof v==="string"&&v.length>0&&v.length<=180);
+ return [...new Set(values)].slice(0,32);
+}
+async function hasAttempt(db:D1Database,userId:string,topicId:string,ids:string[]):Promise<boolean>{
+ if(!ids.length)return false;
+ const marks=ids.map(()=>"?").join(",");
+ const row=await db.prepare(`SELECT 1 AS attempted FROM english_expert_attempts WHERE user_id=? AND topic_id=? AND question_id IN (${marks}) LIMIT 1`).bind(userId,topicId,...ids).first<any>();
+ return Boolean(row?.attempted);
+}
 const today=()=>new Date(Date.now()-2.5*60*60*1000).toISOString().slice(0,10);
 async function setup(db:D1Database){
  await db.prepare("CREATE TABLE IF NOT EXISTS english_expert_pending_questions(user_id TEXT NOT NULL,topic_id TEXT NOT NULL,question_id TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(user_id,topic_id))").run();
@@ -33,7 +43,7 @@ async function handle(req:Request,consume:boolean){
   const date=today();
   if(consume){
    let body:any={};try{body=await req.json()}catch{}
-   const topic=String(body.topicId??""),questionId=String(body.questionId??"").slice(0,180),action=String(body.action??"answer");
+   const topic=String(body.topicId??""),questionId=String(body.questionId??"").slice(0,180),legacyIds=normalizeQuestionIds(questionId,body.legacyQuestionIds),action=String(body.action??"answer");
    if(!TOPICS.includes(topic)||(action!=="check"&&!questionId))return NextResponse.json({error:"Choose a valid English grammar topic and question."},{status:400,headers});
    if(action==="check"){
     const paid=admin||subscribed;
@@ -61,7 +71,7 @@ async function handle(req:Request,consume:boolean){
     await db.prepare("INSERT INTO english_expert_pending_questions(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id) DO UPDATE SET question_id=excluded.question_id,created_at=excluded.created_at").bind(user.id,topic,questionId,new Date().toISOString()).run();
     return NextResponse.json({reserved:true,pendingQuestionId:questionId},{headers});
    }
-   const claimed=await db.prepare("INSERT INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
+   if(await hasAttempt(db,user.id,topic,legacyIds)){await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=?").bind(user.id,topic).run();const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}\n   const claimed=await db.prepare("INSERT OR IGNORE INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
    if(!claimed){await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=? AND question_id=?").bind(user.id,topic,questionId).run();const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}
    let row:any;
    if(subscribed||admin){
