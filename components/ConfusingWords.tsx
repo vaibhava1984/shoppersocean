@@ -28,6 +28,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
   const [busy, setBusy] = useState(false);
   const [quotaPopup, setQuotaPopup] = useState(false);
   const [error, setError] = useState("");
+  const [hasAccess, setHasAccess] = useState(false);
 
   const privileged = isAdmin || isSubscribed;
   const current = WORD_PAIRS[index];
@@ -65,6 +66,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
           return;
         }
         setRemaining(Number(charged.remaining ?? 0));
+        setHasAccess(true);
       })
       .catch(err => { if (live) setError(err instanceof Error ? err.message : "Quota could not be verified."); })
       .finally(() => { if (live) setLoading(false); });
@@ -99,6 +101,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
         return;
       }
       setRemaining(Number(data.remaining ?? 0));
+      setHasAccess(true);
       setIndex(value => value + 1);
     } catch {
       setError("We couldn't verify your quota. Please try again.");
@@ -125,7 +128,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center font-semibold text-slate-800">Please sign in to access this section.</div>
       ) : loading ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center font-semibold text-slate-600">Loading your word lesson…</div>
-      ) : current ? (
+      ) : current && hasAccess ? (
         <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg">
           <div className="border-b border-slate-100 bg-gradient-to-r from-sky-50 via-white to-violet-50 px-5 py-5 text-center sm:px-8">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Word Pair {index + 1} of {WORD_PAIRS.length}</p>
@@ -158,7 +161,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
           </div>
         </article>
       ) : (
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center font-semibold text-slate-700">No word pairs are available yet.</div>
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center font-semibold text-slate-700">{error || (remaining <= 0 ? "Your quota for this section has been exhausted for today." : "No word pairs are available yet.")}</div>
       )}
       <GameQuotaPopup open={quotaPopup} isSubscribed={privileged} resetKey="word-differences" />
     </div>
