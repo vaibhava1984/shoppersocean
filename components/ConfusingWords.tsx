@@ -7,6 +7,18 @@ type WordPair = { id: string; title: string; difference: string; examples: { lab
 
 // The first entry is the sample supplied for the section layout.
 // New entries can be appended here as the word-pair batches are provided.
+
+function highlightComparedWords(text: string, words: string[]) {
+  const terms = words.filter(Boolean).map(word => word.replace(/[.*+?^${}()|[\]\\]/g, "\\const WORD_PAIRS: WordPair[] = ["));
+  if (!terms.length) return text;
+  const expression = new RegExp(`(?<![A-Za-z0-9])(${terms.join("|")})(?![A-Za-z0-9])`, "gi");
+  return text.split(expression).map((part, index) =>
+    words.some(word => part.toLowerCase() === word.toLowerCase())
+      ? <strong key={index} className="font-extrabold">{part}</strong>
+      : part
+  );
+}
+
 const WORD_PAIRS: WordPair[] = [
   {
     "id": "affect-effect",
@@ -4351,6 +4363,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
 
   const privileged = isAdmin || isSubscribed;
   const current = WORD_PAIRS[index];
+  const comparedWords = current?.title.split(/\\s+and\\s+/i).slice(0, 2) ?? [];
 
   useEffect(() => {
     if (!userId) { setLoading(false); return; }
@@ -4438,7 +4451,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-violet-200 bg-violet-50 px-4 py-3">
         <div>
           <h2 className="text-lg font-black text-slate-900">Confusing Words</h2>
-          <p className="text-xs font-medium text-slate-600">Understand the difference, one word pair at a time.</p>
+          <p className="text-xs font-semibold text-slate-800">Understand the difference, one word pair at a time.</p>
         </div>
         <span className="rounded-full border border-violet-200 bg-white px-3 py-1.5 text-xs font-black text-violet-800">{quotaLabel}</span>
       </div>
@@ -4450,28 +4463,26 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
       ) : current && hasAccess ? (
         <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg">
           <div className="border-b border-slate-100 bg-gradient-to-r from-sky-50 via-white to-violet-50 px-5 py-5 text-center sm:px-8">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Word Pair {index + 1} of {WORD_PAIRS.length}</p>
-            <h3 className="mt-2 text-2xl font-black tracking-tight text-violet-700 sm:text-3xl">{index + 1}. {current.title}</h3>
+            <h3 className="text-2xl font-black tracking-tight text-violet-700 sm:text-3xl">{index + 1}. {highlightComparedWords(current.title, comparedWords)}</h3>
           </div>
           <div className="space-y-6 px-5 py-6 text-[15px] leading-8 text-slate-950 sm:px-8 sm:py-8">
             <section>
               <h4 className="mb-2 text-base font-extrabold text-slate-950">Difference:</h4>
-              <p>{current.difference}</p>
+              <p>{highlightComparedWords(current.difference, comparedWords)}</p>
             </section>
             <section>
               <h4 className="mb-3 text-base font-extrabold text-slate-950">Examples:</h4>
               <div className="space-y-4">
                 {current.examples.map(example => (
                   <div key={example.label} className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
-                    <p className="font-extrabold text-slate-950">{example.label}:</p>
-                    <p className="mt-1 text-slate-950">{example.sentence}</p>
+                    <p className="font-extrabold text-slate-950">{highlightComparedWords(example.label, comparedWords)}:</p>
+                    <p className="mt-1 text-slate-950">{highlightComparedWords(example.sentence, comparedWords)}</p>
                   </div>
                 ))}
               </div>
             </section>
           </div>
           <div className="border-t border-slate-100 bg-slate-50 px-5 py-5 text-center">
-            <p className="mb-3 text-xs font-semibold text-slate-500">{index + 1} of {WORD_PAIRS.length}</p>
             <button type="button" onClick={showNext} disabled={busy || loading || remaining <= 0 || index >= WORD_PAIRS.length - 1} className="min-h-12 rounded-full bg-gradient-to-r from-violet-500 to-indigo-600 px-8 py-3 text-sm font-black text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-45">
               {busy ? "Loading…" : "Next word →"}
             </button>
