@@ -3939,6 +3939,402 @@ const WORD_PAIRS: WordPair[] = [
       { "label": "Write", "sentence": "Students write notes in their notebooks during class." },
       { "label": "Right", "sentence": "Make sure your math answers are right before submitting." }
     ]
+  },
+  {
+    "id": "absolve-and-absorb",
+    "title": "Absolve and absorb",
+    "difference": "\"Absolve\" means to declare someone free from blame, guilt, or responsibility. \"Absorb\" means to take in or soak up liquid, energy, or information.",
+    "examples": [
+      { "label": "Absolve", "sentence": "The judge decided to absolve the defendant of all legal charges." },
+      { "label": "Absorb", "sentence": "A thick kitchen sponge can quickly absorb spilled water from the counter." }
+    ]
+  },
+  {
+    "id": "aggregate-and-egress",
+    "title": "Aggregate and egress",
+    "difference": "\"Aggregate\" means a whole formed by combining several separate elements. \"Egress\" means the action of going out of or leaving a place; an exit.",
+    "examples": [
+      { "label": "Aggregate", "sentence": "The company calculated the aggregate sales for the entire fiscal year." },
+      { "label": "Egress", "sentence": "Building codes require clear emergency egress routes in every public theatre." }
+    ]
+  },
+  {
+    "id": "alibi-and-alumni",
+    "title": "Alibi and alumni",
+    "difference": "\"Alibi\" is a claim or evidence that someone was elsewhere when an act took place. \"Alumni\" is the plural term for graduates or former students of a school or college.",
+    "examples": [
+      { "label": "Alibi", "sentence": "The suspect provided a reliable alibi proving he was at home during the robbery." },
+      { "label": "Alumni", "sentence": "The university invited its alumni to attend the annual fundraising gala." }
+    ]
+  },
+  {
+    "id": "ameliorate-and-annihilate",
+    "title": "Ameliorate and annihilate",
+    "difference": "\"Ameliorate\" means to make something bad or unsatisfactory better. \"Annihilate\" means to destroy utterly or obliterate completely.",
+    "examples": [
+      { "label": "Ameliorate", "sentence": "New community policies helped ameliorate traffic congestion downtown." },
+      { "label": "Annihilate", "sentence": "Powerful shockwaves can annihilate fragile structures instantly." }
+    ]
+  },
+  {
+    "id": "amortize-and-atomize",
+    "title": "Amortize and atomize",
+    "difference": "\"Amortize\" means to gradually write off the cost of an asset or pay off a debt over time. \"Atomize\" means to convert a liquid into tiny droplets or particles.",
+    "examples": [
+      { "label": "Amortize", "sentence": "The business chose to amortize the expensive equipment purchase over five years." },
+      { "label": "Atomize", "sentence": "The laboratory sprayer can atomize liquid into a fine mist." }
+    ]
+  },
+  {
+    "id": "anachronism-and-aneurysm",
+    "title": "Anachronism and aneurysm",
+    "difference": "\"Anachronism\" is something belonging to a period other than the one in which it exists. \"Aneurysm\" is a localized enlargement of an artery caused by a weakened arterial wall.",
+    "examples": [
+      { "label": "Anachronism", "sentence": "Featuring a mechanical wristwatch in a medieval play created an anachronism." },
+      { "label": "Aneurysm", "sentence": "Doctors performed surgery to repair a dangerous brain aneurysm." }
+    ]
+  },
+  {
+    "id": "anodyne-and-antidote",
+    "title": "Anodyne and antidote",
+    "difference": "\"Anodyne\" is something that relieves pain or is soothing and inoffensive. \"Antidote\" is a remedy that counteracts a poison.",
+    "examples": [
+      { "label": "Anodyne", "sentence": "Soft instrumental music served as an anodyne for her stressful workday." },
+      { "label": "Antidote", "sentence": "Medical staff quickly administered the correct antidote to neutralize the toxin." }
+    ]
+  },
+  {
+    "id": "apathy-and-antipathy",
+    "title": "Apathy and antipathy",
+    "difference": "\"Apathy\" means lack of interest, enthusiasm, or concern. \"Antipathy\" means a deep-seated feeling of dislike, aversion, or hostility.",
+    "examples": [
+      { "label": "Apathy", "sentence": "Voter turnout was low due to widespread public apathy toward local politics." },
+      { "label": "Antipathy", "sentence": "Years of corporate rivalry created deep antipathy between the two executives." }
+    ]
+  },
+  {
+    "id": "apex-and-nadir",
+    "title": "Apex and nadir",
+    "difference": "\"Apex\" means the highest point or peak of something. \"Nadir\" means the lowest point or point of greatest adversity.",
+    "examples": [
+      { "label": "Apex", "sentence": "Reaching the mountain's apex required hours of grueling physical climbing." },
+      { "label": "Nadir", "sentence": "Losing his life savings marked the financial nadir of his career." }
+    ]
+  },
+  {
+    "id": "append-and-appraise",
+    "title": "Append and appraise",
+    "difference": "\"Append\" means to add something as a supplement or attachment. \"Appraise\" means to assess, evaluate, or estimate the value of property.",
+    "examples": [
+      { "label": "Append", "sentence": "Please remember to append your signature at the bottom of the contract." },
+      { "label": "Appraise", "sentence": "An expert came to appraise the antique grandfather clock." }
+    ]
+  },
+  {
+    "id": "arbitrate-and-agitate",
+    "title": "Arbitrate and agitate",
+    "difference": "\"Arbitrate\" means to settle a dispute as an impartial third party. \"Agitate\" means to disturb or make someone anxious, or to campaign publicly for change.",
+    "examples": [
+      { "label": "Arbitrate", "sentence": "A neutral mediator was brought in to arbitrate the labor dispute." },
+      { "label": "Agitate", "sentence": "Strong winds began to agitate the calm surface of the lake." }
+    ]
+  },
+  {
+    "id": "arraign-and-arrange",
+    "title": "Arraign and arrange",
+    "difference": "\"Arraign\" means to call someone before a court to answer a criminal charge. \"Arrange\" means to put things in a particular order or position.",
+    "examples": [
+      { "label": "Arraign", "sentence": "Police officers planned to arraign the suspect before the magistrate on Monday." },
+      { "label": "Arrange", "sentence": "She took time to arrange the colorful flowers neatly in a glass vase." }
+    ]
+  },
+  {
+    "id": "ascetic-and-aesthetic",
+    "title": "Ascetic and aesthetic",
+    "difference": "\"Ascetic\" describes a life of severe self-discipline and abstention from indulgence. \"Aesthetic\" relates to beauty, art, or the appreciation of beautiful things.",
+    "examples": [
+      { "label": "Ascetic", "sentence": "Monks lived an ascetic lifestyle devoid of material luxuries." },
+      { "label": "Aesthetic", "sentence": "The modern apartment was decorated with a clean, minimalist aesthetic." }
+    ]
+  },
+  {
+    "id": "aspiration-and-expiration",
+    "title": "Aspiration and expiration",
+    "difference": "\"Aspiration\" means a hope or ambition to achieve something. \"Expiration\" means the act of breathing out or the end of a fixed period.",
+    "examples": [
+      { "label": "Aspiration", "sentence": "Her ultimate career aspiration is to become a leading neurosurgeon." },
+      { "label": "Expiration", "sentence": "Check the milk carton label to find the exact expiration date." }
+    ]
+  },
+  {
+    "id": "assail-and-assault",
+    "title": "Assail and assault",
+    "difference": "\"Assail\" means to attack someone or trouble them persistently. \"Assault\" means a physical attack or the legal offense of threatening or using violence.",
+    "examples": [
+      { "label": "Assail", "sentence": "Critics began to assail the politician's new economic proposal." },
+      { "label": "Assault", "sentence": "The intruder was arrested and charged with criminal assault." }
+    ]
+  },
+  {
+    "id": "astound-and-amuse",
+    "title": "Astound and amuse",
+    "difference": "\"Astound\" means to shock or greatly surprise someone. \"Amuse\" means to entertain or make someone laugh.",
+    "examples": [
+      { "label": "Astound", "sentence": "The magician's clever card tricks never failed to astound the audience." },
+      { "label": "Amuse", "sentence": "The funny comedy show managed to amuse children and adults alike." }
+    ]
+  },
+  {
+    "id": "atrophy-and-hypertrophy",
+    "title": "Atrophy and hypertrophy",
+    "difference": "\"Atrophy\" means to waste away or decline through underuse. \"Hypertrophy\" means enlargement of an organ or tissue through an increase in cell size.",
+    "examples": [
+      { "label": "Atrophy", "sentence": "Muscles will quickly atrophy if left immobilized in a cast for weeks." },
+      { "label": "Hypertrophy", "sentence": "Heavy weightlifting can stimulate muscle hypertrophy." }
+    ]
+  },
+  {
+    "id": "audacious-and-auspicious",
+    "title": "Audacious and auspicious",
+    "difference": "\"Audacious\" means showing a willingness to take surprisingly bold risks. \"Auspicious\" means favorable or promising; conducive to success.",
+    "examples": [
+      { "label": "Audacious", "sentence": "The startup company launched an audacious marketing campaign." },
+      { "label": "Auspicious", "sentence": "Clear blue skies provided an auspicious start to their wedding day." }
+    ]
+  },
+  {
+    "id": "augur-and-augury",
+    "title": "Augur and augury",
+    "difference": "\"Augur\" means to indicate or predict a future outcome; it can also refer to an ancient Roman prophet. \"Augury\" is a sign or omen of what may happen in the future.",
+    "examples": [
+      { "label": "Augur", "sentence": "Strong early sales figures augur well for the new product launch." },
+      { "label": "Augury", "sentence": "The unusual bird call was interpreted as an augury of change." }
+    ]
+  },
+  {
+    "id": "autonomy-and-automation",
+    "title": "Autonomy and automation",
+    "difference": "\"Autonomy\" means freedom from external control or independence. \"Automation\" means the use of machines or automatic systems to perform tasks.",
+    "examples": [
+      { "label": "Autonomy", "sentence": "Regional states demanded greater political autonomy from the central government." },
+      { "label": "Automation", "sentence": "Modern factories rely heavily on robotics and industrial automation." }
+    ]
+  },
+  {
+    "id": "bane-and-boon",
+    "title": "Bane and boon",
+    "difference": "\"Bane\" is a cause of great distress, annoyance, or destruction. \"Boon\" is something helpful or beneficial; a blessing.",
+    "examples": [
+      { "label": "Bane", "sentence": "Invasive weed species have become the bane of local farmers." },
+      { "label": "Boon", "sentence": "The new public transit line proved to be a major boon for commuters." }
+    ]
+  },
+  {
+    "id": "barter-and-bargain",
+    "title": "Barter and bargain",
+    "difference": "\"Barter\" means to exchange goods or services for other goods without money. \"Bargain\" means an agreement between parties or something bought at a favorable price.",
+    "examples": [
+      { "label": "Barter", "sentence": "Ancient traders used to barter wheat and spices for metal tools." },
+      { "label": "Bargain", "sentence": "Shoppers searched the outdoor market for a good bargain on clothes." }
+    ]
+  },
+  {
+    "id": "beatific-and-beautiful",
+    "title": "Beatific and beautiful",
+    "difference": "\"Beatific\" means expressing or imparting bliss, happiness, or saintly calm. \"Beautiful\" means pleasing to the senses or mind.",
+    "examples": [
+      { "label": "Beatific", "sentence": "The smiling baby slept with a peaceful, beatific expression." },
+      { "label": "Beautiful", "sentence": "Sunset views over the ocean look exceptionally beautiful." }
+    ]
+  },
+  {
+    "id": "belie-and-betray",
+    "title": "Belie and betray",
+    "difference": "\"Belie\" means to give a false impression of something. \"Betray\" means to expose someone to danger or break trust.",
+    "examples": [
+      { "label": "Belie", "sentence": "His friendly smile tended to belie his fiercely competitive nature." },
+      { "label": "Betray", "sentence": "Secret agents must never betray confidential state security information." }
+    ]
+  },
+  {
+    "id": "belittle-and-belay",
+    "title": "Belittle and belay",
+    "difference": "\"Belittle\" means to make someone or something seem unimportant. \"Belay\" is a climbing term meaning to secure a rope; it can also be an order to stop.",
+    "examples": [
+      { "label": "Belittle", "sentence": "Constructive managers mentor employees rather than belittle their efforts." },
+      { "label": "Belay", "sentence": "The lead climber called out an instruction to belay the safety rope." }
+    ]
+  },
+  {
+    "id": "beneficial-and-beneficiary",
+    "title": "Beneficial and beneficiary",
+    "difference": "\"Beneficial\" means producing a good or favorable result. \"Beneficiary\" is a person who receives an advantage, funds, or property from a will or trust.",
+    "examples": [
+      { "label": "Beneficial", "sentence": "Regular aerobic exercise has many beneficial effects on health." },
+      { "label": "Beneficiary", "sentence": "The charitable foundation was named the primary beneficiary in her will." }
+    ]
+  },
+  {
+    "id": "bereaved-and-bereft",
+    "title": "Bereaved and bereft",
+    "difference": "\"Bereaved\" describes someone who has suffered the death of a loved one. \"Bereft\" means deprived of or lacking something.",
+    "examples": [
+      { "label": "Bereaved", "sentence": "Community members offered comfort and support to the bereaved family." },
+      { "label": "Bereft", "sentence": "The old abandoned mansion stood cold and bereft of furniture." }
+    ]
+  },
+  {
+    "id": "besiege-and-beseech",
+    "title": "Besiege and beseech",
+    "difference": "\"Besiege\" means to surround a place, usually with armed forces, or crowd it oppressively. \"Beseech\" means to ask someone urgently and fervently; implore.",
+    "examples": [
+      { "label": "Besiege", "sentence": "Medieval armies would besiege enemy castles until supplies ran out." },
+      { "label": "Beseech", "sentence": "The desperate explorer began to beseech passing travelers for food." }
+    ]
+  },
+  {
+    "id": "blatant-and-latent",
+    "title": "Blatant and latent",
+    "difference": "\"Blatant\" means done openly and unashamedly; glaringly obvious. \"Latent\" means existing but hidden or not yet developed.",
+    "examples": [
+      { "label": "Blatant", "sentence": "Ignoring safety regulations during the inspection was a blatant violation." },
+      { "label": "Latent", "sentence": "Careful analysis revealed latent design flaws in the prototype engine." }
+    ]
+  },
+  {
+    "id": "bliss-and-bluster",
+    "title": "Bliss and bluster",
+    "difference": "\"Bliss\" means perfect happiness or joy. \"Bluster\" means loud, aggressive, or indignant talk that often has little effect.",
+    "examples": [
+      { "label": "Bliss", "sentence": "Lounging on the tropical beach provided hours of quiet bliss." },
+      { "label": "Bluster", "sentence": "Ignore his angry political bluster; he rarely takes actual action." }
+    ]
+  },
+  {
+    "id": "bogus-and-fungus",
+    "title": "Bogus and fungus",
+    "difference": "\"Bogus\" means counterfeit, fake, or not genuine. \"Fungus\" is a spore-producing organism such as a mold or mushroom.",
+    "examples": [
+      { "label": "Bogus", "sentence": "The con artist tried to deposit a bogus check at the local bank." },
+      { "label": "Fungus", "sentence": "Damp forest soil provides ideal growing conditions for woodland fungus." }
+    ]
+  },
+  {
+    "id": "bourgeois-and-bohemian",
+    "title": "Bourgeois and bohemian",
+    "difference": "\"Bourgeois\" relates to the middle class and often to conventional values. \"Bohemian\" describes a socially unconventional, artistic lifestyle.",
+    "examples": [
+      { "label": "Bourgeois", "sentence": "They chose a comfortable bourgeois lifestyle in the suburbs." },
+      { "label": "Bohemian", "sentence": "The young painters lived a free-spirited bohemian life in the city." }
+    ]
+  },
+  {
+    "id": "bovine-and-canine",
+    "title": "Bovine and canine",
+    "difference": "\"Bovine\" relates to cattle or cows. \"Canine\" relates to dogs or members of the dog family.",
+    "examples": [
+      { "label": "Bovine", "sentence": "Large herds of bovine livestock grazed quietly across the pasture." },
+      { "label": "Canine", "sentence": "Police units used specialized canine teams to track lost hikers." }
+    ]
+  },
+  {
+    "id": "bravado-and-bravery",
+    "title": "Bravado and bravery",
+    "difference": "\"Bravado\" is a show of boldness intended to impress or intimidate. \"Bravery\" is genuine courage in facing danger or difficulty.",
+    "examples": [
+      { "label": "Bravado", "sentence": "His tough outward bravado hid a deeply nervous personality." },
+      { "label": "Bravery", "sentence": "Firefighters displayed incredible bravery while rescuing trapped residents." }
+    ]
+  },
+  {
+    "id": "broach-and-bleach",
+    "title": "Broach and bleach",
+    "difference": "\"Broach\" means to raise a subject for discussion. \"Bleach\" means to whiten or sterilize using chemical agents.",
+    "examples": [
+      { "label": "Broach", "sentence": "She hesitated to broach the difficult subject of salary during reviews." },
+      { "label": "Bleach", "sentence": "Laundry workers used liquid chlorine bleach to clean white fabrics." }
+    ]
+  },
+  {
+    "id": "bumptious-and-scrumptious",
+    "title": "Bumptious and scrumptious",
+    "difference": "\"Bumptious\" means self-assertive or proud to an irritating degree. \"Scrumptious\" means extremely delicious or tasty.",
+    "examples": [
+      { "label": "Bumptious", "sentence": "His bumptious attitude during meetings annoyed his colleagues." },
+      { "label": "Scrumptious", "sentence": "The bakery sold scrumptious chocolate brownies and pastries." }
+    ]
+  },
+  {
+    "id": "cache-and-cachet",
+    "title": "Cache and cachet",
+    "difference": "\"Cache\" is a hidden collection of items or a computer memory store. \"Cachet\" is prestige or a state of being respected and admired.",
+    "examples": [
+      { "label": "Cache", "sentence": "Detectives discovered a hidden cache of gold coins in the attic." },
+      { "label": "Cachet", "sentence": "Owning a vintage sports car carries a certain social cachet." }
+    ]
+  },
+  {
+    "id": "cackle-and-crackle",
+    "title": "Cackle and crackle",
+    "difference": "\"Cackle\" means to give a harsh, loud laugh, like a hen. \"Crackle\" means to make a rapid series of sharp snapping noises.",
+    "examples": [
+      { "label": "Cackle", "sentence": "The storyteller let out a sudden spooky cackle at the campfire." },
+      { "label": "Crackle", "sentence": "Dry firewood began to crackle and pop in the fireplace." }
+    ]
+  },
+  {
+    "id": "cadaver-and-chancellor",
+    "title": "Cadaver and chancellor",
+    "difference": "\"Cadaver\" is a dead human body, especially one used for medical study. \"Chancellor\" is the head of a university or a senior government official.",
+    "examples": [
+      { "label": "Cadaver", "sentence": "Medical students studied anatomy using a preserved human cadaver." },
+      { "label": "Chancellor", "sentence": "The university chancellor delivered the graduation commencement speech." }
+    ]
+  },
+  {
+    "id": "cajole-and-coerce",
+    "title": "Cajole and coerce",
+    "difference": "\"Cajole\" means to persuade through persistent coaxing or flattery. \"Coerce\" means to compel someone through force, threats, or intimidation.",
+    "examples": [
+      { "label": "Cajole", "sentence": "She tried to cajole her younger brother into sharing his dessert." },
+      { "label": "Coerce", "sentence": "Totalitarian regimes use fear to coerce citizens into obedience." }
+    ]
+  },
+  {
+    "id": "callous-and-callus",
+    "title": "Callous and callus",
+    "difference": "\"Callous\" means showing cruel or insensitive disregard for others. \"Callus\" is a thickened, hardened area of skin.",
+    "examples": [
+      { "label": "Callous", "sentence": "Stealing from charity funds reflects a deeply callous attitude." },
+      { "label": "Callus", "sentence": "Playing guitar frequently can cause a hard callus to form on fingertips." }
+    ]
+  },
+  {
+    "id": "canine-and-feline",
+    "title": "Canine and feline",
+    "difference": "\"Canine\" relates to dogs. \"Feline\" relates to cats or cat-like animals.",
+    "examples": [
+      { "label": "Canine", "sentence": "The veterinarian specializes in canine dental and surgical care." },
+      { "label": "Feline", "sentence": "Leopards and lions are majestic wild feline predators." }
+    ]
+  },
+  {
+    "id": "capacious-and-capricious",
+    "title": "Capacious and capricious",
+    "difference": "\"Capacious\" means having a lot of space inside; roomy. \"Capricious\" means given to sudden, unpredictable changes of mood or behavior.",
+    "examples": [
+      { "label": "Capacious", "sentence": "The large travel backpack featured a capacious main compartment." },
+      { "label": "Capricious", "sentence": "The weather in the mountains can be unpredictable and capricious." }
+    ]
+  },
+  {
+    "id": "captivate-and-excavate",
+    "title": "Captivate and excavate",
+    "difference": "\"Captivate\" means to charm or hold someone's attention. \"Excavate\" means to dig out or uncover something, such as buried artifacts.",
+    "examples": [
+      { "label": "Captivate", "sentence": "The talented musicians managed to captivate the entire audience." },
+      { "label": "Excavate", "sentence": "Archaeologists began to excavate the ancient Roman ruins carefully." }
+    ]
   }
 ];
 
