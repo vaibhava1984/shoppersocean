@@ -3292,6 +3292,7 @@ export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quot
             gameTypeId: "trivio",
             challengeId,
             challengeQuestion: candidate.question,
+            legacyChallengeIds: QUESTIONS.map((item, index) => ({ key: item.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300), id: "trivio-q-" + index })).filter(item => item.key === candidate.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300)).map(item => item.id),
             reserveQuestion: true,
             reservationSessionId
           })
@@ -3311,7 +3312,8 @@ export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quot
       }
       const bankQuestionPairs = QUESTIONS.map((item, index) => ({
         challengeId: "trivio-q-" + index,
-        questionKey: item.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300)
+        questionKey: item.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300),
+        legacyChallengeIds: QUESTIONS.map((other, otherIndex) => ({ key: other.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300), id: "trivio-q-" + otherIndex })).filter(other => other.key === item.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300)).map(other => other.id)
       })).filter((item, index, all) => all.findIndex(other => other.questionKey === item.questionKey) === index);
       const resetResponse = await fetch("/api/game-access", {
         method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" },
