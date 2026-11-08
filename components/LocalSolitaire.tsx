@@ -20,7 +20,7 @@ function makeDeal(): { stock: Card[]; waste: Card[]; piles: Card[][]; foundation
 function canTableau(card: Card, target: Card | undefined) { return target ? target.rank === card.rank + 1 && RED.has(target.suit) !== RED.has(card.suit) : card.rank === 13; }
 function canFoundation(card: Card, target: Card | undefined) { return target ? target.suit === card.suit && card.rank === target.rank + 1 : card.rank === 1; }
 
-export default function LocalSolitaire({ userId, onQuotaUpdate }: { userId: string; onQuotaUpdate: (remaining: number) => void }) {
+export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied }: { onQuotaUpdate: (remaining: number) => void; onQuotaDenied: () => void }) {
   const [dealKey, setDealKey] = useState(0);
   const deal = useMemo(makeDeal, [dealKey]);
   const [stock, setStock] = useState(deal.stock);
@@ -46,7 +46,7 @@ export default function LocalSolitaire({ userId, onQuotaUpdate }: { userId: stri
         body: JSON.stringify({ sectionId: "classic-games", gameTypeId: "solitaire", challengeId })
       });
       const data = await response.json();
-      if (!response.ok) { setMessage(data.error || "Your Solitaire quota is unavailable."); return false; }
+      if (!response.ok) { setMessage(data.error || "Your Solitaire quota is unavailable."); onQuotaDenied(); return false; }
       onQuotaUpdate(Number(data.remaining ?? 0));
       return true;
     } catch {
