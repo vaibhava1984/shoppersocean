@@ -68,8 +68,23 @@ async function handle(req:Request,consume:boolean){
    const reserveQuestion=body.reserveQuestion===true,reservationSessionId=typeof body.reservationSessionId==="string"?body.reservationSessionId.slice(0,120):"";
    const previewMode=body.previewMode===true&&admin;
    if(!SECTIONS.includes(section)||!TYPES[section]?.includes(type))return NextResponse.json({error:"Choose a valid game and section."},{status:400,headers});
-   // Reserve a question when it is displayed, not only after an answer. This prevents repeats
-   // from appearing on screen and shares the 365-day history across every game type.
+   // A question bank can restart only after every unique question was answered by this user.
+   if(body.resetQuestionBank===true){
+    const pairs=Array.isArray(body.bankQuestionPairs)?body.bankQuestionPairs.filter((x:any)=>x&&typeof x.challengeId==="string"&&typeof x.questionKey==="string").slice(0,500):[];
+    if(!pairs.length)return NextResponse.json({error:"Invalid question bank."},{status:400,headers});
+    for(const pair of pairs){
+     const key=String(pair.questionKey).normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300);
+     const done=await db.prepare("SELECT 1 AS ok FROM game_answered_questions WHERE user_id=? AND section_id=? AND question_key=? UNION ALL SELECT 1 AS ok FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=? LIMIT 1").bind(user.id,section,key,user.id,type,String(pair.challengeId).slice(0,160)).first<any>();
+     if(!done)return NextResponse.json({bankReset:false,bankComplete:false},{headers});
+    }
+    const keys=[...new Set(pairs.map((x:any)=>String(x.questionKey).normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)))];
+    const placeholders=keys.map(()=>"?").join(",");
+    await db.prepare("DELETE FROM game_answered_questions WHERE user_id=? AND section_id=? AND question_key IN ("+placeholders+")").bind(user.id,section,...keys).run();
+    await db.prepare("DELETE FROM game_challenge_history WHERE user_id=? AND game_type_id=?").bind(user.id,type).run();
+    await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=?").bind(user.id,type).run();
+    return NextResponse.json({bankReset:true,bankComplete:true},{headers});
+   }
+   // Display reservations are temporary; permanent history is written only after an answer.
    if(reserveQuestion){
     if(previewMode)return NextResponse.json({reserved:true,previewMode:true},{headers});
     // A user can have only one active reservation for the same normalized question across all games.
