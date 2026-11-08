@@ -3471,6 +3471,393 @@ const WORD_PAIRS: WordPair[] = [
         "sentence": "Warehouse workers stacked heavy cardboard boxes onto a wooden pallet."
       }
     ]
+  },
+  {
+    "id": "panic-and-panicky",
+    "title": "Panic and panicky",
+    "difference": "“Panic” is a noun or verb referring to sudden uncontrollable fear or anxiety. “Panicky” is an adjective describing someone who feels or shows such fear.",
+    "examples": [
+      { "label": "Panic", "sentence": "Hearing the loud fire alarm caused immediate panic among shoppers." },
+      { "label": "Panicky", "sentence": "She felt panicky when she realized her passport was missing." }
+    ]
+  },
+  {
+    "id": "paranoia-and-xenophobia",
+    "title": "Paranoia and xenophobia",
+    "difference": "“Paranoia” is an irrational or delusional suspicion, often involving persecution. “Xenophobia” is fear or dislike of people from other countries.",
+    "examples": [
+      { "label": "Paranoia", "sentence": "Excessive stress can sometimes trigger feelings of groundless paranoia." },
+      { "label": "Xenophobia", "sentence": "Cultural education programs work actively to eliminate xenophobia." }
+    ]
+  },
+  {
+    "id": "parasite-and-parakeet",
+    "title": "Parasite and parakeet",
+    "difference": "A “parasite” is an organism that lives on or in another organism and obtains nutrients from it. A “parakeet” is a small, often brightly colored parrot with a long tail.",
+    "examples": [
+      { "label": "Parasite", "sentence": "Ticks are a common external parasite affecting domestic dogs." },
+      { "label": "Parakeet", "sentence": "A colorful green parakeet chirped happily inside its cage." }
+    ]
+  },
+  {
+    "id": "parody-and-tragedy",
+    "title": "Parody and tragedy",
+    "difference": "A “parody” imitates a work or style with exaggeration, usually for comic effect. A “tragedy” is an event causing great suffering or a serious dramatic work.",
+    "examples": [
+      { "label": "Parody", "sentence": "The comedy film featured a hilarious parody of classic spy thrillers." },
+      { "label": "Tragedy", "sentence": "The sudden factory explosion resulted in a terrible human tragedy." }
+    ]
+  },
+  {
+    "id": "pastoral-and-pastiche",
+    "title": "Pastoral and pastiche",
+    "difference": "“Pastoral” relates to the countryside or rural life. A “pastiche” is an artistic work that imitates the style of another artist or work.",
+    "examples": [
+      { "label": "Pastoral", "sentence": "Sheep grazed peacefully across the green pastoral landscape." },
+      { "label": "Pastiche", "sentence": "The musical score was a clever pastiche of 1980s pop genres." }
+    ]
+  },
+  {
+    "id": "patent-and-latent",
+    "title": "Patent and latent",
+    "difference": "“Patent” can mean obvious or refer to an official right protecting an invention. “Latent” means present but hidden or not yet developed.",
+    "examples": [
+      { "label": "Patent", "sentence": "The inventor filed a legal patent for her new solar-powered device." },
+      { "label": "Latent", "sentence": "Children often possess latent musical talents waiting to be discovered." }
+    ]
+  },
+  {
+    "id": "pathos-and-bathos",
+    "title": "Pathos and bathos",
+    "difference": "“Pathos” is a quality that evokes pity, sadness, or compassion. “Bathos” is an abrupt shift from elevated seriousness to something trivial or ridiculous.",
+    "examples": [
+      { "label": "Pathos", "sentence": "The heartbreaking movie scene was filled with genuine pathos." },
+      { "label": "Bathos", "sentence": "The solemn speech descended into bathos when his phone rang loudly." }
+    ]
+  },
+  {
+    "id": "paucity-and-plethora",
+    "title": "Paucity and plethora",
+    "difference": "“Paucity” means a scarcity or insufficient amount. “Plethora” means a large or excessive amount.",
+    "examples": [
+      { "label": "Paucity", "sentence": "There was a noticeable paucity of reliable evidence supporting the claim." },
+      { "label": "Plethora", "sentence": "The festival offered a plethora of delicious food choices." }
+    ]
+  },
+  {
+    "id": "peer-and-pier",
+    "title": "Peer and pier",
+    "difference": "A “peer” is someone of equal age or status, or a verb meaning to look closely. A “pier” is a structure projecting into water, often used by boats or visitors.",
+    "examples": [
+      { "label": "Peer", "sentence": "Students collaborated with their peers on the science project." },
+      { "label": "Pier", "sentence": "Fishermen cast their lines from the wooden ocean pier." }
+    ]
+  },
+  {
+    "id": "penal-and-penile",
+    "title": "Penal and penile",
+    "difference": "“Penal” relates to punishment or the system of criminal penalties. “Penile” is the anatomical adjective relating to the penis.",
+    "examples": [
+      { "label": "Penal", "sentence": "The country's penal code imposes strict sentences for white-collar crime." },
+      { "label": "Penile", "sentence": "Medical researchers published a study on penile health and treatment." }
+    ]
+  },
+  {
+    "id": "pendant-and-pendent",
+    "title": "Pendant and pendent",
+    "difference": "A “pendant” is an ornament that hangs from a necklace. “Pendent” means hanging down or, in some contexts, remaining undecided or pending.",
+    "examples": [
+      { "label": "Pendant", "sentence": "She wore a sparkling diamond pendant on a thin silver chain." },
+      { "label": "Pendent", "sentence": "Vines hung in a pendent fashion from the greenhouse rafters." }
+    ]
+  },
+  {
+    "id": "perquisite-and-prerequisite",
+    "title": "Perquisite and prerequisite",
+    "difference": "A “perquisite” is an extra benefit or privilege attached to a job. A “prerequisite” is a condition that must be met before something else can happen.",
+    "examples": [
+      { "label": "Perquisite", "sentence": "Free company car usage was a major job perquisite." },
+      { "label": "Prerequisite", "sentence": "Passing basic calculus is a strict prerequisite for advanced physics." }
+    ]
+  },
+  {
+    "id": "perspicacious-and-perspicuous",
+    "title": "Perspicacious and perspicuous",
+    "difference": "“Perspicacious” means having keen insight or judgment. “Perspicuous” means clearly expressed and easy to understand.",
+    "examples": [
+      { "label": "Perspicacious", "sentence": "The perspicacious analyst uncovered the financial fraud quickly." },
+      { "label": "Perspicuous", "sentence": "The professor delivered a perspicuous lecture on quantum physics." }
+    ]
+  },
+  {
+    "id": "perverse-and-pervious",
+    "title": "Perverse and pervious",
+    "difference": "“Perverse” describes deliberately unreasonable or unacceptable behavior. “Pervious” means permeable or allowing liquid to pass through.",
+    "examples": [
+      { "label": "Perverse", "sentence": "He took a perverse pleasure in arguing against obvious facts." },
+      { "label": "Pervious", "sentence": "Sandy soil is highly pervious, allowing rainwater to drain quickly." }
+    ]
+  },
+  {
+    "id": "phenomenon-and-phenomena",
+    "title": "Phenomenon and phenomena",
+    "difference": "“Phenomenon” is the singular form for an event or occurrence. “Phenomena” is its plural form.",
+    "examples": [
+      { "label": "Phenomenon", "sentence": "An aurora is a breathtaking natural optical phenomenon." },
+      { "label": "Phenomena", "sentence": "Scientists studied seismic phenomena recorded across tectonic plates." }
+    ]
+  },
+  {
+    "id": "philistine-and-polyglot",
+    "title": "Philistine and polyglot",
+    "difference": "A “philistine” is a person indifferent or hostile to culture and the arts. A “polyglot” is someone who knows or uses several languages.",
+    "examples": [
+      { "label": "Philistine", "sentence": "He dismissed modern abstract art with a typical philistine attitude." },
+      { "label": "Polyglot", "sentence": "The seasoned diplomat was a true polyglot fluent in five languages." }
+    ]
+  },
+  {
+    "id": "physiognomy-and-phrenology",
+    "title": "Physiognomy and phrenology",
+    "difference": "“Physiognomy” refers to facial features or expression, historically—and unreliably—thought to reveal character. “Phrenology” is a discredited pseudoscience that claimed skull shape revealed mental traits.",
+    "examples": [
+      { "label": "Physiognomy", "sentence": "Victorian novelists sometimes described characters' supposed moral traits through physiognomy." },
+      { "label": "Phrenology", "sentence": "Nineteenth-century researchers mistakenly used phrenology to judge intelligence." }
+    ]
+  },
+  {
+    "id": "pittance-and-patience",
+    "title": "Pittance and patience",
+    "difference": "A “pittance” is a very small or inadequate amount of money. “Patience” is the ability to tolerate delay or difficulty calmly.",
+    "examples": [
+      { "label": "Pittance", "sentence": "Working long hours for a mere pittance left employees frustrated." },
+      { "label": "Patience", "sentence": "Teaching young children requires immense dedication and patience." }
+    ]
+  },
+  {
+    "id": "plaintive-and-plaint",
+    "title": "Plaintive and plaint",
+    "difference": "“Plaintive” describes a sound that is sad or mournful. A “plaint” is an old or formal term for a complaint or grievance.",
+    "examples": [
+      { "label": "Plaintive", "sentence": "A plaintive cry echoed through the dark forest at night." },
+      { "label": "Plaint", "sentence": "The citizen filed a formal plaint against the zoning violation." }
+    ]
+  },
+  {
+    "id": "plastic-and-elastic",
+    "title": "Plastic and elastic",
+    "difference": "“Plastic” can mean easily shaped or refer to synthetic polymers. “Elastic” describes something that can return to its original shape after being stretched.",
+    "examples": [
+      { "label": "Plastic", "sentence": "Sculptors used a soft, plastic clay to form the figurine." },
+      { "label": "Elastic", "sentence": "Rubber bands are highly elastic and stretch easily under tension." }
+    ]
+  },
+  {
+    "id": "plebeian-and-patrician",
+    "title": "Plebeian and patrician",
+    "difference": "“Plebeian” relates to common people or can mean lacking refinement. “Patrician” relates to the aristocracy or suggests refined, upper-class manners.",
+    "examples": [
+      { "label": "Plebeian", "sentence": "Ancient Roman senators looked down upon plebeian citizens." },
+      { "label": "Patrician", "sentence": "The family lived in a grand estate reflecting patrician elegance." }
+    ]
+  },
+  {
+    "id": "pliable-and-pliant",
+    "title": "Pliable and pliant",
+    "difference": "Both words can mean flexible or easily bent. “Pliable” can also suggest being easily influenced, while “pliant” often emphasizes adaptability or willingness to yield.",
+    "examples": [
+      { "label": "Pliable", "sentence": "Fresh willow branches are remarkably pliable and easy to weave." },
+      { "label": "Pliant", "sentence": "The material remained pliant enough to shape by hand." }
+    ]
+  },
+  {
+    "id": "podiatrist-and-pediatrician",
+    "title": "Podiatrist and pediatrician",
+    "difference": "A “podiatrist” specializes in diagnosing and treating foot and ankle conditions. A “pediatrician” specializes in the medical care of infants, children, and adolescents.",
+    "examples": [
+      { "label": "Podiatrist", "sentence": "She visited a podiatrist to treat her chronic heel pain." },
+      { "label": "Pediatrician", "sentence": "Parents brought their sick infant to the local pediatrician." }
+    ]
+  },
+  {
+    "id": "polemic-and-polite",
+    "title": "Polemic and polite",
+    "difference": "A “polemic” is a strong verbal or written attack on an opinion or position. “Polite” means showing good manners or courtesy.",
+    "examples": [
+      { "label": "Polemic", "sentence": "The philosopher published a fierce political polemic against tyranny." },
+      { "label": "Polite", "sentence": "Always remember to be polite and courteous to customers." }
+    ]
+  },
+  {
+    "id": "pomade-and-pomander",
+    "title": "Pomade and pomander",
+    "difference": "“Pomade” is a scented ointment used to style hair. A “pomander” is a fragrant ball or container of aromatic substances used to scent the air.",
+    "examples": [
+      { "label": "Pomade", "sentence": "He slicked back his hair neatly using a scented styling pomade." },
+      { "label": "Pomander", "sentence": "She placed a dried orange pomander inside her winter clothes closet." }
+    ]
+  },
+  {
+    "id": "poor-and-pore",
+    "title": "Poor and pore",
+    "difference": "“Poor” can mean lacking money or being of low quality. “Pore” is a tiny opening in the skin, and as a verb in “pore over” means to study closely.",
+    "examples": [
+      { "label": "Poor", "sentence": "Heavy rain destroyed crops, leaving farmers in a poor financial state." },
+      { "label": "Pore", "sentence": "Researchers spent hours poring over ancient historical manuscripts." }
+    ]
+  },
+  {
+    "id": "portable-and-potable",
+    "title": "Portable and potable",
+    "difference": "“Portable” means easy to carry or move. “Potable” means safe or suitable to drink.",
+    "examples": [
+      { "label": "Portable", "sentence": "The modern laptop computer is lightweight and easily portable." },
+      { "label": "Potable", "sentence": "Emergency workers distributed clean, potable water to flood victims." }
+    ]
+  },
+  {
+    "id": "portent-and-potable",
+    "title": "Portent and potable",
+    "difference": "A “portent” is a sign or warning of something significant or momentous to come. “Potable” means safe to drink.",
+    "examples": [
+      { "label": "Portent", "sentence": "Dark storm clouds gathering rapidly served as an ominous portent." },
+      { "label": "Potable", "sentence": "Ensuring access to potable water is essential for public health." }
+    ]
+  },
+  {
+    "id": "pragmatic-and-dogmatic",
+    "title": "Pragmatic and dogmatic",
+    "difference": "“Pragmatic” means practical and realistic. “Dogmatic” describes someone who asserts beliefs as unquestionably true, often without considering evidence.",
+    "examples": [
+      { "label": "Pragmatic", "sentence": "Management adopted a pragmatic approach to resolve supply delays." },
+      { "label": "Dogmatic", "sentence": "He refused to compromise during debates because of his dogmatic views." }
+    ]
+  },
+  {
+    "id": "precipitate-and-precipitous",
+    "title": "Precipitate and precipitous",
+    "difference": "“Precipitate” can mean to cause something to happen suddenly or prematurely. “Precipitous” means very steep or, figuratively, rash and hasty.",
+    "examples": [
+      { "label": "Precipitate", "sentence": "Unforeseen economic shifts can precipitate sudden market crashes." },
+      { "label": "Precipitous", "sentence": "The hikers stopped at the edge of a precipitous mountain cliff." }
+    ]
+  },
+  {
+    "id": "preempt-and-exempt",
+    "title": "Preempt and exempt",
+    "difference": "“Preempt” means to take action before someone else or prevent something from occurring. “Exempt” means free from an obligation or liability.",
+    "examples": [
+      { "label": "Preempt", "sentence": "The network special will preempt tonight's regular television sitcom." },
+      { "label": "Exempt", "sentence": "Senior citizens are exempt from paying certain municipal property taxes." }
+    ]
+  },
+  {
+    "id": "premier-and-premiere",
+    "title": "Premier and premiere",
+    "difference": "“Premier” means first in importance or rank and can also refer to a head of government. “Premiere” is the first public performance or screening of a work.",
+    "examples": [
+      { "label": "Premier", "sentence": "The company is recognized as a premier provider of cloud software." },
+      { "label": "Premiere", "sentence": "Actors walked down the red carpet for the grand movie premiere." }
+    ]
+  },
+  {
+    "id": "prescribe-and-proscribe",
+    "title": "Prescribe and proscribe",
+    "difference": "“Prescribe” means to recommend or authorize a treatment or rule. “Proscribe” means to forbid or officially condemn something.",
+    "examples": [
+      { "label": "Prescribe", "sentence": "Doctors prescribe antibiotics to treat bacterial infections." },
+      { "label": "Proscribe", "sentence": "Local laws strictly proscribe driving vehicles without a valid license." }
+    ]
+  },
+  {
+    "id": "presentiment-and-resentment",
+    "title": "Presentiment and resentment",
+    "difference": "A “presentiment” is an intuitive feeling about something that may happen, often unpleasant. “Resentment” is bitter anger at perceived unfair treatment.",
+    "examples": [
+      { "label": "Presentiment", "sentence": "She felt a sudden dark presentiment before opening the letter." },
+      { "label": "Resentment", "sentence": "Unfair workplace favoritism caused deep resentment among staff." }
+    ]
+  },
+  {
+    "id": "primeval-and-medieval",
+    "title": "Primeval and medieval",
+    "difference": "“Primeval” relates to the earliest ages of the world or history. “Medieval” relates to the Middle Ages.",
+    "examples": [
+      { "label": "Primeval", "sentence": "Thick primeval forests covered the untamed wilderness." },
+      { "label": "Medieval", "sentence": "Historic castles stand as iconic monuments of medieval architecture." }
+    ]
+  },
+  {
+    "id": "pristine-and-murky",
+    "title": "Pristine and murky",
+    "difference": "“Pristine” means clean and unspoiled or in its original condition. “Murky” means dark, cloudy, or dirty.",
+    "examples": [
+      { "label": "Pristine", "sentence": "The secluded beach featured crystal-clear water and pristine white sand." },
+      { "label": "Murky", "sentence": "Heavy rains left the river water muddy and murky." }
+    ]
+  },
+  {
+    "id": "probate-and-probation",
+    "title": "Probate and probation",
+    "difference": "“Probate” is the legal process of proving and administering a will. “Probation” is a period of supervision or testing, including supervision imposed after a criminal conviction.",
+    "examples": [
+      { "label": "Probate", "sentence": "Lawyers filed the deceased person's will through the probate court." },
+      { "label": "Probation", "sentence": "The offender served two years of supervised community probation." }
+    ]
+  },
+  {
+    "id": "profane-and-profound",
+    "title": "Profane and profound",
+    "difference": "“Profane” can mean secular or irreverent toward something sacred. “Profound” means very great or showing deep insight.",
+    "examples": [
+      { "label": "Profane", "sentence": "The ancient text distinguished between sacred and profane rituals." },
+      { "label": "Profound", "sentence": "The inspirational speaker shared profound insights on human psychology." }
+    ]
+  },
+  {
+    "id": "profligate-and-prolific",
+    "title": "Profligate and prolific",
+    "difference": "“Profligate” means recklessly wasteful or extravagant. “Prolific” means highly productive or producing many works or offspring.",
+    "examples": [
+      { "label": "Profligate", "sentence": "His profligate spending habits quickly led to financial trouble." },
+      { "label": "Prolific", "sentence": "The award-winning author was a prolific writer of science fiction." }
+    ]
+  },
+  {
+    "id": "prominent-and-imminent",
+    "title": "Prominent and imminent",
+    "difference": "“Prominent” means important, well-known, or conspicuously projecting. “Imminent” means about to happen very soon.",
+    "examples": [
+      { "label": "Prominent", "sentence": "A prominent scientist delivered the keynote conference address." },
+      { "label": "Imminent", "sentence": "Dark, gathering storm clouds signaled an imminent downpour." }
+    ]
+  },
+  {
+    "id": "prophesy-and-prophecy",
+    "title": "Prophesy and prophecy",
+    "difference": "“Prophesy” is a verb meaning to predict future events. “Prophecy” is a noun referring to the prediction itself.",
+    "examples": [
+      { "label": "Prophesy", "sentence": "Ancient oracles would prophesy about the rise of great kingdoms." },
+      { "label": "Prophecy", "sentence": "The old myth spoke of an ancient prophecy finally coming true." }
+    ]
+  },
+  {
+    "id": "prostrate-and-prostate",
+    "title": "Prostrate and prostate",
+    "difference": "“Prostrate” means lying flat, especially face down, often from exhaustion or humility. The “prostate” is a gland in the male reproductive system.",
+    "examples": [
+      { "label": "Prostrate", "sentence": "Exhausted hikers lay prostrate on the grass to catch their breath." },
+      { "label": "Prostate", "sentence": "Regular medical screenings are essential for monitoring prostate health." }
+    ]
+  },
+  {
+    "id": "protagonist-and-antagonist",
+    "title": "Protagonist and antagonist",
+    "difference": "A “protagonist” is the central character in a story or drama. An “antagonist” opposes the protagonist.",
+    "examples": [
+      { "label": "Protagonist", "sentence": "The brave protagonist fought courageously to save her kingdom." },
+      { "label": "Antagonist", "sentence": "A cunning villain served as the primary antagonist in the story." }
+    ]
   }
 ];
 
