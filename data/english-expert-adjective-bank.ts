@@ -2,34 +2,34 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "1. Choose the correct adjective to fill in the blank:\nThe weather today is much __________ than it was yesterday.",
     "o": [
-      "hot",
       "hotter",
+      "hot",
       "hottest",
       "hotly"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
     "q": "2. Identify the adjective in the following sentence:\nShe wore a beautiful red dress to the party.",
     "o": [
-      "dress",
       "red",
+      "dress",
       "party",
       "wore"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
     "q": "3. Choose the correct adjective to fill in the blank:\nHe drives a very __________ car on the highway.",
     "o": [
       "speed",
-      "fast",
       "quickly",
+      "fast",
       "fastly"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
@@ -37,32 +37,32 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "Quickly",
       "Honesty",
-      "Courageous",
-      "Beautifully"
+      "Beautifully",
+      "Courageous"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
     "q": "5. Choose the correct adjective to fill in the blank:\nThere is not __________ milk left in the jug for tea.",
     "o": [
       "many",
-      "much",
       "few",
+      "much",
       "several"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
     "q": "6. Identify the adjective in the sentence:\nThe clever fox outsmarted the hungry wolf.",
     "o": [
-      "clever",
+      "outsmarted",
       "fox",
       "wolf",
-      "outsmarted"
+      "clever"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
@@ -81,43 +81,43 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "breakfast",
       "morning",
-      "two",
-      "apples"
+      "apples",
+      "two"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
     "q": "9. Choose the correct adjective to fill in the blank:\nI have __________ friends who always support me in tough times.",
     "o": [
-      "little",
       "a few",
+      "little",
       "much",
       "less"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
     "q": "10. Identify the adjective in the sentence:\nThe tired traveler rested under the shady tree.",
     "o": [
       "traveler",
-      "tree",
       "tired",
+      "tree",
       "rested"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "11. Choose the correct adjective to fill in the blank:\nThis puzzle is __________ than the previous one we solved.",
     "o": [
-      "easy",
       "easier",
+      "easy",
       "easiest",
       "easily"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
@@ -134,23 +134,23 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "13. Choose the correct adjective to fill in the blank:\nShe added a __________ amount of sugar to the coffee.",
     "o": [
-      "little",
+      "fewer",
       "few",
       "many",
-      "fewer"
+      "little"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
     "q": "14. Identify the adjective in the sentence:\nThe cold wind blew through the empty streets.",
     "o": [
       "wind",
-      "cold",
       "streets",
+      "cold",
       "blew"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
@@ -158,10 +158,10 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "tall",
       "taller",
-      "tallest",
-      "tallish"
+      "tallish",
+      "tallest"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
@@ -169,43 +169,43 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "book",
       "shelf",
-      "That",
-      "me"
-    ],
-    "a": 2,
-    "e": ""
-  },
-  {
-    "q": "17. Choose the correct adjective to fill in the blank:\nHe is an __________ boy who always tells the truth.",
-    "o": [
-      "honest",
-      "honesty",
-      "honestly",
-      "dishonesty"
-    ],
-    "a": 0,
-    "e": ""
-  },
-  {
-    "q": "18. Identify the adjective in the sentence:\nThe bright stars lit up the dark sky.",
-    "o": [
-      "stars",
-      "sky",
-      "lit",
-      "bright"
+      "me",
+      "That"
     ],
     "a": 3,
     "e": ""
   },
   {
+    "q": "17. Choose the correct adjective to fill in the blank:\nHe is an __________ boy who always tells the truth.",
+    "o": [
+      "honestly",
+      "honesty",
+      "honest",
+      "dishonesty"
+    ],
+    "a": 2,
+    "e": ""
+  },
+  {
+    "q": "18. Identify the adjective in the sentence:\nThe bright stars lit up the dark sky.",
+    "o": [
+      "bright",
+      "sky",
+      "lit",
+      "stars"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
     "q": "19. Choose the correct adjective to fill in the blank:\nWe do not have __________ time left to finish this assignment.",
     "o": [
-      "many",
       "much",
+      "many",
       "few",
       "several"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
@@ -222,23 +222,23 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "21. Choose the correct adjective to fill in the blank:\nThis box is too __________ for me to carry alone.",
     "o": [
-      "heavy",
-      "heavily",
       "heaviness",
+      "heavily",
+      "heavy",
       "heavier"
     ],
-    "a": 0,
+    "a": 2,
     "e": ""
   },
   {
     "q": "22. Identify the adjective in the sentence:\nThe old man walked slowly down the dusty road.",
     "o": [
       "slowly",
-      "road",
       "dusty",
+      "road",
       "walked"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
@@ -255,12 +255,12 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "24. Identify the adjective indicating quality:",
     "o": [
-      "Wooden",
+      "All of these",
       "Soft",
       "Smooth",
-      "All of these"
+      "Wooden"
     ],
-    "a": 3,
+    "a": 0,
     "e": ""
   },
   {
@@ -290,10 +290,10 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "silk",
       "silken",
-      "silky",
-      "All of these"
+      "All of these",
+      "silky"
     ],
-    "a": 3,
+    "a": 2,
     "e": ""
   },
   {
@@ -301,43 +301,43 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "color",
       "room",
-      "Which",
-      "prefer"
+      "prefer",
+      "Which"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
     "q": "29. Choose the correct adjective to fill in the blank:\nHis performance in the school play was __________.",
     "o": [
-      "excellence",
       "excellent",
+      "excellence",
       "excellently",
       "excel"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
     "q": "30. Identify the adjective in the sentence:\nThe hungry dog barked loudly at the stranger.",
     "o": [
-      "hungry",
+      "loudly",
       "dog",
       "stranger",
-      "loudly"
+      "hungry"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
     "q": "31. Choose the correct adjective to fill in the blank:\nFebruary is the __________ month of the year.",
     "o": [
       "short",
-      "shorter",
       "shortest",
+      "shorter",
       "shortly"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
@@ -354,12 +354,12 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "33. Choose the correct adjective to fill in the blank:\nCan you give me __________ information about this course?",
     "o": [
-      "some",
-      "many",
       "few",
+      "many",
+      "some",
       "several"
     ],
-    "a": 0,
+    "a": 2,
     "e": ""
   },
   {
@@ -377,11 +377,11 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "q": "35. Choose the correct adjective to fill in the blank:\nIron is __________ than most other metals.",
     "o": [
       "strong",
-      "stronger",
+      "strongly",
       "strongest",
-      "strongly"
+      "stronger"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
@@ -398,12 +398,12 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "37. Choose the correct adjective to fill in the blank:\nHe is __________ enough to lift this heavy box.",
     "o": [
-      "strong",
       "strength",
+      "strong",
       "strongly",
       "stronger"
     ],
-    "a": 0,
+    "a": 1,
     "e": ""
   },
   {
@@ -411,65 +411,65 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "flowers",
       "room",
-      "sweet",
-      "smell"
+      "smell",
+      "sweet"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
     "q": "39. Choose the correct adjective to fill in the blank:\nShe wore a __________ scarf around her neck.",
     "o": [
       "woolen",
-      "wool",
+      "Both A and C",
       "woolly",
-      "Both A and C"
+      "wool"
     ],
-    "a": 3,
+    "a": 1,
     "e": ""
   },
   {
     "q": "40. Identify the adjective in the sentence:\nThe naughty boy broke the fragile glass vase.",
     "o": [
-      "naughty",
+      "All of these",
       "boy",
       "glass",
-      "All of these"
+      "naughty"
     ],
-    "a": 3,
+    "a": 0,
     "e": ""
   },
   {
     "q": "41. Choose the correct adjective to fill in the blank:\nThis is the __________ movie I have ever watched in a theater.",
     "o": [
       "bad",
-      "worse",
       "worst",
+      "worse",
       "badly"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "42. Identify the adjective in the sentence:\nA quiet library is the best place to study.",
     "o": [
-      "quiet",
+      "study",
       "library",
       "place",
-      "study"
+      "quiet"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
     "q": "43. Choose the correct adjective to fill in the blank:\nThere is __________ hope of winning the match now.",
     "o": [
-      "little",
-      "few",
       "many",
+      "few",
+      "little",
       "fewer"
     ],
-    "a": 0,
+    "a": 2,
     "e": ""
   },
   {
@@ -486,56 +486,56 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "45. Choose the correct adjective to fill in the blank:\nPlease keep your hands _________ while painting.",
     "o": [
-      "clean",
-      "cleanly",
       "cleanliness",
+      "cleanly",
+      "clean",
       "cleaner"
     ],
-    "a": 0,
+    "a": 2,
     "e": ""
   },
   {
     "q": "46. Identify the adjective in the sentence:\nThe bitter medicine made the child cry.",
     "o": [
       "medicine",
-      "bitter",
+      "cry",
       "child",
-      "cry"
+      "bitter"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "47. Choose the correct adjective to fill in the blank:\nHe is a __________ writer who has published many books.",
     "o": [
       "fame",
-      "famous",
+      "fameless",
       "famously",
-      "fameless"
+      "famous"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "48. Identify the adjective in the sentence:\nThe rich merchant donated money to the poor.",
     "o": [
-      "rich",
+      "poor",
       "merchant",
       "money",
-      "poor"
+      "rich"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
     "q": "49. Choose the correct adjective to fill in the blank:\nThe water in the swimming pool is quite __________.",
     "o": [
-      "warm",
       "warmly",
+      "warm",
       "warmth",
       "warmer"
     ],
-    "a": 0,
+    "a": 1,
     "e": ""
   },
   {
@@ -553,11 +553,11 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "q": "51. Choose the correct adjective to fill in the blank:\nThis is the __________ book I have ever read on this subject.",
     "o": [
       "interesting",
-      "more interesting",
       "most interesting",
+      "more interesting",
       "interestingly"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
@@ -586,22 +586,22 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "q": "54. Identify the quantitative adjective in the sentence:\nShe bought six fresh apples from the local market.",
     "o": [
       "fresh",
-      "local",
       "six",
+      "local",
       "market"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "55. Choose the correct adjective to fill in the blank:\nThe soup tastes much __________ than the one we had yesterday.",
     "o": [
-      "good",
       "better",
+      "good",
       "best",
       "well"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
@@ -629,12 +629,12 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "58. Identify the adjective in the sentence:\nThe dark clouds gathered quickly across the western sky.",
     "o": [
-      "dark",
+      "sky",
       "quickly",
       "gathered",
-      "sky"
+      "dark"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
@@ -652,44 +652,44 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "q": "60. Identify the possessive adjective in the sentence:\nOur school library has a large collection of books.",
     "o": [
       "school",
-      "Our",
+      "books",
       "collection",
-      "books"
+      "Our"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "61. Choose the correct adjective to fill in the blank:\nPlease pour me __________ water in this glass.",
     "o": [
-      "some",
-      "many",
       "few",
+      "many",
+      "some",
       "several"
-    ],
-    "a": 0,
-    "e": ""
-  },
-  {
-    "q": "62. Identify the adjective in the sentence:\nThe young boy climbed up the tall coconut tree.",
-    "o": [
-      "climbed",
-      "coconut",
-      "young",
-      "tree"
     ],
     "a": 2,
     "e": ""
   },
   {
+    "q": "62. Identify the adjective in the sentence:\nThe young boy climbed up the tall coconut tree.",
+    "o": [
+      "young",
+      "coconut",
+      "climbed",
+      "tree"
+    ],
+    "a": 0,
+    "e": ""
+  },
+  {
     "q": "63. Choose the correct adjective to fill in the blank:\nThis suitcase is __________ than the one I packed yesterday.",
     "o": [
-      "light",
       "lighter",
+      "light",
       "lightest",
       "lightly"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
@@ -697,10 +697,10 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "mangoes",
       "tree",
-      "Those",
-      "sweet"
+      "sweet",
+      "Those"
     ],
-    "a": 2,
+    "a": 3,
     "e": ""
   },
   {
@@ -718,22 +718,22 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "q": "66. Identify the adjective in the sentence:\nA gentle breeze blew across the calm lake.",
     "o": [
       "gentle",
-      "breeze",
+      "Both A and C",
       "calm",
-      "Both A and C"
+      "breeze"
     ],
-    "a": 3,
+    "a": 1,
     "e": ""
   },
   {
     "q": "67. Choose the correct adjective to fill in the blank:\nShe wore a __________ necklace made of genuine pearls.",
     "o": [
       "shining",
-      "shiny",
       "shinily",
+      "shiny",
       "shine"
     ],
-    "a": 1,
+    "a": 2,
     "e": ""
   },
   {
@@ -751,22 +751,22 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "q": "69. Choose the correct adjective to fill in the blank:\nIt was the __________ experience of my entire life.",
     "o": [
       "bad",
-      "worse",
       "worst",
+      "worse",
       "badly"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "70. Identify the adjective in the sentence:\nThe loyal dog guarded the house all night.",
     "o": [
-      "loyal",
+      "night",
       "dog",
       "house",
-      "night"
+      "loyal"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
@@ -794,45 +794,45 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "73. Choose the correct adjective to fill in the blank:\nThis is a __________ problem that requires careful attention.",
     "o": [
-      "complex",
-      "complexly",
       "complexity",
+      "complexly",
+      "complex",
       "complexer"
     ],
-    "a": 0,
+    "a": 2,
     "e": ""
   },
   {
     "q": "74. Identify the adjective in the sentence:\nThe bright sun shone brightly in the clear sky.",
     "o": [
-      "shone",
-      "brightly",
       "clear",
+      "brightly",
+      "shone",
       "sun"
     ],
-    "a": 2,
+    "a": 0,
     "e": ""
   },
   {
     "q": "75. Choose the correct adjective to fill in the blank:\nHe is __________ than his elder brother.",
     "o": [
       "tall",
-      "taller",
+      "tallish",
       "tallest",
-      "tallish"
+      "taller"
     ],
-    "a": 1,
+    "a": 3,
     "e": ""
   },
   {
     "q": "76. Identify the adjective in the sentence:\nThe stray cat mewed softly at our back door.",
     "o": [
       "stray",
-      "softly",
+      "Both A and C",
       "back",
-      "Both A and C"
+      "softly"
     ],
-    "a": 3,
+    "a": 1,
     "e": ""
   },
   {
@@ -861,11 +861,11 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "q": "79. Choose the correct adjective to fill in the blank:\nShe is the __________ girl in our neighborhood.",
     "o": [
       "kind",
-      "kinder",
       "kindest",
+      "kinder",
       "kindly"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
@@ -873,21 +873,21 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "strong",
       "weak",
-      "trees",
-      "Both A and B"
+      "Both A and B",
+      "trees"
     ],
-    "a": 3,
+    "a": 2,
     "e": ""
   },
   {
     "q": "81. Choose the correct adjective to fill in the blank:\nPlease speak in a __________ voice inside the library.",
     "o": [
-      "low",
+      "lowly",
       "lower",
       "lowest",
-      "lowly"
+      "low"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
@@ -905,11 +905,11 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "q": "83. Choose the correct adjective to fill in the blank:\nHe has __________ friends in this new city.",
     "o": [
       "much",
-      "little",
       "few",
+      "little",
       "less"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
@@ -937,12 +937,12 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "86. Identify the adjective in the sentence:\nThe delicious food was prepared by my mother.",
     "o": [
-      "food",
       "delicious",
+      "food",
       "prepared",
       "mother"
     ],
-    "a": 1,
+    "a": 0,
     "e": ""
   },
   {
@@ -970,45 +970,45 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "89. Choose the correct adjective to fill in the blank:\nShe bought a __________ dress for the wedding ceremony.",
     "o": [
-      "costly",
+      "costlier",
       "cost",
       "costing",
-      "costlier"
+      "costly"
     ],
-    "a": 0,
+    "a": 3,
     "e": ""
   },
   {
     "q": "90. Identify the adjective in the sentence:\nThe deep well contains cool and clean water.",
     "o": [
       "deep",
-      "cool",
+      "All of these",
       "clean",
-      "All of these"
+      "cool"
     ],
-    "a": 3,
+    "a": 1,
     "e": ""
   },
   {
     "q": "91. Choose the correct adjective to fill in the blank:\nHe is the __________ player in our school cricket team.",
     "o": [
       "good",
-      "better",
       "best",
+      "better",
       "well"
     ],
-    "a": 2,
+    "a": 1,
     "e": ""
   },
   {
     "q": "92. Identify the adjective in the sentence:\nThe heavy rain ruined our weekend plans.",
     "o": [
-      "heavy",
+      "Both A and C",
       "rain",
       "weekend",
-      "Both A and C"
+      "heavy"
     ],
-    "a": 3,
+    "a": 0,
     "e": ""
   },
   {
@@ -1036,12 +1036,12 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
   {
     "q": "95. Choose the correct adjective to fill in the blank:\nThis box is too __________ for me to lift.",
     "o": [
-      "heavy",
       "heavier",
+      "heavy",
       "heaviest",
       "heavily"
     ],
-    "a": 0,
+    "a": 1,
     "e": ""
   },
   {
@@ -1049,43 +1049,43 @@ export const ADJECTIVE_QUESTION_BANK: { q: string; o: string[]; a: number; e: st
     "o": [
       "sweet",
       "fresh",
-      "morning",
-      "All of these"
+      "All of these",
+      "morning"
     ],
-    "a": 3,
+    "a": 2,
     "e": ""
   },
   {
     "q": "97. Choose the correct adjective to fill in the blank:\nHe is a __________ person who always helps the needy.",
     "o": [
-      "generous",
-      "generously",
       "generosity",
+      "generously",
+      "generous",
       "generosities"
     ],
-    "a": 0,
+    "a": 2,
     "e": ""
   },
   {
     "q": "98. Identify the adjective in the sentence:\nThe quiet night was interrupted by a loud noise.",
     "o": [
-      "quiet",
+      "Both A and B",
       "loud",
       "noise",
-      "Both A and B"
+      "quiet"
     ],
-    "a": 3,
+    "a": 0,
     "e": ""
   },
   {
     "q": "99. Choose the correct adjective to fill in the blank:\nShe is wearing a __________ ring on her finger.",
     "o": [
-      "gold",
+      "Both A and B",
       "golden",
       "goldish",
-      "Both A and B"
+      "gold"
     ],
-    "a": 3,
+    "a": 0,
     "e": ""
   },
   {
