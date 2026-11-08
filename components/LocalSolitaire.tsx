@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import type { DragEvent } from "react";
 
 type Suit = "♠" | "♥" | "♦" | "♣";
 type Card = { id: string; rank: number; suit: Suit; faceUp: boolean };
@@ -96,17 +97,17 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
     const source = sourceOverride ?? selected;
     if (!source || busy) return;
     const sourceCards = source.kind === "waste" ? [waste[waste.length - 1]] : piles[source.index].slice(source.cardIndex);
-    if (!sourceCards.length || selected.kind === "tableau" && selected.index === column) { setSelected(null); return; }
+    if (!sourceCards.length || source.kind === "tableau" && source.index === column) { setSelected(null); return; }
     const targetPile = piles[column];
     if (!canTableau(sourceCards[0], targetPile[targetPile.length - 1])) return;
     void commitMove(() => {
       const nextPiles = piles.map(pile => [...pile]);
       const nextWaste = [...waste];
-      if (selected.kind === "waste") nextWaste.pop();
+      if (source.kind === "waste") nextWaste.pop();
       else {
-        nextPiles[selected.index] = nextPiles[selected.index].slice(0, selected.cardIndex);
-        const oldTop = nextPiles[selected.index].length - 1;
-        if (oldTop >= 0 && !nextPiles[selected.index][oldTop].faceUp) nextPiles[selected.index][oldTop] = { ...nextPiles[selected.index][oldTop], faceUp: true };
+        nextPiles[source.index] = nextPiles[source.index].slice(0, source.cardIndex);
+        const oldTop = nextPiles[source.index].length - 1;
+        if (oldTop >= 0 && !nextPiles[source.index][oldTop].faceUp) nextPiles[source.index][oldTop] = { ...nextPiles[source.index][oldTop], faceUp: true };
       }
       nextPiles[column] = [...nextPiles[column], ...sourceCards];
       setPiles(nextPiles); setWaste(nextWaste); setSelected(null);
@@ -162,7 +163,7 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
     } catch {}
   };
 
-  const renderCard = (card: Card, active: boolean, onClick: () => void, stack = false, onDragStart?: (event: React.DragEvent<HTMLButtonElement>) => void, dragSource?: Source) => (
+  const renderCard = (card: Card, active: boolean, onClick: () => void, stack = false, onDragStart?: (event: DragEvent<HTMLButtonElement>) => void, dragSource?: Source) => (
     <button key={card.id} type="button" onClick={(event) => { event.stopPropagation(); onClick(); }} aria-label={card.faceUp ? label(card.rank) + " of " + card.suit : "Face-down card"}
       className={`relative z-0 flex aspect-[2/3] min-h-0 w-full min-w-0 items-start justify-start overflow-hidden rounded-md border text-left shadow-md transition-all duration-200 ${card.faceUp ? "border-slate-300 bg-gradient-to-br from-white via-white to-slate-100" : "border-slate-400 bg-gradient-to-br from-slate-600 to-slate-900"} ${active ? "z-20 scale-105 -translate-y-2 rotate-2 shadow-2xl ring-2 ring-amber-400" : "hover:-translate-y-0.5"} ${card.faceUp && RED.has(card.suit) ? "text-rose-600" : "text-slate-900"}`}
       style={stack ? { marginTop: "calc(-1 * clamp(1.2rem, 6.5vw, 1.8rem))" } : undefined}
