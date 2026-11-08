@@ -20,7 +20,7 @@ function makeDeal(): { stock: Card[]; waste: Card[]; piles: Card[][]; foundation
 function canTableau(card: Card, target: Card | undefined) { return target ? target.rank === card.rank + 1 && RED.has(target.suit) !== RED.has(card.suit) : card.rank === 13; }
 function canFoundation(card: Card, target: Card | undefined) { return target ? target.suit === card.suit && card.rank === target.rank + 1 : card.rank === 1; }
 
-export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied }: { onQuotaUpdate: (remaining: number) => void; onQuotaDenied: () => void }) {
+export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText }: { onQuotaUpdate: (remaining: number) => void; onQuotaDenied: () => void; quotaText: string }) {
   const [dealKey, setDealKey] = useState(0);
   const deal = useMemo(makeDeal, [dealKey]);
   const [stock, setStock] = useState(deal.stock);
@@ -139,32 +139,54 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied }: { onQuo
     setStock(next.stock); setWaste([]); setPiles(next.piles); setFoundations(next.foundations);
     setSelected(null); moveCountRef.current = 0; setMoves(0); setMessage(""); setChallengeId(crypto.randomUUID()); setDealKey(value => value + 1);
   };
-  const renderCard = (card: Card, active: boolean, onClick: () => void, stack = false) => (
+  const playCardTouch = () => {
+    try {
+      const AudioClass = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!AudioClass) return;
+      const ctx = new AudioClass();
+      const now = ctx.currentTime;
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+      oscillator.type = "triangle";
+      oscillator.frequency.setValueAtTime(520, now);
+      oscillator.frequency.exponentialRampToValueAtTime(760, now + 0.055);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.075, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+      oscillator.start(now);
+      oscillator.stop(now + 0.12);
+      oscillator.onended = () => { void ctx.close(); };
+    } catch {}
+  };
+
+  const renderCard = (card: Card, active: boolean, onClick: () => void, stack = false, onDragStart?: (event: React.DragEvent<HTMLButtonElement>) => void) => (
     <button key={card.id} type="button" onClick={(event) => { event.stopPropagation(); onClick(); }} aria-label={card.faceUp ? label(card.rank) + " of " + card.suit : "Face-down card"}
-      className={`relative z-0 flex aspect-[2/3] min-h-0 w-full min-w-0 items-start justify-start overflow-hidden rounded-md border text-left shadow-md ${card.faceUp ? "border-slate-300 bg-white" : "border-emerald-200 bg-gradient-to-br from-emerald-700 to-green-950"} ${active ? "z-10 ring-2 ring-amber-400 -translate-y-0.5" : ""} ${card.faceUp && RED.has(card.suit) ? "text-rose-600" : "text-slate-900"}`}
+      className={`relative z-0 flex aspect-[2/3] min-h-0 w-full min-w-0 items-start justify-start overflow-hidden rounded-md border text-left shadow-md transition-all duration-200 ${card.faceUp ? "border-slate-300 bg-gradient-to-br from-white via-white to-slate-100" : "border-slate-400 bg-gradient-to-br from-slate-600 to-slate-900"} ${active ? "z-20 scale-105 -translate-y-2 rotate-2 shadow-2xl ring-2 ring-amber-400" : "hover:-translate-y-0.5"} ${card.faceUp && RED.has(card.suit) ? "text-rose-600" : "text-slate-900"}`}
       style={stack ? { marginTop: "calc(-1 * clamp(1.2rem, 6.5vw, 1.8rem))" } : undefined}>
       {card.faceUp ? <span className="p-0.5 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/><span className="text-[clamp(11px,3.2vw,17px)]">{card.suit}</span></span> : <span className="m-1.5 flex h-[calc(100%-12px)] w-[calc(100%-12px)] items-center justify-center rounded border border-white/40 text-xl text-white">✦</span>}
     </button>
   );
 
   return (
-    <div className="mx-auto w-full min-w-0 max-w-3xl overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-800 via-green-800 to-emerald-950 p-1.5 text-white shadow-inner sm:p-4">
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-1.5 rounded-xl bg-black/20 px-2 py-2 sm:mb-3 sm:px-3">
-        <div><h3 className="text-base font-black sm:text-lg">♠ Klondike Solitaire</h3><p className="text-[10px] leading-4 text-emerald-100 sm:text-[11px]">Draw 1 · Tap a card, then its destination</p></div>
-        <button type="button" onClick={newGame} disabled={busy} className="min-h-9 rounded-full border border-white/40 bg-white/15 px-3 py-1.5 text-[11px] font-black disabled:opacity-50">New deal ↻</button>
+    <div className="mx-auto w-full min-w-0 max-w-3xl overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-sky-50 p-1.5 text-slate-800 shadow-inner sm:p-4">
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-1.5 rounded-xl border border-slate-200 bg-white/90 px-2 py-2 shadow-sm sm:mb-3 sm:px-3">
+        <div><h3 className="text-base font-black text-slate-900 sm:text-lg">♠ Solitaire</h3><p className="text-[10px] leading-4 text-slate-500 sm:text-[11px]">Draw 1 · Drag cards or tap a card and its destination</p></div>
+        <span className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-[10px] font-black text-indigo-700">{quotaText}</span>
       </div>
       <div className="mb-3 grid grid-cols-7 gap-1 sm:mb-4 sm:gap-2">
-        <button type="button" onClick={draw} disabled={busy} aria-label="Draw from stock" className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-white/50 bg-emerald-950/50 text-2xl sm:rounded-lg sm:text-3xl">{stock.length ? "▧" : "↻"}</button>
-        <div className="relative">{waste.length ? renderCard(waste[waste.length - 1], selected?.kind === "waste", chooseWaste) : <div className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-white/30 text-[9px] text-white/60 sm:rounded-lg sm:text-xs">Waste</div>}</div>
+        <button type="button" onClick={draw} disabled={busy} aria-label="Draw from stock" className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-2xl sm:rounded-lg sm:text-3xl">{stock.length ? "▧" : "↻"}</button>
+        <div className="relative">{waste.length ? renderCard(waste[waste.length - 1], selected?.kind === "waste", chooseWaste) : <div className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-[9px] text-slate-400 sm:rounded-lg sm:text-xs">Waste</div>}</div>
         <div className="col-span-1" />
-        {foundations.map((stack, index) => <button key={index} type="button" onClick={() => moveToFoundation(index)} className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-white/40 bg-emerald-950/30 text-base text-white/70 sm:rounded-lg sm:text-2xl">{stack.length ? <span className={RED.has(stack[stack.length-1].suit) ? "text-rose-300" : "text-white"}>{label(stack[stack.length-1].rank)}{stack[stack.length-1].suit}</span> : "A"}</button>)}
+        {foundations.map((stack, index) => <button key={index} type="button" onClick={() => moveToFoundation(index)} className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-base text-slate-500 sm:rounded-lg sm:text-2xl">{stack.length ? <span className={RED.has(stack[stack.length-1].suit) ? "text-rose-600" : "text-slate-900"}>{label(stack[stack.length-1].rank)}{stack[stack.length-1].suit}</span> : "A"}</button>)}
       </div>
       <div className="grid min-w-0 grid-cols-7 gap-1 sm:gap-2">
-        {piles.map((pile, column) => <div key={column} onClick={() => moveToTableau(column)} className="flex min-h-[clamp(10rem,48vw,18rem)] min-w-0 flex-col items-stretch rounded-md bg-black/10 px-px pb-2 pt-1 sm:rounded-lg">
-          {pile.length ? pile.map((card, index) => renderCard(card, selected?.kind === "tableau" && selected.index === column && index >= selected.cardIndex, () => { if (selected) moveToTableau(column); else if (card.faceUp) chooseTableau(column, index); }, index > 0)) : <button type="button" onClick={() => moveToTableau(column)} className="flex aspect-[2/3] w-full items-center justify-center rounded-md border-2 border-dashed border-white/30 text-lg">K</button>}
+        {piles.map((pile, column) => <div key={column} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); const raw = event.dataTransfer.getData("text/plain"); if (raw) { try { const source = JSON.parse(raw) as Source; setSelected(source); window.setTimeout(() => moveToTableau(column), 0); } catch {} } }} onClick={() => moveToTableau(column)} className="flex min-h-[clamp(10rem,48vw,18rem)] min-w-0 flex-col items-stretch rounded-md bg-black/10 px-px pb-2 pt-1 sm:rounded-lg">
+          {pile.length ? pile.map((card, index) => renderCard(card, selected?.kind === "tableau" && selected.index === column && index >= selected.cardIndex, () => { if (selected) moveToTableau(column); else if (card.faceUp) chooseTableau(column, index); }, index > 0, (event) => { event.dataTransfer.setData("text/plain", JSON.stringify({ kind: "tableau", index: column, cardIndex: index })); event.dataTransfer.effectAllowed = "move"; setSelected({ kind: "tableau", index: column, cardIndex: index }); })) : <button type="button" onClick={() => moveToTableau(column)} className="flex aspect-[2/3] w-full items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-lg">K</button>}
         </div>)}
       </div>
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-emerald-100 sm:text-xs"><span>Moves: {moves}</span><span className="text-right">{busy ? "Checking your first move…" : message || (foundations.reduce((sum, pile) => sum + pile.length, 0) === 52 ? "🎉 You won! All suits completed." : "Build each suit from Ace to King.")}</span></div>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-slate-500 sm:text-xs"><span>Moves: {moves}</span><span className="text-right">{busy ? "Checking your first move…" : message || (foundations.reduce((sum, pile) => sum + pile.length, 0) === 52 ? "🎉 You won! All suits completed." : "Build each suit from Ace to King.")}</span></div>
     </div>
   );
 }
