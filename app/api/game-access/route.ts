@@ -109,10 +109,10 @@ async function handle(req:Request,consume:boolean){
      await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).run();
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
-    const existing=await db.prepare("SELECT question_text,session_id FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? LIMIT 1").bind(user.id,type,challenge).first<any>();
+    const existing=await db.prepare("SELECT question_text,session_id FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND question_text=? LIMIT 1").bind(user.id,type,questionText).first<any>();
     if(existing){
-     if(String(existing.session_id)===reservationSessionId&&String(existing.question_text)===questionText)return NextResponse.json({reserved:true},{headers});
-     await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).run();
+     if(String(existing.session_id)===reservationSessionId)return NextResponse.json({reserved:true},{headers});
+     await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND question_text=?").bind(user.id,type,questionText).run();
     }
     await db.prepare("INSERT OR IGNORE INTO game_question_reservations(user_id,game_type_id,challenge_id,question_text,session_id,reserved_at) VALUES(?,?,?,?,?,?)").bind(user.id,type,challenge,questionText,reservationSessionId,playedAt).run();
     const acquired=await db.prepare("SELECT 1 AS ok FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? AND question_text=? AND session_id=? LIMIT 1").bind(user.id,type,challenge,questionText,reservationSessionId).first<any>();
