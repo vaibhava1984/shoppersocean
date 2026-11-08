@@ -52,7 +52,7 @@ async function handle(req:Request,consume:boolean){
     if(attempted)return NextResponse.json({repeated:true,skipQuestion:true},{status:409,headers});
     return NextResponse.json({reserved:true},{headers});
    }
-   const claimed=await db.prepare("INSERT INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
+   const claimed=await db.prepare("INSERT INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,question_id) DO NOTHING RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
    if(!claimed){const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}
    let row:any;
    if(subscribed||admin){
