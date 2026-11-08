@@ -10,6 +10,7 @@ import WorldExplorer from "@/components/WorldExplorer";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import RiddleCornerQuiz from "@/components/RiddleCornerQuiz";
+import LocalSolitaire from "@/components/LocalSolitaire";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
@@ -489,11 +490,30 @@ useEffect(() => {
                       type="button"
                       onClick={() => void openClassicGame("tic-tac-toe")}
                       disabled={classicGameOpening}
-                      className="flex min-h-14 w-full min-w-0 items-center justify-center whitespace-nowrap rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-4 py-4 text-base font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg"
+                      className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg"
                     >
                       ❌⭕ &nbsp; Play Tic Tac Toe
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => void openClassicGame("solitaire")}
+                      disabled={classicGameOpening}
+                      className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg"
+                    >
+                      ♠️ &nbsp; Play Solitaire
+                    </button>
                     </div>
+                    </div>
+                  </div>
+                ) : classicGameStarted === "solitaire" && userId ? (
+                  <div className="w-full min-w-0">
+                    <LocalSolitaire
+                      key={solitaireInstance}
+                      userId={userId}
+                      onQuotaUpdate={(remaining) => setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, solitaire: remaining } }))}
+                    />
+                    <div className="mt-2 text-center text-[10px] font-bold text-slate-500">
+                      {classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.solitaire ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
                     </div>
                   </div>
                 ) : (
