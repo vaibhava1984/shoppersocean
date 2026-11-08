@@ -3858,6 +3858,87 @@ const WORD_PAIRS: WordPair[] = [
       { "label": "Protagonist", "sentence": "The brave protagonist fought courageously to save her kingdom." },
       { "label": "Antagonist", "sentence": "A cunning villain served as the primary antagonist in the story." }
     ]
+  },
+  {
+    "id": "ascent-and-assent",
+    "title": "Ascent and assent",
+    "difference": "“Ascent” means the act of climbing or moving upward. “Assent” means agreement, approval, or consent.",
+    "examples": [
+      { "label": "Ascent", "sentence": "The steep mountain ascent proved exhausting for the hikers." },
+      { "label": "Assent", "sentence": "The board of directors gave their assent to the new policy." }
+    ]
+  },
+  {
+    "id": "compliment-and-complement",
+    "title": "Compliment and complement",
+    "difference": "A “compliment” is an expression of praise. A “complement” is something that completes or enhances something else.",
+    "examples": [
+      { "label": "Compliment", "sentence": "She received a wonderful compliment on her new haircut." },
+      { "label": "Complement", "sentence": "The rich red wine proved to be a perfect complement to the steak dinner." }
+    ]
+  },
+  {
+    "id": "idle-and-idol",
+    "title": "Idle and idol",
+    "difference": "“Idle” means inactive or not working. An “idol” is an image worshipped as a deity or a person greatly admired.",
+    "examples": [
+      { "label": "Idle", "sentence": "Leaving the car engine idle for too long wastes fuel." },
+      { "label": "Idol", "sentence": "Many young fans regard the singer as their idol." }
+    ]
+  },
+  {
+    "id": "lightning-and-lightening",
+    "title": "Lightning and lightening",
+    "difference": "“Lightning” is the electrical discharge seen during a storm. “Lightening” means making something lighter in weight, color, or intensity.",
+    "examples": [
+      { "label": "Lightning", "sentence": "A brilliant flash of lightning illuminated the dark night sky." },
+      { "label": "Lightening", "sentence": "Adding white paint is effective for lightening dark wall colors." }
+    ]
+  },
+  {
+    "id": "ascent-and-descent",
+    "title": "Ascent and descent",
+    "difference": "“Ascent” means movement upward. “Descent” means movement downward.",
+    "examples": [
+      { "label": "Ascent", "sentence": "The steep hike required a steady upward ascent." },
+      { "label": "Descent", "sentence": "The plane began its final descent toward the runway." }
+    ]
+  },
+  {
+    "id": "confident-and-confidant",
+    "title": "Confident and confidant",
+    "difference": "“Confident” means feeling or showing self-assurance. A “confidant” is a trusted person with whom private matters are shared.",
+    "examples": [
+      { "label": "Confident", "sentence": "She felt confident about passing her final exams." },
+      { "label": "Confidant", "sentence": "He considered his brother his closest confidant." }
+    ]
+  },
+  {
+    "id": "flour-and-flower",
+    "title": "Flour and flower",
+    "difference": "“Flour” is a powder made by grinding grain, used in baking. A “flower” is the blossom of a plant.",
+    "examples": [
+      { "label": "Flour", "sentence": "She used wheat flour to bake fresh bread." },
+      { "label": "Flower", "sentence": "A bright red flower bloomed in the garden." }
+    ]
+  },
+  {
+    "id": "health-and-heal",
+    "title": "Health and heal",
+    "difference": "“Health” is the state of physical or mental well-being. “Heal” means to recover or make something healthy again.",
+    "examples": [
+      { "label": "Health", "sentence": "Eating nutritious food is essential for good health." },
+      { "label": "Heal", "sentence": "Cuts and scrapes take time to heal properly." }
+    ]
+  },
+  {
+    "id": "write-and-right",
+    "title": "Write and right",
+    "difference": "“Write” means to form words or symbols. “Right” can mean correct, proper, or the opposite of left.",
+    "examples": [
+      { "label": "Write", "sentence": "Students write notes in their notebooks during class." },
+      { "label": "Right", "sentence": "Make sure your math answers are right before submitting." }
+    ]
   }
 ];
 
