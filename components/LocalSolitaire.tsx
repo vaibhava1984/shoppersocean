@@ -22,8 +22,7 @@ function canTableau(card: Card, target: Card | undefined) { return target ? targ
 function canFoundation(card: Card, target: Card | undefined) { return target ? target.suit === card.suit && card.rank === target.rank + 1 : card.rank === 1; }
 
 export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText }: { onQuotaUpdate: (remaining: number) => void; onQuotaDenied: () => void; quotaText: string }) {
-  const [dealKey, setDealKey] = useState(0);
-  const deal = useMemo(makeDeal, [dealKey]);
+  const deal = useMemo(makeDeal, []);
   const [stock, setStock] = useState(deal.stock);
   const [waste, setWaste] = useState<Card[]>([]);
   const [piles, setPiles] = useState(deal.piles);
@@ -34,7 +33,7 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
   const moveCountRef = useRef(0);
   const [message, setMessage] = useState("");
   const [moves, setMoves] = useState(0);
-  const [challengeId, setChallengeId] = useState(() => crypto.randomUUID());
+  const [challengeId] = useState(() => crypto.randomUUID());
 
   const chargeFirstMove = async () => {
     if (moveCountRef.current > 0) return true;
@@ -114,9 +113,10 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
     });
   };
 
-  const moveToFoundation = (foundationIndex: number) => {
-    if (!selected || busy) return;
-    const sourceCards = selected.kind === "waste" ? [waste[waste.length - 1]] : piles[selected.index].slice(selected.cardIndex);
+  const moveToFoundation = (foundationIndex: number, sourceOverride?: Source) => {
+    const source = sourceOverride ?? selected;
+    if (!source || busy) return;
+    const sourceCards = source.kind === "waste" ? [waste[waste.length - 1]] : piles[source.index].slice(source.cardIndex);
     if (sourceCards.length !== 1) return;
     const card = sourceCards[0], foundation = foundations[foundationIndex];
     if (!canFoundation(card, foundation[foundation.length - 1])) return;
@@ -124,23 +124,18 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
       const nextFoundations = foundations.map(stack => [...stack]);
       nextFoundations[foundationIndex].push(card);
       setFoundations(nextFoundations);
-      if (selected.kind === "waste") setWaste(current => current.slice(0, -1));
+      if (source.kind === "waste") setWaste(current => current.slice(0, -1));
       else {
         const nextPiles = piles.map(pile => [...pile]);
-        nextPiles[selected.index] = nextPiles[selected.index].slice(0, selected.cardIndex);
-        const top = nextPiles[selected.index].length - 1;
-        if (top >= 0 && !nextPiles[selected.index][top].faceUp) nextPiles[selected.index][top] = { ...nextPiles[selected.index][top], faceUp: true };
+        nextPiles[source.index] = nextPiles[source.index].slice(0, source.cardIndex);
+        const top = nextPiles[source.index].length - 1;
+        if (top >= 0 && !nextPiles[source.index][top].faceUp) nextPiles[source.index][top] = { ...nextPiles[source.index][top], faceUp: true };
         setPiles(nextPiles);
       }
       setSelected(null);
     });
   };
 
-  const newGame = () => {
-    const next = makeDeal();
-    setStock(next.stock); setWaste([]); setPiles(next.piles); setFoundations(next.foundations);
-    setSelected(null); moveCountRef.current = 0; setMoves(0); setMessage(""); setChallengeId(crypto.randomUUID()); setDealKey(value => value + 1);
-  };
   const playCardTouch = () => {
     try {
       const AudioClass = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
@@ -169,7 +164,7 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
       style={stack ? { marginTop: "calc(-1 * clamp(1.2rem, 6.5vw, 1.8rem))" } : undefined}
       draggable={card.faceUp}
       onDragStart={(event) => { if (!card.faceUp) { event.preventDefault(); return; } playCardTouch(); if (onDragStart) onDragStart(event); }}
-      onPointerDown={() => { if (card.faceUp) playCardTouch(); }}\n      onTouchStart={() => { if (card.faceUp && dragSource) setSelected(dragSource); }}\n      onTouchEnd={(event) => { if (!dragSource) return; const touch = event.changedTouches[0]; const target = document.elementFromPoint(touch.clientX, touch.clientY)?.closest("[data-solitaire-column]") as HTMLElement | null; const column = target ? Number(target.dataset.solitaireColumn) : NaN; if (Number.isInteger(column)) moveToTableau(column, dragSource); }}>
+      onPointerDown={() => { if (card.faceUp) playCardTouch(); }}\n      onTouchStart={() => { if (card.faceUp && dragSource) setSelected(dragSource); }}\n      onTouchEnd={(event) => { if (!dragSource) return; const touch = event.changedTouches[0]; const hit = document.elementFromPoint(touch.clientX, touch.clientY); const foundation = hit?.closest("[data-solitaire-foundation]") as HTMLElement | null; const columnTarget = hit?.closest("[data-solitaire-column]") as HTMLElement | null; if (foundation) moveToFoundation(Number(foundation.dataset.solitaireFoundation), dragSource); else if (columnTarget) moveToTableau(Number(columnTarget.dataset.solitaireColumn), dragSource); }}>
       {card.faceUp ? <>
         <span className="absolute left-1 top-0.5 z-10 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/><span className="text-[clamp(11px,3.2vw,17px)]">{card.suit}</span></span>
         <span className="absolute inset-0 flex items-center justify-center text-[clamp(20px,7vw,42px)] font-black opacity-90" aria-hidden="true">{card.rank === 13 ? "👑" : card.rank === 12 ? "👸" : card.rank === 11 ? "🤴" : card.suit}</span>
@@ -189,7 +184,7 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
         <button type="button" onClick={draw} disabled={busy} aria-label="Draw from stock" className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-2xl sm:rounded-lg sm:text-3xl">{stock.length ? "▧" : "↻"}</button>
         <div className="relative">{waste.length ? renderCard(waste[waste.length - 1], selected?.kind === "waste", chooseWaste, false, (event) => { event.dataTransfer.setData("text/plain", JSON.stringify({ kind: "waste", index: 0, cardIndex: waste.length - 1 })); event.dataTransfer.effectAllowed = "move"; setSelected({ kind: "waste", index: 0, cardIndex: waste.length - 1 }); }, { kind: "waste", index: 0, cardIndex: waste.length - 1 }) : <div className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-[9px] text-slate-400 sm:rounded-lg sm:text-xs">Waste</div>}</div>
         <div className="col-span-1" />
-        {foundations.map((stack, index) => <button key={index} type="button" onClick={() => moveToFoundation(index)} className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-base text-slate-500 sm:rounded-lg sm:text-2xl">{stack.length ? <span className={RED.has(stack[stack.length-1].suit) ? "text-rose-600" : "text-slate-900"}>{label(stack[stack.length-1].rank)}{stack[stack.length-1].suit}</span> : "A"}</button>)}
+        {foundations.map((stack, index) => <button key={index} type="button" data-solitaire-foundation={index} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); const raw = event.dataTransfer.getData("text/plain"); if (raw) { try { moveToFoundation(index, JSON.parse(raw) as Source); } catch {} } }} onClick={() => moveToFoundation(index)} className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-base text-slate-500 sm:rounded-lg sm:text-2xl">{stack.length ? <span className={RED.has(stack[stack.length-1].suit) ? "text-rose-600" : "text-slate-900"}>{label(stack[stack.length-1].rank)}{stack[stack.length-1].suit}</span> : "A"}</button>)}
       </div>
       <div className="grid min-w-0 grid-cols-7 gap-1 sm:gap-2">
         {piles.map((pile, column) => <div key={column} data-solitaire-column={column} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); const raw = event.dataTransfer.getData("text/plain"); if (raw) { try { const source = JSON.parse(raw) as Source; moveToTableau(column, source); } catch {} } }} onClick={() => moveToTableau(column)} className="flex min-h-[clamp(10rem,48vw,18rem)] min-w-0 flex-col items-stretch rounded-md bg-black/10 px-px pb-2 pt-1 sm:rounded-lg">
