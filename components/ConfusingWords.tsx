@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 
 type WordPair = { id: string; title: string; difference: string; examples: { label: string; sentence: string }[] };
@@ -10,7 +11,7 @@ type WordPair = { id: string; title: string; difference: string; examples: { lab
 
 function highlightComparedWords(text: string, words: string[]) {
   const terms = words.filter(Boolean);
-  const parts: React.ReactNode[] = [];
+  const parts: ReactNode[] = [];
   const lowerText = text.toLowerCase();
   const isWordChar = (char: string) => /[A-Za-z0-9]/.test(char);
   let cursor = 0;
@@ -23,29 +24,25 @@ function highlightComparedWords(text: string, words: string[]) {
         const before = position > 0 ? text[position - 1] : "";
         const after = text[position + word.length] ?? "";
         if (!isWordChar(before) && !isWordChar(after)) {
-          if (bestStart === -1 || position < bestStart) { bestStart = position; bestWord = word; }
+          if (bestStart === -1 || position < bestStart) {
+            bestStart = position;
+            bestWord = word;
+          }
           break;
         }
         position = lowerText.indexOf(word.toLowerCase(), position + 1);
       }
     }
-    if (bestStart === -1) { parts.push(text.slice(cursor)); break; }
+    if (bestStart === -1) {
+      parts.push(text.slice(cursor));
+      break;
+    }
     if (bestStart > cursor) parts.push(text.slice(cursor, bestStart));
     const matched = text.slice(bestStart, bestStart + bestWord.length);
     parts.push(<strong key={bestStart} className="font-extrabold">{matched}</strong>);
     cursor = bestStart + bestWord.length;
   }
   return parts;
-}
-
-const WORD_PAIRS: WordPair[] = ["));
-  if (!terms.length) return text;
-  const expression = new RegExp(`(?<![A-Za-z0-9])(${terms.join("|")})(?![A-Za-z0-9])`, "gi");
-  return text.split(expression).map((part, index) =>
-    words.some(word => part.toLowerCase() === word.toLowerCase())
-      ? <strong key={index} className="font-extrabold">{part}</strong>
-      : part
-  );
 }
 
 const WORD_PAIRS: WordPair[] = [
@@ -4392,7 +4389,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
 
   const privileged = isAdmin || isSubscribed;
   const current = WORD_PAIRS[index];
-  const comparedWords = current?.title.split(/\\s+and\\s+/i).slice(0, 2) ?? [];
+  const comparedWords = current?.title.split(/\s+and\s+/i).slice(0, 2) ?? [];
 
   useEffect(() => {
     if (!userId) { setLoading(false); return; }
@@ -4426,8 +4423,10 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
           setQuotaPopup(true);
           return;
         }
-        setRemaining(Number(charged.remaining ?? 0));
+        const left = Number(charged.remaining ?? 0);
+        setRemaining(left);
         setHasAccess(true);
+        if (left <= 0) setQuotaPopup(true);
       })
       .catch(err => { if (live) setError(err instanceof Error ? err.message : "Quota could not be verified."); })
       .finally(() => { if (live) setLoading(false); });
@@ -4461,9 +4460,11 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
         setRemaining(0);
         return;
       }
-      setRemaining(Number(data.remaining ?? 0));
+      const left = Number(data.remaining ?? 0);
+      setRemaining(left);
       setHasAccess(true);
       setIndex(value => value + 1);
+      if (left <= 0) setQuotaPopup(true);
     } catch {
       setError("We couldn't verify your quota. Please try again.");
     } finally {
@@ -4489,7 +4490,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center font-semibold text-slate-800">Please sign in to access this section.</div>
       ) : loading ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center font-semibold text-slate-600">Loading your word lesson…</div>
-      ) : current && hasAccess ? (
+      ) : current && hasAccess && remaining > 0 ? (
         <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg">
           <div className="border-b border-slate-100 bg-gradient-to-r from-sky-50 via-white to-violet-50 px-5 py-5 text-center sm:px-8">
             <h3 className="text-2xl font-black tracking-tight text-violet-700 sm:text-3xl">{index + 1}. {highlightComparedWords(current.title, comparedWords)}</h3>
@@ -4520,7 +4521,14 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
           </div>
         </article>
       ) : (
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center font-semibold text-slate-700">{error || (remaining <= 0 ? "Your quota for this section has been exhausted for today." : "No word pairs are available yet.")}</div>
+        <div className={`rounded-2xl border p-8 text-center shadow-sm ${privileged ? "border-indigo-200 bg-indigo-50 text-indigo-950" : "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-950"}`}>
+          <p className="text-base font-extrabold leading-relaxed">{error || (remaining <= 0
+            ? privileged
+              ? "Your quota for this section today has been exhausted. Please visit tomorrow to play again."
+              : "Your free quota for this section has been exhausted. Please subscribe to enjoy further."
+            : "No word pairs are available yet.")}</p>
+          {!privileged && remaining <= 0 && <a href="/subscribe-now" className="mt-4 inline-flex rounded-full bg-fuchsia-700 px-5 py-2.5 text-sm font-black text-white shadow">Subscribe Now →</a>}
+        </div>
       )}
       <GameQuotaPopup open={quotaPopup} isSubscribed={privileged} resetKey="word-differences" />
     </div>
