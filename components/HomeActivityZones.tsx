@@ -10,7 +10,6 @@ import WorldExplorer from "@/components/WorldExplorer";
 import WorldRecordsArena from "@/components/WorldRecordsArena";
 import NativeTriviaQuiz from "@/components/NativeTriviaQuiz";
 import RiddleCornerQuiz from "@/components/RiddleCornerQuiz";
-import LocalSolitaire from "@/components/LocalSolitaire";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
@@ -187,19 +186,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [englishAcademyEntered, setEnglishAcademyEntered] = useState(false);
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "solitaire" | "chess" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "solitaire" | "chess"; sessionId: string; consumed: boolean } | null>(null);
-  const enterSolitairePortrait = () => {
-    try { void screen.orientation?.lock?.("portrait").catch(() => {}); } catch {}
-  };
-  const leaveSolitaireLandscape = () => {
-    try { screen.orientation?.unlock?.(); } catch {}
-  };
+  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
-  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "solitaire" | "chess" | null>(null);
+  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | null>(null);
   const [signInPopup, setSignInPopup] = useState(false);
   useEffect(() => {
     if (!signInPopup) return;
@@ -209,7 +202,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [classicGameOpening, setClassicGameOpening] = useState(false);
   const [chessPaused, setChessPaused] = useState(false);
   const [chessInstance, setChessInstance] = useState(0);
-  const [solitaireInstance, setSolitaireInstance] = useState(0);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [riddleRemaining, setRiddleRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
@@ -217,14 +209,14 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  const consumeClassicAttempt = async (session: { gameType: "tic" | "solitaire" | "chess"; sessionId: string; consumed: boolean }) => {
+  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess"; sessionId: string; consumed: boolean }) => {
     if (session.consumed) return false;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
       const data = await response.json();
       if (!response.ok) {
         setClassicQuotaPopup(true);
-        if (session.gameType === "solitaire" || session.gameType === "chess") {
+        if (session.gameType === "chess") {
           classicGameStartedRef.current = false;
           setClassicGameStarted(false);
         }
@@ -240,7 +232,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       return true;
     } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
   };
-  const startNextClassicAttempt = (gameType: "tic" | "solitaire" | "chess") => {
+  const startNextClassicAttempt = (gameType: "tic" | "chess") => {
     classicGameSessionRef.current = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameInteractedRef.current = false;
   };
@@ -253,7 +245,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     if (!allowed && classicGameSessionRef.current === session) classicGameInteractedRef.current = false;
     return allowed;
   };
-  const startChargedClassicRestart = async (gameType: "solitaire" | "chess") => {
+  const startChargedClassicRestart = async (gameType: "chess") => {
     const session = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameSessionRef.current = session;
     classicGameInteractedRef.current = true;
@@ -266,7 +258,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       if (classicGameStartedRef.current) {
         const session = classicGameSessionRef.current;
         // The current game attempt was charged when the game was opened or restarted.
-        if (classicGameStartedRef.current === "solitaire") leaveSolitaireLandscape();
         classicGameStartedRef.current = false;
         classicGameSessionRef.current = null;
         classicGameInteractedRef.current = false;
@@ -325,11 +316,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "solitaire" | "chess") => {
+  const openClassicGame = async (game: "tic-tac-toe" | "chess") => {
     setClassicQuotaNoticeFor(null);
     if (!userId) { setSignInPopup(true); return; }
-    if (game === "solitaire") { enterSolitairePortrait(); }
-    const gameType = game === "solitaire" ? "solitaire" : game === "chess" ? "chess" : "tic";
+    const gameType = game === "chess" ? "chess" : "tic";
     setClassicGameOpening(true);
     try {
       // Check the current balance before showing the game, but charge only when
@@ -340,7 +330,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       const remaining = Number(quotaData.remainingByType?.[gameType] ?? 0);
       setClassicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
       if (remaining <= 0) {
-        if (gameType === "solitaire") leaveSolitaireLandscape();
         setClassicGameOpening(false);
         setClassicQuotaNoticeFor(gameType);
         return;
@@ -353,7 +342,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       setClassicGameStarted(game);
       setClassicGameOpening(false);
     } catch (error) {
-      if (game === "solitaire") leaveSolitaireLandscape();
       setClassicGameOpening(false);
       console.error("Classic game quota check failed:", error);
       setClassicQuota(current => ({ ...current, loading: false }));
@@ -398,7 +386,7 @@ useEffect(() => {
 
   return (
     <>
-    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-solitaire-game], [data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeZone !== null || activeQuizGame !== null || Boolean(classicGameStarted) || classicGameOpening ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
+    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeZone !== null || activeQuizGame !== null || Boolean(classicGameStarted) || classicGameOpening ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
       {classicGameOpening && <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950 text-lg font-black text-white">Opening game…</div>}
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
@@ -406,7 +394,7 @@ useEffect(() => {
 @media (orientation: landscape) and (max-height: 600px) {
 
 }
-.classic-solitaire-frame { height: min(78vw, 420px); min-height: 280px; max-height: 420px; }\n@media (orientation: landscape) { .classic-solitaire-frame { height: min(72dvh, 430px) !important; min-height: 260px !important; max-height: 430px; } }\n.classic-game-landscape-controls { display: none; }
+
 [data-entertainment-hub] div.flex.items-start.gap-3.rounded-xl.border-violet-200 { display: block !important; width: 100%; }
 [data-entertainment-hub] div.flex.items-start.gap-3.rounded-xl.border-violet-200 > span { display: inline-flex; max-width: 100%; }
 [data-entertainment-hub] div.flex.items-start.gap-3.rounded-xl.border-violet-200 > p { display: block; width: 100%; margin-top: .6rem; white-space: normal; overflow-wrap: anywhere; line-height: 1.75; }
@@ -494,26 +482,8 @@ useEffect(() => {
                     >
                       ❌⭕ &nbsp; Play Tic Tac Toe
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => void openClassicGame("solitaire")}
-                      disabled={classicGameOpening}
-                      className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-emerald-600 via-green-700 to-teal-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg"
-                    >
-                      ♠️ &nbsp; Play Solitaire
-                    </button>
                     </div>
                     </div>
-                  </div>
-                ) : classicGameStarted === "solitaire" && userId ? (
-                  <div className="w-full min-w-0">
-                    <LocalSolitaire
-                      key={solitaireInstance}
-                      quotaText={classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.solitaire ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
-                      onQuotaUpdate={(remaining) => setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, solitaire: remaining } }))}
-                      onQuotaDenied={() => setClassicQuotaPopup(true)}
-                    />
-                    
                   </div>
                 ) : (
                   <ColourfulTicTacToe
