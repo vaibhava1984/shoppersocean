@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 const SECTIONS=["quiz-world","word-playground","brain-logic","quiz-arena","world-knowledge-quiz","riddle-corner","daily-challenge","memory-observation","classic-games","digital-discovery-hub","mystery-mansion","puzzle-universe","world-explorer","creative-studio","mind-lab","world-records-arena","mystery-quiz","word-differences"];
 const TYPES:Record<string,string[]>={"quiz-world":["trivio"],"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"world-knowledge-quiz":["worldquiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot","jigsaw"],"classic-games":["tic","solitaire","chess","connect","ludo","snakes"],"digital-discovery-hub":["internet","artificial-intelligence","cyber-detective","technology-history","quiz"],"mystery-mansion":["crime-scene","locked-room","secret-code","master-deception","riddle"],"puzzle-universe":["pattern-master","missing-piece","word-puzzle","sequence"],"world-explorer":["geography-quest","world-culture","landmark-adventure","worldquiz"],"creative-studio":["design-detective","pixel-artist","storyboard-challenge","odd"],"mind-lab":["mind-memory","mind-pattern","mind-focus","mind-logic","mind-speed","mind-spatial","worldquiz"],"world-records-arena":["world-records","quiz"],"mystery-quiz":["mystery-quiz"],"word-differences":["confusing-words"]};
+const QUESTION_BANK_SIZES:Record<string,number>={trivio:285,riddle:109,"mystery-quiz":90};
 const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10;
 const NO_MORE_TODAY="Your quota for this section today has been exhausted. Please visit tomorrow to play again.";
 const headers={"Cache-Control":"no-store"};
@@ -71,7 +72,9 @@ async function handle(req:Request,consume:boolean){
    // A question bank can restart only after every unique question was answered by this user.
    if(body.resetQuestionBank===true){
     const pairs=Array.isArray(body.bankQuestionPairs)?body.bankQuestionPairs.filter((x:any)=>x&&typeof x.challengeId==="string"&&typeof x.questionKey==="string").slice(0,500):[];
-    if(!pairs.length)return NextResponse.json({error:"Invalid question bank."},{status:400,headers});
+    const expectedBankSize=QUESTION_BANK_SIZES[type];
+    const uniqueBankKeys=new Set(pairs.map((x:any)=>String(x.questionKey).normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)));
+    if(!expectedBankSize||pairs.length!==expectedBankSize||uniqueBankKeys.size!==expectedBankSize)return NextResponse.json({error:"The complete question bank is required before a reset."},{status:400,headers});
     for(const pair of pairs){
      const key=String(pair.questionKey).normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300);
      const aliases=Array.isArray(pair.legacyChallengeIds)?pair.legacyChallengeIds.filter((x:any)=>typeof x==="string").map((x:string)=>x.slice(0,160)): [String(pair.challengeId).slice(0,160)];
