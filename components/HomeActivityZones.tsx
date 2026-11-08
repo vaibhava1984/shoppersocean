@@ -398,7 +398,7 @@ useEffect(() => {
 
   return (
     <>
-    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeZone !== null || activeQuizGame !== null || Boolean(classicGameStarted) || classicGameOpening ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
+    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-solitaire-game], [data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeZone !== null || activeQuizGame !== null || Boolean(classicGameStarted) || classicGameOpening ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
       {classicGameOpening && <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950 text-lg font-black text-white">Opening game…</div>}
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
@@ -512,9 +512,7 @@ useEffect(() => {
                       onQuotaUpdate={(remaining) => setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, solitaire: remaining } }))}
                       onQuotaDenied={() => setClassicQuotaPopup(true)}
                     />
-                    <div className="mt-2 text-center text-[10px] font-bold text-slate-500">
-                      {classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.solitaire ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
-                    </div>
+                    
                   </div>
                 ) : (
                   <ColourfulTicTacToe
