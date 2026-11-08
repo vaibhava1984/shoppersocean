@@ -121,8 +121,14 @@ export default function MysteryQuiz({ userId }: { userId: string | null; onExit:
     try{
       const currentQuota=await loadQuota();
       if(currentQuota.remaining<=0){setQuestion(null);setMessage(currentQuota.isAdmin||currentQuota.isSubscribed?"Your quota for this section today has been exhausted. Please visit tomorrow to play again.":"Your free quota for this section has been exhausted. Please subscribe to enjoy further.");return;}
-      const candidates=QUESTIONS.filter(q=>!used.includes(q.id));
-      const pool=candidates.length?candidates:QUESTIONS;
+      const seenQuestionKeys=new Set<string>();
+      const uniqueQuestions=QUESTIONS.filter(q=>{
+        const key=q.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300);
+        if(seenQuestionKeys.has(key))return false;
+        seenQuestionKeys.add(key);return true;
+      });
+      const candidates=uniqueQuestions.filter(q=>!used.includes(q.id));
+      const pool=candidates.length?candidates:uniqueQuestions;
       let selected:Question|null=null;
       let nextUsed=[...used];
       for(const candidate of [...pool].sort(()=>Math.random()-.5)){
@@ -135,7 +141,17 @@ export default function MysteryQuiz({ userId }: { userId: string | null; onExit:
       }
       setUsed(nextUsed);
       if(selected){setQuestion(selected);await loadQuota();}
-      else if(!message)setMessage("You have completed the available questions in this round.");
+      else{
+        const bankQuestionPairs=uniqueQuestions.map(q=>({
+          challengeId:"mystery-q-"+q.id,
+          questionKey:q.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)
+        }));
+        const resetResponse=await fetch("/api/game-access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"mystery-quiz",gameTypeId:"mystery-quiz",resetQuestionBank:true,bankQuestionPairs})});
+        const resetData=await resetResponse.json();
+        if(resetResponse.ok&&resetData.bankReset){
+          window.setTimeout(()=>void reserveNext(),50);
+        }else if(!message)setMessage("You have completed the available questions in this round. Your next round will begin after the full bank is completed.");
+      }
     }catch(error){setMessage(error instanceof Error?error.message:"Unable to load Mystery Quiz.");}
     finally{setBusy(false);}
   },[userId,busy,used,loadQuota,message]);
