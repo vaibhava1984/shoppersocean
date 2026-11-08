@@ -133,7 +133,7 @@ export default function MysteryQuiz({ userId }: { userId: string | null; onExit:
       let nextUsed=[...used];
       for(const candidate of [...pool].sort(()=>Math.random()-.5)){
         const reservationSessionId="mystery-"+Date.now()+"-"+Math.random().toString(36).slice(2);
-        const response=await fetch("/api/game-access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"mystery-quiz",gameTypeId:"mystery-quiz",challengeId:"mystery-q-"+candidate.id,challengeQuestion:candidate.question,reserveQuestion:true,reservationSessionId})});
+        const response=await fetch("/api/game-access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"mystery-quiz",gameTypeId:"mystery-quiz",challengeId:"mystery-q-"+candidate.id,challengeQuestion:candidate.question,legacyChallengeIds:QUESTIONS.filter(q=>q.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)===candidate.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)).map(q=>"mystery-q-"+q.id),reserveQuestion:true,reservationSessionId})});
         const data=await response.json();
         if(response.ok&&data.reserved){selected=candidate;setSession(reservationSessionId);nextUsed=[...nextUsed,candidate.id];break;}
         if(!data.repeated){if(response.status===403){setMessage(data.freeTrialsExhausted ? "Your free quota for this section has been exhausted. Please subscribe to enjoy further." : "Your quota for this section today has been exhausted. Please visit tomorrow to play again.");}else{setMessage(data.error||"Unable to load the next question.");}break;}
@@ -144,7 +144,8 @@ export default function MysteryQuiz({ userId }: { userId: string | null; onExit:
       else{
         const bankQuestionPairs=uniqueQuestions.map(q=>({
           challengeId:"mystery-q-"+q.id,
-          questionKey:q.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)
+          questionKey:q.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300),
+          legacyChallengeIds:QUESTIONS.filter(other=>other.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)===q.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)).map(other=>"mystery-q-"+other.id)
         }));
         const resetResponse=await fetch("/api/game-access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"mystery-quiz",gameTypeId:"mystery-quiz",resetQuestionBank:true,bankQuestionPairs})});
         const resetData=await resetResponse.json();
