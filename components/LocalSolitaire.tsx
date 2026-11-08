@@ -92,9 +92,10 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
     setSelected({ kind: "tableau", index: column, cardIndex });
   };
 
-  const moveToTableau = (column: number) => {
-    if (!selected || busy) return;
-    const sourceCards = selected.kind === "waste" ? [waste[waste.length - 1]] : piles[selected.index].slice(selected.cardIndex);
+  const moveToTableau = (column: number, sourceOverride?: Source) => {
+    const source = sourceOverride ?? selected;
+    if (!source || busy) return;
+    const sourceCards = source.kind === "waste" ? [waste[waste.length - 1]] : piles[source.index].slice(source.cardIndex);
     if (!sourceCards.length || selected.kind === "tableau" && selected.index === column) { setSelected(null); return; }
     const targetPile = piles[column];
     if (!canTableau(sourceCards[0], targetPile[targetPile.length - 1])) return;
@@ -164,8 +165,16 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
   const renderCard = (card: Card, active: boolean, onClick: () => void, stack = false, onDragStart?: (event: React.DragEvent<HTMLButtonElement>) => void) => (
     <button key={card.id} type="button" onClick={(event) => { event.stopPropagation(); onClick(); }} aria-label={card.faceUp ? label(card.rank) + " of " + card.suit : "Face-down card"}
       className={`relative z-0 flex aspect-[2/3] min-h-0 w-full min-w-0 items-start justify-start overflow-hidden rounded-md border text-left shadow-md transition-all duration-200 ${card.faceUp ? "border-slate-300 bg-gradient-to-br from-white via-white to-slate-100" : "border-slate-400 bg-gradient-to-br from-slate-600 to-slate-900"} ${active ? "z-20 scale-105 -translate-y-2 rotate-2 shadow-2xl ring-2 ring-amber-400" : "hover:-translate-y-0.5"} ${card.faceUp && RED.has(card.suit) ? "text-rose-600" : "text-slate-900"}`}
-      style={stack ? { marginTop: "calc(-1 * clamp(1.2rem, 6.5vw, 1.8rem))" } : undefined}>
-      {card.faceUp ? <span className="p-0.5 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/><span className="text-[clamp(11px,3.2vw,17px)]">{card.suit}</span></span> : <span className="m-1.5 flex h-[calc(100%-12px)] w-[calc(100%-12px)] items-center justify-center rounded border border-white/40 text-xl text-white">✦</span>}
+      style={stack ? { marginTop: "calc(-1 * clamp(1.2rem, 6.5vw, 1.8rem))" } : undefined}
+      draggable={card.faceUp}
+      onDragStart={(event) => { if (!card.faceUp) { event.preventDefault(); return; } playCardTouch(); if (onDragStart) onDragStart(event); }}
+      onPointerDown={() => { if (card.faceUp) playCardTouch(); }}>
+      {card.faceUp ? <>
+        <span className="absolute left-1 top-0.5 z-10 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/><span className="text-[clamp(11px,3.2vw,17px)]">{card.suit}</span></span>
+        <span className="absolute inset-0 flex items-center justify-center text-[clamp(20px,7vw,42px)] font-black opacity-90" aria-hidden="true">{card.rank === 13 ? "👑" : card.rank === 12 ? "👸" : card.rank === 11 ? "🤴" : card.suit}</span>
+        <span className="absolute bottom-0.5 right-1 rotate-180 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/>{card.suit}</span>
+        {card.rank >= 11 && <span className="absolute inset-[18%] rounded border border-current/25" />}
+      </> : <span className="m-1.5 flex h-[calc(100%-12px)] w-[calc(100%-12px)] items-center justify-center rounded border-2 border-white/50 bg-gradient-to-br from-indigo-700 to-slate-950 text-xl text-amber-200">✦</span>}
     </button>
   );
 
@@ -182,7 +191,7 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
         {foundations.map((stack, index) => <button key={index} type="button" onClick={() => moveToFoundation(index)} className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-base text-slate-500 sm:rounded-lg sm:text-2xl">{stack.length ? <span className={RED.has(stack[stack.length-1].suit) ? "text-rose-600" : "text-slate-900"}>{label(stack[stack.length-1].rank)}{stack[stack.length-1].suit}</span> : "A"}</button>)}
       </div>
       <div className="grid min-w-0 grid-cols-7 gap-1 sm:gap-2">
-        {piles.map((pile, column) => <div key={column} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); const raw = event.dataTransfer.getData("text/plain"); if (raw) { try { const source = JSON.parse(raw) as Source; setSelected(source); window.setTimeout(() => moveToTableau(column), 0); } catch {} } }} onClick={() => moveToTableau(column)} className="flex min-h-[clamp(10rem,48vw,18rem)] min-w-0 flex-col items-stretch rounded-md bg-black/10 px-px pb-2 pt-1 sm:rounded-lg">
+        {piles.map((pile, column) => <div key={column} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); const raw = event.dataTransfer.getData("text/plain"); if (raw) { try { const source = JSON.parse(raw) as Source; moveToTableau(column, source); } catch {} } }} onClick={() => moveToTableau(column)} className="flex min-h-[clamp(10rem,48vw,18rem)] min-w-0 flex-col items-stretch rounded-md bg-black/10 px-px pb-2 pt-1 sm:rounded-lg">
           {pile.length ? pile.map((card, index) => renderCard(card, selected?.kind === "tableau" && selected.index === column && index >= selected.cardIndex, () => { if (selected) moveToTableau(column); else if (card.faceUp) chooseTableau(column, index); }, index > 0, (event) => { event.dataTransfer.setData("text/plain", JSON.stringify({ kind: "tableau", index: column, cardIndex: index })); event.dataTransfer.effectAllowed = "move"; setSelected({ kind: "tableau", index: column, cardIndex: index }); })) : <button type="button" onClick={() => moveToTableau(column)} className="flex aspect-[2/3] w-full items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-lg">K</button>}
         </div>)}
       </div>
