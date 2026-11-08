@@ -3272,7 +3272,10 @@ export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quot
         return;
       }
 
-      const candidates = QUESTIONS.map((_, i) => i).filter(i => i !== excludeIndex);
+      const candidates = QUESTIONS.map((_, i) => i).filter(i => i !== excludeIndex).filter((index, _, list) => {
+        const key = QUESTIONS[index].question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300);
+        return list.findIndex(other => QUESTIONS[other].question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300) === key) === list.indexOf(index);
+      });
       for (let i = candidates.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
@@ -3306,7 +3309,20 @@ export default function NativeTriviaQuiz({ userId, isPrivileged, remaining, quot
           return;
         }
       }
-      setErrorMessage("You have completed all available questions in this section. New questions will appear when more are added.");
+      const bankQuestionPairs = QUESTIONS.map((item, index) => ({
+        challengeId: "trivio-q-" + index,
+        questionKey: item.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim().slice(0, 300)
+      })).filter((item, index, all) => all.findIndex(other => other.questionKey === item.questionKey) === index);
+      const resetResponse = await fetch("/api/game-access", {
+        method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sectionId: "quiz-world", gameTypeId: "trivio", resetQuestionBank: true, bankQuestionPairs })
+      });
+      const resetData = await resetResponse.json();
+      if (resetResponse.ok && resetData.bankReset) {
+        window.setTimeout(() => void reserveNextQuestion(null), 50);
+        return;
+      }
+      setErrorMessage("You have completed all available questions in this section. Your next round will begin after the full bank is completed.");
     } catch {
       setErrorMessage("Questions could not be loaded. Please try again.");
     }
