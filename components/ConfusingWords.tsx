@@ -2139,6 +2139,614 @@ const WORD_PAIRS: WordPair[] = [
         "sentence": "The enormousness of the stadium amazed visitors."
       }
     ]
+  },
+  {
+    "id": "epigram-and-epitaph",
+    "title": "Epigram and epitaph",
+    "difference": "\"Epigram\" is a noun meaning a concise, clever, or witty saying or remark. \"Epitaph\" is a noun referring to a phrase or written tribute inscribed on a tombstone in memory of a deceased person.",
+    "examples": [
+      {
+        "label": "Epigram",
+        "sentence": "The witty author opened each chapter with a memorable satirical epigram."
+      },
+      {
+        "label": "Epitaph",
+        "sentence": "Family members carefully selected a peaceful epitaph for the marble gravestone."
+      }
+    ]
+  },
+  {
+    "id": "equable-and-equitable",
+    "title": "Equable and equitable",
+    "difference": "\"Equable\" is an adjective meaning not easily disturbed, tranquil, or having a calm and even temper (or stable weather). \"Equitable\" is an adjective meaning fair, just, and impartial in treatment.",
+    "examples": [
+      {
+        "label": "Equable",
+        "sentence": "She maintained an equable temperament even during high-pressure crises."
+      },
+      {
+        "label": "Equitable",
+        "sentence": "The mediator proposed an equitable settlement satisfying both parties."
+      }
+    ]
+  },
+  {
+    "id": "expatriate-and-repatriate",
+    "title": "Expatriate and repatriate",
+    "difference": "\"Expatriate\" means to live outside one's native country, or a person who does so. \"Repatriate\" means to send someone back or return them to their home country or citizenship.",
+    "examples": [
+      {
+        "label": "Expatriate",
+        "sentence": "Many corporate professionals choose to work as an expatriate abroad."
+      },
+      {
+        "label": "Repatriate",
+        "sentence": "The government made arrangements to repatriate displaced citizens safely."
+      }
+    ]
+  },
+  {
+    "id": "facetious-and-fictitious",
+    "title": "Facetious and fictitious",
+    "difference": "\"Facetious\" means treating serious issues with deliberately inappropriate humor or flippancy. \"Fictional\" or \"fictitious\" means created, made up, or not genuine and false.",
+    "examples": [
+      {
+        "label": "Facetious",
+        "sentence": "His facetious remarks during the serious safety briefing annoyed the manager."
+      },
+      {
+        "label": "Fictitious",
+        "sentence": "The spy novel featured an elaborate plot involving fictitious organizations."
+      }
+    ]
+  },
+  {
+    "id": "fawn-and-phone",
+    "title": "Fawn and phone",
+    "difference": "\"Fawn\" is a verb meaning to give servile flattery or display exaggerated affection to gain favor, or a noun meaning a young deer. \"Phone\" is a noun or verb referring to a telephone device.",
+    "examples": [
+      {
+        "label": "Fawn",
+        "sentence": "Sales associates were trained not to fawn over customers too aggressively."
+      },
+      {
+        "label": "Phone",
+        "sentence": "Please remember to charge your mobile phone before leaving the house."
+      }
+    ]
+  },
+  {
+    "id": "feat-and-feet",
+    "title": "Feat and feet",
+    "difference": "\"Feat\" is a noun referring to an achievement requiring great courage, skill, or strength. \"Feet\" is the plural noun referring to the lower extremities of the legs used for standing.",
+    "examples": [
+      {
+        "label": "Feat",
+        "sentence": "Climbing the sheer rock face without ropes was an incredible physical feat."
+      },
+      {
+        "label": "Feet",
+        "sentence": "Running a marathon puts a tremendous amount of strain on your feet."
+      }
+    ]
+  },
+  {
+    "id": "fend-and-friend",
+    "title": "Fend and friend",
+    "difference": "\"Fend\" is a verb meaning to defend, ward off, or look after oneself without help. \"Friend\" is a noun referring to a person whom one knows and with whom one has a bond of mutual affection.",
+    "examples": [
+      {
+        "label": "Fend",
+        "sentence": "Orphaned animals must learn early how to fend for themselves in the wild."
+      },
+      {
+        "label": "Friend",
+        "sentence": "She invited her best childhood friend to attend the graduation party."
+      }
+    ]
+  },
+  {
+    "id": "fisher-and-fissure",
+    "title": "Fisher and fissure",
+    "difference": "\"Fisher\" is a noun referring to someone who catches fish or a North American mammal. \"Fissure\" is a noun referring to a narrow opening, crack, or split in rock or tissue.",
+    "examples": [
+      {
+        "label": "Fisher",
+        "sentence": "A solitary fisher cast his line peacefully into the morning river."
+      },
+      {
+        "label": "Fissure",
+        "sentence": "Geologists examined a deep volcanic fissure running across the rocky valley."
+      }
+    ]
+  },
+  {
+    "id": "flack-and-flak",
+    "title": "Flack and flak",
+    "difference": "\"Flack\" is a noun meaning publicity agent or press flack. \"Flak\" is a noun meaning anti-aircraft fire or strong criticism and opposition.",
+    "examples": [
+      {
+        "label": "Flack",
+        "sentence": "The celebrity hired an experienced public relations flack to handle media."
+      },
+      {
+        "label": "Flak",
+        "sentence": "The controversial new policy drew heavy flak from opposition politicians."
+      }
+    ]
+  },
+  {
+    "id": "flagrant-and-fragrant",
+    "title": "Flagrant and fragrant",
+    "difference": "\"Flagrant\" is an adjective meaning conspicuously offensive, glaring, or obviously bad. \"Fragrant\" is an adjective meaning having a pleasant, sweet smell.",
+    "examples": [
+      {
+        "label": "Flagrant",
+        "sentence": "Embezzling funds from the charity was a flagrant violation of trust."
+      },
+      {
+        "label": "Fragrant",
+        "sentence": "Blooming jasmine flowers filled the warm summer evening with a fragrant aroma."
+      }
+    ]
+  },
+  {
+    "id": "flea-and-flee",
+    "title": "Flea and flee",
+    "difference": "\"Flea\" is a noun referring to a small, wingless parasitic jumping insect. \"Flee\" is a verb meaning to run away from a place or danger rapidly.",
+    "examples": [
+      {
+        "label": "Flea",
+        "sentence": "The veterinarian prescribed a specialized topical treatment to keep fleas off the dog."
+      },
+      {
+        "label": "Flee",
+        "sentence": "Residents were ordered to evacuate and flee the approaching wildfire immediately."
+      }
+    ]
+  },
+  {
+    "id": "flex-and-fleck",
+    "title": "Flex and fleck",
+    "difference": "\"Flex\" is a verb meaning to bend a muscle or joint. \"Fleck\" is a noun meaning a very small patch of color or light, a speck.",
+    "examples": [
+      {
+        "label": "Flex",
+        "sentence": "Bodybuilders love to flex their muscles in front of the competition mirror."
+      },
+      {
+        "label": "Fleck",
+        "sentence": "The antique painting had a delicate fleck of gold leaf embedded in the paint."
+      }
+    ]
+  },
+  {
+    "id": "flout-and-flaunt",
+    "title": "Flout and flaunt",
+    "difference": "\"Flout\" means to openly disobey, disregard, or defy a rule or law. \"Flaunt\" means to show off, display proudly, or exhibit ostentatiously.",
+    "examples": [
+      {
+        "label": "Flout",
+        "sentence": "Drivers who speed choose to flout basic traffic safety regulations."
+      },
+      {
+        "label": "Flaunt",
+        "sentence": "Successful entrepreneurs sometimes like to flaunt their wealth publicly."
+      }
+    ]
+  },
+  {
+    "id": "formally-and-formerly",
+    "title": "Formally and formerly",
+    "difference": "\"Formally\" means in a conventional, official, or ceremonial manner. \"Formerly\" means in the past, previously, or at an earlier time.",
+    "examples": [
+      {
+        "label": "Formally",
+        "sentence": "Guests were requested to dress formally for the evening gala event."
+      },
+      {
+        "label": "Formerly",
+        "sentence": "The modern café was formerly an old industrial manufacturing warehouse."
+      }
+    ]
+  },
+  {
+    "id": "fortuitous-and-fortunate",
+    "title": "Fortuitous and fortunate",
+    "difference": "\"Fortuitous\" means happening by a lucky accident or chance (not necessarily fortunate, though often confused). \"Fortunate\" means favored by good luck or prosperous.",
+    "examples": [
+      {
+        "label": "Fortuitous",
+        "sentence": "Their chance meeting at the airport proved to be a fortuitous coincidence."
+      },
+      {
+        "label": "Fortunate",
+        "sentence": "She felt fortunate to survive the major car accident without injury."
+      }
+    ]
+  },
+  {
+    "id": "found-and-founded",
+    "title": "Found and founded",
+    "difference": "\"Found\" is the present-tense verb meaning to discover or establish an organization. \"Founded\" is the past tense of \"to found\" meaning established, or the past tense of \"to find\".",
+    "examples": [
+      {
+        "label": "Found",
+        "sentence": "Archaeologists hoped to found new evidence regarding ancient civilizations."
+      },
+      {
+        "label": "Founded",
+        "sentence": "The technology startup was founded by two university graduates."
+      }
+    ]
+  },
+  {
+    "id": "gamble-and-gambol",
+    "title": "Gamble and gambol",
+    "difference": "\"Gamble\" is a verb or noun meaning to play games of chance for money or take risky bets. \"Gambol\" is a verb meaning to run or jump about playfully, to frolic.",
+    "examples": [
+      {
+        "label": "Gamble",
+        "sentence": "Visiting a casino to gamble can lead to rapid financial losses."
+      },
+      {
+        "label": "Gambol",
+        "sentence": "Young lambs began to gambol across the green spring meadow."
+      }
+    ]
+  },
+  {
+    "id": "gantt-and-gauntlet",
+    "title": "Gantt and gauntlet",
+    "difference": "\"Gantt\" refers to a type of bar chart used in project management (Gantt chart). \"Gauntlet\" refers to a stout medieval glove or a severe trial/challenge.",
+    "examples": [
+      {
+        "label": "Gantt",
+        "sentence": "The project manager created a detailed Gantt chart to track task schedules."
+      },
+      {
+        "label": "Gauntlet",
+        "sentence": "The knight threw down his heavy steel gauntlet to challenge his rival."
+      }
+    ]
+  },
+  {
+    "id": "gibe-jibe-and-gybe",
+    "title": "Gibe, jibe, and gybe",
+    "difference": "\"Gibe\" means to jeer or mock insultingly. \"Jibe\" means to agree or be consistent. \"Gybe\" is a sailing term meaning to change a sailing vessel's course.",
+    "examples": [
+      {
+        "label": "Gibe",
+        "sentence": "Bullies hurled a cruel gibe at the new student on the playground."
+      },
+      {
+        "label": "Jibe",
+        "sentence": "The witness's statement did not jibe with the physical forensic evidence."
+      },
+      {
+        "label": "Gybe",
+        "sentence": "The skipper needed to gybe the yacht smoothly to catch the changing wind."
+      }
+    ]
+  },
+  {
+    "id": "gratis-and-gracious",
+    "title": "Gratis and gracious",
+    "difference": "\"Gratis\" means free of charge, without cost. \"Gracious\" means courteous, kind, and pleasant, especially to those of lower status.",
+    "examples": [
+      {
+        "label": "Gratis",
+        "sentence": "Admission to the public art gallery on Tuesdays is entirely gratis."
+      },
+      {
+        "label": "Gracious",
+        "sentence": "The host remained gracious and welcoming despite the unexpected delays."
+      }
+    ]
+  },
+  {
+    "id": "grizzly-and-grisly",
+    "title": "Grizzly and grisly",
+    "difference": "\"Grizzly\" refers to a large North American brown bear or graying hair. \"Grisly\" means causing horror, disgust, or revulsion, gruesome.",
+    "examples": [
+      {
+        "label": "Grizzly",
+        "sentence": "Campers were warned about grizzly bears foraging for food in the park."
+      },
+      {
+        "label": "Grisly",
+        "sentence": "Detectives investigated a grisly crime scene inside the abandoned cabin."
+      }
+    ]
+  },
+  {
+    "id": "guaranty-and-guarantee",
+    "title": "Guaranty and guarantee",
+    "difference": "\"Guaranty\" is a legal promise or formal undertaking to answer for another's debt. \"Guarantee\" is a formal assurance or promise that certain conditions will be fulfilled.",
+    "examples": [
+      {
+        "label": "Guaranty",
+        "sentence": "The bank required a financial guaranty before approving the commercial loan."
+      },
+      {
+        "label": "Guarantee",
+        "sentence": "The manufacturer offered a lifetime warranty guarantee on all parts."
+      }
+    ]
+  },
+  {
+    "id": "hangar-and-hanger",
+    "title": "Hangar and hanger",
+    "difference": "\"Hangar\" is a large building with extensive floor area for housing aircraft. \"Hanger\" is a curved loop device used for hanging garments in a closet.",
+    "examples": [
+      {
+        "label": "Hangar",
+        "sentence": "Mechanics rolled the private jet inside the spacious aircraft hangar."
+      },
+      {
+        "label": "Hanger",
+        "sentence": "She hung her winter coat neatly on a wooden clothes hanger."
+      }
+    ]
+  },
+  {
+    "id": "hardly-and-sternly",
+    "title": "Hardly and sternly",
+    "difference": "\"Hardly\" means barely or almost not at all. \"Sternly\" means in a serious, strict, or severe manner.",
+    "examples": [
+      {
+        "label": "Hardly",
+        "sentence": "There was hardly any food left in the refrigerator after the weekend."
+      },
+      {
+        "label": "Sternly",
+        "sentence": "The teacher spoke sternly to the students who arrived late."
+      }
+    ]
+  },
+  {
+    "id": "haul-and-hall",
+    "title": "Haul and hall",
+    "difference": "\"Haul\" means to pull or drag with effort. \"Hall\" is a large room, corridor, or building used for assemblies.",
+    "examples": [
+      {
+        "label": "Haul",
+        "sentence": "Workers used a winch to haul the heavy cargo crate onto the deck."
+      },
+      {
+        "label": "Hall",
+        "sentence": "Students hurried down the long school hall to reach their next class."
+      }
+    ]
+  },
+  {
+    "id": "heal-heel-and-he-ll",
+    "title": "Heal, heel, and he'll",
+    "difference": "\"Heal\" means to become healthy again or cure. \"Heel\" is the back part of the foot or shoe. \"He'll\" is a contraction for \"he will\".",
+    "examples": [
+      {
+        "label": "Heal",
+        "sentence": "Deep cuts take time to heal properly without leaving severe scars."
+      },
+      {
+        "label": "Heel",
+        "sentence": "The high heel of her formal shoe snapped while walking on gravel."
+      },
+      {
+        "label": "He'll",
+        "sentence": "He'll arrive at the train station by seven o'clock tonight."
+      }
+    ]
+  },
+  {
+    "id": "hoarse-and-horse",
+    "title": "Hoarse and horse",
+    "difference": "\"Hoarse\" means sounding rough and harsh, typically as the result of sore throat or shouting. \"Horse\" is a large quadruped mammal used for riding and farm work.",
+    "examples": [
+      {
+        "label": "Hoarse",
+        "sentence": "Cheering loudly at the football match left his voice completely hoarse."
+      },
+      {
+        "label": "Horse",
+        "sentence": "The majestic white horse galloped gracefully across the open pasture."
+      }
+    ]
+  },
+  {
+    "id": "imply-and-infer",
+    "title": "Imply and infer",
+    "difference": "\"Imply\" means to strongly suggest or hint at something without stating it directly (done by the speaker/writer). \"Infer\" means to deduce or conclude information from evidence and reasoning (done by the listener/reader).",
+    "examples": [
+      {
+        "label": "Imply",
+        "sentence": "Her tone seemed to imply that she was unhappy with the decision."
+      },
+      {
+        "label": "Infer",
+        "sentence": "Auditors were able to infer financial discrepancies from the missing receipts."
+      }
+    ]
+  },
+  {
+    "id": "incipient-and-insipid",
+    "title": "Incipient and insipid",
+    "difference": "\"Incipient\" means in an initial stage; beginning to happen or develop. \"Insipid\" means lacking flavor, vigor, or interest; bland.",
+    "examples": [
+      {
+        "label": "Incipient",
+        "sentence": "Scientists detected incipient signs of corrosion on the metal bridge beam."
+      },
+      {
+        "label": "Insipid",
+        "sentence": "The watery soup tasted completely insipid and lacked any spices."
+      }
+    ]
+  },
+  {
+    "id": "indict-and-indictment",
+    "title": "Indict and indictment",
+    "difference": "\"Indict\" is a verb meaning to formally charge or accuse someone of a serious crime. \"Indictment\" is the noun form of the formal accusation.",
+    "examples": [
+      {
+        "label": "Indict",
+        "sentence": "A grand jury voted to indict the executive on charges of fraud."
+      },
+      {
+        "label": "Indictment",
+        "sentence": "Prosecutors issued a formal indictment detailing counts of corruption."
+      }
+    ]
+  },
+  {
+    "id": "inoculate-and-vaccinate",
+    "title": "Inoculate and vaccinate",
+    "difference": "\"Inoculate\" and \"vaccinate\" are often used interchangeably to mean administering a vaccine to produce immunity, though historically inoculation used material from a patient.",
+    "examples": [
+      {
+        "label": "Inoculate",
+        "sentence": "Health workers traveled to rural villages to inoculate children against polio."
+      },
+      {
+        "label": "Vaccinate",
+        "sentence": "Pediatricians recommend parents vaccinate infants according to schedule."
+      }
+    ]
+  },
+  {
+    "id": "interments-and-internments",
+    "title": "Interments and internments",
+    "difference": "\"Interments\" refers to the burial of a corpse in a grave. \"Internments\" refers to the state of being confined as a prisoner, especially for political reasons.",
+    "examples": [
+      {
+        "label": "Interments",
+        "sentence": "Historic cemetery records documented hundreds of quiet military interments."
+      },
+      {
+        "label": "Internments",
+        "sentence": "The wartime policy led to the unjust internments of civilian populations."
+      }
+    ]
+  },
+  {
+    "id": "irrelevant-and-irreverent",
+    "title": "Irrelevant and irreverent",
+    "difference": "\"Irrelevant\" means not connected to or relevant to the matter at hand. \"Irreverent\" means showing a lack of respect for people or things that are generally taken seriously.",
+    "examples": [
+      {
+        "label": "Irrelevant",
+        "sentence": "The speaker brought up several irrelevant details during the debate."
+      },
+      {
+        "label": "Irreverent",
+        "sentence": "The comedian's irreverent jokes shocked some conservative audience members."
+      }
+    ]
+  },
+  {
+    "id": "jargon-and-argot",
+    "title": "Jargon and argot",
+    "difference": "\"Jargon\" is special words or expressions used by a particular profession or group. \"Argot\" is the slang or secret language used by a particular group or subculture.",
+    "examples": [
+      {
+        "label": "Jargon",
+        "sentence": "Medical journals are often difficult to read due to technical scientific jargon."
+      },
+      {
+        "label": "Argot",
+        "sentence": "Detectives studied the secret criminal argot used by the smuggling ring."
+      }
+    ]
+  },
+  {
+    "id": "jealous-and-envious",
+    "title": "Jealous and envious",
+    "difference": "\"Jealous\" typically involves fear of losing something you have to a rival (possessive). \"Envious\" involves wanting something that someone else has (covetous).",
+    "examples": [
+      {
+        "label": "Jealous",
+        "sentence": "He felt jealous when his partner spent time with new colleagues."
+      },
+      {
+        "label": "Envious",
+        "sentence": "She felt envious of her friend's brand-new luxury sports car."
+      }
+    ]
+  },
+  {
+    "id": "kernel-and-colonel",
+    "title": "Kernel and colonel",
+    "difference": "\"Kernel\" is a softer, edible part of a nut or seed, or a core. \"Colonel\" (pronounced \"kernel\") is an army officer rank.",
+    "examples": [
+      {
+        "label": "Kernel",
+        "sentence": "Popcorn kernels must be heated until they burst into fluffy snacks."
+      },
+      {
+        "label": "Colonel",
+        "sentence": "A decorated army colonel led the military battalion into formation."
+      }
+    ]
+  },
+  {
+    "id": "knot-and-not",
+    "title": "Knot and not",
+    "difference": "\"Knot\" is a fastening made by tying a piece of string or rope. \"Not\" is an adverb used to express negation, denial, or refusal.",
+    "examples": [
+      {
+        "label": "Knot",
+        "sentence": "Sailors tied a secure knot around the wooden cleat on the dock."
+      },
+      {
+        "label": "Not",
+        "sentence": "She decided not to attend the evening party due to exhaustion."
+      }
+    ]
+  },
+  {
+    "id": "lessor-and-lessee",
+    "title": "Lessor and lessee",
+    "difference": "\"Lessor\" is a person who leases property to someone else (the landlord). \"Lessee\" is a person who holds the lease of a property (the tenant).",
+    "examples": [
+      {
+        "label": "Lessor",
+        "sentence": "The commercial lessor required a security deposit before handing over keys."
+      },
+      {
+        "label": "Lessee",
+        "sentence": "The business lessee signed a three-year lease agreement for the office space."
+      }
+    ]
+  },
+  {
+    "id": "levy-and-levee",
+    "title": "Levy and levee",
+    "difference": "\"Levy\" means to impose or collect a tax, fee, or fine. \"Levee\" is an embankment built to prevent the overflow of a river.",
+    "examples": [
+      {
+        "label": "Levy",
+        "sentence": "The local government decided to levy a new tax on commercial properties."
+      },
+      {
+        "label": "Levee",
+        "sentence": "Emergency workers reinforced the river levee to prevent floodwaters."
+      }
+    ]
+  },
+  {
+    "id": "liable-and-libel",
+    "title": "Liable and libel",
+    "difference": "\"Liable\" means legally responsible or likely to do something. \"Libel\" is a published false statement that is damaging to a person's reputation; written defamation.",
+    "examples": [
+      {
+        "label": "Liable",
+        "sentence": "Manufacturers are held strictly liable for defective product safety hazards."
+      },
+      {
+        "label": "Libel",
+        "sentence": "The newspaper faced a costly libel lawsuit after publishing false accusations."
+      }
+    ]
   }
 ];
 
