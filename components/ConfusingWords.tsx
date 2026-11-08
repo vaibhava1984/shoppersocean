@@ -2747,6 +2747,730 @@ const WORD_PAIRS: WordPair[] = [
         "sentence": "The newspaper faced a costly libel lawsuit after publishing false accusations."
       }
     ]
+  },
+  {
+    "id": "luxuriant-and-luxurious",
+    "title": "Luxuriant and luxurious",
+    "difference": "\"Luxuriant\" means growing thickly, lush, or abundantly rich in production. \"Luxurious\" means characterized by luxury, extremely comfortable, or expensive and lavish.",
+    "examples": [
+      {
+        "label": "Luxuriant",
+        "sentence": "The tropical rainforest featured luxuriant green foliage and exotic plants."
+      },
+      {
+        "label": "Luxurious",
+        "sentence": "They booked a luxurious suite at the five-star beachfront resort."
+      }
+    ]
+  },
+  {
+    "id": "mackerel-and-macrame",
+    "title": "Mackerel and macrame",
+    "difference": "\"Mackerel\" is a fast-swimming oceanic food fish with dark vertical stripes. \"Macrame\" is a textile craft using knotting techniques to make decorative hangings.",
+    "examples": [
+      {
+        "label": "Mackerel",
+        "sentence": "The local fisherman caught fresh mackerel off the rocky coastline."
+      },
+      {
+        "label": "Macrame",
+        "sentence": "She spent the weekend crafting an intricate wall hanging using macrame cords."
+      }
+    ]
+  },
+  {
+    "id": "mall-and-maul",
+    "title": "Mall and maul",
+    "difference": "\"Mall\" is a large enclosed shopping center or pedestrian retail area. \"Maul\" is a verb meaning to wound, scratch, or savage violently with claws or heavy handling, or a heavy hammer.",
+    "examples": [
+      {
+        "label": "Mall",
+        "sentence": "Teenagers gathered inside the crowded suburban shopping mall on Saturday."
+      },
+      {
+        "label": "Maul",
+        "sentence": "Wildlife officials warned hikers about bears known to maul stray livestock."
+      }
+    ]
+  },
+  {
+    "id": "manner-and-manor",
+    "title": "Manner and manor",
+    "difference": "\"Manner\" means a way in which a thing is done or a person's behavior. \"Manor\" is a large country house with lands, historically belonging to a lord.",
+    "examples": [
+      {
+        "label": "Manner",
+        "sentence": "He answered all the interview questions in a polite and professional manner."
+      },
+      {
+        "label": "Manor",
+        "sentence": "The historic English manor was surrounded by extensive green gardens."
+      }
+    ]
+  },
+  {
+    "id": "marital-and-martial",
+    "title": "Marital and martial",
+    "difference": "\"Marital\" relates to marriage or the relationship between spouses. \"Martial\" relates to fighting, war, combat, or the military.",
+    "examples": [
+      {
+        "label": "Marital",
+        "sentence": "Couples often seek professional counseling to resolve marital disputes."
+      },
+      {
+        "label": "Martial",
+        "sentence": "Students learned self-defense techniques in their weekly martial arts class."
+      }
+    ]
+  },
+  {
+    "id": "maybe-and-may-be",
+    "title": "Maybe and may be",
+    "difference": "\"Maybe\" is an adverb meaning perhaps or possibly. \"May be\" is a verb phrase expressing possibility.",
+    "examples": [
+      {
+        "label": "Maybe",
+        "sentence": "Maybe we can reschedule our meeting for next week."
+      },
+      {
+        "label": "May be",
+        "sentence": "The package you ordered may be delivered by tomorrow afternoon."
+      }
+    ]
+  },
+  {
+    "id": "mean-and-mien",
+    "title": "Mean and mien",
+    "difference": "\"Mean\" can mean average, unkind, or signify something. \"Mien\" is a noun referring to a person's appearance, air, or facial expression indicating their mood.",
+    "examples": [
+      {
+        "label": "Mean",
+        "sentence": "Calculating the mathematical mean requires adding all values and dividing by the count."
+      },
+      {
+        "label": "Mien",
+        "sentence": "Despite the stressful situation, she maintained a calm and confident mien."
+      }
+    ]
+  },
+  {
+    "id": "medal-and-meddle",
+    "title": "Medal and meddle",
+    "difference": "\"Medal\" is a flat metal disc awarded as a prize or honor. \"Meddle\" is a verb meaning to interfere in something that is not one's concern.",
+    "examples": [
+      {
+        "label": "Medal",
+        "sentence": "The champion athlete proudly wore her gold medal around her neck."
+      },
+      {
+        "label": "Meddle",
+        "sentence": "It is unwise to meddle in private family affairs that do not concern you."
+      }
+    ]
+  },
+  {
+    "id": "mega-and-meter",
+    "title": "Mega and meter",
+    "difference": "\"Mega\" is a prefix meaning one million or extraordinarily large. \"Meter\" is a fundamental unit of length in the metric system, or a measuring device.",
+    "examples": [
+      {
+        "label": "Mega",
+        "sentence": "The tech corporation invested millions in a mega data center."
+      },
+      {
+        "label": "Meter",
+        "sentence": "The track runner completed the four-hundred-meter race in record time."
+      }
+    ]
+  },
+  {
+    "id": "meretricious-and-meritorious",
+    "title": "Meretricious and meritorious",
+    "difference": "\"Meretricious\" means apparently attractive but having in reality no value or integrity. \"Meritorious\" means deserving reward, praise, or formal recognition.",
+    "examples": [
+      {
+        "label": "Meretricious",
+        "sentence": "The advertisement relied on flashy graphics and meretricious promises."
+      },
+      {
+        "label": "Meritorious",
+        "sentence": "The firefighter received a medal for his meritorious service during the rescue."
+      }
+    ]
+  },
+  {
+    "id": "metal-and-mettle",
+    "title": "Metal and mettle",
+    "difference": "\"Metal\" is a solid material such as iron, gold, or steel. \"Mettle\" is a person's ability to cope well with difficulties; spirit or resilience.",
+    "examples": [
+      {
+        "label": "Metal",
+        "sentence": "The heavy gate was constructed from durable wrought iron."
+      },
+      {
+        "label": "Mettle",
+        "sentence": "The grueling mountain climb tested the young hikers' true mettle."
+      }
+    ]
+  },
+  {
+    "id": "mewl-and-muddle",
+    "title": "Mewl and muddle",
+    "difference": "\"Mewl\" means to cry weakly or whimper like a baby. \"Muddle\" means to bring into a disordered or confused state, or a confused mess.",
+    "examples": [
+      {
+        "label": "Mewl",
+        "sentence": "The hungry kitten began to mewl softly near the back door."
+      },
+      {
+        "label": "Muddle",
+        "sentence": "Misplacing the financial folders caused a major muddle in the office."
+      }
+    ]
+  },
+  {
+    "id": "milieu-and-mildew",
+    "title": "Milieu and mildew",
+    "difference": "\"Milieu\" is a person's social environment, setting, or surroundings. \"Mildew\" is a thin, whitish fungus that grows on plants or damp materials.",
+    "examples": [
+      {
+        "label": "Milieu",
+        "sentence": "Growing up in an artistic milieu shaped her creative career path."
+      },
+      {
+        "label": "Mildew",
+        "sentence": "Damp basement conditions caused dark spots of mildew to form on the walls."
+      }
+    ]
+  },
+  {
+    "id": "mimeograph-and-monograph",
+    "title": "Mimeograph and monograph",
+    "difference": "\"Mimeograph\" is an old duplicating machine using a stencil. \"Monograph\" is a detailed written study of a single specialized subject.",
+    "examples": [
+      {
+        "label": "Mimeograph",
+        "sentence": "Old school offices used a mechanical mimeograph to print worksheets."
+      },
+      {
+        "label": "Monograph",
+        "sentence": "The professor published an academic monograph on medieval history."
+      }
+    ]
+  },
+  {
+    "id": "miscreant-and-minimalist",
+    "title": "Miscreant and minimalist",
+    "difference": "\"Miscreant\" is a person who behaves badly or breaks the law. \"Minimalist\" is a person who advocates minimalism or simple, sparse design.",
+    "examples": [
+      {
+        "label": "Miscreant",
+        "sentence": "Police officers quickly apprehended the miscreant who stole the bicycle."
+      },
+      {
+        "label": "Minimalist",
+        "sentence": "Her apartment was decorated in a clean, minimalist aesthetic style."
+      }
+    ]
+  },
+  {
+    "id": "monologue-and-dialogue",
+    "title": "Monologue and dialogue",
+    "difference": "\"Monologue\" is a long speech by one actor in a play or movie. \"Dialogue\" is a conversation between two or more people.",
+    "examples": [
+      {
+        "label": "Monologue",
+        "sentence": "The actor delivered a powerful theatrical monologue on stage."
+      },
+      {
+        "label": "Dialogue",
+        "sentence": "Open dialogue between team members is essential for resolving conflicts."
+      }
+    ]
+  },
+  {
+    "id": "moot-and-mute",
+    "title": "Moot and mute",
+    "difference": "\"Moot\" means subject to debate, arguable, or having no practical significance. \"Mute\" means silent, unable to speak, or silencing sound.",
+    "examples": [
+      {
+        "label": "Moot",
+        "sentence": "With the project canceled, the budget debate became completely moot."
+      },
+      {
+        "label": "Mute",
+        "sentence": "He pressed the remote control button to mute the loud television commercial."
+      }
+    ]
+  },
+  {
+    "id": "mutate-and-mutilate",
+    "title": "Mutate and mutilate",
+    "difference": "\"Mutate\" means to change or alter form, often genetically. \"Mutilate\" means to inflict severe damage or disfigurement upon a body or object.",
+    "examples": [
+      {
+        "label": "Mutate",
+        "sentence": "Viruses can mutate rapidly over time, creating new resistant strains."
+      },
+      {
+        "label": "Mutilate",
+        "sentence": "Vandals tried to mutilate the historic public sculpture in the park."
+      }
+    ]
+  },
+  {
+    "id": "myth-and-methodology",
+    "title": "Myth and methodology",
+    "difference": "\"Myth\" is a traditional story or widely held false belief. \"Methodology\" is a system of methods used in a particular area of study or activity.",
+    "examples": [
+      {
+        "label": "Myth",
+        "sentence": "Ancient cultures created stories and myths to explain natural phenomena."
+      },
+      {
+        "label": "Methodology",
+        "sentence": "The research team outlined a rigorous statistical methodology."
+      }
+    ]
+  },
+  {
+    "id": "nadir-and-zenith",
+    "title": "Nadir and zenith",
+    "difference": "\"Nadir\" is the lowest point or point of greatest adversity. \"Zenith\" is the time at which something is most powerful or successful; the peak.",
+    "examples": [
+      {
+        "label": "Nadir",
+        "sentence": "Losing his job marked the financial nadir of his professional career."
+      },
+      {
+        "label": "Zenith",
+        "sentence": "Winning the championship trophy brought the team to its career zenith."
+      }
+    ]
+  },
+  {
+    "id": "naive-and-native",
+    "title": "Naïve and native",
+    "difference": "\"Naïve\" means showing a lack of experience, wisdom, or judgment. \"Native\" relates to someone born in a particular place or a local indigenous plant or animal.",
+    "examples": [
+      {
+        "label": "Naïve",
+        "sentence": "She was initially too naïve to recognize the dishonest business scam."
+      },
+      {
+        "label": "Native",
+        "sentence": "Koalas are native marsupials found across Australian eucalyptus forests."
+      }
+    ]
+  },
+  {
+    "id": "natal-and-neonatal",
+    "title": "Natal and neonatal",
+    "difference": "\"Natal\" relates to birth or the date or place of birth. \"Neonatal\" relates to newborn babies, especially the first month after birth.",
+    "examples": [
+      {
+        "label": "Natal",
+        "sentence": "Hospital records documented the infant's exact natal weight and time."
+      },
+      {
+        "label": "Neonatal",
+        "sentence": "Specialized doctors worked tirelessly inside the neonatal intensive care unit."
+      }
+    ]
+  },
+  {
+    "id": "natty-and-gnarly",
+    "title": "Natty and gnarly",
+    "difference": "\"Natty\" means smart and fashionable in appearance. \"Gnarly\" means knotted, rugged, or difficult or dangerous (also used in surf slang).",
+    "examples": [
+      {
+        "label": "Natty",
+        "sentence": "He wore a natty tailored suit to the corporate awards banquet."
+      },
+      {
+        "label": "Gnarly",
+        "sentence": "Surfers braved the gnarly ocean waves during the coastal storm."
+      }
+    ]
+  },
+  {
+    "id": "naval-and-navel",
+    "title": "Naval and navel",
+    "difference": "\"Naval\" relates to a country's navy, ships, or marine military forces. \"Navel\" is the anatomical belly button on the human abdomen.",
+    "examples": [
+      {
+        "label": "Naval",
+        "sentence": "The country's naval fleet patrolled international shipping lanes."
+      },
+      {
+        "label": "Navel",
+        "sentence": "She wore a crop top that exposed her midriff and navel."
+      }
+    ]
+  },
+  {
+    "id": "negligent-and-negligible",
+    "title": "Negligent and negligible",
+    "difference": "\"Negligent\" means failing to take proper care in doing something; careless. \"Negligible\" means so small or unimportant as to be not worth considering.",
+    "examples": [
+      {
+        "label": "Negligent",
+        "sentence": "The security guard was fired for being negligent on duty."
+      },
+      {
+        "label": "Negligible",
+        "sentence": "The minor scratch on the used car had a negligible effect on its price."
+      }
+    ]
+  },
+  {
+    "id": "nepotism-and-despotism",
+    "title": "Nepotism and despotism",
+    "difference": "\"Nepotism\" is the practice of favoring relatives or friends by those with power or influence. \"Despotism\" is the exercise of absolute power, typically in a cruel way.",
+    "examples": [
+      {
+        "label": "Nepotism",
+        "sentence": "Hiring family members for executive positions was criticized as corporate nepotism."
+      },
+      {
+        "label": "Despotism",
+        "sentence": "Citizens rebelled against years of cruel royal despotism and tyranny."
+      }
+    ]
+  },
+  {
+    "id": "nettle-and-mettle",
+    "title": "Nettle and mettle",
+    "difference": "\"Nettle\" is a prickly plant or a verb meaning to irritate or annoy. \"Mettle\" means resilience, courage, or spirit.",
+    "examples": [
+      {
+        "label": "Nettle",
+        "sentence": "Walking through the overgrown brush caused skin irritation from stinging nettles."
+      },
+      {
+        "label": "Mettle",
+        "sentence": "Her calm response to repeated setbacks showed remarkable mettle."
+      }
+    ]
+  },
+  {
+    "id": "nocturnal-and-diurnal",
+    "title": "Nocturnal and diurnal",
+    "difference": "\"Nocturnal\" means active at night. \"Diurnal\" means active during the daytime.",
+    "examples": [
+      {
+        "label": "Nocturnal",
+        "sentence": "Owls and bats are typical nocturnal creatures that hunt after dark."
+      },
+      {
+        "label": "Diurnal",
+        "sentence": "Most songbirds follow a diurnal routine, resting during night hours."
+      }
+    ]
+  },
+  {
+    "id": "nominal-and-numinal",
+    "title": "Nominal and numinal",
+    "difference": "\"Nominal\" means existing in name only or a very small or insignificant amount. \"Numinal\" relates to spiritual or divine numinous essence.",
+    "examples": [
+      {
+        "label": "Nominal",
+        "sentence": "The museum charged only a nominal admission fee for students."
+      },
+      {
+        "label": "Numinal",
+        "sentence": "Philosophers contemplated the deep numinal mysteries of existence."
+      }
+    ]
+  },
+  {
+    "id": "nostalgia-and-anesthesia",
+    "title": "Nostalgia and anesthesia",
+    "difference": "\"Nostalgia\" is a sentimental longing for the past. \"Anesthesia\" is insensibility to pain induced by medical drugs.",
+    "examples": [
+      {
+        "label": "Nostalgia",
+        "sentence": "Looking through old family photo albums filled her with warm nostalgia."
+      },
+      {
+        "label": "Anesthesia",
+        "sentence": "The surgeon administered general anesthesia before starting the operation."
+      }
+    ]
+  },
+  {
+    "id": "notorious-and-illustrious",
+    "title": "Notorious and illustrious",
+    "difference": "\"Notorious\" means famous or well known, typically for something bad. \"Illustrious\" means well respected, admired, and distinguished.",
+    "examples": [
+      {
+        "label": "Notorious",
+        "sentence": "The gang was notorious for executing elaborate bank robberies."
+      },
+      {
+        "label": "Illustrious",
+        "sentence": "An illustrious group of Nobel laureates attended the science gala."
+      }
+    ]
+  },
+  {
+    "id": "novice-and-connoisseur",
+    "title": "Novice and connoisseur",
+    "difference": "\"Novice\" is a person new to or inexperienced in a field. \"Connoisseur\" is an expert judge in matters of taste or fine arts.",
+    "examples": [
+      {
+        "label": "Novice",
+        "sentence": "The ski instructor taught basic balance techniques to the skiing novice."
+      },
+      {
+        "label": "Connoisseur",
+        "sentence": "The connoisseur identified the vintage notes immediately."
+      }
+    ]
+  },
+  {
+    "id": "noxious-and-obnoxious",
+    "title": "Noxious and obnoxious",
+    "difference": "\"Noxious\" means harmful, poisonous, or very unpleasant, typically describing substances. \"Obnoxious\" means extremely unpleasant, offensive, or objectionable, typically describing behavior or people.",
+    "examples": [
+      {
+        "label": "Noxious",
+        "sentence": "Chemical factories release noxious fumes into the atmosphere."
+      },
+      {
+        "label": "Obnoxious",
+        "sentence": "His obnoxious behavior at the restaurant annoyed other diners."
+      }
+    ]
+  },
+  {
+    "id": "nuance-and-instance",
+    "title": "Nuance and instance",
+    "difference": "\"Nuance\" is a subtle difference in shade of meaning, expression, or sound. \"Instance\" is an example or single occurrence.",
+    "examples": [
+      {
+        "label": "Nuance",
+        "sentence": "Translators must capture every linguistic nuance of the original poem."
+      },
+      {
+        "label": "Instance",
+        "sentence": "This is a clear instance of technical system failure."
+      }
+    ]
+  },
+  {
+    "id": "nurture-and-nature",
+    "title": "Nurture and nature",
+    "difference": "\"Nurture\" means caring for and encouraging the growth or development of someone. \"Nature\" is the inherent physical world or someone's innate character.",
+    "examples": [
+      {
+        "label": "Nurture",
+        "sentence": "Parents strive to nurture creativity and curiosity in their children."
+      },
+      {
+        "label": "Nature",
+        "sentence": "Exploring wild forests helps people appreciate the beauty of nature."
+      }
+    ]
+  },
+  {
+    "id": "oaf-and-oases",
+    "title": "Oaf and oases",
+    "difference": "\"Oaf\" is a clumsy, stupid, or awkward person. \"Oases\" is the plural of oasis, a fertile spot in a desert where water is found.",
+    "examples": [
+      {
+        "label": "Oaf",
+        "sentence": "The clumsy oaf knocked over the fragile vase in the antique shop."
+      },
+      {
+        "label": "Oases",
+        "sentence": "Desert travelers rejoiced upon discovering shaded green oases."
+      }
+    ]
+  },
+  {
+    "id": "obese-and-astute",
+    "title": "Obese and astute",
+    "difference": "\"Obese\" means grossly overweight. \"Astute\" means having or showing an ability to accurately assess situations or people and turn this to one's advantage.",
+    "examples": [
+      {
+        "label": "Obese",
+        "sentence": "Veterinarians noted that overfeeding can cause pets to become obese."
+      },
+      {
+        "label": "Astute",
+        "sentence": "The astute investor predicted the market shift before competitors."
+      }
+    ]
+  },
+  {
+    "id": "objective-and-subjective",
+    "title": "Objective and subjective",
+    "difference": "\"Objective\" means not influenced by personal feelings or opinions when considering facts. \"Subjective\" means based on or influenced by personal feelings, tastes, or opinions.",
+    "examples": [
+      {
+        "label": "Objective",
+        "sentence": "Scientists strive to maintain objective analysis during experiments."
+      },
+      {
+        "label": "Subjective",
+        "sentence": "Art critique is often highly subjective and varies by individual."
+      }
+    ]
+  },
+  {
+    "id": "oblivious-and-observant",
+    "title": "Oblivious and observant",
+    "difference": "\"Oblivious\" means not aware of or not concerned about what is happening around one. \"Observant\" means quick to notice or perceive things; alert.",
+    "examples": [
+      {
+        "label": "Oblivious",
+        "sentence": "He walked past the sign completely oblivious to the warning message."
+      },
+      {
+        "label": "Observant",
+        "sentence": "The observant detective noticed subtle clues left at the crime scene."
+      }
+    ]
+  },
+  {
+    "id": "obtuse-and-acute",
+    "title": "Obtuse and acute",
+    "difference": "\"Obtuse\" means annoyingly insensitive or slow to understand, or an angle greater than 90 degrees. \"Acute\" means sharp, severe, or an angle less than 90 degrees.",
+    "examples": [
+      {
+        "label": "Obtuse",
+        "sentence": "He played dumb and pretended to be obtuse during questioning."
+      },
+      {
+        "label": "Acute",
+        "sentence": "The patient experienced acute abdominal pain requiring emergency care."
+      }
+    ]
+  },
+  {
+    "id": "odious-and-odorous",
+    "title": "Odious and odorous",
+    "difference": "\"Odious\" means extremely unpleasant or repulsive. \"Odorous\" means having a smell, especially a strong or unpleasant one.",
+    "examples": [
+      {
+        "label": "Odious",
+        "sentence": "Stealing money from charitable donations is an odious crime."
+      },
+      {
+        "label": "Odorous",
+        "sentence": "Decaying organic waste produced an intensely odorous smell."
+      }
+    ]
+  },
+  {
+    "id": "official-and-officious",
+    "title": "Official and officious",
+    "difference": "\"Official\" relates to an authority or public office. \"Officious\" means assertively domineering in an annoying bureaucratic way; meddlesome.",
+    "examples": [
+      {
+        "label": "Official",
+        "sentence": "The government agency issued an official statement regarding policy."
+      },
+      {
+        "label": "Officious",
+        "sentence": "The officious security guard demanded unnecessary paperwork."
+      }
+    ]
+  },
+  {
+    "id": "ominous-and-auspicious",
+    "title": "Ominous and auspicious",
+    "difference": "\"Ominous\" means giving the troubling impression that something bad is going to happen. \"Auspicious\" means conducive to success; favorable.",
+    "examples": [
+      {
+        "label": "Ominous",
+        "sentence": "Dark, ominous storm clouds gathered quickly over the mountains."
+      },
+      {
+        "label": "Auspicious",
+        "sentence": "Clear skies and warm weather provided an auspicious start to the trip."
+      }
+    ]
+  },
+  {
+    "id": "opaque-and-transparent",
+    "title": "Opaque and transparent",
+    "difference": "\"Opaque\" means not able to be seen through. \"Transparent\" means allowing light to pass through so that objects behind can be distinctly seen.",
+    "examples": [
+      {
+        "label": "Opaque",
+        "sentence": "Heavy curtains made the bedroom windows completely opaque."
+      },
+      {
+        "label": "Transparent",
+        "sentence": "Clean glass windows are transparent and let sunlight flood in."
+      }
+    ]
+  },
+  {
+    "id": "oppress-and-suppress",
+    "title": "Oppress and suppress",
+    "difference": "\"Oppress\" means to keep someone in subjection and hardship unjustly. \"Suppress\" means to forcibly put an end to or prevent the development of something.",
+    "examples": [
+      {
+        "label": "Oppress",
+        "sentence": "Tyrannical rulers often attempt to oppress marginalized populations."
+      },
+      {
+        "label": "Suppress",
+        "sentence": "Authorities worked quickly to suppress public riots and protests."
+      }
+    ]
+  },
+  {
+    "id": "organic-and-inorganic",
+    "title": "Organic and inorganic",
+    "difference": "\"Organic\" relates to living matter or food produced without synthetic chemicals. \"Inorganic\" relates to matter that is not organic, often of mineral origin.",
+    "examples": [
+      {
+        "label": "Organic",
+        "sentence": "She prefers buying fresh organic vegetables from local farmers."
+      },
+      {
+        "label": "Inorganic",
+        "sentence": "Rocks and minerals are classified as inorganic chemical substances."
+      }
+    ]
+  },
+  {
+    "id": "ostensible-and-ostentatious",
+    "title": "Ostensible and ostentatious",
+    "difference": "\"Ostensible\" means stated or appearing to be true, but not necessarily so. \"Ostentatious\" means designed to impress or attract notice; showy and pretentious.",
+    "examples": [
+      {
+        "label": "Ostensible",
+        "sentence": "His ostensible reason for visiting was business, but he really wanted a vacation."
+      },
+      {
+        "label": "Ostentatious",
+        "sentence": "The billionaire drove an ostentatious gold-plated sports car."
+      }
+    ]
+  },
+  {
+    "id": "palate-palette-and-pallet",
+    "title": "Palate, palette, and pallet",
+    "difference": "\"Palate\" is the roof of the mouth or sense of taste. \"Palette\" is an artist's board for mixing paints. \"Pallet\" is a portable platform for storing goods.",
+    "examples": [
+      {
+        "label": "Palate",
+        "sentence": "Rich dark chocolate appeals to a sophisticated palate."
+      },
+      {
+        "label": "Palette",
+        "sentence": "The painter mixed vibrant oil colors on her wooden palette."
+      },
+      {
+        "label": "Pallet",
+        "sentence": "Warehouse workers stacked heavy cardboard boxes onto a wooden pallet."
+      }
+    ]
   }
 ];
 
