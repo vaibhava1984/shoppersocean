@@ -72,7 +72,8 @@ async function handle(req:Request,consume:boolean){
     return NextResponse.json({reserved:true,pendingQuestionId:questionId},{headers});
    }
    if(await hasAttempt(db,user.id,topic,legacyIds)){await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=?").bind(user.id,topic).run();const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}
-   const claimed=await db.prepare("INSERT OR IGNORE INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
+   const attemptedAt=new Date().toISOString();
+   const claimed=await db.prepare("INSERT OR IGNORE INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) RETURNING question_id").bind(user.id,topic,questionId,attemptedAt).first<any>();
    if(!claimed){await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=? AND question_id=?").bind(user.id,topic,questionId).run();const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}
    let row:any;
    if(subscribed||admin){
@@ -82,7 +83,14 @@ async function handle(req:Request,consume:boolean){
     row=await db.prepare("INSERT INTO english_expert_free_usage(user_id,topic_id,attempts_used,updated_at) VALUES(?,?,1,?) ON CONFLICT(user_id,topic_id) DO UPDATE SET attempts_used=attempts_used+1,updated_at=excluded.updated_at WHERE english_expert_free_usage.attempts_used<? RETURNING attempts_used").bind(user.id,topic,new Date().toISOString(),FREE_LIMIT).first<any>();
     if(!row){await db.prepare("DELETE FROM english_expert_attempts WHERE user_id=? AND topic_id=? AND question_id=?").bind(user.id,topic,questionId).run();return NextResponse.json({error:"Your free quota on this section has been exhausted, please subscribe to play further.",topicId:topic,freeQuotaExhausted:true,usage:await readUsage(db,user.id,date,false)},{status:403,headers});}
    }
-   await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=? AND question_id=?").bind(user.id,topic,questionId).run();
+   // Persist every legacy identity for this same authored question as attempted.
+   // This prevents a reservation created under an older question-ID scheme from
+   // being resumed after the current stable ID has been answered.
+   for(const alias of legacyIds){
+    if(alias!==questionId)await db.prepare("INSERT OR IGNORE INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?)").bind(user.id,topic,alias,attemptedAt).run();
+   }
+   const pendingMarks=legacyIds.map(()=>"?").join(",");
+   await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=? AND question_id IN ("+pendingMarks+")").bind(user.id,topic,...legacyIds).run();
    const usage=await readUsage(db,user.id,date,subscribed||admin);
    return NextResponse.json({ok:true,usage,topicRemaining:Math.max(0,(subscribed||admin?DAILY_LIMIT:FREE_LIMIT)-Number(row.attempts_used??0))},{headers});
   }
