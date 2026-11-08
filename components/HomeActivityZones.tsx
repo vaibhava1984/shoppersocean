@@ -13,6 +13,7 @@ import RiddleCornerQuiz from "@/components/RiddleCornerQuiz";
 import GameQuotaPopup from "@/components/GameQuotaPopup";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
+import ConfusingWords from "@/components/ConfusingWords";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -184,6 +185,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const [englishTopicOpen, setEnglishTopicOpen] = useState(false);
   const [englishAcademyEntered, setEnglishAcademyEntered] = useState(false);
+  const [confusingWordsOpen, setConfusingWordsOpen] = useState(false);
+  const confusingWordsOpenRef = useRef(false);
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
   const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | null | false>(false);
@@ -270,6 +273,11 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         setActiveQuizGame(null);
         return;
       }
+      if (confusingWordsOpenRef.current) {
+        confusingWordsOpenRef.current = false;
+        setConfusingWordsOpen(false);
+        return;
+      }
       if (englishAcademyEnteredRef.current && englishTopicOpenRef.current) {
         // Let EnglishExpert handle question-page Back; otherwise return from the definition to the topic list.
         if (document.querySelector('[data-entertainment-hub] h4[style*="scroll-margin-top"]')) return;
@@ -303,6 +311,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     englishTopicOpenRef.current = false;
     setEnglishAcademyEntered(false);
     englishAcademyEnteredRef.current = false;
+    setConfusingWordsOpen(false);
+    confusingWordsOpenRef.current = false;
     classicGameStartedRef.current = false;
     setClassicGameStarted(false);
     activeQuizGameRef.current = null;
@@ -497,11 +507,17 @@ useEffect(() => {
             )}
             {selected.action === "learning" && (
               <div ref={activityTargetRef} className="w-full" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button"); if (button?.textContent?.trim() === "← Back" && event.currentTarget.querySelector('h4[style*="scroll-margin-top"]')) { event.preventDefault(); event.stopPropagation(); window.history.back(); } }}>
-                {!englishAcademyEntered ? (
-                  <div className="mx-auto w-full max-w-md">
+                {confusingWordsOpen ? (
+                  <ConfusingWords userId={userId} />
+                ) : !englishAcademyEntered ? (
+                  <div className="mx-auto w-full max-w-md space-y-3">
                     <button type="button" onClick={() => { window.history.pushState({ shoppersOceanLearning: true }, "", window.location.href); englishAcademyEnteredRef.current = true; setEnglishAcademyEntered(true); }} className="group w-full rounded-2xl border border-sky-300 bg-gradient-to-br from-sky-100 via-white to-violet-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200">
                       <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📘</span><span className="rounded-full bg-white/80 px-3 py-1 text-xs font-bold text-slate-600">Open →</span></span>
                       <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-blue-700">English Master Quiz</span>
+                    </button>
+                    <button type="button" onClick={() => { if (!userId) { setSignInPopup(true); return; } window.history.pushState({ shoppersOceanLearning: true, shoppersOceanTool: "confusing-words" }, "", window.location.href); confusingWordsOpenRef.current = true; setConfusingWordsOpen(true); }} className="group w-full rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-200">
+                      <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📖</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-amber-800">Open →</span></span>
+                      <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-amber-800">Confusing Words</span>
                     </button>
                   </div>
                 ) : (
