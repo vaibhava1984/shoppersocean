@@ -105,7 +105,16 @@ export default function RiddleCornerQuiz({ userId, isPrivileged, remaining, quot
         });
         const data = await response.json();
         if (response.ok && data.reserved) {
-          setQuestionIndex(candidateIndex);
+          const resumedId = data.resumed && typeof data.challengeId === "string"
+            ? Number(data.challengeId.replace("riddle-q-", ""))
+            : Number(candidate.id);
+          const resumedIndex = QUESTIONS.findIndex((item: any) => Number(item.id) === resumedId);
+          if (resumedIndex < 0) {
+            setErrorMessage("Your saved question could not be restored. Please try again.");
+            setLoading(false);
+            return;
+          }
+          setQuestionIndex(resumedIndex);
           setChosen(null);
           setLoading(false);
           return;
