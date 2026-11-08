@@ -1546,6 +1546,599 @@ const WORD_PAIRS: WordPair[] = [
         "sentence": "She created a quiet, zen atmosphere in her meditation room."
       }
     ]
+  },
+  {
+    "id": "adapt-adopt",
+    "title": "Adapt and adopt",
+    "difference": "Adapt means to adjust to new conditions; adopt means to accept, take up, or begin using something.",
+    "examples": [
+      {
+        "label": "Adapt",
+        "sentence": "Animals must adapt to changes in their environment."
+      },
+      {
+        "label": "Adopt",
+        "sentence": "The school plans to adopt a new teaching method."
+      }
+    ]
+  },
+  {
+    "id": "altar-alter",
+    "title": "Altar and alter",
+    "difference": "An altar is a sacred table or structure used in religious ceremonies; alter means to change or modify something.",
+    "examples": [
+      {
+        "label": "Altar",
+        "sentence": "The couple stood before the altar during the ceremony."
+      },
+      {
+        "label": "Alter",
+        "sentence": "The tailor agreed to alter the jacket."
+      }
+    ]
+  },
+  {
+    "id": "aural-oral",
+    "title": "Aural and oral",
+    "difference": "Aural relates to hearing or sound; oral relates to the mouth or spoken communication.",
+    "examples": [
+      {
+        "label": "Aural",
+        "sentence": "The musician has excellent aural skills."
+      },
+      {
+        "label": "Oral",
+        "sentence": "The students will take an oral examination."
+      }
+    ]
+  },
+  {
+    "id": "bale-bail",
+    "title": "Bale and bail",
+    "difference": "A bale is a large bundle of material; bail is security paid for temporary release from custody, or the act of removing water from a boat.",
+    "examples": [
+      {
+        "label": "Bale",
+        "sentence": "The farmer stacked a bale of hay in the barn."
+      },
+      {
+        "label": "Bail",
+        "sentence": "The judge granted bail to the accused."
+      }
+    ]
+  },
+  {
+    "id": "bizarre-bazaar",
+    "title": "Bizarre and bazaar",
+    "difference": "Bizarre means very strange or unusual; a bazaar is a market where goods are sold.",
+    "examples": [
+      {
+        "label": "Bizarre",
+        "sentence": "The detective heard a bizarre explanation."
+      },
+      {
+        "label": "Bazaar",
+        "sentence": "We bought handmade gifts at the bazaar."
+      }
+    ]
+  },
+  {
+    "id": "block-bloc",
+    "title": "Block and bloc",
+    "difference": "A block can be a solid piece, obstruction, or group of buildings; a bloc is a group united by a common interest.",
+    "examples": [
+      {
+        "label": "Block",
+        "sentence": "A fallen tree blocked the road."
+      },
+      {
+        "label": "Bloc",
+        "sentence": "The nations formed a trade bloc."
+      }
+    ]
+  },
+  {
+    "id": "boar-bore",
+    "title": "Boar and bore",
+    "difference": "A boar is a male pig, especially a wild one; bore can mean make a hole or cause boredom, and is also the past tense of bear.",
+    "examples": [
+      {
+        "label": "Boar",
+        "sentence": "A wild boar emerged from the forest."
+      },
+      {
+        "label": "Bore",
+        "sentence": "The lengthy speech began to bore the audience."
+      }
+    ]
+  },
+  {
+    "id": "boy-buoy",
+    "title": "Boy and buoy",
+    "difference": "A boy is a male child or young man; a buoy is a floating marker used on water.",
+    "examples": [
+      {
+        "label": "Boy",
+        "sentence": "The boy helped his father in the garden."
+      },
+      {
+        "label": "Buoy",
+        "sentence": "The buoy marks the safe channel for boats."
+      }
+    ]
+  },
+  {
+    "id": "bridal-bridle",
+    "title": "Bridal and bridle",
+    "difference": "Bridal relates to a bride or wedding; a bridle is equipment used to control a horse, or a verb meaning to restrain.",
+    "examples": [
+      {
+        "label": "Bridal",
+        "sentence": "She chose a beautiful bridal gown."
+      },
+      {
+        "label": "Bridle",
+        "sentence": "The rider checked the horse’s bridle."
+      }
+    ]
+  },
+  {
+    "id": "broach-brooch",
+    "title": "Broach and brooch",
+    "difference": "Broach means to introduce a subject for discussion; a brooch is a decorative ornament fastened to clothing.",
+    "examples": [
+      {
+        "label": "Broach",
+        "sentence": "He was reluctant to broach the subject of money."
+      },
+      {
+        "label": "Brooch",
+        "sentence": "She pinned a gold brooch to her coat."
+      }
+    ]
+  },
+  {
+    "id": "caliber-calibre",
+    "title": "Caliber and calibre",
+    "difference": "Caliber and calibre are alternative spellings of the same word, referring to quality, ability, or the internal diameter of a gun barrel.",
+    "examples": [
+      {
+        "label": "Caliber",
+        "sentence": "The university attracts scholars of the highest caliber."
+      },
+      {
+        "label": "Calibre",
+        "sentence": "The team needs players of international calibre."
+      }
+    ]
+  },
+  {
+    "id": "canvas-canvass",
+    "title": "Canvas and canvass",
+    "difference": "Canvas is strong, heavy fabric; canvass means to seek opinions, votes, or support by asking people.",
+    "examples": [
+      {
+        "label": "Canvas",
+        "sentence": "The artist painted a landscape on canvas."
+      },
+      {
+        "label": "Canvass",
+        "sentence": "Volunteers went door to door to canvass voters."
+      }
+    ]
+  },
+  {
+    "id": "carat-caret-karat",
+    "title": "Carat, caret, and karat",
+    "difference": "Carat measures gemstone weight; caret is the proofreading symbol ^; karat measures gold purity.",
+    "examples": [
+      {
+        "label": "Carat",
+        "sentence": "The ring contains a one-carat diamond."
+      },
+      {
+        "label": "Caret",
+        "sentence": "The editor used a caret to mark the insertion point."
+      },
+      {
+        "label": "Karat",
+        "sentence": "The necklace is made of 18-karat gold."
+      }
+    ]
+  },
+  {
+    "id": "cavalry-chivalry",
+    "title": "Cavalry and chivalry",
+    "difference": "Cavalry refers to soldiers or a military unit; chivalry refers to ideals of honour, courtesy, and considerate behaviour.",
+    "examples": [
+      {
+        "label": "Cavalry",
+        "sentence": "The cavalry crossed the open field."
+      },
+      {
+        "label": "Chivalry",
+        "sentence": "He believes courtesy and chivalry are still important."
+      }
+    ]
+  },
+  {
+    "id": "census-senses",
+    "title": "Census and senses",
+    "difference": "A census is an official population count; senses are faculties such as sight, hearing, smell, taste, and touch.",
+    "examples": [
+      {
+        "label": "Census",
+        "sentence": "The government conducts a census every ten years."
+      },
+      {
+        "label": "Senses",
+        "sentence": "The aroma appealed to all her senses."
+      }
+    ]
+  },
+  {
+    "id": "climactic-climatic",
+    "title": "Climactic and climatic",
+    "difference": "Climactic relates to the most exciting or decisive point; climatic relates to climate and long-term weather conditions.",
+    "examples": [
+      {
+        "label": "Climactic",
+        "sentence": "The climactic scene surprised every viewer."
+      },
+      {
+        "label": "Climatic",
+        "sentence": "Climatic changes have affected local agriculture."
+      }
+    ]
+  },
+  {
+    "id": "coarse-course",
+    "title": "Coarse and course",
+    "difference": "Coarse means rough in texture or lacking refinement; course can mean a path, class, direction, or part of a meal.",
+    "examples": [
+      {
+        "label": "Coarse",
+        "sentence": "The coarse fabric irritated her skin."
+      },
+      {
+        "label": "Course",
+        "sentence": "He enrolled in a computer programming course."
+      }
+    ]
+  },
+  {
+    "id": "collaborate-corroborate",
+    "title": "Collaborate and corroborate",
+    "difference": "Collaborate means to work jointly; corroborate means to confirm a claim with supporting evidence.",
+    "examples": [
+      {
+        "label": "Collaborate",
+        "sentence": "The two teams will collaborate on the project."
+      },
+      {
+        "label": "Corroborate",
+        "sentence": "The video helped corroborate the witness’s account."
+      }
+    ]
+  },
+  {
+    "id": "complementary-complimentary",
+    "title": "Complementary and complimentary",
+    "difference": "Complementary means completing or going well with something; complimentary means free of charge or expressing praise.",
+    "examples": [
+      {
+        "label": "Complementary",
+        "sentence": "The curtains are complementary to the wall colour."
+      },
+      {
+        "label": "Complimentary",
+        "sentence": "The hotel provides complimentary breakfast."
+      }
+    ]
+  },
+  {
+    "id": "confidant-confident",
+    "title": "Confidant and confident",
+    "difference": "A confidant is a trusted person with whom secrets are shared; confident means sure of oneself or certain.",
+    "examples": [
+      {
+        "label": "Confidant",
+        "sentence": "She told the secret to her closest confidant."
+      },
+      {
+        "label": "Confident",
+        "sentence": "He felt confident before the interview."
+      }
+    ]
+  },
+  {
+    "id": "continual-continuous",
+    "title": "Continual and continuous",
+    "difference": "Continual describes repeated events with possible breaks; continuous describes something uninterrupted.",
+    "examples": [
+      {
+        "label": "Continual",
+        "sentence": "Continual interruptions made it hard to work."
+      },
+      {
+        "label": "Continuous",
+        "sentence": "The machine needs a continuous power supply."
+      }
+    ]
+  },
+  {
+    "id": "core-corps",
+    "title": "Core and corps",
+    "difference": "Core means the central or most important part; corps means an organized group, often military or professional.",
+    "examples": [
+      {
+        "label": "Core",
+        "sentence": "Honesty is at the core of their relationship."
+      },
+      {
+        "label": "Corps",
+        "sentence": "The medical corps assisted the injured."
+      }
+    ]
+  },
+  {
+    "id": "correspondents-co-respondents",
+    "title": "Correspondents and co-respondents",
+    "difference": "Correspondents are people who report news or exchange messages; co-respondents are people jointly named as respondents in a legal case.",
+    "examples": [
+      {
+        "label": "Correspondents",
+        "sentence": "Foreign correspondents reported from the capital."
+      },
+      {
+        "label": "Co-respondents",
+        "sentence": "The petition named two co-respondents."
+      }
+    ]
+  },
+  {
+    "id": "credible-credulous",
+    "title": "Credible and credulous",
+    "difference": "Credible means believable or trustworthy; credulous describes someone too ready to believe things without evidence.",
+    "examples": [
+      {
+        "label": "Credible",
+        "sentence": "The report was based on credible sources."
+      },
+      {
+        "label": "Credulous",
+        "sentence": "A credulous reader might believe the false story."
+      }
+    ]
+  },
+  {
+    "id": "criteria-criterion",
+    "title": "Criteria and criterion",
+    "difference": "Criteria is the plural of criterion; criterion is the singular word for a standard used in judging something.",
+    "examples": [
+      {
+        "label": "Criteria",
+        "sentence": "Applicants must meet all the eligibility criteria."
+      },
+      {
+        "label": "Criterion",
+        "sentence": "Experience is an important criterion for the role."
+      }
+    ]
+  },
+  {
+    "id": "cygnet-signet",
+    "title": "Cygnet and signet",
+    "difference": "A cygnet is a young swan; a signet is a seal or a ring bearing an engraved seal.",
+    "examples": [
+      {
+        "label": "Cygnet",
+        "sentence": "A cygnet swam beside its mother."
+      },
+      {
+        "label": "Signet",
+        "sentence": "The letter was sealed with a signet ring."
+      }
+    ]
+  },
+  {
+    "id": "decent-descent-dissent",
+    "title": "Decent, descent, and dissent",
+    "difference": "Decent means respectable or acceptable; descent means movement downward or ancestry; dissent means disagreement.",
+    "examples": [
+      {
+        "label": "Decent",
+        "sentence": "They found a decent hotel near the station."
+      },
+      {
+        "label": "Descent",
+        "sentence": "The aircraft began its descent."
+      },
+      {
+        "label": "Dissent",
+        "sentence": "Several members voiced dissent."
+      }
+    ]
+  },
+  {
+    "id": "definite-defiant",
+    "title": "Definite and defiant",
+    "difference": "Definite means clear, certain, or precisely determined; defiant describes open resistance to authority.",
+    "examples": [
+      {
+        "label": "Definite",
+        "sentence": "We need a definite answer today."
+      },
+      {
+        "label": "Defiant",
+        "sentence": "The defiant student refused to obey."
+      }
+    ]
+  },
+  {
+    "id": "delusion-illusion",
+    "title": "Delusion and illusion",
+    "difference": "A delusion is a firmly held false belief; an illusion is a misleading appearance or impression.",
+    "examples": [
+      {
+        "label": "Delusion",
+        "sentence": "He was under the delusion that everyone opposed him."
+      },
+      {
+        "label": "Illusion",
+        "sentence": "The mirrors created an illusion of space."
+      }
+    ]
+  },
+  {
+    "id": "deprecate-depreciate",
+    "title": "Deprecate and depreciate",
+    "difference": "Deprecate means to express disapproval or mark something as discouraged or obsolete; depreciate means to decrease in value.",
+    "examples": [
+      {
+        "label": "Deprecate",
+        "sentence": "The director continued to deprecate wasteful practices."
+      },
+      {
+        "label": "Depreciate",
+        "sentence": "Cars generally depreciate over time."
+      }
+    ]
+  },
+  {
+    "id": "deprivation-depravation",
+    "title": "Deprivation and depravation",
+    "difference": "Deprivation means lack of basic needs or comforts; depravation means moral corruption or degradation.",
+    "examples": [
+      {
+        "label": "Deprivation",
+        "sentence": "Sleep deprivation can affect memory."
+      },
+      {
+        "label": "Depravation",
+        "sentence": "The story depicts the depravation of a corrupt society."
+      }
+    ]
+  },
+  {
+    "id": "detractor-distracter",
+    "title": "Detractor and distracter",
+    "difference": "A detractor is someone who criticizes a person or thing; a distracter is something that diverts attention (often spelled distractor).",
+    "examples": [
+      {
+        "label": "Detractor",
+        "sentence": "Even his detractor praised the speech."
+      },
+      {
+        "label": "Distracter",
+        "sentence": "The test included a plausible distracter among the choices."
+      }
+    ]
+  },
+  {
+    "id": "device-devise",
+    "title": "Device and devise",
+    "difference": "A device is a tool or piece of equipment; devise is a verb meaning to plan, invent, or create.",
+    "examples": [
+      {
+        "label": "Device",
+        "sentence": "The technician repaired the electronic device."
+      },
+      {
+        "label": "Devise",
+        "sentence": "The team had to devise a new strategy."
+      }
+    ]
+  },
+  {
+    "id": "diffuse-defuse",
+    "title": "Diffuse and defuse",
+    "difference": "Diffuse means to spread over an area or make less concentrated; defuse means to reduce tension or remove a fuse.",
+    "examples": [
+      {
+        "label": "Diffuse",
+        "sentence": "The curtains diffuse the sunlight."
+      },
+      {
+        "label": "Defuse",
+        "sentence": "She tried to defuse the argument."
+      }
+    ]
+  },
+  {
+    "id": "dour-tower",
+    "title": "Dour and tower",
+    "difference": "Dour means stern, gloomy, or unfriendly; a tower is a tall structure, and tower can also mean to rise high above.",
+    "examples": [
+      {
+        "label": "Dour",
+        "sentence": "The dour manager rarely smiled."
+      },
+      {
+        "label": "Tower",
+        "sentence": "A stone tower stood above the village."
+      }
+    ]
+  },
+  {
+    "id": "dual-duel",
+    "title": "Dual and duel",
+    "difference": "Dual means consisting of two parts or having two functions; a duel is a contest or fight between two people.",
+    "examples": [
+      {
+        "label": "Dual",
+        "sentence": "The phone has a dual-camera system."
+      },
+      {
+        "label": "Duel",
+        "sentence": "The rivals challenged each other to a duel."
+      }
+    ]
+  },
+  {
+    "id": "elusive-illusive",
+    "title": "Elusive and illusive",
+    "difference": "Elusive means difficult to find or understand; illusive means deceptive or based on an illusion and is less common.",
+    "examples": [
+      {
+        "label": "Elusive",
+        "sentence": "The cause of the problem remained elusive."
+      },
+      {
+        "label": "Illusive",
+        "sentence": "The apparent solution proved illusive."
+      }
+    ]
+  },
+  {
+    "id": "enervate-energize",
+    "title": "Enervate and energize",
+    "difference": "Enervate means to weaken or drain energy; energize means to give energy, enthusiasm, or strength.",
+    "examples": [
+      {
+        "label": "Enervate",
+        "sentence": "The exhausting journey began to enervate the team."
+      },
+      {
+        "label": "Energize",
+        "sentence": "A short walk can energize you."
+      }
+    ]
+  },
+  {
+    "id": "enormity-enormousness",
+    "title": "Enormity and enormousness",
+    "difference": "Enormity can refer to extreme seriousness or wickedness and is also used for great scale; enormousness specifically refers to immense size or extent.",
+    "examples": [
+      {
+        "label": "Enormity",
+        "sentence": "The report revealed the enormity of the damage."
+      },
+      {
+        "label": "Enormousness",
+        "sentence": "The enormousness of the stadium amazed visitors."
+      }
+    ]
   }
 ];
 
