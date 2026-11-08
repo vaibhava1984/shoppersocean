@@ -93,8 +93,7 @@ async function handle(req:Request,consume:boolean){
    // Display reservations are temporary; permanent history is written only after an answer.
    if(reserveQuestion){
     if(previewMode)return NextResponse.json({reserved:true,previewMode:true},{headers});
-    // A user can have only one active reservation for the same normalized question across all games.
-    await db.prepare("DELETE FROM game_question_reservations WHERE reserved_at < ?").bind(new Date(Date.now()-30*60*1000).toISOString()).run();
+    // Unanswered reservations are durable: leaving a section or starting a new browser session must not discard the question.
     const reservationIndex=await db.prepare("SELECT name FROM sqlite_master WHERE type='index' AND name='game_question_reservations_user_type_question_unique'").first<any>();
     if(!reservationIndex){
      await db.prepare("DROP INDEX IF EXISTS game_question_reservations_user_question_unique").run();
@@ -102,6 +101,22 @@ async function handle(req:Request,consume:boolean){
      await db.prepare("CREATE UNIQUE INDEX IF NOT EXISTS game_question_reservations_user_type_question_unique ON game_question_reservations(user_id,game_type_id,question_text)").run();
     }
     if(!challenge||!questionText||!reservationSessionId)return NextResponse.json({error:"A question reservation requires a challenge and session."},{status:400,headers});
+    // Resume the user's pending question before considering any new candidate. A new component
+    // mount creates a new session ID, so transfer the reservation to this session and return
+    // the original challenge ID. Viewing the question never consumes quota or marks it answered.
+    const pending=await db.prepare("SELECT challenge_id,question_text FROM game_question_reservations WHERE user_id=? AND game_type_id=? ORDER BY reserved_at ASC LIMIT 1").bind(user.id,type).first<any>();
+    if(pending){
+     const pendingId=String(pending.challenge_id??"");
+     const pendingText=String(pending.question_text??"");
+     const alreadyAnswered=await db.prepare("SELECT 1 AS ok FROM game_answered_questions WHERE user_id=? AND section_id=? AND question_key=? LIMIT 1").bind(user.id,section,pendingText).first<any>();
+     const alreadyPlayed=pendingId?await db.prepare("SELECT 1 AS ok FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=? LIMIT 1").bind(user.id,type,pendingId).first<any>():null;
+     if(alreadyAnswered||alreadyPlayed){
+      await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,pendingId).run();
+     }else{
+      await db.prepare("UPDATE game_question_reservations SET session_id=? WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(reservationSessionId,user.id,type,pendingId).run();
+      return NextResponse.json({reserved:true,resumed:true,challengeId:pendingId,questionText:pendingText},{headers});
+     }
+    }
     const playedAt=new Date().toISOString();
     const prior=await db.prepare("SELECT played_at FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).first<any>();
     const priorQuestion=await db.prepare("SELECT answered_at FROM game_answered_questions WHERE user_id=? AND section_id=? AND question_key=?").bind(user.id,section,questionText).first<any>();
@@ -114,8 +129,8 @@ async function handle(req:Request,consume:boolean){
     }
     const existing=await db.prepare("SELECT question_text,session_id FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND question_text=? LIMIT 1").bind(user.id,type,questionText).first<any>();
     if(existing){
-     if(String(existing.session_id)===reservationSessionId)return NextResponse.json({reserved:true},{headers});
-     await db.prepare("DELETE FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND question_text=?").bind(user.id,type,questionText).run();
+     await db.prepare("UPDATE game_question_reservations SET session_id=? WHERE user_id=? AND game_type_id=? AND question_text=?").bind(reservationSessionId,user.id,type,questionText).run();
+     return NextResponse.json({reserved:true,resumed:true,challengeId:challenge,questionText},{headers});
     }
     await db.prepare("INSERT OR IGNORE INTO game_question_reservations(user_id,game_type_id,challenge_id,question_text,session_id,reserved_at) VALUES(?,?,?,?,?,?)").bind(user.id,type,challenge,questionText,reservationSessionId,playedAt).run();
     const acquired=await db.prepare("SELECT 1 AS ok FROM game_question_reservations WHERE user_id=? AND game_type_id=? AND challenge_id=? AND question_text=? AND session_id=? LIMIT 1").bind(user.id,type,challenge,questionText,reservationSessionId).first<any>();
