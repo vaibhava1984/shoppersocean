@@ -66,12 +66,13 @@ async function handle(req:Request,consume:boolean){
      if(!attemptedPending)return NextResponse.json({reserved:true,resumed:pendingId!==questionId,pendingQuestionId:pendingId},{headers});
      await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=?").bind(user.id,topic).run();
     }
-    const attempted=await db.prepare("SELECT 1 AS attempted FROM english_expert_attempts WHERE user_id=? AND topic_id=? AND question_id=? LIMIT 1").bind(user.id,topic,questionId).first<any>();
+    const attempted=await hasAttempt(db,user.id,topic,legacyIds);
     if(attempted)return NextResponse.json({repeated:true,skipQuestion:true},{status:409,headers});
     await db.prepare("INSERT INTO english_expert_pending_questions(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) ON CONFLICT(user_id,topic_id) DO UPDATE SET question_id=excluded.question_id,created_at=excluded.created_at").bind(user.id,topic,questionId,new Date().toISOString()).run();
     return NextResponse.json({reserved:true,pendingQuestionId:questionId},{headers});
    }
-   if(await hasAttempt(db,user.id,topic,legacyIds)){await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=?").bind(user.id,topic).run();const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}\n   const claimed=await db.prepare("INSERT OR IGNORE INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
+   if(await hasAttempt(db,user.id,topic,legacyIds)){await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=?").bind(user.id,topic).run();const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}
+   const claimed=await db.prepare("INSERT OR IGNORE INTO english_expert_attempts(user_id,topic_id,question_id,created_at) VALUES(?,?,?,?) RETURNING question_id").bind(user.id,topic,questionId,new Date().toISOString()).first<any>();
    if(!claimed){await db.prepare("DELETE FROM english_expert_pending_questions WHERE user_id=? AND topic_id=? AND question_id=?").bind(user.id,topic,questionId).run();const usage=await readUsage(db,user.id,date,subscribed||admin);const limit=(subscribed||admin)?DAILY_LIMIT:FREE_LIMIT;return NextResponse.json({ok:true,alreadyRecorded:true,usage,topicRemaining:Math.max(0,limit-Number(usage[topic]??0))},{headers});}
    let row:any;
    if(subscribed||admin){
