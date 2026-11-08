@@ -42,7 +42,29 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
         if (!live) return;
         setIsAdmin(Boolean(data.isAdmin));
         setIsSubscribed(Boolean(data.isSubscribed));
-        setRemaining(Number(data.remainingByType?.["confusing-words"] ?? 0));
+        const available = Number(data.remainingByType?.["confusing-words"] ?? 0);
+        if (available <= 0) {
+          setRemaining(0);
+          setQuotaPopup(true);
+          return;
+        }
+        const first = WORD_PAIRS[0];
+        const charge = await fetch("/api/game-access", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sectionId: "word-differences",
+            gameTypeId: "confusing-words",
+            challengeId: "confusing-words:" + first.id + ":" + Date.now()
+          })
+        });
+        const charged = await charge.json();
+        if (!charge.ok) {
+          setRemaining(0);
+          setQuotaPopup(true);
+          return;
+        }
+        setRemaining(Number(charged.remaining ?? 0));
       })
       .catch(err => { if (live) setError(err instanceof Error ? err.message : "Quota could not be verified."); })
       .finally(() => { if (live) setLoading(false); });
