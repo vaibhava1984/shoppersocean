@@ -135,7 +135,12 @@ export default function MysteryQuiz({ userId }: { userId: string | null; onExit:
         const reservationSessionId="mystery-"+Date.now()+"-"+Math.random().toString(36).slice(2);
         const response=await fetch("/api/game-access",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sectionId:"mystery-quiz",gameTypeId:"mystery-quiz",challengeId:"mystery-q-"+candidate.id,challengeQuestion:candidate.question,legacyChallengeIds:QUESTIONS.filter(q=>q.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)===candidate.question.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300)).map(q=>"mystery-q-"+q.id),reserveQuestion:true,reservationSessionId})});
         const data=await response.json();
-        if(response.ok&&data.reserved){selected=candidate;setSession(reservationSessionId);nextUsed=[...nextUsed,candidate.id];break;}
+        if(response.ok&&data.reserved){
+          const resumedId=data.resumed&&typeof data.challengeId==="string"?Number(data.challengeId.replace("mystery-q-","")):candidate.id;
+          const resumedQuestion=uniqueQuestions.find(q=>q.id===resumedId);
+          if(!resumedQuestion){setMessage("Your saved question could not be restored. Please try again.");break;}
+          selected=resumedQuestion;setSession(reservationSessionId);nextUsed=[...nextUsed,resumedQuestion.id];break;
+        }
         if(!data.repeated){if(response.status===403){setMessage(data.freeTrialsExhausted ? "Your free quota for this section has been exhausted. Please subscribe to enjoy further." : "Your quota for this section today has been exhausted. Please visit tomorrow to play again.");}else{setMessage(data.error||"Unable to load the next question.");}break;}
         nextUsed=[...nextUsed,candidate.id];
       }
