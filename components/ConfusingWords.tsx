@@ -776,6 +776,776 @@ const WORD_PAIRS: WordPair[] = [
         "sentence": "The coal miner emerged from the deep tunnel covered in dust."
       }
     ]
+  },
+  {
+    "id": "moral-morale",
+    "title": "Moral and morale",
+    "difference": "\"Moral\" is a noun or adjective relating to principles of right and wrong, or a lesson learned. \"Morale\" is a noun meaning the overall confidence, enthusiasm, and discipline of a group.",
+    "examples": [
+      {
+        "label": "Moral",
+        "sentence": "The fable teaches a valuable moral about honesty and hard work."
+      },
+      {
+        "label": "Morale",
+        "sentence": "Winning the championship game boosted the team's morale significantly."
+      }
+    ]
+  },
+  {
+    "id": "ordinance-ordnance",
+    "title": "Ordinance and ordnance",
+    "difference": "\"Ordinance\" is a noun meaning a municipal law, rule, or authoritative decree. \"Ordnance\" is a noun referring to military weapons, artillery, ammunition, and munitions.",
+    "examples": [
+      {
+        "label": "Ordinance",
+        "sentence": "The city council passed a strict noise ordinance for residential areas."
+      },
+      {
+        "label": "Ordnance",
+        "sentence": "Military experts safely disposed of unexploded ordnance found on-site."
+      }
+    ]
+  },
+  {
+    "id": "peak-peek-pique",
+    "title": "Peak, peek, and pique",
+    "difference": "\"Peak\" is a noun or adjective meaning the pointed top of a mountain or maximum level. \"Peek\" is a verb or noun meaning a quick, furtive look. \"Pique\" is a verb meaning to stimulate interest or provoke annoyance.",
+    "examples": [
+      {
+        "label": "Peak",
+        "sentence": "Climbers reached the snowy peak of the mountain just before noon."
+      },
+      {
+        "label": "Peek",
+        "sentence": "She took a quick peek inside the wrapped birthday present."
+      },
+      {
+        "label": "Pique",
+        "sentence": "The mysterious headline served to pique my curiosity immediately."
+      }
+    ]
+  },
+  {
+    "id": "pedal-peddle",
+    "title": "Pedal and peddle",
+    "difference": "\"Pedal\" is a noun or verb referring to a foot-operated lever on a machine or vehicle. \"Peddle\" is a verb meaning to promote, hawk, or travel around selling goods.",
+    "examples": [
+      {
+        "label": "Pedal",
+        "sentence": "Press down on the bicycle pedal to increase your speed."
+      },
+      {
+        "label": "Peddle",
+        "sentence": "Street vendors traveled through the town square to peddle handmade crafts."
+      }
+    ]
+  },
+  {
+    "id": "persecute-prosecute",
+    "title": "Persecute and prosecute",
+    "difference": "\"Persecute\" is a verb meaning to harass, oppress, or mistreat someone persistently based on race or beliefs. \"Prosecute\" is a verb meaning to institute legal proceedings against a criminal suspect.",
+    "examples": [
+      {
+        "label": "Persecute",
+        "sentence": "Historically, minority groups faced efforts to persecute them unfairly."
+      },
+      {
+        "label": "Prosecute",
+        "sentence": "The district attorney vowed to prosecute all offenders to the fullest extent."
+      }
+    ]
+  },
+  {
+    "id": "personal-personnel",
+    "title": "Personal and personnel",
+    "difference": "\"Personal\" is an adjective meaning private, individual, or relating to a specific person. \"Personnel\" is a noun meaning the human workforce or staff employed by an organization.",
+    "examples": [
+      {
+        "label": "Personal",
+        "sentence": "Please keep this information strictly confidential and personal."
+      },
+      {
+        "label": "Personnel",
+        "sentence": "Human resources handles all hiring and employee personnel files."
+      }
+    ]
+  },
+  {
+    "id": "plain-plane",
+    "title": "Plain and plane",
+    "difference": "\"Plain\" is an adjective or noun meaning clear, simple, or an expanse of flat land. \"Plane\" is a noun meaning an airplane, a flat geometric surface, or a carpentry tool.",
+    "examples": [
+      {
+        "label": "Plain",
+        "sentence": "The instructions were written in plain English so everyone could understand."
+      },
+      {
+        "label": "Plane",
+        "sentence": "The commercial plane landed safely at the international airport."
+      }
+    ]
+  },
+  {
+    "id": "pore-pour",
+    "title": "Pore and pour",
+    "difference": "\"Pore\" is a noun meaning a tiny opening in the skin, or a verb meaning to study or read something intently. \"Pour\" is a verb meaning to flow or cause liquid to stream out continuously.",
+    "examples": [
+      {
+        "label": "Pore",
+        "sentence": "The researcher spent hours to pore over the historical archives."
+      },
+      {
+        "label": "Pour",
+        "sentence": "Please pour me a refreshing glass of cold water."
+      }
+    ]
+  },
+  {
+    "id": "precede-proceed",
+    "title": "Precede and proceed",
+    "difference": "\"Precede\" is a verb meaning to come before something in time, order, or rank. \"Proceed\" is a verb meaning to carry on, advance, or move forward with an action.",
+    "examples": [
+      {
+        "label": "Precede",
+        "sentence": "Lightning flashes typically precede the sound of thunder during storms."
+      },
+      {
+        "label": "Proceed",
+        "sentence": "You may now proceed with your presentation to the board."
+      }
+    ]
+  },
+  {
+    "id": "presence-presents",
+    "title": "Presence and presents",
+    "difference": "\"Presence\" is a noun meaning the state of being present or existing in a place. \"Presents\" is the plural noun meaning gifts or items given to someone.",
+    "examples": [
+      {
+        "label": "Presence",
+        "sentence": "Her calming presence helped ease everyone's anxiety during the crisis."
+      },
+      {
+        "label": "Presents",
+        "sentence": "Children eagerly opened their birthday presents under the tree."
+      }
+    ]
+  },
+  {
+    "id": "principal-principle",
+    "title": "Principal and principle",
+    "difference": "\"Principal\" is a noun or adjective meaning the head of a school, main, or a sum of money bearing interest. \"Principle\" is a noun meaning a fundamental truth, rule, or moral standard.",
+    "examples": [
+      {
+        "label": "Principal",
+        "sentence": "The school principal addressed the students during the morning assembly."
+      },
+      {
+        "label": "Principle",
+        "sentence": "He refused to compromise on his core ethical principle of honesty."
+      }
+    ]
+  },
+  {
+    "id": "prophecy-prophesy",
+    "title": "Prophecy and prophesy",
+    "difference": "\"Prophecy\" is a noun meaning a prediction of future events. \"Prophesy\" is a verb meaning to predict or foretell future events or utter divine inspired messages.",
+    "examples": [
+      {
+        "label": "Prophecy",
+        "sentence": "The ancient myth spoke of a strange prophecy coming true."
+      },
+      {
+        "label": "Prophesy",
+        "sentence": "Prophets in ancient times would prophesy about coming kingdoms."
+      }
+    ]
+  },
+  {
+    "id": "quiet-quite",
+    "title": "Quiet and quite",
+    "difference": "\"Quiet\" is an adjective or noun meaning making little or no noise; silent. \"Quite\" is an adverb meaning to a certain extent, fairly, or completely/very.",
+    "examples": [
+      {
+        "label": "Quiet",
+        "sentence": "Please keep the library study hall zone quiet for readers."
+      },
+      {
+        "label": "Quite",
+        "sentence": "The movie turned out to be quite entertaining in the end."
+      }
+    ]
+  },
+  {
+    "id": "quote-quotation",
+    "title": "Quote and quotation",
+    "difference": "\"Quote\" is a verb meaning to repeat exact words, or often used informally as a noun. \"Quotation\" is the formal noun meaning a group of words repeated from a book or speech.",
+    "examples": [
+      {
+        "label": "Quote",
+        "sentence": "He loved to quote famous lines from Shakespearean plays."
+      },
+      {
+        "label": "Quotation",
+        "sentence": "She selected an inspiring quotation to start her research essay."
+      }
+    ]
+  },
+  {
+    "id": "raise-raze",
+    "title": "Raise and raze",
+    "difference": "\"Raise\" is a verb meaning to lift, elevate, or build up. \"Raze\" is a verb meaning to completely demolish, tear down, or destroy a building or town.",
+    "examples": [
+      {
+        "label": "Raise",
+        "sentence": "Workers tried to raise the heavy metal beam using a crane."
+      },
+      {
+        "label": "Raze",
+        "sentence": "Authorities planned to raze the abandoned warehouse to build a park."
+      }
+    ]
+  },
+  {
+    "id": "rational-rationale",
+    "title": "Rational and rationale",
+    "difference": "\"Rational\" is an adjective meaning based on or in accordance with reason or logic. \"Rationale\" is a noun meaning a set of reasons or logical explanation for a course of action.",
+    "examples": [
+      {
+        "label": "Rational",
+        "sentence": "She made a calm and rational decision under pressure."
+      },
+      {
+        "label": "Rationale",
+        "sentence": "The manager explained the strategic rationale behind the new policy."
+      }
+    ]
+  },
+  {
+    "id": "reckless-wreckless",
+    "title": "Reckless and wreckless",
+    "difference": "\"Reckless\" is an adjective meaning acting without thinking or showing a lack of care for consequences. \"Wreckless\" is a common misspelling and is not a standard accepted word in formal English.",
+    "examples": [
+      {
+        "label": "Reckless",
+        "sentence": "Speeding through residential zones is a dangerous and reckless habit."
+      },
+      {
+        "label": "Wreckless",
+        "sentence": "(Incorrect usage; use reckless instead to mean careless)."
+      }
+    ]
+  },
+  {
+    "id": "respectfully-respectively",
+    "title": "Respectfully and respectively",
+    "difference": "\"Respectfully\" means showing politeness, honor, and respect. \"Respectively\" means separately or in the exact order previously mentioned.",
+    "examples": [
+      {
+        "label": "Respectfully",
+        "sentence": "The student bowed respectfully before the martial arts master."
+      },
+      {
+        "label": "Respectively",
+        "sentence": "John and Mary won first and second place, respectively."
+      }
+    ]
+  },
+  {
+    "id": "right-rite-wright",
+    "title": "Right, rite, and wright",
+    "difference": "\"Right\" means correct, morally good, or a legal entitlement. \"Rite\" is a noun meaning a religious or ceremonial solemn act or custom. \"Wright\" is a noun meaning a maker or builder.",
+    "examples": [
+      {
+        "label": "Right",
+        "sentence": "Make sure your answers are mathematically right before submitting."
+      },
+      {
+        "label": "Rite",
+        "sentence": "The cultural initiation rite marked the transition into adulthood."
+      },
+      {
+        "label": "Wright",
+        "sentence": "The shipwright worked meticulously on building the wooden hull."
+      }
+    ]
+  },
+  {
+    "id": "role-roll",
+    "title": "Role and roll",
+    "difference": "\"Role\" is a noun meaning an actor's part in a play or a function assumed by someone. \"Roll\" is a noun or verb meaning a cylinder of food/paper, or to turn over and over.",
+    "examples": [
+      {
+        "label": "Role",
+        "sentence": "She played a starring role in the school theatrical drama production."
+      },
+      {
+        "label": "Roll",
+        "sentence": "Please pass me a warm dinner roll from the basket."
+      }
+    ]
+  },
+  {
+    "id": "salient-resilient",
+    "title": "Salient and resilient",
+    "difference": "\"Salient\" is an adjective meaning most noticeable, prominent, or important. \"Resilient\" is an adjective meaning able to recover quickly from tough conditions or bounce back.",
+    "examples": [
+      {
+        "label": "Salient",
+        "sentence": "The speaker highlighted the most salient points of the report."
+      },
+      {
+        "label": "Resilient",
+        "sentence": "Small businesses proved remarkably resilient during economic downturns."
+      }
+    ]
+  },
+  {
+    "id": "sanguine-genuine",
+    "title": "Sanguine and genuine",
+    "difference": "\"Sanguine\" is an adjective meaning optimistic or positive, especially in an apparently bad situation. \"Genuine\" is an adjective meaning truly what something is said to be; authentic.",
+    "examples": [
+      {
+        "label": "Sanguine",
+        "sentence": "Despite the delays, the team remained sanguine about winning."
+      },
+      {
+        "label": "Genuine",
+        "sentence": "The museum expert confirmed the diamond necklace was genuine."
+      }
+    ]
+  },
+  {
+    "id": "scarcely-sparsely",
+    "title": "Scarcely and sparsely",
+    "difference": "\"Scarcely\" is an adverb meaning barely, almost not at all. \"Sparsely\" is an adverb meaning thinly scattered or distributed over a wide area.",
+    "examples": [
+      {
+        "label": "Scarcely",
+        "sentence": "There was scarcely enough food left for the final guest."
+      },
+      {
+        "label": "Sparsely",
+        "sentence": "The desert region remained sparsely populated by humans."
+      }
+    ]
+  },
+  {
+    "id": "sensual-sensuous",
+    "title": "Sensual and sensuous",
+    "difference": "\"Sensual\" is an adjective relating to or involving physical gratification of the senses, often sexual. \"Sensuous\" is an adjective meaning affecting or derived from the senses, providing aesthetic pleasure.",
+    "examples": [
+      {
+        "label": "Sensual",
+        "sentence": "The luxury spa retreat promised a deeply sensual relaxation experience."
+      },
+      {
+        "label": "Sensuous",
+        "sentence": "She enjoyed the sensuous pleasure of walking barefoot through soft grass."
+      }
+    ]
+  },
+  {
+    "id": "shear-sheer",
+    "title": "Shear and sheer",
+    "difference": "\"Shear\" is a verb meaning to cut off fleece, hair, or wool. \"Sheer\" is an adjective meaning perpendicular, utter/complete, or very thin and transparent fabric.",
+    "examples": [
+      {
+        "label": "Shear",
+        "sentence": "Farmers shear sheep every spring to harvest their thick wool."
+      },
+      {
+        "label": "Sheer",
+        "sentence": "The climbers faced a sheer rock face with no handholds."
+      }
+    ]
+  },
+  {
+    "id": "stationary-stationery",
+    "title": "Stationary and stationery",
+    "difference": "\"Stationary\" is an adjective meaning not moving, staying in one place. \"Stationery\" is a noun referring to writing materials like paper and envelopes.",
+    "examples": [
+      {
+        "label": "Stationary",
+        "sentence": "The car remained stationary at the red traffic light."
+      },
+      {
+        "label": "Stationery",
+        "sentence": "She purchased custom monogrammed stationery for writing letters."
+      }
+    ]
+  },
+  {
+    "id": "statue-stature-statute",
+    "title": "Statue, stature, and statute",
+    "difference": "\"Statue\" is a carved or cast figure of a person or animal. \"Stature\" is a person's natural height or level of respect/achievement. \"Statute\" is a written law passed by a legislative body.",
+    "examples": [
+      {
+        "label": "Statue",
+        "sentence": "A bronze statue of the historic leader stood in the town square."
+      },
+      {
+        "label": "Stature",
+        "sentence": "The seasoned diplomat grew in political stature over the years."
+      },
+      {
+        "label": "Statute",
+        "sentence": "Breaking the corporate tax code violated federal law statute."
+      }
+    ]
+  },
+  {
+    "id": "straight-strait",
+    "title": "Straight and strait",
+    "difference": "\"Straight\" means extending in a continuous line without curves. \"Strait\" is a noun meaning a narrow passage of water connecting two seas, or a state of distress.",
+    "examples": [
+      {
+        "label": "Straight",
+        "sentence": "Draw a straight line connecting point A to point B."
+      },
+      {
+        "label": "Strait",
+        "sentence": "Cargo ships navigated carefully through the narrow oceanic strait."
+      }
+    ]
+  },
+  {
+    "id": "subtle-submerge",
+    "title": "Subtle and submerge",
+    "difference": "\"Subtle\" is an adjective meaning delicate, precise, and not obvious. \"Submerge\" is a verb meaning to push or plunge completely beneath the surface of liquid.",
+    "examples": [
+      {
+        "label": "Subtle",
+        "sentence": "There was a subtle hint of mint in the chocolate dessert."
+      },
+      {
+        "label": "Submerge",
+        "sentence": "Scuba divers watched the submarine submerge into deep blue water."
+      }
+    ]
+  },
+  {
+    "id": "suit-suite",
+    "title": "Suit and suite",
+    "difference": "\"Suit\" is a noun or verb referring to a set of matching outer garments or legal lawsuits. \"Suite\" is a noun meaning a set of connected rooms in a hotel or a collection of musical pieces.",
+    "examples": [
+      {
+        "label": "Suit",
+        "sentence": "He wore a sharp black tailored suit to the business meeting."
+      },
+      {
+        "label": "Suite",
+        "sentence": "The newlyweds booked a luxury penthouse suite at the resort."
+      }
+    ]
+  },
+  {
+    "id": "taught-taut",
+    "title": "Taught and taut",
+    "difference": "\"Taught\" is the past tense and past participle of the verb \"to teach\". \"Taut\" is an adjective meaning stretched or pulled tight; not slack.",
+    "examples": [
+      {
+        "label": "Taught",
+        "sentence": "My grandfather taught me how to fish when I was young."
+      },
+      {
+        "label": "Taut",
+        "sentence": "Pull the tent ropes taut so the structure remains secure in wind."
+      }
+    ]
+  },
+  {
+    "id": "than-then",
+    "title": "Than and then",
+    "difference": "\"Than\" is a conjunction and preposition used for comparisons. \"Then\" is an adverb indicating a sequence of time or consequence.",
+    "examples": [
+      {
+        "label": "Than",
+        "sentence": "Mount Everest is much higher than any other mountain."
+      },
+      {
+        "label": "Then",
+        "sentence": "We ate dinner at a restaurant and then went to a movie."
+      }
+    ]
+  },
+  {
+    "id": "their-there-theyre",
+    "title": "Their, there, and they're",
+    "difference": "\"Their\" is a possessive pronoun belonging to them. \"There\" indicates a place or location. \"They're\" is a contraction of the words \"they are\".",
+    "examples": [
+      {
+        "label": "Their",
+        "sentence": "The students left their backpacks in the school locker room."
+      },
+      {
+        "label": "There",
+        "sentence": "Please put the heavy box of books over there on the desk."
+      },
+      {
+        "label": "They're",
+        "sentence": "They're planning to visit Europe during the summer vacation."
+      }
+    ]
+  },
+  {
+    "id": "threw-through",
+    "title": "Threw and through",
+    "difference": "\"Threw\" is the past tense of the verb \"to throw\". \"Through\" is a preposition or adverb indicating movement from one side to the other.",
+    "examples": [
+      {
+        "label": "Threw",
+        "sentence": "The pitcher threw a fast strike across home plate."
+      },
+      {
+        "label": "Through",
+        "sentence": "The train traveled through the dark mountain tunnel."
+      }
+    ]
+  },
+  {
+    "id": "tortuous-torturous",
+    "title": "Tortuous and torturous",
+    "difference": "\"Tortuous\" means full of twists, turns, or overly complex and winding. \"Torturous\" means involving or causing extreme pain, suffering, or torture.",
+    "examples": [
+      {
+        "label": "Tortuous",
+        "sentence": "The sports car drove along the tortuous mountain switchback road."
+      },
+      {
+        "label": "Torturous",
+        "sentence": "Waiting in line for hours in scorching heat proved torturous."
+      }
+    ]
+  },
+  {
+    "id": "track-tract",
+    "title": "Track and tract",
+    "difference": "\"Track\" is a noun or verb meaning a path, course, or footprint left behind. \"Tract\" is a noun meaning an area of land or a pamphlet/leaflet of religious or political nature.",
+    "examples": [
+      {
+        "label": "Track",
+        "sentence": "Runners sprinted around the oval running track during the meet."
+      },
+      {
+        "label": "Tract",
+        "sentence": "They purchased a large wooded tract of land to build a cabin."
+      }
+    ]
+  },
+  {
+    "id": "turbid-turgid",
+    "title": "Turbid and turgid",
+    "difference": "\"Turbid\" means cloudy, opaque, or thick with stirred-up sediment. \"Turgid\" means swollen, congested, or artificially pompous in language style.",
+    "examples": [
+      {
+        "label": "Turbid",
+        "sentence": "Heavy rainstorms left the river water muddy and turbid."
+      },
+      {
+        "label": "Turgid",
+        "sentence": "The academic essay was filled with overly complex, turgid prose."
+      }
+    ]
+  },
+  {
+    "id": "unabashed-bashful",
+    "title": "Unabashed and bashful",
+    "difference": "\"Unabashed\" means not embarrassed, discomposed, or ashamed. \"Bashful\" means shy, excessively timid, or reluctant to draw attention.",
+    "examples": [
+      {
+        "label": "Unabashed",
+        "sentence": "She was unabashed about sharing her unique artistic vision."
+      },
+      {
+        "label": "Bashful",
+        "sentence": "The young boy felt too bashful to speak in front of the audience."
+      }
+    ]
+  },
+  {
+    "id": "principled-unprincipled",
+    "title": "Principled and unprincipled",
+    "difference": "\"Principled\" means acting in accordance with strong moral principles. \"Unprincipled\" means lacking moral principles, unscrupulous, or unethical.",
+    "examples": [
+      {
+        "label": "Principled",
+        "sentence": "She took a firm, principled stand against corporate corruption."
+      },
+      {
+        "label": "Unprincipled",
+        "sentence": "The con artist engaged in unprincipled financial schemes."
+      }
+    ]
+  },
+  {
+    "id": "urban-urbane",
+    "title": "Urban and urbane",
+    "difference": "\"Urban\" is an adjective relating to cities or densely populated towns. \"Urbane\" is an adjective meaning courteous, refined, elegant, and suave in manner.",
+    "examples": [
+      {
+        "label": "Urban",
+        "sentence": "City planners worked on expanding public transit networks in the urban core."
+      },
+      {
+        "label": "Urbane",
+        "sentence": "The host charmed guests at the dinner party with his urbane wit."
+      }
+    ]
+  },
+  {
+    "id": "vain-vane-vein",
+    "title": "Vain, vane, and vein",
+    "difference": "\"Vain\" means having an excessively high opinion of one's appearance or useless. \"Vane\" refers to a weather blade showing wind direction. \"Vein\" is a blood vessel or geological mineral crack.",
+    "examples": [
+      {
+        "label": "Vain",
+        "sentence": "All his attempts to fix the broken engine proved vain."
+      },
+      {
+        "label": "Vane",
+        "sentence": "The weather vane on the rooftop spun rapidly in the wind."
+      },
+      {
+        "label": "Vein",
+        "sentence": "The nurse located a clear vein in her arm before drawing blood."
+      }
+    ]
+  },
+  {
+    "id": "venal-venial",
+    "title": "Venal and venial",
+    "difference": "\"Venal\" means showing or motivated by susceptibility to bribery. \"Venial\" means minor, pardonable, or forgivable.",
+    "examples": [
+      {
+        "label": "Venal",
+        "sentence": "Investigators uncovered a venal network of corrupt politicians."
+      },
+      {
+        "label": "Venial",
+        "sentence": "Telling a small white lie to spare feelings is considered a venial fault."
+      }
+    ]
+  },
+  {
+    "id": "veracious-voracious",
+    "title": "Veracious and voracious",
+    "difference": "\"Veracious\" means speaking or representing the truth. \"Voracious\" means wanting or devouring great quantities of food or eager for knowledge.",
+    "examples": [
+      {
+        "label": "Veracious",
+        "sentence": "The witness provided a veracious account of the accident details."
+      },
+      {
+        "label": "Voracious",
+        "sentence": "He is a voracious reader who finishes multiple books every week."
+      }
+    ]
+  },
+  {
+    "id": "vice-vise",
+    "title": "Vice and vise",
+    "difference": "\"Vice\" is a noun meaning immoral or wicked behavior. \"Vise\" is a noun referring to a metal clamping tool used to hold objects steady.",
+    "examples": [
+      {
+        "label": "Vice",
+        "sentence": "Greed is widely considered a destructive personal vice."
+      },
+      {
+        "label": "Vise",
+        "sentence": "The carpenter clamped the wooden block securely in a metal vise."
+      }
+    ]
+  },
+  {
+    "id": "waiver-waver",
+    "title": "Waiver and waver",
+    "difference": "\"Waiver\" is a noun meaning an act of voluntarily relinquishing a right or claim. \"Waver\" is a verb meaning to become unsteady, hesitate, or fluctuate in opinion.",
+    "examples": [
+      {
+        "label": "Waiver",
+        "sentence": "Participants signed a liability waiver before joining the extreme sport."
+      },
+      {
+        "label": "Waver",
+        "sentence": "Her voice began to waver slightly as she started her speech."
+      }
+    ]
+  },
+  {
+    "id": "warrant-warranty",
+    "title": "Warrant and warranty",
+    "difference": "\"Warrant\" is a noun or verb meaning a legal document authorizing an action or justification. \"Warranty\" is a noun meaning a written guarantee given to a buyer by a manufacturer.",
+    "examples": [
+      {
+        "label": "Warrant",
+        "sentence": "Police officers obtained a search warrant from the judge."
+      },
+      {
+        "label": "Warranty",
+        "sentence": "The new television comes with a two-year manufacturer warranty."
+      }
+    ]
+  },
+  {
+    "id": "weather-whether",
+    "title": "Weather and whether",
+    "difference": "\"Weather\" refers to atmospheric conditions like rain, temperature, and wind. \"Whether\" is a conjunction used to express a choice or alternative possibilities.",
+    "examples": [
+      {
+        "label": "Weather",
+        "sentence": "Outdoor events depend heavily on favorable weekend weather conditions."
+      },
+      {
+        "label": "Whether",
+        "sentence": "I cannot decide whether I should order tea or coffee."
+      }
+    ]
+  },
+  {
+    "id": "who-whom",
+    "title": "Who and whom",
+    "difference": "\"Who\" is a subjective pronoun used as the subject of a sentence performing an action. \"Whom\" is an objective pronoun used as the object of a verb or preposition.",
+    "examples": [
+      {
+        "label": "Who",
+        "sentence": "Who left the front door open during the storm?"
+      },
+      {
+        "label": "Whom",
+        "sentence": "To whom should I address this formal business letter?"
+      }
+    ]
+  },
+  {
+    "id": "your-youre",
+    "title": "Your and you're",
+    "difference": "\"Your\" is a possessive pronoun indicating something belongs to you. \"You're\" is a contraction combining the words \"you are\".",
+    "examples": [
+      {
+        "label": "Your",
+        "sentence": "Please remember to bring your notebook to class tomorrow."
+      },
+      {
+        "label": "You're",
+        "sentence": "You're going to love the surprise party we organized."
+      }
+    ]
+  },
+  {
+    "id": "zany-zen",
+    "title": "Zany and zen",
+    "difference": "\"Zany\" is an adjective meaning amusingly unconventional, eccentric, or bizarre. \"Zen\" is a noun/adjective relating to a school of Buddhism emphasizing peace, calm, and mindfulness.",
+    "examples": [
+      {
+        "label": "Zany",
+        "sentence": "The comedy show featured a series of zany and unpredictable sketches."
+      },
+      {
+        "label": "Zen",
+        "sentence": "She created a quiet, zen atmosphere in her meditation room."
+      }
+    ]
   }
 ];
 
