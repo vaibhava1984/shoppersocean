@@ -1,11 +1,12 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import type { DragEvent } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
 
 type Suit = "♠" | "♥" | "♦" | "♣";
 type Card = { id: string; rank: number; suit: Suit; faceUp: boolean };
 type Source = { kind: "waste" | "tableau"; index: number; cardIndex: number };
+type ActiveDrag = { source: Source; pointerId: number; startX: number; startY: number; x: number; y: number; card: Card; moved: boolean };
 const SUITS: Suit[] = ["♠", "♥", "♦", "♣"];
 const RED = new Set<Suit>(["♥", "♦"]);
 const label = (rank: number) => rank === 1 ? "A" : rank === 11 ? "J" : rank === 12 ? "Q" : rank === 13 ? "K" : String(rank);
@@ -28,6 +29,9 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
   const [piles, setPiles] = useState(deal.piles);
   const [foundations, setFoundations] = useState<Card[][]>(deal.foundations);
   const [selected, setSelected] = useState<Source | null>(null);
+  const activeDragRef = useRef<ActiveDrag | null>(null);
+  const suppressClickRef = useRef(false);
+  const [dragPreview, setDragPreview] = useState<{ x: number; y: number; card: Card } | null>(null);
   const [busy, setBusy] = useState(false);
   const busyRef = useRef(false);
   const moveCountRef = useRef(0);
@@ -136,6 +140,45 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
     });
   };
 
+  const beginCardDrag = (event: ReactPointerEvent<HTMLButtonElement>, source: Source, card: Card) => {
+    if (!card.faceUp || (event.pointerType === "mouse" && event.button !== 0)) return;
+    event.preventDefault();
+    try { event.currentTarget.setPointerCapture(event.pointerId); } catch {}
+    playCardTouch();
+    activeDragRef.current = { source, pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, x: event.clientX, y: event.clientY, card, moved: false };
+  };
+
+  const updateCardDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const drag = activeDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    drag.moved = drag.moved || Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) > 7;
+    drag.x = event.clientX; drag.y = event.clientY;
+    if (drag.moved) {
+      setSelected(drag.source);
+      setDragPreview({ x: event.clientX, y: event.clientY, card: drag.card });
+    }
+  };
+
+  const finishCardDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const drag = activeDragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    activeDragRef.current = null;
+    setDragPreview(null);
+    if (!drag.moved) return;
+    suppressClickRef.current = true;
+    const hit = document.elementFromPoint(event.clientX, event.clientY);
+    const foundation = hit?.closest("[data-solitaire-foundation]") as HTMLElement | null;
+    const columnTarget = hit?.closest("[data-solitaire-column]") as HTMLElement | null;
+    if (foundation) moveToFoundation(Number(foundation.dataset.solitaireFoundation), drag.source);
+    else if (columnTarget) moveToTableau(Number(columnTarget.dataset.solitaireColumn), drag.source);
+  };
+
+  const cancelCardDrag = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (activeDragRef.current?.pointerId !== event.pointerId) return;
+    activeDragRef.current = null;
+    setDragPreview(null);
+  };
+
   const playCardTouch = () => {
     try {
       const AudioClass = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
@@ -158,21 +201,20 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
     } catch {}
   };
 
-  const renderCard = (card: Card, active: boolean, onClick: () => void, stack = false, onDragStart?: (event: DragEvent<HTMLButtonElement>) => void, dragSource?: Source) => (
-    <button key={card.id} type="button" onClick={(event) => { event.stopPropagation(); onClick(); }} aria-label={card.faceUp ? label(card.rank) + " of " + card.suit : "Face-down card"}
-      className={`relative z-0 flex aspect-[2/3] min-h-0 w-full min-w-0 items-start justify-start overflow-hidden rounded-md border text-left shadow-md transition-all duration-200 ${card.faceUp ? "border-slate-300 bg-gradient-to-br from-white via-white to-slate-100" : "border-slate-400 bg-gradient-to-br from-slate-600 to-slate-900"} ${active ? "z-20 scale-105 -translate-y-2 rotate-2 shadow-2xl ring-2 ring-amber-400" : "hover:-translate-y-0.5"} ${card.faceUp && RED.has(card.suit) ? "text-rose-600" : "text-slate-900"}`}
-      style={stack ? { marginTop: "calc(-1 * clamp(1.2rem, 6.5vw, 1.8rem))" } : undefined}
-      draggable={card.faceUp}
-      onDragStart={(event) => { if (!card.faceUp) { event.preventDefault(); return; } if (onDragStart) onDragStart(event); }}
-      onPointerDown={() => { if (card.faceUp) playCardTouch(); }}
-      onTouchStart={() => { if (card.faceUp && dragSource) setSelected(dragSource); }}
-      onTouchEnd={(event) => { if (!dragSource) return; const touch = event.changedTouches[0]; const hit = document.elementFromPoint(touch.clientX, touch.clientY); const foundation = hit?.closest("[data-solitaire-foundation]") as HTMLElement | null; const columnTarget = hit?.closest("[data-solitaire-column]") as HTMLElement | null; if (foundation) moveToFoundation(Number(foundation.dataset.solitaireFoundation), dragSource); else if (columnTarget) moveToTableau(Number(columnTarget.dataset.solitaireColumn), dragSource); }}>
-      {card.faceUp ? <>
-        <span className="absolute left-1 top-0.5 z-10 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/><span className="text-[clamp(11px,3.2vw,17px)]">{card.suit}</span></span>
-        <span className="absolute inset-0 flex items-center justify-center text-[clamp(20px,7vw,42px)] font-black opacity-90" aria-hidden="true">{card.rank === 13 ? "👑" : card.rank === 12 ? "👸" : card.rank === 11 ? "🤴" : card.suit}</span>
-        <span className="absolute bottom-0.5 right-1 rotate-180 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/>{card.suit}</span>
-        {card.rank >= 11 && <span className="absolute inset-[18%] rounded border border-current/25" />}
-      </> : <span className="m-1.5 flex h-[calc(100%-12px)] w-[calc(100%-12px)] items-center justify-center rounded border-2 border-white/50 bg-gradient-to-br from-indigo-700 to-slate-950 text-xl text-amber-200">✦</span>}
+  const renderCard = (card: Card, active: boolean, onClick: () => void, stack = false, dragSource?: Source) => (
+    <button key={card.id} type="button"
+      onClick={(event) => { event.stopPropagation(); if (suppressClickRef.current) { suppressClickRef.current = false; event.preventDefault(); return; } onClick(); }}
+      aria-label={label(card.rank) + " of " + card.suit}
+      className={`relative z-0 flex aspect-[2/3] min-h-0 w-full min-w-0 touch-none select-none items-start justify-start overflow-hidden rounded-md border bg-gradient-to-br from-white via-white to-slate-100 text-left shadow-md transition-all duration-150 ${active ? "z-20 -translate-y-1 scale-105 rotate-1 shadow-2xl ring-2 ring-amber-400" : "hover:-translate-y-0.5"} ${RED.has(card.suit) ? "border-rose-200 text-rose-600" : "border-slate-300 text-slate-900"}`}
+      style={stack ? { marginTop: "clamp(1.15rem, 6vw, 1.6rem)" } : undefined}
+      onPointerDown={(event) => { if (dragSource) beginCardDrag(event, dragSource, card); }}
+      onPointerMove={updateCardDrag}
+      onPointerUp={finishCardDrag}
+      onPointerCancel={cancelCardDrag}>
+      <span className="absolute left-1 top-0.5 z-10 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/><span className="text-[clamp(11px,3.2vw,17px)]">{card.suit}</span></span>
+      <span className="absolute inset-0 flex items-center justify-center text-[clamp(20px,7vw,42px)] font-black opacity-90" aria-hidden="true">{card.rank === 13 ? "👑" : card.rank === 12 ? "👸" : card.rank === 11 ? "🤴" : card.suit}</span>
+      <span className="absolute bottom-0.5 right-1 rotate-180 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/>{card.suit}</span>
+      {card.rank >= 11 && <span className="absolute inset-[18%] rounded border border-current/25" />}
     </button>
   );
 
@@ -180,19 +222,20 @@ export default function LocalSolitaire({ onQuotaUpdate, onQuotaDenied, quotaText
     <div data-solitaire-game className="mx-auto w-full min-w-0 max-w-3xl overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-sky-50 p-1.5 text-slate-800 shadow-inner sm:p-4">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-1.5 rounded-xl border border-slate-200 bg-white/90 px-2 py-2 shadow-sm sm:mb-3 sm:px-3">
         <div><h3 className="text-base font-black text-slate-900 sm:text-lg">♠ Solitaire</h3><p className="text-[10px] leading-4 text-slate-500 sm:text-[11px]">Draw 1 · Drag cards or tap a card and its destination</p></div>
-        <span className="rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-[10px] font-black text-indigo-700">{quotaText}</span>
+        <span className="rounded-full border-2 border-amber-300 bg-amber-100 px-3 py-1.5 text-[11px] font-black text-slate-900 shadow-sm sm:text-xs">{quotaText}</span>
       </div>
       <div className="mb-3 grid grid-cols-7 gap-1 sm:mb-4 sm:gap-2">
         <button type="button" onClick={draw} disabled={busy} aria-label="Draw from stock" className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-2xl sm:rounded-lg sm:text-3xl">{stock.length ? "▧" : "↻"}</button>
-        <div className="relative">{waste.length ? renderCard(waste[waste.length - 1], selected?.kind === "waste", chooseWaste, false, (event) => { event.dataTransfer.setData("text/plain", JSON.stringify({ kind: "waste", index: 0, cardIndex: waste.length - 1 })); event.dataTransfer.effectAllowed = "move"; setSelected({ kind: "waste", index: 0, cardIndex: waste.length - 1 }); }, { kind: "waste", index: 0, cardIndex: waste.length - 1 }) : <div className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-[9px] text-slate-400 sm:rounded-lg sm:text-xs">Waste</div>}</div>
+        <div className="relative">{waste.length ? renderCard(waste[waste.length - 1], selected?.kind === "waste", chooseWaste, false, { kind: "waste", index: 0, cardIndex: waste.length - 1 }) : <div className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-[9px] text-slate-400 sm:rounded-lg sm:text-xs">Waste</div>}</div>
         <div className="col-span-1" />
-        {foundations.map((stack, index) => <button key={index} type="button" data-solitaire-foundation={index} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); const raw = event.dataTransfer.getData("text/plain"); if (raw) { try { moveToFoundation(index, JSON.parse(raw) as Source); } catch {} } }} onClick={() => moveToFoundation(index)} className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-base text-slate-500 sm:rounded-lg sm:text-2xl">{stack.length ? <span className={RED.has(stack[stack.length-1].suit) ? "text-rose-600" : "text-slate-900"}>{label(stack[stack.length-1].rank)}{stack[stack.length-1].suit}</span> : "A"}</button>)}
+        {foundations.map((stack, index) => <button key={index} type="button" data-solitaire-foundation={index} onClick={() => moveToFoundation(index)} className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-slate-300 bg-slate-100 text-base text-slate-500 sm:rounded-lg sm:text-2xl">{stack.length ? <span className={RED.has(stack[stack.length-1].suit) ? "text-rose-600" : "text-slate-900"}>{label(stack[stack.length-1].rank)}{stack[stack.length-1].suit}</span> : "A"}</button>)}
       </div>
       <div className="grid min-w-0 grid-cols-7 gap-1 sm:gap-2">
-        {piles.map((pile, column) => <div key={column} data-solitaire-column={column} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); const raw = event.dataTransfer.getData("text/plain"); if (raw) { try { const source = JSON.parse(raw) as Source; moveToTableau(column, source); } catch {} } }} onClick={() => moveToTableau(column)} className="flex min-h-[clamp(10rem,48vw,18rem)] min-w-0 flex-col items-stretch rounded-md bg-black/10 px-px pb-2 pt-1 sm:rounded-lg">
-          {pile.length ? pile.map((card, index) => renderCard(card, selected?.kind === "tableau" && selected.index === column && index >= selected.cardIndex, () => { if (selected) moveToTableau(column); else if (card.faceUp) chooseTableau(column, index); }, index > 0, (event) => { event.dataTransfer.setData("text/plain", JSON.stringify({ kind: "tableau", index: column, cardIndex: index })); event.dataTransfer.effectAllowed = "move"; setSelected({ kind: "tableau", index: column, cardIndex: index }); }, { kind: "tableau", index: column, cardIndex: index })) : <button type="button" onClick={() => moveToTableau(column)} className="flex aspect-[2/3] w-full items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-lg">K</button>}
+        {piles.map((pile, column) => <div key={column} data-solitaire-column={column} onClick={() => moveToTableau(column)} className="flex min-h-[clamp(7rem,30vw,12rem)] min-w-0 flex-col items-stretch rounded-md bg-black/10 px-px pb-2 pt-1 sm:rounded-lg">
+          {pile.length ? pile.map((card, index) => card.faceUp ? renderCard(card, selected?.kind === "tableau" && selected.index === column && index >= selected.cardIndex, () => { if (selected) moveToTableau(column); else chooseTableau(column, index); }, pile.slice(0, index).some(previous => previous.faceUp), { kind: "tableau", index: column, cardIndex: index }) : null) : <button type="button" onClick={() => moveToTableau(column)} className="flex aspect-[2/3] w-full items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-lg">K</button>}
         </div>)}
       </div>
+      {dragPreview && <div aria-hidden="true" className={`pointer-events-none fixed z-[100] flex aspect-[2/3] w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-md border-2 bg-white text-2xl font-black shadow-2xl sm:w-16 ${RED.has(dragPreview.card.suit) ? "border-rose-300 text-rose-600" : "border-slate-300 text-slate-900"}`} style={{ left: dragPreview.x, top: dragPreview.y }}>{dragPreview.card.rank === 13 ? "👑" : dragPreview.card.rank === 12 ? "👸" : dragPreview.card.rank === 11 ? "🤴" : dragPreview.card.suit}</div>}
       <div className="mt-3 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-slate-500 sm:text-xs"><span>Moves: {moves}</span><span className="text-right">{busy ? "Checking your first move…" : message || (foundations.reduce((sum, pile) => sum + pile.length, 0) === 52 ? "🎉 You won! All suits completed." : "Build each suit from Ace to King.")}</span></div>
     </div>
   );

@@ -509,6 +509,7 @@ useEffect(() => {
                   <div className="w-full min-w-0">
                     <LocalSolitaire
                       key={solitaireInstance}
+                      quotaText={classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.solitaire ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
                       onQuotaUpdate={(remaining) => setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, solitaire: remaining } }))}
                       onQuotaDenied={() => setClassicQuotaPopup(true)}
                     />
