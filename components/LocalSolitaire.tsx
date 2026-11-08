@@ -140,31 +140,31 @@ export default function LocalSolitaire({ userId, onQuotaUpdate }: { userId: stri
     setSelected(null); moveCountRef.current = 0; setMoves(0); setMessage(""); setChallengeId(crypto.randomUUID()); setDealKey(value => value + 1);
   };
   const renderCard = (card: Card, active: boolean, onClick: () => void, stack = false) => (
-    <button key={card.id} type="button" onClick={onClick} aria-label={card.faceUp ? label(card.rank) + " of " + card.suit : "Face-down card"}
-      className={`relative flex h-[clamp(4.6rem,17vw,7.1rem)] w-[clamp(3.15rem,12vw,5.05rem)] shrink-0 items-start justify-start rounded-lg border text-left shadow-md ${card.faceUp ? "border-slate-300 bg-white" : "border-emerald-200 bg-gradient-to-br from-emerald-700 to-green-950"} ${active ? "ring-4 ring-amber-400 -translate-y-1" : ""} ${card.faceUp && RED.has(card.suit) ? "text-rose-600" : "text-slate-900"}`}
-      style={stack ? { marginTop: "-4.35rem" } : undefined}>
-      {card.faceUp ? <span className="p-1.5 text-sm font-black leading-4">{label(card.rank)}<br/><span className="text-lg">{card.suit}</span></span> : <span className="m-1.5 flex h-[calc(100%-12px)] w-[calc(100%-12px)] items-center justify-center rounded border border-white/40 text-xl text-white">✦</span>}
+    <button key={card.id} type="button" onClick={(event) => { event.stopPropagation(); onClick(); }} aria-label={card.faceUp ? label(card.rank) + " of " + card.suit : "Face-down card"}
+      className={`relative z-0 flex aspect-[2/3] min-h-0 w-full min-w-0 items-start justify-start overflow-hidden rounded-md border text-left shadow-md ${card.faceUp ? "border-slate-300 bg-white" : "border-emerald-200 bg-gradient-to-br from-emerald-700 to-green-950"} ${active ? "z-10 ring-2 ring-amber-400 -translate-y-0.5" : ""} ${card.faceUp && RED.has(card.suit) ? "text-rose-600" : "text-slate-900"}`}
+      style={stack ? { marginTop: "calc(-1 * clamp(1.2rem, 6.5vw, 1.8rem))" } : undefined}>
+      {card.faceUp ? <span className="p-0.5 text-[clamp(8px,2.5vw,12px)] font-black leading-tight">{label(card.rank)}<br/><span className="text-[clamp(11px,3.2vw,17px)]">{card.suit}</span></span> : <span className="m-1.5 flex h-[calc(100%-12px)] w-[calc(100%-12px)] items-center justify-center rounded border border-white/40 text-xl text-white">✦</span>}
     </button>
   );
 
   return (
-    <div className="mx-auto w-full max-w-5xl rounded-2xl bg-gradient-to-br from-emerald-800 via-green-800 to-emerald-950 p-2 text-white shadow-inner sm:p-4">
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-black/20 px-3 py-2">
-        <div><h3 className="text-lg font-black">♠ Klondike Solitaire</h3><p className="text-[11px] text-emerald-100">Draw 1 · Tap a card, then tap its destination</p></div>
-        <button type="button" onClick={newGame} className="rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-black">New game ↻</button>
+    <div className="mx-auto w-full min-w-0 max-w-3xl overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-800 via-green-800 to-emerald-950 p-1.5 text-white shadow-inner sm:p-4">
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-1.5 rounded-xl bg-black/20 px-2 py-2 sm:mb-3 sm:px-3">
+        <div><h3 className="text-base font-black sm:text-lg">♠ Klondike Solitaire</h3><p className="text-[10px] leading-4 text-emerald-100 sm:text-[11px]">Draw 1 · Tap a card, then its destination</p></div>
+        <button type="button" onClick={newGame} disabled={busy} className="min-h-9 rounded-full border border-white/40 bg-white/15 px-3 py-1.5 text-[11px] font-black disabled:opacity-50">New deal ↻</button>
       </div>
-      <div className="mb-5 grid grid-cols-7 gap-1.5 sm:gap-3">
-        <button type="button" onClick={draw} disabled={busy} aria-label="Draw from stock" className="flex h-[clamp(4.6rem,17vw,7.1rem)] items-center justify-center rounded-lg border-2 border-dashed border-white/50 bg-emerald-950/50 text-3xl">{stock.length ? "▧" : "↻"}</button>
-        <div className="relative">{waste.length ? renderCard(waste[waste.length - 1], selected?.kind === "waste", chooseWaste) : <div className="flex h-[clamp(4.6rem,17vw,7.1rem)] items-center justify-center rounded-lg border-2 border-dashed border-white/30 text-xs text-white/60">Waste</div>}</div>
+      <div className="mb-3 grid grid-cols-7 gap-1 sm:mb-4 sm:gap-2">
+        <button type="button" onClick={draw} disabled={busy} aria-label="Draw from stock" className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-white/50 bg-emerald-950/50 text-2xl sm:rounded-lg sm:text-3xl">{stock.length ? "▧" : "↻"}</button>
+        <div className="relative">{waste.length ? renderCard(waste[waste.length - 1], selected?.kind === "waste", chooseWaste) : <div className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-white/30 text-[9px] text-white/60 sm:rounded-lg sm:text-xs">Waste</div>}</div>
         <div className="col-span-1" />
-        {foundations.map((stack, index) => <button key={index} type="button" onClick={() => moveToFoundation(index)} className="flex h-[clamp(4.6rem,17vw,7.1rem)] items-center justify-center rounded-lg border-2 border-dashed border-white/40 bg-emerald-950/30 text-2xl text-white/70">{stack.length ? <span className={RED.has(stack[stack.length-1].suit) ? "text-rose-300" : "text-white"}>{label(stack[stack.length-1].rank)}{stack[stack.length-1].suit}</span> : "A"}</button>)}
+        {foundations.map((stack, index) => <button key={index} type="button" onClick={() => moveToFoundation(index)} className="flex aspect-[2/3] min-w-0 items-center justify-center rounded-md border-2 border-dashed border-white/40 bg-emerald-950/30 text-base text-white/70 sm:rounded-lg sm:text-2xl">{stack.length ? <span className={RED.has(stack[stack.length-1].suit) ? "text-rose-300" : "text-white"}>{label(stack[stack.length-1].rank)}{stack[stack.length-1].suit}</span> : "A"}</button>)}
       </div>
-      <div className="grid grid-cols-7 gap-1.5 sm:gap-3">
-        {piles.map((pile, column) => <div key={column} onClick={() => moveToTableau(column)} className="flex min-h-36 flex-col items-center rounded-lg bg-black/10 pb-2 pt-1">
-          {pile.length ? pile.map((card, index) => renderCard(card, selected?.kind === "tableau" && selected.index === column && index >= selected.cardIndex, () => card.faceUp ? chooseTableau(column, index) : undefined, index > 0)) : <button type="button" onClick={() => moveToTableau(column)} className="flex h-[clamp(4.6rem,17vw,7.1rem)] w-[clamp(3.15rem,12vw,5.05rem)] items-center justify-center rounded-lg border-2 border-dashed border-white/30 text-2xl">K</button>}
+      <div className="grid min-w-0 grid-cols-7 gap-1 sm:gap-2">
+        {piles.map((pile, column) => <div key={column} onClick={() => moveToTableau(column)} className="flex min-h-[clamp(10rem,48vw,18rem)] min-w-0 flex-col items-stretch rounded-md bg-black/10 px-px pb-2 pt-1 sm:rounded-lg">
+          {pile.length ? pile.map((card, index) => renderCard(card, selected?.kind === "tableau" && selected.index === column && index >= selected.cardIndex, () => { if (selected) moveToTableau(column); else if (card.faceUp) chooseTableau(column, index); }, index > 0)) : <button type="button" onClick={() => moveToTableau(column)} className="flex aspect-[2/3] w-full items-center justify-center rounded-md border-2 border-dashed border-white/30 text-lg">K</button>}
         </div>)}
       </div>
-      <div className="mt-3 flex items-center justify-between gap-2 text-xs text-emerald-100"><span>Moves: {moves}</span><span>{busy ? "Saving first move…" : message || "Build each suit from Ace to King."}</span></div>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-emerald-100 sm:text-xs"><span>Moves: {moves}</span><span className="text-right">{busy ? "Checking your first move…" : message || (foundations.reduce((sum, pile) => sum + pile.length, 0) === 52 ? "🎉 You won! All suits completed." : "Build each suit from Ace to King.")}</span></div>
     </div>
   );
 }
