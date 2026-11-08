@@ -137,13 +137,8 @@ async function handle(req:Request,consume:boolean){
    }
    const playedAt=new Date().toISOString();
    if(!previewMode){
-    await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
-    if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
-    return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
-    }
     const savedQuestion=questionText?await db.prepare("INSERT INTO game_answered_questions(user_id,section_id,question_key,answered_at) VALUES(?,?,?,?) ON CONFLICT(user_id,section_id,question_key) DO NOTHING RETURNING question_key").bind(user.id,section,questionText,playedAt).first<any>():{question_key:""};
     if(!savedQuestion){
-     if(challenge)await db.prepare("DELETE FROM game_challenge_history WHERE user_id=? AND game_type_id=? AND challenge_id=?").bind(user.id,type,challenge).run();
      await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
      if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
