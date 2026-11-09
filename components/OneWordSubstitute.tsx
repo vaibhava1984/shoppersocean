@@ -36,7 +36,7 @@ export default function OneWordSubstitute({ userId }: { userId: string | null })
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          sectionId: "word-differences",
+          sectionId: "one-word-substitute",
           gameTypeId: "one-word-substitute",
           challengeId: "one-word-substitute:" + candidate.id,
           challengeQuestion: candidate.keyword,
@@ -99,7 +99,7 @@ export default function OneWordSubstitute({ userId }: { userId: string | null })
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          sectionId: "word-differences",
+          sectionId: "one-word-substitute",
           gameTypeId: "one-word-substitute",
           challengeId: "one-word-substitute:" + current.id,
           challengeQuestion: current.keyword,
@@ -169,7 +169,7 @@ export default function OneWordSubstitute({ userId }: { userId: string | null })
           {!privileged && remaining <= 0 && <a href="/subscribe-now" className="mt-4 inline-flex rounded-full bg-blue-700 px-5 py-2.5 text-sm font-black text-white shadow">Subscribe Now →</a>}
         </div>
       )}
-      <GameQuotaPopup open={quotaPopup} isSubscribed={privileged} resetKey="word-differences" />
+      <GameQuotaPopup open={quotaPopup} isSubscribed={privileged} resetKey="one-word-substitute" />
     </div>
   );
 }
