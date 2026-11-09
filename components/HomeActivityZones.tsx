@@ -186,6 +186,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [englishTopicOpen, setEnglishTopicOpen] = useState(false);
   const [englishAcademyEntered, setEnglishAcademyEntered] = useState(false);
   const [confusingWordsOpen, setConfusingWordsOpen] = useState(false);
+  const [oneWordSubstituteOpen, setOneWordSubstituteOpen] = useState(false);
+  const oneWordSubstituteOpenRef = useRef(false);
   const confusingWordsOpenRef = useRef(false);
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
@@ -273,6 +275,11 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         setActiveQuizGame(null);
         return;
       }
+      if (oneWordSubstituteOpenRef.current) {
+        oneWordSubstituteOpenRef.current = false;
+        setOneWordSubstituteOpen(false);
+        return;
+      }
       if (confusingWordsOpenRef.current) {
         confusingWordsOpenRef.current = false;
         setConfusingWordsOpen(false);
@@ -313,6 +320,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     englishAcademyEnteredRef.current = false;
     setConfusingWordsOpen(false);
     confusingWordsOpenRef.current = false;
+    setOneWordSubstituteOpen(false);
+    oneWordSubstituteOpenRef.current = false;
     classicGameStartedRef.current = false;
     setClassicGameStarted(false);
     activeQuizGameRef.current = null;
@@ -507,13 +516,25 @@ useEffect(() => {
             )}
             {selected.action === "learning" && (
               <div ref={activityTargetRef} className="w-full" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button"); if (button?.textContent?.trim() === "← Back" && event.currentTarget.querySelector('h4[style*="scroll-margin-top"]')) { event.preventDefault(); event.stopPropagation(); window.history.back(); } }}>
-                {confusingWordsOpen ? (
+                {oneWordSubstituteOpen ? (
+                  <div className="mx-auto w-full max-w-3xl">
+                    <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3">
+                      <h2 className="text-lg font-black text-slate-900">One Word Substitute</h2>
+                      <button type="button" onClick={() => window.history.back()} className="rounded-full border border-sky-300 bg-white px-4 py-2 text-sm font-black text-sky-800 shadow-sm">← Back</button>
+                    </div>
+                    <div className="min-h-[45vh] rounded-3xl border border-slate-200 bg-white shadow-lg" aria-label="One Word Substitute content area" />
+                  </div>
+                ) : confusingWordsOpen ? (
                   <ConfusingWords userId={userId} />
                 ) : !englishAcademyEntered ? (
                   <div className="mx-auto w-full max-w-md space-y-3">
                     <button type="button" onClick={() => { window.history.pushState({ shoppersOceanLearning: true }, "", window.location.href); englishAcademyEnteredRef.current = true; setEnglishAcademyEntered(true); }} className="group w-full rounded-2xl border border-sky-300 bg-gradient-to-br from-sky-100 via-white to-violet-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200">
                       <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📘</span><span className="rounded-full bg-white/80 px-3 py-1 text-xs font-bold text-slate-600">Open →</span></span>
                       <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-blue-700">English Master Quiz</span>
+                    </button>
+                    <button type="button" onClick={() => { if (!userId) { setSignInPopup(true); return; } window.history.pushState({ shoppersOceanLearning: true, shoppersOceanTool: "one-word-substitute" }, "", window.location.href); oneWordSubstituteOpenRef.current = true; setOneWordSubstituteOpen(true); }} className="group w-full rounded-2xl border border-sky-300 bg-gradient-to-br from-sky-50 via-white to-cyan-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200">
+                      <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📚</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-sky-800">Open →</span></span>
+                      <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-sky-800">One Word Substitute</span>
                     </button>
                     <button type="button" onClick={() => { if (!userId) { setSignInPopup(true); return; } window.history.pushState({ shoppersOceanLearning: true, shoppersOceanTool: "confusing-words" }, "", window.location.href); confusingWordsOpenRef.current = true; setConfusingWordsOpen(true); }} className="group w-full rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-200">
                       <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📖</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-amber-800">Open →</span></span>
