@@ -455,7 +455,7 @@ useEffect(() => {
           </>
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
-            {!englishTopicOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            {!englishTopicOpen && !oneWordSubstituteOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null || englishAcademyEntered || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button></div>
                 {activeQuizGame === null && !classicGameStarted && selected.action !== "games" && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>            )}
