@@ -98,7 +98,6 @@ select:disabled{opacity:.5}
     </section>
      <aside class="side">
        <div class="ctl">
-         <label>Play as<select id="me"><option value="w">White</option><option value="b">Black</option></select></label>
          <label>Level<select id="lvl"><option value="0">Easy</option><option value="1" selected>Medium</option><option value="2">Hard</option></select></label>
        </div>
        <div class="btns"><button class="btn pri" id="nw" type="button">♟ New game</button></div>
@@ -284,9 +283,8 @@ function captured(){
   return{w:lostW,b:lostB}}
 
 function strip(el,col,cp){
-  const nm=col==me?(S.t==me&&!over?"You":""):"Computer";
   const got=(col=="w"?cp.b:cp.w).map(k=>`<span class="pc ${isW(k)?"w":"b"}">${G(k)}</span>`).join("");
-  el.innerHTML=`<span class="tn ${S.t==col&&!over?"on":""}"></span><b>${nm}</b><span class="cg">${got}</span>`}
+  el.innerHTML=`<span class="cg">${got}</span>`}
 
 function render(focus){
   const chk=inCheck(S)?kingSq(S.b,S.t=="w"):-1;let h="";
@@ -306,17 +304,41 @@ function render(focus){
   const st=$("#stat");st.textContent=msg;st.className="stat"+(over?" end":"");
   }
 
-function newGame(notifyParent=false){
+let chessNewGameSequence=0,chessQuotaBlocked=false;
+function requestChessNewGame(){
+  if(window.parent===window)return Promise.resolve(true);
+  const requestId="chess-new-game-"+(++chessNewGameSequence);
+  return new Promise(resolve=>{
+    let settled=false;
+    const finish=allowed=>{if(settled)return;settled=true;clearTimeout(timer);window.removeEventListener("message",receive);resolve(Boolean(allowed));};
+    const receive=event=>{
+      if(event.origin!==location.origin||event.source!==window.parent)return;
+      const data=event.data;
+      if(data&&data.type==="shoppers-ocean-chess-new-game-result"&&data.requestId===requestId)finish(data.allowed);
+    };
+    const timer=window.setTimeout(()=>finish(false),60000);
+    window.addEventListener("message",receive);
+    window.parent.postMessage({type:"shoppers-ocean-chess-new-game",requestId},location.origin);
+  });
+}
+async function newGame(notifyParent=false){
+  if(notifyParent&&chessQuotaBlocked)return;
+  if(notifyParent&&chessAttemptClaimed){
+    busy=true;render();
+    const allowed=await requestChessNewGame();
+    if(!allowed){busy=false;chessQuotaBlocked=true;msg="Your quota for this game has been exhausted.";render();return;}
+  }else if(notifyParent&&window.parent!==window){
+    window.parent.postMessage({type:"shoppers-ocean-chess-new-game-unused"},location.origin);
+  }
   tok++;chessAttemptClaimed=false;chessAttemptPending=false;S=init();last=null;sel=-1;targets=[];busy=false;ov.hidden=true;
-  if(notifyParent&&window.parent!==window)window.parent.postMessage({type:"shoppers-ocean-chess-new-game"},location.origin);
-  fl=mode=="cpu"&&me=="b";refresh();render();
-  if(mode=="cpu"&&S.t!=me)cpuMove()}
+  fl=false;refresh();render();
+}
 
 
 grid.addEventListener("click",e=>{const b=e.target.closest(".sq");if(b)click(+b.dataset.s)});
 $("#sn").onclick=e=>{mute=!mute;e.currentTarget.textContent=mute?"🔇 Sound off":"🔊 Sound on";e.currentTarget.setAttribute("aria-pressed",String(!mute));if(!mute)snd("move")};
 $("#nw").onclick=()=>newGame(true);
-$("#me").onchange=e=>{me=e.target.value;newGame(true)};
+
 $("#lvl").onchange=e=>{lvl=+e.target.value};
 newGame();
 </script>
