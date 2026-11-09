@@ -172,7 +172,7 @@ async function handle(req:Request,consume:boolean){
     if(challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt)){
      await db.prepare("DELETE FROM game_answered_questions WHERE user_id=? AND section_id=? AND question_key=?").bind(user.id,section,questionText).run();
      await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
-     if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
+     if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_type SET trials_used=trials_used-1 WHERE user_id=? AND game_type_id=? AND trials_used>0").bind(user.id,type).run();
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
    }
@@ -181,7 +181,8 @@ async function handle(req:Request,consume:boolean){
    const usedTypes:Record<string,number>={};for(const row of all.results??[])usedTypes[row.game_type_id]=Number(row.plays_used??0);
    const dailyRemaining=previewMode?limit:Math.max(0,limit-Number(changed.plays_used??0));
    const dailySectionRemaining=sectionDailyRemaining(section,usedTypes);
-   const sectionRemaining=admin||subscribed?dailySectionRemaining:Math.min(dailySectionRemaining,Math.max(0,sectionFreeLimit(section)-(freeTrialsUsed??0)));
+   const sectionFreeRemaining=TYPES[section].reduce((n,t)=>n+Math.max(0,FREE_LIMIT-(t===type?(freeTrialsUsed??0):Number(0))),0);
+    const sectionRemaining=admin||subscribed?dailySectionRemaining:Math.min(dailySectionRemaining,sectionFreeRemaining);
    const remaining=admin||subscribed?dailyRemaining:Math.min(dailyRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    return NextResponse.json({sectionId:section,gameTypeId:type,remaining,sectionRemaining,isAdmin:admin,isSubscribed:subscribed,freeTrialsRemaining:freeTrialsUsed===null?undefined:Math.max(0,sectionFreeLimit(section)-freeTrialsUsed)},{headers});
   }
