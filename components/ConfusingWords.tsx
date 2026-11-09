@@ -4386,48 +4386,67 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
   const [quotaPopup, setQuotaPopup] = useState(false);
   const [error, setError] = useState("");
   const [hasAccess, setHasAccess] = useState(false);
+  const [bankComplete, setBankComplete] = useState(false);
+  const [reservationSessionId] = useState(() => "confusing-words:" + Date.now() + ":" + Math.random().toString(36).slice(2));
 
   const privileged = isAdmin || isSubscribed;
   const current = WORD_PAIRS[index];
   const comparedWords = current?.title.split(/\s+and\s+/i).slice(0, 2) ?? [];
 
+  // Reserve only: opening or leaving this page must never consume an attempt.
+  // The shared game-access API resumes this user's pending word on every revisit.
+  const reserveWordFrom = async (startIndex: number, isLive: () => boolean) => {
+    for (let candidateIndex = startIndex; candidateIndex < WORD_PAIRS.length; candidateIndex += 1) {
+      const candidate = WORD_PAIRS[candidateIndex];
+      const response = await fetch("/api/game-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sectionId: "word-differences",
+          gameTypeId: "confusing-words",
+          challengeId: "confusing-words:" + candidate.id,
+          challengeQuestion: candidate.title,
+          reserveQuestion: true,
+          reservationSessionId
+        })
+      });
+      const data = await response.json();
+      if (!isLive()) return false;
+      if (response.ok && data.reserved) {
+        const reservedId = typeof data.challengeId === "string" ? data.challengeId : "confusing-words:" + candidate.id;
+        const reservedIndex = WORD_PAIRS.findIndex(word => "confusing-words:" + word.id === reservedId);
+        if (reservedIndex < 0) {
+          setError("Your saved word could not be located. Please contact support.");
+          return false;
+        }
+        setIndex(reservedIndex);
+        setHasAccess(true);
+        setBankComplete(false);
+        return true;
+      }
+      if (response.status === 409 && data.repeated) continue;
+      throw new Error(data.error || "Your word could not be loaded.");
+    }
+    if (isLive()) {
+      setHasAccess(false);
+      setBankComplete(true);
+    }
+    return false;
+  };
+
   useEffect(() => {
     if (!userId) { setLoading(false); return; }
     let live = true;
-    fetch("/api/game-access", { cache: "no-store" })
-      .then(async response => {
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "Quota could not be verified.");
-        if (!live) return;
-        setIsAdmin(Boolean(data.isAdmin));
-        setIsSubscribed(Boolean(data.isSubscribed));
-        const available = Number(data.remainingByType?.["confusing-words"] ?? 0);
-        if (available <= 0) {
-          setRemaining(0);
-          setQuotaPopup(true);
-          return;
-        }
-        const first = WORD_PAIRS[0];
-        const charge = await fetch("/api/game-access", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            sectionId: "word-differences",
-            gameTypeId: "confusing-words",
-            challengeId: "confusing-words:" + first.id + ":" + Date.now()
-          })
-        });
-        const charged = await charge.json();
-        if (!charge.ok) {
-          setRemaining(0);
-          setQuotaPopup(true);
-          return;
-        }
-        const left = Number(charged.remaining ?? 0);
-        setRemaining(left);
-        setHasAccess(true);
-        if (left <= 0) setQuotaPopup(true);
-      })
+    (async () => {
+      const response = await fetch("/api/game-access", { cache: "no-store" });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Quota could not be verified.");
+      if (!live) return;
+      setIsAdmin(Boolean(data.isAdmin));
+      setIsSubscribed(Boolean(data.isSubscribed));
+      setRemaining(Number(data.remainingByType?.["confusing-words"] ?? 0));
+      await reserveWordFrom(0, () => live);
+    })()
       .catch(err => { if (live) setError(err instanceof Error ? err.message : "Quota could not be verified."); })
       .finally(() => { if (live) setLoading(false); });
     return () => { live = false; };
@@ -4440,33 +4459,46 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
   }, [quotaPopup]);
 
   const showNext = async () => {
-    if (busy || index >= WORD_PAIRS.length - 1 || remaining <= 0 || !userId) return;
+    if (busy || loading || !current || !hasAccess || !userId) return;
     setBusy(true);
     setError("");
     try {
-      const next = WORD_PAIRS[index + 1];
+      // This is the only point at which the current word is marked attempted
+      // and the user's quota is charged.
       const response = await fetch("/api/game-access", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           sectionId: "word-differences",
           gameTypeId: "confusing-words",
-          challengeId: "confusing-words:" + next.id + ":" + Date.now()
+          challengeId: "confusing-words:" + current.id,
+          challengeQuestion: current.title,
+          reservationSessionId
         })
       });
       const data = await response.json();
       if (!response.ok) {
-        setQuotaPopup(true);
-        setRemaining(0);
+        if (response.status === 403) {
+          setRemaining(0);
+          setQuotaPopup(true);
+        } else if (data.repeated) {
+          setError("This word was already attempted. Loading your next word…");
+          await reserveWordFrom(index + 1, () => true);
+        } else {
+          setError(data.error || "We couldn't verify your quota. Please try again.");
+        }
         return;
       }
       const left = Number(data.remaining ?? 0);
       setRemaining(left);
-      setHasAccess(true);
-      setIndex(value => value + 1);
-      if (left <= 0) setQuotaPopup(true);
-    } catch {
-      setError("We couldn't verify your quota. Please try again.");
+      if (left <= 0) {
+        setHasAccess(false);
+        setQuotaPopup(true);
+        return;
+      }
+      await reserveWordFrom(index + 1, () => true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "We couldn't verify your quota. Please try again.");
     } finally {
       setBusy(false);
     }
@@ -4490,7 +4522,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center font-semibold text-slate-800">Please sign in to access this section.</div>
       ) : loading ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center font-semibold text-slate-600">Loading your word lesson…</div>
-      ) : current && hasAccess && remaining > 0 ? (
+      ) : current && hasAccess ? (
         <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg">
           <div className="border-b border-slate-100 bg-gradient-to-r from-sky-50 via-white to-violet-50 px-5 py-5 text-center sm:px-8">
             <h3 className="text-2xl font-black tracking-tight text-violet-700 sm:text-3xl">{index + 1}. {highlightComparedWords(current.title, comparedWords)}</h3>
@@ -4513,20 +4545,21 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
             </section>
           </div>
           <div className="border-t border-slate-100 bg-slate-50 px-5 py-5 text-center">
-            <button type="button" onClick={showNext} disabled={busy || loading || remaining <= 0 || index >= WORD_PAIRS.length - 1} className="min-h-12 rounded-full bg-gradient-to-r from-violet-500 to-indigo-600 px-8 py-3 text-sm font-black text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-45">
+            <button type="button" onClick={showNext} disabled={busy || loading} className="min-h-12 rounded-full bg-gradient-to-r from-violet-500 to-indigo-600 px-8 py-3 text-sm font-black text-white shadow-md transition hover:-translate-y-0.5 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-45">
               {busy ? "Loading…" : "Next word →"}
             </button>
-            {index >= WORD_PAIRS.length - 1 && <p className="mt-3 text-xs font-medium text-slate-500">More word pairs can be added to this section.</p>}
             {error && <p role="alert" className="mt-3 text-sm font-semibold text-rose-700">{error}</p>}
           </div>
         </article>
       ) : (
         <div className={`rounded-2xl border p-8 text-center shadow-sm ${privileged ? "border-indigo-200 bg-indigo-50 text-indigo-950" : "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-950"}`}>
-          <p className="text-base font-extrabold leading-relaxed">{error || (remaining <= 0
-            ? privileged
-              ? "Your quota for this section today has been exhausted. Please visit tomorrow to play again."
-              : "Your free quota for this section has been exhausted. Please subscribe to enjoy further."
-            : "No word pairs are available yet.")}</p>
+          <p className="text-base font-extrabold leading-relaxed">{error || (bankComplete
+            ? "You have completed all the available word pairs."
+            : remaining <= 0
+              ? privileged
+                ? "Your quota for this section today has been exhausted. Please visit tomorrow to play again."
+                : "Your free quota for this section has been exhausted. Please subscribe to enjoy further."
+              : "No word pairs are available yet.")}</p>
           {!privileged && remaining <= 0 && <a href="/subscribe-now" className="mt-4 inline-flex rounded-full bg-fuchsia-700 px-5 py-2.5 text-sm font-black text-white shadow">Subscribe Now →</a>}
         </div>
       )}
