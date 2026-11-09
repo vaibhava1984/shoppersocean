@@ -103,7 +103,7 @@ export default function Chess3DGame({ quotaText, onPlayed, onNewGame }: Props) {
           if(move){
             if(!started.current){const ok=await played.current();if(!ok){selected=null;legal=[];render();return;}started.current=true;}
             const capture=Boolean(chess.get(sq as any));chess.move({from:selected as any,to:sq as any,promotion:"q"});tone(capture);selected=null;legal=[];render();aiMove();
-          }else if(p&&p.color===chess.turn()){selected=sq;legal=chess.moves({square:sq,verbose:true});render();}else{selected=null;legal=[];render();}
+          }else if(p&&p.color===chess.turn()){selected=sq;legal=chess.moves({square:sq as any,verbose:true});render();}else{selected=null;legal=[];render();}
         };
         let down:{x:number;y:number;drag:boolean;id:number}|null=null;
         const activePointers=new Map<number,{x:number;y:number}>();
