@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 const SECTIONS=["quiz-world","word-playground","brain-logic","quiz-arena","world-knowledge-quiz","riddle-corner","daily-challenge","memory-observation","classic-games","digital-discovery-hub","mystery-mansion","puzzle-universe","world-explorer","creative-studio","mind-lab","world-records-arena","mystery-quiz","word-differences","one-word-substitute"];
-const TYPES:Record<string,string[]>={"quiz-world":["trivio"],"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"world-knowledge-quiz":["worldquiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot","jigsaw"],"classic-games":["tic","solitaire","chess","connect","ludo","snakes"],"digital-discovery-hub":["internet","artificial-intelligence","cyber-detective","technology-history","quiz"],"mystery-mansion":["crime-scene","locked-room","secret-code","master-deception","riddle"],"puzzle-universe":["pattern-master","missing-piece","word-puzzle","sequence"],"world-explorer":["geography-quest","world-culture","landmark-adventure","worldquiz"],"creative-studio":["design-detective","pixel-artist","storyboard-challenge","odd"],"mind-lab":["mind-memory","mind-pattern","mind-focus","mind-logic","mind-speed","mind-spatial","worldquiz"],"world-records-arena":["world-records","quiz"],"mystery-quiz":["mystery-quiz"],"word-differences":["confusing-words"],"one-word-substitute":["one-word-substitute"]};
+const TYPES:Record<string,string[]>={"quiz-world":["trivio"],"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"world-knowledge-quiz":["worldquiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot","jigsaw"],"classic-games":["tic"],"digital-discovery-hub":["internet","artificial-intelligence","cyber-detective","technology-history","quiz"],"mystery-mansion":["crime-scene","locked-room","secret-code","master-deception","riddle"],"puzzle-universe":["pattern-master","missing-piece","word-puzzle","sequence"],"world-explorer":["geography-quest","world-culture","landmark-adventure","worldquiz"],"creative-studio":["design-detective","pixel-artist","storyboard-challenge","odd"],"mind-lab":["mind-memory","mind-pattern","mind-focus","mind-logic","mind-speed","mind-spatial","worldquiz"],"world-records-arena":["world-records","quiz"],"mystery-quiz":["mystery-quiz"],"word-differences":["confusing-words"],"one-word-substitute":["one-word-substitute"]};
 const QUESTION_BANK_SIZES:Record<string,number>={trivio:285,riddle:109,"mystery-quiz":90};
 const ADMIN_EMAIL="kochimonu@gmail.com", FREE_LIMIT=3, DAILY_LIMIT=10;
 const NO_MORE_TODAY="Your quota for this section today has been exhausted. Please visit tomorrow to play again.";
@@ -43,27 +43,13 @@ async function handle(req:Request,consume:boolean){
   // One-time correction for the site owner only: the old Picture Pair build allowed one attempt.
   // Reset only this account's jigsaw usage for today; no other account or game quota is touched.
   if(String(acct?.email??user.email).trim().toLowerCase()===ADMIN_EMAIL){
-   const solitaireReset=await db.prepare("CREATE TABLE IF NOT EXISTS game_solitaire_admin_reset_v2(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
-   const solitaireResetClaim=await db.prepare("INSERT OR IGNORE INTO game_solitaire_admin_reset_v2(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
-   if(solitaireResetClaim){
-    await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND game_type_id='solitaire' AND usage_date=?").bind(user.id,date).run();
-   }
    const reset=await db.prepare("INSERT OR IGNORE INTO game_picture_pair_quota_reset_v2(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
    if(reset){
     await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND game_type_id='jigsaw' AND usage_date=?").bind(user.id,date).run();
     await db.prepare("UPDATE game_free_trials_by_section SET trials_used=0,updated_at=? WHERE user_id=? AND section_id='memory-observation'").bind(new Date().toISOString(),user.id).run();
    }
   }
-  // Restore the site owner's Chess and Solitaire test allowance once per game day.
-  // This resets only these two classic-game counters for the admin account.
-  if(admin){
-   await db.prepare("CREATE TABLE IF NOT EXISTS game_classic_admin_test_reset_v1(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
-   const resetClaim=await db.prepare("INSERT OR IGNORE INTO game_classic_admin_test_reset_v1(user_id,usage_date) VALUES(?,?) RETURNING user_id").bind(user.id,date).first<any>();
-   if(resetClaim){
-    await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=0 WHERE user_id=? AND usage_date=? AND game_type_id IN ('chess','solitaire')").bind(user.id,date).run();
-   }
-  }
-  if(consume){
+    if(consume){
    let body:any={};try{body=await req.json()}catch{}
    const section=body.sectionId,type=body.gameTypeId,challenge=typeof body.challengeId==="string"?body.challengeId.slice(0,160):"",questionText=typeof body.challengeQuestion==="string"?body.challengeQuestion.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").trim().slice(0,300):"";
    const reserveQuestion=body.reserveQuestion===true,reservationSessionId=typeof body.reservationSessionId==="string"?body.reservationSessionId.slice(0,120):"";

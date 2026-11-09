@@ -192,13 +192,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const confusingWordsOpenRef = useRef(false);
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess"; sessionId: string; consumed: boolean } | null>(null);
+  const classicGameSessionRef = useRef<{ gameType: "tic"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
-  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | null>(null);
+  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | null>(null);
   const [signInPopup, setSignInPopup] = useState(false);
   useEffect(() => {
     if (!signInPopup) return;
@@ -206,8 +206,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     return () => window.clearTimeout(timer);
   }, [signInPopup]);
   const [classicGameOpening, setClassicGameOpening] = useState(false);
-  const [chessPaused, setChessPaused] = useState(false);
-  const [chessInstance, setChessInstance] = useState(0);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [riddleRemaining, setRiddleRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
@@ -215,17 +213,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess"; sessionId: string; consumed: boolean }) => {
+  const consumeClassicAttempt = async (session: { gameType: "tic"; sessionId: string; consumed: boolean }) => {
     if (session.consumed) return false;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
       const data = await response.json();
       if (!response.ok) {
         setClassicQuotaPopup(true);
-        if (session.gameType === "chess") {
-          classicGameStartedRef.current = false;
-          setClassicGameStarted(false);
-        }
         return false;
       }
       session.consumed = true;
@@ -238,7 +232,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       return true;
     } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
   };
-  const startNextClassicAttempt = (gameType: "tic" | "chess") => {
+  const startNextClassicAttempt = (gameType: "tic") => {
     classicGameSessionRef.current = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameInteractedRef.current = false;
   };
@@ -251,14 +245,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     if (!allowed && classicGameSessionRef.current === session) classicGameInteractedRef.current = false;
     return allowed;
   };
-  const startChargedClassicRestart = async (gameType: "chess") => {
-    const session = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
-    classicGameSessionRef.current = session;
-    classicGameInteractedRef.current = true;
-    const allowed = await consumeClassicAttempt(session);
-    if (!allowed) classicGameInteractedRef.current = false;
-    return allowed;
-  };
   useEffect(() => {
     const handleMobileBack = async () => {
       if (classicGameStartedRef.current) {
@@ -267,7 +253,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         classicGameStartedRef.current = false;
         classicGameSessionRef.current = null;
         classicGameInteractedRef.current = false;
-        setChessPaused(false);
         setClassicGameStarted(false);
         return;
       }
@@ -336,10 +321,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "chess") => {
+  const openClassicGame = async (game: "tic-tac-toe") => {
     setClassicQuotaNoticeFor(null);
     if (!userId) { setSignInPopup(true); return; }
-    const gameType = game === "chess" ? "chess" : "tic";
+    const gameType = "tic" as const;
     setClassicGameOpening(true);
     try {
       // Check the current balance before showing the game, but charge only when
@@ -355,8 +340,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         return;
       }
       startNextClassicAttempt(gameType);
-      setChessPaused(false);
-      setChessInstance(0);
       window.history.pushState({ shoppersOceanZone: true, shoppersOceanClassicGame: game }, "", window.location.href);
       classicGameStartedRef.current = game;
       setClassicGameStarted(game);
