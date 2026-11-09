@@ -25,6 +25,7 @@ async function handle(req:Request,consume:boolean){
   if(!db||!secret)return NextResponse.json({error:"Game access is temporarily unavailable."},{status:503,headers});
   const user=await getCurrentUser(req,db,secret);if(!user)return NextResponse.json({error:"Please sign in to play."},{status:401,headers});
   await db.prepare("CREATE TABLE IF NOT EXISTS game_free_trials_by_section(user_id TEXT NOT NULL,section_id TEXT NOT NULL,trials_used INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL,PRIMARY KEY(user_id,section_id))").run();
+  await db.prepare("CREATE TABLE IF NOT EXISTS game_free_trials_by_type(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,trials_used INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_subscriber_usage_by_type(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,usage_date TEXT NOT NULL,plays_used INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(user_id,game_type_id,usage_date))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_challenge_history(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,challenge_id TEXT NOT NULL,played_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id,challenge_id))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_answered_questions(user_id TEXT NOT NULL,section_id TEXT NOT NULL,question_key TEXT NOT NULL,answered_at TEXT NOT NULL,PRIMARY KEY(user_id,section_id,question_key))").run();
@@ -128,9 +129,9 @@ async function handle(req:Request,consume:boolean){
    // Enforce the free section quota before touching daily usage; this prevents stale clients
    // from receiving another question after their free allowance has run out.
    if(!admin&&!subscribed){
-    const freeRow=await db.prepare("SELECT trials_used FROM game_free_trials_by_section WHERE user_id=? AND section_id=? LIMIT 1").bind(user.id,section).first<any>();
-    if(Number(freeRow?.trials_used??0)>=sectionFreeLimit(section)){
-     return NextResponse.json({error:"Your free quota for this section has been exhausted. Please subscribe to enjoy further.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false,isAdmin:false},{status:403,headers});
+    const freeRow=await db.prepare("SELECT trials_used FROM game_free_trials_by_type WHERE user_id=? AND game_type_id=? LIMIT 1").bind(user.id,type).first<any>();
+    if(Number(freeRow?.trials_used??0)>=FREE_LIMIT){
+     return NextResponse.json({error:"Your free quota for this game has been exhausted. Please subscribe to enjoy further.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false,isAdmin:false},{status:403,headers});
     }
    }
    // Check the section's daily quota before duplicate-history checks so exhausted sections stop immediately.
@@ -153,10 +154,10 @@ async function handle(req:Request,consume:boolean){
    }
    let freeTrialsUsed:number|null=null;
    if(!admin&&!subscribed){
-    const trial=await db.prepare("INSERT INTO game_free_trials_by_section(user_id,section_id,trials_used,updated_at) VALUES(?,?,1,?) ON CONFLICT(user_id,section_id) DO UPDATE SET trials_used=trials_used+1,updated_at=excluded.updated_at WHERE game_free_trials_by_section.trials_used < ? RETURNING trials_used").bind(user.id,section,new Date().toISOString(),sectionFreeLimit(section)).first<any>();
+    const trial=await db.prepare("INSERT INTO game_free_trials_by_type(user_id,game_type_id,trials_used,updated_at) VALUES(?,?,1,?) ON CONFLICT(user_id,game_type_id) DO UPDATE SET trials_used=trials_used+1,updated_at=excluded.updated_at WHERE game_free_trials_by_type.trials_used < ? RETURNING trials_used").bind(user.id,type,new Date().toISOString(),FREE_LIMIT).first<any>();
     if(!trial){
      await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
-     return NextResponse.json({error:"Your free quota for this section has been exhausted. Please subscribe to enjoy further.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false},{status:403,headers});
+     return NextResponse.json({error:"Your free quota for this game has been exhausted. Please subscribe to enjoy further.",sectionId:section,gameTypeId:type,remaining:0,sectionRemaining:0,freeTrialsExhausted:true,isSubscribed:false},{status:403,headers});
     }
     freeTrialsUsed=Number(trial.trials_used??0);
    }
@@ -165,7 +166,7 @@ async function handle(req:Request,consume:boolean){
     const savedQuestion=questionText?await db.prepare("INSERT INTO game_answered_questions(user_id,section_id,question_key,answered_at) VALUES(?,?,?,?) ON CONFLICT(user_id,section_id,question_key) DO NOTHING RETURNING question_key").bind(user.id,section,questionText,playedAt).first<any>():{question_key:""};
     if(!savedQuestion){
      await db.prepare("UPDATE game_subscriber_usage_by_type SET plays_used=plays_used-1 WHERE user_id=? AND game_type_id=? AND usage_date=? AND plays_used>0").bind(user.id,type,date).run();
-     if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_section SET trials_used=trials_used-1 WHERE user_id=? AND section_id=? AND trials_used>0").bind(user.id,section).run();
+     if(freeTrialsUsed!==null)await db.prepare("UPDATE game_free_trials_by_type SET trials_used=trials_used-1 WHERE user_id=? AND game_type_id=? AND trials_used>0").bind(user.id,type).run();
      return NextResponse.json({error:"Please try another challenge.",repeated:true,skipQuestion:true,sectionId:section,gameTypeId:type},{status:409,headers});
     }
     if(challenge&&!await claimChallenge(db,user.id,type,challenge,playedAt)){
@@ -184,15 +185,15 @@ async function handle(req:Request,consume:boolean){
    const remaining=admin||subscribed?dailyRemaining:Math.min(dailyRemaining,Math.max(0,FREE_LIMIT-(freeTrialsUsed??0)));
    return NextResponse.json({sectionId:section,gameTypeId:type,remaining,sectionRemaining,isAdmin:admin,isSubscribed:subscribed,freeTrialsRemaining:freeTrialsUsed===null?undefined:Math.max(0,sectionFreeLimit(section)-freeTrialsUsed)},{headers});
   }
-  const free=await db.prepare("SELECT section_id,trials_used FROM game_free_trials_by_section WHERE user_id=?").bind(user.id).all<any>();
+  const free=await db.prepare("SELECT game_type_id,trials_used FROM game_free_trials_by_type WHERE user_id=?").bind(user.id).all<any>();
   const usage=await db.prepare("SELECT game_type_id,plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id,date).all<any>();
   const freeUsed:Record<string,number>={},usedByType:Record<string,number>={},remainingBySection:Record<string,number>={},remainingByType:Record<string,number>={};
-  for(const s of SECTIONS)freeUsed[s]=0;for(const x of free.results??[])freeUsed[x.section_id]=Number(x.trials_used??0);for(const x of usage.results??[])usedByType[x.game_type_id]=Number(x.plays_used??0);
+  for(const x of free.results??[])freeUsed[x.game_type_id]=Number(x.trials_used??0);for(const x of usage.results??[])usedByType[x.game_type_id]=Number(x.plays_used??0);
   for(const s of SECTIONS){
    const dailySection=sectionDailyRemaining(s,usedByType);
-   remainingBySection[s]=admin||subscribed?dailySection:Math.min(dailySection,Math.max(0,sectionFreeLimit(s)-(freeUsed[s]??0)));
-   for(const t of TYPES[s])remainingByType[t]=Math.min(Math.max(0,typeLimit(t)-(usedByType[t]??0)),admin||subscribed?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[s]??0)));
+   remainingBySection[s]=admin||subscribed?dailySection:Math.min(dailySection,TYPES[s].reduce((n,t)=>n+Math.max(0,FREE_LIMIT-(freeUsed[t]??0)),0));
+   for(const t of TYPES[s])remainingByType[t]=Math.min(Math.max(0,typeLimit(t)-(usedByType[t]??0)),admin||subscribed?Number.MAX_SAFE_INTEGER:Math.max(0,FREE_LIMIT-(freeUsed[t]??0)));
   }
-  return NextResponse.json({isAdmin:admin,isSubscribed:subscribed,role:admin?"admin":subscribed?"subscriber":"free",remainingBySection,remainingByType,freeUsedBySection:freeUsed,usedByType,gameDay:date,resetTime:"08:00 Asia/Kolkata"},{headers});
+  return NextResponse.json({isAdmin:admin,isSubscribed:subscribed,role:admin?"admin":subscribed?"subscriber":"free",remainingBySection,remainingByType,freeUsedByType:freeUsed,usedByType,gameDay:date,resetTime:"08:00 Asia/Kolkata"},{headers});
  }catch(error){console.error("Game access check failed:",error);return NextResponse.json({error:"Game access could not be verified."},{status:503,headers})}
 }
