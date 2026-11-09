@@ -80,7 +80,7 @@ export default function Chess3DGame({ quotaText, onPlayed, onNewGame }: Props) {
           Object.values(mats).forEach((m:any)=>m.emissive.setHex(0));
           if(selected){mats[selected].emissive.setHex(0x147c55);legal.forEach(x=>mats[x.to].emissive.setHex(0x245caa));}
           const h=chess.history({verbose:true});setHistory(chess.history());
-          setCaptures({white:h.filter((x:any)=>x.color==="b"&&x.captured).length,black:h.filter((x:any)=>x.color==="w"&&x.captured).length});
+          setCaptures({white:h.filter((x:any)=>x.color==="w"&&x.captured).length,black:h.filter((x:any)=>x.color==="b"&&x.captured).length});
           let s=chess.turn()==="w"?"White to move":"Black to move";
           if(chess.isCheckmate())s="Checkmate — "+(chess.turn()==="w"?"Black":"White")+" wins";
           else if(chess.isStalemate())s="Draw — stalemate";else if(chess.isDraw())s="Draw";else if(chess.isCheck())s+=" · Check!";
