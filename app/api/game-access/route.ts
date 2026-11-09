@@ -26,6 +26,9 @@ async function handle(req:Request,consume:boolean){
   const user=await getCurrentUser(req,db,secret);if(!user)return NextResponse.json({error:"Please sign in to play."},{status:401,headers});
   await db.prepare("CREATE TABLE IF NOT EXISTS game_free_trials_by_section(user_id TEXT NOT NULL,section_id TEXT NOT NULL,trials_used INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL,PRIMARY KEY(user_id,section_id))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_free_trials_by_type(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,trials_used INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id))").run();
+  // Preserve each user's historical usage where the game-specific attempt history exists.
+  // A newly introduced game with no history starts with all three free attempts.
+  await db.prepare("INSERT INTO game_free_trials_by_type(user_id,game_type_id,trials_used,updated_at) SELECT user_id,game_type_id,CASE WHEN COUNT(*)>3 THEN 3 ELSE COUNT(*) END,MAX(played_at) FROM game_challenge_history GROUP BY user_id,game_type_id ON CONFLICT(user_id,game_type_id) DO NOTHING").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_subscriber_usage_by_type(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,usage_date TEXT NOT NULL,plays_used INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(user_id,game_type_id,usage_date))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_challenge_history(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,challenge_id TEXT NOT NULL,played_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id,challenge_id))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_answered_questions(user_id TEXT NOT NULL,section_id TEXT NOT NULL,question_key TEXT NOT NULL,answered_at TEXT NOT NULL,PRIMARY KEY(user_id,section_id,question_key))").run();
