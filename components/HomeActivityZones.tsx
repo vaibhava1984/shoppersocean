@@ -495,14 +495,17 @@ useEffect(() => {
                 {classicGameStarted === null || classicGameStarted === false ? (
                   <div className="w-full min-w-0 max-w-2xl">
                     <div className="grid w-full max-w-2xl gap-3">
-                    <div className="grid w-full grid-cols-2 gap-3">
-                      <button type="button" onClick={() => void openClassicGame("chess")} disabled={classicGameOpening} className="flex min-h-14 min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-sky-600 via-blue-700 to-indigo-800 px-2 py-4 text-center text-xs font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">♟️ Ocean Chess</button>
-                      <button type="button" onClick={() => void openClassicGame("tic-tac-toe")} disabled={classicGameOpening} className="flex min-h-14 min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-2 py-4 text-center text-xs font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">❌⭕ Tic Tac Toe</button>
+                    <div className="grid w-full grid-cols-1 gap-3">
+                      <button type="button" onClick={() => void openClassicGame("chess")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-sky-600 via-blue-700 to-indigo-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">♟️ Ocean Chess</button>
+                      <button type="button" onClick={() => void openClassicGame("tic-tac-toe")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">❌⭕ Tic Tac Toe</button>
                     </div>
                     </div>
                   </div>
                 ) : classicGameStarted === "chess" ? (
                   <div className="w-full min-w-0">
+                    <p className="mb-2 w-full text-center text-sm font-black text-white drop-shadow-sm">
+                      {classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.chess ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
+                    </p>
                     <iframe
                       ref={chessFrameRef}
                       title="Ocean Chess"
@@ -511,9 +514,6 @@ useEffect(() => {
                       className="w-full rounded-2xl border-0 bg-[#e8f2f1]"
                       style={{ height: "min(900px, calc(100dvh - 170px))", minHeight: "620px" }}
                     />
-                    <p className="mt-2 w-full text-center text-xs font-bold text-slate-500">
-                      {classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.chess ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
-                    </p>
                   </div>
                 ) : (
                   <ColourfulTicTacToe
