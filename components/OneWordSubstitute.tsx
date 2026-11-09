@@ -138,7 +138,7 @@ export default function OneWordSubstitute({ userId }: { userId: string | null })
       ) : loading ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center font-semibold text-slate-600">Loading your word…</div>
       ) : current && hasAccess ? (
-        <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg" aria-label={`One Word Substitute word ${index + 1}`}>
+        <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg" aria-label="One Word Substitute entry">
           <div className="border-b border-slate-100 bg-gradient-to-r from-sky-50 via-white to-blue-50 px-5 py-5 text-center sm:px-8">
               <h3 className="mt-3 text-xl font-black leading-relaxed tracking-tight text-slate-900 sm:text-2xl">{current.prompt}</h3>
             <p className="mt-4 text-lg font-bold leading-relaxed text-slate-900">{highlightKeyword(current.answerLine, current.keyword)}</p>
