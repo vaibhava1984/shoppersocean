@@ -140,15 +140,14 @@ export default function OneWordSubstitute({ userId }: { userId: string | null })
       ) : current && hasAccess ? (
         <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-lg" aria-label={`One Word Substitute word ${index + 1}`}>
           <div className="border-b border-slate-100 bg-gradient-to-r from-sky-50 via-white to-blue-50 px-5 py-5 text-center sm:px-8">
-            <p className="text-xs font-black uppercase tracking-[.18em] text-blue-700">Word {index + 1} of {ONE_WORD_SUBSTITUTE.length}</p>
-            <h3 className="mt-3 text-xl font-black leading-relaxed tracking-tight text-slate-900 sm:text-2xl">{current.prompt}</h3>
+              <h3 className="mt-3 text-xl font-black leading-relaxed tracking-tight text-slate-900 sm:text-2xl">{current.prompt}</h3>
             <p className="mt-4 text-lg font-bold leading-relaxed text-slate-900">{highlightKeyword(current.answerLine, current.keyword)}</p>
           </div>
           <div className="space-y-6 px-5 py-6 text-[15px] leading-8 text-slate-950 sm:px-8 sm:py-8">
-            <section className="space-y-3">
+            <section className="space-y-4">
               {current.examples.map((example, exampleIndex) => (
-                <p key={exampleIndex}>
-                  <strong className="font-extrabold">Example {exampleIndex + 1}.</strong>{" "}
+                <p key={exampleIndex} className="rounded-2xl border border-sky-100 bg-gradient-to-r from-sky-50/80 via-white to-indigo-50/80 px-4 py-4 font-serif text-[16px] italic leading-8 tracking-[0.01em] text-slate-800 shadow-sm sm:px-5 sm:text-[17px]">
+                  <strong className="mr-1 font-sans text-[13px] font-black not-italic tracking-wide text-indigo-700 sm:text-sm">Example {exampleIndex + 1}:</strong>
                   {highlightKeyword(example, current.keyword)}
                 </p>
               ))}
