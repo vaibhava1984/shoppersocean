@@ -14,6 +14,7 @@ import GameQuotaPopup from "@/components/GameQuotaPopup";
 import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 import ConfusingWords from "@/components/ConfusingWords";
+import OneWordSubstitute from "@/components/OneWordSubstitute";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -517,13 +518,7 @@ useEffect(() => {
             {selected.action === "learning" && (
               <div ref={activityTargetRef} className="w-full" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button"); if (button?.textContent?.trim() === "← Back" && event.currentTarget.querySelector('h4[style*="scroll-margin-top"]')) { event.preventDefault(); event.stopPropagation(); window.history.back(); } }}>
                 {oneWordSubstituteOpen ? (
-                  <div className="mx-auto w-full max-w-3xl">
-                    <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3">
-                      <h2 className="text-lg font-black text-slate-900">One Word Substitute</h2>
-                      <button type="button" onClick={() => window.history.back()} className="rounded-full border border-sky-300 bg-white px-4 py-2 text-sm font-black text-sky-800 shadow-sm">← Back</button>
-                    </div>
-                    <div className="min-h-[45vh] rounded-3xl border border-slate-200 bg-white shadow-lg" aria-label="One Word Substitute content area" />
-                  </div>
+                  <OneWordSubstitute userId={userId} />
                 ) : confusingWordsOpen ? (
                   <ConfusingWords userId={userId} />
                 ) : !englishAcademyEntered ? (
