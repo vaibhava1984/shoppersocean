@@ -4422,6 +4422,7 @@ export default function ConfusingWords({ userId }: { userId: string | null }) {
         setIndex(reservedIndex);
         setHasAccess(true);
         setBankComplete(false);
+        setError("");
         return true;
       }
       if (response.status === 409 && data.repeated) continue;
