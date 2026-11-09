@@ -146,8 +146,12 @@ export default function OneWordSubstitute({ userId }: { userId: string | null })
           </div>
           <div className="space-y-6 px-5 py-6 text-[15px] leading-8 text-slate-950 sm:px-8 sm:py-8">
             <section className="space-y-3">
-              <p>{highlightKeyword(current.examples[0], current.keyword)}</p>
-              <p>{highlightKeyword(current.examples[1], current.keyword)}</p>
+              {current.examples.map((example, exampleIndex) => (
+                <p key={exampleIndex}>
+                  <strong className="font-extrabold">Example {exampleIndex + 1}.</strong>{" "}
+                  {highlightKeyword(example, current.keyword)}
+                </p>
+              ))}
             </section>
           </div>
           <div className="border-t border-slate-100 bg-slate-50 px-5 py-5 text-center">
