@@ -105,6 +105,21 @@ select:disabled{opacity:.5}
   </div>
 </main>
 <script>
+// Shared parent-page activity protocol for embedded games. Report actual
+// player input, throttled to avoid flooding the parent window with messages.
+const EMBEDDED_ACTIVITY_MESSAGE = "shoppers-ocean-user-activity";
+let lastEmbeddedActivityReport = 0;
+const reportEmbeddedGameActivity = () => {
+  if (window.parent === window) return;
+  const now = Date.now();
+  if (now - lastEmbeddedActivityReport < 1000) return;
+  lastEmbeddedActivityReport = now;
+  window.parent.postMessage({ type: EMBEDDED_ACTIVITY_MESSAGE }, window.location.origin);
+};
+["pointerdown", "keydown", "touchstart", "input", "change"].forEach(eventName => {
+  document.addEventListener(eventName, reportEmbeddedGameActivity, { capture: true, passive: true });
+});
+
 const $=s=>document.querySelector(s);
 const SYM={K:"♚",Q:"♛",R:"♜",B:"♝",N:"♞",P:"♟"},NM={K:"king",Q:"queen",R:"rook",B:"bishop",N:"knight",P:"pawn"};
 const VAL={p:100,n:320,b:330,r:500,q:900,k:0};

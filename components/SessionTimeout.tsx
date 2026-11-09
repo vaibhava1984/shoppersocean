@@ -100,6 +100,28 @@ export default function SessionTimeout() {
       window.addEventListener(event, recordActivity, { passive: true })
     );
 
+    // Embedded same-origin games report real player input through this shared
+    // message contract. Accept messages only from an iframe actually embedded
+    // on this page, so unrelated windows cannot keep the session alive.
+    const onEmbeddedFrameActivity = (event: MessageEvent) => {
+      if (
+        event.origin !== window.location.origin ||
+        event.data?.type !== "shoppers-ocean-user-activity"
+      ) return;
+
+      const trustedFrame = Array.from(document.querySelectorAll("iframe")).some(frame => {
+        if (frame.contentWindow !== event.source) return false;
+        try {
+          return new URL(frame.getAttribute("src") || "", window.location.href).origin === window.location.origin;
+        } catch {
+          return false;
+        }
+      });
+
+      if (trustedFrame) recordActivity();
+    };
+    window.addEventListener("message", onEmbeddedFrameActivity);
+
     const timer = window.setInterval(() => { void checkTimeout(); }, CHECK_INTERVAL_MS);
     const onVisibilityChange = () => {
       if (document.visibilityState === "visible") void checkTimeout();
@@ -109,6 +131,7 @@ export default function SessionTimeout() {
 
     return () => {
       activityEvents.forEach(event => window.removeEventListener(event, recordActivity));
+      window.removeEventListener("message", onEmbeddedFrameActivity);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.clearInterval(timer);
     };
