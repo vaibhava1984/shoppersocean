@@ -15,7 +15,6 @@ import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 import ConfusingWords from "@/components/ConfusingWords";
 import OneWordSubstitute from "@/components/OneWordSubstitute";
-import Chess3DGame from "@/components/Chess3DGame";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -193,13 +192,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const confusingWordsOpenRef = useRef(false);
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess"; sessionId: string; consumed: boolean } | null>(null);
+  const classicGameSessionRef = useRef<{ gameType: "tic"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
-  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | null>(null);
+  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | null>(null);
   const [signInPopup, setSignInPopup] = useState(false);
   useEffect(() => {
     if (!signInPopup) return;
@@ -214,7 +213,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess"; sessionId: string; consumed: boolean }) => {
+  const consumeClassicAttempt = async (session: { gameType: "tic"; sessionId: string; consumed: boolean }) => {
     if (session.consumed) return false;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
@@ -233,7 +232,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       return true;
     } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
   };
-  const startNextClassicAttempt = (gameType: "tic" | "chess") => {
+  const startNextClassicAttempt = (gameType: "tic") => {
     classicGameSessionRef.current = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameInteractedRef.current = false;
   };
@@ -322,10 +321,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "chess") => {
+  const openClassicGame = async (game: "tic-tac-toe") => {
     setClassicQuotaNoticeFor(null);
     if (!userId) { setSignInPopup(true); return; }
-    const gameType = game === "chess" ? "chess" as const : "tic" as const;
+    const gameType = "tic" as const;
     setClassicGameOpening(true);
     try {
       // Check the current balance before showing the game, but charge only when
@@ -479,16 +478,9 @@ useEffect(() => {
                     <div className="grid w-full max-w-2xl gap-3">
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <button type="button" onClick={() => void openClassicGame("tic-tac-toe")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">❌⭕ &nbsp; Play Tic Tac Toe</button>
-                    <button type="button" onClick={() => void openClassicGame("chess")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-amber-200/40 bg-gradient-to-r from-slate-900 via-indigo-950 to-amber-900 px-3 py-4 text-center text-sm font-black text-amber-100 shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">♛ &nbsp; Play 3D Chess</button>
                     </div>
                     </div>
                   </div>
-                ) : classicGameStarted === "chess" ? (
-                  <Chess3DGame
-                    quotaText={classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.chess ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
-                    onPlayed={async () => { classicGameInteractedRef.current = true; return true; }}
-                    onNewGame={async () => { if (!classicGameInteractedRef.current) return true; const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (allowed) startNextClassicAttempt("chess"); return allowed; }}
-                  />
                 ) : (
                   <ColourfulTicTacToe
                     quotaText={classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.tic ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
