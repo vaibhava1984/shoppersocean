@@ -92,23 +92,25 @@ export default function Chess3DGame({ quotaText, onPlayed, onNewGame }: Props) {
         const ray=new T.Raycaster(), point=new T.Vector2();
         const tone=(capture:boolean)=>{try{const C=window.AudioContext||(window as any).webkitAudioContext;if(!C)return;const ctx=new C(),o=ctx.createOscillator(),v=ctx.createGain();o.frequency.value=capture?430:310;v.gain.setValueAtTime(.07,ctx.currentTime);v.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.12);o.connect(v);v.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.13);setTimeout(()=>void ctx.close(),250);}catch{}};
         let busyAI=false;
-        const aiMove=()=>{if(!ai.current||chess.turn()!=="b"||chess.isGameOver())return;busyAI=true;setBusy(true);setTimeout(()=>{if(dead)return;const list=chess.moves({verbose:true});if(list.length){const m=list[Math.floor(Math.random()*list.length)];chess.move({from:m.from,to:m.to,promotion:"q"});tone(Boolean(m.captured));render();}busyAI=false;setBusy(false);},420);};
+        const aiMove=()=>{if(!ai.current||chess.turn()!=="b"||chess.isGameOver())return;busyAI=true;setBusy(true);setTimeout(()=>{if(dead)return;const list=chess.moves({verbose:true});if(list.length){const m=list[Math.floor(Math.random()*list.length)];chess.move({from:m.from as any,to:m.to as any,promotion:"q"});tone(Boolean(m.captured));render();}busyAI=false;setBusy(false);},420);};
         const tap=async(x:number,y:number)=>{
           if(busyAI||chess.isGameOver()||(ai.current&&chess.turn()==="b"))return;
           const rect=renderer.domElement.getBoundingClientRect();point.set((x-rect.left)/rect.width*2-1,-(y-rect.top)/rect.height*2+1);ray.setFromCamera(point,camera);
           const hits=ray.intersectObjects(Object.values(squareMeshes));if(!hits.length)return;
           const sq=hits[0].object.userData.sq,p=chess.get(sq);
-          if(!selected){if(p&&p.color===chess.turn()){selected=sq;legal=chess.moves({square:sq,verbose:true});render();}return;}
+          if(!selected){if(p&&p.color===chess.turn()){selected=sq;legal=chess.moves({square:sq as any,verbose:true});render();}return;}
           const move=legal.find(m=>m.to===sq);
           if(move){
             if(!started.current){const ok=await played.current();if(!ok){selected=null;legal=[];render();return;}started.current=true;}
-            const capture=Boolean(chess.get(sq));chess.move({from:selected,to:sq,promotion:"q"});tone(capture);selected=null;legal=[];render();aiMove();
+            const capture=Boolean(chess.get(sq as any));chess.move({from:selected as any,to:sq as any,promotion:"q"});tone(capture);selected=null;legal=[];render();aiMove();
           }else if(p&&p.color===chess.turn()){selected=sq;legal=chess.moves({square:sq,verbose:true});render();}else{selected=null;legal=[];render();}
         };
-        let down:{x:number;y:number;drag:boolean}|null=null;
-        const pd=(e:PointerEvent)=>{if(e.pointerType==="mouse"&&e.button!==0)return;down={x:e.clientX,y:e.clientY,drag:false};renderer.domElement.setPointerCapture?.(e.pointerId);};
-        const pm=(e:PointerEvent)=>{if(!down)return;const dx=e.clientX-down.x,dy=e.clientY-down.y;if(Math.abs(dx)+Math.abs(dy)>5)down.drag=true;if(down.drag){theta-=dx*.008;phi=Math.max(.22,Math.min(Math.PI/2-.06,phi-dy*.008));cameraSet();down.x=e.clientX;down.y=e.clientY;}};
-        const pu=(e:PointerEvent)=>{if(!down)return;const dragged=down.drag;down=null;if(!dragged)void tap(e.clientX,e.clientY);};
+        let down:{x:number;y:number;drag:boolean;id:number}|null=null;
+        const activePointers=new Map<number,{x:number;y:number}>();
+        let pinchDistance=0;
+        const pd=(e:PointerEvent)=>{if(e.pointerType==="mouse"&&e.button!==0)return;activePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(activePointers.size===2){const pts=[...activePointers.values()];pinchDistance=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);down=null;}else if(activePointers.size===1){down={x:e.clientX,y:e.clientY,drag:false,id:e.pointerId};}renderer.domElement.setPointerCapture?.(e.pointerId);};
+        const pm=(e:PointerEvent)=>{if(activePointers.has(e.pointerId))activePointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(activePointers.size>=2){const pts=[...activePointers.values()];const distance=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);if(pinchDistance>0){radius=Math.max(9.5,Math.min(17,radius-(distance-pinchDistance)*.025));cameraSet();}pinchDistance=distance;return;}if(!down||down.id!==e.pointerId)return;const dx=e.clientX-down.x,dy=e.clientY-down.y;if(Math.abs(dx)+Math.abs(dy)>5)down.drag=true;if(down.drag){theta-=dx*.008;phi=Math.max(.22,Math.min(Math.PI/2-.06,phi-dy*.008));cameraSet();down.x=e.clientX;down.y=e.clientY;}};
+        const pu=(e:PointerEvent)=>{const was=down?.id===e.pointerId?down:null;activePointers.delete(e.pointerId);if(activePointers.size<2)pinchDistance=0;if(!was)return;const dragged=was.drag;down=null;if(!dragged&&activePointers.size===0)void tap(e.clientX,e.clientY);};
         const wheel=(e:WheelEvent)=>{e.preventDefault();radius=Math.max(9.5,Math.min(17,radius+e.deltaY*.012));cameraSet();};
         renderer.domElement.addEventListener("pointerdown",pd);renderer.domElement.addEventListener("pointermove",pm);renderer.domElement.addEventListener("pointerup",pu);renderer.domElement.addEventListener("pointercancel",pu);renderer.domElement.addEventListener("wheel",wheel,{passive:false});
         const resize=()=>{if(!host.current)return;const w=host.current.clientWidth,h=host.current.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.fov=w<520?45:41;camera.updateProjectionMatrix();renderer.setSize(w,h,false);};
