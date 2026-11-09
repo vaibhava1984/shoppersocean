@@ -197,6 +197,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const classicGameInteractedRef = useRef(false);
   const classicGameSessionRef = useRef<{ gameType: "tic" | "chess"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
+  const pendingClassicQuotaRef = useRef<Record<string, number>>({});
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
   const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | null>(null);
   const [signInPopup, setSignInPopup] = useState(false);
@@ -225,7 +226,12 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       }
       session.consumed = true;
       const remaining = Number(data.remaining ?? 0);
-      setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: remaining } }));
+      if (session.gameType === "chess") {
+        // Keep the visible Chess meter unchanged until New Game or zone re-entry.
+        pendingClassicQuotaRef.current.chess = remaining;
+      } else {
+        setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, [session.gameType]: remaining } }));
+      }
       // The final permitted attempt remains playable; the next attempt request opens the quota popup.
       // A successful POST has already consumed the attempt. Allow that final
       // permitted attempt to start even when the returned balance is now zero.
@@ -363,11 +369,16 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
           window.location.origin
         );
       } else if (data?.type === "shoppers-ocean-chess-new-game" && typeof data.requestId === "string") {
-        const previousAttemptWasUsed = Boolean(classicGameSessionRef.current?.consumed);
+        // Restarting is free. Reveal any balance already deducted by the
+        // previous game's first move; charge the new game only on its first move.
+        const pendingChessBalance = pendingClassicQuotaRef.current.chess;
+        if (typeof pendingChessBalance === "number") {
+          setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, chess: pendingChessBalance } }));
+          delete pendingClassicQuotaRef.current.chess;
+        }
         startNextClassicAttempt("chess");
-        const allowed = previousAttemptWasUsed ? await registerClassicInteraction() : true;
         chessFrameRef.current?.contentWindow?.postMessage(
-          { type: "shoppers-ocean-chess-new-game-result", requestId: data.requestId, allowed },
+          { type: "shoppers-ocean-chess-new-game-result", requestId: data.requestId, allowed: true },
           window.location.origin
         );
       }
