@@ -145,7 +145,7 @@ export default async function BookShelfPage({
                     {!isCategoryBrowse && user && (
                         <div className="mb-10 rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-cyan-50 p-5 shadow-sm sm:p-7">
                             <h1 className="mb-5 text-2xl font-bold text-slate-900 sm:text-3xl">Entertainment</h1>
-                            <div className="grid gap-4 md:grid-cols-2">
+                            <div className="grid max-w-xl gap-4">
                                 <div className="rounded-xl bg-white p-5 shadow-sm">
                                     <h2 className="mb-3 text-lg font-bold text-blue-800">Subscription Status</h2>
                                     {subscription && String(subscription.status ?? "").toLowerCase() === "active" && subscription.expires_at && Date.parse(String(subscription.expires_at)) > Date.now() ? (
@@ -156,15 +156,6 @@ export default async function BookShelfPage({
                                             <p><strong>Expiry date:</strong> {new Date(String(subscription.expires_at)).toLocaleDateString("en-GB", { timeZone: "UTC" })}</p>
                                         </div>
                                     ) : <p className="text-slate-700">You have not taken any subscription plan</p>}
-                                </div>
-                                <div className="rounded-xl bg-white p-5 shadow-sm">
-                                    <h2 className="mb-3 text-lg font-bold text-blue-800">Daily Usage Quota</h2>
-                                    {subscription && String(subscription.status ?? "").toLowerCase() === "active" && subscription.expires_at && Date.parse(String(subscription.expires_at)) > Date.now() ? (
-                                        <>
-                                            <p className="mb-3 text-slate-700">{Math.min(100, Math.round((dailyUsed / dailyTotal) * 100))}% used today ({Math.min(dailyUsed, dailyTotal)} of {dailyTotal} attempts)</p>
-                                            <div className="h-3 overflow-hidden rounded-full bg-slate-200"><div className="h-full rounded-full bg-gradient-to-r from-blue-600 to-cyan-500" style={{ width: String(Math.min(100, (dailyUsed / dailyTotal) * 100)) + "%" }} /></div>
-                                        </>
-                                    ) : <p className="text-slate-700">Nill</p>}
                                 </div>
                             </div>
                         </div>
