@@ -7,10 +7,9 @@ declare global {
   interface Window { Razorpay?: new (options: Record<string, any>) => { open: () => void; on: (event: string, callback: (response: any) => void) => void }; }
 }
 const plans = [
-  { id: "1-month", name: "1 Month", duration: "1 month", amount: 299 },
-  { id: "3-months", name: "3 Months", duration: "3 months", amount: 850 },
-  { id: "6-months", name: "6 Months", duration: "6 months", amount: 1550 },
-  { id: "12-months", name: "12 Months", duration: "12 months", amount: 3000, featured: true },
+  { id: "1-month", name: "1 Month", duration: "1 month", amount: 99 },
+  { id: "6-months", name: "6 Months", duration: "6 months", amount: 550 },
+  { id: "12-months", name: "1 Year", duration: "1 year", amount: 1100, featured: true },
 ];
 function formatDate(value: string) { return new Date(value).toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric", timeZone: "Asia/Kolkata" }); }
 
@@ -83,7 +82,7 @@ export default function SubscriptionPlanSelector({ signedIn }: { signedIn: boole
     <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">Choose Your Subscription Plan</h2>
     <p className="mt-2 text-sm text-slate-500">Secure checkout. Your membership activates after the payment is verified.</p>
     {error && <div role="alert" className="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-4 text-left text-sm font-semibold text-rose-800">{error}</div>}
-    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {plans.map(plan => <div key={plan.id} className={`relative flex flex-col rounded-2xl border p-5 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${plan.featured ? "border-blue-500 bg-gradient-to-b from-blue-50 to-white ring-2 ring-blue-200" : "border-slate-200 bg-white"}`}>
         {plan.featured && <span className="mb-3 self-start rounded-full bg-blue-700 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white">Best Value</span>}
         <h3 className="text-lg font-extrabold text-slate-900">{plan.name}</h3><p className="mt-1 text-xs text-slate-500">{plan.duration}</p>

@@ -1,8 +1,7 @@
 export const SUBSCRIPTION_PLANS = {
-  "1-month": { id: "1-month", name: "1 Month", months: 1, amount: 299 },
-  "3-months": { id: "3-months", name: "3 Months", months: 3, amount: 850 },
-  "6-months": { id: "6-months", name: "6 Months", months: 6, amount: 1550 },
-  "12-months": { id: "12-months", name: "12 Months", months: 12, amount: 3000 },
+  "1-month": { id: "1-month", name: "1 Month", months: 1, amount: 99 },
+  "6-months": { id: "6-months", name: "6 Months", months: 6, amount: 550 },
+  "12-months": { id: "12-months", name: "1 Year", months: 12, amount: 1100 },
 } as const;
 
 export type SubscriptionPlanId = keyof typeof SUBSCRIPTION_PLANS;

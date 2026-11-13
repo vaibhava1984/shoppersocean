@@ -10,10 +10,9 @@ export const metadata = {
 };
 
 const plans = [
-  { name: "1 Month", price: "₹299", value: "1-month", featured: false },
-  { name: "3 Months", price: "₹850", value: "3-months", featured: false },
-  { name: "6 Months", price: "₹1,550", value: "6-months", featured: true },
-  { name: "12 Months", price: "₹3,000", value: "12-months", featured: false },
+  { name: "1 Month", price: "₹99", value: "1-month", featured: false },
+  { name: "6 Months", price: "₹550", value: "6-months", featured: true },
+  { name: "1 Year", price: "₹1,100", value: "12-months", featured: false },
 ];
 
 export default async function SubscribePage() {
@@ -72,7 +71,7 @@ export default async function SubscribePage() {
           <p className="mt-3 text-base text-slate-600 sm:text-lg">Select the duration that works best for you.</p>
         </div>
 
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {plans.map((plan) => (
             <article key={plan.value} className={`relative flex flex-col rounded-2xl border bg-white p-5 text-center shadow-lg transition hover:-translate-y-1 ${plan.featured ? "border-blue-500 ring-2 ring-blue-200" : "border-slate-200"}`}>
               {plan.featured && <span className="mb-3 self-center rounded-full bg-blue-100 px-3 py-1 text-xs font-extrabold text-blue-800">POPULAR CHOICE</span>}
