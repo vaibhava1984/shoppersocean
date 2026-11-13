@@ -5,8 +5,9 @@ import EntertainmentHub from "@/components/EntertainmentHub";
 import { getCurrentUser } from "@/utils/auth/session";
 
 export const metadata = {
-  title: "Play Games & Brain Challenges",
-  description: "Enjoy free browser games, quizzes, riddles, daily brain challenges, and flipbooks on Shoppers Ocean.",
+  title: "Online Games, Quizzes & Brain Challenges | Shoppers Ocean",
+  description: "Explore online games, knowledge quizzes, riddles and daily brain challenges in the Shoppers Ocean entertainment world.",
+  alternates: { canonical: "https://shoppersocean.com/entertainment" },
 };
 
 export default async function EntertainmentPage() {
