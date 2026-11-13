@@ -6,8 +6,9 @@ import Footer from "@/components/Footer"
 import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 export const metadata = {
-    title: 'Terms and Conditions',
-    description: 'Please read these terms carefully before using our services.',
+    title: 'Privacy Policy | Shoppers Ocean',
+    description: 'Read the Shoppers Ocean privacy policy to understand how information is handled when you use our website and services.',
+    alternates: { canonical: 'https://shoppersocean.com/privacy-policy' },
 }
 
 export default function TermsAndConditionsPage() {
