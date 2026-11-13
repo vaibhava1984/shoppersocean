@@ -4,6 +4,7 @@ import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { activatePaidSubscription } from "@/utils/subscriptions/activate";
 import { ensureSubscriptionSchema } from "@/utils/subscriptions/schema";
+import { getPaypalAccessToken, paypalApiUrl } from "@/utils/paypal";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -27,6 +28,29 @@ export async function POST(request: Request) {
     const identity = await requireUser();
     if (!identity) return NextResponse.json({ error: "Please sign in again to verify your payment." }, { status: 401 });
     const body = await request.json().catch(() => ({}));
+    const paypalOrderId = String(body?.paypal_order_id || "");
+    if (paypalOrderId) {
+      const db = getD1();
+      if (!db) return NextResponse.json({ error: "Subscription service is temporarily unavailable." }, { status: 503 });
+      await ensureSubscriptionSchema(db);
+      const saved = await db.prepare("SELECT * FROM subscription_orders WHERE razorpay_order_id=? AND user_id=? LIMIT 1").bind(paypalOrderId, identity.profile.id).first<any>();
+      if (!saved || String(saved.currency).toUpperCase() !== "USD") return NextResponse.json({ error: "This PayPal order does not belong to your account." }, { status: 403 });
+      const token = await getPaypalAccessToken();
+      const captureResponse = await fetch(paypalApiUrl(`/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}/capture`), { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, cache: "no-store" });
+      let paypalOrder = await captureResponse.json().catch(() => ({})) as Record<string, any>;
+      if (!captureResponse.ok) {
+        const check = await fetch(paypalApiUrl(`/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}`), { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" });
+        paypalOrder = await check.json().catch(() => ({})) as Record<string, any>;
+        if (!check.ok || paypalOrder.status !== "COMPLETED") return NextResponse.json({ error: "PayPal could not confirm this payment yet." }, { status: 502 });
+      }
+      const unit = Array.isArray(paypalOrder.purchase_units) ? paypalOrder.purchase_units[0] : null;
+      const capture = unit?.payments?.captures?.find((item: any) => item?.status === "COMPLETED");
+      if (paypalOrder.status !== "COMPLETED" || String(unit?.custom_id || "") !== `${identity.profile.id}|${saved.plan_id}` || !capture?.id || String(capture.amount?.currency_code || "").toUpperCase() !== "USD" || Math.abs(Number(capture.amount?.value) - Number(saved.amount)) > 0.001) return NextResponse.json({ error: "The PayPal payment does not match your selected subscription plan." }, { status: 409 });
+      const { env } = await getCloudflareContext();
+      const apiKey = String((env as any).RESEND_API_KEY || process.env.RESEND_API_KEY || "");
+      const activated = await activatePaidSubscription(db, { razorpayOrderId: paypalOrderId, paymentId: String(capture.id), apiKey });
+      return NextResponse.json(activated, { headers: { "Cache-Control": "no-store" } });
+    }
     const orderId = String(body?.razorpay_order_id || "");
     const paymentId = String(body?.razorpay_payment_id || "");
     const signature = String(body?.razorpay_signature || "");

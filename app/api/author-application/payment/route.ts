@@ -3,6 +3,7 @@ import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { Resend } from "@/utils/email/resend";
+import { getPaypalAccessToken, paypalApiUrl } from "@/utils/paypal";
 
 const INDIA_AMOUNT = 250;
 const FOREIGN_AMOUNT = 5;
@@ -138,10 +139,6 @@ export async function POST(request: Request) {
     if (application.status !== "approved_payment_pending") return NextResponse.json({ error: "Your author application is not currently awaiting payment.", status: application.status }, { status: 409 });
     if (await expireApplication(db, application, env)) return NextResponse.json({ error: "The three-day payment period has expired. Your author registration could not be completed.", status: "not_started" }, { status: 410 });
 
-    const keyId = String(env.RAZORPAY_KEY_ID || "");
-    const keySecret = String(env.RAZORPAY_KEY_SECRET || "");
-    if (!keyId || !keySecret) return NextResponse.json({ error: "Razorpay payment service is not configured." }, { status: 503 });
-
     const country = String(application.country || "");
     const currency = country === "India" ? "INR" : "USD";
     const amount = country === "India" ? INDIA_AMOUNT : FOREIGN_AMOUNT;
@@ -160,6 +157,61 @@ export async function POST(request: Request) {
       }
       await db.prepare("UPDATE author_applications SET title=?,full_name=?,city=?,age=?,gender=? WHERE id=? AND status='approved_payment_pending'")
         .bind(title, fullName, city, age, gender, application.id).run();
+    }
+
+    if (currency === "USD" && action === "create") {
+      const token = await getPaypalAccessToken();
+      const origin = new URL(request.url).origin;
+      const response = await fetch(paypalApiUrl("/v2/checkout/orders"), {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          intent: "CAPTURE",
+          purchase_units: [{ custom_id: `${application.id}|${identity.profile.id}`, description: "Shoppers Ocean Author Registration", amount: { currency_code: "USD", value: "5.00" } }],
+          application_context: { brand_name: "Shoppers Ocean", user_action: "PAY_NOW", shipping_preference: "NO_SHIPPING", return_url: `${origin}/create-your-flipbook?paypal_author_order={order_id}`, cancel_url: `${origin}/create-your-flipbook?paypal_cancelled=1` }
+        }),
+        cache: "no-store"
+      });
+      const paypalOrder = await response.json() as Record<string, any>;
+      const approvalUrl = Array.isArray(paypalOrder.links) ? paypalOrder.links.find((link: any) => link.rel === "approve")?.href : "";
+      if (!response.ok || !paypalOrder.id || !approvalUrl) return NextResponse.json({ error: "Unable to start PayPal author registration payment." }, { status: 502 });
+      await db.prepare("UPDATE author_applications SET payment_order_id=?,payment_currency='USD',payment_amount=? WHERE id=? AND status='approved_payment_pending'")
+        .bind(String(paypalOrder.id), FOREIGN_AMOUNT, application.id).run();
+      return NextResponse.json({ provider: "paypal", orderId: String(paypalOrder.id), approvalUrl, amount: FOREIGN_AMOUNT, currency: "USD" }, { headers: { "Cache-Control": "no-store" } });
+    }
+
+    if (action === "verify" && currency === "USD") {
+      const paypalOrderId = String(body?.paypal_order_id || "");
+      if (!paypalOrderId) return NextResponse.json({ error: "PayPal order information is missing." }, { status: 400 });
+      if (application.payment_order_id && application.payment_order_id !== paypalOrderId) return NextResponse.json({ error: "Payment order does not match this author application." }, { status: 409 });
+      const token = await getPaypalAccessToken();
+      const captureResponse = await fetch(paypalApiUrl(`/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}/capture`), { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }, cache: "no-store" });
+      let paypalOrder = await captureResponse.json().catch(() => ({})) as Record<string, any>;
+      if (!captureResponse.ok) {
+        const check = await fetch(paypalApiUrl(`/v2/checkout/orders/${encodeURIComponent(paypalOrderId)}`), { headers: { Authorization: `Bearer ${token}` }, cache: "no-store" });
+        paypalOrder = await check.json().catch(() => ({})) as Record<string, any>;
+        if (!check.ok || paypalOrder.status !== "COMPLETED") return NextResponse.json({ error: "PayPal could not confirm this payment yet." }, { status: 502 });
+      }
+      const unit = Array.isArray(paypalOrder.purchase_units) ? paypalOrder.purchase_units[0] : null;
+      const capture = unit?.payments?.captures?.find((item: any) => item?.status === "COMPLETED");
+      if (paypalOrder.status !== "COMPLETED" || String(unit?.custom_id || "") !== `${application.id}|${identity.profile.id}` || !capture?.id || String(capture.amount?.currency_code || "").toUpperCase() !== "USD" || Math.abs(Number(capture.amount?.value) - FOREIGN_AMOUNT) > 0.001) return NextResponse.json({ error: "PayPal payment does not match the $5 author registration fee." }, { status: 409 });
+      const now = new Date().toISOString();
+      const existingAuthor = await db.prepare("SELECT id FROM authors WHERE user_id=? AND COALESCE(is_deleted,0)=0 LIMIT 1").bind(application.user_id).first();
+      if (!existingAuthor) await db.prepare("INSERT INTO authors(id,name,bio,user_id,is_deleted,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").bind(crypto.randomUUID(), application.full_name, "-", application.user_id, 0, now, now).run();
+      await db.prepare("UPDATE author_applications SET status='completed',payment_order_id=?,payment_id=?,payment_currency='USD',payment_amount=?,reviewed_at=? WHERE id=? AND status='approved_payment_pending'").bind(paypalOrderId, String(capture.id), FOREIGN_AMOUNT, now, application.id).run();
+      const resendKey = String(env.RESEND_API_KEY || "");
+      if (resendKey) {
+        const safeName = String(application.full_name || "Author").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        const resend = new Resend(resendKey);
+        const html = `<div style="font-family:Arial,sans-serif;line-height:1.8;color:#1e293b;"><h2>Welcome to Shoppers Ocean!</h2><p>Dear ${safeName}, your $5 USD author registration payment has been verified. Your author registration is complete.</p><p>Warm regards,<br/>Shoppers Ocean</p></div>`;
+        const adminHtml = `<div style="font-family:Arial,sans-serif;line-height:1.8;color:#1e293b;"><h2>New Registered Author</h2><p>Name: ${safeName}</p><p>Email: ${String(application.email || "").replace(/</g,"&lt;")}</p><p>Country: ${String(application.country || "").replace(/</g,"&lt;")}</p><p>Payment: USD 5.00 (PayPal)</p></div>`;
+        const emailResults = await Promise.allSettled([
+          resend.emails.send({ from: "no-reply@shoppersocean.com", to: application.email, subject: "Welcome to Shoppers Ocean — Your Author Registration Is Complete", html }),
+          resend.emails.send({ from: "no-reply@shoppersocean.com", to: ADMIN_EMAIL, subject: "New Registered Author — Shoppers Ocean", html: adminHtml })
+        ]);
+        emailResults.forEach(result => { if (result.status === "rejected") console.error("Author PayPal email failed:", result.reason); });
+      }
+      return NextResponse.json({ success: true, status: "completed" });
     }
 
     if (action === "verify") {
@@ -200,6 +252,10 @@ export async function POST(request: Request) {
       }
       return NextResponse.json({ success: true, status: "completed" });
     }
+
+    const keyId = String(env.RAZORPAY_KEY_ID || "");
+    const keySecret = String(env.RAZORPAY_KEY_SECRET || "");
+    if (!keyId || !keySecret) return NextResponse.json({ error: "Razorpay payment service is not configured." }, { status: 503 });
 
     const receipt = "author_" + crypto.randomUUID().replace(/-/g, "").slice(0, 25);
     const orderResponse = await fetch("https://api.razorpay.com/v1/orders", {

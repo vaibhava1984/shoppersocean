@@ -18,6 +18,10 @@ export default function SubscriptionPlanSelector({ signedIn }: { signedIn: boole
   const [checkoutReady, setCheckoutReady] = useState(false);
   const [error, setError] = useState("");
   const [confirmation, setConfirmation] = useState<{planName:string;amount:number;startedAt:string;expiresAt:string}|null>(null);
+  const [currency, setCurrency] = useState<"INR"|"USD">("INR");
+  const [prices, setPrices] = useState<Record<string, number>>({ "1-month": 99, "6-months": 550, "12-months": 1100 });
+  useEffect(() => { fetch("/api/subscription/create-order", { cache: "no-store" }).then(r => r.json()).then(data => { if (data.currency === "INR" || data.currency === "USD") setCurrency(data.currency); if (Array.isArray(data.plans)) setPrices(Object.fromEntries(data.plans.map((p: any) => [p.id, Number(p.amount)]))); }).catch(() => {}); }, []);
+  useEffect(() => { const orderId = new URLSearchParams(window.location.search).get("paypal_subscription_order"); if (!orderId) return; setLoading("paypal"); fetch("/api/subscription/verify-payment", { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ paypal_order_id: orderId }) }).then(async r => { const d = await r.json(); if (!r.ok || !d.success) throw new Error(d.error || "Payment verification failed."); setConfirmation({ planName: d.planName, amount: d.amount, startedAt: d.startedAt, expiresAt: d.expiresAt }); window.history.replaceState({}, "", "/subscribe-now"); }).catch(e => setError(e instanceof Error ? e.message : "Unable to verify PayPal payment.")).finally(() => setLoading("")); }, []);
   useEffect(() => {
     if (window.Razorpay) { setCheckoutReady(true); return; }
     let script = document.querySelector<HTMLScriptElement>('script[data-razorpay-checkout="true"]');
@@ -43,12 +47,13 @@ export default function SubscriptionPlanSelector({ signedIn }: { signedIn: boole
   const subscribe = async (planId: string) => {
     setError("");
     if (!signedIn) { window.location.href = "/login?next=%2Fsubscribe-now"; return; }
-    if (!window.Razorpay) { setError("The secure payment window is still loading. Please wait a moment and try again."); return; }
+    if (currency === "INR" && !window.Razorpay) { setError("The secure payment window is still loading. Please wait a moment and try again."); return; }
     setLoading(planId);
     try {
       const response = await fetch("/api/subscription/create-order", { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Unable to start payment.");
+      if (data.provider === "paypal" && data.approvalUrl) { window.location.href = data.approvalUrl; return; }
       const checkout = new window.Razorpay({
         key: data.keyId, amount: data.amount, currency: data.currency, name: data.name, description: data.description,
         order_id: data.orderId, prefill: data.prefill, theme: { color: "#1d4ed8" },
@@ -74,7 +79,7 @@ export default function SubscriptionPlanSelector({ signedIn }: { signedIn: boole
   if (confirmation) return <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="subscription-success-title">
     <div className="w-full max-w-lg overflow-hidden rounded-[2rem] bg-white shadow-2xl">
       <div className="bg-gradient-to-r from-blue-700 via-indigo-600 to-cyan-600 px-6 py-8 text-center text-white"><div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-4xl">🎉</div><h2 id="subscription-success-title" className="mt-4 text-2xl font-black sm:text-3xl">Welcome to the Shoppers Ocean family!</h2><p className="mt-2 text-sm text-cyan-50">Your subscription has been activated successfully.</p></div>
-      <div className="p-6 sm:p-8"><div className="rounded-2xl border border-blue-100 bg-blue-50 p-5"><p className="flex justify-between gap-4 py-1 text-sm"><strong>Plan</strong><span>{confirmation.planName}</span></p><p className="flex justify-between gap-4 py-1 text-sm"><strong>Amount paid</strong><span>₹{confirmation.amount.toLocaleString("en-IN")}</span></p><p className="flex justify-between gap-4 py-1 text-sm"><strong>Activation date</strong><span className="text-right">{formatDate(confirmation.startedAt)}</span></p><p className="flex justify-between gap-4 py-1 text-sm"><strong>Expiry date</strong><span className="text-right">{formatDate(confirmation.expiresAt)}</span></p><p className="flex justify-between gap-4 py-1 text-sm"><strong>Status</strong><span className="font-extrabold text-green-700">Active</span></p></div><p className="mt-4 text-sm leading-6 text-slate-600">Thank you for subscribing. Your included entertainment features are ready to explore. A confirmation email with your plan details will also be sent to your registered email address. E-books and flipbooks remain separate.</p><Link href="/" className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-blue-700 px-5 py-3 font-extrabold text-white hover:bg-blue-800">Start Exploring →</Link></div>
+      <div className="p-6 sm:p-8"><div className="rounded-2xl border border-blue-100 bg-blue-50 p-5"><p className="flex justify-between gap-4 py-1 text-sm"><strong>Plan</strong><span>{confirmation.planName}</span></p><p className="flex justify-between gap-4 py-1 text-sm"><strong>Amount paid</strong><span>{currency === "USD" ? "$" + confirmation.amount.toFixed(2) : "₹" + confirmation.amount.toLocaleString("en-IN")}</span></p><p className="flex justify-between gap-4 py-1 text-sm"><strong>Activation date</strong><span className="text-right">{formatDate(confirmation.startedAt)}</span></p><p className="flex justify-between gap-4 py-1 text-sm"><strong>Expiry date</strong><span className="text-right">{formatDate(confirmation.expiresAt)}</span></p><p className="flex justify-between gap-4 py-1 text-sm"><strong>Status</strong><span className="font-extrabold text-green-700">Active</span></p></div><p className="mt-4 text-sm leading-6 text-slate-600">Thank you for subscribing. Your included entertainment features are ready to explore. A confirmation email with your plan details will also be sent to your registered email address. E-books and flipbooks remain separate.</p><Link href="/" className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-blue-700 px-5 py-3 font-extrabold text-white hover:bg-blue-800">Start Exploring →</Link></div>
     </div>
   </div>;
 
@@ -86,9 +91,9 @@ export default function SubscriptionPlanSelector({ signedIn }: { signedIn: boole
       {plans.map(plan => <div key={plan.id} className={`relative flex flex-col rounded-2xl border p-5 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${plan.featured ? "border-blue-500 bg-gradient-to-b from-blue-50 to-white ring-2 ring-blue-200" : "border-slate-200 bg-white"}`}>
         {plan.featured && <span className="mb-3 self-start rounded-full bg-blue-700 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-white">Best Value</span>}
         <h3 className="text-lg font-extrabold text-slate-900">{plan.name}</h3><p className="mt-1 text-xs text-slate-500">{plan.duration}</p>
-        <p className="mt-4 text-3xl font-black tracking-tight text-blue-800">₹{plan.amount.toLocaleString("en-IN")}</p>
+        <p className="mt-4 text-3xl font-black tracking-tight text-blue-800">{currency === "USD" ? "$" + Number(prices[plan.id] ?? plan.amount).toFixed(2) : "₹" + Number(prices[plan.id] ?? plan.amount).toLocaleString("en-IN")}</p>
         <p className="mt-2 text-xs leading-5 text-slate-500">Access to subscription-covered entertainment features while your plan is active.</p>
-        <button disabled={Boolean(loading) || (!checkoutReady && signedIn)} onClick={() => void subscribe(plan.id)} className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-700 px-4 py-3 text-sm font-extrabold text-white shadow transition hover:bg-blue-800 disabled:cursor-wait disabled:opacity-60">{loading === plan.id ? "Preparing secure checkout…" : loading ? "Please wait…" : signedIn && !checkoutReady ? "Loading secure checkout…" : "Subscribe Now →"}</button>
+        <button disabled={Boolean(loading) || (currency === "INR" && !checkoutReady && signedIn)} onClick={() => void subscribe(plan.id)} className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-700 px-4 py-3 text-sm font-extrabold text-white shadow transition hover:bg-blue-800 disabled:cursor-wait disabled:opacity-60">{loading === plan.id ? "Preparing secure checkout…" : loading ? "Please wait…" : signedIn && currency === "INR" && !checkoutReady ? "Loading secure checkout…" : "Subscribe Now →"}</button>
       </div>)}
     </div>
   </div>;

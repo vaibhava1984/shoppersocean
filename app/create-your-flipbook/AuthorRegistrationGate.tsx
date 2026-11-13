@@ -97,6 +97,16 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   }, []);
 
   useEffect(() => {
+    const orderId = new URLSearchParams(window.location.search).get("paypal_author_order");
+    if (!orderId) return;
+    setPaying(true);
+    fetch("/api/author-application/payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "verify", paypal_order_id: orderId }) })
+      .then(async response => { const data = await response.json(); if (!response.ok || data.status !== "completed") throw new Error(data.error || "PayPal payment verification failed."); setStatus({ status: "completed", paymentDeadline: null, fullName }); setMessage("Congratulations 🎉 Your author registration is complete."); window.history.replaceState({}, "", "/create-your-flipbook"); })
+      .catch(error => setMessage(error instanceof Error ? error.message : "Unable to verify PayPal payment."))
+      .finally(() => setPaying(false));
+  }, []);
+
+  useEffect(() => {
     if (!status?.paymentDeadline || status.status !== "approved_payment_pending") return;
     const tick = () => setRemaining(formatRemaining(status.paymentDeadline));
     tick();
@@ -108,6 +118,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
     setPaying(true);
     setMessage("");
     try {
+      if (status?.currency === "INR") {
       const existing = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
       if (!existing) {
         await new Promise((resolve, reject) => {
@@ -117,6 +128,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
           script.onerror = reject;
           document.body.appendChild(script);
         });
+      }
       }
       const response = await fetch("/api/author-application/payment", {
         method: "POST",
@@ -140,6 +152,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
         throw new Error(order.error || "Unable to create payment order.");
       }
 
+      if (order.provider === "paypal" && order.approvalUrl) { window.location.href = order.approvalUrl; return; }
       const Razorpay = (window as any).Razorpay;
       if (!Razorpay) throw new Error("Razorpay could not be loaded.");
 
