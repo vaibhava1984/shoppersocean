@@ -34,6 +34,7 @@ export async function ensureSubscriptionSchema(db: any) {
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     )`,
+    "ALTER TABLE subscription_orders ADD COLUMN admin_email_sent_at TEXT",
     "ALTER TABLE subscription_orders ADD COLUMN subscription_started_at TEXT",
     "ALTER TABLE subscription_orders ADD COLUMN subscription_expires_at TEXT",
     "CREATE INDEX IF NOT EXISTS idx_subscription_orders_user_created ON subscription_orders(user_id, created_at)",
