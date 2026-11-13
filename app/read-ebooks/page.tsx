@@ -13,8 +13,9 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata = {
-  title: "Read E-books | Shoppers Ocean",
-  description: "Explore e-books by genre, author, language, trending stories, and international collections on Shoppers Ocean.",
+  title: "Read Multilingual Digital Flipbooks & E-books | Shoppers Ocean",
+  description: "Discover interactive digital flipbooks and e-books by genre, author and language, including trending titles and international collections.",
+  alternates: { canonical: "https://shoppersocean.com/read-ebooks" },
 };
 
 export default async function ReadEbooksPage() {
