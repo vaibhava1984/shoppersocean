@@ -48,7 +48,9 @@ const entertainmentServices = [
     },
 ];
 
-function ServiceCard({ icon, title, description, accent = "blue" }) {
+type ServiceCardProps = { icon: string; title: string; description: string; accent?: "blue" | "cyan" };
+
+function ServiceCard({ icon, title, description, accent = "blue" }: ServiceCardProps) {
     const accentClasses = accent === "cyan"
         ? "border-cyan-100 bg-gradient-to-br from-cyan-50 to-blue-50 text-cyan-800"
         : "border-blue-100 bg-gradient-to-br from-blue-50 to-cyan-50 text-blue-800";
