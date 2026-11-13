@@ -168,7 +168,7 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           intent: "CAPTURE",
           purchase_units: [{ custom_id: `${application.id}|${identity.profile.id}`, description: "Shoppers Ocean Author Registration", amount: { currency_code: "USD", value: "5.00" } }],
-          application_context: { brand_name: "Shoppers Ocean", user_action: "PAY_NOW", shipping_preference: "NO_SHIPPING", return_url: `${origin}/create-your-flipbook?paypal_author_order={order_id}`, cancel_url: `${origin}/create-your-flipbook?paypal_cancelled=1` }
+          application_context: { brand_name: "Shoppers Ocean", user_action: "PAY_NOW", shipping_preference: "NO_SHIPPING", return_url: `${origin}/create-your-flipbook?paypal_return=1`, cancel_url: `${origin}/create-your-flipbook?paypal_cancelled=1` }
         }),
         cache: "no-store"
       });

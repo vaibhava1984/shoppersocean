@@ -36,7 +36,7 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           intent: "CAPTURE",
           purchase_units: [{ custom_id: `${identity.profile.id}|${plan.id}`, description: `${plan.name} Shoppers Ocean Entertainment Subscription`, amount: { currency_code: "USD", value: amount } }],
-          application_context: { brand_name: "Shoppers Ocean", user_action: "PAY_NOW", shipping_preference: "NO_SHIPPING", return_url: `${origin}/subscribe-now?paypal_subscription_order={order_id}`, cancel_url: `${origin}/subscribe-now?paypal_cancelled=1` }
+          application_context: { brand_name: "Shoppers Ocean", user_action: "PAY_NOW", shipping_preference: "NO_SHIPPING", return_url: `${origin}/subscribe-now?paypal_return=1`, cancel_url: `${origin}/subscribe-now?paypal_cancelled=1` }
         }),
         cache: "no-store"
       });

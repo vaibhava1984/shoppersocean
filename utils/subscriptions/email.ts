@@ -14,7 +14,7 @@ async function sendEmail(input: { apiKey: string; to: string; subject: string; h
   return response.json();
 }
 export async function sendSubscriptionWelcome(input: {
-  apiKey: string; email: string; name: string; planName: string; amount: number;
+  apiKey: string; email: string; name: string; planName: string; amount: number; currency?: string;
   startedAt: string; expiresAt: string; paymentId: string;
 }) {
   const name = esc(input.name || "Shoppers Ocean member");
@@ -22,10 +22,11 @@ export async function sendSubscriptionWelcome(input: {
   const start = esc(dateLabel(input.startedAt));
   const expiry = esc(dateLabel(input.expiresAt));
   const amount = input.amount.toLocaleString("en-IN");
+  const money = String(input.currency || "INR").toUpperCase() === "USD" ? "$" + input.amount.toFixed(2) : "₹" + amount;
   return sendEmail({
     apiKey: input.apiKey, to: input.email, subject: "Welcome to Shoppers Ocean — Your Subscription Is Active",
     idempotencyKey: `subscription-welcome/${input.paymentId}`,
-    html: `<div style="margin:0;background:#f1f5f9;padding:28px 12px;font-family:Arial,sans-serif;color:#172554"><div style="max-width:620px;margin:auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 12px 36px #0f172a18"><div style="padding:30px 26px;text-align:center;background:linear-gradient(135deg,#1d4ed8,#0891b2);color:#fff"><div style="font-size:32px">🌊</div><h1 style="margin:12px 0 6px;font-size:27px">Welcome to Shoppers Ocean!</h1><p style="margin:0;color:#e0f2fe">Your subscription is now active</p></div><div style="padding:28px"><p>Dear ${name},</p><p>Thank you for subscribing to Shoppers Ocean. We are delighted to welcome you to our entertainment community. Your membership is active, and you can now enjoy the games, quizzes, brain challenges, exercises and other features included in your plan.</p><div style="border:1px solid #bfdbfe;background:#eff6ff;border-radius:14px;padding:18px;margin:22px 0"><h2 style="margin:0 0 14px;font-size:18px;color:#1d4ed8">Your subscription details</h2><p style="margin:7px 0"><strong>Plan:</strong> ${plan}</p><p style="margin:7px 0"><strong>Amount paid:</strong> ₹${amount}</p><p style="margin:7px 0"><strong>Activation date:</strong> ${start}</p><p style="margin:7px 0"><strong>Expiry date:</strong> ${expiry}</p><p style="margin:7px 0"><strong>Status:</strong> Active</p></div><p>Please note that e-books and flipbooks are separate from subscriptions and remain subject to their existing access and purchase rules.</p><p>We hope your time here is enjoyable, enriching and full of new discoveries.</p><p style="margin-top:26px">Warm regards,<br><strong>Team Shoppers Ocean</strong><br><span style="color:#64748b">One destination. Endless possibilities.</span></p></div></div></div>`,
+    html: `<div style="margin:0;background:#f1f5f9;padding:28px 12px;font-family:Arial,sans-serif;color:#172554"><div style="max-width:620px;margin:auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 12px 36px #0f172a18"><div style="padding:30px 26px;text-align:center;background:linear-gradient(135deg,#1d4ed8,#0891b2);color:#fff"><div style="font-size:32px">🌊</div><h1 style="margin:12px 0 6px;font-size:27px">Welcome to Shoppers Ocean!</h1><p style="margin:0;color:#e0f2fe">Your subscription is now active</p></div><div style="padding:28px"><p>Dear ${name},</p><p>Thank you for subscribing to Shoppers Ocean. We are delighted to welcome you to our entertainment community. Your membership is active, and you can now enjoy the games, quizzes, brain challenges, exercises and other features included in your plan.</p><div style="border:1px solid #bfdbfe;background:#eff6ff;border-radius:14px;padding:18px;margin:22px 0"><h2 style="margin:0 0 14px;font-size:18px;color:#1d4ed8">Your subscription details</h2><p style="margin:7px 0"><strong>Plan:</strong> ${plan}</p><p style="margin:7px 0"><strong>Amount paid:</strong> ${money}</p><p style="margin:7px 0"><strong>Activation date:</strong> ${start}</p><p style="margin:7px 0"><strong>Expiry date:</strong> ${expiry}</p><p style="margin:7px 0"><strong>Status:</strong> Active</p></div><p>Please note that e-books and flipbooks are separate from subscriptions and remain subject to their existing access and purchase rules.</p><p>We hope your time here is enjoyable, enriching and full of new discoveries.</p><p style="margin-top:26px">Warm regards,<br><strong>Team Shoppers Ocean</strong><br><span style="color:#64748b">One destination. Endless possibilities.</span></p></div></div></div>`,
   });
 }
 export async function sendSubscriptionReminder(input: {
@@ -43,7 +44,7 @@ export async function sendSubscriptionReminder(input: {
 
 export async function sendSubscriptionAdminNotification(input: {
   apiKey: string; customerEmail: string; customerName: string; userId: string;
-  planName: string; amount: number; startedAt: string; expiresAt: string; paymentId: string;
+  planName: string; amount: number; currency?: string; startedAt: string; expiresAt: string; paymentId: string;
 }) {
   const customerName = esc(input.customerName || "Not provided");
   const customerEmail = esc(input.customerEmail);
@@ -52,11 +53,12 @@ export async function sendSubscriptionAdminNotification(input: {
   const start = esc(dateLabel(input.startedAt));
   const expiry = esc(dateLabel(input.expiresAt));
   const amount = input.amount.toLocaleString("en-IN");
+  const money = String(input.currency || "INR").toUpperCase() === "USD" ? "$" + input.amount.toFixed(2) : "₹" + amount;
   return sendEmail({
     apiKey: input.apiKey,
     to: "kochimonu@gmail.com",
     subject: "New Subscription | Shoppers Ocean",
     idempotencyKey: `subscription-admin/${input.paymentId}`,
-    html: `<div style="font-family:Arial,sans-serif;color:#172554;max-width:620px;margin:auto"><h2>New Shoppers Ocean Subscription</h2><p>A customer has successfully subscribed.</p><div style="border:1px solid #bfdbfe;background:#eff6ff;border-radius:12px;padding:18px"><p><strong>Customer name:</strong> ${customerName}</p><p><strong>Customer email:</strong> ${customerEmail}</p><p><strong>User ID:</strong> ${userId}</p><p><strong>Subscription plan:</strong> ${plan}</p><p><strong>Amount paid:</strong> ₹${amount}</p><p><strong>Activation date:</strong> ${start}</p><p><strong>Expiry date:</strong> ${expiry}</p><p><strong>Status:</strong> Active</p><p><strong>Razorpay payment ID:</strong> ${esc(input.paymentId)}</p></div><p>— Shoppers Ocean</p></div>`,
+    html: `<div style="font-family:Arial,sans-serif;color:#172554;max-width:620px;margin:auto"><h2>New Shoppers Ocean Subscription</h2><p>A customer has successfully subscribed.</p><div style="border:1px solid #bfdbfe;background:#eff6ff;border-radius:12px;padding:18px"><p><strong>Customer name:</strong> ${customerName}</p><p><strong>Customer email:</strong> ${customerEmail}</p><p><strong>User ID:</strong> ${userId}</p><p><strong>Subscription plan:</strong> ${plan}</p><p><strong>Amount paid:</strong> ${money}</p><p><strong>Activation date:</strong> ${start}</p><p><strong>Expiry date:</strong> ${expiry}</p><p><strong>Status:</strong> Active</p><p><strong>Payment ID:</strong> ${esc(input.paymentId)}</p></div><p>— Shoppers Ocean</p></div>`,
   });
 }

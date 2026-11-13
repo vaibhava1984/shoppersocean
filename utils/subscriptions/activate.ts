@@ -28,7 +28,7 @@ export async function activatePaidSubscription(db: any, input: { razorpayOrderId
   const final = await db.prepare("SELECT email_sent_at,admin_email_sent_at FROM subscription_orders WHERE id=? LIMIT 1").bind(order.id).first<any>();
   const profile = await db.prepare("SELECT email,full_name FROM users WHERE id=? LIMIT 1").bind(order.user_id).first<any>();
   if (profile?.email && input.apiKey && !final?.email_sent_at) {
-    await sendSubscriptionWelcome({ apiKey: input.apiKey, email: String(profile.email), name: String(profile.full_name || ""), planName: String(order.plan_name), amount: Number(order.amount), startedAt, expiresAt, paymentId: input.paymentId });
+    await sendSubscriptionWelcome({ apiKey: input.apiKey, email: String(profile.email), name: String(profile.full_name || ""), planName: String(order.plan_name), amount: Number(order.amount), currency: String(order.currency || "INR"), startedAt, expiresAt, paymentId: input.paymentId });
     await db.prepare("UPDATE subscription_orders SET email_sent_at=?,updated_at=? WHERE id=? AND email_sent_at IS NULL").bind(nowIso, nowIso, order.id).run();
   }
   if (input.apiKey && !final?.admin_email_sent_at) {
@@ -39,6 +39,7 @@ export async function activatePaidSubscription(db: any, input: { razorpayOrderId
       userId: String(order.user_id),
       planName: String(order.plan_name),
       amount: Number(order.amount),
+      currency: String(order.currency || "INR"),
       startedAt,
       expiresAt,
       paymentId: input.paymentId,

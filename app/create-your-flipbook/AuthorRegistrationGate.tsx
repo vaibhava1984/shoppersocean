@@ -97,7 +97,7 @@ export default function AuthorRegistrationGate({ children }: { children: React.R
   }, []);
 
   useEffect(() => {
-    const orderId = new URLSearchParams(window.location.search).get("paypal_author_order");
+    const orderId = new URLSearchParams(window.location.search).get("paypal_author_order") || new URLSearchParams(window.location.search).get("token");
     if (!orderId) return;
     setPaying(true);
     fetch("/api/author-application/payment", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "verify", paypal_order_id: orderId }) })
