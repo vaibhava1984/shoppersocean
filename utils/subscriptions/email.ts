@@ -39,3 +39,24 @@ export async function sendSubscriptionReminder(input: {
     html: `<div style="margin:0;background:#f1f5f9;padding:28px 12px;font-family:Arial,sans-serif;color:#172554"><div style="max-width:620px;margin:auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 12px 36px #0f172a18"><div style="padding:28px;text-align:center;background:linear-gradient(135deg,#1d4ed8,#0891b2);color:#fff"><div style="font-size:30px">✨</div><h1 style="margin:10px 0;font-size:25px">We hope you’re enjoying Shoppers Ocean!</h1></div><div style="padding:28px"><p>Dear ${name},</p><p>This is a friendly reminder that your <strong>${esc(input.planName)}</strong> subscription is scheduled to end on <strong>${expiry}</strong>.</p><p>After the expiry date, access to subscription-covered games, quizzes, challenges, exercises and other membership features will pause until you renew. Your account will remain available, and e-books and flipbooks will continue to follow their separate access rules.</p><p style="text-align:center;margin:28px 0"><a href="https://www.shoppersocean.com/subscribe-now" style="display:inline-block;background:#1d4ed8;color:#fff;text-decoration:none;padding:14px 24px;border-radius:10px;font-weight:bold">View Renewal Plans</a></p><p>We would be delighted to have you continue with us. Thank you for being part of Shoppers Ocean.</p><p>Warm regards,<br><strong>Team Shoppers Ocean</strong></p></div></div></div>`,
   });
 }
+
+
+export async function sendSubscriptionAdminNotification(input: {
+  apiKey: string; customerEmail: string; customerName: string; userId: string;
+  planName: string; amount: number; startedAt: string; expiresAt: string; paymentId: string;
+}) {
+  const customerName = esc(input.customerName || "Not provided");
+  const customerEmail = esc(input.customerEmail);
+  const userId = esc(input.userId);
+  const plan = esc(input.planName);
+  const start = esc(dateLabel(input.startedAt));
+  const expiry = esc(dateLabel(input.expiresAt));
+  const amount = input.amount.toLocaleString("en-IN");
+  return sendEmail({
+    apiKey: input.apiKey,
+    to: "kochimonu@gmail.com",
+    subject: "New Subscription | Shoppers Ocean",
+    idempotencyKey: `subscription-admin/${input.paymentId}`,
+    html: `<div style="font-family:Arial,sans-serif;color:#172554;max-width:620px;margin:auto"><h2>New Shoppers Ocean Subscription</h2><p>A customer has successfully subscribed.</p><div style="border:1px solid #bfdbfe;background:#eff6ff;border-radius:12px;padding:18px"><p><strong>Customer name:</strong> ${customerName}</p><p><strong>Customer email:</strong> ${customerEmail}</p><p><strong>User ID:</strong> ${userId}</p><p><strong>Subscription plan:</strong> ${plan}</p><p><strong>Amount paid:</strong> ₹${amount}</p><p><strong>Activation date:</strong> ${start}</p><p><strong>Expiry date:</strong> ${expiry}</p><p><strong>Status:</strong> Active</p><p><strong>Razorpay payment ID:</strong> ${esc(input.paymentId)}</p></div><p>— Shoppers Ocean</p></div>`,
+  });
+}
