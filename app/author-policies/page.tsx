@@ -12,7 +12,7 @@ export const metadata = {
 const policies = [
   {
     title: "1. One-Time Lifetime Registration",
-    content: "A one-time registration fee of ₹250 applies to authors registering in India. This fee covers lifetime author registration with Shoppers Ocean, and no recurring registration fee will be charged.",
+    content: "Authors registering in India are required to pay a one-time registration fee of ₹250. Authors registering from outside India are required to pay a one-time registration fee of US$5. In both cases, the fee covers lifetime author registration with Shoppers Ocean, and no recurring registration fee will be charged.",
   },
   {
     title: "2. Individual Author Registration",
@@ -72,7 +72,7 @@ const policies = [
   },
   {
     title: "16. Maximum Book Price",
-    content: "To help keep books affordable for our national and global customers, Shoppers Ocean has established maximum book-price limits. Authors from India may set a maximum selling price of ₹150 per book. Authors from outside India may set a maximum selling price of US$3 per book.",
+    content: "To help keep books affordable for our national and global customers, Shoppers Ocean has established maximum book-price limits. Authors from India may set a maximum selling price of ₹150 per book. Authors from outside India may set a maximum selling price of US$5 per book.",
   },
 ];
 
