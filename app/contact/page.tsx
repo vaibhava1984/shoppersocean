@@ -7,8 +7,9 @@ import ContactForm from '../components/ContactForm';
 import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 export const metadata = {
-    title: 'Contact',
-    description: 'Discover Our Story and Mission',
+    title: 'Contact Shoppers Ocean | Get in Touch',
+    description: 'Contact Shoppers Ocean for questions about digital flipbooks, author opportunities, games, quizzes, learning activities and support.',
+    alternates: { canonical: 'https://shoppersocean.com/contact' },
 }
 
 export default function ContactPage() {
