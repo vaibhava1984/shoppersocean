@@ -6,8 +6,9 @@ import Footer from "@/components/Footer"
 import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 
 export const metadata = {
-    title: 'Terms and Conditions',
-    description: 'Please read these terms carefully before using our services.',
+    title: 'Terms and Conditions | Shoppers Ocean',
+    description: 'Read the terms and conditions governing the use of Shoppers Ocean, its digital books and online services.',
+    alternates: { canonical: 'https://shoppersocean.com/terms-and-conditions' },
 }
 
 export default function TermsAndConditionsPage() {
