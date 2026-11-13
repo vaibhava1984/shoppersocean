@@ -13,15 +13,15 @@ import HomeActivityZones from "@/components/HomeActivityZones";
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'Shoppers Ocean | Play, Think, Discover & Read',
-  description: 'One Destination. Endless Ways to Enjoy. Explore games, quizzes, brain challenges and beautifully designed online flipbooks.',
+  title: 'Shoppers Ocean | Digital Flipbooks, Games, Quizzes & Learning',
+  description: 'Discover interactive multilingual digital flipbooks, online games, quizzes, educational activities and brain challenges on Shoppers Ocean.',
   openGraph: {
     type: 'website',
     url: 'https://shoppersocean.com',
     siteName: 'Shoppers Ocean',
-    title: 'Shoppers Ocean — Play, Think, Discover & Read',
-    description: 'One Destination. Endless Ways to Enjoy.',
-    images: [{ url: 'https://shoppersocean.com/1.jpg?rev=2', width: 1200, height: 630, alt: 'Shoppers Ocean — One Destination. Endless Ways to Enjoy.' }],
+    title: 'Shoppers Ocean | Digital Flipbooks, Games, Quizzes & Learning',
+    description: 'Read interactive multilingual flipbooks, play online games, explore quizzes and enjoy learning activities on Shoppers Ocean.',
+    images: [{ url: 'https://shoppersocean.com/1.jpg?rev=2', width: 1200, height: 630, alt: 'Shoppers Ocean — Digital Flipbooks, Games, Quizzes & Learning' }],
   },
   twitter: {
     card: 'summary_large_image',
