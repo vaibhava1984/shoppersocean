@@ -5,6 +5,7 @@ import AuthorApplicationBanner from "@/app/components/AuthorApplicationBanner";
 export const metadata = {
     title: "About Shoppers Ocean | Reading, Learning, Gaming & Entertainment",
     description: "Discover Shoppers Ocean, a global digital platform for interactive multilingual flipbooks, online games, quizzes, educational activities and entertainment.",
+    alternates: { canonical: "https://shoppersocean.com/about" },
 };
 
 export default function AboutPage() {
