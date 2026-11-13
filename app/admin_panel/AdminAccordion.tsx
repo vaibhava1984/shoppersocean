@@ -14,7 +14,8 @@ const sections = [
 ] as const;
 
 export default function AdminAccordion() {
-  const [open, setOpen] = useState<string | null>(null);\n  const [showSubscriptionPreview, setShowSubscriptionPreview] = useState(false);
+  const [open, setOpen] = useState<string | null>(null);
+  const [showSubscriptionPreview, setShowSubscriptionPreview] = useState(false);
   const [saveNotice, setSaveNotice] = useState<string>("");
   const [saving, setSaving] = useState(false);
   const [frameReady, setFrameReady] = useState(false);
