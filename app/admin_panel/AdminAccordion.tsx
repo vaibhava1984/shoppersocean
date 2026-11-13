@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, Users, UserCheck, ExternalLink } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, Users, UserCheck, ExternalLink, Eye } from "lucide-react";
 import Dashboard from "../components/adminPage/Dashboard";
 
 const sections = [
@@ -14,7 +14,7 @@ const sections = [
 ] as const;
 
 export default function AdminAccordion() {
-  const [open, setOpen] = useState<string | null>(null);
+  const [open, setOpen] = useState<string | null>(null);\n  const [showSubscriptionPreview, setShowSubscriptionPreview] = useState(false);
   const [saveNotice, setSaveNotice] = useState<string>("");
   const [saving, setSaving] = useState(false);
   const [frameReady, setFrameReady] = useState(false);
@@ -239,7 +239,7 @@ export default function AdminAccordion() {
               </button>
             ))}
           </nav>
-          <a href="/" className="mt-3 flex min-h-10 items-center justify-center gap-2 rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700"><ExternalLink className="h-4 w-4" /> Back to Homepage</a>
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-2">\n            <button type="button" onClick={() => setShowSubscriptionPreview(true)} className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"><Eye className="h-4 w-4" /> Preview Subscription Plan</button>\n            <a href="/" className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"><ExternalLink className="h-4 w-4" /> Back to Homepage</a>\n          </div>\n          {showSubscriptionPreview && (\n            <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-slate-950/60 p-4" role="dialog" aria-modal="true" aria-labelledby="subscription-preview-title">\n              <div className="w-full max-w-xl rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-cyan-50 p-5 shadow-2xl sm:p-7">\n                <div className="mb-5 flex items-center justify-between gap-3"><h2 id="subscription-preview-title" className="text-xl font-bold text-slate-900 sm:text-2xl">User Panel — Subscription Preview</h2><button type="button" onClick={() => setShowSubscriptionPreview(false)} className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">Close</button></div>\n                <div className="rounded-xl bg-white p-5 shadow-sm"><h3 className="mb-3 text-lg font-bold text-blue-800">Subscription Status</h3><div className="space-y-2 text-slate-700"><p><strong>Status:</strong> Active</p><p><strong>Plan:</strong> 1 Year</p><p><strong>Start date:</strong> 13/11/2026</p><p><strong>Days remaining:</strong> 365</p><p><strong>Expiry date:</strong> 13/11/2027</p></div></div>\n                <p className="mt-4 text-xs text-slate-500">Preview only — no payment, subscription record, or account data is changed.</p>\n              </div>\n            </div>\n          )}
         </>
       ) : (
         <section className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-white">
