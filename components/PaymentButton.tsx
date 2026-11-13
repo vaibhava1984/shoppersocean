@@ -193,7 +193,7 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
         }
     };
     return <><div className="flex w-full items-stretch gap-2">
-        {localCurrency === 'USD' && !isInitialFetching ? (
+        {localCurrency === 'USD' && Boolean(userId) && !isInitialFetching ? (
             <div className="min-w-0 flex-1">
                 <div className="mb-1 text-center text-xs font-extrabold text-slate-700">Buy eBook {formattedAmount ?? ''}</div>
                 <PayPalCheckoutButton productId={productId} onSuccess={() => {
