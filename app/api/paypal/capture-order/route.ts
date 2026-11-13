@@ -119,7 +119,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "A conflicting PayPal payment record exists" }, { status: 409 });
       }
       await db.prepare(
-        "UPDATE payments SET status = 'completed', paypal_capture_id = ?, original_amount = ?, currency = 'USD', original_amount = ?, original_currency = 'USD', payment_method = 'PayPal', updated_at = ? WHERE id = ?"
+        "UPDATE payments SET status = 'completed', paypal_capture_id = ?, currency = 'USD', original_amount = ?, original_currency = 'USD', payment_method = 'PayPal', updated_at = ? WHERE id = ?"
       ).bind(captureId, paidAmount, now, existingPayment.id).run();
     } else {
       try {
