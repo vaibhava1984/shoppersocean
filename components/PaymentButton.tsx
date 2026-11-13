@@ -195,11 +195,11 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
     return <><div className="grid w-full grid-cols-2 items-start gap-2">
         {localCurrency === 'USD' && Boolean(userId) && !isInitialFetching ? (
             <div className="min-w-0 w-full">
-                <div className="mb-1 text-center text-xs font-extrabold text-slate-700">Buy eBook {formattedAmount ?? ''}</div>
                 <PayPalCheckoutButton productId={productId} onSuccess={() => {
                     setPurchaseStatus(userId ?? '', productId, true);
                     setHasPurchased(true);
                 }} />
+                <div className="mt-1 text-center text-xs font-extrabold text-slate-700">Buy eBook {formattedAmount ?? ''}</div>
             </div>
         ) : (
             <button type="button" onClick={handleBuyClick} disabled={isLoading || isInitialFetching} className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center rounded-lg bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-[#F8FAFC] shadow-md ring-1 ring-blue-700/20 transition-all hover:bg-blue-700 active:scale-95 disabled:opacity-60 sm:text-sm">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex items-center justify-center'><Loader2Icon width={16} className='mr-1 animate-spin shrink-0' /><span>Fetching</span></span> : `Buy eBook ${formattedAmount ?? '-'}`}</button>
