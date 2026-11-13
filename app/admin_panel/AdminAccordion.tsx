@@ -16,6 +16,45 @@ const sections = [
 export default function AdminAccordion() {
   const [open, setOpen] = useState<string | null>(null);
   const [showSubscriptionPreview, setShowSubscriptionPreview] = useState(false);
+  const [subscriptionPlan, setSubscriptionPlan] = useState<"1-month" | "6-months" | "12-months">("1-month");
+  const [subscriptionStartDate, setSubscriptionStartDate] = useState("");
+  const [subscriptionSaving, setSubscriptionSaving] = useState(false);
+  const [subscriptionMessage, setSubscriptionMessage] = useState("");
+  const subscriptionAmounts = { "1-month": 99, "6-months": 550, "12-months": 1100 };
+  const subscriptionMonths = { "1-month": 1, "6-months": 6, "12-months": 12 };
+  const subscriptionExpiry = (() => {
+    if (!subscriptionStartDate) return "";
+    const [year, month, day] = subscriptionStartDate.split("-").map(Number);
+    const start = new Date(Date.UTC(year, month - 1, day));
+    const targetMonth = start.getUTCMonth() + subscriptionMonths[subscriptionPlan];
+    const lastDay = new Date(Date.UTC(start.getUTCFullYear(), targetMonth + 1, 0)).getUTCDate();
+    return new Date(Date.UTC(start.getUTCFullYear(), targetMonth, Math.min(day, lastDay))).toISOString().slice(0, 10);
+  })();
+  const subscriptionDaysRemaining = subscriptionExpiry
+    ? Math.max(0, Math.ceil((Date.parse(subscriptionExpiry + "T00:00:00Z") - Date.now()) / 86400000))
+    : null;
+  async function submitSubscriptionPlan() {
+    if (!subscriptionStartDate || !subscriptionExpiry) {
+      setSubscriptionMessage("Please select the plan start date.");
+      return;
+    }
+    setSubscriptionSaving(true);
+    setSubscriptionMessage("");
+    try {
+      const response = await fetch("/api/admin/subscription/assign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planId: subscriptionPlan, startedAt: subscriptionStartDate }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Could not save the subscription.");
+      setSubscriptionMessage("Subscription saved successfully. Your User Panel will now show the assigned plan.");
+    } catch (error) {
+      setSubscriptionMessage(error instanceof Error ? error.message : "Could not save the subscription.");
+    } finally {
+      setSubscriptionSaving(false);
+    }
+  }
   const [saveNotice, setSaveNotice] = useState<string>("");
   const [saving, setSaving] = useState(false);
   const [frameReady, setFrameReady] = useState(false);
@@ -245,12 +284,32 @@ export default function AdminAccordion() {
             <a href="/" className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700"><ExternalLink className="h-4 w-4" /> Back to Homepage</a>
           </div>
           {showSubscriptionPreview && (
-            <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-slate-950/60 p-4" role="dialog" aria-modal="true" aria-labelledby="subscription-preview-title">
-              <div className="w-full max-w-xl rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-cyan-50 p-5 shadow-2xl sm:p-7">
-                <div className="mb-5 flex items-center justify-between gap-3"><h2 id="subscription-preview-title" className="text-xl font-bold text-slate-900 sm:text-2xl">User Panel — Subscription Preview</h2><button type="button" onClick={() => setShowSubscriptionPreview(false)} className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">Close</button></div>
-                <div className="rounded-xl bg-white p-5 shadow-sm"><h3 className="mb-3 text-lg font-bold text-blue-800">Subscription Status</h3><div className="space-y-2 text-slate-700"><p><strong>Status:</strong> Active</p><p><strong>Plan:</strong> 1 Year</p><p><strong>Start date:</strong> 13/11/2026</p><p><strong>Days remaining:</strong> 365</p><p><strong>Expiry date:</strong> 13/11/2027</p></div></div>
-                <p className="mt-4 text-xs text-slate-500">Preview only — no payment, subscription record, or account data is changed.</p>
-              </div>
+            <div className="fixed inset-0 z-[3000] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4" role="dialog" aria-modal="true" aria-labelledby="subscription-preview-title">
+              <form onSubmit={(event) => { event.preventDefault(); void submitSubscriptionPlan(); }} className="my-auto w-full max-w-xl rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-cyan-50 p-5 shadow-2xl sm:p-7">
+                <div className="mb-5 flex items-center justify-between gap-3"><h2 id="subscription-preview-title" className="text-xl font-bold text-slate-900 sm:text-2xl">Preview Subscription Plan</h2><button type="button" onClick={() => setShowSubscriptionPreview(false)} className="rounded-lg bg-slate-600 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-700">Close</button></div>
+                <div className="grid gap-4">
+                  <label className="grid gap-1.5 text-sm font-semibold text-slate-700">Subscription Plan
+                    <select value={subscriptionPlan} onChange={(event) => setSubscriptionPlan(event.target.value as typeof subscriptionPlan)} className="min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base font-medium text-slate-900">
+                      <option value="1-month">1 Month</option><option value="6-months">6 Months</option><option value="12-months">1 Year (12 Months)</option>
+                    </select>
+                  </label>
+                  <label className="grid gap-1.5 text-sm font-semibold text-slate-700">Total Amount
+                    <input readOnly value={`₹${subscriptionAmounts[subscriptionPlan].toLocaleString("en-IN")}`} className="min-h-12 w-full rounded-lg border border-slate-300 bg-slate-100 px-3 text-base font-bold text-slate-900" />
+                  </label>
+                  <label className="grid gap-1.5 text-sm font-semibold text-slate-700">Plan Start Date
+                    <input required type="date" value={subscriptionStartDate} onChange={(event) => setSubscriptionStartDate(event.target.value)} className="min-h-12 w-full rounded-lg border border-slate-300 bg-white px-3 text-base text-slate-900" />
+                  </label>
+                  <label className="grid gap-1.5 text-sm font-semibold text-slate-700">Plan Expiry Date
+                    <input readOnly value={subscriptionExpiry ? new Date(subscriptionExpiry + "T00:00:00Z").toLocaleDateString("en-GB", { timeZone: "UTC" }) : ""} placeholder="Calculated automatically" className="min-h-12 w-full rounded-lg border border-slate-300 bg-slate-100 px-3 text-base text-slate-900" />
+                  </label>
+                  <label className="grid gap-1.5 text-sm font-semibold text-slate-700">Days Remaining
+                    <input readOnly value={subscriptionDaysRemaining === null ? "" : String(subscriptionDaysRemaining)} placeholder="Calculated automatically" className="min-h-12 w-full rounded-lg border border-slate-300 bg-slate-100 px-3 text-base text-slate-900" />
+                  </label>
+                </div>
+                {subscriptionMessage && <p role="status" aria-live="polite" className={`mt-4 rounded-lg p-3 text-sm font-semibold ${subscriptionMessage.startsWith("Subscription saved") ? "bg-green-50 text-green-700" : "bg-amber-50 text-amber-800"}`}>{subscriptionMessage}</p>}
+                <button type="submit" disabled={subscriptionSaving || !subscriptionStartDate} className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-base font-bold text-white shadow-sm hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60">{subscriptionSaving ? "Submitting…" : "Submit"}</button>
+                <p className="mt-3 text-xs text-slate-500">This admin action assigns the subscription to your own account; it does not initiate a payment.</p>
+              </form>
             </div>
           )}
         </>
