@@ -5,6 +5,7 @@ import AuthorApplicationBanner from "@/app/components/AuthorApplicationBanner";
 export const metadata = {
     title: "Our Services | Flipbooks, Games, Quizzes & Learning | Shoppers Ocean",
     description: "Explore Shoppers Ocean services: interactive multilingual digital flipbooks, author publishing opportunities, online games, educational quizzes, learning activities and brain teasers.",
+    alternates: { canonical: "https://shoppersocean.com/services" },
 };
 
 const flipbookServices = [
