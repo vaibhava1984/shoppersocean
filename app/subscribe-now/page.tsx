@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SubscriptionPlanSelector from "@/components/SubscriptionPlanSelector";
+import SubscriptionPriceText from "@/components/SubscriptionPriceText";
 import { requireUser } from "@/utils/auth/requireUser";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,8 @@ export default async function SubscribeNowPage() {
             <p className="text-base leading-8 text-slate-700 sm:text-lg">
               Welcome to Shoppers Ocean, a worldwide entertainment hub offering exciting games, quizzes, brain exercises, daily challenges, and many engaging activities. Our goal is to provide quality entertainment, encourage learning, and bring you fresh, interesting experiences with minimal repetition.
             </p>
+
+            <SubscriptionPriceText />
 
             <div className="mt-8">
               <h2 className="text-2xl font-extrabold text-blue-950 sm:text-3xl">Why Subscribe?</h2>
