@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { sendSaleNotification } from "@/utils/email/sendSaleNotification";
 import { activatePaidSubscription } from "@/utils/subscriptions/activate";
@@ -37,7 +38,9 @@ function basicAuth(keyId: string, keySecret: string) {
 
 export async function POST(req: Request) {
   try {
-    const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+    const { env } = getCloudflareContext();
+    const runtimeEnv = env as any;
+    const secret = String(runtimeEnv.RAZORPAY_WEBHOOK_SECRET || process.env.RAZORPAY_WEBHOOK_SECRET || "");
     if (!secret) {
       console.error("Razorpay webhook secret is not configured");
       return NextResponse.json({ error: "Webhook is not configured" }, { status: 503 });
@@ -69,8 +72,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Captured payment details are incomplete" }, { status: 400 });
     }
 
-    const keyId = process.env.RAZORPAY_KEY_ID;
-    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    const keyId = String(runtimeEnv.RAZORPAY_KEY_ID || process.env.RAZORPAY_KEY_ID || "");
+    const keySecret = String(runtimeEnv.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_KEY_SECRET || "");
     if (!keyId || !keySecret) {
       return NextResponse.json({ error: "Razorpay server credentials are not configured" }, { status: 503 });
     }
@@ -112,7 +115,7 @@ export async function POST(req: Request) {
       const activated = await activatePaidSubscription(db, {
         razorpayOrderId,
         paymentId,
-        apiKey: String(process.env.RESEND_API_KEY || ""),
+        apiKey: String(runtimeEnv.RESEND_API_KEY || process.env.RESEND_API_KEY || ""),
       });
       return NextResponse.json({ received: true, purchaseType: "subscription", ...activated }, { headers: { "Cache-Control": "no-store" } });
     }
