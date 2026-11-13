@@ -1,5 +1,5 @@
 import { addMonthsKeepingMonthEnd, ensureSubscriptionSchema } from "./schema";
-import { sendSubscriptionWelcome } from "./email";
+import { sendSubscriptionWelcome, sendSubscriptionAdminNotification } from "./email";
 
 export async function activatePaidSubscription(db: any, input: { razorpayOrderId: string; paymentId: string; apiKey: string }) {
   await ensureSubscriptionSchema(db);
@@ -25,13 +25,25 @@ export async function activatePaidSubscription(db: any, input: { razorpayOrderId
     await db.prepare("UPDATE subscription_orders SET status='completed',razorpay_payment_id=?,subscription_started_at=?,subscription_expires_at=?,updated_at=? WHERE id=?")
       .bind(input.paymentId, startedAt, expiresAt, nowIso, order.id).run();
   }
-  const final = await db.prepare("SELECT email_sent_at FROM subscription_orders WHERE id=? LIMIT 1").bind(order.id).first<any>();
-  if (!final?.email_sent_at) {
-    const profile = await db.prepare("SELECT email,full_name FROM users WHERE id=? LIMIT 1").bind(order.user_id).first<any>();
-    if (profile?.email && input.apiKey) {
-      await sendSubscriptionWelcome({ apiKey: input.apiKey, email: String(profile.email), name: String(profile.full_name || ""), planName: String(order.plan_name), amount: Number(order.amount), startedAt, expiresAt, paymentId: input.paymentId });
-      await db.prepare("UPDATE subscription_orders SET email_sent_at=?,updated_at=? WHERE id=? AND email_sent_at IS NULL").bind(nowIso, nowIso, order.id).run();
-    }
+  const final = await db.prepare("SELECT email_sent_at,admin_email_sent_at FROM subscription_orders WHERE id=? LIMIT 1").bind(order.id).first<any>();
+  const profile = await db.prepare("SELECT email,full_name FROM users WHERE id=? LIMIT 1").bind(order.user_id).first<any>();
+  if (profile?.email && input.apiKey && !final?.email_sent_at) {
+    await sendSubscriptionWelcome({ apiKey: input.apiKey, email: String(profile.email), name: String(profile.full_name || ""), planName: String(order.plan_name), amount: Number(order.amount), startedAt, expiresAt, paymentId: input.paymentId });
+    await db.prepare("UPDATE subscription_orders SET email_sent_at=?,updated_at=? WHERE id=? AND email_sent_at IS NULL").bind(nowIso, nowIso, order.id).run();
+  }
+  if (input.apiKey && !final?.admin_email_sent_at) {
+    await sendSubscriptionAdminNotification({
+      apiKey: input.apiKey,
+      customerEmail: String(profile?.email || "Not available"),
+      customerName: String(profile?.full_name || ""),
+      userId: String(order.user_id),
+      planName: String(order.plan_name),
+      amount: Number(order.amount),
+      startedAt,
+      expiresAt,
+      paymentId: input.paymentId,
+    });
+    await db.prepare("UPDATE subscription_orders SET admin_email_sent_at=?,updated_at=? WHERE id=? AND admin_email_sent_at IS NULL").bind(nowIso, nowIso, order.id).run();
   }
   return { success: true, status: "active", planName: String(order.plan_name), amount: Number(order.amount), startedAt, expiresAt };
 }
