@@ -1,6 +1,4 @@
-import type { ExchangeRates } from "@/utils/currency";
-
-/** Create the separate pricing table lazily so existing Cloudflare D1 databases need no manual migration. */
+/** Lazily create the two-currency pricing table for existing Cloudflare D1 databases. */
 let pricingTableReady: Promise<void> | null = null;
 
 export async function ensureBookPricingTable(db: any) {
@@ -10,31 +8,13 @@ export async function ensureBookPricingTable(db: any) {
       book_id TEXT PRIMARY KEY,
       price_inr REAL,
       price_usd REAL,
-      price_eur REAL,
-      price_cny REAL,
-      price_rub REAL,
       updated_at TEXT NOT NULL
     )
-  `).run().then(async () => {
-    try {
-      await db.prepare("ALTER TABLE book_pricing ADD COLUMN price_rub REAL").run();
-    } catch (error) {
-      const message = String((error as any)?.message ?? error).toLowerCase();
-      if (!message.includes("duplicate column")) throw error;
-    }
-  }).then(() => undefined).catch((error: unknown) => {
+  `).run().then(() => undefined).catch((error: unknown) => {
     pricingTableReady = null;
     throw error;
   });
   return pricingTableReady;
-}
-
-export function convertPrice(amount: number, from: string, to: string, rates: ExchangeRates): number | null {
-  if (!Number.isFinite(amount) || amount <= 0) return null;
-  if (from === to) return amount;
-  if (!rates[from] || !rates[to]) return null;
-  const converted = amount / rates[from] * rates[to];
-  return Number.isFinite(converted) && converted > 0 ? converted : null;
 }
 
 export function getVisitorCountry(request: Request): string | null {

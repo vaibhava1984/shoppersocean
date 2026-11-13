@@ -28,7 +28,7 @@ function parseBook(row: any) {
 const BOOK_SELECT = `SELECT
   b.id,b.title,b.code_name,b.description,b.published_date,b.isbn,b.price,b.ratings,b.cover_images,
   b.binding,b.language,b.genre,b.publisher,b.pages,b.author_id,b.author_name,b.updated_at,
-  bp.price_inr AS price_inr,bp.price_usd AS price_usd,bp.price_eur AS price_eur,bp.price_cny AS price_cny,bp.price_rub AS price_rub,
+  bp.price_inr AS price_inr,bp.price_usd AS price_usd,
   a.id AS joined_author_id,a.name AS joined_author_name
   FROM books b
   LEFT JOIN authors a ON a.id=b.author_id
@@ -89,11 +89,8 @@ async function saveBook(request: Request, id?: string) {
 
   const priceINR = Number(body.price_inr ?? body.price ?? 0);
   const priceUSD = Number(body.price_usd ?? 0);
-  const priceEUR = Number(body.price_eur ?? 0);
-  const priceCNY = Number(body.price_cny ?? 0);
-  const priceRUB = Number(body.price_rub ?? 0);
-  if ([priceINR, priceUSD, priceEUR, priceCNY, priceRUB].some((value) => !Number.isFinite(value) || value <= 0)) {
-    return NextResponse.json({ error: "Enter a valid positive price for INR, USD, EUR, CNY, and RUB." }, { status: 400 });
+  if ([priceINR, priceUSD].some((value) => !Number.isFinite(value) || value <= 0)) {
+    return NextResponse.json({ error: "Enter a valid positive price for INR and USD." }, { status: 400 });
   }
 
   const coverImages = Array.isArray(body.cover_images) ? body.cover_images : [];
@@ -155,11 +152,10 @@ async function saveBook(request: Request, id?: string) {
   }
 
   await db.prepare(
-    `INSERT INTO book_pricing (book_id,price_inr,price_usd,price_eur,price_cny,price_rub,updated_at)
-     VALUES (?,?,?,?,?,?,?)
-     ON CONFLICT(book_id) DO UPDATE SET price_inr=excluded.price_inr,price_usd=excluded.price_usd,
-       price_eur=excluded.price_eur,price_cny=excluded.price_cny,price_rub=excluded.price_rub,updated_at=excluded.updated_at`
-  ).bind(savedId, priceINR, priceUSD, priceEUR, priceCNY, priceRUB, now).run();
+    `INSERT INTO book_pricing (book_id,price_inr,price_usd,updated_at)
+     VALUES (?,?,?,?)
+     ON CONFLICT(book_id) DO UPDATE SET price_inr=excluded.price_inr,price_usd=excluded.price_usd,updated_at=excluded.updated_at`
+  ).bind(savedId, priceINR, priceUSD, now).run();
 
   return NextResponse.json({ id: savedId, message: id ? "Book updated successfully" : "Book added successfully" });
 }

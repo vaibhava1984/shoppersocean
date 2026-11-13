@@ -8,9 +8,6 @@ export interface BookType {
     price: number;
     price_inr?: number | null;
     price_usd?: number | null;
-    price_eur?: number | null;
-    price_cny?: number | null;
-    price_rub?: number | null;
     ratings: number;
     cover_images: string[];
     binding: string;

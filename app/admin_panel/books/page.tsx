@@ -37,9 +37,6 @@ export default function Books() {
         { key: 'pages', label: 'Flipbook Pages' },
         { key: 'price', label: 'Price (INR)' },
         { key: 'price_usd', label: 'Price (USD)' },
-        { key: 'price_eur', label: 'Price (EUR)' },
-        { key: 'price_cny', label: 'Price (CNY)' },
-        { key: 'price_rub', label: 'Price (RUB)' },
         { key: 'ratings', label: 'Ratings' },
         { key: 'language', label: 'Language' },
         { key: 'genre', label: 'Genre' },
@@ -135,9 +132,6 @@ export default function Books() {
                                                 {([
                                                     ["INR ₹", book.price_inr ?? book.price],
                                                     ["USD $", book.price_usd],
-                                                    ["EUR €", book.price_eur],
-                                                    ["CNY ¥", book.price_cny],
-                                                    ["RUB ₽", book.price_rub],
                                                 ] as const).map(([label, price]) => (
                                                     <div key={label} className="rounded-lg bg-slate-50 px-2.5 py-2">
                                                         <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{label}</p>

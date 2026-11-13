@@ -8,6 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import Link from 'next/link';
 import { X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import PayPalCheckoutButton from "@/components/PayPalCheckoutButton";
 import dynamic from 'next/dynamic';
 const BookFlipbook = dynamic(() => import('@/components/BookFlipbook'), {
     ssr: false,
@@ -184,14 +185,25 @@ export default function PaymentButton({ amount, notes, userId, isAdmin = false, 
         if (isInitialFetching) return;
         if (localCurrency === 'INR') {
             void handlePayment();
-        } else if (localCurrency) {
-            alert('International payments are currently unavailable.');
+        } else if (localCurrency === 'USD') {
+            // USD checkout is rendered through PayPal Smart Buttons below.
+            return;
         } else {
             alert('The book price could not be loaded. Please try again shortly.');
         }
     };
     return <><div className="flex w-full items-stretch gap-2">
-        <button type="button" onClick={handleBuyClick} disabled={isLoading || isInitialFetching} className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center rounded-lg bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-[#F8FAFC] shadow-md ring-1 ring-blue-700/20 transition-all hover:bg-blue-700 active:scale-95 disabled:opacity-60 sm:text-sm">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex items-center justify-center'><Loader2Icon width={16} className='mr-1 animate-spin shrink-0' /><span>Fetching</span></span> : `Buy eBook ${formattedAmount ?? '-'}`}</button>
+        {localCurrency === 'USD' && !isInitialFetching ? (
+            <div className="min-w-0 flex-1">
+                <div className="mb-1 text-center text-xs font-extrabold text-slate-700">Buy eBook {formattedAmount ?? ''}</div>
+                <PayPalCheckoutButton productId={productId} onSuccess={() => {
+                    setPurchaseStatus(userId ?? '', productId, true);
+                    setHasPurchased(true);
+                }} />
+            </div>
+        ) : (
+            <button type="button" onClick={handleBuyClick} disabled={isLoading || isInitialFetching} className="inline-flex min-h-[42px] min-w-0 flex-1 items-center justify-center rounded-lg bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold leading-tight text-[#F8FAFC] shadow-md ring-1 ring-blue-700/20 transition-all hover:bg-blue-700 active:scale-95 disabled:opacity-60 sm:text-sm">{isLoading ? 'Processing...' : isInitialFetching ? <span className='inline-flex items-center justify-center'><Loader2Icon width={16} className='mr-1 animate-spin shrink-0' /><span>Fetching</span></span> : `Buy eBook ${formattedAmount ?? '-'}`}</button>
+        )}
         <button type="button" onClick={handleShareBook} aria-label="Share book link" className="inline-flex min-h-[44px] min-w-0 flex-1 items-center justify-center gap-1 rounded-lg bg-blue-600 px-2 py-2 text-center text-xs font-extrabold leading-tight text-[#F8FAFC] shadow-md ring-1 ring-blue-700/20 transition-all hover:bg-blue-700 active:scale-95 sm:text-sm"><Share2 size={16} aria-hidden="true" className="shrink-0" /><span>{shareCopied ? 'Link copied!' : 'Share Book'}</span></button>
     </div>{shareMenuPanel}<AlertDialog open={isLoginNeededDialogOpen} onOpenChange={setIsLoginNeededDialogOpen}><AlertDialogContent className='bg-white'><AlertDialogTitle className='hidden'></AlertDialogTitle><Card className="w-full max-w-md border-0"><CardHeader className="relative"><CardTitle className="text-rxl font-bold text-center">Login Required</CardTitle><Button variant="ghost" size="icon" className="absolute right-2 top-2" onClick={() => setIsLoginNeededDialogOpen(false)} aria-label="Close popup"><X className="h-4 w-4" /></Button></CardHeader><CardContent><p className="text-center text-muted-foreground">You need to be logged in to make a purchase. Please sign up or sign in to continue.</p></CardContent><CardFooter className="flex justify-center space-x-4"><Link href="/login?type=signup" className="inline-block px-2 py-2 rounded-md text-blue-600 border-blue-600 hover:bg-gray-200">Sign Up</Link><Link href="/login" className="inline-block px-2 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">Sign In</Link></CardFooter></Card></AlertDialogContent></AlertDialog></>;
 }

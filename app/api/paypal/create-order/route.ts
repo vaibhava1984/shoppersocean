@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { ensurePaypalSchema, getPaypalAccessToken, paypalApiUrl } from "@/utils/paypal";
+import { ensureBookPricingTable } from "@/utils/book-pricing";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -31,6 +32,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Cloudflare D1 is not available" }, { status: 503 });
     }
     await ensurePaypalSchema(db);
+    await ensureBookPricingTable(db);
 
     const body = await req.json().catch(() => ({}));
     const productId = String(body?.productId || "").trim();
@@ -39,7 +41,9 @@ export async function POST(req: Request) {
     }
 
     const book = await db.prepare(
-      "SELECT id, title, price_usd FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1"
+      "SELECT b.id, b.title, COALESCE(bp.price_usd, b.price_usd) AS price_usd FROM books b " +
+      "LEFT JOIN book_pricing bp ON bp.book_id = b.id " +
+      "WHERE b.id = ? AND COALESCE(b.is_deleted, 0) = 0 LIMIT 1"
     ).bind(productId).first<Record<string, any>>();
 
     if (!book) {

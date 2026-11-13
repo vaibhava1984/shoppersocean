@@ -74,9 +74,6 @@ export default function AddBookPopup(props: propsType) {
         isbn: book?.isbn ?? '',
         price: book?.price_inr ?? book?.price ?? 0,
         price_usd: book?.price_usd ?? 0,
-        price_eur: 0,
-        price_cny: 0,
-        price_rub: 0,
         ratings: book?.ratings ?? 0,
         cover_images: book?.cover_images ?? [],
         binding: book?.binding ?? '',
@@ -117,9 +114,6 @@ export default function AddBookPopup(props: propsType) {
                         published_date: dateToDisplay(details.published_date ?? previous.published_date),
                         price: details.price_inr ?? details.price ?? previous.price,
                         price_usd: Number(details.price_usd ?? previous.price_usd ?? 0),
-                        price_eur: 0,
-                        price_cny: 0,
-                        price_rub: 0,
                         cover_images: Array.isArray(details.cover_images) ? details.cover_images : previous.cover_images,
                     }));
                 }
@@ -333,9 +327,6 @@ export default function AddBookPopup(props: propsType) {
             isbn: '',
             price: 0,
             price_usd: 0,
-            price_eur: 0,
-            price_cny: 0,
-            price_rub: 0,
             ratings: 0,
             cover_images: [],
             binding: '',
@@ -441,7 +432,7 @@ export default function AddBookPopup(props: propsType) {
                     <section className="col-span-full rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50/70 to-white p-4 shadow-sm sm:p-5">
                         <div className="mb-4">
                             <h2 className="text-base font-bold text-slate-900 sm:text-lg">Book prices by currency</h2>
-                            <p className="mt-1 text-xs leading-relaxed text-slate-600 sm:text-sm">Enter the exact price for this book in all five currencies. These amounts are saved separately and are not automatically converted.</p>
+                            <p className="mt-1 text-xs leading-relaxed text-slate-600 sm:text-sm">Set the exact price for this book in Indian rupees and US dollars. Indian customers pay in INR; overseas customers pay in USD.</p>
                         </div>
                         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
                             <div className="min-w-0 space-y-1.5">
