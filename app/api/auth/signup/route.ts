@@ -1,8 +1,6 @@
 import { Resend } from "@/utils/email/resend";
 import { NextResponse } from 'next/server';
 import { hashPassword, createJwt } from '@/lib/auth';
-import { COUNTRIES } from '@/utils/countries';
-import { addAdminNotification } from '@/utils/adminNotifications';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,13 +32,6 @@ export async function POST(req: Request) {
     await db.prepare('INSERT INTO users (id, email, password_hash, full_name, country, gender, city, email_confirmed, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)')
       .bind(userId, normalizedEmail, hashedPassword, full_name.trim(), country, gender.trim(), city.trim(), now, now).run();
 
-    await addAdminNotification(db, {
-      type: 'account_created',
-      title: 'New user account created',
-      message: (String(full_name || '').trim() || normalizedEmail) + ' created an account.',
-      details: { userId, email: normalizedEmail, name: String(full_name || '').trim(), country: String(country || '').trim(), gender: String(gender || '').trim(), city: String(city || '').trim(), createdAt: now }
-    });
-
     let emailSent = false;
     if (resendApiKey) {
       try {
@@ -64,21 +55,6 @@ export async function POST(req: Request) {
         if (emailError) console.error('Error sending signup welcome email:', emailError);
         else emailSent = true;
 
-        const countryName = COUNTRIES.find(c => c.code === String(country || '').trim().toUpperCase())?.name || String(country || '').trim() || 'Not provided';
-        const safeCountry = escapeHtml(countryName);
-        const { error: adminEmailError } = await resend.emails.send({
-          from: 'no-reply@shoppersocean.com',
-          to: 'kochimonu@gmail.com',
-          subject: 'New user account created | Shoppers Ocean',
-          html: '<div style="font-family:Arial,sans-serif;line-height:1.7;color:#1e293b;">' +
-            '<p>Dear admin !</p>' +
-            '<p style="font-size:16px;"><strong>A new user has created an account on Shopper ocean on ' + new Date(now).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' at ' + new Date(now).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST (GMT+5:30)</strong></p>' +
-            '<p><strong>Name</strong><br>' + safeName + '</p>' +
-            '<p><strong>Email</strong><br>' + escapeHtml(normalizedEmail) + '</p>' +
-            '<p><strong>Country</strong><br>' + safeCountry + '</p>' +
-            '</div>'
-        });
-        if (adminEmailError) console.error('Error sending signup admin notification:', adminEmailError);
       } catch (emailError) { console.error('Unexpected signup email error:', emailError); }
     } else console.error('RESEND_API_KEY is not configured; account was created without welcome email.');
 
