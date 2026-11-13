@@ -7,8 +7,6 @@ import { sendSaleNotification } from "@/utils/email/sendSaleNotification";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const EXPECTED_USD = 3;
-
 export async function POST(req: Request) {
   try {
     const identity = await requireUser();
@@ -83,6 +81,7 @@ export async function POST(req: Request) {
     const expectedCustomId = `${identity.profile.id}|${productId}`;
     const paidCurrency = String(capture?.amount?.currency_code || "").toUpperCase();
     const paidAmount = Number(capture?.amount?.value);
+    const expectedAmount = Number(savedOrder.amount);
 
     if (
       paypalOrder.status !== "COMPLETED" ||
@@ -90,10 +89,10 @@ export async function POST(req: Request) {
       !capture?.id ||
       paidCurrency !== "USD" ||
       !Number.isFinite(paidAmount) ||
-      Math.abs(paidAmount - EXPECTED_USD) > 0.001 ||
-      !Number.isFinite(Number(savedOrder.amount)) ||
-      Number(savedOrder.amount) <= 0 ||
-      String(savedOrder.currency || "").toUpperCase() !== "INR"
+      Math.abs(paidAmount - expectedAmount) > 0.001 ||
+      !Number.isFinite(expectedAmount) ||
+      expectedAmount <= 0 ||
+      String(savedOrder.currency || "").toUpperCase() !== "USD"
     ) {
       return NextResponse.json({ error: "PayPal payment details did not match the expected purchase" }, { status: 409 });
     }
@@ -120,14 +119,14 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "A conflicting PayPal payment record exists" }, { status: 409 });
       }
       await db.prepare(
-        "UPDATE payments SET status = 'completed', paypal_capture_id = ?, original_amount = ?, original_currency = 'USD', payment_method = 'PayPal', updated_at = ? WHERE id = ?"
+        "UPDATE payments SET status = 'completed', paypal_capture_id = ?, original_amount = ?, currency = 'USD', original_amount = ?, original_currency = 'USD', payment_method = 'PayPal', updated_at = ? WHERE id = ?"
       ).bind(captureId, paidAmount, now, existingPayment.id).run();
     } else {
       try {
         await db.prepare(
           "INSERT INTO payments " +
           "(id, order_id, user_id, book_id, amount, currency, status, razorpay_payment_id, razorpay_order_id, paypal_order_id, paypal_capture_id, original_amount, original_currency, payment_method, created_at, updated_at) " +
-          "VALUES (?, ?, ?, ?, ?, 'INR', 'completed', NULL, NULL, ?, ?, ?, 'USD', 'PayPal', ?, ?)"
+          "VALUES (?, ?, ?, ?, ?, 'USD', 'completed', NULL, NULL, ?, ?, ?, 'USD', 'PayPal', ?, ?)"
         ).bind(
           crypto.randomUUID(),
           savedOrder.id,

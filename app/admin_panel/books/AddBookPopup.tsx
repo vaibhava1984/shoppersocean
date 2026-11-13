@@ -73,7 +73,7 @@ export default function AddBookPopup(props: propsType) {
         published_date: dateToDisplay(book?.published_date ?? ''),
         isbn: book?.isbn ?? '',
         price: book?.price_inr ?? book?.price ?? 0,
-        price_usd: 0,
+        price_usd: book?.price_usd ?? 0,
         price_eur: 0,
         price_cny: 0,
         price_rub: 0,
@@ -117,9 +117,9 @@ export default function AddBookPopup(props: propsType) {
                         published_date: dateToDisplay(details.published_date ?? previous.published_date),
                         price: details.price_inr ?? details.price ?? previous.price,
                         price_usd: Number(details.price_usd ?? previous.price_usd ?? 0),
-                        price_eur: Number(details.price_eur ?? previous.price_eur ?? 0),
-                        price_cny: Number(details.price_cny ?? previous.price_cny ?? 0),
-                        price_rub: Number(details.price_rub ?? previous.price_rub ?? 0),
+                        price_eur: 0,
+                        price_cny: 0,
+                        price_rub: 0,
                         cover_images: Array.isArray(details.cover_images) ? details.cover_images : previous.cover_images,
                     }));
                 }
@@ -242,9 +242,6 @@ export default function AddBookPopup(props: propsType) {
         // if (!formData.isbn) validationErrors.isbn = 'ISBN is required';
         if (!formData.price || !Number.isFinite(Number(formData.price)) || Number(formData.price) <= 0) validationErrors.price = 'Valid INR price is required';
         if (!formData.price_usd || !Number.isFinite(Number(formData.price_usd)) || Number(formData.price_usd) <= 0) validationErrors.price_usd = 'Valid USD price is required';
-        if (!formData.price_eur || !Number.isFinite(Number(formData.price_eur)) || Number(formData.price_eur) <= 0) validationErrors.price_eur = 'Valid EUR price is required';
-        if (!formData.price_cny || !Number.isFinite(Number(formData.price_cny)) || Number(formData.price_cny) <= 0) validationErrors.price_cny = 'Valid CNY price is required';
-        if (!formData.price_rub || !Number.isFinite(Number(formData.price_rub)) || Number(formData.price_rub) <= 0) validationErrors.price_rub = 'Valid RUB price is required';
         if (Number(formData.pages) > 0 && Number(formData.pages) <= 50 && formData.genre !== 'Short Books') {
             validationErrors.pages = "Books with 50 pages or fewer must be submitted in the 'Short Books' genre.";
         } else if (Number(formData.pages) > 50 && formData.genre === 'Short Books') {
@@ -362,7 +359,7 @@ export default function AddBookPopup(props: propsType) {
                 validateAndAddBook();
             }} className="space-y-4">
                 <div className="mb-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
-                    Complete the required details and enter the currency prices manually. Use the small blue <strong>Save</strong> button at the bottom-right of this editor.
+                    Enter the book price in Indian rupees and US dollars. Indian customers are charged in INR; overseas customers are charged in USD. Use the small blue <strong>Save</strong> button at the bottom-right of this editor.
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -457,22 +454,7 @@ export default function AddBookPopup(props: propsType) {
                                 <Input id="price_usd" name="price_usd" type="number" min="0.01" step="0.01" inputMode="decimal" value={formData.price_usd ? String(formData.price_usd) : ''} onChange={(e) => setFormData({ ...formData, price_usd: e.target.value ? Number(e.target.value) : 0 })} className="h-10 rounded-lg bg-white" required />
                                 {errors.price_usd && <span className="block text-xs text-red-600">{errors.price_usd}</span>}
                             </div>
-                            <div className="min-w-0 space-y-1.5">
-                                <Label htmlFor="price_eur" className="text-xs font-semibold text-slate-700 sm:text-sm">EUR € <span className="text-red-500">*</span></Label>
-                                <Input id="price_eur" name="price_eur" type="number" min="0.01" step="0.01" inputMode="decimal" value={formData.price_eur ? String(formData.price_eur) : ''} onChange={(e) => setFormData({ ...formData, price_eur: e.target.value ? Number(e.target.value) : 0 })} className="h-10 rounded-lg bg-white" required />
-                                {errors.price_eur && <span className="block text-xs text-red-600">{errors.price_eur}</span>}
-                            </div>
-                            <div className="min-w-0 space-y-1.5">
-                                <Label htmlFor="price_cny" className="text-xs font-semibold text-slate-700 sm:text-sm">CNY ¥ <span className="text-red-500">*</span></Label>
-                                <Input id="price_cny" name="price_cny" type="number" min="0.01" step="0.01" inputMode="decimal" value={formData.price_cny ? String(formData.price_cny) : ''} onChange={(e) => setFormData({ ...formData, price_cny: e.target.value ? Number(e.target.value) : 0 })} className="h-10 rounded-lg bg-white" required />
-                                {errors.price_cny && <span className="block text-xs text-red-600">{errors.price_cny}</span>}
-                            </div>
-                            <div className="min-w-0 space-y-1.5">
-                                <Label htmlFor="price_rub" className="text-xs font-semibold text-slate-700 sm:text-sm">RUB ₽ <span className="text-red-500">*</span></Label>
-                                <Input id="price_rub" name="price_rub" type="number" min="0.01" step="0.01" inputMode="decimal" value={formData.price_rub ? String(formData.price_rub) : ''} onChange={(e) => setFormData({ ...formData, price_rub: e.target.value ? Number(e.target.value) : 0 })} className="h-10 rounded-lg bg-white" required />
-                                {errors.price_rub && <span className="block text-xs text-red-600">{errors.price_rub}</span>}
-                            </div>
-                        </div>
+</div>
                     </section>
                     {/* <div className="space-y-2">
                         <Label htmlFor="ratings">Ratings</Label>
