@@ -13,16 +13,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: {
     template: "%s | Shoppers Ocean",
-    default: "Shoppers Ocean — Play, Think, Discover & Read",
+    default: "Shoppers Ocean | Digital Flipbooks, Games, Quizzes & Learning",
   },
-  description: "Play. Connect. Compete. Your Next Favourite Escape Starts Here. Explore games, quizzes, brain challenges and beautifully designed online flipbooks at Shoppers Ocean.",
+  description: "Discover interactive multilingual digital flipbooks, online games, quizzes, educational activities and brain challenges on Shoppers Ocean.",
   openGraph: {
     type: "website",
     url: defaultUrl,
     siteName: "Shoppers Ocean",
-    title: "Shoppers Ocean — Play, Think, Discover & Read",
-    description: "Play. Connect. Compete. Your Next Favourite Escape Starts Here.",
-    images: [{ url: socialImage, width: 1200, height: 630, alt: "Shoppers Ocean — Play. Connect. Compete. Your Next Favourite Escape Starts Here." }],
+    title: "Shoppers Ocean | Digital Flipbooks, Games, Quizzes & Learning",
+    description: "Explore interactive multilingual flipbooks, online games, quizzes, learning activities and entertainment on Shoppers Ocean.",
+    images: [{ url: socialImage, width: 1200, height: 630, alt: "Shoppers Ocean — Digital Flipbooks, Games, Quizzes & Learning" }],
   },
   twitter: {
     card: "summary_large_image",
