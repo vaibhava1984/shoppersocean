@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Snakes &amp; Ladders</title>
+<style>
+html,body{height:100%;margin:0;background:#150c33}
+/* Everything is scoped to .snl. Embedding inline? Set --snl-h on a parent (e.g. 680px) to control height; default fills the screen. */
+.snl{--gold:#ffd93d;font-family:'Trebuchet MS','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;color:#fff;box-sizing:border-box;
+  height:100vh;height:var(--snl-h,100dvh);max-height:960px;max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:8px;
+  padding:max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom));
+  background:radial-gradient(120% 80% at 20% 0,#5b2fc9 0,#2b1473 45%,#150c33 100%);user-select:none;-webkit-user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.snl *{box-sizing:border-box}
+.snl button{font:inherit;color:inherit;cursor:pointer;border:0}
+.snl button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.snl-top{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:none}
+.tb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:100%;min-width:0;height:50px;border-radius:14px;
+  background:rgba(255,255,255,.1);font-size:12px;font-weight:600;white-space:nowrap;transition:background .15s,transform .1s}
+.tb:hover{background:rgba(255,255,255,.18)}.tb:active{transform:scale(.94)}
+.tb svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tb.on{background:rgba(255,217,61,.22);color:var(--gold)}
+.snl-wrap{position:relative;flex:1;min-height:0}
+.snl-stage{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.snl canvas{display:block;border-radius:16px}
+.snl-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:16px;
+  background:rgba(21,12,51,.88);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);border-radius:16px}
+.snl-ov[hidden]{display:none}
+.snl-ov h3{margin:0;font-size:clamp(22px,7vw,34px)}
+.snl-ov p{margin:0;opacity:.85;font-size:clamp(13px,3.6vw,16px);max-width:300px}
+.seg{display:flex;gap:6px;background:rgba(255,255,255,.1);padding:4px;border-radius:999px}
+.seg button{padding:8px 14px;border-radius:999px;background:none;font-size:14px;font-weight:600}
+.seg button[aria-pressed=true]{background:var(--gold);color:#3a2300}
+.go{background:linear-gradient(180deg,#ffd93d,#ff9f1c);color:#3a2300!important;font-weight:700;font-size:18px;padding:12px 30px;border-radius:999px;box-shadow:0 4px 0 #b86a00,0 8px 16px rgba(0,0,0,.35)}
+.go:active{transform:translateY(3px);box-shadow:0 1px 0 #b86a00}
+.ghost{background:rgba(255,255,255,.14);padding:12px 22px;border-radius:999px;font-weight:600;font-size:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.snl-banner{position:absolute;left:50%;top:8px;transform:translateX(-50%);padding:7px 16px;border-radius:999px;font-weight:700;font-size:clamp(13px,3.8vw,17px);
+  opacity:0;pointer-events:none;white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.4);background:#4b3bd1;z-index:2}
+.snl-banner.snake{background:#e23b4e}.snl-banner.ladder{background:#1fa86a}.snl-banner.six{background:#e89a00}
+.snl-banner.show{animation:snlpop 3.2s ease forwards}
+@keyframes snlpop{0%{opacity:0;transform:translateX(-50%) scale(.6)}10%{opacity:1;transform:translateX(-50%) scale(1.1)}18%{transform:translateX(-50%) scale(1)}85%{opacity:1}100%{opacity:0}}
+.snl-panel{flex:none;display:grid;grid-template-columns:1fr 64px 1fr;gap:8px;align-items:center;background:rgba(255,255,255,.07);border-radius:18px;padding:8px;
+  border:1px solid rgba(255,255,255,.1)}
+.pc{background:rgba(255,255,255,.09);border:2px solid transparent;border-radius:14px;padding:7px 9px;min-width:0;opacity:.7;transition:all .2s}
+.pc.cur{opacity:1;border-color:var(--gold);background:rgba(255,217,61,.14);box-shadow:0 0 14px rgba(255,217,61,.3)}
+.pc .n{display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px;white-space:nowrap}
+.pc .n b{width:13px;height:13px;border-radius:50%;flex:none}
+.pc .s{font-size:12px;opacity:.85;margin:1px 0 5px}
+.pc .bar{height:5px;border-radius:9px;background:rgba(255,255,255,.18);overflow:hidden}
+.pc .bar i{display:block;height:100%;border-radius:9px;transition:width .3s}
+.dwrap{position:relative;height:62px;display:grid;place-items:center}
+.dshadow{position:absolute;left:16px;right:16px;bottom:10px;height:7px;border-radius:50%;background:rgba(0,0,0,.5);filter:blur(2.5px)}
+.dscene{--d:30px;position:relative;width:var(--d);height:var(--d);perspective:360px;background:none;padding:0;margin-top:-8px}
+.dscene:disabled{cursor:default}
+.tilt{position:absolute;inset:0;transform-style:preserve-3d;transform:none;transition:transform .7s ease}
+.dscene.jump .tilt{transform:rotateX(-26deg) rotateY(-30deg);transition:transform .5s ease}
+.die{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 2.4s cubic-bezier(.3,.05,.2,1)}
+.face{position:absolute;inset:0;border-radius:24%;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:16%;
+  background:linear-gradient(145deg,#ff6b6b,#d1121f 60%,#a30d18);border:1px solid rgba(255,255,255,.4);backface-visibility:hidden;
+  box-shadow:inset 0 0 5px rgba(255,255,255,.35),inset 0 -3px 5px rgba(80,0,10,.35)}
+.face::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(160deg,rgba(255,255,255,.42),transparent 45%);pointer-events:none}
+.f2,.f5{background:linear-gradient(145deg,#f04a54,#bb0f1c 60%,#8e0912)}
+.f4,.f6{background:linear-gradient(145deg,#d93642,#a30d18 60%,#780810)}
+.face i{margin:auto;width:86%;height:86%;border-radius:50%}
+.face i.on{background:radial-gradient(circle at 35% 30%,#fff,#ffeaea 60%,#e8c9c9);box-shadow:0 1px 1px rgba(60,0,0,.55)}
+.f1 i.on{background:radial-gradient(circle at 35% 30%,#fff6c2,#ffd23f 60%,#e0a100)}
+.f1{transform:translateZ(calc(var(--d)/2))}.f6{transform:rotateY(180deg) translateZ(calc(var(--d)/2))}.f2{transform:rotateY(90deg) translateZ(calc(var(--d)/2))}
+.f5{transform:rotateY(-90deg) translateZ(calc(var(--d)/2))}.f3{transform:rotateX(90deg) translateZ(calc(var(--d)/2))}.f4{transform:rotateX(-90deg) translateZ(calc(var(--d)/2))}
+.hint{position:absolute;bottom:-3px;font-size:10px;font-weight:600;color:var(--gold);opacity:0;transition:opacity .2s;white-space:nowrap}
+.dwrap.ready .hint{opacity:1}
+.dwrap.ready .dscene{animation:snlbob 1.6s ease-in-out infinite}
+.dwrap.ready .dshadow{animation:snlsh 1.6s ease-in-out infinite}
+.dscene.jump{animation:snljump 2.4s ease-in-out!important}
+.dwrap.rolling .dshadow{animation:snlsh2 2.4s ease-in-out}
+@keyframes snlbob{50%{transform:translateY(-4px)}}
+@keyframes snlsh{50%{transform:scale(.8);opacity:.6}}
+@keyframes snljump{0%{transform:translateY(0)}22%{transform:translateY(-18px) scale(1.12)}45%{transform:translateY(0) scale(1)}60%{transform:translateY(-8px)}75%{transform:translateY(0)}86%{transform:translateY(-3px)}100%{transform:translateY(0)}}
+@keyframes snlsh2{0%{transform:scale(1)}22%{transform:scale(.55);opacity:.35}45%{transform:scale(1)}60%{transform:scale(.8)}75%{transform:scale(1)}86%{transform:scale(.92)}100%{transform:scale(1)}}
+.snl.paused .dscene,.snl.paused .dshadow{animation-play-state:paused}
+.snl-msg{grid-column:1/-1;text-align:center;font-weight:600;font-size:clamp(14px,3.8vw,17px);min-height:2.5em;display:flex;align-items:center;justify-content:center;line-height:1.25;padding:0 4px}
+@media (max-height:620px){.snl-msg{min-height:1.4em}}
+@media (prefers-reduced-motion:reduce){.snl *{animation:none!important}.die{transition-duration:.01s}}
+</style>
+</head>
+<body>
+<div class="snl" id="snl">
+  <header class="snl-top">
+    <button class="tb" id="bPause" aria-label="Pause game"></button>
+    <button class="tb" id="bRestart" aria-label="Restart game"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v5h-5"/></svg>Restart</button>
+    <button class="tb" id="bNew" aria-label="New game"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New</button>
+    <button class="tb" id="bSnd" aria-label="Toggle sound"></button>
+  </header>
+  <main class="snl-wrap" id="wrap">
+    <div class="snl-stage" id="stage">
+      <canvas id="cv" aria-label="Snakes and ladders board"></canvas>
+      <div class="snl-banner" id="ban"></div>
+      <div class="snl-ov" id="ov"></div>
+    </div>
+  </main>
+  <footer class="snl-panel">
+    <div class="pc" id="pc0"></div>
+    <div class="dwrap" id="dw"><div class="dshadow"></div>
+      <button class="dscene" id="dice" aria-label="Tap to roll the dice" disabled><div class="tilt"><div class="die" id="die"></div></div></button>
+      <span class="hint">Tap to roll</span></div>
+    <div class="pc" id="pc1"></div>
+    <div class="snl-msg" id="msg" aria-live="polite"></div>
+  </footer>
+</div>
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const root=$('snl'),cv=$('cv'),ctx=cv.getContext('2d'),wrap=$('wrap'),stage=$('stage'),ov=$('ov'),dice=$('dice'),die=$('die'),dw=$('dw'),msg=$('msg'),ban=$('ban');
+const LAD={4:14,9:31,21:42,28:84,36:44,51:67,71:91,80:100};
+const SNK={16:6,47:26,49:11,56:53,62:19,64:60,87:24,93:73,95:75,98:78};
+const SCOL=['#18b36b','#9b5de5','#ff8c1a','#1e9bd7','#e83e8c'];
+const CELLS=['#ff6b81','#ffb142','#ffd93d','#5ddc8a','#4dc3ff','#a78bfa'];
+const PAWN=[['#ffffff','#b9b2e0','#2b1473'],['#55556f','#0b0b15','#ffffff']]; // [light,dark,outline]: You = white, Computer = black
+const BARC=['#ffffff','#9aa3d4'];
+const PIPS={1:[4],2:[2,6],3:[2,4,6],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+const BASE={1:[0,0],2:[0,-90],3:[-90,0],4:[90,0],5:[0,90],6:[0,180]};
+const UW=10.6,UH=11.6,B=.3;
+
+/* ================= SOUND: soft, synthesised (no files) ================= */
+let AC=null,master=null,muted=false;
+function ac(){if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();
+  master=AC.createGain();master.gain.value=.9;const comp=AC.createDynamicsCompressor(),dl=AC.createDelay(),fb=AC.createGain(),wet=AC.createGain();
+  dl.delayTime.value=.12;fb.gain.value=.25;wet.gain.value=.22;master.connect(comp);master.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(wet);wet.connect(comp);comp.connect(AC.destination)}
+  if(AC.state==='suspended'&&!G.paused)AC.resume();return AC}
+function tone(f,d,o){o=o||{};if(muted)return;const a=ac();if(!a)return;const t=a.currentTime+(o.t||0),os=a.createOscillator(),g=a.createGain();
+  os.type=o.type||'sine';os.frequency.setValueAtTime(f,t);if(o.to)os.frequency.exponentialRampToValueAtTime(o.to,t+d);
+  g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(o.v||.2,t+(o.a||.006));g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  let n=os;if(o.lp){const fl=a.createBiquadFilter();fl.type='lowpass';fl.frequency.value=o.lp;os.connect(fl);n=fl}
+  n.connect(g);g.connect(master);os.start(t);os.stop(t+d+.05)}
+function noise(d,v,f,t0,type,q){if(muted)return;const a=ac();if(!a)return;const t=a.currentTime+(t0||0),n=Math.floor(a.sampleRate*d),b=a.createBuffer(1,n,a.sampleRate),x=b.getChannelData(0);
+  for(let i=0;i<n;i++)x[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);const s=a.createBufferSource(),fl=a.createBiquadFilter(),g=a.createGain();
+  s.buffer=b;fl.type=type||'bandpass';fl.frequency.value=f;fl.Q.value=q||2;g.gain.value=v;s.connect(fl).connect(g).connect(master);s.start(t)}
+const PENTA=[523.25,587.33,659.25,783.99,880];
+const SFX={
+  click(){tone(760,.05,{v:.07,to:520})},
+  rattle(){for(let i=0;i<40;i++){const t=Math.pow(i/40,.8)*2.1+Math.random()*.02;noise(.025,.14+Math.random()*.12,2200+Math.random()*2600,t,'bandpass',3)}
+    [1.08,1.8,2.3].forEach(t=>tone(170,.08,{v:.12,to:95,t}))},
+  thud(){tone(150,.16,{v:.28,to:70});noise(.06,.12,900,0,'lowpass')},
+  step(i){const f=PENTA[i%5]*(Math.floor(i/5)%2?2:1);tone(f,.24,{v:.15});tone(f*4,.07,{v:.04})},
+  ladder(){[523,587,659,784,880,1047,1175,1319,1568].forEach((f,i)=>{tone(f,.5,{type:'triangle',v:.12,t:i*.07});tone(f*2,.3,{v:.04,t:i*.07})})},
+  snake(){noise(.45,.05,7000,0,'highpass');[[392,.28],[349,.28],[311,.28]].forEach(([f,d],i)=>tone(f,d,{type:'triangle',lp:1100,v:.2,t:i*.3}));
+    tone(262,.7,{type:'triangle',lp:900,v:.22,t:.9,to:196})},
+  six(){[880,1175,1568].forEach((f,i)=>tone(f,.25,{v:.14,t:i*.08}))},
+  win(){[523,659,784,1047,784,1047,1319].forEach((f,i)=>{tone(f,.4,{type:'triangle',v:.2,t:i*.13});tone(f/2,.4,{v:.08,t:i*.13})})},
+  lose(){[330,294,262].forEach((f,i)=>tone(f,.5,{v:.14,t:i*.3,to:f*.96}))},
+  start(){[392,523,659].forEach((f,i)=>tone(f,.2,{type:'triangle',v:.15,t:i*.09}))}
+};
+const vib=ms=>{try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}};
+
+/* ================= GEOMETRY ================= */
+function cell(n){if(n<1)return[B+.75,11.05];const i=n-1,r=Math.floor(i/10);let c=i%10;if(r%2)c=9-c;return[B+c+.5,B+9-r+.5]}
+function path(a,b,snake){const[x0,y0]=cell(a),[x1,y1]=cell(b),dx=x1-x0,dy=y1-y0,len=Math.hypot(dx,dy),vx=-dy/len,vy=dx/len,w=Math.max(2,Math.round(len/1.9)),pts=[];
+  for(let i=0;i<=70;i++){const t=i/70,s=snake?Math.sin(t*Math.PI*w)*Math.pow(Math.sin(Math.PI*t),.6)*.34:0;pts.push([x0+dx*t+vx*s,y0+dy*t+vy*s])}
+  return{pts,x0,y0,x1,y1,dx,dy,len,vx,vy}}
+const snakes=Object.entries(SNK).map(([h,t],i)=>({...path(+h,+t,true),col:SCOL[i%5]}));
+const ladders=Object.entries(LAD).map(([f,t])=>path(+f,+t,false));
+function lite(hex,a){const n=parseInt(hex.slice(1),16),m=v=>Math.round(v+(255-v)*a);return`rgb(${m(n>>16)},${m(n>>8&255)},${m(n&255)})`}
+function rr(x,y,w,h,r){ctx.beginPath();ctx.roundRect?ctx.roundRect(x,y,w,h,r):ctx.rect(x,y,w,h)}
+
+/* ================= DRAWING ================= */
+let W=300,dpr=1;
+function resize(){const aw=wrap.clientWidth,ah=wrap.clientHeight,k=Math.max(10,Math.min(aw/UW,ah/UH));W=Math.floor(k*UW);const h=Math.floor(k*UH);
+  dpr=Math.min(window.devicePixelRatio||1,3);stage.style.width=W+'px';stage.style.height=h+'px';cv.width=Math.round(W*dpr);cv.height=Math.round(h*dpr);cv.style.width='100%';cv.style.height='100%'}
+function board(){
+  let g=ctx.createLinearGradient(0,0,UW,UW);g.addColorStop(0,'#ffcf5c');g.addColorStop(.5,'#e8892b');g.addColorStop(1,'#b5561a');
+  ctx.save();ctx.shadowColor='rgba(0,0,0,.5)';ctx.shadowBlur=.4;ctx.shadowOffsetY=.15;ctx.fillStyle=g;rr(0,0,UW,UW,.5);ctx.fill();ctx.restore();
+  ctx.fillStyle='#2b1473';rr(.18,.18,UW-.36,UW-.36,.34);ctx.fill();
+  for(let n=1;n<=100;n++){const[cx,cy]=cell(n),x=cx-.5,y=cy-.5,r=Math.floor((n-1)/10),c=Math.floor(x-B+.01);
+    ctx.fillStyle=n===100?'#ffc93c':CELLS[(r+c)%6];ctx.fillRect(x,y,1,1);
+    const gl=ctx.createLinearGradient(0,y,0,y+1);gl.addColorStop(0,'rgba(255,255,255,.45)');gl.addColorStop(.5,'rgba(255,255,255,.05)');gl.addColorStop(1,'rgba(0,0,0,.14)');
+    ctx.fillStyle=gl;ctx.fillRect(x,y,1,1);ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=.03;ctx.strokeRect(x+.015,y+.015,.97,.97);
+    ctx.font='700 .3px Trebuchet MS,system-ui,sans-serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.lineJoin='round';
+    ctx.strokeStyle='rgba(40,20,90,.55)';ctx.lineWidth=.07;ctx.strokeText(n,x+.08,y+.06);ctx.fillStyle='#fff';ctx.fillText(n,x+.08,y+.06)}
+  ctx.font='.62px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🏆',cell(100)[0],cell(100)[1]+.15);
+  ctx.fillStyle='rgba(255,255,255,.14)';rr(B,10.75,3.4,.9,.45);ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='700 .3px Trebuchet MS,system-ui,sans-serif';ctx.textAlign='left';ctx.fillText('START',B+1.2,11.2)}
+function ladder(g){const o=.15;ctx.lineCap='round';
+  [-1,1].forEach(s=>{ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=.11;ctx.beginPath();ctx.moveTo(g.x0+g.vx*o*s+.04,g.y0+g.vy*o*s+.06);ctx.lineTo(g.x1+g.vx*o*s+.04,g.y1+g.vy*o*s+.06);ctx.stroke()});
+  const n=Math.max(3,Math.floor(g.len/.32));for(let i=0;i<=n;i++){const t=(i+.5)/(n+1),x=g.x0+g.dx*t,y=g.y0+g.dy*t;
+    ctx.strokeStyle='#ffe08a';ctx.lineWidth=.06;ctx.beginPath();ctx.moveTo(x+g.vx*o,y+g.vy*o);ctx.lineTo(x-g.vx*o,y-g.vy*o);ctx.stroke()}
+  [-1,1].forEach(s=>{ctx.strokeStyle='#7a3f12';ctx.lineWidth=.1;ctx.beginPath();ctx.moveTo(g.x0+g.vx*o*s,g.y0+g.vy*o*s);ctx.lineTo(g.x1+g.vx*o*s,g.y1+g.vy*o*s);ctx.stroke();
+    ctx.strokeStyle='#d98a3d';ctx.lineWidth=.055;ctx.stroke()})}
+function snake(g){const P=g.pts,N=P.length,rad=i=>.07+.1*(1-i/(N-1))+(i<8?.03:0);
+  for(let i=N-1;i>=0;i--){ctx.fillStyle='rgba(0,0,0,.28)';ctx.beginPath();ctx.arc(P[i][0]+.04,P[i][1]+.07,rad(i)+.03,0,7);ctx.fill()}
+  for(let i=N-1;i>=0;i--){ctx.fillStyle='rgba(15,20,30,.9)';ctx.beginPath();ctx.arc(P[i][0],P[i][1],rad(i)+.028,0,7);ctx.fill()}
+  for(let i=N-1;i>=0;i--){ctx.fillStyle=Math.floor(i/4)%2?g.col:lite(g.col,.35);ctx.beginPath();ctx.arc(P[i][0],P[i][1],rad(i),0,7);ctx.fill()}
+  const[hx,hy]=P[0],ux=-g.dx/g.len,uy=-g.dy/g.len,hr=.23;
+  ctx.strokeStyle='#e0162f';ctx.lineWidth=.04;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(hx+ux*hr,hy+uy*hr);ctx.lineTo(hx+ux*(hr+.22),hy+uy*(hr+.22));
+  ctx.lineTo(hx+ux*(hr+.32)+g.vx*.07,hy+uy*(hr+.32)+g.vy*.07);ctx.moveTo(hx+ux*(hr+.22),hy+uy*(hr+.22));ctx.lineTo(hx+ux*(hr+.32)-g.vx*.07,hy+uy*(hr+.32)-g.vy*.07);ctx.stroke();
+  ctx.fillStyle='rgba(15,20,30,.9)';ctx.beginPath();ctx.arc(hx,hy,hr+.03,0,7);ctx.fill();ctx.fillStyle=g.col;ctx.beginPath();ctx.arc(hx,hy,hr,0,7);ctx.fill();
+  [-1,1].forEach(s=>{const ex=hx+ux*.06+g.vx*.12*s,ey=hy+uy*.06+g.vy*.12*s;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ex,ey,.07,0,7);ctx.fill();
+    ctx.fillStyle='#111';ctx.beginPath();ctx.arc(ex+ux*.02,ey+uy*.02,.035,0,7);ctx.fill()})}
+function pawn(p,i,off){const[lt,dk,ol]=PAWN[i],x=p.x+off,gy=p.y+.3;
+  ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();ctx.ellipse(x+.04,gy,.28,.085,0,0,7);ctx.fill();
+  if(G.started&&!G.over&&G.cur===i){ctx.strokeStyle='rgba(255,217,61,.95)';ctx.lineWidth=.05;ctx.beginPath();ctx.ellipse(x,gy,.34+Math.sin(performance.now()/250)*.03,.115,0,0,7);ctx.stroke()}
+  ctx.save();ctx.translate(x,gy-p.lift);ctx.scale(1.3,1.3);ctx.lineJoin='round';ctx.strokeStyle=ol;ctx.lineWidth=.04;
+  const g=ctx.createLinearGradient(-.2,0,.2,0);g.addColorStop(0,lt);g.addColorStop(1,dk);ctx.fillStyle=g;
+  ctx.beginPath();ctx.ellipse(0,-.05,.21,.07,0,0,7);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-.15,-.06);ctx.quadraticCurveTo(-.04,-.14,-.07,-.30);ctx.lineTo(.07,-.30);ctx.quadraticCurveTo(.04,-.14,.15,-.06);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.ellipse(0,-.30,.115,.04,0,0,7);ctx.fill();ctx.stroke();
+  const h=ctx.createRadialGradient(-.04,-.47,.01,0,-.42,.16);h.addColorStop(0,i?'#9a9ac0':'#fff');h.addColorStop(1,dk);ctx.fillStyle=h;
+  ctx.beginPath();ctx.arc(0,-.42,.125,0,7);ctx.fill();ctx.stroke();ctx.restore()}
+function targetBox(){if(!G.target)return;const[cx,cy]=cell(G.target),pu=.5+.5*Math.sin(performance.now()/260);
+  ctx.fillStyle='rgba(255,255,255,'+(.16+.14*pu)+')';ctx.fillRect(cx-.5,cy-.5,1,1);ctx.lineWidth=.08;ctx.strokeStyle='#2b1473';ctx.strokeRect(cx-.45,cy-.45,.9,.9);
+  ctx.lineWidth=.045;ctx.strokeStyle='#ffd93d';ctx.strokeRect(cx-.45,cy-.45,.9,.9)}
+function tagBubble(){if(!G.tag)return;const p=G.players[G.tag.i],x=p.x,y=p.y-.62-p.lift;
+  ctx.fillStyle='#ffd93d';ctx.strokeStyle='#2b1473';ctx.lineWidth=.05;ctx.beginPath();ctx.arc(x,y,.22,0,7);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#2b1473';ctx.font='700 .3px Trebuchet MS,system-ui,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(G.tag.t,x,y+.015)}
+const CONF=[];
+function confetti(){for(let i=0;i<180;i++)CONF.push({x:UW/2,y:4,vx:(Math.random()-.5)*.3,vy:-Math.random()*.32-.05,r:Math.random()*6,vr:(Math.random()-.5)*.4,s:.12+Math.random()*.12,c:CELLS[i%6]})}
+function frame(){ctx.setTransform(dpr*W/UW,0,0,dpr*W/UW,0,0);ctx.clearRect(0,0,UW,UH);
+  board();ladders.forEach(ladder);snakes.forEach(snake);targetBox();
+  const ps=G.players,near=ps.length>1&&Math.hypot(ps[0].x-ps[1].x,ps[0].y-ps[1].y)<.35;
+  ps.map((p,i)=>[p,i]).sort((a,b)=>a[0].y-b[0].y).forEach(([p,i])=>pawn(p,i,near?(i?.2:-.2):0));tagBubble();
+  if(!G.paused)for(let i=CONF.length-1;i>=0;i--){const c=CONF[i];c.vy+=.008;c.x+=c.vx;c.y+=c.vy;c.r+=c.vr;if(c.y>UH+1)CONF.splice(i,1)}
+  CONF.forEach(c=>{ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.r);ctx.fillStyle=c.c;ctx.fillRect(-c.s/2,-c.s/4,c.s,c.s/2);ctx.restore()});
+  requestAnimationFrame(frame)}
+
+/* ================= DICE ================= */
+for(let f=1;f<=6;f++){const e=document.createElement('div');e.className='face f'+f;
+  for(let i=0;i<9;i++){const p=document.createElement('i');if(PIPS[f].includes(i))p.className='on';e.appendChild(p)}die.appendChild(e)}
+let rx=0,ry=0;
+function showFace(n,spin){const[bx,by]=BASE[n];
+  if(spin){rx=Math.ceil(rx/360)*360+bx+360*(1+Math.floor(Math.random()*2));ry=Math.ceil(ry/360)*360+by+360}else{rx=bx;ry=by}
+  die.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`}
+
+/* ================= GAME STATE ================= */
+const G={players:[],cur:0,busy:false,over:false,started:false,paused:false,id:0,first:'you',target:0,tag:null};
+let waiters=[];
+const gate=()=>G.paused?new Promise(r=>waiters.push(r)):Promise.resolve();
+const wait=async ms=>{await new Promise(r=>setTimeout(r,ms));await gate()};
+const anim=(ms,fn)=>new Promise(res=>{let t0=performance.now(),last=t0;(function f(t){if(G.paused){t0+=t-last;last=t;return requestAnimationFrame(f)}
+  last=t;const k=Math.min(1,(t-t0)/ms);fn(k);k<1?requestAnimationFrame(f):res()})(t0)});
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function banner(t,cls){ban.className='snl-banner '+(cls||'');ban.textContent=t;void ban.offsetWidth;ban.classList.add('show')}
+const ICON={pause:'<svg viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></svg>Pause',play:'<svg viewBox="0 0 24 24" style="fill:currentColor"><path d="M7 4.5v15l12-7.5z"/></svg>Resume',
+  on:'<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM16.5 9a4 4 0 0 1 0 6M19 6.5a8 8 0 0 1 0 11"/></svg>Sound',off:'<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM17 9l5 6M22 9l-5 6"/></svg>Muted'};
+function ui(){
+  [0,1].forEach(i=>{const p=G.players[i]||{pos:0,in:false,name:i?'Computer':'You'};$('pc'+i).className='pc'+(G.started&&!G.over&&G.cur===i?' cur':'');
+    $('pc'+i).innerHTML=`<div class="n"><b style="background:${PAWN[i][0]};box-shadow:0 0 0 2px ${i?'#fff':'#2b1473'},0 0 0 3px rgba(255,255,255,.5)"></b>${p.name}</div><div class="s">${p.pos?'Square '+p.pos:(p.in?'Ready to move':'Needs a 6 to start')}</div><div class="bar"><i style="width:${p.pos}%;background:${BARC[i]}"></i></div>`});
+  const my=G.started&&!G.over&&!G.busy&&G.cur===0&&!G.paused;dice.disabled=!my;dw.classList.toggle('ready',my);
+  $('bPause').innerHTML=G.paused?ICON.play:ICON.pause;$('bPause').classList.toggle('on',G.paused);$('bPause').disabled=!G.started||G.over;$('bPause').style.opacity=(!G.started||G.over)?.45:1;
+  $('bSnd').innerHTML=muted?ICON.off:ICON.on;$('bSnd').classList.toggle('on',muted);root.classList.toggle('paused',G.paused)}
+function show(html){ov.innerHTML=html;ov.hidden=false}
+function setPaused(on){if(on===G.paused)return;G.paused=on;if(AC){on?AC.suspend():AC.resume()}if(!on){waiters.splice(0).forEach(f=>f())}ui()}
+
+/* ---- overlays ---- */
+function showSetup(){
+  show(`<h3>🐍 New game 🪜</h3><p>Race the computer to square 100. Roll a 6 to go again.</p><p style="margin-top:4px"><b>Who goes first?</b></p>
+    <div class="seg" id="seg">${[['you','You'],['cpu','Computer']].map(([v,t])=>`<button data-v="${v}" aria-pressed="${G.first===v}">${t}</button>`).join('')}</div>
+    <button class="go" id="goBtn">Start game</button>`);
+  ov.querySelectorAll('#seg button').forEach(b=>b.onclick=()=>{ac();SFX.click();G.first=b.dataset.v;ov.querySelectorAll('#seg button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+  $('goBtn').onclick=()=>{ac();startGame()}}
+function requestQuotaAttempt(){
+  if(window.parent===window)return Promise.resolve(true);
+  return new Promise(resolve=>{
+    const requestId='snakes:'+Date.now()+':'+Math.random().toString(36).slice(2);
+    let settled=false;
+    const finish=allowed=>{if(settled)return;settled=true;window.removeEventListener('message',onResult);clearTimeout(timer);resolve(Boolean(allowed));};
+    const onResult=event=>{
+      if(event.origin!==window.location.origin||event.source!==window.parent)return;
+      const data=event.data;
+      if(data&&data.type==='shoppers-ocean-snakes-attempt-result'&&data.requestId===requestId)finish(data.allowed);
+    };
+    const timer=setTimeout(()=>finish(false),15000);
+    window.addEventListener('message',onResult);
+    window.parent.postMessage({type:'shoppers-ocean-snakes-attempt',requestId},window.location.origin);
+  });
+}
+function confirmBox(title,text,okLabel,fn){
+  if(!G.started||G.over){fn();return}
+  setPaused(true);show(`<h3>${title}</h3><p>${text}</p><div class="row"><button class="ghost" id="cNo">Keep playing</button><button class="go" id="cYes" style="font-size:16px;padding:11px 24px">${okLabel}</button></div>`);
+  $('cNo').onclick=()=>{ov.hidden=true;setPaused(false)};$('cYes').onclick=()=>{setPaused(false);fn()}}
+function showPause(){show(`<h3>⏸ Paused</h3><p>Your game is safe. Take your time!</p><button class="go" id="rs">Resume</button>`);$('rs').onclick=()=>{ov.hidden=true;setPaused(false)}}
+
+/* ---- flow ---- */
+function startGame(){
+  G.id++;waiters.splice(0).forEach(f=>f());G.paused=false;if(AC)AC.resume();
+  G.players=[{name:'You'},{name:'Computer'}].map(o=>{const[x,y]=cell(0);return{...o,pos:0,x,y,lift:0,in:false}});
+  G.cur=G.first==='cpu'?1:0;G.target=0;G.tag=null;G.busy=false;G.over=false;G.started=true;CONF.length=0;ov.hidden=true;showFace(1);
+  SFX.start();msg.textContent=G.cur===0?'Your turn. Tap the dice!':'Computer goes first…';ui();
+  if(G.cur===1){const id=G.id;setTimeout(()=>{if(id===G.id)roll()},1800)}}
+async function hop(p,n,i){const[x1,y1]=cell(n),x0=p.x,y0=p.y;SFX.step(i);
+  await anim(reduce?1:520,k=>{p.x=x0+(x1-x0)*k;p.y=y0+(y1-y0)*k;p.lift=Math.sin(Math.PI*k)*.3});p.lift=0}
+async function slide(p,n,ms){const[x1,y1]=cell(n),x0=p.x,y0=p.y;
+  await anim(reduce?1:ms,k=>{const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;p.x=x0+(x1-x0)*e;p.y=y0+(y1-y0)*e;p.lift=Math.sin(Math.PI*k)*.12});p.lift=0}
+async function roll(){
+  if(G.busy||G.over||!G.started||G.paused)return;G.busy=true;const id=G.id,who=G.cur,p=G.players[who];
+  const S=async pr=>{await pr;await gate();if(id!==G.id)throw 0};
+  try{
+    ui();const n=1+Math.floor(Math.random()*6);msg.textContent=who?'Computer is rolling…':'Rolling…';
+    dw.classList.add('rolling');dice.classList.add('jump');showFace(n,true);SFX.rattle();vib(30);await S(wait(2450));
+    dice.classList.remove('jump');dw.classList.remove('rolling');SFX.thud();
+    msg.textContent=`${p.name} rolled a ${n}`;if(n===6){SFX.six();banner(p.in?'🎲 Rolled a 6! Extra turn':'🎲 A 6! Ready to start','six')}
+    let again=false;const target=p.pos+n;await S(wait(p.in?1000:1300));
+    if(!p.in){
+      if(n===6){p.in=true;ui();again=true;msg.textContent=`${p.name} can start now! Roll again`;await S(wait(1500))}
+      else{msg.textContent=`${p.name} need${who?'s':''} a 6 to start`;await S(wait(1500))}
+    }
+    else if(target>100){G.target=0;msg.textContent=`${p.name} need${who?'s':''} ${100-p.pos} or less to finish`;await S(wait(1600))}
+    else{
+      G.target=target;await S(wait(300));again=n===6;
+      const start=p.pos;G.tag={i:who,t:0};
+      for(let s=start+1;s<=target;s++){await S(hop(p,s,s));G.tag.t=s-start;ui();await S(wait(160))}
+      p.pos=target;ui();await S(wait(500));G.tag=null;G.target=0;
+      const sn=SNK[target],ld=LAD[target];
+      if(sn){banner(`🐍 Snake! ${target} → ${sn}`,'snake');msg.textContent=`Ouch! ${p.name} slid down to ${sn}`;SFX.snake();vib([80,60,120]);await S(wait(900));await S(slide(p,sn,2400));p.pos=sn;await S(wait(600))}
+      else if(ld){banner(`🪜 Ladder! ${target} → ${ld}`,'ladder');msg.textContent=`Yay! ${p.name} climbed up to ${ld}`;SFX.ladder();vib(60);await S(wait(900));await S(slide(p,ld,2000));p.pos=ld;await S(wait(600))}
+      if(p.pos===100){G.over=true;G.busy=false;ui();return finish(who)}
+    }
+    if(!again)G.cur=1-G.cur;
+    msg.textContent=G.cur===0?'Your turn. Tap the dice!':'Computer’s turn…';
+    G.busy=false;ui();if(G.cur===1)setTimeout(()=>{if(id===G.id)roll()},1700)
+  }catch(e){if(e!==0)throw e}}
+function finish(who){
+  confetti();who===0?SFX.win():SFX.lose();msg.textContent=who===0?'You won the game! 🎉':'Computer won this time.';
+  setTimeout(()=>{if(!G.over)return;show(`<h3>${who===0?'You won! 🏆':'Computer won 🤖'}</h3><p>${who===0?'Brilliant rolling! Ready for a rematch?':'So close! Want a rematch?'}</p>
+    <div class="row"><button class="go" id="again">Play again</button><button class="ghost" id="chg">Change setup</button></div>`);
+    $('again').onclick=()=>{ac();void (async()=>{if(await requestQuotaAttempt())startGame()})()};$('chg').onclick=showSetup},1800)}
+
+/* ---- controls ---- */
+dice.addEventListener('click',()=>{ac();if(G.cur===0)roll()});
+$('bPause').onclick=()=>{ac();SFX.click();if(G.paused){ov.hidden=true;setPaused(false)}else if(G.started&&!G.over){setPaused(true);showPause()}};
+$('bRestart').onclick=()=>{ac();SFX.click();confirmBox('Restart game?','Your board goes back to the start with the same settings.','Restart',()=>{void (async()=>{if(await requestQuotaAttempt())startGame()})()})};
+$('bNew').onclick=()=>{ac();SFX.click();confirmBox('Start a new game?','Your current game will be lost.','New game',()=>{void (async()=>{if(await requestQuotaAttempt())showSetup()})()})};
+$('bSnd').onclick=()=>{muted=!muted;if(!muted){ac();SFX.start()}ui()};
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&G.started&&!G.over&&!G.paused){setPaused(true);showPause()}});
+new ResizeObserver(resize).observe(wrap);window.addEventListener('resize',resize);
+showFace(1);resize();ui();showSetup();msg.textContent='Choose who starts, then press Start.';
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
