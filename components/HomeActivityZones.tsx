@@ -192,14 +192,14 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const confusingWordsOpenRef = useRef(false);
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | "snakes-ladders" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | "snakes-ladders" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess" | "snakes-ladders"; sessionId: string; consumed: boolean } | null>(null);
+  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const pendingClassicQuotaRef = useRef<Record<string, number>>({});
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
-  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | "snakes-ladders" | null>(null);
+  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | null>(null);
   const [signInPopup, setSignInPopup] = useState(false);
   useEffect(() => {
     if (!signInPopup) return;
@@ -209,6 +209,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [classicGameOpening, setClassicGameOpening] = useState(false);
   const chessFrameRef = useRef<HTMLIFrameElement | null>(null);
   const snakesFrameRef = useRef<HTMLIFrameElement | null>(null);
+  const solitaireFrameRef = useRef<HTMLIFrameElement | null>(null);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [riddleRemaining, setRiddleRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
@@ -216,7 +217,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess" | "snakes-ladders"; sessionId: string; consumed: boolean }) => {
+  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire"; sessionId: string; consumed: boolean }) => {
     if (session.consumed) return false;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
@@ -240,7 +241,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       return true;
     } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
   };
-  const startNextClassicAttempt = (gameType: "tic" | "chess" | "snakes-ladders") => {
+  const startNextClassicAttempt = (gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire") => {
     classicGameSessionRef.current = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameInteractedRef.current = false;
   };
@@ -329,10 +330,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "chess" | "snakes-ladders") => {
+  const openClassicGame = async (game: "tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire") => {
     setClassicQuotaNoticeFor(null);
     if (!userId) { setSignInPopup(true); return; }
-    const gameType: "tic" | "chess" | "snakes-ladders" = game === "chess" ? "chess" : game === "snakes-ladders" ? "snakes-ladders" : "tic";
+    const gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" = game === "chess" ? "chess" : game === "snakes-ladders" ? "snakes-ladders" : game === "ocean-solitaire" ? "ocean-solitaire" : "tic";
     setClassicGameOpening(true);
     try {
       // Check the current balance before showing the game, but charge only when
@@ -358,6 +359,22 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       setClassicQuota(current => ({ ...current, loading: false }));
     }
   };
+  useEffect(() => {
+    if (classicGameStarted !== "ocean-solitaire") return;
+    const handleSolitaireMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin || event.source !== solitaireFrameRef.current?.contentWindow) return;
+      const data = event.data as { type?: string; requestId?: string };
+      if (data?.type !== "shoppers-ocean-solitaire-attempt" || typeof data.requestId !== "string") return;
+      startNextClassicAttempt("ocean-solitaire");
+      const allowed = await registerClassicInteraction();
+      solitaireFrameRef.current?.contentWindow?.postMessage(
+        { type: "shoppers-ocean-solitaire-attempt-result", requestId: data.requestId, allowed },
+        window.location.origin
+      );
+    };
+    window.addEventListener("message", handleSolitaireMessage);
+    return () => window.removeEventListener("message", handleSolitaireMessage);
+  }, [classicGameStarted]);
   useEffect(() => {
     if (classicGameStarted !== "snakes-ladders") return;
     const handleSnakesMessage = async (event: MessageEvent) => {
@@ -532,7 +549,8 @@ useEffect(() => {
                     <div className="grid w-full grid-cols-1 gap-3">
                       <button type="button" onClick={() => void openClassicGame("chess")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-sky-600 via-blue-700 to-indigo-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">♟️ Ocean Chess</button>
                       <button type="button" onClick={() => void openClassicGame("snakes-ladders")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-emerald-500 via-teal-600 to-cyan-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">🐍🎲 Snake &amp; Ladders</button>
-                      <button type="button" onClick={() => void openClassicGame("tic-tac-toe")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">❌⭕ Tic Tac Toe</button>
+                      <button type="button" onClick={() => void openClassicGame("ocean-solitaire")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-teal-600 via-cyan-700 to-blue-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">🃏 Ocean Solitaire</button>
+                      <button type="button" onClick={() => void openClassicGame("tic-tac-toe") disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">❌⭕ Tic Tac Toe</button>
                     </div>
                     </div>
                   </div>
@@ -550,6 +568,10 @@ useEffect(() => {
                 ) : classicGameStarted === "snakes-ladders" ? (
                   <div className="w-full min-w-0 overflow-hidden rounded-2xl bg-[#150c33]">
                     <iframe ref={snakesFrameRef} title="Snake &amp; Ladders" src="/snakes-and-ladders-game.html" allow="autoplay" className="block w-full border-0" style={{ height: "min(960px, calc(100dvh - 150px))", minHeight: "620px" }} />
+                  </div>
+                ) : classicGameStarted === "ocean-solitaire" ? (
+                  <div className="w-full min-w-0 overflow-hidden rounded-2xl bg-[#06281c]">
+                    <iframe ref={solitaireFrameRef} title="Ocean Solitaire" src="/solitaire-backup-undo-hint.html" allow="autoplay" className="block w-full border-0" style={{ height: "min(900px, calc(100dvh - 150px))", minHeight: "620px" }} />
                   </div>
                 ) : (
                   <ColourfulTicTacToe
