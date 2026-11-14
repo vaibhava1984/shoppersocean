@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Solitaire</title>
+<title>Ocean Solitaire</title>
 <style>
 html,body{height:100%;margin:0;background:#06281c}
 /* Everything is scoped to .sol. Embedding inline? Set --sol-h on a parent (e.g. 700px); default fills the screen. */
@@ -222,6 +222,24 @@ function release(e,cancel){const d=D;D=null;if(!d)return;if(d.tapStock){if(!canc
 tbl.addEventListener('pointerup',e=>release(e,false));tbl.addEventListener('pointercancel',e=>release(e,true));
 
 /* ================= GAME FLOW ================= */
+let attemptSequence=0;
+function requestAttempt(){
+  if(window.parent===window)return Promise.resolve(true);
+  const requestId='ocean-solitaire:'+Date.now()+':'+(++attemptSequence);
+  return new Promise(resolve=>{
+    let settled=false;
+    const finish=allowed=>{if(settled)return;settled=true;clearTimeout(timeout);window.removeEventListener('message',onMessage);resolve(allowed)};
+    const onMessage=event=>{
+      if(event.origin!==window.location.origin||event.source!==window.parent)return;
+      const data=event.data||{};
+      if(data.type==='shoppers-ocean-solitaire-attempt-result'&&data.requestId===requestId)finish(data.allowed===true);
+    };
+    const timeout=setTimeout(()=>finish(false),12000);
+    window.addEventListener('message',onMessage);
+    window.parent.postMessage({type:'shoppers-ocean-solitaire-attempt',requestId},window.location.origin);
+  });
+}
+async function dealNewGame(){ac();const allowed=await requestAttempt();if(allowed)newGame(mode);else say('Your game quota is unavailable. Please try again.')}
 function newGame(draw){mode=draw;S.draw=draw;hist=[];S.moves=0;S.score=0;S.time=0;S.started=false;S.won=false;S.auto=true;ov.hidden=true;
   tbl.querySelectorAll('.c').forEach(e=>e.remove());cards=[];tbl.classList.add('nt');
   for(let s=0;s<4;s++)for(let r=1;r<=13;r++){const el=document.createElement('div');el.className='c down';el.innerHTML=cardInner(s,r);const c={id:cards.length,s,r,up:false,el,x:0,y:0,d:null};el.dataset.i=c.id;cards.push(c);tbl.appendChild(el)}
@@ -229,13 +247,13 @@ function newGame(draw){mode=draw;S.draw=draw;hist=[];S.moves=0;S.score=0;S.time=
   S.stock=deck;S.waste=[];S.found=[[],[],[],[]];S.tab=[[],[],[],[],[],[],[]];metrics();layoutAll();void tbl.offsetWidth;tbl.classList.remove('nt');
   let o=0;for(let r=0;r<7;r++)for(let k=r;k<7;k++){const c=S.stock.pop();c.up=r===k;c.d=o++;S.tab[k].push(c)}
   layoutAll(true);SFX.riffle(28);setTimeout(()=>{cards.forEach(c=>{c.d=null;c.el.style.transitionDelay='0ms'});S.auto=false},1800)}
-function setup(){ov.innerHTML=`<div class="box"><h3>♠ Solitaire ♥</h3><p>Classic Klondike. Drag cards, or tap a card to send it where it fits.</p>
+function setup(){ov.innerHTML=`<div class="box"><h3>🌊 Ocean Solitaire</h3><p>Classic Klondike. Drag cards, or tap a card to send it where it fits.</p>
   <div class="seg" id="seg"><button data-m="1" aria-pressed="${mode===1}">Draw 1</button><button data-m="3" aria-pressed="${mode===3}">Draw 3</button></div><button class="go" id="deal">Deal cards</button></div>`;ov.hidden=false;
   ov.querySelectorAll('#seg button').forEach(b=>b.onclick=()=>{mode=+b.dataset.m;ov.querySelectorAll('#seg button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
-  $('deal').onclick=()=>{ac();newGame(mode)}}
+  $('deal').onclick=()=>{void dealNewGame()}}
 function showWin(){const cf=Array.from({length:40},(_,i)=>`<i style="left:${Math.random()*100}%;background:${['#f4c542','#ef4444','#38bdf8','#4ade80','#fff'][i%5]};animation-delay:${Math.random()*3}s"></i>`).join('');
   ov.innerHTML=`<div class="cf">${cf}</div><div class="box"><h3>🏆 You won!</h3><p>${S.moves} moves · ${$('tm').textContent} · ${S.score} points</p><div class="row"><button class="go" id="again">Play again</button><button class="ghost" id="chg">Change mode</button></div></div>`;
-  ov.hidden=false;$('again').onclick=()=>{ac();newGame(mode)};$('chg').onclick=setup}
+  ov.hidden=false;$('again').onclick=()=>{void dealNewGame()};$('chg').onclick=setup}
 $('bUndo').onclick=()=>{ac();undo()};$('bHint').onclick=()=>{ac();hint()};
 $('bNew').onclick=()=>{ac();SFX.pick();if(S.started&&!S.won){ov.innerHTML=`<div class="box"><h3>Start a new game?</h3><p>Your current game will be lost.</p><div class="row"><button class="ghost" id="no">Keep playing</button><button class="go" id="yes" style="font-size:16px;padding:11px 24px">New game</button></div></div>`;
   ov.hidden=false;$('no').onclick=()=>ov.hidden=true;$('yes').onclick=setup}else setup()};
