@@ -562,16 +562,16 @@ useEffect(() => {
                       src="/ocean-chess.html"
                       allow="autoplay"
                       className="w-full rounded-2xl border-0 bg-[#e8f2f1]"
-                      style={{ height: "min(900px, calc(100dvh - 170px))", minHeight: "620px" }}
+                      style={{ height: "min(900px, calc(100dvh - 170px))", minHeight: "620px", touchAction: "pan-x pan-y pinch-zoom" }}
                     />
                   </div>
                 ) : classicGameStarted === "snakes-ladders" ? (
                   <div className="w-full min-w-0 overflow-hidden rounded-2xl bg-[#150c33]">
-                    <iframe ref={snakesFrameRef} title="Snake &amp; Ladders" src="/snakes-and-ladders-game.html" allow="autoplay" className="block w-full border-0" style={{ height: "min(960px, calc(100dvh - 150px))", minHeight: "620px" }} />
+                    <iframe ref={snakesFrameRef} title="Snake &amp; Ladders" src="/snakes-and-ladders-game.html" allow="autoplay" className="block w-full border-0" style={{ height: "min(960px, calc(100dvh - 150px))", minHeight: "620px", touchAction: "pan-x pan-y pinch-zoom" }} />
                   </div>
                 ) : classicGameStarted === "ocean-solitaire" ? (
                   <div className="w-full min-w-0 overflow-hidden rounded-2xl bg-[#06281c]">
-                    <iframe ref={solitaireFrameRef} title="Ocean Solitaire" src="/solitaire-backup-undo-hint.html" allow="autoplay" className="block w-full border-0" style={{ height: "min(900px, calc(100dvh - 150px))", minHeight: "620px" }} />
+                    <iframe ref={solitaireFrameRef} title="Ocean Solitaire" src="/solitaire-backup-undo-hint.html" allow="autoplay" className="block w-full border-0" style={{ height: "min(900px, calc(100dvh - 150px))", minHeight: "620px", touchAction: "pan-x pan-y pinch-zoom" }} />
                   </div>
                 ) : (
                   <ColourfulTicTacToe
