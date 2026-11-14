@@ -192,14 +192,14 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const confusingWordsOpenRef = useRef(false);
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | "snakes-ladders" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | "snakes-ladders" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess" | "snakes-ladders"; sessionId: string; consumed: boolean } | null>(null);
+  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const pendingClassicQuotaRef = useRef<Record<string, number>>({});
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
-  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | "snakes-ladders" | null>(null);
+  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | null>(null);
   const [signInPopup, setSignInPopup] = useState(false);
   useEffect(() => {
     if (!signInPopup) return;
@@ -208,7 +208,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   }, [signInPopup]);
   const [classicGameOpening, setClassicGameOpening] = useState(false);
   const chessFrameRef = useRef<HTMLIFrameElement | null>(null);
-  const snakesLaddersFrameRef = useRef<HTMLIFrameElement | null>(null);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [riddleRemaining, setRiddleRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
@@ -216,7 +215,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess" | "snakes-ladders"; sessionId: string; consumed: boolean }) => {
+  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess"; sessionId: string; consumed: boolean }) => {
     if (session.consumed) return false;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
@@ -240,7 +239,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       return true;
     } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
   };
-  const startNextClassicAttempt = (gameType: "tic" | "chess" | "snakes-ladders") => {
+  const startNextClassicAttempt = (gameType: "tic" | "chess") => {
     classicGameSessionRef.current = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameInteractedRef.current = false;
   };
@@ -329,10 +328,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "chess" | "snakes-ladders") => {
+  const openClassicGame = async (game: "tic-tac-toe" | "chess") => {
     setClassicQuotaNoticeFor(null);
     if (!userId) { setSignInPopup(true); return; }
-    const gameType: "tic" | "chess" | "snakes-ladders" = game === "chess" ? "chess" : game === "snakes-ladders" ? "snakes-ladders" : "tic";
+    const gameType: "tic" | "chess" = game === "chess" ? "chess" : "tic";
     setClassicGameOpening(true);
     try {
       // Check the current balance before showing the game, but charge only when
@@ -358,20 +357,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       setClassicQuota(current => ({ ...current, loading: false }));
     }
   };
-  useEffect(() => {
-    if (classicGameStarted !== "snakes-ladders") return;
-    const handleSnakesLaddersMessage = async (event: MessageEvent) => {
-      if (event.origin !== window.location.origin || event.source !== snakesLaddersFrameRef.current?.contentWindow) return;
-      const data = event.data as { type?: string; requestId?: string; reason?: string };
-      if (data?.type !== "shoppers-ocean-snl-attempt" || typeof data.requestId !== "string") return;
-      // Opening the game is free. The first roll consumes one attempt; Restart, New Game and Play Again each consume a fresh attempt.
-      if (data.reason === "restart" || data.reason === "new-game" || data.reason === "replay") startNextClassicAttempt("snakes-ladders");
-      const allowed = await registerClassicInteraction();
-      snakesLaddersFrameRef.current?.contentWindow?.postMessage({ type: "shoppers-ocean-snl-attempt-result", requestId: data.requestId, allowed }, window.location.origin);
-    };
-    window.addEventListener("message", handleSnakesLaddersMessage);
-    return () => window.removeEventListener("message", handleSnakesLaddersMessage);
-  }, [classicGameStarted]);
   useEffect(() => {
     if (classicGameStarted !== "chess") return;
     const handleChessMessage = async (event: MessageEvent) => {
@@ -491,7 +476,7 @@ useEffect(() => {
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
             {!englishTopicOpen && !oneWordSubstituteOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-col items-start gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null || englishAcademyEntered || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button>{(classicGameStarted === "chess" || classicGameStarted === "snakes-ladders") && <p className="text-sm font-black text-indigo-800">{classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType[classicGameStarted === "chess" ? "chess" : "snakes-ladders"] ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}</p>}</div>
+                <div className="flex flex-col items-start gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null || englishAcademyEntered || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button>{classicGameStarted === "chess" && <p className="text-sm font-black text-indigo-800">{classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.chess ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}</p>}</div>
                 {activeQuizGame === null && !classicGameStarted && selected.action !== "games" && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>            )}
             {selected.action === "games" && (
@@ -530,7 +515,6 @@ useEffect(() => {
                     <div className="grid w-full grid-cols-1 gap-3">
                       <button type="button" onClick={() => void openClassicGame("chess")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-sky-600 via-blue-700 to-indigo-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">♟️ Ocean Chess</button>
                       <button type="button" onClick={() => void openClassicGame("tic-tac-toe")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">❌⭕ Tic Tac Toe</button>
-                      <button type="button" onClick={() => void openClassicGame("snakes-ladders")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-violet-600 via-purple-700 to-indigo-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">🐍🪜 Snakes &amp; Ladders</button>
                     </div>
                     </div>
                   </div>
@@ -544,10 +528,6 @@ useEffect(() => {
                       className="w-full rounded-2xl border-0 bg-[#e8f2f1]"
                       style={{ height: "min(900px, calc(100dvh - 170px))", minHeight: "620px" }}
                     />
-                  </div>
-                ) : classicGameStarted === "snakes-ladders" ? (
-                  <div className="mx-auto w-full min-w-0 max-w-[560px] overflow-hidden rounded-2xl bg-[#150c33] shadow-xl">
-                    <iframe ref={snakesLaddersFrameRef} title="Snakes and Ladders" src="/snakes-and-ladders.html" allow="autoplay" className="block w-full border-0" style={{ height: "min(960px, calc(100dvh - 170px))", minHeight: "560px" }} />
                   </div>
                 ) : (
                   <ColourfulTicTacToe
