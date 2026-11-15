@@ -43,27 +43,33 @@ async function correctEnglish(ai: any, source: string): Promise<string> {
   if (!ai || typeof ai.run !== "function") {
     throw new Error("The correction service is temporarily unavailable. Please try again later.");
   }
-  const response = await ai.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", {
-    messages: [
-      {
-        role: "system",
-        content: [
-          "You are a precise English spelling, grammar and punctuation correction engine.",
-          "Correct the user's English word or single sentence. Return ONLY the corrected word or sentence, with no explanation, labels, quotation marks, markdown, or mention of the model.",
-          "Preserve the original meaning, intended tense, time references, names, and wording wherever possible. Never change the facts or time reference.",
-          "Use standard Indian/British English spelling and grammar (for example, haemorrhage, colour, centre, organise).",
-          "Correct spelling, verb tense, subject-verb agreement, articles, prepositions, pronouns, plurals, word order, and punctuation where needed.",
-          "If the input is already correct, return it unchanged. Add appropriate terminal punctuation only when missing; use a question mark for a question, not a full stop.",
-          "For a misspelled single word, return its most likely correct spelling. Do not offer multiple guesses.",
-          "Do not rewrite a correct sentence for style. Do not add facts or explanations."
-        ].join(" ")
-      },
-      { role: "user", content: source }
-    ],
-    max_tokens: 128,
-    temperature: 0,
-    top_p: 1
-  });
+  let response: any;
+  try {
+    response = await ai.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", {
+      messages: [
+        {
+          role: "system",
+          content: [
+            "You are a precise English spelling, grammar and punctuation correction engine.",
+            "Correct the user's English word or single sentence. Return ONLY the corrected word or sentence, with no explanation, labels, quotation marks, markdown, or mention of the model.",
+            "Preserve the original meaning, intended tense, time references, names, and wording wherever possible. Never change the facts or time reference.",
+            "Use standard Indian/British English spelling and grammar (for example, haemorrhage, colour, centre, organise).",
+            "Correct spelling, verb tense, subject-verb agreement, articles, prepositions, pronouns, plurals, word order, and punctuation where needed.",
+            "If the input is already correct, return it unchanged. Add appropriate terminal punctuation only when missing; use a question mark for a question, not a full stop.",
+            "For a misspelled single word, return its most likely correct spelling. Do not offer multiple guesses.",
+            "Do not rewrite a correct sentence for style. Do not add facts or explanations."
+          ].join(" ")
+        },
+        { role: "user", content: source }
+      ],
+      max_tokens: 128,
+      temperature: 0,
+      top_p: 1
+    });
+  } catch (error) {
+    console.error("Correct My Language inference failed:", error);
+    throw new Error("The correction service is temporarily unavailable. Please try again.");
+  }
   let corrected = typeof response?.response === "string"
     ? response.response
     : typeof response?.choices?.[0]?.message?.content === "string"

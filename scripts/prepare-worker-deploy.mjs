@@ -12,6 +12,7 @@ const config = {
   main: "custom-worker.ts",
   compatibility_date: "2026-10-25",
   compatibility_flags: ["nodejs_compat"],
+  ai: { binding: "AI" },
   vars: {
     B2_BUCKET: "Shoppers-ocean-books",
     B2_ENDPOINT: "s3.us-west-004.backblazeb2.com",
