@@ -391,6 +391,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       if (event.origin !== window.location.origin || event.source !== archeryFrameRef.current?.contentWindow) return;
       const data = event.data as { type?: string; requestId?: string };
       if (data?.type !== "shoppers-ocean-archery3d-attempt" || typeof data.requestId !== "string") return;
+      // Each explicit Archery start/retry is a fresh quota attempt. Stage progression does not send this request.
+      startNextClassicAttempt("archery3d");
       const allowed = await registerClassicInteraction();
       archeryFrameRef.current?.contentWindow?.postMessage(
         { type: "shoppers-ocean-archery3d-attempt-result", requestId: data.requestId, allowed },
