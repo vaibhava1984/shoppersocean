@@ -307,8 +307,8 @@ export default function EntertainmentHub({userId,visibleGroupIds,initialGroupId,
 
  {game==="books"&&<div className="max-w-xl"><h3 className="text-xl font-black not-italic">Stories from Around the World</h3><p className="my-3 text-sm not-italic leading-6 text-slate-600">Explore flipbooks already available on Shoppers Ocean. Browse languages, discover genres, and find your next short read.</p><Link href="/bookShelf" className={`inline-flex ${btn}`}>Explore Flipbooks →</Link></div>}
  </>}
- </div></div>}
- </div></section>}
+ </div></div></div>}
+ </section>}
 
  {userId&&!isAdmin&&!isSubscribed&&<Link href="/subscribe-now" className="fixed bottom-5 right-4 z-[105] inline-flex items-center gap-2 rounded-full border border-white/80 bg-gradient-to-r from-amber-300 via-yellow-300 to-amber-400 px-4 py-2.5 text-xs font-black text-slate-900 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl sm:right-6 sm:px-5 sm:text-sm" aria-label="View Shoppers Ocean subscription plans"><span aria-hidden="true">✨</span> Subscribe Now <span aria-hidden="true">→</span></Link>}
  {notice&&<div role="status" className="fixed bottom-5 left-1/2 z-[120] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 rounded-2xl border border-amber-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-2xl">{notice}<button type="button" onClick={()=>setNotice("")} className="ml-3 font-black text-blue-700">Dismiss</button></div>}
