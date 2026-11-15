@@ -177,7 +177,7 @@ function requestArcheryAttempt(){
   window.parent.postMessage({type:'shoppers-ocean-archery3d-attempt',requestId},window.location.origin);
  });
 }
-async function play(i){if(!await requestArcheryAttempt()){menu('Quota unavailable','Your Archery 3D attempt could not be verified. Please return to Classic Games and check your quota.',[['Back to menu',home,'alt']]);return;}A();cs=i;shots=0;total=0;paused=false;theme(i);setRound();newWind();ov.style.display='none';st='aim';hud();$('cross').style.display='block'}
+async function play(i,consumeQuota=true){if(consumeQuota&&!await requestArcheryAttempt()){menu('Quota unavailable','Your Archery 3D attempt could not be verified. Please return to Classic Games and check your quota.',[['Back to menu',home,'alt']]);return;}A();cs=i;shots=0;total=0;paused=false;theme(i);setRound();newWind();ov.style.display='none';st='aim';hud();$('cross').style.display='block'}
 function setRound(){const s=ST[cs];D=s.d;target.position.set(0,1.6,-D);legs.visible=!(s.ax||s.ay);
  for(let i=target.children.length-1;i>=0;i--)if(target.children[i].userData.a)target.remove(target.children[i]);loose.splice(0).forEach(a=>sc.remove(a))}
 const newWind=()=>{wind=(rnd()*2-1)*ST[cs].w};
@@ -207,7 +207,7 @@ function step(dt){const f=fl;f.v.y-=9.8*dt;f.v.x+=wind*dt;const prev=f.p.clone()
  if(f.p.y<=.02||f.p.z<-D-40){f.p.y=Math.max(f.p.y,.02);land(f.p.clone(),0)}}
 function fin(){st='over';const win=total>=GOAL,k=total>=43?3:total>=35?2:total>=GOAL?1:0,last=cs===ST.length-1;
  if(win){P.s[cs]=Math.max(P.s[cs]||0,k);P.u=Math.max(P.u,Math.min(cs+2,ST.length));save();S.win()}else S.lose();
- const b=[];if(win&&!last)b.push(['Next stage',()=>play(cs+1)]);b.push(['Retry',()=>play(cs),win&&!last?'alt':'']);b.push(['Stages',stages,'alt']);
+ const b=[];if(win&&!last)b.push(['Next stage',()=>play(cs+1,false)]);b.push(['Retry',()=>play(cs),win&&!last?'alt':'']);b.push(['Stages',stages,'alt']);
  menu(win?(last?'Champion!':'Stage cleared'):'Not quite',(win?'★'.repeat(k)+'☆'.repeat(3-k)+'<br>':'')+'Score '+total+' of '+N*10+'. You need '+GOAL+' to pass.',b)}
 let last=performance.now();
 (function loop(now){requestAnimationFrame(loop);const dt=Math.min(.05,(now-last)/1000);last=now;
