@@ -31,7 +31,6 @@ async function getContext(req: Request) {
 
 async function payload(context: any) {
   const date = today();
-  const table = context.privileged ? "correct_my_language_daily_usage" : "correct_my_language_free_usage";
   const row = context.privileged
     ? await context.db.prepare("SELECT attempts_used FROM correct_my_language_daily_usage WHERE user_id=? AND usage_date=?").bind(context.user.id, date).first<any>()
     : await context.db.prepare("SELECT attempts_used FROM correct_my_language_free_usage WHERE user_id=?").bind(context.user.id).first<any>();
