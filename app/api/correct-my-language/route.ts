@@ -26,7 +26,7 @@ async function getContext(req: Request) {
   if (!admin && String(subscription?.status ?? "").toLowerCase() === "active" && (!subscription?.expires_at || !Number.isFinite(expiry) || expiry <= Date.now())) {
     await db.prepare("UPDATE user_subscriptions SET status='expired',updated_at=? WHERE user_id=? AND status='active'").bind(new Date().toISOString(), user.id).run();
   }
-  return { db, user, account, admin, subscribed, privileged: admin || subscribed, userName: String(account?.full_name ?? user.full_name ?? "").trim().split(/\\s+/)[0] };
+  return { db, user, account, admin, subscribed, privileged: admin || subscribed, userName: String(account?.full_name ?? user.full_name ?? "").trim().split(/\s+/)[0] };
 }
 
 async function payload(context: any) {
@@ -43,7 +43,7 @@ async function payload(context: any) {
 export async function GET(req: Request) {
   try {
     const context = await getContext(req);
-    if (context.response) return context.response;
+    if ("response" in context && context.response) return context.response;
     return NextResponse.json(await payload(context), { headers });
   } catch (error) {
     console.error("Correct My Language access failed:", error);
@@ -54,13 +54,13 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const context = await getContext(req);
-    if (context.response) return context.response;
+    if ("response" in context && context.response) return context.response;
     let body: any = {};
     try { body = await req.json(); } catch {}
     const text = typeof body.text === "string" ? body.text.trim() : "";
-    const letters = text.match(/[\\p{L}]/gu) ?? [];
-    const latin = text.match(/[\\p{Script=Latin}]/gu) ?? [];
-    if (body.processed !== true || !text || text.length > 3000 || !letters.length || latin.length / letters.length < 0.9 || /[\\p{Script=Devanagari}\\p{Script=Arabic}\\p{Script=Cyrillic}\\p{Script=Han}\\p{Script=Hangul}]/u.test(text)) {
+    const letters = text.match(/[\p{L}]/gu) ?? [];
+    const latin = text.match(/[\p{Script=Latin}]/gu) ?? [];
+    if (body.processed !== true || !text || text.length > 3000 || !letters.length || latin.length / letters.length < 0.9 || /[\p{Script=Devanagari}\p{Script=Arabic}\p{Script=Cyrillic}\p{Script=Han}\p{Script=Hangul}]/u.test(text)) {
       return NextResponse.json({ error: "Please submit valid English text for correction." }, { status: 400, headers });
     }
     const date = today();
