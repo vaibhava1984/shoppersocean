@@ -62,15 +62,15 @@ const regularPastVerbs = [
 ];
 
 function applyClearPastTenseHints(text: string) {
-  const pastContext = /\\b(yesterday|last\\s+(?:night|week|month|year|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|\\d+\\s+days?\\s+ago|\\d+\\s+weeks?\\s+ago|earlier)\\b/i;
-  return text.split(/(?<=[.!?])\\s+/).map(sentence => {
+  const pastContext = /\b(yesterday|last\s+(?:night|week|month|year|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|\d+\s+days?\s+ago|\d+\s+weeks?\s+ago|earlier)\b/i;
+  return text.split(/(?<=[.!?])\s+/).map(sentence => {
     if (!pastContext.test(sentence)) return sentence;
     let corrected = sentence;
     const replaceVerb = (word: string, replacement: string) => {
-      const pattern = new RegExp(\\`\\\\b${word}\\\\b\\`, "gi");
+      const pattern = new RegExp("\\b" + word + "\\b", "gi");
       corrected = corrected.replace(pattern, (match, offset: number) => {
         const before = corrected.slice(Math.max(0, offset - 14), offset);
-        if (/\\b(?:can|could|may|might|must|shall|should|will|would|to)\\s*$/i.test(before)) return match;
+        if (/\b(?:can|could|may|might|must|shall|should|will|would|to)\s*$/i.test(before)) return match;
         return match === match.toUpperCase() ? replacement.toUpperCase()
           : match[0] === match[0].toUpperCase() ? replacement[0].toUpperCase() + replacement.slice(1)
           : replacement;
