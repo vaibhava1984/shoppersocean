@@ -26,7 +26,7 @@ async function getContext(req: Request) {
   if (!admin && String(subscription?.status ?? "").toLowerCase() === "active" && (!subscription?.expires_at || !Number.isFinite(expiry) || expiry <= Date.now())) {
     await db.prepare("UPDATE user_subscriptions SET status='expired',updated_at=? WHERE user_id=? AND status='active'").bind(new Date().toISOString(), user.id).run();
   }
-  return { db, user, account, admin, subscribed, privileged: admin || subscribed, userName: String(account?.full_name ?? user.full_name ?? "").trim().split(/\s+/)[0] };
+  return { db, user, account, admin, subscribed, privileged: admin || subscribed, userName: String(account?.full_name ?? user.full_name ?? "").trim().split(/\s+/)[0], ai: (env as any).AI };
 }
 
 async function payload(context: any) {
@@ -37,6 +37,46 @@ async function payload(context: any) {
   const used = Number(row?.attempts_used ?? 0);
   const limit = context.privileged ? DAILY_LIMIT : FREE_LIMIT;
   return { remaining: Math.max(0, limit - used), limit, used, isPrivileged: context.privileged, userName: context.userName };
+}
+
+async function correctEnglish(ai: any, source: string): Promise<string> {
+  if (!ai || typeof ai.run !== "function") {
+    throw new Error("The correction service is temporarily unavailable. Please try again later.");
+  }
+  const response = await ai.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", {
+    messages: [
+      {
+        role: "system",
+        content: [
+          "You are a precise English spelling, grammar and punctuation correction engine.",
+          "Correct the user's English word or single sentence. Return ONLY the corrected word or sentence, with no explanation, labels, quotation marks, markdown, or mention of the model.",
+          "Preserve the original meaning, intended tense, time references, names, and wording wherever possible. Never change the facts or time reference.",
+          "Use standard Indian/British English spelling and grammar (for example, haemorrhage, colour, centre, organise).",
+          "Correct spelling, verb tense, subject-verb agreement, articles, prepositions, pronouns, plurals, word order, and punctuation where needed.",
+          "If the input is already correct, return it unchanged. Add appropriate terminal punctuation only when missing; use a question mark for a question, not a full stop.",
+          "For a misspelled single word, return its most likely correct spelling. Do not offer multiple guesses.",
+          "Do not rewrite a correct sentence for style. Do not add facts or explanations."
+        ].join(" ")
+      },
+      { role: "user", content: source }
+    ],
+    max_tokens: 128,
+    temperature: 0,
+    top_p: 1
+  });
+  let corrected = typeof response?.response === "string"
+    ? response.response
+    : typeof response?.choices?.[0]?.message?.content === "string"
+      ? response.choices[0].message.content
+      : "";
+  corrected = corrected.trim();
+  if ((corrected.startsWith('"') && corrected.endsWith('"')) || (corrected.startsWith("'") && corrected.endsWith("'"))) {
+    corrected = corrected.slice(1, -1).trim();
+  }
+  if (!corrected || corrected.length > 200 || /^(?:i cannot|i'm unable|sorry,? i cannot)/i.test(corrected)) {
+    throw new Error("The correction service could not process this text. Please try again.");
+  }
+  return corrected;
 }
 
 export async function GET(req: Request) {
@@ -57,10 +97,31 @@ export async function POST(req: Request) {
     let body: any = {};
     try { body = await req.json(); } catch {}
     const text = typeof body.text === "string" ? body.text.trim() : "";
+    if (body.action === "correct") {
+      const letters = text.match(/[\p{L}]/gu) ?? [];
+      const latin = text.match(/[\p{Script=Latin}]/gu) ?? [];
+      if (!text || text.length > 100 || /[\r\n]/.test(text)) {
+        return NextResponse.json({ error: "Check your word or sentence." }, { status: 400, headers });
+      }
+      if (!letters.length || latin.length / letters.length < 0.9 || /[\p{Script=Devanagari}\p{Script=Arabic}\p{Script=Cyrillic}\p{Script=Han}\p{Script=Hangul}]/u.test(text)) {
+        return NextResponse.json({ error: "Please enter your word or sentence in English." }, { status: 400, headers });
+      }
+      const current = await payload(context);
+      if (current.remaining <= 0) {
+        return NextResponse.json({
+          error: context.privileged
+            ? "Your daily quota for Correct My Language has been exhausted."
+            : "Your free quota for Correct My Language has been exhausted. Please subscribe to continue.",
+          remaining: 0
+        }, { status: 403, headers });
+      }
+      const corrected = await correctEnglish(context.ai, text);
+      return NextResponse.json({ corrected }, { headers });
+    }
     const letters = text.match(/[\p{L}]/gu) ?? [];
     const latin = text.match(/[\p{Script=Latin}]/gu) ?? [];
-    if (body.processed !== true || !text || text.length > 150 || !letters.length || latin.length / letters.length < 0.9 || /[\p{Script=Devanagari}\p{Script=Arabic}\p{Script=Cyrillic}\p{Script=Han}\p{Script=Hangul}]/u.test(text)) {
-      return NextResponse.json({ error: "Please submit valid English text for correction." }, { status: 400, headers });
+    if (body.processed !== true || !text || text.length > 100 || !letters.length || latin.length / letters.length < 0.9 || /[\p{Script=Devanagari}\p{Script=Arabic}\p{Script=Cyrillic}\p{Script=Han}\p{Script=Hangul}]/u.test(text)) {
+      return NextResponse.json({ error: "Check your word or sentence." }, { status: 400, headers });
     }
     const date = today();
     let row: any;
