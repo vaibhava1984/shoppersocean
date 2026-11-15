@@ -234,7 +234,7 @@ export default function EntertainmentHub({userId,visibleGroupIds,initialGroupId,
    if(!data||data.type!==requestType||typeof data.requestId!=="string")return;
    if(!classicAttemptPromise.current)classicAttemptPromise.current=recordAttempt(game+":iframe-round:"+data.requestId,"Classic game attempt "+game+" "+data.requestId);
    const allowed=await classicAttemptPromise.current;
-   if(!allowed)classicAttemptPromise.current=null;
+   if(!allowed||game==="archery3d")classicAttemptPromise.current=null;
    (event.source as Window).postMessage({type:resultType,requestId:data.requestId,allowed},event.origin);
   };
   window.addEventListener("message",handleAttempt);
