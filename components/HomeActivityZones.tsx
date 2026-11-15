@@ -16,6 +16,7 @@ import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 import ConfusingWords from "@/components/ConfusingWords";
 import OneWordSubstitute from "@/components/OneWordSubstitute";
 import CorrectMyLanguage from "@/components/CorrectMyLanguage";
+import TranslateMyLanguage from "@/components/TranslateMyLanguage";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -190,6 +191,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [confusingWordsOpen, setConfusingWordsOpen] = useState(false);
   const [oneWordSubstituteOpen, setOneWordSubstituteOpen] = useState(false);
   const [correctMyLanguageOpen, setCorrectMyLanguageOpen] = useState(false);
+  const [translateMyLanguageOpen, setTranslateMyLanguageOpen] = useState(false);
+  const translateMyLanguageOpenRef = useRef(false);
   const correctMyLanguageOpenRef = useRef(false);
   const oneWordSubstituteOpenRef = useRef(false);
   const confusingWordsOpenRef = useRef(false);
@@ -273,6 +276,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         setActiveQuizGame(null);
         return;
       }
+      if (translateMyLanguageOpenRef.current) { translateMyLanguageOpenRef.current = false; setTranslateMyLanguageOpen(false); return; }
       if (correctMyLanguageOpenRef.current) {
         correctMyLanguageOpenRef.current = false;
         setCorrectMyLanguageOpen(false);
@@ -327,6 +331,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     oneWordSubstituteOpenRef.current = false;
     setCorrectMyLanguageOpen(false);
     correctMyLanguageOpenRef.current = false;
+    setTranslateMyLanguageOpen(false);
+    translateMyLanguageOpenRef.current = false;
     classicGameStartedRef.current = false;
     setClassicGameStarted(false);
     activeQuizGameRef.current = null;
@@ -516,7 +522,7 @@ useEffect(() => {
           </>
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
-            {!englishTopicOpen && !oneWordSubstituteOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            {!englishTopicOpen && !oneWordSubstituteOpen && !translateMyLanguageOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-col items-start gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null || englishAcademyEntered || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button>{(classicGameStarted === "chess" || classicGameStarted === "snakes-ladders" || classicGameStarted === "ocean-solitaire") && <p className="text-sm font-black text-indigo-800">{classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType[classicGameStarted === "chess" ? "chess" : classicGameStarted === "snakes-ladders" ? "snakes-ladders" : "ocean-solitaire"] ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}</p>}</div>
                 {activeQuizGame === null && !classicGameStarted && selected.action !== "games" && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>            )}
@@ -602,7 +608,9 @@ useEffect(() => {
             )}
             {selected.action === "learning" && (
               <div ref={activityTargetRef} className="w-full" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button"); if (button?.textContent?.trim() === "← Back" && event.currentTarget.querySelector('h4[style*="scroll-margin-top"]')) { event.preventDefault(); event.stopPropagation(); window.history.back(); } }}>
-                {correctMyLanguageOpen ? (
+                {translateMyLanguageOpen ? (
+                  <TranslateMyLanguage userId={userId} onBack={() => window.history.back()} />
+                ) : correctMyLanguageOpen ? (
                   <CorrectMyLanguage userId={userId} />
                 ) : oneWordSubstituteOpen ? (
                   <OneWordSubstitute userId={userId} />
@@ -625,6 +633,10 @@ useEffect(() => {
                     <button type="button" onClick={() => { if (!userId) { setSignInPopup(true); return; } window.history.pushState({ shoppersOceanLearning: true, shoppersOceanTool: "correct-my-language" }, "", window.location.href); correctMyLanguageOpenRef.current = true; setCorrectMyLanguageOpen(true); }} className="group w-full rounded-2xl border border-violet-300 bg-gradient-to-br from-violet-50 via-white to-fuchsia-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-200">
                       <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">✍️</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-violet-800">Open →</span></span>
                       <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-violet-800">Correct My Language</span>
+                    </button>
+                    <button type="button" onClick={() => { if (!userId) { setSignInPopup(true); return; } window.history.pushState({ shoppersOceanLearning: true, shoppersOceanTool: "translate-my-language" }, "", window.location.href); translateMyLanguageOpenRef.current = true; setTranslateMyLanguageOpen(true); }} className="group w-full rounded-2xl border border-blue-300 bg-gradient-to-br from-blue-50 via-white to-cyan-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200">
+                      <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">🌐</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-blue-800">Open →</span></span>
+                      <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-blue-800">Translate My Language</span>
                     </button>
                   </div>
                 ) : (
