@@ -78,7 +78,7 @@ function ticBestMove(board: TicMark[], difficulty: TicDifficulty): number {
   return best;
 }
 
-function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: string; onPlayed: () => Promise<boolean>; onNewGame: (finished: boolean) => Promise<boolean> }) {
+function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: string; onPlayed: () => void; onNewGame: (finished: boolean) => Promise<boolean> }) {
   const [mode,setMode]=useState<TicMode>("computer");
   const [difficulty,setDifficulty]=useState<TicDifficulty>("medium");
   const [board,setBoard]=useState<TicMark[]>(Array(9).fill(null));
@@ -135,9 +135,9 @@ function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: str
     return ()=>window.clearTimeout(timer);
   },[mode,turn,finished,difficulty,board]);
 
-  const playCell=async (index:number)=>{
+  const playCell=(index:number)=>{
     if (board[index] || finished || thinking || (mode==="computer" && turn!=="X")) return;
-    if (!(await onPlayed())) return;
+    onPlayed();
     playMoveTone();
     const next=[...board]; next[index]=turn;
     const result=ticWinner(next);
@@ -583,7 +583,7 @@ useEffect(() => {
                 ) : (
                   <ColourfulTicTacToe
                     quotaText={classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.tic ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
-                    onPlayed={() => registerClassicInteraction()}
+                    onPlayed={() => { classicGameInteractedRef.current = true; }}
                     onNewGame={async () => { const session=classicGameSessionRef.current; if (!session || session.consumed || !classicGameInteractedRef.current) return true; return consumeClassicAttempt(session); }}
                   />
                 )}
