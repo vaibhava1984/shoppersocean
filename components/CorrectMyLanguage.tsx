@@ -102,7 +102,7 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
     setNotice("");
     if (!source || source.length > 100 || /[\r\n]/.test(source)) { setNotice("Check your word or sentence."); return; }
     if (!isEnglishText(source)) { setNotice("Please enter text in English using the Latin alphabet."); return; }
-    if (!access || access.remaining <= 0) { setNotice("Your quota for Correct My Language has been exhausted. Please subscribe to continue."); return; }
+    if (!access || access.remaining <= 0) { setNotice("Your quota for Correct My English has been exhausted. Please subscribe to continue."); return; }
 
     setBusy(true);
     const requestId = ++requestRef.current;
@@ -139,7 +139,7 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
     <section className="mx-auto w-full max-w-3xl space-y-4">
       <div className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 via-white to-fuchsia-50 p-4 shadow-sm sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-xl font-black text-slate-900 sm:text-2xl">Correct My Language</h2>
+          <h2 className="text-xl font-black text-slate-900 sm:text-2xl">Correct My English</h2>
           <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-violet-800 shadow-sm">{loading ? "Checking quota…" : access ? privileged ? `${access.remaining} out of 10 corrections remaining for today` : `${access.remaining} out of 3 free corrections remaining` : "Quota unavailable"}</span>
         </div>
         <label htmlFor="correct-language-input" className="mb-2 block text-sm font-bold text-slate-700">Enter your word or sentence</label>
