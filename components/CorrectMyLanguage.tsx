@@ -16,7 +16,8 @@ function getHarperLinter() {
       const linter = new WorkerLinter({ binary, dialect: Dialect.Indian });
       await linter.setup();
       // Materialize Harper's default grammar and spelling rules before first use.
-      await linter.getDefaultLintConfig();
+      const defaults = await linter.getDefaultLintConfig();
+      await linter.setLintConfig(defaults);
       return linter;
     })().catch(error => {
       harperPromise = null;
@@ -61,27 +62,24 @@ const regularPastVerbs = [
 ];
 
 function applyClearPastTenseHints(text: string) {
-  const pastContext = /\b(yesterday|last\s+(?:night|week|month|year|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|\d+\s+days?\s+ago|\d+\s+weeks?\s+ago|earlier)\b/i;
-  return text.split(/(?<=[.!?])\s+/).map(sentence => {
+  const pastContext = /\\b(yesterday|last\\s+(?:night|week|month|year|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|\\d+\\s+days?\\s+ago|\\d+\\s+weeks?\\s+ago|earlier)\\b/i;
+  return text.split(/(?<=[.!?])\\s+/).map(sentence => {
     if (!pastContext.test(sentence)) return sentence;
     let corrected = sentence;
-    for (const [present, past] of Object.entries(irregularPast)) {
-      const pattern = new RegExp(`\\b${present}\\b`, "gi");
-      corrected = corrected.replace(pattern, match => {
-        const before = corrected.slice(Math.max(0, corrected.toLowerCase().lastIndexOf(match.toLowerCase()) - 12), corrected.toLowerCase().lastIndexOf(match.toLowerCase()));
-        if (/\b(?:can|could|may|might|must|shall|should|will|would|to)\s*$/i.test(before)) return match;
-        return match === match.toUpperCase() ? past.toUpperCase() : match[0] === match[0].toUpperCase() ? past[0].toUpperCase() + past.slice(1) : past;
+    const replaceVerb = (word: string, replacement: string) => {
+      const pattern = new RegExp(\\`\\\\b${word}\\\\b\\`, "gi");
+      corrected = corrected.replace(pattern, (match, offset: number) => {
+        const before = corrected.slice(Math.max(0, offset - 14), offset);
+        if (/\\b(?:can|could|may|might|must|shall|should|will|would|to)\\s*$/i.test(before)) return match;
+        return match === match.toUpperCase() ? replacement.toUpperCase()
+          : match[0] === match[0].toUpperCase() ? replacement[0].toUpperCase() + replacement.slice(1)
+          : replacement;
       });
-    }
+    };
+    for (const [present, past] of Object.entries(irregularPast)) replaceVerb(present, past);
     for (const verb of regularPastVerbs) {
-      const pattern = new RegExp(`\\b${verb}\\b`, "gi");
-      corrected = corrected.replace(pattern, match => {
-        const index = corrected.toLowerCase().lastIndexOf(match.toLowerCase());
-        const before = corrected.slice(Math.max(0, index - 12), index);
-        if (/\b(?:can|could|may|might|must|shall|should|will|would|to)\s*$/i.test(before)) return match;
-        const past = /[^aeiou]y$/i.test(verb) ? verb.slice(0, -1) + "ied" : /e$/i.test(verb) ? verb + "d" : verb + "ed";
-        return match === match.toUpperCase() ? past.toUpperCase() : match[0] === match[0].toUpperCase() ? past[0].toUpperCase() + past.slice(1) : past;
-      });
+      const past = /[^aeiou]y$/i.test(verb) ? verb.slice(0, -1) + "ied" : /e$/i.test(verb) ? verb + "d" : verb + "ed";
+      replaceVerb(verb, past);
     }
     return corrected;
   }).join(" ");
