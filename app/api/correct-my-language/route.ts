@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     const text = typeof body.text === "string" ? body.text.trim() : "";
     const letters = text.match(/[\p{L}]/gu) ?? [];
     const latin = text.match(/[\p{Script=Latin}]/gu) ?? [];
-    if (body.processed !== true || !text || text.length > 3000 || !letters.length || latin.length / letters.length < 0.9 || /[\p{Script=Devanagari}\p{Script=Arabic}\p{Script=Cyrillic}\p{Script=Han}\p{Script=Hangul}]/u.test(text)) {
+    if (body.processed !== true || !text || text.length > 150 || !letters.length || latin.length / letters.length < 0.9 || /[\p{Script=Devanagari}\p{Script=Arabic}\p{Script=Cyrillic}\p{Script=Han}\p{Script=Hangul}]/u.test(text)) {
       return NextResponse.json({ error: "Please submit valid English text for correction." }, { status: 400, headers });
     }
     const date = today();
