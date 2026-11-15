@@ -213,14 +213,15 @@ export default function EntertainmentHub({userId,visibleGroupIds,initialGroupId,
  const remainingForSection=section==="classic-games"?(groups.find(x=>x.id===section)?.games??[]).reduce((sum,g)=>sum+Math.max(0,nextTypes[g[0]]??0),0):0;
  setRemainingBySection(v=>({...v,[section]:remainingForSection}));setRemainingByType(v=>({...v,...exhaustedTypes}));setRemaining(remainingForSection);triggerQuotaPopup();
 }else if(data.remaining===0&&(data.isSubscribed||data.isAdmin)){setRemainingByType(v=>({...v,[game]:0}));const exhaustedSectionRemaining=typeof data.sectionRemaining==="number"?data.sectionRemaining:0;setRemainingBySection(v=>({...v,[section]:exhaustedSectionRemaining}));setRemaining(exhaustedSectionRemaining);triggerQuotaPopup();setNotice("");}else setNotice(data.error??"We couldn’t verify your free plays. Please try again.");return false;}challengeConsumed.current=challengeId;
+ const responseSectionRemaining=typeof data.sectionRemaining==="number"?data.sectionRemaining:Number(data.remaining??0);
  let typeUpdates:Record<string,number>={};
  if(typeof data.remaining==="number"){
-  typeUpdates=section==="classic-games"?{[game]:data.remaining}:confirmedSectionRemaining===0?Object.fromEntries((groups.find(x=>x.id===section)?.games??[]).map(g=>[g[0],0])):!data.isSubscribed&&!data.isAdmin?Object.fromEntries((groups.find(x=>x.id===section)?.games??[]).map(g=>[g[0],data.remaining])):{[game]:data.remaining};
+  typeUpdates=section==="classic-games"?{[game]:data.remaining}:responseSectionRemaining===0?Object.fromEntries((groups.find(x=>x.id===section)?.games??[]).map(g=>[g[0],0])):!data.isSubscribed&&!data.isAdmin?Object.fromEntries((groups.find(x=>x.id===section)?.games??[]).map(g=>[g[0],data.remaining])):{[game]:data.remaining};
  }
  const nextTypes={...remainingByType,...typeUpdates};
  const confirmedSectionRemaining=section==="classic-games"&&!data.isSubscribed&&!data.isAdmin
   ?(groups.find(x=>x.id===section)?.games??[]).reduce((sum,g)=>sum+Math.max(0,nextTypes[g[0]]??0),0)
-  :typeof data.sectionRemaining==="number"?data.sectionRemaining:Number(data.remaining??0);
+  :responseSectionRemaining;
  setRemainingBySection(v=>({...v,[section]:confirmedSectionRemaining}));setRemaining(confirmedSectionRemaining);
  if(Object.keys(typeUpdates).length)setRemainingByType(v=>({...v,...typeUpdates}));if((game==="daily"&&confirmedSectionRemaining===0)||(confirmedSectionRemaining===0&&section==="daily-challenge"))setDailyAnswered(true);if(Number(data.remaining??data.sectionRemaining)===0||Number(data.sectionRemaining??0)===0){triggerQuotaPopup();}setNotice("");return true;}catch{setNotice("We couldn’t verify your free plays. Please check your connection and try again.");return false;}};
  useEffect(()=>{
