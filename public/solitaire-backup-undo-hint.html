@@ -187,7 +187,7 @@ function autoMove(c){const loc=locate(c);if(!loc||!c.up)return;const stack=stack
   let pick=-1;for(let k=0;k<7;k++){if(loc.t==='tab'&&loc.i===k)continue;const col=S.tab[k];if(!canTab(c,col))continue;if(!col.length&&loc.t==='tab'&&loc.j===0)continue;if(pick<0||col.length)pick=k;if(col.length)break}
   if(pick>=0)return doMove(stack,loc,{t:'tab',i:pick});
   SFX.bad();c.el.classList.add('bad');setTimeout(()=>c.el.classList.remove('bad'),400)}
-async function drawCard(){if(S.auto||S.won)return;
+async function drawCard(){if(S.auto||S.won||quotaPending)return;
   if(S.stock.length||S.waste.length){if(!await ensureQuota())return;}
   if(S.stock.length){hist.push(snap());const n=Math.min(S.draw,S.stock.length);for(let i=0;i<n;i++){const c=S.stock.pop();c.up=true;S.waste.push(c)}S.moves++;S.started=true;SFX.flick();layoutAll()}
   else if(S.waste.length){hist.push(snap());S.stock=S.waste.reverse();S.stock.forEach(c=>c.up=false);S.waste=[];S.score=Math.max(0,S.score-20);SFX.riffle(10);layoutAll()}else SFX.bad()}
@@ -208,7 +208,7 @@ function hint(){if(S.auto||S.won)return;const tops=[...S.tab.map(c=>c[c.length-1
 const activePointers=new Set();
 tbl.addEventListener('pointerdown',e=>{
   if(e.pointerType==='touch'){activePointers.add(e.pointerId);if(activePointers.size>1){D=null;return;}}
-  if(S.auto||S.won||ov.hidden===false)return;
+  if(S.auto||S.won||quotaPending||ov.hidden===false)return;
   const el=e.target.closest('.c'),sl=e.target.closest('.slot');D=null;ac();
   if(el){const card=cards[+el.dataset.i],loc=locate(card);if(!loc)return;
     if(loc.t==='stock')D={tapStock:1};else{if(!card.up)return;const stack=stackOf(card,loc);if(!stack)return;D={c:card,loc,stack,moved:false}}}
@@ -230,7 +230,7 @@ function release(e,cancel){const d=D;D=null;if(!d)return;if(d.tapStock){if(!canc
 tbl.addEventListener('pointerup',e=>{activePointers.delete(e.pointerId);if(D&&D.pointerId===e.pointerId)release(e,false)});tbl.addEventListener('pointercancel',e=>{activePointers.delete(e.pointerId);if(D&&D.pointerId===e.pointerId)release(e,true)});
 
 /* ================= GAME FLOW ================= */
-let attemptSequence=0,quotaClaimed=false,quotaPromise=null;
+let attemptSequence=0,quotaClaimed=false,quotaPromise=null,quotaPending=false;
 function requestAttempt(){
   if(window.parent===window)return Promise.resolve(true);
   const requestId='ocean-solitaire:'+Date.now()+':'+(++attemptSequence);
@@ -247,7 +247,7 @@ function requestAttempt(){
     window.parent.postMessage({type:'shoppers-ocean-solitaire-attempt',requestId},window.location.origin);
   });
 }
-async function ensureQuota(){if(quotaClaimed)return true;if(!quotaPromise)quotaPromise=requestAttempt().then(allowed=>{quotaClaimed=allowed;if(!allowed)quotaPromise=null;return allowed});return quotaPromise}
+async function ensureQuota(){if(quotaClaimed)return true;if(!quotaPromise){quotaPending=true;quotaPromise=requestAttempt().then(allowed=>{quotaClaimed=allowed;quotaPending=false;if(!allowed)quotaPromise=null;return allowed}).catch(()=>{quotaPending=false;quotaPromise=null;return false})}return quotaPromise}
 function dealNewGame(){ac();newGame(mode)}
 function newGame(draw){mode=draw;S.draw=draw;hist=[];S.moves=0;S.score=0;S.time=0;S.started=false;S.won=false;S.auto=true;ov.hidden=true;
   tbl.querySelectorAll('.c').forEach(e=>e.remove());cards=[];tbl.classList.add('nt');
@@ -264,7 +264,7 @@ function showWin(){const cf=Array.from({length:40},(_,i)=>`<i style="left:${Math
   ov.innerHTML=`<div class="cf">${cf}</div><div class="box"><h3>🏆 You won!</h3><p>${S.moves} moves · ${$('tm').textContent} · ${S.score} points</p><div class="row"><button class="go" id="again">Play again</button><button class="ghost" id="chg">Change mode</button></div></div>`;
   ov.hidden=false;$('again').onclick=()=>{void dealNewGame()};$('chg').onclick=setup}
 $('bUndo').onclick=()=>{ac();undo()};$('bHint').onclick=()=>{ac();hint()};
-$('bNew').onclick=()=>{ac();SFX.pick();if(S.started&&!S.won){ov.innerHTML=`<div class="box"><h3>Start a new game?</h3><p>Your current game will be lost.</p><div class="row"><button class="ghost" id="no">Keep playing</button><button class="go" id="yes" style="font-size:16px;padding:11px 24px">New game</button></div></div>`;
+$('bNew').onclick=()=>{if(quotaPending)return;ac();SFX.pick();if(S.started&&!S.won){ov.innerHTML=`<div class="box"><h3>Start a new game?</h3><p>Your current game will be lost.</p><div class="row"><button class="ghost" id="no">Keep playing</button><button class="go" id="yes" style="font-size:16px;padding:11px 24px">New game</button></div></div>`;
   ov.hidden=false;$('no').onclick=()=>ov.hidden=true;$('yes').onclick=setup}else setup()};
 $('bSnd').onclick=()=>{muted=!muted;if(!muted){ac();SFX.hint()}ui()};
 setInterval(()=>{if(S.started&&!S.won&&!document.hidden){S.time++;ui()}},1000);
