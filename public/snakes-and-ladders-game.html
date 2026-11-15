@@ -231,7 +231,7 @@ function showFace(n,spin){const[bx,by]=BASE[n];
 
 /* ================= GAME STATE ================= */
 const G={players:[],cur:0,busy:false,over:false,started:false,paused:false,id:0,first:'you',target:0,tag:null};
-let waiters=[];
+let waiters=[],quotaClaimed=false;
 const gate=()=>G.paused?new Promise(r=>waiters.push(r)):Promise.resolve();
 const wait=async ms=>{await new Promise(r=>setTimeout(r,ms));await gate()};
 const anim=(ms,fn)=>new Promise(res=>{let t0=performance.now(),last=t0;(function f(t){if(G.paused){t0+=t-last;last=t;return requestAnimationFrame(f)}
@@ -292,6 +292,7 @@ async function slide(p,n,ms){const[x1,y1]=cell(n),x0=p.x,y0=p.y;
 async function roll(){
   if(G.busy||G.over||!G.started||G.paused)return;G.busy=true;const id=G.id,who=G.cur,p=G.players[who];
   const S=async pr=>{await pr;await gate();if(id!==G.id)throw 0};
+  if(who===0&&!quotaClaimed){const allowed=await requestQuotaAttempt();if(!allowed){G.busy=false;ui();msg.textContent="Your game quota is unavailable. Please try again.";return;}quotaClaimed=true;}
   try{
     ui();const n=1+Math.floor(Math.random()*6);msg.textContent=who?'Computer is rolling…':'Rolling…';
     dw.classList.add('rolling');dice.classList.add('jump');showFace(n,true);SFX.rattle();vib(30);await S(wait(2450));
@@ -321,13 +322,13 @@ function finish(who){
   confetti();who===0?SFX.win():SFX.lose();msg.textContent=who===0?'You won the game! 🎉':'Computer won this time.';
   setTimeout(()=>{if(!G.over)return;show(`<h3>${who===0?'You won! 🏆':'Computer won 🤖'}</h3><p>${who===0?'Brilliant rolling! Ready for a rematch?':'So close! Want a rematch?'}</p>
     <div class="row"><button class="go" id="again">Play again</button><button class="ghost" id="chg">Change setup</button></div>`);
-    $('again').onclick=()=>{ac();void (async()=>{if(await requestQuotaAttempt())startGame()})()};$('chg').onclick=showSetup},1800)}
+    $('again').onclick=()=>{ac();startGame()};$('chg').onclick=showSetup},1800)}
 
 /* ---- controls ---- */
 dice.addEventListener('click',()=>{ac();if(G.cur===0)roll()});
 $('bPause').onclick=()=>{ac();SFX.click();if(G.paused){ov.hidden=true;setPaused(false)}else if(G.started&&!G.over){setPaused(true);showPause()}};
-$('bRestart').onclick=()=>{ac();SFX.click();confirmBox('Restart game?','Your board goes back to the start with the same settings.','Restart',()=>{void (async()=>{if(await requestQuotaAttempt())startGame()})()})};
-$('bNew').onclick=()=>{ac();SFX.click();confirmBox('Start a new game?','Your current game will be lost.','New game',()=>{void (async()=>{if(await requestQuotaAttempt())showSetup()})()})};
+$('bRestart').onclick=()=>{ac();SFX.click();confirmBox('Restart game?','Your board goes back to the start with the same settings.','Restart',()=>startGame())};
+$('bNew').onclick=()=>{ac();SFX.click();confirmBox('Start a new game?','Your current game will be lost.','New game',showSetup)};
 $('bSnd').onclick=()=>{muted=!muted;if(!muted){ac();SFX.start()}ui()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&G.started&&!G.over&&!G.paused){setPaused(true);showPause()}});
 new ResizeObserver(resize).observe(wrap);window.addEventListener('resize',resize);
