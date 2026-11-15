@@ -127,6 +127,7 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
   const [busy, setBusy] = useState(false);
   const requestRef = useRef(0);
   const pendingUsageRef = useRef<string | null>(null);
+  const consumingRef = useRef(false);
 
   useEffect(() => {
     let live = true;
@@ -145,7 +146,7 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
       live = false;
       requestRef.current += 1;
       const pendingText = pendingUsageRef.current;
-      if (pendingText) {
+      if (pendingText && !consumingRef.current) {
         void fetch("/api/correct-my-language", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -159,16 +160,23 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
   const consumePendingUsage = async () => {
     const pendingText = pendingUsageRef.current;
     if (!pendingText) return access;
-    const response = await fetch("/api/correct-my-language", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ processed: true, text: pendingText }),
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Your correction could not be recorded.");
-    pendingUsageRef.current = null;
-    setAccess(data);
-    return data as Access;
+    if (consumingRef.current) throw new Error("Your correction is already being recorded.");
+    consumingRef.current = true;
+    try {
+      const response = await fetch("/api/correct-my-language", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ processed: true, text: pendingText }),
+        keepalive: true,
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Your correction could not be recorded.");
+      pendingUsageRef.current = null;
+      setAccess(data);
+      return data as Access;
+    } finally {
+      consumingRef.current = false;
+    }
   };
 
   const clearResult = async () => {
