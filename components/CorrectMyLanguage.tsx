@@ -4,6 +4,28 @@ import { useEffect, useRef, useState } from "react";
 
 type Access = { remaining: number; limit: number; isPrivileged: boolean; userName: string };
 
+let harperPromise: Promise<any> | null = null;
+
+function getHarperLinter() {
+  if (!harperPromise) {
+    harperPromise = (async () => {
+      const [{ WorkerLinter, Dialect }, { binary }] = await Promise.all([
+        import("harper.js"),
+        import("harper.js/binary"),
+      ]);
+      const linter = new WorkerLinter({ binary, dialect: Dialect.Indian });
+      await linter.setup();
+      // Materialize Harper's default grammar and spelling rules before first use.
+      await linter.getDefaultLintConfig();
+      return linter;
+    })().catch(error => {
+      harperPromise = null;
+      throw error;
+    });
+  }
+  return harperPromise;
+}
+
 function isEnglishText(value: string) {
   const letters = value.match(/[\p{L}]/gu) ?? [];
   if (!letters.length) return false;
@@ -17,34 +39,85 @@ function contentKind(value: string): "word" | "sentence" | "paragraph" {
   return "sentence";
 }
 
-async function correctWithHarper(source: string): Promise<string> {
-  // LocalLinter avoids worker-startup/bundling failures in the hosted app.
-  // The 150-character limit keeps this small task responsive on mobile.
-  const [{ LocalLinter, Dialect }, { binary }] = await Promise.all([
-    import("harper.js"),
-    import("harper.js/binary"),
-  ]);
-  const linter = new LocalLinter({ binary, dialect: Dialect.Indian });
-  try {
-    await linter.setup();
-    let current = source;
-    for (let pass = 0; pass < 40; pass += 1) {
-      const lints = await linter.lint(current, { language: "plaintext" });
-      let changed = false;
-      for (const lint of lints) {
-        const suggestions = lint.suggestions();
-        if (suggestions.length > 0) {
-          current = await linter.applySuggestion(current, lint, suggestions[0]);
-          changed = true;
-          break;
-        }
-      }
-      if (!changed) break;
+const irregularPast: Record<string, string> = {
+  am: "was", is: "was", are: "were", go: "went", come: "came", do: "did",
+  have: "had", eat: "ate", see: "saw", take: "took", make: "made", get: "got",
+  buy: "bought", bring: "brought", write: "wrote", speak: "spoke", say: "said",
+  tell: "told", give: "gave", find: "found", think: "thought", know: "knew",
+  meet: "met", leave: "left", feel: "felt", keep: "kept", sleep: "slept",
+  read: "read", run: "ran", sit: "sat", stand: "stood", begin: "began",
+  drink: "drank", drive: "drove", break: "broke", choose: "chose", fall: "fell",
+  forget: "forgot", hear: "heard", hold: "held", lose: "lost", pay: "paid",
+  send: "sent", teach: "taught", understand: "understood", wear: "wore",
+  win: "won", build: "built", catch: "caught", fly: "flew", grow: "grew",
+  show: "showed", spend: "spent", swim: "swam", throw: "threw", wake: "woke",
+};
+
+const regularPastVerbs = [
+  "play", "work", "visit", "call", "watch", "walk", "study", "clean", "cook",
+  "travel", "open", "close", "start", "finish", "help", "need", "want", "like",
+  "love", "use", "talk", "ask", "answer", "learn", "try", "stay", "move", "live",
+  "dance", "wait", "look", "listen", "remember", "arrive", "enjoy", "plan",
+];
+
+function applyClearPastTenseHints(text: string) {
+  const pastContext = /\b(yesterday|last\s+(?:night|week|month|year|monday|tuesday|wednesday|thursday|friday|saturday|sunday)|\d+\s+days?\s+ago|\d+\s+weeks?\s+ago|earlier)\b/i;
+  return text.split(/(?<=[.!?])\s+/).map(sentence => {
+    if (!pastContext.test(sentence)) return sentence;
+    let corrected = sentence;
+    for (const [present, past] of Object.entries(irregularPast)) {
+      const pattern = new RegExp(`\\b${present}\\b`, "gi");
+      corrected = corrected.replace(pattern, match => {
+        const before = corrected.slice(Math.max(0, corrected.toLowerCase().lastIndexOf(match.toLowerCase()) - 12), corrected.toLowerCase().lastIndexOf(match.toLowerCase()));
+        if (/\b(?:can|could|may|might|must|shall|should|will|would|to)\s*$/i.test(before)) return match;
+        return match === match.toUpperCase() ? past.toUpperCase() : match[0] === match[0].toUpperCase() ? past[0].toUpperCase() + past.slice(1) : past;
+      });
     }
-    return current;
-  } finally {
-    await linter.dispose();
+    for (const verb of regularPastVerbs) {
+      const pattern = new RegExp(`\\b${verb}\\b`, "gi");
+      corrected = corrected.replace(pattern, match => {
+        const index = corrected.toLowerCase().lastIndexOf(match.toLowerCase());
+        const before = corrected.slice(Math.max(0, index - 12), index);
+        if (/\b(?:can|could|may|might|must|shall|should|will|would|to)\s*$/i.test(before)) return match;
+        const past = /[^aeiou]y$/i.test(verb) ? verb.slice(0, -1) + "ied" : /e$/i.test(verb) ? verb + "d" : verb + "ed";
+        return match === match.toUpperCase() ? past.toUpperCase() : match[0] === match[0].toUpperCase() ? past[0].toUpperCase() + past.slice(1) : past;
+      });
+    }
+    return corrected;
+  }).join(" ");
+}
+
+function addMissingTerminalPunctuation(text: string) {
+  const trimmed = text.trim();
+  if (!/\s/.test(trimmed) || /[.!?…]["')\]]?$/.test(trimmed)) return trimmed;
+  return trimmed.replace(/(["')\]]*)$/, ".$1");
+}
+
+async function correctWithHarper(source: string): Promise<string> {
+  const linter = await getHarperLinter();
+  let current = source;
+  for (let pass = 0; pass < 6; pass += 1) {
+    const lints = await linter.lint(current, { language: "plaintext" });
+    if (!lints.length) break;
+    let next = current;
+    let changed = false;
+    // Apply from right to left so earlier spans remain valid as text is changed.
+    const ordered = [...lints].sort((a, b) => b.span().start - a.span().start);
+    for (const lint of ordered) {
+      const suggestions = lint.suggestions();
+      if (!suggestions.length) continue;
+      const candidate = await linter.applySuggestion(next, lint, suggestions[0]);
+      if (candidate !== next) {
+        next = candidate;
+        changed = true;
+      }
+    }
+    if (!changed || next === current) break;
+    current = next;
   }
+  current = applyClearPastTenseHints(current);
+  current = addMissingTerminalPunctuation(current);
+  return current;
 }
 
 export default function CorrectMyLanguage({ userId }: { userId: string | null }) {
@@ -55,10 +128,13 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const requestRef = useRef(0);
+  const pendingUsageRef = useRef<string | null>(null);
 
   useEffect(() => {
     let live = true;
     if (!userId) { setLoading(false); return; }
+    // Warm up the grammar engine while the user is typing, not after Submit.
+    void getHarperLinter().catch(error => console.error("Harper preload failed:", error));
     fetch("/api/correct-my-language", { cache: "no-store" })
       .then(async response => {
         const data = await response.json();
@@ -67,12 +143,51 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
       })
       .catch(error => { if (live) setNotice(error instanceof Error ? error.message : "Quota could not be verified."); })
       .finally(() => { if (live) setLoading(false); });
-    return () => { live = false; requestRef.current += 1; };
+    return () => {
+      live = false;
+      requestRef.current += 1;
+      const pendingText = pendingUsageRef.current;
+      if (pendingText) {
+        void fetch("/api/correct-my-language", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ processed: true, text: pendingText }),
+          keepalive: true,
+        }).catch(() => {});
+      }
+    };
   }, [userId]);
+
+  const consumePendingUsage = async () => {
+    const pendingText = pendingUsageRef.current;
+    if (!pendingText) return access;
+    const response = await fetch("/api/correct-my-language", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ processed: true, text: pendingText }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Your correction could not be recorded.");
+    pendingUsageRef.current = null;
+    setAccess(data);
+    return data as Access;
+  };
+
+  const clearResult = async () => {
+    if (!pendingUsageRef.current) return;
+    try {
+      await consumePendingUsage();
+      setInput("");
+      setResult("");
+      setNotice("");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Please try clearing again.");
+    }
+  };
 
   const submit = async () => {
     const source = input.trim();
-    if (busy) return;
+    if (busy || pendingUsageRef.current) return;
     setResult("");
     setNotice("");
     if (!source) { setNotice("Please enter an English word, sentence, or short paragraph."); return; }
@@ -85,25 +200,12 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
     try {
       const corrected = await correctWithHarper(source);
       if (requestId !== requestRef.current) return;
-      const response = await fetch("/api/correct-my-language", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ processed: true, text: source }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        if (response.status === 403) {
-          setAccess(previous => previous ? { ...previous, remaining: 0 } : previous);
-          setNotice(data.error || "Your quota for Correct My Language has been exhausted.");
-        } else setNotice(data.error || "Your correction could not be saved. Please try again.");
-        return;
-      }
-      setAccess(data);
+      pendingUsageRef.current = source;
       setResult(corrected);
       const kind = contentKind(source);
       setNotice(corrected === source
         ? `Your ${kind} is correct. 😊`
-        : `This is your correct ${kind}${data.userName ? `, ${data.userName}` : ""} 🤗`);
+        : `This is your correct ${kind}${access.userName ? `, ${access.userName}` : ""} 🤗`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "The correction engine could not start. Please try again.");
     } finally {
@@ -122,7 +224,7 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
         <label htmlFor="correct-language-input" className="mb-2 block text-sm font-bold text-slate-700">Enter an English word, sentence, or short paragraph</label>
         <textarea id="correct-language-input" value={input} onChange={event => setInput(event.target.value.slice(0, 150))} maxLength={150} rows={3} placeholder="Type your English text here…" className="h-24 w-full resize-none rounded-xl border-2 border-violet-200 bg-white p-3 text-base leading-6 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-4 focus:ring-violet-100" />
         <div className="mt-1 flex items-center justify-between gap-3 text-xs text-slate-500"><span>Maximum 150 characters</span><span>{input.length}/150</span></div>
-        <button type="button" onClick={submit} disabled={busy || loading || !access || access.remaining <= 0} className="mt-3 rounded-lg bg-blue-600 px-5 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">Submit</button>
+        <button type="button" onClick={submit} disabled={busy || loading || !access || access.remaining <= 0 || Boolean(pendingUsageRef.current)} className="mt-3 rounded-lg bg-blue-600 px-5 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">Submit</button>
       </div>
 
       <div className="rounded-2xl border border-emerald-200 bg-white p-4 shadow-sm sm:p-6">
@@ -130,7 +232,7 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
         <div id="correct-language-output" aria-live="polite" className="min-h-24 w-full whitespace-pre-wrap break-words rounded-xl border-2 border-emerald-200 bg-emerald-50/40 p-3 text-base leading-6 text-slate-900">{result || <span className="text-slate-400">Your corrected text will appear here…</span>}</div>
       </div>
 
-      {notice && <p role="status" aria-live="polite" className={`rounded-xl border px-4 py-3 text-sm font-semibold leading-6 ${notice.includes("correct") || notice.includes("🤗") ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-amber-200 bg-amber-50 text-amber-800"}`}>{notice}</p>}
+      {notice && <div role="status" aria-live="polite" className={`rounded-xl border px-4 py-3 text-sm font-semibold leading-6 ${notice.includes("correct") || notice.includes("🤗") ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-amber-200 bg-amber-50 text-amber-800"}`}>{notice}{pendingUsageRef.current && <div><button type="button" onClick={clearResult} className="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-blue-700">Clear</button></div>}</div>}
     </section>
   );
 }
