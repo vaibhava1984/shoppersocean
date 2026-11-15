@@ -6,15 +6,15 @@ import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 type Access = { remaining: number; limit: number; isPrivileged: boolean; userName: string };
 
 function isEnglishText(value: string) {
-  const letters = value.match(/[\\p{L}]/gu) ?? [];
+  const letters = value.match(/[\p{L}]/gu) ?? [];
   if (!letters.length) return false;
-  const latin = value.match(/[\\p{Script=Latin}]/gu) ?? [];
-  return latin.length / letters.length >= 0.9 && !/[\\p{Script=Devanagari}\\p{Script=Arabic}\\p{Script=Cyrillic}\\p{Script=Han}\\p{Script=Hangul}]/u.test(value);
+  const latin = value.match(/[\p{Script=Latin}]/gu) ?? [];
+  return latin.length / letters.length >= 0.9 && !/[\p{Script=Devanagari}\p{Script=Arabic}\p{Script=Cyrillic}\p{Script=Han}\p{Script=Hangul}]/u.test(value);
 }
 
 function contentKind(value: string): "word" | "sentence" | "paragraph" {
-  if (!/\\s/.test(value.trim())) return "word";
-  if (value.includes("\\n") || value.trim().length > 240) return "paragraph";
+  if (!/\s/.test(value.trim())) return "word";
+  if (value.includes("\n") || value.trim().length > 240) return "paragraph";
   return "sentence";
 }
 
@@ -113,7 +113,7 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
       <div className="rounded-2xl border border-violet-200 bg-gradient-to-br from-violet-50 via-white to-fuchsia-50 p-4 shadow-sm sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-xl font-black text-slate-900 sm:text-2xl">Correct My Language</h2>
-          <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-violet-800 shadow-sm">{loading ? "Checking quota…" : access ? formatFreeQuotaLabel(access.remaining, privileged, "question") : "Quota unavailable"}</span>
+          <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-violet-800 shadow-sm">{loading ? "Checking quota…" : access ? formatFreeQuotaLabel(access.remaining, privileged, "quiz") : "Quota unavailable"}</span>
         </div>
         <label htmlFor="correct-language-input" className="mb-2 block text-sm font-bold text-slate-700">Enter an English word, sentence, or short paragraph</label>
         <textarea id="correct-language-input" value={input} onChange={event => setInput(event.target.value)} maxLength={3000} rows={6} placeholder="Type or paste your English text here…" className="w-full resize-y rounded-xl border-2 border-violet-200 bg-white p-4 text-base leading-7 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-4 focus:ring-violet-100" />
