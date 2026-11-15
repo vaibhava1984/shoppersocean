@@ -218,7 +218,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
   const consumeClassicAttempt = async (session: { gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire"; sessionId: string; consumed: boolean }) => {
-    if (session.consumed) return false;
+    if (session.consumed) return true;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
       const data = await response.json();
@@ -365,7 +365,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       if (event.origin !== window.location.origin || event.source !== solitaireFrameRef.current?.contentWindow) return;
       const data = event.data as { type?: string; requestId?: string };
       if (data?.type !== "shoppers-ocean-solitaire-attempt" || typeof data.requestId !== "string") return;
-      startNextClassicAttempt("ocean-solitaire");
       const allowed = await registerClassicInteraction();
       solitaireFrameRef.current?.contentWindow?.postMessage(
         { type: "shoppers-ocean-solitaire-attempt-result", requestId: data.requestId, allowed },
@@ -382,7 +381,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       const data = event.data as { type?: string; requestId?: string };
       if (data?.type !== "shoppers-ocean-snakes-attempt" || typeof data.requestId !== "string") return;
       const allowed = await registerClassicInteraction();
-      if (allowed) startNextClassicAttempt("snakes-ladders");
       snakesFrameRef.current?.contentWindow?.postMessage(
         { type: "shoppers-ocean-snakes-attempt-result", requestId: data.requestId, allowed },
         window.location.origin
@@ -410,7 +408,6 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
           setClassicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, chess: pendingChessBalance } }));
           delete pendingClassicQuotaRef.current.chess;
         }
-        startNextClassicAttempt("chess");
         chessFrameRef.current?.contentWindow?.postMessage(
           { type: "shoppers-ocean-chess-new-game-result", requestId: data.requestId, allowed: true },
           window.location.origin
@@ -544,14 +541,24 @@ useEffect(() => {
             {selected.action === "classic-games" && (
               <div ref={activityTargetRef} className="flex w-full min-w-0 flex-col items-center justify-center gap-4">
                 {classicGameStarted === null || classicGameStarted === false ? (
-                  <div className="w-full min-w-0 max-w-2xl">
-                    <div className="grid w-full max-w-2xl gap-3">
-                    <div className="grid w-full grid-cols-1 gap-3">
-                      <button type="button" onClick={() => void openClassicGame("chess")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-sky-600 via-blue-700 to-indigo-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">♟️ Ocean Chess</button>
-                      <button type="button" onClick={() => void openClassicGame("snakes-ladders")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-emerald-500 via-teal-600 to-cyan-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">🐍🎲 Snake &amp; Ladders</button>
-                      <button type="button" onClick={() => void openClassicGame("ocean-solitaire")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-teal-600 via-cyan-700 to-blue-800 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">🃏 Ocean Solitaire</button>
-                      <button type="button" onClick={() => void openClassicGame("tic-tac-toe")} disabled={classicGameOpening} className="flex min-h-14 w-full min-w-0 items-center justify-center rounded-2xl border border-white/30 bg-gradient-to-r from-orange-500 via-rose-600 to-pink-700 px-3 py-4 text-center text-sm font-black text-white shadow-xl transition hover:-translate-y-1 hover:brightness-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-200 disabled:opacity-60 sm:px-6 sm:py-6 sm:text-lg">❌⭕ Tic Tac Toe</button>
-                    </div>
+                  <div className="w-full min-w-0 px-1 py-3">
+                    <div className="mx-auto mb-5 text-center"><p className="text-xs font-black uppercase tracking-[.22em] text-cyan-200">Choose your game</p><h3 className="mt-1 text-2xl font-black text-white sm:text-3xl">Classic Games</h3><p className="mt-1 text-sm text-white/70">Tap a game preview to play.</p></div>
+                    <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+                      {(["chess","snakes-ladders","ocean-solitaire","tic-tac-toe"] as const).map((id)=>{
+                        const title=id==="chess"?"Ocean Chess":id==="snakes-ladders"?"Snake & Ladders":id==="ocean-solitaire"?"Ocean Solitaire":"Tic Tac Toe";
+                        const desc=id==="chess"?"The royal game":id==="snakes-ladders"?"Race to 100":id==="ocean-solitaire"?"Clear the cards":"A quick strategy duel";
+                        const tone=id==="chess"?"from-amber-500 to-orange-700":id==="snakes-ladders"?"from-emerald-500 to-cyan-600":id==="ocean-solitaire"?"from-blue-500 to-fuchsia-600":"from-pink-500 to-violet-600";
+                        return <div key={id} className="min-w-0 text-center">
+                          <button type="button" onClick={()=>void openClassicGame(id)} disabled={classicGameOpening} aria-label={"Open "+title} className="group relative block aspect-square w-full overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-800 p-3 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-300 disabled:opacity-60 sm:rounded-3xl sm:p-4">
+                            {id==="chess"&&<div className="mx-auto grid h-full max-w-[170px] grid-cols-5 grid-rows-5 overflow-hidden rounded-lg border-2 border-amber-300">{Array.from({length:25},(_,i)=><span key={i} className={((Math.floor(i/5)+i%5)%2===0?"bg-amber-100":"bg-amber-800")+" flex items-center justify-center text-lg sm:text-2xl"}>{[0,4,6,12,18,20,24].includes(i)?"♟":""}</span>)}</div>}
+                            {id==="snakes-ladders"&&<div className="relative mx-auto grid h-full max-w-[170px] grid-cols-5 grid-rows-5 gap-0.5 overflow-hidden rounded-lg border-2 border-amber-300 bg-violet-950 p-1">{Array.from({length:25},(_,i)=><span key={i} className={"flex items-center justify-center rounded-sm text-[9px] font-black "+["bg-rose-400","bg-amber-300","bg-emerald-300","bg-sky-300","bg-violet-300"][i%5]}>{25-i}</span>)}<span className="pointer-events-none absolute left-[18%] top-[20%] rotate-[-35deg] text-3xl">🐍</span><span className="pointer-events-none absolute bottom-[18%] right-[18%] rotate-[35deg] text-3xl">🪜</span></div>}
+                            {id==="ocean-solitaire"&&<div className="mx-auto h-full max-w-[170px] rounded-lg bg-emerald-800/80 p-2"><div className="grid grid-cols-4 gap-1">{["A♠","K♥","Q♣","J♦"].map((v,i)=><span key={i} className={"flex aspect-[.7/1] items-start justify-center rounded bg-white pt-1 text-[10px] font-black "+(i%2?"text-rose-600":"text-slate-900")}>{v}</span>)}</div><div className="mt-2 grid grid-cols-4 gap-1">{["7♣","4♦","9♠","2♥"].map((v,i)=><span key={i} className={"flex aspect-[.7/1] items-start justify-center rounded bg-white pt-1 text-[10px] font-black "+(i%2?"text-rose-600":"text-slate-900")}>{v}</span>)}</div></div>}
+                            {id==="tic-tac-toe"&&<div className="mx-auto grid h-full max-w-[170px] grid-cols-3 gap-1 rounded-lg bg-white/10 p-2">{["✕","","○","","✕","","○","","✕"].map((v,i)=><span key={i} className="flex items-center justify-center rounded bg-white text-xl font-black text-indigo-700 sm:text-3xl">{v}</span>)}</div>}
+                            <span className="absolute bottom-2 right-2 rounded-full bg-white/15 px-2 py-1 text-[10px] font-black text-white">PLAY ↗</span>
+                          </button>
+                          <p className={"mt-2 bg-gradient-to-r text-sm font-black tracking-tight sm:text-base "+tone} style={{backgroundClip:"text",WebkitTextFillColor:"transparent"}}>{title}</p><p className="mt-0.5 text-[11px] text-white/65 sm:text-xs">{desc}</p>
+                        </div>;
+                      })}
                     </div>
                   </div>
                 ) : classicGameStarted === "chess" ? (
@@ -577,7 +584,7 @@ useEffect(() => {
                   <ColourfulTicTacToe
                     quotaText={classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType.tic ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}
                     onPlayed={() => { classicGameInteractedRef.current = true; }}
-                    onNewGame={async (wasFinished) => { if (!wasFinished && !classicGameInteractedRef.current) return true; const session=classicGameSessionRef.current; const allowed=session ? await consumeClassicAttempt(session) : false; if (allowed) startNextClassicAttempt("tic"); return allowed; }}
+                    onNewGame={async () => { const session=classicGameSessionRef.current; if (!session || session.consumed || !classicGameInteractedRef.current) return true; return consumeClassicAttempt(session); }}
                   />
                 )}
                 {classicQuotaNoticeFor !== null && <div className="w-full max-w-2xl"><GameQuotaNotice isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} /></div>}
