@@ -175,7 +175,7 @@ function locate(c){let i=S.stock.indexOf(c);if(i>=0)return{t:'stock'};i=S.waste.
   for(let f=0;f<4;f++){i=S.found[f].indexOf(c);if(i>=0)return{t:'found',i:f,j:i}}for(let k=0;k<7;k++){i=S.tab[k].indexOf(c);if(i>=0)return{t:'tab',i:k,j:i}}}
 const enc=a=>a.map(c=>c.id*2+(c.up?1:0)),dec=a=>a.map(v=>{const c=cards[v>>1];c.up=!!(v&1);return c});
 const snap=()=>({s:enc(S.stock),w:enc(S.waste),f:S.found.map(enc),t:S.tab.map(enc),m:S.moves,sc:S.score});
-function doMove(stack,from,to){hist.push(snap());if(hist.length>300)hist.shift();
+async function doMove(stack,from,to){if(!await ensureQuota()){layoutAll();return}hist.push(snap());if(hist.length>300)hist.shift();
   const src=from.t==='tab'?S.tab[from.i]:from.t==='waste'?S.waste:S.found[from.i];src.splice(src.length-stack.length,stack.length);
   const dst=to.t==='tab'?S.tab[to.i]:S.found[to.i];stack.forEach(c=>dst.push(c));S.moves++;S.started=true;
   if(to.t==='found'){S.score+=10;SFX.found(dst.length-1)}else{SFX.place();if(from.t==='waste')S.score+=5;if(from.t==='found')S.score=Math.max(0,S.score-15)}
@@ -187,13 +187,14 @@ function autoMove(c){const loc=locate(c);if(!loc||!c.up)return;const stack=stack
   let pick=-1;for(let k=0;k<7;k++){if(loc.t==='tab'&&loc.i===k)continue;const col=S.tab[k];if(!canTab(c,col))continue;if(!col.length&&loc.t==='tab'&&loc.j===0)continue;if(pick<0||col.length)pick=k;if(col.length)break}
   if(pick>=0)return doMove(stack,loc,{t:'tab',i:pick});
   SFX.bad();c.el.classList.add('bad');setTimeout(()=>c.el.classList.remove('bad'),400)}
-function drawCard(){if(S.auto||S.won)return;
+async function drawCard(){if(S.auto||S.won)return;
+  if(S.stock.length||S.waste.length){if(!await ensureQuota())return;}
   if(S.stock.length){hist.push(snap());const n=Math.min(S.draw,S.stock.length);for(let i=0;i<n;i++){const c=S.stock.pop();c.up=true;S.waste.push(c)}S.moves++;S.started=true;SFX.flick();layoutAll()}
   else if(S.waste.length){hist.push(snap());S.stock=S.waste.reverse();S.stock.forEach(c=>c.up=false);S.waste=[];S.score=Math.max(0,S.score-20);SFX.riffle(10);layoutAll()}else SFX.bad()}
 function undo(){if(S.auto||S.won||!hist.length)return SFX.bad();const h=hist.pop();S.stock=dec(h.s);S.waste=dec(h.w);S.found=h.f.map(dec);S.tab=h.t.map(dec);S.moves=h.m;S.score=h.sc;SFX.undo();layoutAll()}
 function checkEnd(){if(S.found.every(p=>p.length===13))return win();
   if(!S.auto&&!S.stock.length&&!S.waste.length&&S.tab.every(col=>col.every(c=>c.up))){S.auto=true;finish()}}
-async function finish(){await sleep(500);while(!S.won){let m=false;for(let k=0;k<7;k++){const col=S.tab[k],c=col[col.length-1];if(!c)continue;const f=foundFor(c);if(f>=0){doMove([c],{t:'tab',i:k},{t:'found',i:f});m=true;break}}if(!m)break;await sleep(170)}S.auto=false}
+async function finish(){await sleep(500);while(!S.won){let m=false;for(let k=0;k<7;k++){const col=S.tab[k],c=col[col.length-1];if(!c)continue;const f=foundFor(c);if(f>=0){await doMove([c],{t:'tab',i:k},{t:'found',i:f});m=true;break}}if(!m)break;await sleep(170)}S.auto=false}
 function win(){if(S.won)return;S.won=true;S.auto=false;SFX.win();setTimeout(showWin,1000)}
 function hint(){if(S.auto||S.won)return;const tops=[...S.tab.map(c=>c[c.length-1]),S.waste[S.waste.length-1]].filter(Boolean);let h=null;
   for(const c of tops)if(c.up&&foundFor(c)>=0){h=[c,slots.find(s=>s.k==='f'+foundFor(c)).el];break}
@@ -229,7 +230,7 @@ function release(e,cancel){const d=D;D=null;if(!d)return;if(d.tapStock){if(!canc
 tbl.addEventListener('pointerup',e=>{activePointers.delete(e.pointerId);if(D&&D.pointerId===e.pointerId)release(e,false)});tbl.addEventListener('pointercancel',e=>{activePointers.delete(e.pointerId);if(D&&D.pointerId===e.pointerId)release(e,true)});
 
 /* ================= GAME FLOW ================= */
-let attemptSequence=0;
+let attemptSequence=0,quotaClaimed=false,quotaPromise=null;
 function requestAttempt(){
   if(window.parent===window)return Promise.resolve(true);
   const requestId='ocean-solitaire:'+Date.now()+':'+(++attemptSequence);
@@ -246,7 +247,8 @@ function requestAttempt(){
     window.parent.postMessage({type:'shoppers-ocean-solitaire-attempt',requestId},window.location.origin);
   });
 }
-async function dealNewGame(){ac();const allowed=await requestAttempt();if(allowed)newGame(mode);else say('Your game quota is unavailable. Please try again.')}
+async function ensureQuota(){if(quotaClaimed)return true;if(!quotaPromise)quotaPromise=requestAttempt().then(allowed=>{quotaClaimed=allowed;if(!allowed)quotaPromise=null;return allowed});return quotaPromise}
+function dealNewGame(){ac();newGame(mode)}
 function newGame(draw){mode=draw;S.draw=draw;hist=[];S.moves=0;S.score=0;S.time=0;S.started=false;S.won=false;S.auto=true;ov.hidden=true;
   tbl.querySelectorAll('.c').forEach(e=>e.remove());cards=[];tbl.classList.add('nt');
   for(let s=0;s<4;s++)for(let r=1;r<=13;r++){const el=document.createElement('div');el.className='c down';el.innerHTML=cardInner(s,r);const c={id:cards.length,s,r,up:false,el,x:0,y:0,d:null};el.dataset.i=c.id;cards.push(c);tbl.appendChild(el)}
