@@ -235,7 +235,7 @@ export default function CorrectMyLanguage({ userId }: { userId: string | null })
 
       <div className="rounded-2xl border border-emerald-200 bg-white p-4 shadow-sm sm:p-6">
         <label htmlFor="correct-language-output" className="mb-2 block text-sm font-black text-emerald-700">Corrected text</label>
-        <div id="correct-language-output" aria-live="polite" className="min-h-24 w-full whitespace-pre-wrap break-words rounded-xl border-2 border-emerald-200 bg-emerald-50/40 p-3 text-base leading-6 text-slate-900">{result || <span className="text-slate-400">Your corrected text will appear here…</span>}</div>
+        <div id="correct-language-output" aria-live="polite" className="min-h-24 w-full whitespace-pre-wrap break-words rounded-xl border-2 border-emerald-200 bg-emerald-50/40 p-3 text-base leading-6 text-slate-900">{result}</div>
       </div>
 
       {notice && <div role="status" aria-live="polite" className={`rounded-xl border px-4 py-3 text-sm font-semibold leading-6 ${notice.includes("correct") || notice.includes("🤗") ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-amber-200 bg-amber-50 text-amber-800"}`}>{notice}{pendingUsageRef.current && <div><button type="button" onClick={clearResult} className="mt-3 rounded-lg bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-blue-700">Clear</button></div>}</div>}
