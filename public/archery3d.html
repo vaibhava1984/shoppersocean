@@ -166,7 +166,18 @@ function home(){st='menu';paused=false;theme(5);target.position.set(0,1.6,-20);
  menu('Archery World','Hold and drag to aim. Hold to draw the bow, then let go to shoot. Lead moving targets and watch the wind flag.',
  [['Play',()=>play(Math.min(P.u,ST.length)-1)],['Stages',stages,'alt'],['New game',()=>{P={u:1,s:[]};save();play(0)},'alt']])}
 function stages(){menu('Stages','Score '+GOAL+' or more to unlock the next one.',[['Back',home,'alt']],1)}
-function play(i){A();cs=i;shots=0;total=0;paused=false;theme(i);setRound();newWind();ov.style.display='none';st='aim';hud();$('cross').style.display='block'}
+function requestArcheryAttempt(){
+ const requestId='archery3d:'+Date.now()+':'+Math.random().toString(36).slice(2);
+ return new Promise(resolve=>{
+  let settled=false;
+  const finish=allowed=>{if(settled)return;settled=true;clearTimeout(timeout);window.removeEventListener('message',onMessage);resolve(allowed===true)};
+  const onMessage=event=>{if(event.origin!==window.location.origin||event.source!==window.parent)return;const data=event.data||{};if(data.type==='shoppers-ocean-archery3d-attempt-result'&&data.requestId===requestId)finish(data.allowed)};
+  const timeout=setTimeout(()=>finish(false),12000);
+  window.addEventListener('message',onMessage);
+  window.parent.postMessage({type:'shoppers-ocean-archery3d-attempt',requestId},window.location.origin);
+ });
+}
+async function play(i){if(!await requestArcheryAttempt()){menu('Quota unavailable','Your Archery 3D attempt could not be verified. Please return to Classic Games and check your quota.',[['Back to menu',home,'alt']]);return;}A();cs=i;shots=0;total=0;paused=false;theme(i);setRound();newWind();ov.style.display='none';st='aim';hud();$('cross').style.display='block'}
 function setRound(){const s=ST[cs];D=s.d;target.position.set(0,1.6,-D);legs.visible=!(s.ax||s.ay);
  for(let i=target.children.length-1;i>=0;i--)if(target.children[i].userData.a)target.remove(target.children[i]);loose.splice(0).forEach(a=>sc.remove(a))}
 const newWind=()=>{wind=(rnd()*2-1)*ST[cs].w};
