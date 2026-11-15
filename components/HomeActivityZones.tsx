@@ -15,6 +15,7 @@ import GameQuotaNotice from "@/components/GameQuotaNotice";
 import { formatFreeQuotaLabel } from "@/lib/game-quota-label";
 import ConfusingWords from "@/components/ConfusingWords";
 import OneWordSubstitute from "@/components/OneWordSubstitute";
+import CorrectMyLanguage from "@/components/CorrectMyLanguage";
 
 const zones = [
   { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
@@ -188,6 +189,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [englishAcademyEntered, setEnglishAcademyEntered] = useState(false);
   const [confusingWordsOpen, setConfusingWordsOpen] = useState(false);
   const [oneWordSubstituteOpen, setOneWordSubstituteOpen] = useState(false);
+  const [correctMyLanguageOpen, setCorrectMyLanguageOpen] = useState(false);
+  const correctMyLanguageOpenRef = useRef(false);
   const oneWordSubstituteOpenRef = useRef(false);
   const confusingWordsOpenRef = useRef(false);
   const englishAcademyEnteredRef = useRef(false);
@@ -270,6 +273,11 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         setActiveQuizGame(null);
         return;
       }
+      if (correctMyLanguageOpenRef.current) {
+        correctMyLanguageOpenRef.current = false;
+        setCorrectMyLanguageOpen(false);
+        return;
+      }
       if (oneWordSubstituteOpenRef.current) {
         oneWordSubstituteOpenRef.current = false;
         setOneWordSubstituteOpen(false);
@@ -317,6 +325,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     confusingWordsOpenRef.current = false;
     setOneWordSubstituteOpen(false);
     oneWordSubstituteOpenRef.current = false;
+    setCorrectMyLanguageOpen(false);
+    correctMyLanguageOpenRef.current = false;
     classicGameStartedRef.current = false;
     setClassicGameStarted(false);
     activeQuizGameRef.current = null;
@@ -592,7 +602,9 @@ useEffect(() => {
             )}
             {selected.action === "learning" && (
               <div ref={activityTargetRef} className="w-full" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button"); if (button?.textContent?.trim() === "← Back" && event.currentTarget.querySelector('h4[style*="scroll-margin-top"]')) { event.preventDefault(); event.stopPropagation(); window.history.back(); } }}>
-                {oneWordSubstituteOpen ? (
+                {correctMyLanguageOpen ? (
+                  <CorrectMyLanguage userId={userId} />
+                ) : oneWordSubstituteOpen ? (
                   <OneWordSubstitute userId={userId} />
                 ) : confusingWordsOpen ? (
                   <ConfusingWords userId={userId} />
@@ -609,6 +621,10 @@ useEffect(() => {
                     <button type="button" onClick={() => { if (!userId) { setSignInPopup(true); return; } window.history.pushState({ shoppersOceanLearning: true, shoppersOceanTool: "confusing-words" }, "", window.location.href); confusingWordsOpenRef.current = true; setConfusingWordsOpen(true); }} className="group w-full rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-200">
                       <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📖</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-amber-800">Open →</span></span>
                       <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-amber-800">Confusing Words</span>
+                    </button>
+                    <button type="button" onClick={() => { if (!userId) { setSignInPopup(true); return; } window.history.pushState({ shoppersOceanLearning: true, shoppersOceanTool: "correct-my-language" }, "", window.location.href); correctMyLanguageOpenRef.current = true; setCorrectMyLanguageOpen(true); }} className="group w-full rounded-2xl border border-violet-300 bg-gradient-to-br from-violet-50 via-white to-fuchsia-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-200">
+                      <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">✍️</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-violet-800">Open →</span></span>
+                      <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-violet-800">Correct My Language</span>
                     </button>
                   </div>
                 ) : (
