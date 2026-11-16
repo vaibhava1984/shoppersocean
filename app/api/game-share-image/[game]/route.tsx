@@ -17,7 +17,7 @@ const div = (style: CSSProperties, ...children: ReactNode[]) =>
   h("div", { style }, ...children);
 
 function artwork(game: string) {
-  const frame = { display: "flex", width: 330, height: 330, alignItems: "center", justifyContent: "center", borderRadius: 38, background: "rgba(255,255,255,.13)", border: "5px solid rgba(255,255,255,.55)", boxShadow: "0 22px 55px rgba(0,0,0,.25)" };
+  const frame = { display: "flex", width: 330, height: 330, alignItems: "center", justifyContent: "center", borderRadius: 38, background: "rgba(255,255,255,.13)", border: "5px solid rgba(255,255,255,.55)", boxShadow: "0 22px 55px rgba(0,0,0,.25)" } as const satisfies CSSProperties;
   if (game === "archery3d") {
     const circle = (size: number, color: string, border = "none", child?: ReactNode) =>
       div({ display: "flex", width: size, height: size, borderRadius: 999, background: color, border, alignItems: "center", justifyContent: "center" }, ...(child ? [child] : []));
