@@ -9,6 +9,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer"
 import HeroSection from "@/components/HeroSection";
 import HomeActivityZones from "@/components/HomeActivityZones";
+import FloatingSubscribeButton from "@/components/FloatingSubscribeButton";
+import { getD1 } from "@/utils/cloudflare/d1";
 
 export const dynamic = 'force-dynamic';
 
@@ -34,6 +36,16 @@ export const metadata = {
 export default async function LandingPage() {
   const user = await getCurrentUser();
   const isAdmin = user?.publicMetadata?.userrole === "ADMIN";
+  let isSubscribed = false;
+  if (user?.id) {
+    try {
+      const db = getD1();
+      if (db) {
+        const subscription = await db.prepare("SELECT status, expires_at FROM user_subscriptions WHERE user_id = ? LIMIT 1").bind(user.id).first<any>();
+        isSubscribed = String(subscription?.status || "").toLowerCase() === "active" && Boolean(subscription?.expires_at) && new Date(String(subscription.expires_at)).getTime() > Date.now();
+      }
+    } catch (error) { console.error("Could not check homepage subscription status:", error); }
+  }
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header user={user} />
@@ -44,6 +56,7 @@ export default async function LandingPage() {
           welcomeName={user?.firstName || undefined}
           isAdmin={isAdmin}
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && !isAdmin}
+          isSubscribed={isSubscribed}
           buttonText="Explore Flipbooks"
           buttonLink="/bookShelf"
           imageSrc="/1.jpg?rev=2"
@@ -69,6 +82,7 @@ export default async function LandingPage() {
       </section>
 
       <section className="py-20 bg-white"><ContactForm user={user} /></section>
+      {!isSubscribed && <FloatingSubscribeButton />}
       <Footer />
     </div>
   )
