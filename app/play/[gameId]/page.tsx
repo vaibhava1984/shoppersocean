@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import GameShareRedirect from "./redirect";
 const games: Record<string, { title: string; description: string; emoji: string }> = {
@@ -11,12 +10,24 @@ const games: Record<string, { title: string; description: string; emoji: string 
 };
 type Props = { params: Promise<{ gameId: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { gameId } = await params; const game = games[gameId];
-  if (!game) return { title: "Game not found | Shoppers Ocean" };
-  const url = "https://www.shoppersocean.com/play/" + gameId;
-  const image = "https://www.shoppersocean.com/api/game-share-image/" + gameId;
+  const { gameId } = await params;
+  const safeId = gameId.toLowerCase().replace(/[^a-z0-9-]/g, "");
+  const game = games[safeId] ?? {
+    title: safeId.split("-").filter(Boolean).map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ") || "Online Game",
+    description: "Play " + safeId.split("-").join(" ") + " on Shoppers Ocean.",
+    emoji: "🎮",
+  };
+  const url = "https://shoppersocean.com/play/" + encodeURIComponent(safeId);
+  const image = "https://shoppersocean.com/api/game-share-image/" + encodeURIComponent(safeId) + "?v=2";
   return { title: game.title + " | Shoppers Ocean", description: game.description, alternates: { canonical: url },
     openGraph: { type: "website", url, siteName: "Shoppers Ocean", title: game.title + " | Shoppers Ocean", description: game.description, images: [{ url: image, width: 1200, height: 630, alt: game.title + " game on Shoppers Ocean" }] },
     twitter: { card: "summary_large_image", title: game.title + " | Shoppers Ocean", description: game.description, images: [image] } };
 }
-export default async function SharedGamePage({ params }: Props) { const { gameId } = await params; if (!games[gameId]) notFound(); return <GameShareRedirect gameId={gameId} title={games[gameId].title} />; }
+export default async function SharedGamePage({ params }: Props) {
+  const { gameId } = await params;
+  const safeId = gameId.toLowerCase().replace(/[^a-z0-9-]/g, "");
+  const game = games[safeId] ?? {
+    title: safeId.split("-").filter(Boolean).map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ") || "Online Game",
+  };
+  return <GameShareRedirect gameId={safeId} title={game.title} />;
+}
