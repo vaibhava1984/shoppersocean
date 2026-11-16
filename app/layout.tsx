@@ -1,6 +1,7 @@
 import "./globals.css";
 import InteractionFeedback from "@/components/InteractionFeedback";
 import SessionTimeout from "@/components/SessionTimeout";
+import FloatingSubscribeButton from "@/components/FloatingSubscribeButton";
 import type { Metadata, Viewport } from "next";
 
 // Canonical public origin and default social-sharing preview.
@@ -45,6 +46,7 @@ export default function RootLayout({
         <main className="min-h-screen flex flex-col">
           {children}
         </main>
+        <FloatingSubscribeButton />
       </body>
     </html>
   );
