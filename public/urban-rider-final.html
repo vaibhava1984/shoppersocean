@@ -159,7 +159,7 @@ const K={},KM={KeyW:'up',ArrowUp:'up',KeyS:'down',ArrowDown:'down',KeyA:'left',A
 addEventListener('keydown',e=>{const k=KM[e.code];if(k){K[k]=1;e.preventDefault()}if(e.code==='KeyH')horn();if(e.code==='KeyP'||e.code==='Escape')pause(!paused)});
 addEventListener('keyup',e=>{const k=KM[e.code];if(k)K[k]=0});
 document.querySelectorAll('#tc button').forEach(b=>{const k=b.dataset.k;b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);K[k]=1;A()});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,()=>{K[k]=0}))});
-let st='menu',paused=false,v=0,h=0,y=0,vy=0,vg=0,gr=true,air=0,pitch=0,leanA=0,score=0,mult=1,mt=0,wt=0,bt2=0,cool=0,shake=0,T=0,total=0,banked=0,best=0,pt=0,stage=1,stageTime=240,stageDeadline=0,stageStartScore=0,stageTarget=2500,trafficSpeedMultiplier=1,stageDecor=new R.Group(),stageLocation='CITY STREETS';
+let st='menu',paused=false,v=0,h=0,y=0,vy=0,vg=0,gr=true,air=0,pitch=0,leanA=0,score=0,mult=1,mt=0,wt=0,bt2=0,cool=0,shake=0,T=0,total=0,banked=0,best=0,pt=0,stage=1,stageTime=240,stageDeadline=0,stageStartScore=0,stageTarget=2500,trafficSpeedMultiplier=1,trafficActiveCount=18,stageDecor=new R.Group(),stageLocation='CITY STREETS';
 try{total=+localStorage.getItem('ub_t')||0;best=+localStorage.getItem('ub_b')||0}catch(e){}
 function bank(){const d=Math.floor(score)-banked;if(d>0){const old=total;total+=d;banked+=d;best=Math.max(best,Math.floor(score));try{localStorage.setItem('ub_t',total);localStorage.setItem('ub_b',best)}catch(e){}BK.forEach(b=>{if(old<b.u&&total>=b.u)pop('New bike unlocked: '+b.n+'!')})}}
 function pop(t){const p=$('pop');p.textContent=t;p.classList.remove('go');void p.offsetWidth;p.classList.add('go')}
@@ -197,6 +197,7 @@ function addStageProp(kind,x,z){
  g.position.set(x,0,z);stageDecor.add(g);
 }
 function setStageEnvironment(){
+ if(!stageDecor.parent)sc.add(stageDecor);
  const theme=STAGE_THEMES[(stage-1)%STAGE_THEMES.length];stageLocation=theme.name;
  sc.background=new R.Color(theme.sky);sc.fog.color.setHex(theme.fog);
  M_SW.color.setHex(theme.road);M_GR.color.setHex(theme.ground);
@@ -206,9 +207,10 @@ function setStageEnvironment(){
  sun.intensity=theme.kind==='night'?.22:theme.kind==='rain'?.55:1;
  sun.color.setHex(theme.kind==='desert'?0xffc18a:theme.kind==='night'?0x9db5ff:0xffffff);
  trafficSpeedMultiplier=1+(stage-1)*.13;
- const desired=Math.min(42,18+(stage-1)*3);
- while(cars.length<desired){const car=mkCar();placeCar(car)}
- cars.forEach(car=>placeCar(car));
+ const desired=Math.min(42,18+(stage-1)*3);trafficActiveCount=desired;
+ while(cars.length<desired){mkCar()}
+ cars.forEach((car,i)=>{if(i<desired)placeCar(car);else car.m.visible=false});
+ stageDecor.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose()}});
  stageDecor.clear();
  if(theme.kind!=='city'){
   for(let i=0;i<14;i++){
@@ -278,7 +280,7 @@ async function exitAfterStage(){
 function frame(dt){T+=dt;
  if(st==='play'&&!paused){sim(dt);tickStage();pt+=dt;if(pt>4){pt=0;bank()}}
  else if(ac&&(st==='menu'||paused)){const t=ac.currentTime;eg.gain.setTargetAtTime(0,t,.04);eo1.frequency.setTargetAtTime(52,t,.1);eo2.frequency.setTargetAtTime(52.5,t,.1);wg.gain.setTargetAtTime(0,t,.1);sgn.gain.setTargetAtTime(0,t,.1)}
- if(st==='play'&&!paused)for(const c of cars)updCar(c,dt);
+ if(st==='play'&&!paused)for(let i=0;i<trafficActiveCount;i++)updCar(cars[i],dt);
  SM.forEach(s=>{if(s.visible){s.userData.l-=dt*.9;s.position.y+=dt*1.2;s.scale.addScalar(dt*2.5);s.material.opacity=Math.max(0,s.userData.l*.6);if(s.userData.l<=0)s.visible=false}});
  updCells();const fx=Math.sin(h),fz=Math.cos(h);
  bike.root.position.set(px,y,pz);bike.root.rotation.y=h;bike.lean.rotation.z=leanA;bike.pit.rotation.x=-pitch;bike.fork.rotation.y=(K.left?1:0)*.35-(K.right?1:0)*.35;
@@ -322,7 +324,7 @@ function pause(on){if(st!=='play')return;if(on){stageTime=Math.max(0,(stageDeadl
 $('bp').onclick=()=>pause(!paused);$('bt').onclick=()=>{A();setTime((tmi+1)%3)};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true)});addEventListener('pagehide',bank);
 // ---------- boot ----------
-setBike();setTime(1);setStageEnvironment();updateAudioButtons();updCells();for(let i=0;i<18;i++){const c=mkCar();placeCar(c)}
+setBike();setTime(1);setStageEnvironment();updateAudioButtons();updCells();
 menuBikes();
 let auto=matchMedia('(pointer:coarse)').matches;const ab=()=>{$('ba').style.background=auto?'rgba(40,180,90,.75)':''};ab();
 $('ba').onclick=()=>{auto=!auto;ab();pop('Auto gas '+(auto?'ON':'OFF'))};
