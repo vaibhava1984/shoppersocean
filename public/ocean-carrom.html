@@ -105,7 +105,10 @@ function menu(h,p,btns){ov.innerHTML='';ov.style.display='flex';const e=(t,c,x)=
  e('h1','',h);if(p)e('p','',p);btns.forEach(([l,f,c])=>{e('button',c,l).onclick=f})}
 function home(){st='menu';paused=false;$('sl').disabled=true;setup();say('');menu('Ocean Carrom','You play white against the CPU. Pocket all 9 white coins first. The red queen is worth 3 points. Sink your own coin to shoot again. Best score '+best+'.',
  [['Play',start],['Level: '+['Easy','Medium','Hard'][DIFF],()=>{DIFF=(DIFF+1)%3;home()},'alt']])}
-function start(){A();setup();sc=[0,0];turn=0;paused=false;ov.style.display='none';hud();next()}
+let quotaPending=null,quotaSeq=0;
+function requestCarromQuota(){return new Promise(resolve=>{const requestId='ocean-carrom-'+(++quotaSeq);quotaPending={requestId,resolve};parent.postMessage({type:'shoppers-ocean-carrom-attempt',requestId,newGame:true},location.origin)})}
+addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent)return;const d=e.data||{};if(d.type!=='shoppers-ocean-carrom-attempt-result'||!quotaPending||d.requestId!==quotaPending.requestId)return;const done=quotaPending.resolve;quotaPending=null;done(Boolean(d.allowed))});
+async function start(){if(quotaPending)return;const allowed=await requestCarromQuota();if(!allowed){say('Your game quota is exhausted. Please check the quota message above.');return}A();setup();sc=[0,0];turn=0;paused=false;ov.style.display='none';hud();next()}
 function pause(on){if(st!=='place'&&st!=='roll')return;paused=on;drag=null;aim=null;
  if(on)menu('Paused','',[['Resume',()=>pause(false)],['New game',start,'alt'],['Menu',home,'alt']]);else ov.style.display='none'}
 $('bp').onclick=()=>pause(!paused);
