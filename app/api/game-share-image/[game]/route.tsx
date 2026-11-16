@@ -10,6 +10,7 @@ type GameConfig = { title: string; subtitle: string; start: RGB; end: RGB; accen
 
 const games: Record<string, GameConfig> = {
   "ocean-carrom": { title: "OCEAN CARROM", subtitle: "AIM. STRIKE. POCKET THE COINS.", start: [4, 49, 70], end: [8, 105, 125], accent: [226, 184, 128] },
+  "urban-rider-final": { title: "URBAN RIDER", subtitle: "RIDE THE CITY. OWN THE ROAD.", start: [12, 35, 82], end: [116, 48, 128], accent: [255, 200, 61] },
   chess: { title: "OCEAN CHESS", subtitle: "THINK AHEAD. MAKE YOUR MOVE.", start: [69, 31, 12], end: [153, 82, 28], accent: [246, 220, 174] },
   "ocean-solitaire": { title: "OCEAN SOLITAIRE", subtitle: "A FRESH DEAL IS WAITING.", start: [5, 78, 72], end: [30, 64, 130], accent: [220, 235, 245] },
   archery3d: { title: "ARCHERY 3D", subtitle: "AIM TRUE. HIT THE TARGET.", start: [124, 45, 18], end: [30, 58, 120], accent: [251, 191, 36] },
@@ -88,7 +89,15 @@ function makePng(game: GameConfig): Buffer {
   rect(700, 110, 430, 430, [245, 248, 250]);
   rect(712, 122, 406, 406, game.start);
   const cx = 915, cy = 325;
-  if (game.title.includes("CARROM")) {
+  if (game.title.includes("URBAN RIDER")) {
+    rect(760, 345, 330, 115, [24, 34, 57]);
+    for(let k=0;k<7;k++){const x=770+k*48,h=70+((k*37)%120);rect(x,345-h,34,h,[35,55,88]);}
+    circle(840,390,43,[18,22,30],[245,195,70]); circle(1010,390,43,[18,22,30],[245,195,70]);
+    line(840,390,910,320,[255,200,61],16); line(910,320,1010,390,[255,200,61],16);
+    line(910,320,955,285,[235,242,250],13); line(955,285,1000,285,[235,242,250],10);
+    circle(915,300,28,[220,45,65]); circle(936,262,20,[30,38,55],[255,255,255]);
+    line(955,285,975,250,[235,242,250],9);
+  } else if (game.title.includes("CARROM")) {
     rect(775, 185, 280, 280, [91, 54, 31]); rect(790, 200, 250, 250, [207, 157, 96]);
     circle(cx, cy, 78, [207, 157, 96], [93, 57, 31]); circle(cx, cy, 24, [24, 35, 49], [255,255,255]);
     circle(840, 250, 19, [250,250,250], [25,35,45]); circle(990, 390, 19, [20,20,20], [250,250,250]); circle(987, 250, 19, [185,28,45], [250,250,250]);
