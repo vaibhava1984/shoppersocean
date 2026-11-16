@@ -9,7 +9,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer"
 import HeroSection from "@/components/HeroSection";
 import HomeActivityZones from "@/components/HomeActivityZones";
-import FloatingSubscribeButton from "@/components/FloatingSubscribeButton";
 import { getD1 } from "@/utils/cloudflare/d1";
 
 export const dynamic = 'force-dynamic';
@@ -82,7 +81,6 @@ export default async function LandingPage() {
       </section>
 
       <section className="py-20 bg-white"><ContactForm user={user} /></section>
-      {!isSubscribed && <FloatingSubscribeButton />}
       <Footer />
     </div>
   )
