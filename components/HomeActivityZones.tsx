@@ -183,6 +183,28 @@ function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: str
   );
 }
 
+function ShareGameButton({ gameId, gameTitle, compact = false }: { gameId: string; gameTitle: string; compact?: boolean }) {
+  const [copied, setCopied] = useState(false);
+  const share = async () => {
+    const url = `${window.location.origin}/games/${gameId}`;
+    const shareData = { title: `${gameTitle} | Shoppers Ocean`, text: `Play ${gameTitle} on Shoppers Ocean!`, url };
+    try {
+      if (navigator.share) { await navigator.share(shareData); return; }
+      await navigator.clipboard.writeText(url);
+      setCopied(true); window.setTimeout(() => setCopied(false), 2200);
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") return;
+      try {
+        const field = document.createElement("textarea"); field.value = url; field.style.position = "fixed"; field.style.opacity = "0";
+        document.body.appendChild(field); field.select(); document.execCommand("copy"); field.remove();
+        setCopied(true); window.setTimeout(() => setCopied(false), 2200);
+      } catch { window.prompt("Copy this game link:", url); }
+    }
+  };
+  return <button type="button" onClick={(event) => { event.stopPropagation(); void share(); }} aria-label={`Share ${gameTitle}`} className={compact ? "inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-white/40 bg-white/15 px-3 py-1.5 text-xs font-extrabold text-white shadow-sm backdrop-blur transition hover:bg-white/25" : "inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-cyan-200 bg-slate-900 px-4 py-2 text-sm font-black text-white shadow-lg transition hover:bg-indigo-900"}>
+    <span aria-hidden="true">↗</span><span>{copied ? "Link copied!" : "Share game"}</span>
+  </button>;
+}
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
   const [englishTopicOpen, setEnglishTopicOpen] = useState(false);
@@ -371,6 +393,20 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       setClassicQuota(current => ({ ...current, loading: false }));
     }
   };
+  const sharedGameHandledRef = useRef(false);
+  useEffect(() => {
+    const requestedGame = new URLSearchParams(window.location.search).get("game");
+    const allowedGames = ["chess", "snakes-ladders", "ocean-solitaire", "tic-tac-toe", "archery3d", "ocean-carrom"] as const;
+    if (!requestedGame || !allowedGames.includes(requestedGame as typeof allowedGames[number])) return;
+    setActiveZone(3);
+    if (!userId || sharedGameHandledRef.current) { if (!userId) setSignInPopup(true); return; }
+    sharedGameHandledRef.current = true;
+    void (async () => {
+      await openClassicGame(requestedGame as typeof allowedGames[number]);
+      const url = new URL(window.location.href); url.searchParams.delete("game");
+      window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+    })();
+  }, [userId]);
   useEffect(() => {
     if (classicGameStarted !== "ocean-carrom") return;
     const handleCarromMessage = async (event: MessageEvent) => {
@@ -598,12 +634,19 @@ useEffect(() => {
                             {id==="ocean-carrom"&&<div className="relative mx-auto flex h-full max-w-[170px] items-center justify-center overflow-hidden rounded-xl border-[7px] border-amber-800 bg-[#d8a45d] shadow-[inset_0_0_0_3px_#f6d79b,0_8px_18px_rgba(0,0,0,.35)]"><div className="absolute inset-3 rounded-lg border-2 border-amber-950/70"><span className="absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-950/50"/><span className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-700 shadow-md"/><span className="absolute left-1/2 top-1/4 h-4 w-4 -translate-x-1/2 rounded-full bg-slate-950 shadow"/><span className="absolute left-1/3 top-1/2 h-4 w-4 rounded-full bg-white shadow"/><span className="absolute right-1/3 top-1/2 h-4 w-4 rounded-full bg-slate-950 shadow"/><span className="absolute bottom-1/4 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-white shadow"/></div><span className="absolute left-1 top-1 text-lg">🟤</span><span className="absolute bottom-1 right-1 text-lg">🟤</span></div>}{id==="tic-tac-toe"&&<div className="mx-auto grid h-full max-w-[170px] grid-cols-3 gap-1 rounded-lg bg-white/10 p-2">{["✕","","○","","✕","","○","","✕"].map((v,i)=><span key={i} className="flex items-center justify-center rounded bg-white text-xl font-black text-indigo-700 sm:text-3xl">{v}</span>)}</div>}{id==="archery3d"&&<div className="relative mx-auto flex h-full max-w-[170px] items-center justify-center overflow-hidden rounded-xl border border-amber-200/60 bg-gradient-to-br from-sky-400 via-indigo-800 to-slate-950 shadow-inner"><span className="absolute left-3 top-3 text-3xl">🏹</span><span className="text-7xl drop-shadow-[0_8px_12px_rgba(0,0,0,.55)]">🎯</span><span className="absolute bottom-2 right-3 text-2xl">➶</span></div>}
                             <span className="absolute bottom-2 right-2 rounded-full bg-white/15 px-2 py-1 text-[10px] font-black text-white">PLAY ↗</span>
                           </button>
+                          <div className="mt-2 flex justify-center"><ShareGameButton gameId={id} gameTitle={title} compact /></div>
                           <p className={"mt-2 bg-gradient-to-r text-sm font-black tracking-tight sm:text-base "+tone} style={{backgroundClip:"text",WebkitTextFillColor:"transparent"}}>{title}</p><p className="mt-0.5 text-[11px] text-white/65 sm:text-xs">{desc}</p><p className="mt-1 text-[10px] font-bold text-cyan-100">{classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType[id==="tic-tac-toe"?"tic":id] ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}</p>
                         </div>;
                       })}
                     </div>
                   </div>
-                ) : classicGameStarted === "chess" ? (
+                ) : (
+                  <>
+                    <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/5 px-3 py-2">
+                      <span className="min-w-0 truncate text-sm font-black text-white">{classicGameStarted === "chess" ? "Ocean Chess" : classicGameStarted === "snakes-ladders" ? "Snake & Ladders" : classicGameStarted === "ocean-solitaire" ? "Ocean Solitaire" : classicGameStarted === "archery3d" ? "Archery 3D" : classicGameStarted === "ocean-carrom" ? "Ocean Carrom" : "Tic Tac Toe"}</span>
+                      <ShareGameButton gameId={classicGameStarted} gameTitle={classicGameStarted === "chess" ? "Ocean Chess" : classicGameStarted === "snakes-ladders" ? "Snake & Ladders" : classicGameStarted === "ocean-solitaire" ? "Ocean Solitaire" : classicGameStarted === "archery3d" ? "Archery 3D" : classicGameStarted === "ocean-carrom" ? "Ocean Carrom" : "Tic Tac Toe"} />
+                    </div>
+                    {classicGameStarted === "chess" ? (
                   <div className="w-full min-w-0">
                     <iframe
                       ref={chessFrameRef}
@@ -636,6 +679,8 @@ useEffect(() => {
                     onPlayed={() => { classicGameInteractedRef.current = true; }}
                     onNewGame={async () => { const session=classicGameSessionRef.current; if (!session || session.consumed || !classicGameInteractedRef.current) return true; return consumeClassicAttempt(session); }}
                   />
+                    )}
+                  </>
                 )}
                 {classicQuotaNoticeFor !== null && <div className="w-full max-w-2xl"><GameQuotaNotice isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} /></div>}
               </div>
