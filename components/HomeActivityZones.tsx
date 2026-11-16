@@ -245,7 +245,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom"; sessionId: string; consumed: boolean }) => {
+  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final"; sessionId: string; consumed: boolean }) => {
     if (session.consumed) return true;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
@@ -667,7 +667,7 @@ useEffect(() => {
                   <>
                     <div className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/5 px-3 py-2">
                       <span className="min-w-0 truncate text-sm font-black text-white">{classicGameStarted === "chess" ? "Ocean Chess" : classicGameStarted === "snakes-ladders" ? "Snake & Ladders" : classicGameStarted === "ocean-solitaire" ? "Ocean Solitaire" : classicGameStarted === "archery3d" ? "Archery 3D" : classicGameStarted === "ocean-carrom" ? "Ocean Carrom" : classicGameStarted === "urban-rider-final" ? "Urban Rider" : "Tic Tac Toe"}</span>
-                      <ShareGameButton gameId={classicGameStarted} gameTitle={classicGameStarted === "chess" ? "Ocean Chess" : classicGameStarted === "snakes-ladders" ? "Snake & Ladders" : classicGameStarted === "ocean-solitaire" ? "Ocean Solitaire" : classicGameStarted === "archery3d" ? "Archery 3D" : classicGameStarted === "ocean-carrom" ? "Ocean Carrom" : "Tic Tac Toe"} />
+                      <ShareGameButton gameId={classicGameStarted} gameTitle={classicGameStarted === "chess" ? "Ocean Chess" : classicGameStarted === "snakes-ladders" ? "Snake & Ladders" : classicGameStarted === "ocean-solitaire" ? "Ocean Solitaire" : classicGameStarted === "archery3d" ? "Archery 3D" : classicGameStarted === "ocean-carrom" ? "Ocean Carrom" : classicGameStarted === "urban-rider-final" ? "Urban Rider" : "Tic Tac Toe"} />
                     </div>
                     {classicGameStarted === "chess" ? (
                   <div className="w-full min-w-0">
