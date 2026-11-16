@@ -6,8 +6,9 @@ export const dynamic = "force-dynamic";
 const WIDTH = 1200;
 const HEIGHT = 630;
 type RGB = [number, number, number];
+type GameConfig = { title: string; subtitle: string; start: RGB; end: RGB; accent: RGB };
 
-const games: Record<string, { title: string; subtitle: string; start: RGB; end: RGB; accent: RGB }> = {
+const games: Record<string, GameConfig> = {
   "ocean-carrom": { title: "OCEAN CARROM", subtitle: "AIM. STRIKE. POCKET THE COINS.", start: [4, 49, 70], end: [8, 105, 125], accent: [226, 184, 128] },
   chess: { title: "OCEAN CHESS", subtitle: "THINK AHEAD. MAKE YOUR MOVE.", start: [69, 31, 12], end: [153, 82, 28], accent: [246, 220, 174] },
   "ocean-solitaire": { title: "OCEAN SOLITAIRE", subtitle: "A FRESH DEAL IS WAITING.", start: [5, 78, 72], end: [30, 64, 130], accent: [220, 235, 245] },
@@ -22,7 +23,7 @@ const FONT: Record<string, string[]> = {
   "&":["01010","10100","10100","01000","10101","10010","01101"],".":["00000","00000","00000","00000","00000","00110","00110"],"!":["00100","00100","00100","00100","00100","00000","00100"],": ["00000","00110","00110","00000","00110","00110","00000"],"-":["00000","00000","00000","11111","00000","00000","00000"]
 };
 
-function makePng(game: typeof games[string]): Buffer {
+function makePng(game: GameConfig): Buffer {
   const pixels = new Uint8Array(WIDTH * HEIGHT * 4);
   const set = (x: number, y: number, c: RGB) => {
     if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) return;
@@ -77,7 +78,7 @@ function makePng(game: typeof games[string]): Buffer {
     rect(WIDTH - 38 + t, 34, 2, HEIGHT - 68, [220, 240, 250]);
   }
   text("SHOPPERS OCEAN", 88, 84, 4, [210, 245, 250]);
-  const titleScale = game.title.length > 14 ? 7 : 9;
+  const titleScale = game.title.length > 14 ? 6 : 9;
   text(game.title, 88, 215, titleScale, [255, 255, 255]);
   text(game.subtitle, 92, 325, 4, [245, 248, 252]);
   text("PLAY  THINK  DISCOVER", 92, 492, 4, game.accent);
