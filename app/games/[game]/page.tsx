@@ -9,6 +9,7 @@ const games = {
   "tic-tac-toe": { title: "Tic Tac Toe", description: "Challenge yourself or a friend in Tic Tac Toe on Shoppers Ocean." },
   archery3d: { title: "Archery 3D", description: "Aim carefully and hit the targets in Archery 3D on Shoppers Ocean." },
   "ocean-carrom": { title: "Ocean Carrom", description: "Aim, strike and pocket the coins in Ocean Carrom on Shoppers Ocean." },
+  "urban-rider-final": { title: "Urban Rider", description: "Ride through a 3D city, weave through traffic and perform stunts in Urban Rider on Shoppers Ocean." },
 } as const;
 
 type GameId = keyof typeof games;
