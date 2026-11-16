@@ -222,7 +222,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
-  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d"; sessionId: string; consumed: boolean }) => {
+  const consumeClassicAttempt = async (session: { gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom"; sessionId: string; consumed: boolean }) => {
     if (session.consumed) return true;
     try {
       const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "classic-games", gameTypeId: session.gameType, challengeId: session.sessionId }) });
@@ -246,7 +246,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       return true;
     } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
   };
-  const startNextClassicAttempt = (gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d") => {
+  const startNextClassicAttempt = (gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom") => {
     classicGameSessionRef.current = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameInteractedRef.current = false;
   };
