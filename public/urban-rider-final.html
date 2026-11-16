@@ -252,7 +252,7 @@ function finishStage(){
  if(mg)mg.gain.setTargetAtTime(0,ac.currentTime,.04);
  menu(success?'STAGE CLEARED!':'STAGE FAILED',
   'STAGE '+stage+' · '+stageLocation+'<br>Score: '+earned.toLocaleString()+' / '+stageTarget.toLocaleString()+'<br>'+(success?'Target achieved. Excellent riding!':'Target missed. Keep riding and try the next challenge.')+'<br>Total points: '+total.toLocaleString()+'.',
-  [['NEXT STAGE',startNextStage],['EXIT GAME',exitAfterStage,'alt']],0);
+  [['NEXT STAGE',startNextStage],['EXIT GAME',exitGameAndCharge,'alt']],0);
 }
 function tickStage(){
  if(st!=='play'||paused)return;
@@ -268,9 +268,8 @@ function startNextStage(){
  musicStarted=true;startBackgroundMusic();ov.style.display='none';
  pop('STAGE '+stage+' · '+stageLocation);ping();
 }
-async function exitAfterStage(){
- if(st!=='over')return;
- // The explicit Exit action is a separate quota-consuming game attempt.
+async function exitGameAndCharge(){
+ // Every explicit in-game Exit/Quit action records one additional quota attempt.
  await requestQuotaAttempt();
  st='menu';paused=false;musicStarted=false;stopBackgroundMusic();
  score=0;banked=0;v=0;vy=0;vg=0;stage=1;stageTime=240;stageDeadline=0;stageStartScore=0;stageTarget=2500;
@@ -320,7 +319,7 @@ async function begin(){
  musicStarted=true;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.05);startBackgroundMusic();
  window.focus();st='play';paused=false;ov.style.display='none'
 }
-function pause(on){if(st!=='play')return;if(on){stageTime=Math.max(0,(stageDeadline-performance.now())/1000);stageDeadline=0}else{stageDeadline=performance.now()+Math.max(0,stageTime)*1000}paused=on;bank();Object.keys(K).forEach(k=>K[k]=0);if(on){if(mg)mg.gain.setTargetAtTime(0,ac.currentTime,.025);stopBackgroundMusic()}else{if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);startBackgroundMusic()}if(on)menu('Paused','Stage '+stage+' • Score '+Math.floor(score-stageStartScore)+' / '+stageTarget,[['RESUME',()=>pause(false)],['QUIT GAME',()=>{bank();st='menu';paused=false;musicStarted=false;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);stopBackgroundMusic();score=0;banked=0;v=0;stage=1;stageTime=240;stageDeadline=0;menuBikes()},'alt']],0);else ov.style.display='none'}
+function pause(on){if(st!=='play')return;if(on){stageTime=Math.max(0,(stageDeadline-performance.now())/1000);stageDeadline=0}else{stageDeadline=performance.now()+Math.max(0,stageTime)*1000}paused=on;bank();Object.keys(K).forEach(k=>K[k]=0);if(on){if(mg)mg.gain.setTargetAtTime(0,ac.currentTime,.025);stopBackgroundMusic()}else{if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);startBackgroundMusic()}if(on)menu('Paused','Stage '+stage+' • Score '+Math.floor(score-stageStartScore)+' / '+stageTarget,[['RESUME',()=>pause(false)],['QUIT GAME',exitGameAndCharge,'alt']],0);else ov.style.display='none'}
 $('bp').onclick=()=>pause(!paused);$('bt').onclick=()=>{A();setTime((tmi+1)%3)};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true)});addEventListener('pagehide',bank);
 // ---------- boot ----------
