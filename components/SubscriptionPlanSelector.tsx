@@ -7,9 +7,9 @@ declare global {
   interface Window { Razorpay?: new (options: Record<string, any>) => { open: () => void; on: (event: string, callback: (response: any) => void) => void }; }
 }
 const plans = [
-  { id: "1-month", name: "1 Month", duration: "1 month", amount: 99 },
-  { id: "6-months", name: "6 Months", duration: "6 months", amount: 550 },
-  { id: "12-months", name: "1 Year", duration: "1 year", amount: 1100, featured: true },
+  { id: "1-month", name: "1 Month", duration: "1 month", amount: 199 },
+  { id: "6-months", name: "6 Months", duration: "6 months", amount: 1100 },
+  { id: "12-months", name: "1 Year", duration: "1 year", amount: 2100, featured: true },
 ];
 function formatDate(value: string) { return new Date(value).toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric", timeZone: "Asia/Kolkata" }); }
 
@@ -19,7 +19,7 @@ export default function SubscriptionPlanSelector({ signedIn }: { signedIn: boole
   const [error, setError] = useState("");
   const [confirmation, setConfirmation] = useState<{planName:string;amount:number;startedAt:string;expiresAt:string}|null>(null);
   const [currency, setCurrency] = useState<"INR"|"USD">("INR");
-  const [prices, setPrices] = useState<Record<string, number>>({ "1-month": 99, "6-months": 550, "12-months": 1100 });
+  const [prices, setPrices] = useState<Record<string, number>>({ "1-month": 199, "6-months": 1100, "12-months": 2100 });
   useEffect(() => { fetch("/api/subscription/create-order", { cache: "no-store" }).then(r => r.json()).then(data => { if (data.currency === "INR" || data.currency === "USD") setCurrency(data.currency); if (Array.isArray(data.plans)) setPrices(Object.fromEntries(data.plans.map((p: any) => [p.id, Number(p.amount)]))); }).catch(() => {}); }, []);
   useEffect(() => { const orderId = new URLSearchParams(window.location.search).get("paypal_subscription_order") || new URLSearchParams(window.location.search).get("token"); if (!orderId) return; setLoading("paypal"); fetch("/api/subscription/verify-payment", { method: "POST", cache: "no-store", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ paypal_order_id: orderId }) }).then(async r => { const d = await r.json(); if (!r.ok || !d.success) throw new Error(d.error || "Payment verification failed."); setConfirmation({ planName: d.planName, amount: d.amount, startedAt: d.startedAt, expiresAt: d.expiresAt }); window.history.replaceState({}, "", "/subscribe-now"); }).catch(e => setError(e instanceof Error ? e.message : "Unable to verify PayPal payment.")).finally(() => setLoading("")); }, []);
   useEffect(() => {
