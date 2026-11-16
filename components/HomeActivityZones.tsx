@@ -186,7 +186,7 @@ function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: str
 function ShareGameButton({ gameId, gameTitle, compact = false }: { gameId: string; gameTitle: string; compact?: boolean }) {
   const [copied, setCopied] = useState(false);
   const share = async () => {
-    const url = `${window.location.origin}/games/${gameId}`;
+    const url = `${window.location.origin}/?game=${encodeURIComponent(gameId)}`;
     const shareData = { title: `${gameTitle} | Shoppers Ocean`, text: `Play ${gameTitle} on Shoppers Ocean!`, url };
     try {
       if (navigator.share) { await navigator.share(shareData); return; }
@@ -398,6 +398,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     const requestedGame = new URLSearchParams(window.location.search).get("game");
     const allowedGames = ["chess", "snakes-ladders", "ocean-solitaire", "tic-tac-toe", "archery3d", "ocean-carrom"] as const;
     if (!requestedGame || !allowedGames.includes(requestedGame as typeof allowedGames[number])) return;
+    activeZoneRef.current = 3;
     setActiveZone(3);
     if (!userId || sharedGameHandledRef.current) { if (!userId) setSignInPopup(true); return; }
     sharedGameHandledRef.current = true;
