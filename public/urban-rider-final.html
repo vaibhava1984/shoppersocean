@@ -15,7 +15,7 @@ canvas{display:block;position:fixed;inset:0}
 #pop{top:26%;left:0;right:0;text-align:center;font-size:30px;font-weight:800;color:var(--gold);opacity:0}
 #pop.go{animation:pp 1.4s ease-out}
 @keyframes pp{0%{opacity:0;transform:scale(.6)}12%{opacity:1;transform:scale(1.1)}75%{opacity:1}100%{opacity:0;transform:translateY(-24px)}}
-#bar{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:8px;display:flex;gap:8px}
+#stageHud{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);padding:7px 12px;border-radius:12px;background:rgba(10,14,24,.62);font-size:13px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:center;letter-spacing:.03em}#stageHud small{display:block;font-size:10px;opacity:.85;margin-top:2px}#bar{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:8px;display:flex;gap:8px}
 button{font:inherit;cursor:pointer;border:0}
 button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .ic{width:40px;height:40px;border-radius:50%;background:var(--glass);color:#fff;font-size:17px}
@@ -43,6 +43,7 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 <div class="hud" id="sc"><span id="scv">0</span> <span id="mu">x1</span></div>
 <div class="hud" id="sp"><span id="spv">0</span> <small>km/h</small></div>
 <div class="hud" id="pop"></div>
+<div class="hud" id="stageHud"><span id="stagev">STAGE 1</span> · <span id="timerv">05:00</span><small id="targetv">TARGET 2,500</small></div>
 <div id="bar"><button class="ic" id="bm" aria-label="Music">🎵</button><button class="ic" id="ba" aria-label="Auto gas">⚡</button><button class="ic" id="bt" aria-label="Time of day">🌇</button><button class="ic" id="bs" aria-label="Sound">🔊</button><button class="ic" id="bp" aria-label="Pause">⏸</button></div>
 <div id="tc"><button data-k="left">◀</button><button data-k="right">▶</button><button data-k="up">GAS</button><button data-k="brake">BRAKE</button><button data-k="whl">WHEELIE</button><button data-k="burn">BURNOUT</button></div>
 <div id="ov"></div>
@@ -104,9 +105,9 @@ const TM=[{n:'☀️',t:'#4a9be8',b:'#cfe8ff',s:1.05,h:.95,e:0,c:0xffffff,hl:0,s
 function setTime(i){tmi=i;const t=TM[i],c=document.createElement('canvas');c.width=2;c.height=256;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,0,256);g.addColorStop(0,t.t);g.addColorStop(.62,t.b);g.addColorStop(1,t.b);x.fillStyle=g;x.fillRect(0,0,2,256);
  sc.background=new R.CanvasTexture(c);sc.fog.color.set(t.b);hemi.intensity=t.h;sun.intensity=t.s;sun.color.set(t.c);MB.forEach(m=>m.emissiveIntensity=t.e);if(head)head.intensity=t.hl;$('bt').textContent=t.n;sunS.material.color.set(t.sc);sunS.scale.set(t.ss,t.ss,1);MHEAD.color.set(t.lh)}
 // ---------- bikes ----------
-const BK=[{n:'Scooter',c:0xff6b3d,vmax:40,acc:17,hd:1.2,u:0,s:.92},{n:'Street',c:0x2f7bd8,vmax:54,acc:25,hd:1.05,u:600,s:1},{n:'Sport',c:0xd83a4a,vmax:68,acc:31,hd:1,u:2000,s:1},{n:'Superbike',c:0xf0b429,vmax:82,acc:38,hd:.95,u:5000,s:1.03}];
+const BK=[{n:'Scooter',c:0xff6b3d,vmax:40,acc:17,hd:1.2,u:0,s:.92},{n:'Street',c:0x2f7bd8,vmax:45,acc:21,hd:1.05,u:600,s:1},{n:'Sport',c:0xd83a4a,vmax:68,acc:31,hd:1,u:2000,s:1},{n:'Superbike',c:0xf0b429,vmax:82,acc:38,hd:.95,u:5000,s:1.03}];
 const TIRE=new R.CylinderGeometry(.36,.36,.16,18).rotateZ(Math.PI/2),RIM=new R.CylinderGeometry(.22,.22,.18,12).rotateZ(Math.PI/2);
-let bike=null,sel=0;
+let bike=null,sel=1;
 function mkBike(B){const root=new R.Group(),lean=new R.Group(),pit=new R.Group(),body=new R.Group(),fork=new R.Group();root.add(lean);lean.add(pit);pit.position.set(0,0,-.85);pit.add(body);body.position.set(0,0,.85);
  const mt=(g,c,x,y,z,p)=>{const m=new R.Mesh(g,new R.MeshStandardMaterial(Object.assign({color:c,roughness:.45,metalness:.35},p||{})));m.position.set(x,y,z);m.castShadow=true;return m},bx=(w,h,d)=>new R.BoxGeometry(w,h,d);
  const wheel=()=>{const w=new R.Group();w.add(mt(TIRE,0x151515,0,0,0),mt(RIM,0xd5d9de,0,0,0),mt(bx(.2,.06,.1),0xffffff,0,.25,0));return w};
@@ -141,9 +142,9 @@ const sunS=new R.Sprite(new R.SpriteMaterial({map:smc,blending:R.AdditiveBlendin
 const SDV=[new R.Vector3(-.5,.6,-.6).normalize(),new R.Vector3(-.8,.15,-.55).normalize(),new R.Vector3(.5,.55,-.65).normalize()];
 function puff(x,y,z){const s=SM[smi++%40];s.position.set(x+(rnd()-.5)*.4,y,z+(rnd()-.5)*.4);s.userData.l=1;s.visible=true;s.scale.setScalar(.8)}
 // ---------- audio ----------
-let ac,mg,mus,eo1,eo2,ef,eg,wg,sgn,nb,soundOn=true,musicOn=true,mnt=0,mst=0;
+let ac,mg,mus,eo1,eo2,ef,eg,wg,sgn,nb,soundOn=true,musicOn=true,musicStarted=false,mnt=0,mst=0;
 function A(){if(!ac){try{ac=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return}
- mg=ac.createGain();mg.gain.value=soundOn?.7:0;mg.connect(ac.destination);mus=ac.createGain();mus.gain.value=musicOn?.38:0;mus.connect(mg);setInterval(msched,100);const n=ac.sampleRate*2,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=rnd()*2-1;nb=b;
+ mg=ac.createGain();mg.gain.value=soundOn?.7:0;mg.connect(ac.destination);mus=ac.createGain();mus.gain.value=0;mus.connect(mg);setInterval(msched,100);const n=ac.sampleRate*2,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=rnd()*2-1;nb=b;
  eo1=ac.createOscillator();eo1.type='sawtooth';eo2=ac.createOscillator();eo2.type='square';ef=ac.createBiquadFilter();ef.type='lowpass';ef.frequency.value=700;eg=ac.createGain();eg.gain.value=0;eo1.connect(ef);eo2.connect(ef);ef.connect(eg);eg.connect(mg);eo1.start();eo2.start();
  const ns=(ty,fr,q,v)=>{const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=nb;s.loop=true;f.type=ty;f.frequency.value=fr;f.Q.value=q;g.gain.value=v;s.connect(f);f.connect(g);g.connect(mg);s.start();return g};
  wg=ns('bandpass',700,.6,0);sgn=ns('bandpass',2600,5,0);ns('lowpass',260,.5,.05)}ac.resume()}
@@ -151,7 +152,7 @@ const mf=n=>440*Math.pow(2,(n-69)/12),CHP=[[57,60,64],[53,57,60],[48,52,55],[55,
 function mnote(f,t,d,ty,v,lp){const o=ac.createOscillator(),g=ac.createGain(),fl=ac.createBiquadFilter();o.type=ty;o.frequency.value=f;fl.type='lowpass';fl.frequency.value=lp;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(fl);fl.connect(g);g.connect(mus);o.start(t);o.stop(t+d+.05)}
 function mnoise(t,d,ty,fr,v){const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=nb;f.type=ty;f.frequency.value=fr;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(f);f.connect(g);g.connect(mus);s.start(t);s.stop(t+d+.02)}
 function mkick(t){const o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(42,t+.14);g.gain.setValueAtTime(.9,t);g.gain.exponentialRampToValueAtTime(.001,t+.26);o.connect(g);g.connect(mus);o.start(t);o.stop(t+.3)}
-function msched(){if(!ac||!nb)return;if(!mnt)mnt=ac.currentTime+.1;
+function msched(){if(!ac||!nb||!musicStarted)return;if(!mnt)mnt=ac.currentTime+.1;
  while(mnt<ac.currentTime+.3){const q=mst%16,ch=CHP[(mst>>4)&3],t=mnt;
   if(q%4===0)mkick(t);if(q===4||q===12){mnoise(t,.16,'bandpass',1900,.35);mnote(190,t,.1,'triangle',.2,900)}if(q%2===0)mnoise(t,.05,'highpass',7000,q%4===2?.22:.1);
   if([0,3,6,8,11,14].includes(q))mnote(mf(ch[0]-24),t,.24,'sawtooth',.3,420);
@@ -163,14 +164,14 @@ function crashSnd(){if(!ac)return;const t=ac.currentTime,s=ac.createBufferSource
 function tone(f,t,d,ty,v){const o=ac.createOscillator(),g=ac.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+d+.05)}
 function ping(){if(ac){const t=ac.currentTime;tone(880,t,.25,'sine',.25);tone(1320,t+.08,.3,'sine',.2)}}
 function horn(){if(ac){const t=ac.currentTime;tone(420,t,.4,'square',.12);tone(520,t,.4,'square',.12)}}
-$('bm').onclick=()=>{musicOn=!musicOn;if(mus)mus.gain.value=musicOn?.38:0;$('bm').style.opacity=musicOn?1:.4};
+$('bm').onclick=()=>{musicOn=!musicOn;if(mus)mus.gain.value=musicStarted&&musicOn?.38:0;$('bm').style.opacity=musicOn?1:.4};
 $('bs').onclick=()=>{soundOn=!soundOn;if(mg)mg.gain.value=soundOn?.7:0;$('bs').textContent=soundOn?'🔊':'🔇'};
 // ---------- state ----------
 const K={},KM={KeyW:'up',ArrowUp:'up',KeyS:'down',ArrowDown:'down',KeyA:'left',ArrowLeft:'left',KeyD:'right',ArrowRight:'right',Space:'brake',KeyB:'burn',ShiftLeft:'whl',ShiftRight:'whl'};
 addEventListener('keydown',e=>{const k=KM[e.code];if(k){K[k]=1;e.preventDefault()}if(e.code==='KeyH')horn();if(e.code==='KeyP'||e.code==='Escape')pause(!paused)});
 addEventListener('keyup',e=>{const k=KM[e.code];if(k)K[k]=0});
 document.querySelectorAll('#tc button').forEach(b=>{const k=b.dataset.k;b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);K[k]=1;A()});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,()=>{K[k]=0}))});
-let st='menu',paused=false,v=0,h=0,y=0,vy=0,vg=0,gr=true,air=0,pitch=0,leanA=0,score=0,mult=1,mt=0,wt=0,bt2=0,cool=0,shake=0,T=0,total=0,banked=0,best=0,pt=0;
+let st='menu',paused=false,v=0,h=0,y=0,vy=0,vg=0,gr=true,air=0,pitch=0,leanA=0,score=0,mult=1,mt=0,wt=0,bt2=0,cool=0,shake=0,T=0,total=0,banked=0,best=0,pt=0,stage=1,stageTime=300,stageStartScore=0,stageTarget=2500;
 try{total=+localStorage.getItem('ub_t')||0;best=+localStorage.getItem('ub_b')||0}catch(e){}
 function bank(){const d=Math.floor(score)-banked;if(d>0){const old=total;total+=d;banked+=d;best=Math.max(best,Math.floor(score));try{localStorage.setItem('ub_t',total);localStorage.setItem('ub_b',best)}catch(e){}BK.forEach(b=>{if(old<b.u&&total>=b.u)pop('New bike unlocked: '+b.n+'!')})}}
 function pop(t){const p=$('pop');p.textContent=t;p.classList.remove('go');void p.offsetWidth;p.classList.add('go')}
@@ -198,8 +199,22 @@ function sim(dt){const B=BK[sel],thr=(K.up||(auto&&!K.brake&&!K.down))?1:0,brk=K
  if(ac){const gs=B.vmax/5,g=Math.min(4,Math.floor(Math.abs(v)/gs)),rpm=.22+.78*clamp((Math.abs(v)-g*gs)/gs,0,1)+thr*.08,fr=(48+rpm*150)*(B.vmax>60?1.15:1),t=ac.currentTime;
   eo1.frequency.setTargetAtTime(fr,t,.04);eo2.frequency.setTargetAtTime(fr*1.01,t,.04);eg.gain.setTargetAtTime(paused?0:.05+.09*thr+.05*rpm,t,.05);ef.frequency.setTargetAtTime(450+rpm*1500,t,.05);
   wg.gain.setTargetAtTime(paused?0:clamp(Math.abs(v)/80,0,1)*.25,t,.1);sgn.gain.setTargetAtTime(paused?0:(smk&&gr?.16:0),t,.05)}}
+function tickStage(dt){
+ stageTime-=dt;
+ const earned=Math.floor(score-stageStartScore);
+ if(earned>=stageTarget){
+  bank();stage++;stageStartScore=score;stageTarget=Math.round(stageTarget*1.4);stageTime=300;
+  pop('STAGE '+stage+'! New target: '+stageTarget.toLocaleString());ping();
+  return;
+ }
+ if(stageTime<=0){
+  stageTime=0;bank();st='over';paused=false;musicStarted=false;
+  if(mus)mus.gain.setTargetAtTime(0,ac.currentTime,.12);
+  menu('TIME UP!','Stage '+stage+' target not reached. Score: '+earned.toLocaleString()+' / '+stageTarget.toLocaleString()+'. Total points: '+total+'.',[['RETRY',begin],['Back to start',()=>{score=0;banked=0;v=0;stage=1;stageTime=300;menuBikes()},'alt']],0);
+ }
+}
 function frame(dt){T+=dt;
- if(st==='play'&&!paused){sim(dt);pt+=dt;if(pt>4){pt=0;bank()}}
+ if(st==='play'&&!paused){sim(dt);tickStage(dt);pt+=dt;if(pt>4){pt=0;bank()}}
  else if(ac&&(st==='menu'||paused)){const t=ac.currentTime;eg.gain.setTargetAtTime(paused?0:.04,t,.1);eo1.frequency.setTargetAtTime(52,t,.1);eo2.frequency.setTargetAtTime(52.5,t,.1);wg.gain.setTargetAtTime(0,t,.1);sgn.gain.setTargetAtTime(0,t,.1)}
  if(!paused)for(const c of cars)updCar(c,dt);
  SM.forEach(s=>{if(s.visible){s.userData.l-=dt*.9;s.position.y+=dt*1.2;s.scale.addScalar(dt*2.5);s.material.opacity=Math.max(0,s.userData.l*.6);if(s.userData.l<=0)s.visible=false}});
@@ -211,7 +226,7 @@ function frame(dt){T+=dt;
  else{const k=Math.min(1,dt*6),d=6.5+Math.abs(v)*.04;cam.position.x+=(px-fx*d-cam.position.x)*k;cam.position.y+=(y+2.6+pitch*1.2-cam.position.y)*k;cam.position.z+=(pz-fz*d-cam.position.z)*k;
   shake=Math.max(0,shake-dt*1.5);cam.position.x+=(rnd()-.5)*shake;cam.position.y+=(rnd()-.5)*shake*.6;cam.position.z+=(rnd()-.5)*shake;cam.lookAt(px+fx*5,y+1.3,pz+fz*5);
   const fv=62+Math.abs(v)*.35;cam.fov+=(fv-cam.fov)*Math.min(1,dt*3);cam.updateProjectionMatrix()}
- sunS.position.copy(cam.position).addScaledVector(SDV[tmi],450);$('scv').textContent=Math.floor(score);$('mu').textContent='x'+mult;$('spv').textContent=Math.round(Math.abs(v)*3.6);$('vig').style.opacity=clamp((Math.abs(v)-40)/45,0,.8);
+ sunS.position.copy(cam.position).addScaledVector(SDV[tmi],450);$('stagev').textContent='STAGE '+stage;const secs=Math.max(0,Math.ceil(stageTime));$('timerv').textContent=String(Math.floor(secs/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0');$('targetv').textContent='TARGET '+stageTarget.toLocaleString()+' · '+Math.max(0,Math.floor(score-stageStartScore)).toLocaleString();$('scv').textContent=Math.floor(score);$('mu').textContent='x'+mult;$('spv').textContent=Math.round(Math.abs(v)*3.6);$('vig').style.opacity=clamp((Math.abs(v)-40)/45,0,.8);
  ren.render(sc,cam)}
 // ---------- menus ----------
 const ov=$('ov');
@@ -219,7 +234,7 @@ function menu(title,txt,btns,bikes){ov.style.display='flex';ov.innerHTML='';cons
  e('h1','',title);if(txt)e('p','',txt);
  if(bikes){const row=e('div','bk');BK.forEach((b,i)=>{const n=document.createElement('button');n.className='bike'+(i===sel?' on':'');n.disabled=total<b.u;n.innerHTML='<b>'+b.n+'</b><small>'+(total<b.u?'🔒 '+b.u+' pts':Math.round(b.vmax*3.6)+' km/h')+'</small>';n.onclick=()=>{sel=i;setBike();A();menuBikes()};row.appendChild(n)})}
  btns.forEach(([l,f,c])=>{e('button','m '+(c||''),l).onclick=f})}
-function menuBikes(){menu('Urban Rider','Weave through traffic, hit the ramps and pull stunts. Total points: '+total+'. Best run: '+best+'.<br>Keys: W/A/S/D or arrows, Space brake, Shift wheelie, B burnout, H horn.',[['Ride!',begin]],1)}
+function menuBikes(){menu('Urban Rider','Weave through traffic, hit ramps and perform stunts. Complete each 5-minute stage by reaching its score target. Total points: '+total+'. Best run: '+best+'.<br>Controls: W/A/S/D or arrows, Space brake, Shift wheelie, B burnout, H horn.',[['RIDE',begin]],0)}
 let attemptRequestId=0;
 function requestQuotaAttempt(){
  if(window.parent===window)return Promise.resolve(true);
@@ -237,9 +252,11 @@ async function begin(){
  A();
  const allowed=await requestQuotaAttempt();
  if(!allowed){pop('Quota unavailable. Please try again.');return}
+ score=0;banked=0;v=0;h=0;y=0;vy=0;vg=0;mult=1;stage=1;stageTime=300;stageStartScore=0;stageTarget=2500;
+ musicStarted=true;if(mus){mus.gain.cancelScheduledValues(ac.currentTime);mus.gain.setTargetAtTime(musicOn?.38:0,ac.currentTime,.15)}mnt=ac.currentTime+.1;mst=0;
  window.focus();st='play';paused=false;ov.style.display='none'
 }
-function pause(on){if(st!=='play')return;paused=on;bank();if(on)menu('Paused','Score '+Math.floor(score)+' • Total '+total,[['Resume',()=>pause(false)],['Change bike',()=>{st='menu';paused=false;score=0;banked=0;v=0;menuBikes()},'alt']],0);else ov.style.display='none'}
+function pause(on){if(st!=='play')return;paused=on;bank();if(on)menu('Paused','Stage '+stage+' • Score '+Math.floor(score-stageStartScore)+' / '+stageTarget,[['Resume',()=>pause(false)],['Quit ride',()=>{bank();st='menu';paused=false;score=0;banked=0;v=0;stage=1;stageTime=300;menuBikes()},'alt']],0);else ov.style.display='none'}
 $('bp').onclick=()=>pause(!paused);$('bt').onclick=()=>{A();setTime((tmi+1)%3)};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true)});addEventListener('pagehide',bank);
 // ---------- boot ----------
