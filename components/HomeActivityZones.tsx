@@ -195,10 +195,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const confusingWordsOpenRef = useRef(false);
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | null | false>(false);
   const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d"; sessionId: string; consumed: boolean } | null>(null);
+  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const pendingClassicQuotaRef = useRef<Record<string, number>>({});
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
@@ -214,6 +214,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const snakesFrameRef = useRef<HTMLIFrameElement | null>(null);
   const solitaireFrameRef = useRef<HTMLIFrameElement | null>(null);
   const archeryFrameRef = useRef<HTMLIFrameElement | null>(null);
+  const carromFrameRef = useRef<HTMLIFrameElement | null>(null);
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [riddleRemaining, setRiddleRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
@@ -341,10 +342,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d") => {
+  const openClassicGame = async (game: "tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom") => {
     setClassicQuotaNoticeFor(null);
     if (!userId) { setSignInPopup(true); return; }
-    const gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" = game === "chess" ? "chess" : game === "snakes-ladders" ? "snakes-ladders" : game === "ocean-solitaire" ? "ocean-solitaire" : game === "archery3d" ? "archery3d" : "tic";
+    const gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" = game === "chess" ? "chess" : game === "snakes-ladders" ? "snakes-ladders" : game === "ocean-solitaire" ? "ocean-solitaire" : game === "archery3d" ? "archery3d" : game === "ocean-carrom" ? "ocean-carrom" : "tic";
     setClassicGameOpening(true);
     try {
       // Check the current balance before showing the game, but charge only when
@@ -370,6 +371,19 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       setClassicQuota(current => ({ ...current, loading: false }));
     }
   };
+  useEffect(() => {
+    if (classicGameStarted !== "ocean-carrom") return;
+    const handleCarromMessage = async (event: MessageEvent) => {
+      if (event.origin !== window.location.origin || event.source !== carromFrameRef.current?.contentWindow) return;
+      const data = event.data as { type?: string; requestId?: string; newGame?: boolean };
+      if (data?.type !== "shoppers-ocean-carrom-attempt" || typeof data.requestId !== "string") return;
+      if (data.newGame) startNextClassicAttempt("ocean-carrom");
+      const allowed = await registerClassicInteraction();
+      carromFrameRef.current?.contentWindow?.postMessage({ type: "shoppers-ocean-carrom-attempt-result", requestId: data.requestId, allowed }, window.location.origin);
+    };
+    window.addEventListener("message", handleCarromMessage);
+    return () => window.removeEventListener("message", handleCarromMessage);
+  }, [classicGameStarted]);
   useEffect(() => {
     if (classicGameStarted !== "ocean-solitaire") return;
     const handleSolitaireMessage = async (event: MessageEvent) => {
@@ -572,19 +586,19 @@ useEffect(() => {
                   <div className="w-full min-w-0 px-1 py-3">
                     <div className="mx-auto mb-5 text-center"><p className="text-xs font-black uppercase tracking-[.22em] text-cyan-200">Choose your game</p><h3 className="mt-1 text-2xl font-black text-white sm:text-3xl">Classic Games</h3><p className="mt-1 text-sm text-white/70">Tap a game preview to play.</p></div>
                     <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
-                      {(["chess","snakes-ladders","ocean-solitaire","tic-tac-toe","archery3d"] as const).map((id)=>{
-                        const title=id==="chess"?"Ocean Chess":id==="snakes-ladders"?"Snake & Ladders":id==="ocean-solitaire"?"Ocean Solitaire":id==="archery3d"?"Archery 3D":"Tic Tac Toe";
-                        const desc=id==="chess"?"The royal game":id==="snakes-ladders"?"Race to 100":id==="ocean-solitaire"?"Clear the cards":id==="archery3d"?"Aim, adjust for wind and hit the targets":"A quick strategy duel";
-                        const tone=id==="chess"?"from-amber-500 to-orange-700":id==="snakes-ladders"?"from-emerald-500 to-cyan-600":id==="ocean-solitaire"?"from-blue-500 to-fuchsia-600":id==="archery3d"?"from-amber-500 to-rose-600":"from-pink-500 to-violet-600";
+                      {(["chess","snakes-ladders","ocean-solitaire","tic-tac-toe","archery3d","ocean-carrom"] as const).map((id)=>{
+                        const title=id==="chess"?"Ocean Chess":id==="snakes-ladders"?"Snake & Ladders":id==="ocean-solitaire"?"Ocean Solitaire":id==="archery3d"?"Archery 3D":id==="ocean-carrom"?"Ocean Carrom":"Tic Tac Toe";
+                        const desc=id==="chess"?"The royal game":id==="snakes-ladders"?"Race to 100":id==="ocean-solitaire"?"Clear the cards":id==="archery3d"?"Aim, adjust for wind and hit the targets":id==="ocean-carrom"?"Aim, strike and pocket the coins":"A quick strategy duel";
+                        const tone=id==="chess"?"from-amber-500 to-orange-700":id==="snakes-ladders"?"from-emerald-500 to-cyan-600":id==="ocean-solitaire"?"from-blue-500 to-fuchsia-600":id==="archery3d"?"from-amber-500 to-rose-600":id==="ocean-carrom"?"from-cyan-400 to-amber-500":"from-pink-500 to-violet-600";
                         return <div key={id} className="min-w-0 text-center">
                           <button type="button" onClick={()=>void openClassicGame(id)} disabled={classicGameOpening} aria-label={"Open "+title} className="group relative block aspect-square w-full overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-800 p-3 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-300 disabled:opacity-60 sm:rounded-3xl sm:p-4">
                             {id==="chess"&&<div className="mx-auto grid h-full max-w-[170px] grid-cols-5 grid-rows-5 overflow-hidden rounded-lg border-2 border-amber-300">{Array.from({length:25},(_,i)=><span key={i} className={((Math.floor(i/5)+i%5)%2===0?"bg-amber-100":"bg-amber-800")+" flex items-center justify-center text-lg sm:text-2xl"}>{[0,4,6,12,18,20,24].includes(i)?"♟":""}</span>)}</div>}
                             {id==="snakes-ladders"&&<div className="relative mx-auto grid h-full max-w-[170px] grid-cols-5 grid-rows-5 gap-0.5 overflow-hidden rounded-lg border-2 border-amber-300 bg-violet-950 p-1">{Array.from({length:25},(_,i)=><span key={i} className={"flex items-center justify-center rounded-sm text-[9px] font-black "+["bg-rose-400","bg-amber-300","bg-emerald-300","bg-sky-300","bg-violet-300"][i%5]}>{25-i}</span>)}<span className="pointer-events-none absolute left-[18%] top-[20%] rotate-[-35deg] text-3xl">🐍</span><span className="pointer-events-none absolute bottom-[18%] right-[18%] rotate-[35deg] text-3xl">🪜</span></div>}
                             {id==="ocean-solitaire"&&<div className="mx-auto h-full max-w-[170px] rounded-lg bg-emerald-800/80 p-2"><div className="grid grid-cols-4 gap-1">{["A♠","K♥","Q♣","J♦"].map((v,i)=><span key={i} className={"flex aspect-[.7/1] items-start justify-center rounded bg-white pt-1 text-[10px] font-black "+(i%2?"text-rose-600":"text-slate-900")}>{v}</span>)}</div><div className="mt-2 grid grid-cols-4 gap-1">{["7♣","4♦","9♠","2♥"].map((v,i)=><span key={i} className={"flex aspect-[.7/1] items-start justify-center rounded bg-white pt-1 text-[10px] font-black "+(i%2?"text-rose-600":"text-slate-900")}>{v}</span>)}</div></div>}
-                            {id==="tic-tac-toe"&&<div className="mx-auto grid h-full max-w-[170px] grid-cols-3 gap-1 rounded-lg bg-white/10 p-2">{["✕","","○","","✕","","○","","✕"].map((v,i)=><span key={i} className="flex items-center justify-center rounded bg-white text-xl font-black text-indigo-700 sm:text-3xl">{v}</span>)}</div>}{id==="archery3d"&&<div className="relative mx-auto flex h-full max-w-[170px] items-center justify-center overflow-hidden rounded-xl border border-amber-200/60 bg-gradient-to-br from-sky-400 via-indigo-800 to-slate-950 shadow-inner"><span className="absolute left-3 top-3 text-3xl">🏹</span><span className="text-7xl drop-shadow-[0_8px_12px_rgba(0,0,0,.55)]">🎯</span><span className="absolute bottom-2 right-3 text-2xl">➶</span></div>}
+                            {id==="ocean-carrom"&&<div className="relative mx-auto flex h-full max-w-[170px] items-center justify-center overflow-hidden rounded-xl border-[7px] border-amber-800 bg-[#d8a45d] shadow-[inset_0_0_0_3px_#f6d79b,0_8px_18px_rgba(0,0,0,.35)]"><div className="absolute inset-3 rounded-lg border-2 border-amber-950/70"><span className="absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-amber-950/50"/><span className="absolute left-1/2 top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-700 shadow-md"/><span className="absolute left-1/2 top-1/4 h-4 w-4 -translate-x-1/2 rounded-full bg-slate-950 shadow"/><span className="absolute left-1/3 top-1/2 h-4 w-4 rounded-full bg-white shadow"/><span className="absolute right-1/3 top-1/2 h-4 w-4 rounded-full bg-slate-950 shadow"/><span className="absolute bottom-1/4 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full bg-white shadow"/></div><span className="absolute left-1 top-1 text-lg">🟤</span><span className="absolute bottom-1 right-1 text-lg">🟤</span></div>}{id==="tic-tac-toe"&&<div className="mx-auto grid h-full max-w-[170px] grid-cols-3 gap-1 rounded-lg bg-white/10 p-2">{["✕","","○","","✕","","○","","✕"].map((v,i)=><span key={i} className="flex items-center justify-center rounded bg-white text-xl font-black text-indigo-700 sm:text-3xl">{v}</span>)}</div>}{id==="archery3d"&&<div className="relative mx-auto flex h-full max-w-[170px] items-center justify-center overflow-hidden rounded-xl border border-amber-200/60 bg-gradient-to-br from-sky-400 via-indigo-800 to-slate-950 shadow-inner"><span className="absolute left-3 top-3 text-3xl">🏹</span><span className="text-7xl drop-shadow-[0_8px_12px_rgba(0,0,0,.55)]">🎯</span><span className="absolute bottom-2 right-3 text-2xl">➶</span></div>}
                             <span className="absolute bottom-2 right-2 rounded-full bg-white/15 px-2 py-1 text-[10px] font-black text-white">PLAY ↗</span>
                           </button>
-                          <p className={"mt-2 bg-gradient-to-r text-sm font-black tracking-tight sm:text-base "+tone} style={{backgroundClip:"text",WebkitTextFillColor:"transparent"}}>{title}</p><p className="mt-0.5 text-[11px] text-white/65 sm:text-xs">{desc}</p>
+                          <p className={"mt-2 bg-gradient-to-r text-sm font-black tracking-tight sm:text-base "+tone} style={{backgroundClip:"text",WebkitTextFillColor:"transparent"}}>{title}</p><p className="mt-0.5 text-[11px] text-white/65 sm:text-xs">{desc}</p><p className="mt-1 text-[10px] font-bold text-cyan-100">{classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType[id==="tic-tac-toe"?"tic":id] ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}</p>
                         </div>;
                       })}
                     </div>
@@ -611,6 +625,10 @@ useEffect(() => {
                 ) : classicGameStarted === "archery3d" ? (
                   <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-amber-200 bg-slate-950">
                     <iframe ref={archeryFrameRef} title="Archery 3D" src="/archery3d.html" allow="autoplay; fullscreen" allowFullScreen className="block w-full border-0" style={{ height: "min(900px, calc(100dvh - 150px))", minHeight: "620px", touchAction: "pan-x pan-y pinch-zoom" }} />
+                  </div>
+                ) : classicGameStarted === "ocean-carrom" ? (
+                  <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-amber-200 bg-[#173b45]">
+                    <iframe ref={carromFrameRef} title="Ocean Carrom" src="/ocean-carrom.html" allow="autoplay" className="block w-full border-0" style={{ height: "min(900px, calc(100dvh - 150px))", minHeight: "620px", touchAction: "pan-x pan-y pinch-zoom" }} />
                   </div>
                 ) : (
                   <ColourfulTicTacToe
