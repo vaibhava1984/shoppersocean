@@ -159,7 +159,7 @@ const K={},KM={KeyW:'up',ArrowUp:'up',KeyS:'down',ArrowDown:'down',KeyA:'left',A
 addEventListener('keydown',e=>{const k=KM[e.code];if(k){K[k]=1;e.preventDefault()}if(e.code==='KeyH')horn();if(e.code==='KeyP'||e.code==='Escape')pause(!paused)});
 addEventListener('keyup',e=>{const k=KM[e.code];if(k)K[k]=0});
 document.querySelectorAll('#tc button').forEach(b=>{const k=b.dataset.k;b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);K[k]=1;A()});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,()=>{K[k]=0}))});
-let st='menu',paused=false,v=0,h=0,y=0,vy=0,vg=0,gr=true,air=0,pitch=0,leanA=0,score=0,mult=1,mt=0,wt=0,bt2=0,cool=0,shake=0,T=0,total=0,banked=0,best=0,pt=0,stage=1,stageTime=240,stageStartScore=0,stageTarget=2500;
+let st='menu',paused=false,v=0,h=0,y=0,vy=0,vg=0,gr=true,air=0,pitch=0,leanA=0,score=0,mult=1,mt=0,wt=0,bt2=0,cool=0,shake=0,T=0,total=0,banked=0,best=0,pt=0,stage=1,stageTime=240,stageDeadline=0,stageStartScore=0,stageTarget=2500;
 try{total=+localStorage.getItem('ub_t')||0;best=+localStorage.getItem('ub_b')||0}catch(e){}
 function bank(){const d=Math.floor(score)-banked;if(d>0){const old=total;total+=d;banked+=d;best=Math.max(best,Math.floor(score));try{localStorage.setItem('ub_t',total);localStorage.setItem('ub_b',best)}catch(e){}BK.forEach(b=>{if(old<b.u&&total>=b.u)pop('New bike unlocked: '+b.n+'!')})}}
 function pop(t){const p=$('pop');p.textContent=t;p.classList.remove('go');void p.offsetWidth;p.classList.add('go')}
@@ -187,22 +187,23 @@ function sim(dt){const B=BK[sel],thr=(K.up||(auto&&!K.brake&&!K.down))?1:0,brk=K
  if(ac){const gs=B.vmax/5,g=Math.min(4,Math.floor(Math.abs(v)/gs)),rpm=.22+.78*clamp((Math.abs(v)-g*gs)/gs,0,1)+thr*.08,fr=(48+rpm*150)*(B.vmax>60?1.15:1),t=ac.currentTime;
   eo1.frequency.setTargetAtTime(fr,t,.04);eo2.frequency.setTargetAtTime(fr*1.01,t,.04);eg.gain.setTargetAtTime(paused?0:.05+.09*thr+.05*rpm,t,.05);ef.frequency.setTargetAtTime(450+rpm*1500,t,.05);
   wg.gain.setTargetAtTime(paused?0:clamp(Math.abs(v)/80,0,1)*.25,t,.1);sgn.gain.setTargetAtTime(paused?0:(smk&&gr?.16:0),t,.05)}}
-function tickStage(dt){
- stageTime-=dt;
+function tickStage(){
+ if(st!=='play'||paused)return;
+ stageTime=Math.max(0,(stageDeadline-performance.now())/1000);
  const earned=Math.floor(score-stageStartScore);
  if(earned>=stageTarget){
-  bank();stage++;stageStartScore=score;stageTarget=Math.round(stageTarget*1.4);stageTime=240;
+  bank();stage++;stageStartScore=score;stageTarget=Math.round(stageTarget*1.4);stageTime=240;stageDeadline=performance.now()+240000;
   pop('STAGE '+stage+'! New target: '+stageTarget.toLocaleString());ping();
   return;
  }
  if(stageTime<=0){
-  stageTime=0;bank();st='over';paused=false;musicStarted=false;
+  stageTime=0;stageDeadline=0;bank();st='over';paused=false;musicStarted=false;
   stopBackgroundMusic();
-  menu('TIME UP!','Stage '+stage+' target not reached. Score: '+earned.toLocaleString()+' / '+stageTarget.toLocaleString()+'. Total points: '+total+'.',[['RETRY',begin],['Back to start',()=>{score=0;banked=0;v=0;stage=1;stageTime=240;menuBikes()},'alt']],0);
+  menu('TIME UP!','Stage '+stage+' target not reached. Score: '+earned.toLocaleString()+' / '+stageTarget.toLocaleString()+'. Total points: '+total+'.',[['RETRY',begin],['Back to start',()=>{score=0;banked=0;v=0;stage=1;stageTime=240;stageDeadline=0;menuBikes()},'alt']],0);
  }
 }
 function frame(dt){T+=dt;
- if(st==='play'&&!paused){sim(dt);tickStage(dt);pt+=dt;if(pt>4){pt=0;bank()}}
+ if(st==='play'&&!paused){sim(dt);tickStage();pt+=dt;if(pt>4){pt=0;bank()}}
  else if(ac&&(st==='menu'||paused)){const t=ac.currentTime;eg.gain.setTargetAtTime(0,t,.04);eo1.frequency.setTargetAtTime(52,t,.1);eo2.frequency.setTargetAtTime(52.5,t,.1);wg.gain.setTargetAtTime(0,t,.1);sgn.gain.setTargetAtTime(0,t,.1)}
  if(!paused)for(const c of cars)updCar(c,dt);
  SM.forEach(s=>{if(s.visible){s.userData.l-=dt*.9;s.position.y+=dt*1.2;s.scale.addScalar(dt*2.5);s.material.opacity=Math.max(0,s.userData.l*.6);if(s.userData.l<=0)s.visible=false}});
@@ -240,11 +241,11 @@ async function begin(){
  A();
  const allowed=await requestQuotaAttempt();
  if(!allowed){pop('Quota unavailable. Please try again.');return}
- score=0;banked=0;v=0;h=0;y=0;vy=0;vg=0;mult=1;stage=1;stageTime=240;stageStartScore=0;stageTarget=2500;
+ score=0;banked=0;v=0;h=0;y=0;vy=0;vg=0;mult=1;stage=1;stageTime=240;stageDeadline=performance.now()+240000;stageStartScore=0;stageTarget=2500;
  musicStarted=true;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.05);startBackgroundMusic();
  window.focus();st='play';paused=false;ov.style.display='none'
 }
-function pause(on){if(st!=='play')return;paused=on;bank();Object.keys(K).forEach(k=>K[k]=0);if(on){if(mg)mg.gain.setTargetAtTime(0,ac.currentTime,.025);stopBackgroundMusic()}else{if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);startBackgroundMusic()}if(on)menu('Paused','Stage '+stage+' • Score '+Math.floor(score-stageStartScore)+' / '+stageTarget,[['RESUME',()=>pause(false)],['QUIT GAME',()=>{bank();st='menu';paused=false;musicStarted=false;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);stopBackgroundMusic();score=0;banked=0;v=0;stage=1;stageTime=240;menuBikes()},'alt']],0);else ov.style.display='none'}
+function pause(on){if(st!=='play')return;if(on){stageTime=Math.max(0,(stageDeadline-performance.now())/1000);stageDeadline=0}else{stageDeadline=performance.now()+Math.max(0,stageTime)*1000}paused=on;bank();Object.keys(K).forEach(k=>K[k]=0);if(on){if(mg)mg.gain.setTargetAtTime(0,ac.currentTime,.025);stopBackgroundMusic()}else{if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);startBackgroundMusic()}if(on)menu('Paused','Stage '+stage+' • Score '+Math.floor(score-stageStartScore)+' / '+stageTarget,[['RESUME',()=>pause(false)],['QUIT GAME',()=>{bank();st='menu';paused=false;musicStarted=false;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);stopBackgroundMusic();score=0;banked=0;v=0;stage=1;stageTime=240;stageDeadline=0;menuBikes()},'alt']],0);else ov.style.display='none'}
 $('bp').onclick=()=>pause(!paused);$('bt').onclick=()=>{A();setTime((tmi+1)%3)};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true)});addEventListener('pagehide',bank);
 // ---------- boot ----------
