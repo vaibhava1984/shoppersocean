@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ game: str
   const id = game as GameId;
   const item = games[id];
   const url = `https://shoppersocean.com/games/${id}`;
-  const image = `/games/${id}/opengraph-image`;
+  const image = `https://shoppersocean.com/api/game-share-image/${id}?v=3`;
   return {
     title: item.title,
     description: item.description,
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ game: str
       siteName: "Shoppers Ocean",
       title: `${item.title} | Shoppers Ocean`,
       description: item.description,
-      images: [{ url: image, width: 1200, height: 630, alt: `${item.title} game on Shoppers Ocean` }],
+      images: [{ url: image, width: 1200, height: 630, type: "image/png", alt: `${item.title} game preview on Shoppers Ocean` }],
     },
     twitter: {
       card: "summary_large_image",
