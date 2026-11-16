@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Urban Rider</title>
+<title>Urban Rider | Shoppers Ocean</title>
 <style>
 :root{--gold:#ffc83d;--glass:rgba(10,14,24,.55);box-sizing:border-box}
 html,body{margin:0;height:100%;overflow:hidden;background:#1b2250;color:#fff;touch-action:none;overscroll-behavior:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -220,7 +220,25 @@ function menu(title,txt,btns,bikes){ov.style.display='flex';ov.innerHTML='';cons
  if(bikes){const row=e('div','bk');BK.forEach((b,i)=>{const n=document.createElement('button');n.className='bike'+(i===sel?' on':'');n.disabled=total<b.u;n.innerHTML='<b>'+b.n+'</b><small>'+(total<b.u?'🔒 '+b.u+' pts':Math.round(b.vmax*3.6)+' km/h')+'</small>';n.onclick=()=>{sel=i;setBike();A();menuBikes()};row.appendChild(n)})}
  btns.forEach(([l,f,c])=>{e('button','m '+(c||''),l).onclick=f})}
 function menuBikes(){menu('Urban Rider','Weave through traffic, hit the ramps and pull stunts. Total points: '+total+'. Best run: '+best+'.<br>Keys: W/A/S/D or arrows, Space brake, Shift wheelie, B burnout, H horn.',[['Ride!',begin]],1)}
-function begin(){A();window.focus();st='play';paused=false;ov.style.display='none'}
+let attemptRequestId=0;
+function requestQuotaAttempt(){
+ if(window.parent===window)return Promise.resolve(true);
+ const requestId='urban-rider:'+Date.now()+':'+(++attemptRequestId);
+ return new Promise(resolve=>{
+  let settled=false;
+  const finish=allowed=>{if(settled)return;settled=true;clearTimeout(timer);window.removeEventListener('message',onMessage);resolve(Boolean(allowed))};
+  const onMessage=e=>{if(e.origin!==location.origin||e.source!==window.parent)return;const d=e.data||{};if(d.type==='shoppers-ocean-urban-rider-attempt-result'&&d.requestId===requestId)finish(d.allowed)};
+  const timer=setTimeout(()=>finish(false),12000);
+  window.addEventListener('message',onMessage);
+  window.parent.postMessage({type:'shoppers-ocean-urban-rider-attempt',requestId},location.origin);
+ });
+}
+async function begin(){
+ A();
+ const allowed=await requestQuotaAttempt();
+ if(!allowed){pop('Quota unavailable. Please try again.');return}
+ window.focus();st='play';paused=false;ov.style.display='none'
+}
 function pause(on){if(st!=='play')return;paused=on;bank();if(on)menu('Paused','Score '+Math.floor(score)+' • Total '+total,[['Resume',()=>pause(false)],['Change bike',()=>{st='menu';paused=false;score=0;banked=0;v=0;menuBikes()},'alt']],0);else ov.style.display='none'}
 $('bp').onclick=()=>pause(!paused);$('bt').onclick=()=>{A();setTime((tmi+1)%3)};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true)});addEventListener('pagehide',bank);
