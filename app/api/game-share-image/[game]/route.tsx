@@ -128,8 +128,15 @@ function makePng(game: GameConfig): Buffer {
 
 export async function GET(_request: Request, context: { params: Promise<{ game: string }> }) {
   const { game } = await context.params;
-  const item = games[game];
-  if (!item) return new Response("Game not found", { status: 404 });
+  const safeId = game.toLowerCase().replace(/[^a-z0-9-]/g, "");
+  if (!safeId || safeId.length > 80) return new Response("Invalid game id", { status: 400 });
+  const item = games[safeId] ?? {
+    title: safeId.split("-").filter(Boolean).join(" ").toUpperCase().slice(0, 28) || "ONLINE GAME",
+    subtitle: "PLAY. THINK. DISCOVER.",
+    start: [8, 48, 88] as RGB,
+    end: [22, 104, 132] as RGB,
+    accent: [125, 230, 245] as RGB,
+  };
   const png = makePng(item);
   return new Response(png, {
     headers: {
