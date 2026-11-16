@@ -15,10 +15,10 @@ canvas{display:block;position:fixed;inset:0;touch-action:pan-y}
 #pop{top:26%;left:0;right:0;text-align:center;font-size:30px;font-weight:800;color:var(--gold);opacity:0}
 #pop.go{animation:pp 1.4s ease-out}
 @keyframes pp{0%{opacity:0;transform:scale(.6)}12%{opacity:1;transform:scale(1.1)}75%{opacity:1}100%{opacity:0;transform:translateY(-24px)}}
-#stageHud{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);padding:7px 12px;border-radius:12px;background:rgba(10,14,24,.62);font-size:13px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:center;letter-spacing:.03em;box-shadow:none;text-shadow:none;filter:none}#stageHud small{display:block;font-size:10px;opacity:.85;margin-top:2px}#bar{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:8px;display:flex;gap:8px;box-shadow:none;text-shadow:none;filter:none}
+#stageHud{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;transform:none;padding:0;border:0;border-radius:0;background:transparent;color:#fff;font-size:15px;font-weight:900;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:left;letter-spacing:.03em;box-shadow:none!important;text-shadow:none!important;filter:none!important}#stageHud small{display:block;font-size:12px;opacity:1;margin-top:3px;color:#fff;text-shadow:none!important}#bar{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;display:flex;gap:0;box-shadow:none;text-shadow:none;filter:none}
 button{font:inherit;cursor:pointer;border:0}
 button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-.ic{width:40px;height:40px;border-radius:50%;background:var(--glass);color:#fff;font-size:17px;box-shadow:none!important;text-shadow:none!important;filter:none!important}
+.ic{width:42px;height:42px;border-radius:10px;background:rgba(8,12,28,.82);color:#fff;font-size:20px;font-weight:900;border:1px solid rgba(255,255,255,.8);box-shadow:none!important;text-shadow:none!important;filter:none!important}
 #tc{display:none}
 #tc button{position:fixed;background:var(--glass);color:#fff;border:2px solid rgba(255,255,255,.35);border-radius:50%;font-weight:800;font-size:12px;touch-action:manipulation;padding:0;display:flex;align-items:center;justify-content:center}
 #tc button:active{background:rgba(255,200,61,.5)}
@@ -44,7 +44,7 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 <div class="hud" id="sp"><span id="spv">0</span> <small>km/h</small></div>
 <div class="hud" id="pop"></div>
 <div class="hud" id="stageHud"><span id="stagev">STAGE 1</span> · <span id="timerv">05:00</span><small id="targetv">TARGET 2,500</small></div>
-<div id="bar"><button class="ic" id="bm" aria-label="Music">🎵</button><button class="ic" id="btrack" aria-label="Choose your music" title="Choose your music">♫+</button><input id="musicFile" type="file" accept="audio/*" hidden><button class="ic" id="ba" aria-label="Auto gas">⚡</button><button class="ic" id="bt" aria-label="Time of day">🌇</button><button class="ic" id="bs" aria-label="Sound">🔊</button><button class="ic" id="bp" aria-label="Pause">⏸</button></div>
+<div id="bar"><button class="ic" id="bm" aria-label="Music" hidden>🎵</button><button class="ic" id="btrack" aria-label="Choose your music" title="Choose your music" hidden>♫+</button><input id="musicFile" type="file" accept="audio/*" hidden><button class="ic" id="ba" aria-label="Auto gas" hidden>⚡</button><button class="ic" id="bt" aria-label="Time of day" hidden>🌇</button><button class="ic" id="bs" aria-label="Sound" hidden>🔊</button><button class="ic" id="bp" aria-label="Pause">Ⅱ</button></div>
 <div id="tc"><button data-k="left">◀</button><button data-k="right">▶</button><button data-k="up">GAS</button><button data-k="brake">BRAKE</button><button data-k="whl">WHEELIE</button><button data-k="burn">BURNOUT</button></div>
 <div id="ov"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
