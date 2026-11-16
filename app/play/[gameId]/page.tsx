@@ -7,6 +7,7 @@ const games: Record<string, { title: string; description: string; emoji: string 
   "tic-tac-toe": { title: "Tic Tac Toe", description: "Enjoy a strategy duel with Tic Tac Toe on Shoppers Ocean.", emoji: "⭕" },
   archery3d: { title: "Archery 3D", description: "Aim, adjust for wind and hit the targets in Archery 3D.", emoji: "🏹" },
   "ocean-carrom": { title: "Ocean Carrom", description: "Aim, strike and pocket the coins in Ocean Carrom.", emoji: "🎯" },
+  "urban-rider-final": { title: "Urban Rider", description: "Ride through a 3D city, weave through traffic and perform stunts in Urban Rider on Shoppers Ocean.", emoji: "🏍️" },
 };
 type Props = { params: Promise<{ gameId: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
