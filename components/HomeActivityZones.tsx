@@ -419,6 +419,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     const handleUrbanRiderMessage = async (event: MessageEvent) => {
       if (event.origin !== window.location.origin || event.source !== urbanRiderFrameRef.current?.contentWindow) return;
       const data = event.data as { type?: string; requestId?: string };
+      if (data?.type === "shoppers-ocean-urban-rider-exit") {
+        classicGameStartedRef.current = false;
+        classicGameSessionRef.current = null;
+        classicGameInteractedRef.current = false;
+        setClassicGameStarted(false);
+        return;
+      }
       if (data?.type !== "shoppers-ocean-urban-rider-attempt" || typeof data.requestId !== "string") return;
       startNextClassicAttempt("urban-rider-final");
       const allowed = await registerClassicInteraction();
