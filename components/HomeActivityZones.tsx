@@ -196,13 +196,13 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
   const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
   const classicGameSessionRef = useRef<{ gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const pendingClassicQuotaRef = useRef<Record<string, number>>({});
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
-  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | null>(null);
+  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | null>(null);
   const [signInPopup, setSignInPopup] = useState(false);
   useEffect(() => {
     if (!signInPopup) return;
