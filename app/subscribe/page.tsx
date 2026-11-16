@@ -10,9 +10,9 @@ export const metadata = {
 };
 
 const plans = [
-  { name: "1 Month", price: "₹99", value: "1-month", featured: false },
-  { name: "6 Months", price: "₹550", value: "6-months", featured: true },
-  { name: "1 Year", price: "₹1,100", value: "12-months", featured: false },
+  { name: "1 Month", price: "₹199", value: "1-month", featured: false },
+  { name: "6 Months", price: "₹1,100", value: "6-months", featured: true },
+  { name: "1 Year", price: "₹2,100", value: "12-months", featured: false },
 ];
 
 export default async function SubscribePage() {
