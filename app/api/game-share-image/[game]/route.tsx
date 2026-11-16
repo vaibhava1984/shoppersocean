@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { createElement as h } from "react";
+import { createElement as h, type CSSProperties, type ReactNode } from "react";
 
 export const runtime = "edge";
 export const dynamic = "force-dynamic";
@@ -13,14 +13,14 @@ const games: Record<string, { title: string; subtitle: string; from: string; to:
   "ocean-carrom": { title: "Ocean Carrom", subtitle: "Aim. Strike. Pocket the coins.", from: "#06b6d4", to: "#92400e" },
 };
 
-const div = (style: Record<string, string | number>, ...children: any[]) =>
+const div = (style: CSSProperties, ...children: ReactNode[]) =>
   h("div", { style }, ...children);
 
 function artwork(game: string) {
   const frame = { display: "flex", width: 330, height: 330, alignItems: "center", justifyContent: "center", borderRadius: 38, background: "rgba(255,255,255,.13)", border: "5px solid rgba(255,255,255,.55)", boxShadow: "0 22px 55px rgba(0,0,0,.25)" };
   if (game === "archery3d") {
-    const circle = (size: number, color: string, border?: string) =>
-      div({ display: "flex", width: size, height: size, borderRadius: 999, background: color, border: border || "none", alignItems: "center", justifyContent: "center" });
+    const circle = (size: number, color: string, border = "none", child?: ReactNode) =>
+      div({ display: "flex", width: size, height: size, borderRadius: 999, background: color, border, alignItems: "center", justifyContent: "center" }, ...(child ? [child] : []));
     return div(frame, circle(260, "#f8fafc", "5px solid #0f172a",
       circle(200, "#dc2626", "none",
         circle(140, "#f8fafc", "none",
