@@ -15,10 +15,10 @@ canvas{display:block;position:fixed;inset:0;touch-action:pan-y}
 #pop{top:26%;left:0;right:0;text-align:center;font-size:30px;font-weight:800;color:var(--gold);opacity:0}
 #pop.go{animation:pp 1.4s ease-out}
 @keyframes pp{0%{opacity:0;transform:scale(.6)}12%{opacity:1;transform:scale(1.1)}75%{opacity:1}100%{opacity:0;transform:translateY(-24px)}}
-#stageHud{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;transform:none;padding:0;border:0;border-radius:0;background:transparent;color:#fff;font-size:15px;font-weight:900;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:left;letter-spacing:.03em;box-shadow:none!important;text-shadow:none!important;filter:none!important}#stageHud small{display:block;font-size:12px;opacity:1;margin-top:3px;color:#fff;text-shadow:none!important}#bar{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;display:flex;gap:0;box-shadow:none;text-shadow:none;filter:none}
+#stageHud{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;transform:none;padding:0;border:0;border-radius:0;background:transparent;color:#fff;font-size:15px;font-weight:900;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:left;letter-spacing:.03em;box-shadow:none!important;text-shadow:none!important;filter:none!important}#stageHud small{display:block;font-size:12px;opacity:1;margin-top:3px;color:#fff;text-shadow:none!important}#bar{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;display:flex;gap:5px;box-shadow:none;text-shadow:none;filter:none}
 button{font:inherit;cursor:pointer;border:0}
 button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-.ic{width:42px;height:42px;border-radius:10px;background:rgba(8,12,28,.82);color:#fff;font-size:20px;font-weight:900;border:1px solid rgba(255,255,255,.8);box-shadow:none!important;text-shadow:none!important;filter:none!important}
+.ic{width:36px;height:36px;border-radius:9px;background:rgba(8,12,28,.82);color:#fff;font-size:18px;font-weight:900;border:1px solid rgba(255,255,255,.8);box-shadow:none!important;text-shadow:none!important;filter:none!important}
 #tc{display:none}
 #tc button{position:fixed;background:var(--glass);color:#fff;border:2px solid rgba(255,255,255,.35);border-radius:50%;font-weight:800;font-size:12px;touch-action:manipulation;padding:0;display:flex;align-items:center;justify-content:center}
 #tc button:active{background:rgba(255,200,61,.5)}
@@ -44,7 +44,7 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 <div class="hud" id="sp"><span id="spv">0</span> <small>km/h</small></div>
 <div class="hud" id="pop"></div>
 <div class="hud" id="stageHud"><span id="stagev">STAGE 1</span> · <span id="timerv">05:00</span><small id="targetv">TARGET 2,500</small></div>
-<div id="bar"><button class="ic" id="bm" aria-label="Music" hidden>🎵</button><button class="ic" id="btrack" aria-label="Choose your music" title="Choose your music" hidden>♫+</button><input id="musicFile" type="file" accept="audio/*" hidden><button class="ic" id="ba" aria-label="Auto gas" hidden>⚡</button><button class="ic" id="bt" aria-label="Time of day" hidden>🌇</button><button class="ic" id="bs" aria-label="Sound" hidden>🔊</button><button class="ic" id="bp" aria-label="Pause">Ⅱ</button></div>
+<div id="bar"><button class="ic" id="bs" aria-label="Bike sound on/off" title="Bike sound ON">🔊</button><button class="ic" id="bm" aria-label="Background music on/off" title="Background music ON">🎵</button><button class="ic" id="bp" aria-label="Pause">Ⅱ</button></div><button id="ba" hidden></button><button id="bt" hidden></button>
 <div id="tc"><button data-k="left">◀</button><button data-k="right">▶</button><button data-k="up">GAS</button><button data-k="brake">BRAKE</button><button data-k="whl">WHEELIE</button><button data-k="burn">BURNOUT</button></div>
 <div id="ov"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -142,32 +142,18 @@ const sunS=new R.Sprite(new R.SpriteMaterial({map:smc,blending:R.AdditiveBlendin
 const SDV=[new R.Vector3(-.5,.6,-.6).normalize(),new R.Vector3(-.8,.15,-.55).normalize(),new R.Vector3(.5,.55,-.65).normalize()];
 function puff(x,y,z){const s=SM[smi++%40];s.position.set(x+(rnd()-.5)*.4,y,z+(rnd()-.5)*.4);s.userData.l=1;s.visible=true;s.scale.setScalar(.8)}
 // ---------- audio ----------
-let ac,mg,mus,eo1,eo2,ef,eg,wg,sgn,nb,soundOn=true,musicOn=true,musicStarted=false,mnt=0,mst=0,customMusic=null,customMusicUrl=null;
-function A(){if(!ac){try{ac=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return}
- mg=ac.createGain();mg.gain.value=soundOn?.7:0;mg.connect(ac.destination);mus=ac.createGain();mus.gain.value=0;mus.connect(mg);setInterval(msched,100);const n=ac.sampleRate*2,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=rnd()*2-1;nb=b;
- eo1=ac.createOscillator();eo1.type='sawtooth';eo2=ac.createOscillator();eo2.type='square';ef=ac.createBiquadFilter();ef.type='lowpass';ef.frequency.value=700;eg=ac.createGain();eg.gain.value=0;eo1.connect(ef);eo2.connect(ef);ef.connect(eg);eg.connect(mg);eo1.start();eo2.start();
- const ns=(ty,fr,q,v)=>{const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=nb;s.loop=true;f.type=ty;f.frequency.value=fr;f.Q.value=q;g.gain.value=v;s.connect(f);f.connect(g);g.connect(mg);s.start();return g};
- wg=ns('bandpass',700,.6,0);sgn=ns('bandpass',2600,5,0);ns('lowpass',260,.5,0)}ac.resume()}
-const mf=n=>440*Math.pow(2,(n-69)/12),CHP=[[57,60,64],[53,57,60],[48,52,55],[55,59,62]];
-function mnote(f,t,d,ty,v,lp){const o=ac.createOscillator(),g=ac.createGain(),fl=ac.createBiquadFilter();o.type=ty;o.frequency.value=f;fl.type='lowpass';fl.frequency.value=lp;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(fl);fl.connect(g);g.connect(mus);o.start(t);o.stop(t+d+.05)}
-function mnoise(t,d,ty,fr,v){const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=nb;f.type=ty;f.frequency.value=fr;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(f);f.connect(g);g.connect(mus);s.start(t);s.stop(t+d+.02)}
-function mkick(t){const o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(42,t+.14);g.gain.setValueAtTime(.9,t);g.gain.exponentialRampToValueAtTime(.001,t+.26);o.connect(g);g.connect(mus);o.start(t);o.stop(t+.3)}
-function msched(){if(!ac||!nb||!musicStarted||paused)return;if(!mnt)mnt=ac.currentTime+.1;
- while(mnt<ac.currentTime+.3){const q=mst%16,ch=CHP[(mst>>4)&3],t=mnt;
-  if(q%4===0)mkick(t);if(q===4||q===12){mnoise(t,.16,'bandpass',1900,.35);mnote(190,t,.1,'triangle',.2,900)}if(q%2===0)mnoise(t,.05,'highpass',7000,q%4===2?.22:.1);
-  if([0,3,6,8,11,14].includes(q))mnote(mf(ch[0]-24),t,.24,'sawtooth',.3,420);
-  if(q%2===0)mnote(mf(ch[(q>>1)%3]+(q%8===6?24:12)),t,.2,'triangle',.13,2600);
-  if(q===0)ch.forEach(n=>mnote(mf(n),t,1.9,'triangle',.06,1100));
-  mnt+=.134;mst++}}
-function crashSnd(){if(!ac)return;const t=ac.currentTime,s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=nb;f.type='lowpass';f.frequency.setValueAtTime(1800,t);f.frequency.exponentialRampToValueAtTime(120,t+.5);g.gain.setValueAtTime(1,t);g.gain.exponentialRampToValueAtTime(.001,t+.55);s.connect(f);f.connect(g);g.connect(mg);s.start(t);s.stop(t+.6);
- const o=ac.createOscillator(),og=ac.createGain();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(40,t+.3);og.gain.setValueAtTime(.8,t);og.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(og);og.connect(mg);o.start(t);o.stop(t+.4)}
-function tone(f,t,d,ty,v){const o=ac.createOscillator(),g=ac.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+d+.05)}
-function ping(){if(ac){const t=ac.currentTime;tone(880,t,.25,'sine',.25);tone(1320,t+.08,.3,'sine',.2)}}
-function horn(){if(ac){const t=ac.currentTime;tone(420,t,.4,'square',.12);tone(520,t,.4,'square',.12)}}
-$('bm').onclick=()=>{musicOn=!musicOn;if(mus)mus.gain.setTargetAtTime(musicStarted&&musicOn&&!customMusic?.38:0,ac.currentTime,.08);if(customMusic){if(musicStarted&&musicOn)customMusic.play().catch(()=>{});else customMusic.pause()}$('bm').style.opacity=musicOn?1:.4};
-$('btrack').onclick=()=>$('musicFile').click();
-$('musicFile').onchange=e=>{const file=e.target.files&&e.target.files[0];if(!file)return;if(customMusicUrl)URL.revokeObjectURL(customMusicUrl);customMusicUrl=URL.createObjectURL(file);customMusic=new Audio(customMusicUrl);customMusic.loop=true;customMusic.volume=.65;if(musicStarted&&musicOn)customMusic.play().catch(()=>{});pop('Your music selected')};
-$('bs').onclick=()=>{soundOn=!soundOn;if(mg)mg.gain.setTargetAtTime(soundOn&&!paused?.7:0,ac.currentTime,.04);$('bs').textContent=soundOn?'🔊':'🔇'};
+let ac,mg,eo1,eo2,ef,eg,wg,sgn,nb,soundOn=true,musicOn=true,musicStarted=false;
+const bgMusic=new Audio('/Urban-rider-music.mp3');bgMusic.loop=true;bgMusic.preload='auto';bgMusic.volume=.58;
+function updateAudioButtons(){$('bs').textContent=soundOn?'🔊':'🔇';$('bs').title='Bike sound '+(soundOn?'ON':'OFF');$('bs').style.opacity=soundOn?1:.5;$('bm').textContent=musicOn?'🎵':'🔕';$('bm').title='Background music '+(musicOn?'ON':'OFF');$('bm').style.opacity=musicOn?1:.5}
+function startBackgroundMusic(){if(!musicStarted||!musicOn||paused)return;bgMusic.play().catch(()=>{})}
+function stopBackgroundMusic(){bgMusic.pause()}
+function A(){if(!ac){try{ac=new(window.AudioContext||window.webkitAudioContext)()}catch(e){return}mg=ac.createGain();mg.gain.value=soundOn?.7:0;mg.connect(ac.destination);const n=ac.sampleRate*2,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=rnd()*2-1;nb=b;eo1=ac.createOscillator();eo1.type='sawtooth';eo2=ac.createOscillator();eo2.type='square';ef=ac.createBiquadFilter();ef.type='lowpass';ef.frequency.value=700;eg=ac.createGain();eg.gain.value=0;eo1.connect(ef);eo2.connect(ef);ef.connect(eg);eg.connect(mg);eo1.start();eo2.start();const ns=(ty,fr,q,v)=>{const src=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();src.buffer=nb;src.loop=true;f.type=ty;f.frequency.value=fr;f.Q.value=q;g.gain.value=v;src.connect(f);f.connect(g);g.connect(mg);src.start();return g};wg=ns('bandpass',700,.6,0);sgn=ns('bandpass',2600,5,0);ns('lowpass',260,.5,0)}if(ac.state==='suspended')ac.resume()}
+function crashSnd(){if(!ac||!soundOn)return;const t=ac.currentTime,src=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();src.buffer=nb;f.type='lowpass';f.frequency.setValueAtTime(1800,t);f.frequency.exponentialRampToValueAtTime(120,t+.5);g.gain.setValueAtTime(1,t);g.gain.exponentialRampToValueAtTime(.001,t+.55);src.connect(f);f.connect(g);g.connect(mg);src.start(t);src.stop(t+.6);const o=ac.createOscillator(),og=ac.createGain();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(40,t+.3);og.gain.setValueAtTime(.8,t);og.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(og);og.connect(mg);o.start(t);o.stop(t+.4)}
+function tone(f,t,d,ty,v){if(!ac||!soundOn)return;const o=ac.createOscillator(),g=ac.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+d+.05)}
+function ping(){if(ac&&soundOn){const t=ac.currentTime;tone(880,t,.25,'sine',.25);tone(1320,t+.08,.3,'sine',.2)}}
+function horn(){if(ac&&soundOn){const t=ac.currentTime;tone(420,t,.4,'square',.12);tone(520,t,.4,'square',.12)}}
+$('bm').onclick=()=>{musicOn=!musicOn;updateAudioButtons();if(musicOn)startBackgroundMusic();else stopBackgroundMusic()};
+$('bs').onclick=()=>{soundOn=!soundOn;updateAudioButtons();if(mg)mg.gain.setTargetAtTime(soundOn&&!paused?.7:0,ac.currentTime,.04)};
 // ---------- state ----------
 const K={},KM={KeyW:'up',ArrowUp:'up',KeyS:'down',ArrowDown:'down',KeyA:'left',ArrowLeft:'left',KeyD:'right',ArrowRight:'right',Space:'brake',KeyB:'burn',ShiftLeft:'whl',ShiftRight:'whl'};
 addEventListener('keydown',e=>{const k=KM[e.code];if(k){K[k]=1;e.preventDefault()}if(e.code==='KeyH')horn();if(e.code==='KeyP'||e.code==='Escape')pause(!paused)});
@@ -211,7 +197,7 @@ function tickStage(dt){
  }
  if(stageTime<=0){
   stageTime=0;bank();st='over';paused=false;musicStarted=false;
-  if(mus)mus.gain.setTargetAtTime(0,ac.currentTime,.12);if(customMusic)customMusic.pause();
+  stopBackgroundMusic();
   menu('TIME UP!','Stage '+stage+' target not reached. Score: '+earned.toLocaleString()+' / '+stageTarget.toLocaleString()+'. Total points: '+total+'.',[['RETRY',begin],['Back to start',()=>{score=0;banked=0;v=0;stage=1;stageTime=300;menuBikes()},'alt']],0);
  }
 }
@@ -255,14 +241,14 @@ async function begin(){
  const allowed=await requestQuotaAttempt();
  if(!allowed){pop('Quota unavailable. Please try again.');return}
  score=0;banked=0;v=0;h=0;y=0;vy=0;vg=0;mult=1;stage=1;stageTime=300;stageStartScore=0;stageTarget=2500;
- musicStarted=true;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.05);if(mus){mus.gain.cancelScheduledValues(ac.currentTime);mus.gain.setTargetAtTime(musicOn&&!customMusic?.38:0,ac.currentTime,.15)}if(customMusic&&musicOn)customMusic.play().catch(()=>{});mnt=ac.currentTime+.1;mst=0;
+ musicStarted=true;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.05);startBackgroundMusic();
  window.focus();st='play';paused=false;ov.style.display='none'
 }
-function pause(on){if(st!=='play')return;paused=on;bank();Object.keys(K).forEach(k=>K[k]=0);if(on){if(mg)mg.gain.setTargetAtTime(0,ac.currentTime,.025);if(customMusic)customMusic.pause()}else{if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);mnt=ac.currentTime+.1;if(customMusic&&musicOn)customMusic.play().catch(()=>{})}if(on)menu('Paused','Stage '+stage+' • Score '+Math.floor(score-stageStartScore)+' / '+stageTarget,[['RESUME',()=>pause(false)],['QUIT GAME',()=>{bank();st='menu';paused=false;musicStarted=false;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);if(customMusic)customMusic.pause();score=0;banked=0;v=0;stage=1;stageTime=300;menuBikes()},'alt']],0);else ov.style.display='none'}
+function pause(on){if(st!=='play')return;paused=on;bank();Object.keys(K).forEach(k=>K[k]=0);if(on){if(mg)mg.gain.setTargetAtTime(0,ac.currentTime,.025);stopBackgroundMusic()}else{if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);startBackgroundMusic()}if(on)menu('Paused','Stage '+stage+' • Score '+Math.floor(score-stageStartScore)+' / '+stageTarget,[['RESUME',()=>pause(false)],['QUIT GAME',()=>{bank();st='menu';paused=false;musicStarted=false;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.04);stopBackgroundMusic();score=0;banked=0;v=0;stage=1;stageTime=300;menuBikes()},'alt']],0);else ov.style.display='none'}
 $('bp').onclick=()=>pause(!paused);$('bt').onclick=()=>{A();setTime((tmi+1)%3)};
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true)});addEventListener('pagehide',bank);
 // ---------- boot ----------
-setBike();setTime(1);updCells();for(let i=0;i<18;i++){const c=mkCar();placeCar(c)}
+setBike();setTime(1);updateAudioButtons();updCells();for(let i=0;i<18;i++){const c=mkCar();placeCar(c)}
 menuBikes();
 let auto=matchMedia('(pointer:coarse)').matches;const ab=()=>{$('ba').style.background=auto?'rgba(40,180,90,.75)':''};ab();
 $('ba').onclick=()=>{auto=!auto;ab();pop('Auto gas '+(auto?'ON':'OFF'))};
