@@ -217,14 +217,14 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const confusingWordsOpenRef = useRef(false);
   const englishAcademyEnteredRef = useRef(false);
   const englishTopicOpenRef = useRef(false);
-  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final" | "urban-rider-final" | null | false>(false);
-  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | null | false>(false);
+  const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final" | null | false>(false);
+  const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
   const classicGameSessionRef = useRef<{ gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final"; sessionId: string; consumed: boolean } | null>(null);
   const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const pendingClassicQuotaRef = useRef<Record<string, number>>({});
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
-  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | null>(null);
+  const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final" | null>(null);
   const [signInPopup, setSignInPopup] = useState(false);
   useEffect(() => {
     if (!signInPopup) return;
@@ -269,7 +269,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       return true;
     } catch (error) { console.error("Classic game quota recording failed:", error); session.consumed = false; return false; }
   };
-  const startNextClassicAttempt = (gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom") => {
+  const startNextClassicAttempt = (gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final") => {
     classicGameSessionRef.current = { gameType, sessionId: "classic-game:" + gameType + ":" + Date.now() + ":" + Math.random().toString(36).slice(2), consumed: false };
     classicGameInteractedRef.current = false;
   };
@@ -370,10 +370,10 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(gameId);
   };
   const exitGame = () => { if (activeQuizGameRef.current !== null) window.history.back(); };
-  const openClassicGame = async (game: "tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom") => {
+  const openClassicGame = async (game: "tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final") => {
     setClassicQuotaNoticeFor(null);
     if (!userId) { setSignInPopup(true); return; }
-    const gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" = game === "chess" ? "chess" : game === "snakes-ladders" ? "snakes-ladders" : game === "ocean-solitaire" ? "ocean-solitaire" : game === "archery3d" ? "archery3d" : game === "ocean-carrom" ? "ocean-carrom" : game === "urban-rider-final" ? "urban-rider-final" : "tic";
+    const gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final" = game === "chess" ? "chess" : game === "snakes-ladders" ? "snakes-ladders" : game === "ocean-solitaire" ? "ocean-solitaire" : game === "archery3d" ? "archery3d" : game === "ocean-carrom" ? "ocean-carrom" : game === "urban-rider-final" ? "urban-rider-final" : "tic";
     setClassicGameOpening(true);
     try {
       // Check the current balance before showing the game, but charge only when
