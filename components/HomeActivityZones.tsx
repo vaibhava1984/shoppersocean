@@ -357,6 +357,11 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     setActiveQuizGame(null);
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
+  useEffect(() => {
+    const open = Boolean(classicGameStarted || activeQuizGame);
+    window.dispatchEvent(new CustomEvent("shoppers-ocean:game-visibility", { detail: { open } }));
+    return () => { window.dispatchEvent(new CustomEvent("shoppers-ocean:game-visibility", { detail: { open: false } })); };
+  }, [classicGameStarted, activeQuizGame]);
   const openGame = (gameId: string) => {
     if (!userId) { setSignInPopup(true); return; }
     window.history.pushState({ shoppersOceanZone: true, shoppersOceanGame: gameId }, "", window.location.href);
