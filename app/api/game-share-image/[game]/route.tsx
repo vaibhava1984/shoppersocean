@@ -27,7 +27,7 @@ function artwork(game: string) {
           circle(82, "#2563eb", "none", circle(32, "#facc15"))))));
   }
   if (game === "ocean-carrom") {
-    const coin = (background: string, extra: Record<string, string | number> = {}) =>
+    const coin = (background: string, extra: CSSProperties = {}) =>
       div({ position: "absolute", width: 32, height: 32, borderRadius: 99, background, border: "3px solid #f8fafc", ...extra });
     return div(frame, div({ display: "flex", width: 260, height: 260, borderRadius: 28, background: "#d6a76b", border: "14px solid #633b24", alignItems: "center", justifyContent: "center", position: "relative" },
       div({ display: "flex", width: 155, height: 155, borderRadius: 99, border: "5px solid #633b24", alignItems: "center", justifyContent: "center" },
@@ -35,7 +35,7 @@ function artwork(game: string) {
       coin("#f8fafc", { top: 45, left: 54 }), coin("#171717", { bottom: 48, right: 48 }), coin("#b91c1c", { top: 47, right: 48 })));
   }
   if (game === "ocean-solitaire") {
-    const card = (style: Record<string, string | number>, color: string, text: string) =>
+    const card = (style: CSSProperties, color: string, text: string) =>
       div({ position: "absolute", width: 140, height: 205, borderRadius: 15, background: color, border: "5px solid white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 88, fontWeight: 900, ...style }, text);
     return div(frame, div({ display: "flex", position: "relative", width: 240, height: 260, alignItems: "center", justifyContent: "center" },
       card({ left: 0, top: 22, transform: "rotate(-12deg)" }, "#e2e8f0", "♠"),
