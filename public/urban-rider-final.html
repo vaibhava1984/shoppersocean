@@ -8,14 +8,14 @@ html,body{margin:0;min-height:100%;height:100%;overflow-x:hidden;overflow-y:auto
 canvas{display:block;position:fixed;inset:0;touch-action:pan-y}
 #vig{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,transparent 50%,rgba(255,255,255,.4) 100%)}
 .hud{position:fixed;pointer-events:none;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-#sc{top:calc(10px + env(safe-area-inset-top,0px));left:14px;font-size:26px;font-weight:800}
+#sc{top:calc(66px + env(safe-area-inset-top,0px));left:12px;font-size:24px;font-weight:900;padding:5px 9px;border-radius:10px;background:rgba(8,12,28,.58);line-height:1.15}
 #mu{color:var(--gold);font-size:18px;font-weight:800}
 #sp{bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);font-size:34px;font-weight:800;font-variant-numeric:tabular-nums}
 #sp small{font-size:13px;opacity:.8}
 #pop{top:26%;left:0;right:0;text-align:center;font-size:30px;font-weight:800;color:var(--gold);opacity:0}
 #pop.go{animation:pp 1.4s ease-out}
 @keyframes pp{0%{opacity:0;transform:scale(.6)}12%{opacity:1;transform:scale(1.1)}75%{opacity:1}100%{opacity:0;transform:translateY(-24px)}}
-#stageHud{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;transform:none;padding:0;border:0;border-radius:0;background:transparent;color:#fff;font-size:15px;font-weight:900;white-space:nowrap;font-variant-numeric:tabular-nums;text-align:left;letter-spacing:.03em;box-shadow:none!important;text-shadow:none!important;filter:none!important}#stageHud small{display:block;font-size:12px;opacity:1;margin-top:3px;color:#fff;text-shadow:none!important}#bar{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;display:flex;gap:5px;box-shadow:none;text-shadow:none;filter:none}
+#stageHud{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:12px;right:154px;transform:none;padding:7px 10px;border:1px solid rgba(255,255,255,.5);border-radius:10px;background:rgba(8,12,28,.68);color:#fff;font-size:clamp(12px,2.8vw,15px);font-weight:900;white-space:normal;font-variant-numeric:tabular-nums;text-align:left;letter-spacing:.02em;line-height:1.25;box-shadow:none!important;text-shadow:none!important;filter:none!important}#stageHud small{display:block;font-size:11px;opacity:1;margin-top:3px;color:#fff;text-shadow:none!important}#bar{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;display:flex;gap:5px;box-shadow:none;text-shadow:none;filter:none}
 button{font:inherit;cursor:pointer;border:0}
 button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .ic{width:36px;height:36px;border-radius:9px;background:rgba(8,12,28,.82);color:#fff;font-size:18px;font-weight:900;border:1px solid rgba(255,255,255,.8);box-shadow:none!important;text-shadow:none!important;filter:none!important}
