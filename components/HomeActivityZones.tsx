@@ -186,7 +186,7 @@ function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: str
 function ShareGameButton({ gameId, gameTitle, compact = false }: { gameId: string; gameTitle: string; compact?: boolean }) {
   const [copied, setCopied] = useState(false);
   const share = async () => {
-    const url = `${window.location.origin}/?game=${encodeURIComponent(gameId)}`;
+    const url = `${window.location.origin}/play/${encodeURIComponent(gameId)}`;
     const shareData = { title: `${gameTitle} | Shoppers Ocean`, text: `Play ${gameTitle} on Shoppers Ocean!`, url };
     try {
       if (navigator.share) { await navigator.share(shareData); return; }
