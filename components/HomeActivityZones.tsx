@@ -22,6 +22,7 @@ const zones = [
   { icon: "🎮", name: "Quiz World", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "A collection of quizzes, mysteries, technology and world challenges", action: "games" },
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
   { icon: "🎲", name: "Classic Games", tone: "from-orange-500 via-rose-600 to-pink-700", action: "classic-games" },
+  { icon: "🎵", name: "Music Zone", tone: "from-fuchsia-600 via-purple-700 to-indigo-900", note: "Play the virtual piano", action: "music-zone" },
 ];
 
 const entertainmentGroups = [
@@ -207,6 +208,10 @@ function ShareGameButton({ gameId, gameTitle, compact = false }: { gameId: strin
 }
 export default function HomeActivityZones({ userId }: { userId: string | null }) {
   const [activeZone, setActiveZone] = useState<number | null>(null);
+  const [musicPianoStarted, setMusicPianoStarted] = useState(false);
+  const musicPianoStartedRef = useRef(false);
+  const [musicQuota, setMusicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
+  const [musicQuotaPopup, setMusicQuotaPopup] = useState(false);
   const [englishTopicOpen, setEnglishTopicOpen] = useState(false);
   const [englishAcademyEntered, setEnglishAcademyEntered] = useState(false);
   const [confusingWordsOpen, setConfusingWordsOpen] = useState(false);
@@ -284,6 +289,11 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   useEffect(() => {
     const handleMobileBack = async () => {
+      if (musicPianoStartedRef.current) {
+        musicPianoStartedRef.current = false;
+        setMusicPianoStarted(false);
+        return;
+      }
       if (classicGameStartedRef.current) {
         const session = classicGameSessionRef.current;
         // The current game attempt was charged when the game was opened or restarted.
@@ -354,10 +364,40 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     correctMyLanguageOpenRef.current = false;
     classicGameStartedRef.current = false;
     setClassicGameStarted(false);
+    musicPianoStartedRef.current = false;
+    setMusicPianoStarted(false);
     activeQuizGameRef.current = null;
     setActiveQuizGame(null);
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
+  useEffect(() => {
+    if (activeZone !== 4 || musicPianoStarted || !userId) return;
+    let live = true;
+    setMusicQuota(current => ({ ...current, loading: true }));
+    fetch("/api/game-access", { cache: "no-store" })
+      .then(async response => { const data = await response.json(); if (!response.ok) throw new Error(data.error || "Quota could not be verified."); return data; })
+      .then(data => { if (live) setMusicQuota({ remainingByType: data.remainingByType ?? {}, isAdmin: Boolean(data.isAdmin), isSubscribed: Boolean(data.isSubscribed), loading: false }); })
+      .catch(error => { console.error("Music Zone quota check failed:", error); if (live) setMusicQuota(current => ({ ...current, loading: false })); });
+    return () => { live = false; };
+  }, [activeZone, musicPianoStarted, userId]);
+  useEffect(() => { if (!musicQuotaPopup) return; const timer = window.setTimeout(() => setMusicQuotaPopup(false), 5200); return () => window.clearTimeout(timer); }, [musicQuotaPopup]);
+  const openMusicPiano = async () => {
+    if (!userId) { setSignInPopup(true); return; }
+    try {
+      const quotaResponse = await fetch("/api/game-access", { cache: "no-store" });
+      const quotaData = await quotaResponse.json();
+      if (!quotaResponse.ok) throw new Error(quotaData.error || "Quota could not be verified.");
+      setMusicQuota({ remainingByType: quotaData.remainingByType ?? {}, isAdmin: Boolean(quotaData.isAdmin), isSubscribed: Boolean(quotaData.isSubscribed), loading: false });
+      if (Number(quotaData.remainingByType?.["virtual-piano"] ?? 0) <= 0) { setMusicQuotaPopup(true); return; }
+      const response = await fetch("/api/game-access", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sectionId: "music-zone", gameTypeId: "virtual-piano", challengeId: "virtual-piano:" + Date.now() + ":" + Math.random().toString(36).slice(2) }) });
+      const data = await response.json();
+      if (!response.ok) { setMusicQuotaPopup(true); return; }
+      setMusicQuota(current => ({ ...current, remainingByType: { ...current.remainingByType, "virtual-piano": Number(data.remaining ?? 0) } }));
+      window.history.pushState({ shoppersOceanZone: true, shoppersOceanMusicPiano: true }, "", window.location.href);
+      musicPianoStartedRef.current = true;
+      setMusicPianoStarted(true);
+    } catch (error) { console.error("Virtual Piano could not be opened:", error); }
+  };
   useEffect(() => {
     const open = Boolean(classicGameStarted || activeQuizGame);
     window.dispatchEvent(new CustomEvent("shoppers-ocean:game-visibility", { detail: { open } }));
@@ -564,7 +604,7 @@ useEffect(() => {
 
   return (
     <>
-    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeZone !== null || activeQuizGame !== null || Boolean(classicGameStarted) || classicGameOpening ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
+    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeZone !== null || activeQuizGame !== null || Boolean(classicGameStarted) || musicPianoStarted || classicGameOpening ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
       {classicGameOpening && <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950 text-lg font-black text-white">Opening game…</div>}
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
@@ -586,7 +626,7 @@ useEffect(() => {
                 <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore Our Worlds</h2>
                 <p className="mt-2 max-w-xl text-xs leading-5 text-slate-300 sm:text-sm">Choose a zone and enjoy its activities.</p>
               </div>
-              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">4 activity zones</span>
+              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">5 activity zones</span>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {zones.map((zone, index) => (
@@ -614,7 +654,7 @@ useEffect(() => {
           </>
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
-            {!englishTopicOpen && !oneWordSubstituteOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            {!musicPianoStarted && !englishTopicOpen && !oneWordSubstituteOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-col items-start gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null || englishAcademyEntered || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button>{(classicGameStarted === "chess" || classicGameStarted === "snakes-ladders" || classicGameStarted === "ocean-solitaire" || classicGameStarted === "archery3d" || classicGameStarted === "ocean-carrom" || classicGameStarted === "urban-rider-final") && <p className="text-sm font-black text-indigo-800">{classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType[classicGameStarted === "chess" ? "chess" : classicGameStarted === "snakes-ladders" ? "snakes-ladders" : classicGameStarted === "archery3d" ? "archery3d" : classicGameStarted === "ocean-carrom" ? "ocean-carrom" : classicGameStarted === "urban-rider-final" ? "urban-rider-final" : "ocean-solitaire"] ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}</p>}</div>
                 {activeQuizGame === null && !classicGameStarted && selected.action !== "games" && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>            )}
@@ -719,6 +759,28 @@ useEffect(() => {
                 {classicQuotaNoticeFor !== null && <div className="w-full max-w-2xl"><GameQuotaNotice isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} /></div>}
               </div>
             )}
+            {selected.action === "music-zone" && (
+              musicPianoStarted ? (
+                <div className="fixed inset-0 z-[10001] overflow-hidden bg-black">
+                  <iframe title="Virtual Piano" src="/virtual-piano.html" allow="autoplay; fullscreen; screen-orientation" allowFullScreen className="block h-[100dvh] w-screen border-0 bg-black" style={{ width: "100vw", height: "100dvh", maxWidth: "100vw", touchAction: "none" }} />
+                </div>
+              ) : (
+                <div className="mx-auto w-full max-w-sm">
+                  <button type="button" onClick={() => void openMusicPiano()} className="group relative block aspect-square w-full overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-[#160d35] via-[#51217e] to-[#142d62] p-4 text-left shadow-2xl transition hover:-translate-y-1 hover:shadow-fuchsia-300/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-fuchsia-300">
+                    <span className="absolute -right-5 -top-7 text-[9rem] leading-none text-white/10 transition group-hover:rotate-12 group-hover:scale-110" aria-hidden="true">♫</span>
+                    <span className="relative flex h-full flex-col items-center justify-center">
+                      <span className="mb-5 flex h-24 w-full max-w-[250px] items-end justify-center gap-[3px] rounded-xl border-4 border-slate-300 bg-slate-900 p-2 shadow-[0_12px_25px_rgba(0,0,0,.45)]">
+                        {Array.from({length:14},(_,i)=><span key={i} className="relative h-full min-w-0 flex-1 rounded-b-sm border border-slate-400 bg-gradient-to-b from-white to-slate-200 shadow-inner"><span className="absolute -right-[3px] top-0 z-10 h-[58%] w-[58%] rounded-b-sm bg-gradient-to-b from-slate-700 to-black shadow-md" /></span>)}
+                      </span>
+                      <span className="text-2xl font-black tracking-tight text-white drop-shadow">Virtual Piano</span>
+                      <span className="mt-2 text-sm font-semibold text-fuchsia-100">Tap to open and play 🎹</span>
+                      <span className="mt-5 rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-extrabold text-white shadow backdrop-blur-sm">{musicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(musicQuota.remainingByType["virtual-piano"] ?? 0), musicQuota.isAdmin || musicQuota.isSubscribed, "game")}</span>
+                      <span className="mt-3 text-[10px] font-bold uppercase tracking-[.18em] text-white/65">Open piano →</span>
+                    </span>
+                  </button>
+                </div>
+              )
+            )}
             {selected.action === "learning" && (
               <div ref={activityTargetRef} className="w-full" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button"); if (button?.textContent?.trim() === "← Back" && event.currentTarget.querySelector('h4[style*="scroll-margin-top"]')) { event.preventDefault(); event.stopPropagation(); window.history.back(); } }}>
                 {correctMyLanguageOpen ? (
@@ -757,6 +819,7 @@ useEffect(() => {
 
     </section>
     <GameQuotaPopup open={classicQuotaPopup} isSubscribed={classicQuota.isAdmin || classicQuota.isSubscribed} resetKey="classic-games" />
+    <GameQuotaPopup open={musicQuotaPopup} isSubscribed={musicQuota.isAdmin || musicQuota.isSubscribed} resetKey="music-zone" />
     {signInPopup && <div className="fixed inset-0 z-[10060] flex items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm" role="alertdialog" aria-modal="true"><div className="w-full max-w-md overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-2xl"><div className="h-2 bg-gradient-to-r from-cyan-300 via-pink-500 to-violet-600"><div className="h-2 bg-gradient-to-r from-cyan-300 to-white/80" style={{animation:"popupCountdown 5s linear forwards"}} /></div><div className="bg-gradient-to-br from-indigo-700 via-violet-600 to-fuchsia-600 px-6 py-7 text-center text-white"><div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 text-3xl shadow-lg">🔐</div><h3 className="mt-4 text-xl font-black">Sign in or create an account</h3><p className="mt-2 text-sm leading-6 text-white/90">Sign in or create an account to enjoy this feature and explore more on Shoppers Ocean.</p><div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row"><Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-black text-indigo-700 shadow-lg">Sign in</Link><Link href="/login?type=signup" className="inline-flex min-h-11 items-center justify-center rounded-full border-2 border-white/80 bg-white/15 px-6 py-3 text-sm font-black text-white shadow-lg">Create account</Link></div></div></div></div>}
     </>
   );
