@@ -223,7 +223,22 @@ function ShareActionButton({ url, title, message, label, compact = false, imageU
             const response = await fetch(imageUrl);
             if (!response.ok) throw new Error("Preview image unavailable");
             const blob = await response.blob();
-            const file = new File([blob], "shoppers-ocean-share.png", { type: blob.type || "image/png" });
+            let imageBlob = blob;
+            if (blob.type === "image/svg+xml" || imageUrl.toLowerCase().endsWith(".svg")) {
+              const objectUrl = URL.createObjectURL(blob);
+              try {
+                const image = new Image();
+                image.src = objectUrl;
+                await new Promise<void>((resolve, reject) => { image.onload = () => resolve(); image.onerror = () => reject(new Error("Preview image could not be prepared.")); });
+                const canvas = document.createElement("canvas");
+                canvas.width = 1200; canvas.height = 630;
+                const context = canvas.getContext("2d");
+                if (!context) throw new Error("Preview image could not be prepared.");
+                context.drawImage(image, 0, 0, 1200, 630);
+                imageBlob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error("Preview image export failed.")), "image/png"));
+              } finally { URL.revokeObjectURL(objectUrl); }
+            }
+            const file = new File([imageBlob], "shoppers-ocean-share.png", { type: "image/png" });
             if (!navigator.canShare || navigator.canShare({ files: [file] })) {
               await navigator.share({ title, text: shareText, files: [file] });
               setOpen(false);
@@ -251,7 +266,7 @@ function ShareActionButton({ url, title, message, label, compact = false, imageU
       </button>
       {open && <div className="fixed inset-0 z-[10070] flex items-end justify-center bg-slate-950/65 p-3 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-label={`Share ${title}`} onClick={() => setOpen(false)}>
         <div className="w-full max-w-sm rounded-3xl border border-white/60 bg-white p-5 shadow-2xl" onClick={event => event.stopPropagation()}>
-          <div className="mb-4 flex items-center justify-between"><div><h3 className="text-lg font-black text-slate-900">Share ${title}</h3><p className="text-xs text-slate-500">Choose how you want to share it</p></div><button type="button" onClick={() => setOpen(false)} className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xl font-bold text-slate-600" aria-label="Close">×</button></div>
+          <div className="mb-4 flex items-center justify-between"><div><h3 className="text-lg font-black text-slate-900">Share {title}</h3><p className="text-xs text-slate-500">Choose how you want to share it</p></div><button type="button" onClick={() => setOpen(false)} className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xl font-bold text-slate-600" aria-label="Close">×</button></div>
           <div className="grid grid-cols-2 gap-3">
             <button type="button" onClick={whatsapp} className="flex min-h-16 items-center gap-3 rounded-2xl border border-green-200 bg-green-50 px-3 text-left font-bold text-green-800"><span className="text-2xl">🟢</span><span>WhatsApp</span></button>
             <button type="button" onClick={telegram} className="flex min-h-16 items-center gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-3 text-left font-bold text-sky-800"><span className="text-2xl">✈️</span><span>Telegram</span></button>
