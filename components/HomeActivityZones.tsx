@@ -383,11 +383,22 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   }, [activeZone, musicPianoStarted, userId]);
   useEffect(() => { if (!musicQuotaPopup) return; const timer = window.setTimeout(() => setMusicQuotaPopup(false), 5200); return () => window.clearTimeout(timer); }, [musicQuotaPopup]);
   const sharePiano = async () => {
-    const shareUrl = "https://shoppersocean.com/virtual-piano.html";
+    const shareUrl = "https://shoppersocean.com/";
     try {
       const response = await fetch("/music-zone-piano.svg", { cache: "force-cache" });
-      const blob = await response.blob();
-      const imageFile = new File([blob], "Shoppers-Ocean-Music-Zone.svg", { type: "image/svg+xml" });
+      const svgBlob = await response.blob();
+      const imageUrl = URL.createObjectURL(svgBlob);
+      const image = new Image();
+      image.src = imageUrl;
+      await new Promise<void>((resolve, reject) => { image.onload = () => resolve(); image.onerror = () => reject(new Error("Preview image could not be prepared.")); });
+      const canvas = document.createElement("canvas");
+      canvas.width = 1200; canvas.height = 630;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("Image preview could not be prepared.");
+      context.drawImage(image, 0, 0, 1200, 630);
+      URL.revokeObjectURL(imageUrl);
+      const pngBlob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error("Image export failed.")), "image/png"));
+      const imageFile = new File([pngBlob], "Shoppers-Ocean-Music-Zone.png", { type: "image/png" });
       const shareData: ShareData = { title: "Music Zone | Shoppers Ocean", text: "Explore instruments and make music on Shoppers Ocean.", url: shareUrl, files: [imageFile] };
       if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [imageFile] }))) { await navigator.share(shareData); return; }
       if (navigator.share) { await navigator.share({ title: shareData.title, text: shareData.text, url: shareUrl }); return; }
