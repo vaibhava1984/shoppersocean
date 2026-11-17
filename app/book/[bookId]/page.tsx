@@ -72,7 +72,10 @@ export default async function BookDetailPage({ params }: { params: any }) {
         bookStructuredData.author = bookAuthors.map((name) => ({ "@type": "Person", name }));
     }
     if (images.length) {
-        bookStructuredData.image = images.map((image) => {
+        bookStructuredData.image = images.map((image, index) => {
+            if (/^data:image\/(png|jpe?g|webp|gif|avif);base64,/i.test(image)) {
+                return `https://shoppersocean.com/api/public/book-cover/${encodeURIComponent(String(currentBookDetails.id))}/${index}`;
+            }
             try { return new URL(image, "https://shoppersocean.com").toString(); }
             catch { return image; }
         });
@@ -135,7 +138,10 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     const fullDescription = String(book.description ?? "Discover this book on Shoppers Ocean.").replace(/\s+/g, " ").trim();
     const description = fullDescription.length > 200 ? `${fullDescription.slice(0, 197).trimEnd()}...` : fullDescription;
     const coverImages = parseImages(book.cover_images);
-    const socialImages = coverImages.slice(0, 3).map((image) => {
+    const socialImages = coverImages.slice(0, 3).map((image, index) => {
+        if (/^data:image\/(png|jpe?g|webp|gif|avif);base64,/i.test(image)) {
+            return `https://shoppersocean.com/api/public/book-cover/${encodeURIComponent(id)}/${index}`;
+        }
         try { return new URL(image, "https://shoppersocean.com").toString(); }
         catch { return ""; }
     }).filter(Boolean);
