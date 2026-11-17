@@ -431,17 +431,17 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     handledPianoShareLinkRef.current = true;
     params.delete("openMusicPiano");
     const cleanUrl = window.location.pathname + (params.toString() ? "?" + params.toString() : "") + window.location.hash;
-    window.history.replaceState(window.history.state, "", cleanUrl);
+    // Create an in-app history entry so the zone's Back button returns to all zones
+    // instead of leaving the site when this shared link is opened directly.
+    window.history.pushState({ shoppersOceanZone: true, shoppersOceanSharedPiano: true }, "", cleanUrl);
     const musicZoneIndex = zones.findIndex(zone => zone.action === "music-zone");
     if (musicZoneIndex >= 0) {
       activeZoneRef.current = musicZoneIndex;
       setActiveZone(musicZoneIndex);
     }
-    if (!userId) {
-      setSignInPopup(true);
-      return;
-    }
-    void openMusicPiano();
+    // A shared link opens the Music Zone landing page only. The user must
+    // explicitly press the piano's Open button to start the instrument.
+    if (!userId) setSignInPopup(true);
   }, [userId]);
 
   useEffect(() => {
