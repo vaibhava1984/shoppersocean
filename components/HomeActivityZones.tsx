@@ -371,7 +371,8 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   };
   const [activeQuizGame, setActiveQuizGame] = useState<string | null>(null);
   useEffect(() => {
-    if (activeZone !== 4 || musicPianoStarted || !userId) return;
+    if (activeZone !== 4 || musicPianoStarted) return;
+    if (!userId) { setMusicQuota(current => ({ ...current, loading: false })); return; }
     let live = true;
     setMusicQuota(current => ({ ...current, loading: true }));
     fetch("/api/game-access", { cache: "no-store" })
@@ -774,7 +775,7 @@ useEffect(() => {
                       </span>
                       <span className="text-2xl font-black tracking-tight text-white drop-shadow">Virtual Piano</span>
                       <span className="mt-2 text-sm font-semibold text-fuchsia-100">Tap to open and play 🎹</span>
-                      <span className="mt-5 rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-extrabold text-white shadow backdrop-blur-sm">{musicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(musicQuota.remainingByType["virtual-piano"] ?? 0), musicQuota.isAdmin || musicQuota.isSubscribed, "game")}</span>
+                      <span className="mt-5 rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-extrabold text-white shadow backdrop-blur-sm">{!userId ? "Sign in to play" : musicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(musicQuota.remainingByType["virtual-piano"] ?? 0), musicQuota.isAdmin || musicQuota.isSubscribed, "game")}</span>
                       <span className="mt-3 text-[10px] font-bold uppercase tracking-[.18em] text-white/65">Open piano →</span>
                     </span>
                   </button>
