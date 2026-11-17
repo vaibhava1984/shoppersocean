@@ -74,7 +74,7 @@ input[type=range]{width:70px;accent-color:var(--ac);touch-action:pan-x}
 <div id="start"><h1>🎹 Virtual Piano</h1><p>Tap to start. The piano will switch to landscape and go full screen.</p><button id="go">Press to Start Piano</button></div>
 <script>
 (function(){
-var NW=22, BASE=48, off=0, trans=0, inst='piano', sustain=false, bpm=100, vol=.8;
+var NW=88, BASE=24, trans=0, inst='piano', sustain=false, bpm=100, vol=.8;
 var AC=null, master=null, comp=null, recordDestination=null, audioRecorder=null, audioChunks=[];
 var kb=document.getElementById('kb'), $=function(i){return document.getElementById(i)};
 var NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
@@ -84,11 +84,11 @@ var keyEls={}, active={}, sustained=[], rec=null, recTimer=0, lastRec=null, scal
 /* ---------- build keyboard ---------- */
 function build(){
   kb.innerHTML=''; keyEls={};
-  var wi=0, m=BASE+off*12, whites=[];
+  var wi=0, m=BASE, whites=[];
   for(var i=0;i<NW;i++){
     var mm=m, pc=mm%12; var wMidi=0;
     // find the i-th white key from base
-    var x=BASE+off*12, c=0, n=x;
+    var x=BASE, c=0, n=x;
     while(true){ if(!BLACK[n%12]){ if(c===i)break; c++; } n++; }
     whites.push(n);
   }
@@ -252,7 +252,7 @@ var st=document.createElement('style');st.textContent='.w.on{background:linear-g
 var ptr={}, zoomPointers={}, keyZoom=1, pinchStart=0, pinchDistance=0;
 function pinchGap(){var ids=Object.keys(zoomPointers);if(ids.length<2)return 0;var a=zoomPointers[ids[0]],b=zoomPointers[ids[1]];return Math.hypot(a.x-b.x,a.y-b.y);}
 var stage=$("stage");
-function setKeyZoom(value){keyZoom=Math.max(.55,Math.min(3,value));var w=Math.max(1,stage.clientWidth-20)*keyZoom;kb.style.width=w+"px";kb.style.minWidth=w+"px";}
+function setKeyZoom(value){keyZoom=Math.max(.55,Math.min(3,value));var w=Math.max(1,stage.clientWidth-20)*4*keyZoom;kb.style.width=w+"px";kb.style.minWidth=w+"px";}
 stage.addEventListener("pointerdown",function(e){zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length===2){pinchStart=keyZoom;pinchDistance=pinchGap();Object.keys(ptr).forEach(function(id){noteOff(ptr[id]);delete ptr[id];});e.preventDefault();}},{passive:false});
 stage.addEventListener("pointermove",function(e){if(!(e.pointerId in zoomPointers))return;zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length>=2){var gap=pinchGap();if(pinchDistance>0){setKeyZoom(pinchStart*(gap/pinchDistance));e.preventDefault();}}},{passive:false});
 function clearZoomPointer(e){delete zoomPointers[e.pointerId];if(Object.keys(zoomPointers).length<2)pinchDistance=0;}
@@ -267,7 +267,7 @@ window.addEventListener('pointerup',up);window.addEventListener('pointercancel',
 var KM='awsedftgyhujkolp;\'';var kdown={};
 window.addEventListener('keydown',function(e){if(e.repeat||e.target.tagName==='SELECT')return;var k=e.key.toLowerCase();
  if(k===' '){e.preventDefault();sustain=true;$('sus').classList.add('on');return;}
- var i=KM.indexOf(k);if(i<0)return;var m=BASE+off*12+12+i;kdown[k]=m;noteOn(m);});
+ var i=KM.indexOf(k);if(i<0)return;var m=BASE+12+i;kdown[k]=m;noteOn(m);});
 window.addEventListener('keyup',function(e){var k=e.key.toLowerCase();
  if(k===' '){sustain=false;$('sus').classList.remove('on');releaseSustain();return;}
  if(kdown[k]!==undefined){noteOff(kdown[k]);delete kdown[k];}});
@@ -277,8 +277,8 @@ $('inst').onchange=function(){inst=this.value};
 $('sus').onclick=function(){sustain=!sustain;this.classList.toggle('on',sustain);if(!sustain)releaseSustain();};
 function setT(v){trans=Math.max(-12,Math.min(12,v));$('xv').textContent=(trans>0?'+':'')+trans;}
 $('xm').onclick=function(){setT(trans-1)};$('xp').onclick=function(){setT(trans+1)};
-function setO(v){off=Math.max(-2,Math.min(2,v));build();}
-$('om').onclick=function(){setO(off-1)};$('op').onclick=function(){setO(off+1)};
+function moveKeyboard(direction){var distance=Math.max(1,stage.clientWidth-20)*.82;stage.scrollBy({left:direction*distance,behavior:'smooth'});}
+$('om').onclick=function(){moveKeyboard(-1)};$('op').onclick=function(){moveKeyboard(1)};
 $('vol').oninput=function(){vol=+this.value;if(master)master.gain.value=vol;};
 $('lbl').onclick=function(){kb.classList.toggle('hide');this.classList.toggle('on')};
 $('fs').onclick=goFull;
@@ -308,7 +308,7 @@ var song=null,si=0;
 function paintLed(){for(var m in keyEls){var l=keyEls[m].querySelector('.led');l.classList.remove('show');}
  if(song&&keyEls[song[si]])keyEls[song[si]].querySelector('.led').classList.add('show');}
 function songCheck(m){if(!song)return;if(m===song[si]){si++;if(si>=song.length)si=0;paintLed();}}
-$('song').onchange=function(){song=SONGS[this.value]||null;si=0;if(song){var lo=BASE+off*12;if(song[0]<lo||song[0]>lo+36)setO(0);}paintLed();};
+$('song').onchange=function(){song=SONGS[this.value]||null;si=0;paintLed();};
 
 /* recording */
 var recT0=0,rtI=0;
@@ -347,7 +347,7 @@ function goFull(){var el=document.documentElement,f=el.requestFullscreen||el.web
  if(p&&p.then)p.then(lock,lock);else lock();}
 $('go').onclick=function(){$('start').style.display='none';ensure();AC.resume();goFull();};
 
-setT(0);build();
+setT(0);build();requestAnimationFrame(function(){stage.scrollLeft=Math.max(0,(stage.scrollWidth-stage.clientWidth)/2);});
 var activitySentAt=0;function reportParentActivity(){var now=Date.now();if(now-activitySentAt<900)return;activitySentAt=now;try{if(window.parent!==window)window.parent.postMessage({type:"shoppers-ocean-user-activity"},window.location.origin)}catch(e){}}
 ["pointerdown","pointermove","keydown","keyup","click","touchstart","input","change"].forEach(function(ev){window.addEventListener(ev,reportParentActivity,{passive:true})});
 })();
