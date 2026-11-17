@@ -874,7 +874,7 @@ useEffect(() => {
                     </span>
                   </button>
                   <div className="mt-3 flex justify-center">
-                    <ShareActionButton url="https://shoppersocean.com/?openMusicPiano=1" title="Virtual Piano" message="Explore the Virtual Piano on Shoppers Ocean. Open Music Zone and start playing!" label="Share Piano" imageUrl="/music-zone-piano.svg" />
+                    <ShareActionButton url="https://shoppersocean.com/?openMusicPiano=1" title="Virtual Piano" message="Explore the Virtual Piano on Shoppers Ocean. Open Music Zone and start playing!" label="Share Piano" />
                   </div>
                 </div>
               )
