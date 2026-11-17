@@ -114,9 +114,10 @@ function ensure(){
   if(AC) return;
   AC=new (window.AudioContext||window.webkitAudioContext)();
   comp=AC.createDynamicsCompressor(); master=AC.createGain(); master.gain.value=vol;
-  var conv=AC.createConvolver(), len=AC.sampleRate*1.6, buf=AC.createBuffer(2,len,AC.sampleRate);
-  for(var c=0;c<2;c++){var d=buf.getChannelData(c);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);}
-  conv.buffer=buf; var wet=AC.createGain(); wet.gain.value=.18;
+  var conv=AC.createConvolver(), len=Math.floor(AC.sampleRate*.9), buf=AC.createBuffer(2,len,AC.sampleRate);
+  for(var c=0;c<2;c++){var d=buf.getChannelData(c);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,4);}
+  conv.buffer=buf; var wet=AC.createGain(); wet.gain.value=.09;
+  comp.threshold.setValueAtTime(-8,AC.currentTime); comp.knee.setValueAtTime(12,AC.currentTime); comp.ratio.setValueAtTime(8,AC.currentTime); comp.attack.setValueAtTime(.004,AC.currentTime); comp.release.setValueAtTime(.18,AC.currentTime);
   master.connect(comp); master.connect(conv); conv.connect(wet); wet.connect(comp); comp.connect(AC.destination);
   recordDestination=AC.createMediaStreamDestination();comp.connect(recordDestination);
 }
@@ -139,25 +140,26 @@ var synDel=null;
 function mk(type,fr,det){var o=AC.createOscillator();o.type=type;o.frequency.value=fr;if(det)o.detune.value=det;return o;}
 function piano(m){
   var t=AC.currentTime,f=freq(m),out=AC.createGain(),lp=AC.createBiquadFilter(),nodes=[];
-  lp.type='lowpass';lp.frequency.setValueAtTime(Math.min(16000,f*14+2000),t);lp.frequency.setTargetAtTime(Math.min(6000,f*4+900),t+.02,.9);
-  out.gain.value=.42;out.connect(lp);lp.connect(master);
-  var D=9*Math.pow(.5,(m-36)/30)+1.6, B=.0002+(m>72?.0025*(m-72)/12:0), N=Math.min(14,Math.floor(14000/f));
+  lp.type='lowpass';lp.frequency.setValueAtTime(Math.min(14500,f*12+1800),t);lp.frequency.setTargetAtTime(Math.min(6200,f*4.2+850),t+.025,.8);
+  out.gain.setValueAtTime(0,t);out.gain.linearRampToValueAtTime(.34,t+.008);out.connect(lp);lp.connect(master);
+  // Lightweight piano voice: fewer partials and no synthetic noise burst.
+  var D=7.2*Math.pow(.5,(m-36)/34)+1.35, B=.00016+(m>72?.0012*(m-72)/12:0), N=Math.min(9,Math.floor(11500/f));
   for(var n=1;n<=N;n++){
-    var fn=f*n*Math.sqrt(1+B*n*n), amp=(Math.abs(Math.sin(Math.PI*n*.13))+.06)/Math.pow(n,.85), d=D/(1+.55*n);
-    var layers=n<=4?[[-1.6,1],[1.6,.55]]:[[0,1]];
-    layers.forEach(function(L,li){
-      var o=mk('sine',fn,L[0]),g=AC.createGain();
-      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(amp*L[1]*.8,t+.003);
-      g.gain.setTargetAtTime(.00005,t+.003,(li?d*1.1:d*.28)+.02);
-      o.connect(g);g.connect(out);o.start(t);o.stop(t+D*2+2);nodes.push(o);});
+    var fn=f*n*Math.sqrt(1+B*n*n), amp=(Math.abs(Math.sin(Math.PI*n*.13))+.08)/Math.pow(n,1.05), d=D/(1+.68*n);
+    var o=mk('sine',fn,n<=3?(n-2)*.65:0),g=AC.createGain();
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(amp*(n===1?.72:.48),t+.006);
+    g.gain.setTargetAtTime(.00004,t+.012,Math.max(.035,d*.3));
+    o.connect(g);g.connect(out);o.start(t);o.stop(t+D*1.45+1);nodes.push(o);
   }
-  var s=AC.createBufferSource();s.buffer=noiseBuf();var nf=AC.createBiquadFilter();nf.type='bandpass';nf.frequency.value=Math.min(5000,f*5+600);nf.Q.value=.8;
-  var ng=AC.createGain();ng.gain.setValueAtTime(.35,t);ng.gain.exponentialRampToValueAtTime(.0005,t+.045);s.connect(nf);nf.connect(ng);ng.connect(out);s.start(t);s.stop(t+.08);
-  var th=mk('sine',Math.max(40,f*.5),0),tg=AC.createGain();tg.gain.setValueAtTime(.25,t);tg.gain.exponentialRampToValueAtTime(.0005,t+.12);th.connect(tg);tg.connect(out);th.start(t);th.stop(t+.2);
   var stopped=false;
-  return {stop:function(sus){if(stopped)return;stopped=true;var n=AC.currentTime,r=sus?1.6:.22;
-    out.gain.cancelScheduledValues(n);out.gain.setValueAtTime(out.gain.value,n);out.gain.setTargetAtTime(.0001,n,r/4);
-    nodes.forEach(function(o){try{o.stop(n+r+.3)}catch(e){}});}};
+  return {stop:function(sus){
+    if(stopped)return;stopped=true;
+    var n=AC.currentTime,r=sus?.9:.16;
+    out.gain.cancelScheduledValues(n);
+    out.gain.setTargetAtTime(.0001,n,Math.max(.025,r/3));
+    nodes.forEach(function(o){try{o.stop(n+r+.12)}catch(e){}});
+  }};
 }
 function brassStr(m){
   var t=AC.currentTime,f=freq(m),out=AC.createGain(),nodes=[];out.gain.value=0;out.connect(master);
