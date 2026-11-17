@@ -185,8 +185,8 @@ function ColourfulTicTacToe({ quotaText, onPlayed, onNewGame }: { quotaText: str
 }
 
 function ShareActionButton({ url, title, message, label, compact = false, imageUrl }: { url: string; title: string; message: string; label: string; compact?: boolean; imageUrl?: string }) {
-  const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(url);
@@ -202,84 +202,78 @@ function ShareActionButton({ url, title, message, label, compact = false, imageU
     }
     setCopied(true);
     window.setTimeout(() => setCopied(false), 2200);
-    setOpen(false);
   };
-  const whatsapp = () => {
-    const text = `${message}\n${url}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
-    setOpen(false);
-  };
-  const telegram = () => {
-    const text = `${message}\n${url}`;
-    window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
-    setOpen(false);
-  };
-  const moreApps = async () => {
+
+  const share = async () => {
     const shareText = `${message}\n${url}`;
+    if (!navigator.share) {
+      await copyLink();
+      return;
+    }
+
     try {
-      if (navigator.share) {
-        if (imageUrl) {
-          try {
-            const response = await fetch(imageUrl);
-            if (!response.ok) throw new Error("Preview image unavailable");
-            const blob = await response.blob();
-            let imageBlob = blob;
-            if (blob.type === "image/svg+xml" || imageUrl.toLowerCase().endsWith(".svg")) {
-              const objectUrl = URL.createObjectURL(blob);
-              try {
-                const image = new Image();
-                image.src = objectUrl;
-                await new Promise<void>((resolve, reject) => { image.onload = () => resolve(); image.onerror = () => reject(new Error("Preview image could not be prepared.")); });
-                const canvas = document.createElement("canvas");
-                canvas.width = 1200; canvas.height = 630;
-                const context = canvas.getContext("2d");
-                if (!context) throw new Error("Preview image could not be prepared.");
-                context.drawImage(image, 0, 0, 1200, 630);
-                imageBlob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error("Preview image export failed.")), "image/png"));
-              } finally { URL.revokeObjectURL(objectUrl); }
+      if (imageUrl) {
+        try {
+          const response = await fetch(imageUrl);
+          if (!response.ok) throw new Error("Share artwork unavailable");
+          const blob = await response.blob();
+          let imageBlob = blob;
+
+          if (blob.type === "image/svg+xml" || imageUrl.toLowerCase().endsWith(".svg")) {
+            const objectUrl = URL.createObjectURL(blob);
+            try {
+              const image = new Image();
+              image.src = objectUrl;
+              await new Promise<void>((resolve, reject) => {
+                image.onload = () => resolve();
+                image.onerror = () => reject(new Error("Share artwork could not be prepared"));
+              });
+              const canvas = document.createElement("canvas");
+              canvas.width = 1200;
+              canvas.height = 630;
+              const context = canvas.getContext("2d");
+              if (!context) throw new Error("Share artwork could not be prepared");
+              context.drawImage(image, 0, 0, canvas.width, canvas.height);
+              imageBlob = await new Promise<Blob>((resolve, reject) =>
+                canvas.toBlob(file => file ? resolve(file) : reject(new Error("Share artwork export failed")), "image/png")
+              );
+            } finally {
+              URL.revokeObjectURL(objectUrl);
             }
-            const file = new File([imageBlob], "shoppers-ocean-share.png", { type: "image/png" });
-            if (!navigator.canShare || navigator.canShare({ files: [file] })) {
-              await navigator.share({ title, text: shareText, files: [file] });
-              setOpen(false);
-              return;
-            }
-          } catch (error) {
-            if (error instanceof Error && error.name === "AbortError") throw error;
           }
+
+          const file = new File([imageBlob], "shoppers-ocean-share.png", { type: "image/png" });
+          if (navigator.canShare?.({ files: [file] })) {
+            await navigator.share({ title, text: shareText, files: [file] });
+            return;
+          }
+        } catch (error) {
+          if (error instanceof Error && error.name === "AbortError") return;
+          // If artwork cannot be shared by this browser, share the clickable link instead.
         }
-        await navigator.share({ title, text: shareText, url });
-      } else {
-        await copyLink();
-        return;
       }
-      setOpen(false);
+
+      await navigator.share({ title, text: message, url });
     } catch (error) {
       if (error instanceof Error && error.name === "AbortError") return;
       await copyLink();
     }
   };
+
   return (
-    <>
-      <button type="button" onClick={(event) => { event.stopPropagation(); setOpen(true); }} aria-label={`Share ${title}`} className={compact ? "inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-white/40 bg-white/15 px-3 py-1.5 text-xs font-extrabold text-white shadow-sm backdrop-blur transition hover:bg-white/25" : "inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-blue-700 bg-blue-600 px-5 py-2 text-sm font-black !text-white shadow-lg transition hover:bg-blue-700"} style={!compact ? { color: "#ffffff" } : undefined}>
-        <span aria-hidden="true">↗</span><span>{copied ? "Link copied!" : label}</span>
-      </button>
-      {open && <div className="fixed inset-0 z-[10070] flex items-end justify-center bg-slate-950/65 p-3 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" aria-label={`Share ${title}`} onClick={() => setOpen(false)}>
-        <div className="w-full max-w-sm rounded-3xl border border-white/60 bg-white p-5 shadow-2xl" onClick={event => event.stopPropagation()}>
-          <div className="mb-4 flex items-center justify-between"><div><h3 className="text-lg font-black text-slate-900">Share {title}</h3><p className="text-xs text-slate-500">Choose how you want to share it</p></div><button type="button" onClick={() => setOpen(false)} className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xl font-bold text-slate-600" aria-label="Close">×</button></div>
-          <div className="grid grid-cols-2 gap-3">
-            <button type="button" onClick={whatsapp} className="flex min-h-16 items-center gap-3 rounded-2xl border border-green-200 bg-green-50 px-3 text-left font-bold text-green-800"><span className="text-2xl">🟢</span><span>WhatsApp</span></button>
-            <button type="button" onClick={telegram} className="flex min-h-16 items-center gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-3 text-left font-bold text-sky-800"><span className="text-2xl">✈️</span><span>Telegram</span></button>
-            <button type="button" onClick={() => void moreApps()} className="col-span-2 flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-indigo-200 bg-indigo-50 px-3 font-bold text-indigo-800"><span className="text-xl">📲</span> More apps</button>
-            <button type="button" onClick={() => void copyLink()} className="col-span-2 flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-slate-900 px-3 font-bold text-white"><span className="text-xl">🔗</span> {copied ? "Link copied!" : "Copy link"}</button>
-          </div>
-          <p className="mt-3 text-center text-[11px] leading-4 text-slate-500">WhatsApp and Telegram open with your clickable link ready to send. More apps uses your phone's sharing options.</p>
-        </div>
-      </div>}
-    </>
+    <button
+      type="button"
+      onClick={(event) => { event.stopPropagation(); void share(); }}
+      aria-label={`Share ${title}`}
+      className={compact
+        ? "inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-white/40 bg-white/15 px-3 py-1.5 text-xs font-extrabold text-white shadow-sm backdrop-blur transition hover:bg-white/25"
+        : "inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-blue-700 bg-blue-600 px-5 py-2 text-sm font-black !text-white shadow-lg transition hover:bg-blue-700"}
+      style={!compact ? { color: "#ffffff" } : undefined}
+    >
+      <span aria-hidden="true">↗</span><span>{copied ? "Link copied!" : label}</span>
+    </button>
   );
 }
-
 function ShareGameButton({ gameId, gameTitle, compact = false }: { gameId: string; gameTitle: string; compact?: boolean }) {
   const url = `https://shoppersocean.com/play/${encodeURIComponent(gameId)}?share=2`;
   return <ShareActionButton url={url} title={gameTitle} message={`Play ${gameTitle} on Shoppers Ocean!`} label="Share game" compact={compact} />;
