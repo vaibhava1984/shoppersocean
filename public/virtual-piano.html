@@ -3,7 +3,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="screen-orientation" content="landscape"><meta name="x5-orientation" content="landscape">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<title>Virtual Piano</title>
+<title>Virtual Piano | Shoppers Ocean Music Zone</title>
+<meta property="og:type" content="website"><meta property="og:title" content="Virtual Piano | Shoppers Ocean"><meta property="og:description" content="Explore instruments and make music in Shoppers Ocean Music Zone."><meta property="og:image" content="https://shoppersocean.com/music-zone-piano.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://shoppersocean.com/music-zone-piano.svg">
 <style>
 :root{--bg:#14161c;--bar:#1e222b;--tx:#e9ecf2;--ac:#4aa3ff;--mut:#8b93a5}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:none}
@@ -71,7 +72,7 @@ input[type=range]{width:70px;accent-color:var(--ac);touch-action:pan-x}
 <script>
 (function(){
 var NW=22, BASE=48, off=0, trans=0, inst='piano', sustain=false, bpm=100, vol=.8;
-var AC=null, master=null, comp=null;
+var AC=null, master=null, comp=null, recordDestination=null, audioRecorder=null, audioChunks=[];
 var kb=document.getElementById('kb'), $=function(i){return document.getElementById(i)};
 var NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 var BLACK={1:1,3:1,6:1,8:1,10:1};
@@ -114,6 +115,7 @@ function ensure(){
   for(var c=0;c<2;c++){var d=buf.getChannelData(c);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);}
   conv.buffer=buf; var wet=AC.createGain(); wet.gain.value=.18;
   master.connect(comp); master.connect(conv); conv.connect(wet); wet.connect(comp); comp.connect(AC.destination);
+  recordDestination=AC.createMediaStreamDestination();comp.connect(recordDestination);
 }
 function freq(m){return 440*Math.pow(2,(m+trans-69)/12)}
 function noiseBuf(){ if(noiseBuf.b)return noiseBuf.b; var b=AC.createBuffer(1,AC.sampleRate,AC.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;return noiseBuf.b=b;}
@@ -246,12 +248,12 @@ var st=document.createElement('style');st.textContent='.w.on{background:linear-g
 /* ---------- pointer input ---------- */
 var ptr={}, zoomPointers={}, keyZoom=1, pinchStart=0, pinchDistance=0;
 function pinchGap(){var ids=Object.keys(zoomPointers);if(ids.length<2)return 0;var a=zoomPointers[ids[0]],b=zoomPointers[ids[1]];return Math.hypot(a.x-b.x,a.y-b.y);}
-function setKeyZoom(value){keyZoom=Math.max(.65,Math.min(2.4,value));kb.style.setProperty("--keyboard-width",(keyZoom*100)+"%");}
 var stage=$("stage");
+function setKeyZoom(value){keyZoom=Math.max(.55,Math.min(3,value));var w=Math.max(1,stage.clientWidth-20)*keyZoom;kb.style.width=w+"px";kb.style.minWidth=w+"px";}
 stage.addEventListener("pointerdown",function(e){zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length===2){pinchStart=keyZoom;pinchDistance=pinchGap();Object.keys(ptr).forEach(function(id){noteOff(ptr[id]);delete ptr[id];});e.preventDefault();}},{passive:false});
 stage.addEventListener("pointermove",function(e){if(!(e.pointerId in zoomPointers))return;zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length>=2){var gap=pinchGap();if(pinchDistance>0){setKeyZoom(pinchStart*(gap/pinchDistance));e.preventDefault();}}},{passive:false});
 function clearZoomPointer(e){delete zoomPointers[e.pointerId];if(Object.keys(zoomPointers).length<2)pinchDistance=0;}
-window.addEventListener("pointerup",clearZoomPointer);window.addEventListener("pointercancel",clearZoomPointer);
+window.addEventListener("pointerup",clearZoomPointer);window.addEventListener("pointercancel",clearZoomPointer);window.addEventListener("resize",function(){setKeyZoom(keyZoom)});setKeyZoom(1);
 function keyAt(x,y){var e=document.elementFromPoint(x,y);while(e&&e!==kb&&!(e.dataset&&e.dataset.m))e=e.parentNode;return e&&e.dataset&&e.dataset.m?+e.dataset.m:null;}
 kb.addEventListener('pointerdown',function(e){e.preventDefault();var m=keyAt(e.clientX,e.clientY);if(m===null)return;ptr[e.pointerId]=m;noteOn(m);});
 kb.addEventListener('pointermove',function(e){if(!(e.pointerId in ptr))return;var m=keyAt(e.clientX,e.clientY);var o=ptr[e.pointerId];if(m!==null&&m!==o){noteOff(o);ptr[e.pointerId]=m;noteOn(m);}});
@@ -307,14 +309,16 @@ $('song').onchange=function(){song=SONGS[this.value]||null;si=0;if(song){var lo=
 
 /* recording */
 var recT0=0,rtI=0;
+function downloadRecording(blob,name){var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},30000);}
+function beginAudioCapture(){audioChunks=[];if(!window.MediaRecorder||!recordDestination)return false;try{var mime=MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":"audio/webm";audioRecorder=new MediaRecorder(recordDestination.stream,{mimeType:mime});audioRecorder.ondataavailable=function(e){if(e.data&&e.data.size)audioChunks.push(e.data)};audioRecorder.onstop=function(){if(!audioChunks.length)return;var blob=new Blob(audioChunks,{type:audioRecorder.mimeType||"audio/webm"});downloadRecording(blob,"Shoppers-Ocean-Piano-Recording-"+new Date().toISOString().replace(/[:.]/g,"-")+".webm");audioChunks=[];};audioRecorder.start();return true;}catch(e){console.error("Audio recording could not start",e);audioRecorder=null;return false;}}
 function fmt(ms){var s=Math.floor(ms/1000);return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
 function startTimer(){var p=$('rt');p.className='show';$('rtt').textContent='0:00';$('rec').textContent='■ 0:00';clearInterval(rtI);rtI=setInterval(function(){var t=fmt(performance.now()-recT0);$('rtt').textContent=t;$('rec').textContent='■ '+t;},250);}
 function stopTimer(ok){clearInterval(rtI);var p=$('rt');$('rtt').textContent=ok?'Saved on this device ✓':'Nothing recorded';p.className=ok?'show ok':'show';setTimeout(function(){p.className='';},2200);}
 $('rec').onclick=function(){
  ensure();
- if(!rec){rec=[];recT0=performance.now();this.classList.add('on');startTimer();}
- else{var r=rec;rec=null;this.classList.remove('on');this.textContent='● Rec';stopTimer(r.length>0);
-  if(r.length){lastRec=r;try{var all=JSON.parse(localStorage.getItem('vp_rec')||'[]');all.push({n:'Recording '+(all.length+1),d:r});if(all.length>10)all.shift();localStorage.setItem('vp_rec',JSON.stringify(all));}catch(e){}}}
+ if(!rec){rec=[];recT0=performance.now();beginAudioCapture();this.classList.add('on');startTimer();}
+ else{var r=rec;rec=null;this.classList.remove('on');this.textContent='● Rec';stopTimer(r.length>0);if(audioRecorder&&audioRecorder.state!=="inactive"){try{audioRecorder.stop()}catch(e){console.error(e)}}
+  if(r.length){lastRec=r;try{var all=JSON.parse(localStorage.getItem('vp_rec')||'[]');all.push({n:'Recording '+(all.length+1),d:r});if(all.length>10)all.shift();localStorage.setItem('vp_rec',JSON.stringify(all));}catch(e){}try{var eventBlob=new Blob([JSON.stringify({format:"shoppers-ocean-piano-events",version:1,events:r})],{type:"application/json"});downloadRecording(eventBlob,"Shoppers-Ocean-Piano-Notes.json")}catch(e){}}}
 };
 var pbT=[];
 function playRec(r){stopPb();ensure();r.forEach(function(ev){pbT.push(setTimeout(function(){ev.on?noteOn(ev.m,'play'):noteOff(ev.m,'play');},ev.t));});
@@ -338,6 +342,8 @@ function goFull(){var el=document.documentElement,f=el.requestFullscreen||el.web
 $('go').onclick=function(){$('start').style.display='none';ensure();AC.resume();goFull();};
 
 setT(0);build();
+var activitySentAt=0;function reportParentActivity(){var now=Date.now();if(now-activitySentAt<900)return;activitySentAt=now;try{if(window.parent!==window)window.parent.postMessage({type:"shoppers-ocean-user-activity"},window.location.origin)}catch(e){}}
+["pointerdown","pointermove","keydown","keyup","click","touchstart","input","change"].forEach(function(ev){window.addEventListener(ev,reportParentActivity,{passive:true})});
 })();
 </script>
 </body></html>
