@@ -319,7 +319,7 @@ $('rec').onclick=function(){
  ensure();
  if(!rec){rec=[];recT0=performance.now();beginAudioCapture();this.classList.add('on');startTimer();}
  else{var r=rec;rec=null;this.classList.remove('on');this.textContent='● Rec';stopTimer(r.length>0);if(audioRecorder&&audioRecorder.state!=="inactive"){try{audioRecorder.stop()}catch(e){console.error(e)}}
-  if(r.length){lastRec=r;try{var all=JSON.parse(localStorage.getItem('vp_rec')||'[]');all.push({n:'Recording '+(all.length+1),d:r});if(all.length>10)all.shift();localStorage.setItem('vp_rec',JSON.stringify(all));}catch(e){}try{var eventBlob=new Blob([JSON.stringify({format:"shoppers-ocean-piano-events",version:1,events:r})],{type:"application/json"});downloadRecording(eventBlob,"Shoppers-Ocean-Piano-Notes.json")}catch(e){}}}
+  if(r.length){lastRec=r;try{var all=JSON.parse(localStorage.getItem('vp_rec')||'[]');all.push({n:'Recording '+(all.length+1),d:r});if(all.length>10)all.shift();localStorage.setItem('vp_rec',JSON.stringify(all));}catch(e){}}}
 };
 var pbT=[];
 function playRec(r){stopPb();ensure();r.forEach(function(ev){pbT.push(setTimeout(function(){ev.on?noteOn(ev.m,'play'):noteOff(ev.m,'play');},ev.t));});
