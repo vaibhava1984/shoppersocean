@@ -118,7 +118,10 @@ export default function SessionTimeout() {
         }
       });
 
-      if (trustedFrame) recordActivity();
+      if (trustedFrame) {
+        const activity = readActivity();
+        if (activity?.userId) writeActivity(activity.userId, true);
+      }
     };
     window.addEventListener("message", onEmbeddedFrameActivity);
 
