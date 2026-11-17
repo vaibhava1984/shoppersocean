@@ -74,7 +74,7 @@ input[type=range]{width:70px;accent-color:var(--ac);touch-action:pan-x}
 <div id="start"><h1>🎹 Virtual Piano</h1><p>Tap to start. The piano will switch to landscape and go full screen.</p><button id="go">Press to Start Piano</button></div>
 <script>
 (function(){
-var NW=88, BASE=24, trans=0, inst='piano', sustain=false, bpm=100, vol=.8;
+var NW=66, BASE=24, trans=0, inst='piano', sustain=false, bpm=100, vol=.8;
 var AC=null, master=null, comp=null, recordDestination=null, audioRecorder=null, audioChunks=[];
 var kb=document.getElementById('kb'), $=function(i){return document.getElementById(i)};
 var NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
@@ -252,7 +252,7 @@ var st=document.createElement('style');st.textContent='.w.on{background:linear-g
 var ptr={}, zoomPointers={}, keyZoom=1, pinchStart=0, pinchDistance=0;
 function pinchGap(){var ids=Object.keys(zoomPointers);if(ids.length<2)return 0;var a=zoomPointers[ids[0]],b=zoomPointers[ids[1]];return Math.hypot(a.x-b.x,a.y-b.y);}
 var stage=$("stage");
-function setKeyZoom(value){keyZoom=Math.max(.55,Math.min(3,value));var w=Math.max(1,stage.clientWidth-20)*4*keyZoom;kb.style.width=w+"px";kb.style.minWidth=w+"px";}
+function setKeyZoom(value){keyZoom=Math.max(.55,Math.min(3,value));var w=Math.max(1,stage.clientWidth-20)*3*keyZoom;kb.style.width=w+"px";kb.style.minWidth=w+"px";}
 stage.addEventListener("pointerdown",function(e){zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length===2){pinchStart=keyZoom;pinchDistance=pinchGap();Object.keys(ptr).forEach(function(id){noteOff(ptr[id]);delete ptr[id];});e.preventDefault();}},{passive:false});
 stage.addEventListener("pointermove",function(e){if(!(e.pointerId in zoomPointers))return;zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length>=2){var gap=pinchGap();if(pinchDistance>0){setKeyZoom(pinchStart*(gap/pinchDistance));e.preventDefault();}}},{passive:false});
 function clearZoomPointer(e){delete zoomPointers[e.pointerId];if(Object.keys(zoomPointers).length<2)pinchDistance=0;}
