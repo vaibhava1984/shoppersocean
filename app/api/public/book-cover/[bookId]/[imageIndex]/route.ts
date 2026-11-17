@@ -1,6 +1,5 @@
 import { getD1 } from "@/utils/cloudflare/d1";
 
-export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 function parseImages(value: unknown): string[] {
