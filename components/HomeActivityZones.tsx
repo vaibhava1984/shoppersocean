@@ -22,7 +22,7 @@ const zones = [
   { icon: "🎮", name: "Quiz World", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "A collection of quizzes, mysteries, technology and world challenges", action: "games" },
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
   { icon: "🎲", name: "Classic Games", tone: "from-orange-500 via-rose-600 to-pink-700", action: "classic-games" },
-  { icon: "🎵", name: "Music Zone", tone: "from-fuchsia-600 via-purple-700 to-indigo-900", note: "Play the virtual piano", action: "music-zone" },
+  { icon: "🎵", name: "Music Zone", tone: "from-fuchsia-600 via-purple-700 to-indigo-900", note: "Explore instruments and make music", action: "music-zone" },
 ];
 
 const entertainmentGroups = [
@@ -382,6 +382,19 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
     return () => { live = false; };
   }, [activeZone, musicPianoStarted, userId]);
   useEffect(() => { if (!musicQuotaPopup) return; const timer = window.setTimeout(() => setMusicQuotaPopup(false), 5200); return () => window.clearTimeout(timer); }, [musicQuotaPopup]);
+  const sharePiano = async () => {
+    const shareUrl = "https://shoppersocean.com/virtual-piano.html";
+    try {
+      const response = await fetch("/music-zone-piano.svg", { cache: "force-cache" });
+      const blob = await response.blob();
+      const imageFile = new File([blob], "Shoppers-Ocean-Music-Zone.svg", { type: "image/svg+xml" });
+      const shareData: ShareData = { title: "Music Zone | Shoppers Ocean", text: "Explore instruments and make music on Shoppers Ocean.", url: shareUrl, files: [imageFile] };
+      if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [imageFile] }))) { await navigator.share(shareData); return; }
+      if (navigator.share) { await navigator.share({ title: shareData.title, text: shareData.text, url: shareUrl }); return; }
+      await navigator.clipboard.writeText(shareUrl);
+      window.alert("Music Zone link copied.");
+    } catch (error) { if (error instanceof Error && error.name === "AbortError") return; try { await navigator.clipboard.writeText(shareUrl); window.alert("Music Zone link copied."); } catch { window.prompt("Copy the Music Zone link:", shareUrl); } }
+  };
   const openMusicPiano = async () => {
     if (!userId) { setSignInPopup(true); return; }
     try {
@@ -774,11 +787,16 @@ useEffect(() => {
                         {Array.from({length:14},(_,i)=><span key={i} className="relative h-full min-w-0 flex-1 rounded-b-sm border border-slate-400 bg-gradient-to-b from-white to-slate-200 shadow-inner"><span className="absolute -right-[3px] top-0 z-10 h-[58%] w-[58%] rounded-b-sm bg-gradient-to-b from-slate-700 to-black shadow-md" /></span>)}
                       </span>
                       <span className="text-2xl font-black tracking-tight text-white drop-shadow">Virtual Piano</span>
-                      <span className="mt-2 text-sm font-semibold text-fuchsia-100">Tap to open and play 🎹</span>
+                      <span className="mt-2 text-sm font-semibold text-fuchsia-100">Explore instruments and make music 🎶</span>
                       <span className="mt-5 rounded-full border border-white/30 bg-white/15 px-4 py-2 text-xs font-extrabold text-white shadow backdrop-blur-sm">{!userId ? "Sign in to play" : musicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(musicQuota.remainingByType["virtual-piano"] ?? 0), musicQuota.isAdmin || musicQuota.isSubscribed, "game")}</span>
                       <span className="mt-3 text-[10px] font-bold uppercase tracking-[.18em] text-white/65">Open piano →</span>
                     </span>
                   </button>
+                  <div className="mt-3 flex justify-center">
+                    <button type="button" onClick={(event) => { event.stopPropagation(); void sharePiano(); }} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-fuchsia-200 bg-white/10 px-5 py-2 text-sm font-black text-white shadow-lg transition hover:bg-white/20">
+                      <span aria-hidden="true">↗</span> Share Piano
+                    </button>
+                  </div>
                 </div>
               )
             )}
