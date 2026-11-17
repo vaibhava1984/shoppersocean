@@ -383,7 +383,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   }, [activeZone, musicPianoStarted, userId]);
   useEffect(() => { if (!musicQuotaPopup) return; const timer = window.setTimeout(() => setMusicQuotaPopup(false), 5200); return () => window.clearTimeout(timer); }, [musicQuotaPopup]);
   const sharePiano = async () => {
-    const shareUrl = "https://shoppersocean.com/";
+    const shareUrl = "https://shoppersocean.com/?openMusicPiano=1";
     try {
       const response = await fetch("/music-zone-piano.svg", { cache: "force-cache" });
       const svgBlob = await response.blob();
@@ -423,6 +423,27 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
       setMusicPianoStarted(true);
     } catch (error) { console.error("Virtual Piano could not be opened:", error); }
   };
+  const handledPianoShareLinkRef = useRef(false);
+  useEffect(() => {
+    if (handledPianoShareLinkRef.current || typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("openMusicPiano") !== "1") return;
+    handledPianoShareLinkRef.current = true;
+    params.delete("openMusicPiano");
+    const cleanUrl = window.location.pathname + (params.toString() ? "?" + params.toString() : "") + window.location.hash;
+    window.history.replaceState(window.history.state, "", cleanUrl);
+    const musicZoneIndex = zones.findIndex(zone => zone.action === "music-zone");
+    if (musicZoneIndex >= 0) {
+      activeZoneRef.current = musicZoneIndex;
+      setActiveZone(musicZoneIndex);
+    }
+    if (!userId) {
+      setSignInPopup(true);
+      return;
+    }
+    void openMusicPiano();
+  }, [userId]);
+
   useEffect(() => {
     const open = Boolean(classicGameStarted || activeQuizGame);
     window.dispatchEvent(new CustomEvent("shoppers-ocean:game-visibility", { detail: { open } }));
@@ -804,7 +825,7 @@ useEffect(() => {
                     </span>
                   </button>
                   <div className="mt-3 flex justify-center">
-                    <button type="button" onClick={(event) => { event.stopPropagation(); void sharePiano(); }} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-fuchsia-200 bg-white/10 px-5 py-2 text-sm font-black text-white shadow-lg transition hover:bg-white/20">
+                    <button type="button" onClick={(event) => { event.stopPropagation(); void sharePiano(); }} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-blue-700 bg-blue-600 px-5 py-2 text-sm font-black !text-white shadow-lg transition hover:bg-blue-700" style={{ color: "#ffffff" }}>
                       <span aria-hidden="true">↗</span> Share Piano
                     </button>
                   </div>
