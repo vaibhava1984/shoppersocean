@@ -43,7 +43,7 @@ button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 <div class="hud" id="sc"><span id="scv">0</span> <span id="mu">x1</span></div>
 <div class="hud" id="sp"><span id="spv">0</span> <small>km/h</small></div>
 <div class="hud" id="pop"></div>
-<div class="hud" id="stageHud"><span id="stagev">STAGE 1 · CITY STREETS</span> · <span id="timerv">04:00</span><small id="targetv">TARGET 2,500</small></div>
+<div class="hud" id="stageHud"><span id="stagev">STAGE 1 · CITY STREETS</span> · <span id="timerv">02:00</span><small id="targetv">TARGET 2,500</small></div>
 <div id="bar"><button class="ic" id="bs" aria-label="Bike sound on/off" title="Bike sound ON">🔊</button><button class="ic" id="bm" aria-label="Background music on/off" title="Background music ON">🎵</button><button class="ic" id="bp" aria-label="Pause">Ⅱ</button></div><button id="ba" hidden></button><button id="bt" hidden></button>
 <div id="tc"><button data-k="left">◀</button><button data-k="right">▶</button><button data-k="up">GAS</button><button data-k="brake">BRAKE</button><button data-k="whl">WHEELIE</button><button data-k="burn">BURNOUT</button></div>
 <div id="ov"></div>
@@ -159,19 +159,17 @@ const K={},KM={KeyW:'up',ArrowUp:'up',KeyS:'down',ArrowDown:'down',KeyA:'left',A
 addEventListener('keydown',e=>{const k=KM[e.code];if(k){K[k]=1;e.preventDefault()}if(e.code==='KeyH')horn();if(e.code==='KeyP'||e.code==='Escape')pause(!paused)});
 addEventListener('keyup',e=>{const k=KM[e.code];if(k)K[k]=0});
 document.querySelectorAll('#tc button').forEach(b=>{const k=b.dataset.k;b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);K[k]=1;A()});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,()=>{K[k]=0}))});
-let st='menu',paused=false,v=0,h=0,y=0,vy=0,vg=0,gr=true,air=0,pitch=0,leanA=0,score=0,mult=1,mt=0,wt=0,bt2=0,cool=0,shake=0,T=0,total=0,banked=0,best=0,pt=0,stage=1,stageTime=240,stageDeadline=0,stageStartScore=0,stageTarget=2500,trafficSpeedMultiplier=1,trafficActiveCount=18,stageDecor=new R.Group(),stageLocation='CITY STREETS';
+let st='menu',paused=false,v=0,h=0,y=0,vy=0,vg=0,gr=true,air=0,pitch=0,leanA=0,score=0,mult=1,mt=0,wt=0,bt2=0,cool=0,shake=0,T=0,total=0,banked=0,best=0,pt=0,stage=1,stageTime=120,stageDeadline=0,stageStartScore=0,stageTarget=2500,trafficSpeedMultiplier=1,trafficActiveCount=18,stageDecor=new R.Group(),stageLocation='CITY STREETS';
 try{total=+localStorage.getItem('ub_t')||0;best=+localStorage.getItem('ub_b')||0}catch(e){}
 function bank(){const d=Math.floor(score)-banked;if(d>0){const old=total;total+=d;banked+=d;best=Math.max(best,Math.floor(score));try{localStorage.setItem('ub_t',total);localStorage.setItem('ub_b',best)}catch(e){}BK.forEach(b=>{if(old<b.u&&total>=b.u)pop('New bike unlocked: '+b.n+'!')})}}
 function pop(t){const p=$('pop');p.textContent=t;p.classList.remove('go');void p.offsetWidth;p.classList.add('go')}
 const STAGE_THEMES=[
- {name:'CITY STREETS',sky:0x8bb9e8,fog:0x9fc8e8,ground:0x777b82,road:0x92949a,buildings:[0xe3e6ec,0xd2bfae,0xb8c8d9,0xe6d6b8],kind:'city'},
- {name:'COASTAL HIGHWAY',sky:0x69c9ee,fog:0x8bd8ed,ground:0xceb77e,road:0x555d64,buildings:[0xf4d6a4,0xe8b987,0xd8e0d0,0xf2cda5],kind:'coast'},
- {name:'MOUNTAIN PASS',sky:0x8bb5d8,fog:0x9baebc,ground:0x69766d,road:0x4b5056,buildings:[0x8b969c,0x697a83,0x9ca6a6,0x777f87],kind:'mountain'},
- {name:'DESERT HIGHWAY',sky:0xe7a46c,fog:0xd99a69,ground:0xc9a05f,road:0x57504a,buildings:[0xc99b68,0xd5ad79,0xb98758,0xe0bd8b],kind:'desert'},
- {name:'RAINY CITY',sky:0x46566d,fog:0x66798c,ground:0x555d66,road:0x343b45,buildings:[0x7c8998,0x69798a,0x8a929b,0x596879],kind:'rain'},
- {name:'NIGHT HIGHWAY',sky:0x070d25,fog:0x18213c,ground:0x343944,road:0x252b35,buildings:[0x333d58,0x41465e,0x29344e,0x50546b],kind:'night'},
- {name:'SNOW MOUNTAINS',sky:0x9bb9d0,fog:0xc3d5df,ground:0xdce6e9,road:0x68747e,buildings:[0xd8e1e8,0xb9cbd8,0xe8edf0,0xaebfcd],kind:'snow'},
- {name:'METRO TRAFFIC',sky:0x777eaa,fog:0x8990a8,ground:0x646a73,road:0x3f454e,buildings:[0x66768a,0x8895a5,0x53657b,0x9aa2aa],kind:'metro'}
+ {name:'COUNTRYSIDE DAY',sky:0x79b9ec,fog:0xb4d8ec,ground:0x568746,road:0x343a40,buildings:[0xb7a27e,0xd1c19b,0x9baf83,0xc5b38e],kind:'countryside',timeIndex:0,roadWidth:13,curve:0,traffic:12,speed:1},
+ {name:'MOUNTAIN PASS',sky:0xf2a46d,fog:0xb8a39b,ground:0x596c5d,road:0x383d43,buildings:[0x78847e,0x687b7c,0x9a9b8c,0x64736d],kind:'mountain',timeIndex:1,roadWidth:10,curve:1,traffic:17,speed:1.16},
+ {name:'MIDNIGHT CITY',sky:0x050817,fog:0x141c36,ground:0x242c38,road:0x202630,buildings:[0x303d58,0x3c4961,0x29344d,0x4a5067],kind:'metro',timeIndex:2,roadWidth:15,curve:2,traffic:27,speed:1.32},
+ {name:'FOREST DUSK',sky:0x354d48,fog:0x64776c,ground:0x294b32,road:0x30383a,buildings:[0x435b4c,0x526657,0x354c40,0x60705c],kind:'forest',timeIndex:1,roadWidth:9,curve:3,traffic:22,speed:1.43},
+ {name:'COASTAL SUNSET',sky:0xff9969,fog:0xf0b28d,ground:0xc5a56f,road:0x45494c,buildings:[0xe6c49c,0xd9ad83,0xe9d6b5,0xc9b38f],kind:'coast',timeIndex:1,roadWidth:13,curve:4,traffic:26,speed:1.56},
+ {name:'NIGHT EXTREME',sky:0x030611,fog:0x10182d,ground:0x333a43,road:0x171d27,buildings:[0x263149,0x343d55,0x202b42,0x41465c],kind:'night',timeIndex:2,roadWidth:8,curve:5,traffic:34,speed:1.72}
 ];
 function addStageProp(kind,x,z){
  const g=new R.Group(),mat=(color)=>new R.MeshLambertMaterial({color});
@@ -181,6 +179,7 @@ function addStageProp(kind,x,z){
  }else if(kind==='desert'){
   const trunk=new R.Mesh(new R.CylinderGeometry(.48,.58,4,7),mat(0x367344));trunk.position.y=2;g.add(trunk);
   const arm=new R.Mesh(new R.CylinderGeometry(.2,.24,2,7),mat(0x367344));arm.position.set(.65,2.7,0);arm.rotation.z=-.7;g.add(arm);
+ }else if(kind==='forest'){const trunk=new R.Mesh(new R.CylinderGeometry(.18,.34,6,7),mat(0x5b422d));trunk.position.y=3;g.add(trunk);for(let q=0;q<3;q++){const crown=new R.Mesh(new R.ConeGeometry(2.4-q*.35,4.5,7),mat(q===0?0x17452d:0x23613b));crown.position.y=4.2+q*1.9;g.add(crown)}
  }else if(kind==='mountain'||kind==='snow'){
   const colors=kind==='snow'?[0xeaf2f5,0xcbd8df,0xf7fbff]:[0x66736d,0x7e8986,0x53666a];
   const peak=new R.Mesh(new R.ConeGeometry(12+rnd()*7,30+rnd()*24,7),mat(colors[(rnd()*colors.length)|0]));peak.position.y=14;g.add(peak);
@@ -196,22 +195,33 @@ function addStageProp(kind,x,z){
  }
  g.position.set(x,0,z);stageDecor.add(g);
 }
+function buildStageTrack(theme){
+ const root=new R.Group(),verts=[],indices=[],width=theme.roadWidth,segments=110,z0=-70,z1=340;
+ const bend=z=>{const q=theme.curve;if(q===1)return 18*Math.sin(z/42)+7*Math.sin(z/19);if(q===2)return 8*Math.sin(z/90);if(q===3)return 23*Math.sin(z/31)+8*Math.sin(z/13);if(q===4)return 15*Math.sin(z/72)+5*Math.sin(z/34);if(q===5)return 25*Math.sin(z/25)+13*Math.sin(z/57);return 0};
+ for(let i=0;i<=segments;i++){const z=z0+(z1-z0)*i/segments,x=bend(z),dx=(bend(z+1)-bend(z-1))/2,n=Math.hypot(dx,1),rx=1/n,rz=-dx/n;verts.push(x-rx*width/2,.24,z-rz*width/2,x+rx*width/2,.24,z+rz*width/2);if(i<segments){const q=i*2;indices.push(q,q+2,q+1,q+1,q+2,q+3)}}
+ const geo=new R.BufferGeometry();geo.setAttribute('position',new R.Float32BufferAttribute(verts,3));geo.setIndex(indices);geo.computeVertexNormals();const road=new R.Mesh(geo,new R.MeshStandardMaterial({color:theme.road,roughness:.96,metalness:.02,side:R.DoubleSide}));road.receiveShadow=true;root.add(road);
+ const marks=[];for(let z=-65;z<335;z+=11){const x=bend(z);marks.push(x-.13,.265,z,x+.13,.265,z)}const mg=new R.BufferGeometry();mg.setAttribute('position',new R.Float32BufferAttribute(marks,3));root.add(new R.LineSegments(mg,new R.LineBasicMaterial({color:theme.timeIndex===2?0xc9ddff:0xf5dda0})));
+ if(['mountain','forest','night'].includes(theme.kind)){for(let z=-55;z<330;z+=5){const x=bend(z);for(const side of [-1,1]){const rail=new R.Mesh(new R.BoxGeometry(.18,.72,3.2),new R.MeshStandardMaterial({color:theme.kind==='night'?0x596780:0x8a9292,metalness:.4}));rail.position.set(x+side*(width/2+.8),.8,z);root.add(rail)}}}
+ if(theme.kind==='night'){for(let z=0;z<320;z+=34){const x=bend(z);for(const side of [-1,1]){const pole=new R.Mesh(new R.CylinderGeometry(.08,.12,7,6),new R.MeshLambertMaterial({color:0x4d5668}));pole.position.set(x+side*(width/2+3),3.5,z);root.add(pole);const lamp=new R.PointLight(0xffd99a,.8,24);lamp.position.set(x+side*(width/2+3),6.8,z);root.add(lamp)}}}
+ stageDecor.add(root);
+}
 function setStageEnvironment(){
  if(!stageDecor.parent)sc.add(stageDecor);
- const theme=STAGE_THEMES[(stage-1)%STAGE_THEMES.length];stageLocation=theme.name;
+ const theme=STAGE_THEMES[Math.min(stage-1,STAGE_THEMES.length-1)];stageLocation=theme.name;setTime(theme.timeIndex);
  sc.background=new R.Color(theme.sky);sc.fog.color.setHex(theme.fog);
  M_SW.color.setHex(theme.road);M_GR.color.setHex(theme.ground);
  MB.forEach((m,i)=>m.color.setHex(theme.buildings[i%theme.buildings.length]));
  gnd.material.color.setHex(theme.ground);
  hemi.intensity=theme.kind==='night'?.28:theme.kind==='rain'?.5:.85;
  sun.intensity=theme.kind==='night'?.22:theme.kind==='rain'?.55:1;
- sun.color.setHex(theme.kind==='desert'?0xffc18a:theme.kind==='night'?0x9db5ff:0xffffff);
- trafficSpeedMultiplier=1+(stage-1)*.13;
- const desired=Math.min(42,18+(stage-1)*3);trafficActiveCount=desired;
+ sun.color.setHex(theme.kind==='coast'?0xffc18a:theme.timeIndex===2?0x9db5ff:0xffffff);if(head){head.intensity=theme.timeIndex===2?4.8:theme.timeIndex===1?.65:0;head.distance=theme.timeIndex===2?110:0;head.angle=.58;head.penumbra=.62;head.decay=1.15;}
+ trafficSpeedMultiplier=theme.speed;
+ const desired=theme.traffic;trafficActiveCount=desired;
  while(cars.length<desired){mkCar()}
  cars.forEach((car,i)=>{if(i<desired)placeCar(car);else car.m.visible=false});
  stageDecor.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose()}});
  stageDecor.clear();
+ buildStageTrack(theme);
  if(theme.kind!=='city'){
   for(let i=0;i<14;i++){
    const side=i%2===0?-1:1,dist=22+Math.floor(i/2)*13;
@@ -250,9 +260,10 @@ function finishStage(){
  st='over';paused=true;musicStarted=false;stopBackgroundMusic();
  Object.keys(K).forEach(k=>K[k]=0);
  if(mg)mg.gain.setTargetAtTime(0,ac.currentTime,.04);
- menu(success?'STAGE CLEARED!':'STAGE FAILED',
-  'STAGE '+stage+' · '+stageLocation+'<br>Score: '+earned.toLocaleString()+' / '+stageTarget.toLocaleString()+'<br>'+(success?'Target achieved. Excellent riding!':'Target missed. Keep riding and try the next challenge.')+'<br>Total points: '+total.toLocaleString()+'.',
-  [['NEXT STAGE',startNextStage],['EXIT GAME',exitGameAndCharge,'alt']],0);
+ const completed=stage>=6;
+ menu(completed?'RIDE COMPLETE!':(success?'STAGE CLEARED!':'STAGE FAILED'),
+  'STAGE '+stage+' · '+stageLocation+'<br>Score: '+earned.toLocaleString()+' / '+stageTarget.toLocaleString()+'<br>'+(success?'Target achieved. Excellent riding!':'Target missed. Keep riding and try the next challenge.')+'<br>'+(completed?'You completed all six stages. ':'')+'Total points: '+total.toLocaleString()+'.',
+  completed?[['RIDE AGAIN',begin],['EXIT GAME',exitGameAndCharge,'alt']]:[['NEXT STAGE',startNextStage],['EXIT GAME',exitGameAndCharge,'alt']],0);
 }
 function tickStage(){
  if(st!=='play'||paused)return;
@@ -261,8 +272,8 @@ function tickStage(){
 }
 function startNextStage(){
  if(st!=='over')return;
- stage++;stageStartScore=score;stageTarget=Math.round(stageTarget*1.4);
- stageTime=240;stageDeadline=performance.now()+240000;v=0;vy=0;vg=0;air=0;wt=0;bt2=0;mult=1;cool=0;
+ if(stage>=6)return;stage++;stageStartScore=score;stageTarget=Math.round(stageTarget*1.4);
+ stageTime=120;stageDeadline=performance.now()+120000;v=0;vy=0;vg=0;air=0;wt=0;bt2=0;mult=1;cool=0;
  setStageEnvironment();st='play';paused=false;Object.keys(K).forEach(k=>K[k]=0);
  if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.05);
  musicStarted=true;startBackgroundMusic();ov.style.display='none';
@@ -272,7 +283,7 @@ async function exitGameAndCharge(){
  // Every explicit in-game Exit/Quit action records one additional quota attempt.
  await requestQuotaAttempt();
  st='menu';paused=false;musicStarted=false;stopBackgroundMusic();
- score=0;banked=0;v=0;vy=0;vg=0;stage=1;stageTime=240;stageDeadline=0;stageStartScore=0;stageTarget=2500;
+ score=0;banked=0;v=0;vy=0;vg=0;stage=1;stageTime=120;stageDeadline=0;stageStartScore=0;stageTarget=2500;
  setStageEnvironment();menuBikes();
  if(window.parent!==window)window.parent.postMessage({type:'shoppers-ocean-urban-rider-exit'},location.origin);
 }
@@ -282,7 +293,7 @@ function frame(dt){T+=dt;
  if(st==='play'&&!paused)for(let i=0;i<trafficActiveCount;i++)updCar(cars[i],dt);
  SM.forEach(s=>{if(s.visible){s.userData.l-=dt*.9;s.position.y+=dt*1.2;s.scale.addScalar(dt*2.5);s.material.opacity=Math.max(0,s.userData.l*.6);if(s.userData.l<=0)s.visible=false}});
  updCells();const fx=Math.sin(h),fz=Math.cos(h);
- bike.root.position.set(px,y,pz);bike.root.rotation.y=h;bike.lean.rotation.z=leanA;bike.pit.rotation.x=-pitch;bike.fork.rotation.y=(K.left?1:0)*.35-(K.right?1:0)*.35;
+ bike.root.position.set(px,y,pz);bike.root.rotation.y=h;stageDecor.rotation.y=h;bike.lean.rotation.z=leanA;bike.pit.rotation.x=-pitch;bike.fork.rotation.y=(K.left?1:0)*.35-(K.right?1:0)*.35;
  const sp=v*dt/.36;bike.wr.rotation.x+=sp*(K.burn&&K.up&&v<10?3:1);bike.wf.rotation.x+=sp;bike.tail.material.color.set(K.brake||K.down?0xff2222:0x661111);
  gnd.position.set(Math.round(px/16)*16,0,Math.round(pz/16)*16);stageDecor.position.set(px,0,pz);sun.position.set(px+32,72,pz+26);sun.target.position.set(px,0,pz);
  if(st==='menu'){const an=T*.35;cam.position.set(px+Math.sin(an)*7,2.6,pz+Math.cos(an)*7);cam.lookAt(px,1,pz)}
@@ -297,7 +308,7 @@ function menu(title,txt,btns,bikes){ov.style.display='flex';ov.innerHTML='';cons
  e('h1','',title);if(txt)e('p','',txt);
  if(bikes){const row=e('div','bk');BK.forEach((b,i)=>{const n=document.createElement('button');n.className='bike'+(i===sel?' on':'');n.disabled=total<b.u;n.innerHTML='<b>'+b.n+'</b><small>'+(total<b.u?'🔒 '+b.u+' pts':Math.round(b.vmax*3.6)+' km/h')+'</small>';n.onclick=()=>{sel=i;setBike();A();menuBikes()};row.appendChild(n)})}
  btns.forEach(([l,f,c])=>{e('button','m '+(c||''),l).onclick=f})}
-function menuBikes(){menu('Urban Rider','Weave through traffic, hit ramps and perform stunts. Survive each timed 4-minute stage and beat its score target. Every stage brings a new location, heavier traffic and tougher challenges. Total points: '+total+'. Best run: '+best+'.<br>Controls: W/A/S/D or arrows, Space brake, Shift wheelie, B burnout, H horn.',[['RIDE',begin]],0)}
+function menuBikes(){menu('Urban Rider','Weave through traffic, hit ramps and perform stunts. Six distinct two-minute rides: countryside, mountain pass, midnight city, forest, coastal highway and extreme night roads. Each stage has its own road shape, scenery, traffic and difficulty. Total points: '+total+'. Best run: '+best+'.<br>Controls: W/A/S/D or arrows, Space brake, Shift wheelie, B burnout, H horn.',[['RIDE',begin]],0)}
 let attemptRequestId=0;
 function requestQuotaAttempt(){
  if(window.parent===window)return Promise.resolve(true);
@@ -315,7 +326,7 @@ async function begin(){
  A();
  const allowed=await requestQuotaAttempt();
  if(!allowed){pop('Quota unavailable. Please try again.');return}
- score=0;banked=0;v=0;h=0;y=0;vy=0;vg=0;mult=1;stage=1;stageTime=240;stageDeadline=performance.now()+240000;stageStartScore=0;stageTarget=2500;setStageEnvironment();
+ score=0;banked=0;v=0;h=0;y=0;vy=0;vg=0;mult=1;stage=1;stageTime=120;stageDeadline=performance.now()+120000;stageStartScore=0;stageTarget=2500;setStageEnvironment();
  musicStarted=true;if(mg)mg.gain.setTargetAtTime(soundOn?.7:0,ac.currentTime,.05);startBackgroundMusic();
  window.focus();st='play';paused=false;ov.style.display='none'
 }
