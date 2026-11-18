@@ -216,7 +216,7 @@ function FashionStudio({onStart}:{onStart:(roundId:string)=>Promise<boolean>}){
   if(busy||selected[category]===name)return;
   setBusy(true);
   try{if(!claimed){const ok=await onStart(round.current);if(!ok){setMessage("Your game attempt could not be started. Please try again.");return;}setClaimed(true);}
-   setSelected(v=>({...v,[category]:name}));setMessage(name+" selected. Keep styling your look!");
+   setSelected(v=>{const next={...v,[category]:name};if(category==="tops"||category==="sweaters"){delete next.dresses;delete next.skirts;delete next.trousers;}if(category==="skirts"||category==="trousers"){delete next.dresses;delete next.tops;delete next.sweaters;}if(category==="dresses"){delete next.tops;delete next.sweaters;delete next.skirts;delete next.trousers;}return next;});setMessage(name+" selected. Keep styling your look!");
   }finally{setBusy(false);}
  };
  const reset=()=>{setSelected({hairstyles:"Long brunette",glasses:"Tortoiseshell",lenses:"Hazel",dresses:"White lace dress",socks:"White knee socks"});setClaimed(false);round.current="fashion:"+Date.now()+":"+Math.random();setMessage("Fresh look! Choose a category to begin.");};
