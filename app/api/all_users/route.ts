@@ -8,8 +8,10 @@ export async function POST() {
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database is unavailable" }, { status: 503 });
 
+    // Keep the admin Users list consistent with sign-in eligibility:
+    // pending registrations must not appear until their email is confirmed.
     const { results = [] } = await db.prepare(
-      "SELECT id,email,full_name,country,phone,address,role,email_confirmed,created_at,updated_at FROM users ORDER BY created_at DESC"
+      "SELECT id,email,full_name,country,phone,address,role,email_confirmed,created_at,updated_at FROM users WHERE COALESCE(email_confirmed,0)=1 ORDER BY created_at DESC"
     ).all<any>();
 
     return NextResponse.json({
