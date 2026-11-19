@@ -85,7 +85,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
         if (error.code === "account_not_found") {
           setErrors({ general: "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑" })
         } else if (error.code === "email_not_confirmed") {
-          setErrors({ general: "Please confirm your email address and try again." })
+          showDialog("Email confirmation required", "Your account is not signed in because your email address has not been confirmed. Please open the confirmation email sent to " + email.trim() + " and click Confirm your email before signing in.")
         } else if (error.code === "invalid_credentials") {
           setErrors({ general: "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑" })
         } else {
@@ -135,7 +135,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
         return
       }
 
-      showDialog("Success", "Your account has been created successfully!")
+      showDialog(data.emailSent ? "Check your email" : "Account created — email needs attention", data.emailSent ? "Your account has been created, but you are not signed in yet. Please open the confirmation email we sent to " + email.trim() + " and click Confirm your email. You can sign in only after confirming your address." : "Your account has been created, but we could not send the confirmation email. Please contact Shoppers Ocean support before trying to sign in. Your account is not signed in yet.")
       setIsSignIn(true)
     } catch (error: any) {
       setIsSubmitting(false)
