@@ -94,7 +94,7 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
         if (error) {
           const message =
             error.code === "email_not_confirmed"
-              ? "Please confirm your email address and try again."
+              ? "Your account is not signed in because your email is not confirmed. Please open the confirmation email sent to " + email.trim() + " and click its confirmation link first."
               : error.code === "account_not_found" || error.code === "invalid_credentials"
                 ? "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑"
                 : error.message || "An error occurred during sign in. Please try again.";
@@ -126,7 +126,7 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
           setErrors({ general: "Unable to create your account. Please try again." });
           return;
         }
-        setNotice("Your account has been created successfully! Please check your email if confirmation is required.");
+        setNotice(data.emailSent ? "Your account has been created, but you are not signed in yet. Please check " + email.trim() + " and click the confirmation link before signing in." : "Your account has been created, but the confirmation email could not be sent. Please contact Shoppers Ocean support. You are not signed in.");
         setIsSignIn(true);
         setPassword("");
       }
