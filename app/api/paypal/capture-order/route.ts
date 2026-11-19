@@ -36,11 +36,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "PayPal order does not match this account and book" }, { status: 403 });
     }
 
-    if (String(savedOrder.status).toLowerCase() === "completed") {
-      return NextResponse.json({ success: true, status: "completed", message: "Purchase already recorded" }, {
-        headers: { "Cache-Control": "no-store" }
-      });
-    }
+    // Even if the order was already completed, continue to PayPal's canonical
+    // order lookup below. This lets a repeated capture request recover a missed
+    // sale email without creating another payment or granting duplicate access.
 
     const accessToken = await getPaypalAccessToken();
     const captureResponse = await fetch(paypalApiUrl(
