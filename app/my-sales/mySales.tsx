@@ -72,7 +72,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     }
   }
   const revenueRows = ids.length ? ((await db.prepare(
-    "SELECT p.id AS payment_id,p.amount,p.currency,p.gateway_fee_inr,p.gateway_fee_amount,p.gateway_fee_currency,p.gateway_fee_checked_at,p.razorpay_payment_id,p.paypal_capture_id,p.paypal_order_id,p.paypal_gross_amount_inr,p.paypal_receivable_amount,p.paypal_receivable_currency,p.paypal_exchange_rate,p.paypal_exchange_source_currency,p.paypal_exchange_target_currency,p.paypal_payer_country,p.created_at,p.updated_at,o.created_at AS order_created_at,b.author_id AS book_author_id " +
+    "SELECT p.id AS payment_id,p.amount,p.currency,p.gateway_fee_inr,p.gateway_fee_amount,p.gateway_fee_currency,p.gateway_fee_checked_at,p.razorpay_payment_id,p.paypal_capture_id,p.paypal_order_id,p.paypal_gross_amount_inr,p.paypal_receivable_amount,p.paypal_receivable_currency,p.paypal_exchange_rate,p.paypal_exchange_source_currency,p.paypal_exchange_target_currency,p.paypal_payer_country,p.sale_country,p.created_at,p.updated_at,o.created_at AS order_created_at,b.author_id AS book_author_id " +
     "FROM payments p JOIN orders o ON o.id=p.order_id JOIN books b ON b.id=p.book_id WHERE p.book_id IN (" + ids.map(() => "?").join(",") + ") AND p.status='completed' AND o.status='completed' ORDER BY COALESCE(p.updated_at,p.created_at,o.created_at) DESC"
   ).bind(...ids).all<any>()).results || []) : [];
 
@@ -96,7 +96,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     try {
       if (row.paypal_capture_id) {
         const needsSettlement = row.paypal_gross_amount_inr == null || row.gateway_fee_inr == null;
-        const needsCountry = !row.paypal_payer_country && Boolean(row.paypal_order_id);
+        const needsCountry = !row.paypal_payer_country && !row.sale_country && Boolean(row.paypal_order_id);
         if (needsSettlement || needsCountry) {
           if (!paypalToken) paypalToken = await getPaypalAccessToken();
           if (needsSettlement) {
