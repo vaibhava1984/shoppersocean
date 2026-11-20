@@ -300,7 +300,7 @@ export async function POST(req: Request) {
           bookTitle: String(book.title || ""),
         });
       } catch (emailError) {
-        // The webhook also sends with the same Resend idempotency key and can retry.
+        // Repeated verification uses the same Resend idempotency key.
         console.error("Sale notification email failed:", emailError);
       }
     }
