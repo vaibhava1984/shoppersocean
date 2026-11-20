@@ -110,22 +110,31 @@ export async function POST(request: Request) {
     }
 
     const accountTableSet = new Set(accountTables);
-    const orderedTables: string[] = [];
-    const visiting = new Set<string>();
-    const visited = new Set<string>();
-    async function visitAccountTable(table: string) {
-      if (visited.has(table) || visiting.has(table)) return;
-      visiting.add(table);
+    const childrenByParent = new Map<string, string[]>();
+    for (const table of accountTables) {
       const { results: foreignKeys = [] } = await db.prepare(`PRAGMA foreign_key_list("${table}")`).all<any>();
       for (const foreignKey of foreignKeys) {
         const parent = String(foreignKey.table || "");
-        if (accountTableSet.has(parent)) await visitAccountTable(parent);
+        if (accountTableSet.has(parent)) {
+          const children = childrenByParent.get(parent) || [];
+          children.push(table);
+          childrenByParent.set(parent, children);
+        }
       }
+    }
+
+    const orderedTables: string[] = [];
+    const visiting = new Set<string>();
+    const visited = new Set<string>();
+    function visitAccountTable(table: string) {
+      if (visited.has(table) || visiting.has(table)) return;
+      visiting.add(table);
+      for (const child of childrenByParent.get(table) || []) visitAccountTable(child);
       visiting.delete(table);
       visited.add(table);
       orderedTables.push(table);
     }
-    for (const table of accountTables) await visitAccountTable(table);
+    for (const table of accountTables) visitAccountTable(table);
 
     for (const table of orderedTables) {
       await db.prepare(`DELETE FROM "${table}" WHERE user_id=?`).bind(uid).run();
