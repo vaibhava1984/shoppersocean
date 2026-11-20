@@ -128,16 +128,8 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
             effectiveUsdInrRate = 1 / exchangeRate;
           }
 
-          // If PayPal did not convert to INR, use the historical daily USD/INR
-          // rate for the capture date, never today's rate.
-          if (!effectiveUsdInrRate && /^\d{4}-\d{2}-\d{2}$/.test(captureDate)) {
-            try {
-              const historicalResponse = await fetch("https://api.frankfurter.dev/v1/" + captureDate + "?base=USD&symbols=INR", { cache: "no-store" });
-              const historical = await historicalResponse.json() as Record<string, any>;
-              const fallbackRate = Number(historical?.rates?.INR);
-              if (historicalResponse.ok && Number.isFinite(fallbackRate) && fallbackRate > 0) effectiveUsdInrRate = fallbackRate;
-            } catch {}
-          }
+          // Revenue must use PayPal's actual settlement conversion only.
+          // Never substitute a market/historical FX rate for PayPal's rate.
 
           let grossInr: number | null = null;
           if (grossCurrency === "INR" && Number.isFinite(grossAmount)) grossInr = grossAmount;
@@ -151,9 +143,19 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
           } else if (feeCurrency === "USD" && effectiveUsdInrRate && Number.isFinite(feeAmount) && feeAmount >= 0) {
             feeInr = feeAmount * effectiveUsdInrRate;
           }
-          if (grossInr == null && receivableCurrency === "INR" && Number.isFinite(receivableAmount) && feeInr != null) {
-            grossInr = receivableAmount + feeInr;
+          let receivableInr: number | null = null;
+          if (Number.isFinite(receivableAmount) && receivableAmount >= 0) {
+            if (receivableCurrency === "INR") receivableInr = receivableAmount;
+            else if (sourceCurrency === receivableCurrency && targetCurrency === "INR" && Number.isFinite(exchangeRate) && exchangeRate > 0) {
+              receivableInr = receivableAmount * exchangeRate;
+            } else if (sourceCurrency === "INR" && targetCurrency === receivableCurrency && Number.isFinite(exchangeRate) && exchangeRate > 0) {
+              receivableInr = receivableAmount / exchangeRate;
+            }
           }
+          // PayPal's receivable_amount is already net of PayPal's processing fee.
+          // Store its INR equivalent as gross + fee so the shared calculator's
+          // existing gross-minus-fee calculation returns exactly the net receivable.
+          if (receivableInr != null && feeInr != null) grossInr = receivableInr + feeInr;
 
           const payerAddress = paypalOrder?.payer?.address || {};
           const shippingAddress = unit?.shipping?.address || {};
@@ -206,7 +208,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
           const paymentId = existing?.id || crypto.randomUUID();
           if (existing) {
             await db.prepare(
-              "UPDATE payments SET status='completed',paypal_capture_id=?,amount=?,currency=?,original_amount=?,original_currency=?,payment_method='PayPal',gateway_name='PayPal',paypal_gross_amount_inr=COALESCE(?,paypal_gross_amount_inr),gateway_fee_amount=?,gateway_fee_currency=?,gateway_fee_inr=COALESCE(?,gateway_fee_inr),paypal_receivable_amount=?,paypal_receivable_currency=?,paypal_exchange_rate=?,paypal_exchange_source_currency=?,paypal_exchange_target_currency=?,paypal_payer_country=COALESCE(NULLIF(?,''),paypal_payer_country),sale_country=COALESCE(NULLIF(sale_country,''),NULLIF(?,'')),created_at=COALESCE(?,created_at),updated_at=? WHERE id=?"
+              "UPDATE payments SET status='completed',paypal_capture_id=?,amount=?,currency=?,original_amount=?,original_currency=?,payment_method='PayPal',gateway_name='PayPal',paypal_gross_amount_inr=?,gateway_fee_amount=?,gateway_fee_currency=?,gateway_fee_inr=?,paypal_receivable_amount=?,paypal_receivable_currency=?,paypal_exchange_rate=?,paypal_exchange_source_currency=?,paypal_exchange_target_currency=?,paypal_payer_country=COALESCE(NULLIF(?,''),paypal_payer_country),sale_country=COALESCE(NULLIF(sale_country,''),NULLIF(?,'')),created_at=COALESCE(?,created_at),updated_at=? WHERE id=?"
             ).bind(
               String(capture.id), paidAmount, paidCurrency, paidAmount, paidCurrency,
               grossInr, Number.isFinite(feeAmount) ? feeAmount : null, feeCurrency || null, feeInr,
@@ -296,7 +298,9 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     const checked = row.gateway_fee_checked_at ? new Date(row.gateway_fee_checked_at).getTime() : 0;
     try {
       if (row.paypal_capture_id) {
-        const needsSettlement = row.paypal_gross_amount_inr == null || row.gateway_fee_inr == null;
+        const needsSettlement = row.paypal_gross_amount_inr == null || row.gateway_fee_inr == null ||
+          row.paypal_receivable_amount == null || !row.paypal_receivable_currency ||
+          (String(row.paypal_receivable_currency).toUpperCase() !== "INR" && row.paypal_exchange_rate == null);
         const needsCountry = !row.paypal_payer_country && !row.sale_country && Boolean(row.paypal_order_id);
         if (needsSettlement || needsCountry) {
           if (!paypalToken) paypalToken = await getPaypalAccessToken();
@@ -335,9 +339,16 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
             }
             const receivableCurrency = String(receivable?.currency_code || "").toUpperCase();
             const receivableAmount = Number(receivable?.value);
-            if (grossInr == null && receivableCurrency === "INR" && Number.isFinite(receivableAmount) && feeInr != null) {
-              grossInr = receivableAmount + feeInr;
+            let receivableInr: number | null = null;
+            if (Number.isFinite(receivableAmount) && receivableAmount >= 0) {
+              if (receivableCurrency === "INR") receivableInr = receivableAmount;
+              else if (sourceCurrency === receivableCurrency && targetCurrency === "INR" && Number.isFinite(exchangeRate) && exchangeRate > 0) {
+                receivableInr = receivableAmount * exchangeRate;
+              } else if (sourceCurrency === "INR" && targetCurrency === receivableCurrency && Number.isFinite(exchangeRate) && exchangeRate > 0) {
+                receivableInr = receivableAmount / exchangeRate;
+              }
             }
+            if (receivableInr != null && feeInr != null) grossInr = receivableInr + feeInr;
             if (response.ok && capture?.id === row.paypal_capture_id) {
               const checkedAt = new Date().toISOString();
               await db.prepare(
