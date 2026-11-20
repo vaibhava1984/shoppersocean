@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
+import { ensureSubscriptionSchema } from "@/utils/subscriptions/schema";
 export const dynamic = "force-dynamic";
 const SECTIONS=["music-zone","quiz-world","word-playground","brain-logic","quiz-arena","world-knowledge-quiz","riddle-corner","daily-challenge","memory-observation","classic-games","digital-discovery-hub","mystery-mansion","puzzle-universe","world-explorer","creative-studio","mind-lab","world-records-arena","mystery-quiz","word-differences","one-word-substitute"];
 const TYPES:Record<string,string[]>={"music-zone":["virtual-piano"],"quiz-world":["trivio"],"word-playground":["word","hidden","missing"],"brain-logic":["sequence","odd"],"quiz-arena":["quiz"],"world-knowledge-quiz":["worldquiz"],"riddle-corner":["riddle"],"daily-challenge":["daily"],"memory-observation":["memory","recall","spot","jigsaw"],"classic-games":["tic","chess","snakes-ladders","ocean-solitaire","archery3d","ocean-carrom","urban-rider-final","bubble-shooter"],"digital-discovery-hub":["internet","artificial-intelligence","cyber-detective","technology-history","quiz"],"mystery-mansion":["crime-scene","locked-room","secret-code","master-deception","riddle"],"puzzle-universe":["pattern-master","missing-piece","word-puzzle","sequence"],"world-explorer":["geography-quest","world-culture","landmark-adventure","worldquiz"],"creative-studio":["design-detective","pixel-artist","storyboard-challenge","odd"],"mind-lab":["mind-memory","mind-pattern","mind-focus","mind-logic","mind-speed","mind-spatial","worldquiz"],"world-records-arena":["world-records","quiz"],"mystery-quiz":["mystery-quiz"],"word-differences":["confusing-words"],"one-word-substitute":["one-word-substitute"]};
@@ -33,12 +34,12 @@ async function handle(req:Request,consume:boolean){
   await db.prepare("CREATE TABLE IF NOT EXISTS game_answered_questions(user_id TEXT NOT NULL,section_id TEXT NOT NULL,question_key TEXT NOT NULL,answered_at TEXT NOT NULL,PRIMARY KEY(user_id,section_id,question_key))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_question_reservations(user_id TEXT NOT NULL,game_type_id TEXT NOT NULL,challenge_id TEXT NOT NULL,question_text TEXT NOT NULL,session_id TEXT NOT NULL,reserved_at TEXT NOT NULL,PRIMARY KEY(user_id,game_type_id,challenge_id))").run();
   await db.prepare("CREATE TABLE IF NOT EXISTS game_picture_pair_quota_reset_v2(user_id TEXT NOT NULL,usage_date TEXT NOT NULL,PRIMARY KEY(user_id,usage_date))").run();
-  await db.prepare("CREATE TABLE IF NOT EXISTS user_subscriptions(user_id TEXT PRIMARY KEY,status TEXT NOT NULL DEFAULT 'inactive',started_at TEXT,expires_at TEXT,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run();
+  await ensureSubscriptionSchema(db);
   const acct=await db.prepare("SELECT role,email,full_name FROM users WHERE id=? LIMIT 1").bind(user.id).first<any>();
   const admin=String(acct?.role??"").toLowerCase()==="admin"||String(acct?.email??user.email).trim().toLowerCase()===ADMIN_EMAIL;
-  const sub=await db.prepare("SELECT status,expires_at FROM user_subscriptions WHERE user_id=? LIMIT 1").bind(user.id).first<any>();
+  const sub=await db.prepare("SELECT status,expires_at,payment_id FROM user_subscriptions WHERE user_id=? LIMIT 1").bind(user.id).first<any>();
   const expiryTime=sub?.expires_at?Date.parse(String(sub.expires_at)):0;
-  const subscribed=!admin&&String(sub?.status??"").toLowerCase()==="active"&&Boolean(sub?.expires_at)&&Number.isFinite(expiryTime)&&expiryTime>Date.now();
+  const subscribed=!admin&&Boolean(sub?.payment_id)&&String(sub?.status??"").toLowerCase()==="active"&&Boolean(sub?.expires_at)&&Number.isFinite(expiryTime)&&expiryTime>Date.now();
   if(!admin&&String(sub?.status??"").toLowerCase()==="active"&&(!sub?.expires_at||!Number.isFinite(expiryTime)||expiryTime<=Date.now())){
    await db.prepare("UPDATE user_subscriptions SET status='expired',updated_at=? WHERE user_id=? AND status='active'").bind(new Date().toISOString(),user.id).run();
   }
