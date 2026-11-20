@@ -155,11 +155,14 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
             grossInr = receivableAmount + feeInr;
           }
 
+          const buyerAddress = paypalOrder?.payer?.address || unit?.shipping?.address || paypalOrder?.payment_source?.paypal?.address || {};
           let buyerCountry = String(
             paypalOrder?.payment_source?.paypal?.address?.country_code ||
             paypalOrder?.payer?.address?.country_code ||
             unit?.shipping?.address?.country_code || ""
           ).toUpperCase();
+          const buyerRegion = String(buyerAddress?.admin_area_1 || "").trim().slice(0,120);
+          const buyerCity = String(buyerAddress?.admin_area_2 || buyerAddress?.city || "").trim().slice(0,120);
 
           // PayPal's transaction reporting record is the authoritative fallback
           // for historical payer country when the Orders response omits address.
@@ -220,6 +223,8 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
               captureTime, nowIso
             ).run();
           }
+          await db.prepare("UPDATE payments SET sale_country=COALESCE(NULLIF(sale_country,''),?),sale_region=COALESCE(NULLIF(sale_region,''),?),sale_city=COALESCE(NULLIF(sale_city,''),?) WHERE paypal_order_id=? OR paypal_capture_id=?")
+            .bind(buyerCountry || null,buyerRegion || null,buyerCity || null,saved.paypal_order_id,String(capture.id)).run();
           await db.prepare("UPDATE orders SET status='completed',paypal_reconciliation_checked_at=?,updated_at=? WHERE id=?")
             .bind(nowIso, nowIso, saved.id).run();
         } else {
@@ -241,7 +246,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
   if (ids.length) {
     const placeholders = ids.map(() => "?").join(",");
     const sql =
-      "SELECT o.id,o.book_id,o.created_at,o.status,b.title,p.id AS payment_id,p.amount,p.currency,p.created_at AS payment_created_at,p.updated_at,p.paypal_capture_id,p.paypal_order_id,p.paypal_gross_amount_inr,p.paypal_payer_country,p.sale_country,p.payment_method,p.gateway_name,u.registration_country " +
+      "SELECT o.id,o.book_id,o.created_at,o.status,b.title,p.id AS payment_id,p.amount,p.currency,p.created_at AS payment_created_at,p.updated_at,p.paypal_capture_id,p.paypal_order_id,p.paypal_gross_amount_inr,p.paypal_payer_country,p.sale_country,p.sale_region,p.sale_city,p.payment_method,p.gateway_name,u.registration_country " +
       "FROM orders o JOIN books b ON b.id=o.book_id " +
       "JOIN payments p ON p.order_id=o.id AND p.status='completed' " +
       "LEFT JOIN users u ON u.id=o.user_id " +
@@ -533,7 +538,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
                     <th className="px-4 py-3 font-semibold sm:px-5">Book Name</th>
                     <th className="px-4 py-3 font-semibold">Sale Price</th>
                     <th className="px-4 py-3 font-semibold sm:px-5">Sale Date &amp; Time</th>
-                    <th className="px-4 py-3 font-semibold sm:px-5">Country</th>
+                    <th className="px-4 py-3 font-semibold sm:px-5">Sale Location</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -544,7 +549,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 font-semibold text-slate-900">{formatPrice(sale.amount, sale.currency)}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-slate-600 sm:px-5">{new Date(sale.payment_created_at || sale.updated_at || sale.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "medium", timeZone: "Asia/Kolkata" })}</td>
-                      <td className="px-4 py-3 text-slate-700 sm:px-5">{(String(sale.sale_country || sale.paypal_payer_country || "").toUpperCase() === "C2" ? "China" : COUNTRIES.find((country) => country.code === String(sale.sale_country || sale.paypal_payer_country || "").toUpperCase())?.name) || "Not available"}</td>
+                      <td className="px-4 py-3 text-slate-700 sm:px-5">{[(String(sale.sale_country || sale.paypal_payer_country || "").toUpperCase() === "C2" ? "China" : COUNTRIES.find((country) => country.code === String(sale.sale_country || sale.paypal_payer_country || "").toUpperCase())?.name) || "Not available", sale.sale_region, sale.sale_city].filter(Boolean).join(" · ")}</td>
                     </tr>
                   ))}
                 </tbody>
