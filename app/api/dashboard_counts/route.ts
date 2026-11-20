@@ -11,7 +11,7 @@ export async function POST() {
     const [books, authors, users] = await Promise.all([
       db.prepare("SELECT COUNT(*) AS count FROM books WHERE COALESCE(is_deleted,0)=0").first<{count:number}>(),
       db.prepare("SELECT COUNT(*) AS count FROM authors WHERE COALESCE(is_deleted,0)=0").first<{count:number}>(),
-      db.prepare("SELECT COUNT(*) AS count FROM users").first<{count:number}>(),
+      db.prepare("SELECT COUNT(*) AS count FROM users WHERE COALESCE(email_confirmed,0)=1").first<{count:number}>(),
     ]);
 
     return NextResponse.json({
