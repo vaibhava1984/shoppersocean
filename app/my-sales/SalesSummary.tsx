@@ -20,9 +20,9 @@ export default function SalesSummary(props: Props) {
   const totals = props[period];
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <label htmlFor="sales-period" className="text-sm font-semibold text-slate-700">Sales Summary</label>
+    <section className="space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+        <label htmlFor="sales-period" className="text-sm font-semibold text-slate-700">Sales Period</label>
         <select
           id="sales-period"
           value={period}
@@ -35,14 +35,14 @@ export default function SalesSummary(props: Props) {
           <option value="thisMonth">This Month</option>
         </select>
       </div>
-      <div className="mt-3">
+      <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
         <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Total Sales Volume</p>
         <p className="mt-1 text-3xl font-bold tracking-tight text-slate-900">{money(totals.total)}</p>
         <p className="mt-1 text-xs text-slate-500">{totals.count} completed {totals.count === 1 ? "sale" : "sales"}{totals.pendingConversion ? ` · ${totals.pendingConversion} awaiting PayPal settlement conversion` : ""}</p>
-      </div>
-      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 border-t border-slate-100 pt-3 text-xs text-slate-600">
-        <span>Razorpay: <strong className="text-slate-800">{money(totals.razorpay)}</strong></span>
-        <span>PayPal: <strong className="text-slate-800">{money(totals.paypal)}</strong></span>
+        <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 border-t border-slate-100 pt-3 text-xs text-slate-600">
+          <span>Razorpay: <strong className="text-slate-800">{money(totals.razorpay)}</strong></span>
+          <span>PayPal: <strong className="text-slate-800">{money(totals.paypal)}</strong></span>
+        </div>
       </div>
     </section>
   );
