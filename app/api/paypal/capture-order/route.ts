@@ -165,11 +165,16 @@ export async function POST(req: Request) {
       "UPDATE orders SET status = 'completed', updated_at = ? WHERE id = ? AND user_id = ?"
     ).bind(now, savedOrder.id, identity.profile.id).run();
 
+    const customer = await db.prepare("SELECT full_name,email FROM users WHERE id=? LIMIT 1").bind(identity.profile.id).first<Record<string, any>>();
     try {
       await sendSaleNotification({
         paymentId: captureId,
         paymentMethod: "PayPal",
-        customerEmail: String(identity.profile.email || ""),
+        customerEmail: String(customer?.email || identity.profile.email || ""),
+        customerName: String(customer?.full_name || ""),
+        saleCountry: validPayerCountry,
+        saleRegion,
+        saleCity,
         bookId: productId,
         bookTitle: String(book.title || ""),
       });
