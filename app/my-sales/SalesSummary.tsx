@@ -15,13 +15,6 @@ function money(value: number) {
   }).format(value);
 }
 
-const labels: Record<Period, string> = {
-  today: "Today",
-  yesterday: "Yesterday",
-  last7Days: "Last 7 Days",
-  thisMonth: "This Month",
-};
-
 export default function SalesSummary(props: Props) {
   const [period, setPeriod] = useState<Period>("today");
   const totals = props[period];
