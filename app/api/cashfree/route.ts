@@ -85,7 +85,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, status: "completed", productId: String(saved.book_id) }, { headers: { "Cache-Control": "no-store" } });
     }
 
-    const country = String(identity.profile.country || "").trim().toUpperCase();
+    const country = String(req.headers.get("cf-ipcountry") || "").trim().toUpperCase();
     if (country === "IN" || country === "INDIA") return NextResponse.json({ error: "Customers in India must use Razorpay." }, { status: 400 });
     const productId = String(body.productId || "").trim();
     if (!productId) return NextResponse.json({ error: "Book is required" }, { status: 400 });
