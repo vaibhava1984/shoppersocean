@@ -8,6 +8,8 @@ import { Toaster } from "@/components/ui/toaster"
 
 interface UserMetadata {
     name?: string;
+    full_name?: string;
+    territory?: string;
     avatar_url?: string;
     [key: string]: any;
 }
@@ -104,22 +106,24 @@ const UsersManagement = () => {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>A_ID</TableHead>
+                                <TableHead>Name</TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead>Role</TableHead>
-                                <TableHead>Created At</TableHead>
+                                <TableHead>Created On</TableHead>
+                                <TableHead>Territory</TableHead>
                                 {/* <TableHead>Actions</TableHead> */}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {allUsersLists.filter(d => d).map((allUser) => (
                                 <TableRow key={allUser.id} className='text-black'>
-                                    <TableCell>{allUser.id}</TableCell>
+                                    <TableCell className="max-w-[180px] whitespace-normal break-words font-medium">{allUser.user_metadata?.full_name || allUser.user_metadata?.name || "Name not available"}</TableCell>
                                     <TableCell className="font-medium">
                                         {allUser.email || allUser.user_metadata?.email || 'Email not available'}
                                     </TableCell>
                                     <TableCell>{allUser.app_metadata.userrole || 'N/A'}</TableCell>
                                     <TableCell>{new Date(allUser.created_at).toLocaleString()}</TableCell>
+                                    <TableCell className="min-w-[140px] whitespace-normal break-words">{allUser.user_metadata?.territory || allUser.user_metadata?.country || "Not provided"}</TableCell>
                                     {/* <TableCell>
                                         <Button variant="destructive" onClick={() => { }}>
                                             Delete
