@@ -109,6 +109,8 @@ export async function POST(req: Request) {
     }
 
     const [userId, bookId] = String(unit.custom_id).split("|");
+    const payerCountryCode = String(paypalOrder?.payer?.address?.country_code || "").toUpperCase();
+    const validPayerCountry = /^[A-Z]{2}$/.test(payerCountryCode) ? payerCountryCode : null;
     const amount = Number(canonicalCapture.amount?.value);
     const currency = String(canonicalCapture.amount?.currency_code || "").toUpperCase();
     if (!userId || !bookId || currency !== "USD" || !Number.isFinite(amount) || amount <= 0 ||
@@ -155,14 +157,14 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Conflicting PayPal payment record exists" }, { status: 409 });
       }
       await db.prepare(
-        "UPDATE payments SET status = 'completed', paypal_capture_id = ?, original_amount = ?, original_currency = 'USD', payment_method = 'PayPal', updated_at = ? WHERE id = ?"
-      ).bind(captureId, amount, now, existing.id).run();
+        "UPDATE payments SET status = 'completed', paypal_capture_id = ?, original_amount = ?, original_currency = 'USD', payment_method = 'PayPal', paypal_payer_country=COALESCE(?,paypal_payer_country), sale_country=COALESCE(NULLIF(sale_country,''),?), updated_at = ? WHERE id = ?"
+      ).bind(captureId, amount, validPayerCountry, validPayerCountry, now, existing.id).run();
     } else {
       try {
         await db.prepare(
-          "INSERT INTO payments (id, order_id, user_id, book_id, amount, currency, status, razorpay_payment_id, razorpay_order_id, paypal_order_id, paypal_capture_id, original_amount, original_currency, payment_method, created_at, updated_at) " +
-          "VALUES (?, ?, ?, ?, ?, 'USD', 'completed', NULL, NULL, ?, ?, ?, 'USD', 'PayPal', ?, ?)"
-        ).bind(crypto.randomUUID(), savedOrder.id, userId, bookId, amount, orderId, captureId, amount, now, now).run();
+          "INSERT INTO payments (id, order_id, user_id, book_id, amount, currency, status, razorpay_payment_id, razorpay_order_id, paypal_order_id, paypal_capture_id, original_amount, original_currency, payment_method, paypal_payer_country, sale_country, created_at, updated_at) " +
+          "VALUES (?, ?, ?, ?, ?, 'USD', 'completed', NULL, NULL, ?, ?, ?, 'USD', 'PayPal', ?, ?, ?, ?)"
+        ).bind(crypto.randomUUID(), savedOrder.id, userId, bookId, amount, orderId, captureId, amount, validPayerCountry, validPayerCountry, now, now).run();
       } catch (insertError) {
         // A parallel browser callback may have inserted this exact payment first.
         const duplicate = await db.prepare(
