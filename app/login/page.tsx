@@ -232,7 +232,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
               </div>
               <div>
                 <label htmlFor="gender">{field("Gender", true)}</label>
-                <select id="gender" value={gender} onChange={e => { setGender(e.target.value); setErrors(p => ({...p, gender: ""})) }} style={{ color: gender ? "#111827" : "#9ca3af" }} className={`mt-1 w-full rounded-md border ${errors.gender ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white shadow-none outline-none focus:outline-none focus:ring-0 ${errors.gender ? "focus:border-red-500" : "focus:border-gray-300"}`}>
+                <select id="gender" required value={gender} onChange={e => { setGender(e.target.value); setErrors(p => ({...p, gender: ""})) }} style={{ color: gender ? "#111827" : "#9ca3af", WebkitTextFillColor: gender ? "#111827" : "#9ca3af" }} className={`mt-1 w-full appearance-none rounded-md border ${errors.gender ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white ${errors.gender ? "focus:border-red-500" : "focus:border-gray-300"} focus:outline-none focus:ring-0`}>
                   <option value="" disabled style={{ color: "#9ca3af" }}>Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option><option value="Prefer not to say">Prefer not to say</option>
                 </select>
                 {errors.gender && <p className="mt-1 text-sm text-red-500">{errors.gender}</p>}
