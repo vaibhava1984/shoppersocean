@@ -97,9 +97,9 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
       if (row.paypal_capture_id) {
         const needsSettlement = row.paypal_gross_amount_inr == null || row.gateway_fee_inr == null;
         const needsCountry = !row.paypal_payer_country && Boolean(row.paypal_order_id);
-        if ((needsSettlement && (!checked || checked <= staleBefore)) || needsCountry) {
+        if (needsSettlement || needsCountry) {
           if (!paypalToken) paypalToken = await getPaypalAccessToken();
-          if (needsSettlement && (!checked || checked <= staleBefore)) {
+          if (needsSettlement) {
             const response = await fetch(paypalApiUrl("/v2/payments/captures/" + encodeURIComponent(String(row.paypal_capture_id))), {
               headers: { Authorization: "Bearer " + paypalToken }, cache: "no-store"
             });
@@ -271,12 +271,15 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     return String(sale.currency || "").toUpperCase() === "INR" && Number.isFinite(amount) && amount >= 0 ? amount : null;
   };
   const summaryFor = (matches: any[]) => {
-    const result = { total: 0, razorpay: 0, paypal: 0, count: 0 };
+    const result = { total: 0, razorpay: 0, paypal: 0, count: 0, pendingConversion: 0 };
     for (const sale of matches) {
-      const amount = saleAmountINR(sale);
-      if (amount == null) continue;
-      result.total += amount;
       result.count += 1;
+      const amount = saleAmountINR(sale);
+      if (amount == null) {
+        result.pendingConversion += 1;
+        continue;
+      }
+      result.total += amount;
       const method = String(sale.payment_method || sale.gateway_name || (sale.paypal_capture_id ? "PayPal" : "Razorpay")).toLowerCase();
       if (method.includes("paypal")) result.paypal += amount;
       else result.razorpay += amount;
