@@ -264,7 +264,7 @@ export async function POST(req: Request) {
     const saleRegion = String(req.headers.get("cf-region") || "").trim().slice(0,120);
     const saleCity = String(req.headers.get("cf-ipcity") || "").trim().slice(0,120);
     await db.prepare(
-      "UPDATE payments SET sale_country=COALESCE(NULLIF(sale_country,''),?),sale_region=COALESCE(NULLIF(sale_region,''),?),sale_city=COALESCE(NULLIF(sale_city,''),?) WHERE razorpay_order_id=? OR razorpay_payment_id=?"
+      "UPDATE payments SET sale_country=COALESCE(?,sale_country),sale_region=COALESCE(?,sale_region),sale_city=COALESCE(?,sale_city) WHERE razorpay_order_id=? OR razorpay_payment_id=?"
     ).bind(/^[A-Z]{2}$/.test(saleCountry) ? saleCountry : null,saleRegion || null,saleCity || null,razorpayOrderId,razorpayPaymentId).run();
 
     const finalOrder = await db.prepare(
