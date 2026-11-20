@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { ensurePaypalSchema, getPaypalAccessToken, paypalApiUrl } from "@/utils/paypal";
-import { sendSaleNotification } from "@/utils/email/sendSaleNotification";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -187,20 +186,6 @@ export async function POST(req: Request) {
     await db.prepare(
       "UPDATE orders SET status = 'completed', updated_at = ? WHERE id = ? AND user_id = ?"
     ).bind(now, savedOrder.id, userId).run();
-
-    // A 5xx response makes PayPal retry this event if the email provider is unavailable.
-    // The shared payment ID idempotency key prevents browser/webhook duplicate emails.
-    await sendSaleNotification({
-      paymentId: captureId,
-      paymentMethod: "PayPal",
-      customerEmail: String(customer.email || ""),
-      customerName: String(customer.full_name || ""),
-      saleCountry: validPayerCountry,
-      saleRegion,
-      saleCity,
-      bookId,
-      bookTitle: String(book.title || ""),
-    });
 
     return NextResponse.json({ received: true, status: "completed" }, {
       headers: { "Cache-Control": "no-store" },
