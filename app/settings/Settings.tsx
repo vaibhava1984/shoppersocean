@@ -6,13 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, ShieldAlert, Trash2, X } from "lucide-react";
 
-const countryCodes = `AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ BT BO BA BW BR BN BG BF BI KH CM CA CV CF TD CL CN CO KM CG CR HR CU CY CZ DK DJ DM DO EC EG SV GQ ER EE ET FJ FI FR GA GM DE GH GR GD GT GN GW GY HT HN HU IS IN ID IR IQ IE IL IT JM JP JO KZ KE KI KP KR KW KG LA LV LB LS LR LU MG MW MY MV ML MT MH MR MU MX FM MD MC MN ME MA MZ MM NA NR NP NL NZ NI NE NG NO OM PK PW PA PG PY PE PH PL PT QA RO RU RW KN LC VC WS SM ST SA SN RS SC SL SG SK SI SB SO ZA SS ES LK SD SR SZ SE CH SY TW TJ TZ TH TL TG TO TT TN TR TM TV UG UA AE GB US UY UZ VU VA VE VN YE ZM ZW`.split(" ");
+const countryCodes = `AF AL DZ AD AO AG AR AM AU AT AZ BS BH BD BB BY BE BZ BJ BT BO BA BW BR BN BG BF BI KH CM CA CV CF TD CL CN CO KM CG CR HR CU CY CZ DK DJ DM DO EC EG SV GQ ER EE ET FJ FI FR GA GM DE GH GR GD GT GN GW GY HT HN HU IS IN ID IR IQ IE IL IT JM JP JO KZ KE KI KR KW KG LA LV LB LS LR LU MG MW MY MV ML MT MH MR MU MX FM MD MC MN ME MA MZ MM NA NR NP NL NZ NI NE NG NO OM PK PW PA PG PY PE PH PL PT QA RO RU RW KN LC VC WS SM ST SA SN RS SC SL SG SK SI SB SO ZA SS ES LK SD SR SZ SE CH SY TW TJ TZ TH TL TG TO TT TN TR TM TV UG UA AE GB US UY UZ VU VA VE VN YE ZM ZW`.split(" ");
 const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
 const countries = countryCodes.map((code) => ({ code, name: countryNames.of(code) ?? code }));
 
-export default function Settings({ initialUser }: { initialUser: any }) {
+export default function Settings({ initialUser, isAdmin = false }: { initialUser: any; isAdmin?: boolean }) {
   const [country, setCountry] = useState(initialUser?.user_metadata?.country ?? "");
   const [fullName, setFullName] = useState(initialUser?.user_metadata?.full_name ?? "");
   const [email, setEmail] = useState(initialUser?.email ?? "");
@@ -21,6 +21,9 @@ export default function Settings({ initialUser }: { initialUser: any }) {
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   function markEditing(setter: (value: string) => void, value: string) {
     setter(value);
@@ -100,6 +103,28 @@ export default function Settings({ initialUser }: { initialUser: any }) {
     }
   }
 
+  async function deleteAccount() {
+    if (deleting) return;
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      const response = await fetch("/api/delete-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ confirm: true }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "Unable to delete your account. Please try again.");
+
+      await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin", cache: "no-store" }).catch(() => undefined);
+      window.location.replace("/");
+    } catch (error) {
+      setDeleteError(error instanceof Error ? error.message : "Unable to delete your account. Please try again.");
+      setDeleting(false);
+    }
+  }
+
   return (
     <div className="space-y-6 p-4 sm:p-6 max-w-4xl mx-auto">
       <Link href="/" className="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-white px-4 py-2.5 font-semibold text-blue-700 shadow-sm transition-colors hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Back to home">
@@ -119,6 +144,44 @@ export default function Settings({ initialUser }: { initialUser: any }) {
           </div>
         </CardContent>
       </Card>
+
+      {!isAdmin && (
+        <Card className="border-red-200 shadow-sm">
+          <CardHeader><CardTitle className="flex items-center gap-2 text-red-700"><ShieldAlert className="h-5 w-5" />Delete Account</CardTitle></CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm leading-6 text-slate-600">If you no longer wish to use Shoppers Ocean, you can permanently delete your account. Please review the consequences before proceeding.</p>
+            <Button type="button" variant="destructive" onClick={() => { setDeleteError(""); setShowDeleteDialog(true); }} className="font-semibold"><Trash2 className="mr-2 h-4 w-4" />Delete My Account</Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {showDeleteDialog && !isAdmin && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !deleting) setShowDeleteDialog(false); }}>
+          <section role="alertdialog" aria-modal="true" aria-labelledby="delete-account-title" aria-describedby="delete-account-description" className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-red-100 bg-white shadow-2xl">
+            <div className="bg-gradient-to-r from-rose-700 via-red-600 to-orange-500 px-6 py-5 text-white">
+              <button type="button" aria-label="Close" disabled={deleting} onClick={() => setShowDeleteDialog(false)} className="absolute right-4 top-4 rounded-full p-1 text-white/90 hover:bg-white/20 disabled:opacity-50"><X className="h-5 w-5" /></button>
+              <div className="mb-2 flex h-11 w-11 items-center justify-center rounded-full bg-white/20"><Trash2 className="h-6 w-6" /></div>
+              <h2 id="delete-account-title" className="text-xl font-extrabold sm:text-2xl">Are you sure you want to leave?</h2>
+              <p className="mt-1 text-sm text-white/90">This action is permanent and cannot be undone.</p>
+            </div>
+            <div id="delete-account-description" className="space-y-3 px-6 py-5 text-sm leading-6 text-slate-700">
+              <p>Deleting your Shoppers Ocean account will permanently remove your account and its associated records. You will lose:</p>
+              <ul className="list-disc space-y-2 pl-5 marker:text-red-600">
+                <li>All books you have purchased and your access to them.</li>
+                <li>Your active subscription, if you have one, and its associated benefits.</li>
+                <li>All books you have published as an author.</li>
+                <li>Any revenue or unpaid earnings associated with your author account.</li>
+              </ul>
+              <p className="font-semibold text-red-700">This information cannot be recovered after deletion.</p>
+              {deleteError && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-red-700">{deleteError}</p>}
+            </div>
+            <div className="flex flex-col-reverse gap-3 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:flex-row sm:justify-end">
+              <Button type="button" variant="outline" disabled={deleting} onClick={() => setShowDeleteDialog(false)} className="sm:min-w-28">Cancel</Button>
+              <Button type="button" variant="destructive" disabled={deleting} onClick={deleteAccount} className="sm:min-w-36">{deleting ? <><Loader2Icon className="mr-2 h-4 w-4 animate-spin" />Deleting...</> : "Sure to delete"}</Button>
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 }
