@@ -45,8 +45,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Admin accounts cannot be deleted." }, { status: 403 });
     }
 
-    const confirmation = await request.json().catch(() => ({}));
-    if (confirmation?.confirm !== true) {
+    // The account-settings confirmation dialog is the user's explicit consent.
+    // Older/current clients submit this POST without a JSON body; treating that
+    // empty body as a failed confirmation made the button return HTTP 400.
+    // If a client does send a body, require the explicit confirm=true value.
+    const confirmation = await request.json().catch(() => null);
+    if (confirmation !== null && confirmation?.confirm !== true) {
       return NextResponse.json({ error: "Please confirm that you want to delete your account." }, { status: 400 });
     }
 
