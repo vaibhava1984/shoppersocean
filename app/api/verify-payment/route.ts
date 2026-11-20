@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/utils/auth/requireUser";
 import { getD1 } from "@/utils/cloudflare/d1";
+import { ensureRevenueSchema } from "@/utils/revenue";
 import { convertCurrency, fetchExchangeRates } from "@/utils/currency";
 import { sendSaleNotification } from "@/utils/email/sendSaleNotification";
 import { addAdminNotification } from "@/utils/adminNotifications";
@@ -62,6 +63,7 @@ export async function POST(req: Request) {
 
     const db = getD1();
     if (!db) throw new Error("Cloudflare D1 is not available");
+    await ensureRevenueSchema(db);
 
     const { keyId, keySecret } = getCredentials();
     const body = await req.json();
@@ -258,6 +260,13 @@ export async function POST(req: Request) {
           now
         ).run();
       }
+    }
+
+    const saleCountry = String(req.headers.get("cf-ipcountry") || "").trim().toUpperCase();
+    if (/^[A-Z]{2}$/.test(saleCountry)) {
+      await db.prepare(
+        "UPDATE payments SET sale_country=COALESCE(NULLIF(sale_country,''),?) WHERE razorpay_order_id=? OR razorpay_payment_id=?"
+      ).bind(saleCountry,razorpayOrderId,razorpayPaymentId).run();
     }
 
     const finalOrder = await db.prepare(
