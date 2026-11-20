@@ -544,7 +544,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 font-semibold text-slate-900">{formatPrice(sale.amount, sale.currency)}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-slate-600 sm:px-5">{new Date(sale.payment_created_at || sale.updated_at || sale.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "medium", timeZone: "Asia/Kolkata" })}</td>
-                      <td className="px-4 py-3 text-slate-700 sm:px-5">{(String(sale.sale_country || sale.paypal_payer_country || "").toUpperCase() === "C2" ? "China" : COUNTRIES.find((country) => country.code === String(sale.sale_country || sale.paypal_payer_country || sale.registration_country || "").toUpperCase())?.name) || "Not available"}</td>
+                      <td className="px-4 py-3 text-slate-700 sm:px-5">{(String(sale.sale_country || sale.paypal_payer_country || "").toUpperCase() === "C2" ? "China" : COUNTRIES.find((country) => country.code === String(sale.sale_country || sale.paypal_payer_country || "").toUpperCase())?.name) || "Not available"}</td>
                     </tr>
                   ))}
                 </tbody>
