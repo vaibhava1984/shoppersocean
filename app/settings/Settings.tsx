@@ -14,7 +14,6 @@ const countries = countryCodes.map((code) => ({ code, name: countryNames.of(code
 
 export default function Settings({ initialUser }: { initialUser: any }) {
   const [country, setCountry] = useState(initialUser?.user_metadata?.country ?? "");
-  const [city, setCity] = useState(initialUser?.user_metadata?.city ?? "");
   const [fullName, setFullName] = useState(initialUser?.user_metadata?.full_name ?? "");
   const [email, setEmail] = useState(initialUser?.email ?? "");
   const [newPassword, setNewPassword] = useState("");
@@ -49,7 +48,7 @@ export default function Settings({ initialUser }: { initialUser: any }) {
       const profileResponse = await fetch("/api/update-profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, country, city, email }),
+        body: JSON.stringify({ fullName, country, email }),
       });
       const profileData = await profileResponse.json();
       if (!profileResponse.ok) {
@@ -113,7 +112,6 @@ export default function Settings({ initialUser }: { initialUser: any }) {
           <div className="space-y-5">
             <div><label className="block font-medium mb-1">Name <span className="text-red-500">*</span></label><Input value={fullName} onChange={(e) => markEditing(setFullName, e.target.value)} /></div>
             <div><label className="block font-medium mb-1">Country <span className="text-red-500">*</span></label><Select value={country} onValueChange={(value) => markEditing(setCountry, value)}><SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger><SelectContent>{countries.map((x) => <SelectItem key={x.code} value={x.code}>{x.name}</SelectItem>)}</SelectContent></Select></div>
-            <div><label className="block font-medium mb-1">City</label><Input value={city} onChange={(e) => markEditing(setCity, e.target.value)} placeholder="Enter your city" /></div>
             <div><label className="block font-medium mb-1">Email <span className="text-red-500">*</span></label><Input type="email" value={email} onChange={(e) => markEditing(setEmail, e.target.value)} /></div>
             <div><label className="block font-medium mb-1">Change Password <span className="text-slate-500 font-normal">(Optional)</span></label><div className="space-y-3"><Input type="password" value={newPassword} onChange={(e) => markEditing(setNewPassword, e.target.value)} placeholder="New Password" autoComplete="new-password" /><Input type="password" value={confirm} onChange={(e) => markEditing(setConfirm, e.target.value)} placeholder="Confirm New Password" autoComplete="new-password" /><p className="text-sm text-slate-500">Leave both password fields blank to keep your current password. Minimum 6 letters/digits.</p></div></div>
             {message && <div className="rounded-md bg-slate-100 p-3 text-sm" role="status">{message}</div>}
