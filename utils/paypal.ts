@@ -10,6 +10,7 @@ export async function ensurePaypalSchema(db: any) {
   const setup = (async () => {
     const statements = [
       "ALTER TABLE orders ADD COLUMN paypal_order_id TEXT",
+      "ALTER TABLE orders ADD COLUMN paypal_reconciliation_checked_at TEXT",
       "ALTER TABLE payments ADD COLUMN paypal_order_id TEXT",
       "ALTER TABLE payments ADD COLUMN paypal_capture_id TEXT",
       "ALTER TABLE payments ADD COLUMN original_amount REAL",
