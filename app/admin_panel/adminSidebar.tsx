@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BookOpen, Home, ShoppingCart, Users, PenTool } from 'lucide-react'
+import { BookOpen, Home, Users, PenTool } from 'lucide-react'
 
 export default function AdminSidebar() {
     return (
@@ -11,7 +11,6 @@ export default function AdminSidebar() {
             <nav className="mt-4">
                 {[
                     { icon: Home, label: 'Dashboard', value: '' },
-                    { icon: ShoppingCart, label: 'Orders', value: 'orders' },
                     { icon: Home, label: 'Home Section', value: 'home_section' },
                     { icon: BookOpen, label: 'Books', value: 'books' },
                     { icon: PenTool, label: 'Authors', value: 'authors' },
