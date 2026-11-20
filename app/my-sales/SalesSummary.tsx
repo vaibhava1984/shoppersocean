@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 type Period = "today" | "yesterday" | "last7Days" | "thisMonth";
-type GatewayTotals = { total: number; razorpay: number; paypal: number; count: number };
+type GatewayTotals = { total: number; razorpay: number; paypal: number; count: number; pendingConversion: number };
 type Props = Record<Period, GatewayTotals>;
 
 function money(value: number) {
@@ -45,7 +45,7 @@ export default function SalesSummary(props: Props) {
       <div className="mt-3">
         <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Total Sales Volume</p>
         <p className="mt-1 text-3xl font-bold tracking-tight text-slate-900">{money(totals.total)}</p>
-        <p className="mt-1 text-xs text-slate-500">{totals.count} completed {totals.count === 1 ? "sale" : "sales"}</p>
+        <p className="mt-1 text-xs text-slate-500">{totals.count} completed {totals.count === 1 ? "sale" : "sales"}{totals.pendingConversion ? ` · ${totals.pendingConversion} awaiting PayPal settlement conversion` : ""}</p>
       </div>
       <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 border-t border-slate-100 pt-3 text-xs text-slate-600">
         <span>Razorpay: <strong className="text-slate-800">{money(totals.razorpay)}</strong></span>
