@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { requireAdmin } from "@/utils/auth/requireUser";
+import { COUNTRIES } from "@/utils/countries";
 
 export async function POST() {
   try {
@@ -11,11 +12,14 @@ export async function POST() {
     // Keep the admin Users list consistent with sign-in eligibility:
     // pending registrations must not appear until their email is confirmed.
     const { results = [] } = await db.prepare(
-      "SELECT id,email,full_name,country,phone,address,role,email_confirmed,created_at,updated_at FROM users WHERE COALESCE(email_confirmed,0)=1 ORDER BY created_at DESC"
+      "SELECT id,email,full_name,country,city,phone,address,role,email_confirmed,created_at,updated_at FROM users WHERE COALESCE(email_confirmed,0)=1 ORDER BY created_at DESC"
     ).all<any>();
 
     return NextResponse.json({
-      users: results.map((u) => ({
+      users: results.map((u) => {
+        const countryName = COUNTRIES.find((country) => country.code === String(u.country || "").toUpperCase())?.name || u.country || "";
+        const territory = [u.city, u.address, countryName].filter((value, index, values) => Boolean(value) && values.indexOf(value) === index).join(", ");
+        return ({
         id: String(u.id),
         email: u.email || "",
         phone: u.phone || null,
@@ -25,11 +29,13 @@ export async function POST() {
         app_metadata: { userrole: String(u.role || "").toUpperCase() || undefined },
         user_metadata: {
           full_name: u.full_name || "",
-          country: u.country || "",
+          country: countryName,
           address: u.address || "",
+          territory: territory || "Not provided",
           phone: u.phone || "",
         },
-      }))
+      });
+      })
     }, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
     console.error("Admin users:", e);
