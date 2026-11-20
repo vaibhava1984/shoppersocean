@@ -4,6 +4,8 @@ export async function ensureRevenueSchema(db: any) {
     "ALTER TABLE payments ADD COLUMN gateway_name TEXT",
     "ALTER TABLE payments ADD COLUMN gateway_fee_checked_at TEXT",
     "ALTER TABLE payments ADD COLUMN sale_country TEXT",
+    "ALTER TABLE payments ADD COLUMN sale_region TEXT",
+    "ALTER TABLE payments ADD COLUMN sale_city TEXT",
   ];
   for (const statement of statements) {
     try { await db.prepare(statement).run(); }
