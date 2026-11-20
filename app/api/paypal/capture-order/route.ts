@@ -104,11 +104,13 @@ export async function POST(req: Request) {
 
     const now = new Date().toISOString();
     const captureId = String(capture.id);
-    const payerAddress = paypalOrder?.payer?.address || purchaseUnit?.shipping?.address || {};
-    const payerCountryCode = String(payerAddress?.country_code || "").toUpperCase();
+    const payerAddress = paypalOrder?.payer?.address || {};
+    const shippingAddress = purchaseUnit?.shipping?.address || {};
+    const requestCountry = String(req.headers.get("cf-ipcountry") || "").trim().toUpperCase();
+    const payerCountryCode = String(payerAddress?.country_code || shippingAddress?.country_code || requestCountry).toUpperCase();
     const validPayerCountry = /^[A-Z]{2}$/.test(payerCountryCode) ? payerCountryCode : null;
-    const saleRegion = String(payerAddress?.admin_area_1 || "").trim().slice(0,120);
-    const saleCity = String(payerAddress?.admin_area_2 || payerAddress?.city || "").trim().slice(0,120);
+    const saleRegion = String(payerAddress?.admin_area_1 || shippingAddress?.admin_area_1 || req.headers.get("cf-region") || "").trim().slice(0,120);
+    const saleCity = String(payerAddress?.admin_area_2 || payerAddress?.city || shippingAddress?.admin_area_2 || shippingAddress?.city || req.headers.get("cf-ipcity") || "").trim().slice(0,120);
     const existingPayment = await db.prepare(
       "SELECT id, order_id, user_id, book_id FROM payments WHERE paypal_order_id = ? OR paypal_capture_id = ? LIMIT 1"
     ).bind(paypalOrderId, captureId).first<Record<string, any>>();
