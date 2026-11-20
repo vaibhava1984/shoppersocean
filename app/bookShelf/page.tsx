@@ -1,6 +1,7 @@
 import Header from "@/components/Header"
 import { getCurrentUser } from "@/utils/auth/session"
 import { getD1 } from "@/utils/cloudflare/d1"
+import { ensureSubscriptionSchema } from "@/utils/subscriptions/schema"
 import Footer from "@/components/Footer"
 import BookCard from "@/components/BookCard"
 import CategoryFilterButtons from "@/components/CategoryFilterButtons"
@@ -48,9 +49,9 @@ export default async function BookShelfPage({
     let dailyUsed = 0
     const dailyTotal = 121
     if (user && !isCategoryBrowse) {
-        await db.prepare("CREATE TABLE IF NOT EXISTS user_subscriptions (user_id TEXT PRIMARY KEY, status TEXT NOT NULL DEFAULT 'inactive', started_at TEXT, expires_at TEXT, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)").run()
+        await ensureSubscriptionSchema(db)
         await db.prepare("CREATE TABLE IF NOT EXISTS game_subscriber_usage_by_type (user_id TEXT NOT NULL, game_type_id TEXT NOT NULL, usage_date TEXT NOT NULL, plays_used INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(user_id,game_type_id,usage_date))").run()
-        subscription = await db.prepare("SELECT status, started_at, expires_at, plan_name FROM user_subscriptions WHERE user_id=? LIMIT 1").bind(user.id).first<Record<string, any>>()
+        subscription = await db.prepare("SELECT status, started_at, expires_at, plan_name, payment_id FROM user_subscriptions WHERE user_id=? AND payment_id IS NOT NULL LIMIT 1").bind(user.id).first<Record<string, any>>()
         const today = new Date().toISOString().slice(0, 10)
         const usage = await db.prepare("SELECT game_type_id, plays_used FROM game_subscriber_usage_by_type WHERE user_id=? AND usage_date=?").bind(user.id, today).all<Record<string, any>>()
         dailyUsed = (usage.results ?? []).reduce((sum, row) => sum + Math.max(0, Number(row.plays_used ?? 0)), 0)
@@ -142,7 +143,7 @@ export default async function BookShelfPage({
             <Header />
             <section className="bg-white py-10 sm:py-16">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    {!isCategoryBrowse && user && (
+                    {!isCategoryBrowse && user && !isAdmin && (
                         <div className="mb-10 rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 via-white to-cyan-50 p-5 shadow-sm sm:p-7">
                             <h1 className="mb-5 text-2xl font-bold text-slate-900 sm:text-3xl">Entertainment</h1>
                             <div className="grid max-w-xl gap-4">

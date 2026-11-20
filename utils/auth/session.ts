@@ -11,8 +11,8 @@ export type AppUser = {
   firstName: string;
   username: string | null;
   phoneNumbers: { phoneNumber: string; verification: { status: "verified" } }[];
-  publicMetadata: { userrole?: string; isAuthor?: boolean; country?: string; address?: string };
-  unsafeMetadata: { country?: string; address?: string };
+  publicMetadata: { userrole?: string; isAuthor?: boolean; country?: string; city?: string; address?: string };
+  unsafeMetadata: { country?: string; city?: string; address?: string };
 };
 
 function normalizedRoles(value: unknown): string[] {
@@ -41,10 +41,12 @@ function rowToUser(r: any): AppUser {
       userrole: roles.includes("ADMIN") ? "ADMIN" : roles[0] || undefined,
       isAuthor: Boolean(r.isAuthor),
       country: r.country ?? undefined,
+      city: r.city ?? undefined,
       address: r.address ?? undefined,
     },
     unsafeMetadata: {
       country: r.country ?? undefined,
+      city: r.city ?? undefined,
       address: r.address ?? undefined,
     },
   };
@@ -70,6 +72,7 @@ export async function getCurrentUser(): Promise<AppUser | null> {
           u.email,
           u.full_name,
           u.country,
+          u.city,
           u.phone,
           u.role AS userrole,
           CASE WHEN EXISTS(

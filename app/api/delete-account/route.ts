@@ -30,7 +30,7 @@ async function tableExists(db: any, table: string) {
   return Boolean(row);
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
     const user = await getCurrentUser();
     if (!user) {
@@ -38,6 +38,16 @@ export async function POST() {
         { error: "You must be signed in to delete your account." },
         { status: 401 }
       );
+    }
+
+    const roles = String(user.publicMetadata?.userrole ?? "").split(",").map((role) => role.trim().toUpperCase());
+    if (roles.includes("ADMIN")) {
+      return NextResponse.json({ error: "Admin accounts cannot be deleted." }, { status: 403 });
+    }
+
+    const confirmation = await request.json().catch(() => ({}));
+    if (confirmation?.confirm !== true) {
+      return NextResponse.json({ error: "Please confirm that you want to delete your account." }, { status: 400 });
     }
 
     const email = user.emailAddresses?.[0]?.emailAddress?.trim();
@@ -65,35 +75,42 @@ export async function POST() {
       details: { userId: uid, email, name: accountName, deletedAt: new Date().toISOString() }
     });
 
-    // Delete dependent records first. This order matters because the live D1
-    // schema has foreign keys from auth_sessions -> profiles and from
-    // sessions/password_reset_tokens -> users.
-    const dependentTables = [
-      "payments",
-      "orders",
-      "testimonials",
-      "user_book_reviews",
-      "user_roles",
-      "authors",
-      "auth_sessions",
-      "sessions",
-      "password_reset_tokens",
-      "authors_interest_submission",
-    ];
+    // Remove published author works and their private file records before
+    // deleting author rows (books.author_id and private_book_files.book_id are
+    // enforced foreign keys in the live database).
+    if (await tableExists(db, "private_book_files") && await tableExists(db, "books") && await tableExists(db, "authors")) {
+      await db.prepare("DELETE FROM private_book_files WHERE book_id IN (SELECT id FROM books WHERE author_id IN (SELECT id FROM authors WHERE user_id=?))").bind(uid).run();
+    }
+    if (await tableExists(db, "books") && await tableExists(db, "authors")) {
+      await db.prepare("DELETE FROM books WHERE author_id IN (SELECT id FROM authors WHERE user_id=?)").bind(uid).run();
+    }
 
-    for (const table of dependentTables) {
-      if (await tableExists(db, table) && await tableHasUserId(db, table)) {
+    // This legacy author-interest form is email-linked rather than user_id-linked.
+    if (await tableExists(db, "authors_interest_submission")) {
+      await db.prepare("DELETE FROM authors_interest_submission WHERE lower(email)=lower(?)").bind(email).run();
+    }
+
+    // Discover every account-owned table so subscriptions, payment records,
+    // purchases, author submissions, sessions and game quotas are all removed.
+    const { results: tableRows = [] } = await db.prepare(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+    ).all<any>();
+    for (const row of tableRows) {
+      const table = String(row.name || "");
+      if (!/^[A-Za-z0-9_]+$/.test(table) || table === "users" || table === "admin_notifications") continue;
+      const { results: columns = [] } = await db.prepare(`PRAGMA table_info("${table}")`).all<any>();
+      if (columns.some((column: any) => column.name === "user_id")) {
         await db.prepare(`DELETE FROM "${table}" WHERE user_id=?`).bind(uid).run();
       }
     }
 
-    // profiles is a separate legacy account-data table and auth_sessions
-    // references it, so it is removed only after auth_sessions above.
+    // auth_sessions references profiles, so profiles is deleted after the
+    // user_id-linked auth_sessions rows have been removed.
     if (await tableExists(db, "profiles")) {
       await db.prepare("DELETE FROM profiles WHERE id=?").bind(uid).run();
     }
 
-    // The current authentication identity is stored in users.
+    // Removing the user row also removes the account from the admin Users list.
     await db.prepare("DELETE FROM users WHERE id=?").bind(uid).run();
 
     // The account is deleted independently of email delivery.

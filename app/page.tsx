@@ -58,6 +58,7 @@ export default async function LandingPage() {
           isAdmin={isAdmin}
           isAuthor={Boolean(user?.publicMetadata?.isAuthor) && !isAdmin}
           isSubscribed={isSubscribed}
+          showDeleteAccount={Boolean(user) && !isAdmin}
           buttonText="Explore Flipbooks"
           buttonLink="/bookShelf"
           imageSrc="/1.jpg?rev=2"

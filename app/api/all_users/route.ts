@@ -12,13 +12,13 @@ export async function POST() {
     // Keep the admin Users list consistent with sign-in eligibility:
     // pending registrations must not appear until their email is confirmed.
     const { results = [] } = await db.prepare(
-      "SELECT id,email,full_name,country,city,phone,address,role,email_confirmed,created_at,updated_at FROM users WHERE COALESCE(email_confirmed,0)=1 ORDER BY created_at DESC"
+      "SELECT u.id,u.email,u.full_name,u.country,COALESCE(NULLIF(TRIM(u.city),''),(SELECT NULLIF(TRIM(aa.city),'') FROM author_applications aa WHERE aa.user_id=u.id ORDER BY aa.created_at DESC LIMIT 1)) AS city,u.phone,COALESCE(NULLIF(TRIM(u.address),''),(SELECT NULLIF(TRIM(p.address),'') FROM profiles p WHERE p.id=u.id LIMIT 1)) AS address,u.role,u.email_confirmed,u.created_at,u.updated_at FROM users u WHERE COALESCE(u.email_confirmed,0)=1 ORDER BY u.created_at DESC"
     ).all<any>();
 
     return NextResponse.json({
       users: results.map((u) => {
         const countryName = COUNTRIES.find((country) => country.code === String(u.country || "").toUpperCase())?.name || u.country || "";
-        const territory = [u.city, u.address, countryName].filter((value, index, values) => Boolean(value) && values.indexOf(value) === index).join(", ");
+        const territory = [u.city || "City not provided", u.address, countryName].filter((value, index, values) => Boolean(value) && values.indexOf(value) === index).join(", ");
         return ({
         id: String(u.id),
         email: u.email || "",
@@ -30,6 +30,7 @@ export async function POST() {
         user_metadata: {
           full_name: u.full_name || "",
           country: countryName,
+          city: u.city || "",
           address: u.address || "",
           territory: territory || "Not provided",
           phone: u.phone || "",
