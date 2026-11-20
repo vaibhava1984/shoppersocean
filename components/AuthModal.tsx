@@ -26,9 +26,9 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
   const [password, setPassword] = useState("");
   const [country, setCountry] = useState("")
   const [gender, setGender] = useState("")
-  const [city, setCity] = useState("");
   const [countryQuery, setCountryQuery] = useState("");
   const [countryOpen, setCountryOpen] = useState(false);
+  const countrySectionRef = useRef<HTMLDivElement>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [notice, setNotice] = useState("");
@@ -50,6 +50,15 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
     };
   }, [open, initialMode, onClose]);
 
+  useEffect(() => {
+    if (!open || !countryOpen) return;
+    const handleOutsideClick = (event: PointerEvent) => {
+      if (event.target instanceof Node && !countrySectionRef.current?.contains(event.target)) setCountryOpen(false);
+    };
+    document.addEventListener("pointerdown", handleOutsideClick, true);
+    return () => document.removeEventListener("pointerdown", handleOutsideClick, true);
+  }, [open, countryOpen]);
+
   if (!open) return null;
 
   const validate = () => {
@@ -62,7 +71,6 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
       if (!fullName.trim()) next.fullName = "Full name is required";
       if (!country) next.country = "Country is required"
       if (!gender) next.gender = "Gender is required"
-      if (!city.trim()) next.city = "City is required";
     }
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -78,7 +86,6 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
     setCountry("");
     setCountryQuery("");
     setGender("");
-    setCity("");
     setCountryOpen(false);
     setShowPassword(false);
   };
@@ -112,7 +119,6 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
           full_name: fullName.trim(),
           country,
           gender,
-          city: city.trim(),
         });
         if (error) {
           setErrors({
@@ -192,7 +198,7 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
                   <input id="auth-full-name" autoComplete="name" value={fullName} onChange={(event) => { setFullName(event.target.value); setErrors((prev) => ({ ...prev, fullName: "", general: "" })); }} placeholder="Your full name" className={`w-full rounded-lg border px-3.5 py-2 text-base text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:py-2.5 ${errors.fullName ? "border-red-400" : "border-slate-200"}`} />
                   {errors.fullName && <p className="mt-1 text-xs text-red-600">{errors.fullName}</p>}
                 </div>
-                <div className="relative">
+                <div className="relative" ref={countrySectionRef}>
                   <label htmlFor="auth-country" className="mb-1 block text-sm font-medium text-slate-700">Country <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <input
@@ -224,15 +230,10 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
                 </div>
                 <div>
                   <label htmlFor="auth-gender" className="mb-1 block text-sm font-medium text-slate-700">Gender <span className="text-red-500">*</span></label>
-                  <select id="auth-gender" value={gender} onChange={event => { setGender(event.target.value); setErrors(prev => ({...prev, gender: "", general: ""})); }} className={`w-full rounded-lg border px-3.5 py-2.5 text-base text-slate-900 outline-none ${errors.gender ? "border-red-400" : "border-slate-200"}`}>
+                  <select id="auth-gender" value={gender} onChange={event => { setGender(event.target.value); setErrors(prev => ({...prev, gender: "", general: ""})); }} className={`w-full appearance-none rounded-lg border bg-white px-3.5 py-2.5 text-base text-slate-900 shadow-none outline-none ring-0 focus:shadow-none focus:ring-0 ${errors.gender ? "border-red-400" : "border-slate-200"}`}>
                     <option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option><option value="Prefer not to say">Prefer not to say</option>
                   </select>
                   {errors.gender && <p className="mt-1 text-xs text-red-600">{errors.gender}</p>}
-                </div>
-                <div>
-                  <label htmlFor="auth-city" className="mb-1 block text-sm font-medium text-slate-700">City <span className="text-red-500">*</span></label>
-                  <input id="auth-city" autoComplete="address-level2" value={city} onChange={event => { setCity(event.target.value); setErrors(prev => ({...prev, city: "", general: ""})); }} placeholder="Your city" className={`w-full rounded-lg border px-3.5 py-2.5 text-base text-slate-900 outline-none ${errors.city ? "border-red-400" : "border-slate-200"}`} />
-                  {errors.city && <p className="mt-1 text-xs text-red-600">{errors.city}</p>}
                 </div>
               </>
             )}
