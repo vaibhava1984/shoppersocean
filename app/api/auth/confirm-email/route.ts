@@ -22,6 +22,12 @@ export async function GET(req: Request) {
     const db = (env as any).DB as D1Database;
     const jwtSecret = (env as any).JWT_SECRET as string;
     const resendApiKey = (env as any).RESEND_API_KEY as string | undefined;
+    for (const column of ["registration_city TEXT", "registration_region TEXT", "registration_country TEXT"]) {
+      try { await db.prepare(`ALTER TABLE users ADD COLUMN ${column}`).run(); } catch (error) {
+        const message = String(error).toLowerCase();
+        if (!message.includes("duplicate column") && !message.includes("already exists")) throw error;
+      }
+    }
     const payload = await verifyJwt(token, jwtSecret);
 
     if (!payload || payload.purpose !== 'email_confirmation' || typeof payload.sub !== 'string' || typeof payload.email !== 'string') {
