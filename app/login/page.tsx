@@ -26,7 +26,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [showPassword, setShowPassword] = useState(false)
   const [country, setCountry] = useState("")
   const [gender, setGender] = useState("")
-  const [city, setCity] = useState("")
   const [countryQuery, setCountryQuery] = useState("")
   const [countryOpen, setCountryOpen] = useState(false)
   const [showAllCountries, setShowAllCountries] = useState(false)
@@ -34,16 +33,15 @@ export default function Login({ searchParams }: { searchParams: any }) {
   const [dialogState, setDialogState] = useState({ isOpen: false, title: "", description: "" })
   const showDialog = (title: string, description: string) => setDialogState({ isOpen: true, title, description })
 
+  const countrySectionRef = React.useRef<HTMLDivElement>(null)
+
   React.useEffect(() => {
     if (!countryOpen) return
-    const handleOutsideClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      if (!target.closest("#country") && !target.closest("[data-country-dropdown]") && !target.closest("[data-country-toggle]")) {
-        setCountryOpen(false)
-      }
+    const handleOutsideClick = (event: PointerEvent) => {
+      if (event.target instanceof Node && !countrySectionRef.current?.contains(event.target)) setCountryOpen(false)
     }
-    document.addEventListener("mousedown", handleOutsideClick)
-    return () => document.removeEventListener("mousedown", handleOutsideClick)
+    document.addEventListener("pointerdown", handleOutsideClick, true)
+    return () => document.removeEventListener("pointerdown", handleOutsideClick, true)
   }, [countryOpen])
 
   const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
@@ -61,7 +59,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
       if (!username.trim()) next.username = "Full name is required"
       if (!country) next.country = "Country is required"
       if (!gender) next.gender = "Gender is required"
-      if (!city.trim()) next.city = "City is required"
     }
     setErrors(next)
     return Object.keys(next).length === 0
@@ -116,7 +113,6 @@ export default function Login({ searchParams }: { searchParams: any }) {
         full_name: username.trim(),
         country,
         gender,
-        city: city.trim(),
       })
 
       setIsSubmitting(false)
@@ -184,7 +180,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
                 {errors.username && <p className="mt-1 text-sm text-red-500">{errors.username}</p>}
               </div>
 
-              <div className="relative">
+              <div className="relative" ref={countrySectionRef}>
                 <label htmlFor="country">{field("Country", true)}</label>
                 <div className="relative mt-1">
                   <input
@@ -236,15 +232,10 @@ export default function Login({ searchParams }: { searchParams: any }) {
               </div>
               <div>
                 <label htmlFor="gender">{field("Gender", true)}</label>
-                <select id="gender" value={gender} onChange={e => { setGender(e.target.value); setErrors(p => ({...p, gender: ""})) }} className={`mt-1 w-full rounded-md border ${errors.gender ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`}>
+                <select id="gender" value={gender} onChange={e => { setGender(e.target.value); setErrors(p => ({...p, gender: ""})) }} className={`mt-1 h-[42px] w-full appearance-none rounded-md border ${errors.gender ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900 shadow-none outline-none ring-0 focus:border-gray-300 focus:outline-none focus:ring-0 focus:shadow-none`}>
                   <option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option><option value="Prefer not to say">Prefer not to say</option>
                 </select>
                 {errors.gender && <p className="mt-1 text-sm text-red-500">{errors.gender}</p>}
-              </div>
-              <div>
-                <label htmlFor="city">{field("City", true)}</label>
-                <input id="city" value={city} onChange={e => { setCity(e.target.value); setErrors(p => ({...p, city: ""})) }} autoComplete="address-level2" placeholder="Your city" className={`mt-1 w-full rounded-md border ${errors.city ? "border-red-500" : "border-gray-300"} px-4 py-2 bg-white text-gray-900`} />
-                {errors.city && <p className="mt-1 text-sm text-red-500">{errors.city}</p>}
               </div>
             </>
           )}
