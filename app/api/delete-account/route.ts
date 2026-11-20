@@ -113,34 +113,14 @@ export async function POST(request: Request) {
       if (columns.some((column: any) => column.name === "user_id")) accountTables.push(table);
     }
 
-    const accountTableSet = new Set(accountTables);
-    const childrenByParent = new Map<string, string[]>();
+    // Do not use PRAGMA foreign_key_list here: Cloudflare D1 rejects that
+    // introspection pragma at runtime (SQLITE_AUTH), which previously aborted
+    // every deletion before any account rows could be removed. The remaining
+    // account-owned tables are already returned alphabetically. Their known FK
+    // dependencies are handled explicitly above/below: auth_sessions is removed
+    // here before profiles, and sessions/password_reset_tokens are removed here
+    // before users. Books/private files are removed explicitly before authors.
     for (const table of accountTables) {
-      const { results: foreignKeys = [] } = await db.prepare(`PRAGMA foreign_key_list("${table}")`).all<any>();
-      for (const foreignKey of foreignKeys) {
-        const parent = String(foreignKey.table || "");
-        if (accountTableSet.has(parent)) {
-          const children = childrenByParent.get(parent) || [];
-          children.push(table);
-          childrenByParent.set(parent, children);
-        }
-      }
-    }
-
-    const orderedTables: string[] = [];
-    const visiting = new Set<string>();
-    const visited = new Set<string>();
-    function visitAccountTable(table: string) {
-      if (visited.has(table) || visiting.has(table)) return;
-      visiting.add(table);
-      for (const child of childrenByParent.get(table) || []) visitAccountTable(child);
-      visiting.delete(table);
-      visited.add(table);
-      orderedTables.push(table);
-    }
-    for (const table of accountTables) visitAccountTable(table);
-
-    for (const table of orderedTables) {
       await db.prepare(`DELETE FROM "${table}" WHERE user_id=?`).bind(uid).run();
     }
 
