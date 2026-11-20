@@ -10,6 +10,7 @@ import Footer from "@/components/Footer"
 import HeroSection from "@/components/HeroSection";
 import HomeActivityZones from "@/components/HomeActivityZones";
 import { getD1 } from "@/utils/cloudflare/d1";
+import { ensureSubscriptionSchema } from "@/utils/subscriptions/schema";
 
 export const dynamic = 'force-dynamic';
 
@@ -40,8 +41,9 @@ export default async function LandingPage() {
     try {
       const db = getD1();
       if (db) {
-        const subscription = await db.prepare("SELECT status, expires_at FROM user_subscriptions WHERE user_id = ? LIMIT 1").bind(user.id).first<any>();
-        isSubscribed = String(subscription?.status || "").toLowerCase() === "active" && Boolean(subscription?.expires_at) && new Date(String(subscription.expires_at)).getTime() > Date.now();
+        await ensureSubscriptionSchema(db);
+        const subscription = await db.prepare("SELECT status, expires_at, payment_id FROM user_subscriptions WHERE user_id = ? LIMIT 1").bind(user.id).first<any>();
+        isSubscribed = Boolean(subscription?.payment_id) && String(subscription?.status || "").toLowerCase() === "active" && Boolean(subscription?.expires_at) && new Date(String(subscription.expires_at)).getTime() > Date.now();
       }
     } catch (error) { console.error("Could not check homepage subscription status:", error); }
   }
