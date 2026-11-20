@@ -230,7 +230,7 @@ export default function AuthModal({ open, initialMode, onClose, onSuccess }: Aut
                 </div>
                 <div>
                   <label htmlFor="auth-gender" className="mb-1 block text-sm font-medium text-slate-700">Gender <span className="text-red-500">*</span></label>
-                  <select id="auth-gender" value={gender} onChange={event => { setGender(event.target.value); setErrors(prev => ({...prev, gender: "", general: ""})); }} style={{ color: gender ? "#0f172a" : "#94a3b8" }} className={`w-full appearance-none rounded-lg border bg-white px-3.5 py-2.5 text-base shadow-none outline-none ring-0 focus:shadow-none focus:ring-0 ${errors.gender ? "border-red-400" : "border-slate-200"}`}>
+                  <select id="auth-gender" required value={gender} onChange={event => { setGender(event.target.value); setErrors(prev => ({...prev, gender: "", general: ""})); }} style={{ color: gender ? "#0f172a" : "#94a3b8", WebkitTextFillColor: gender ? "#0f172a" : "#94a3b8" }} className={`w-full appearance-none rounded-lg border bg-white px-3.5 py-2.5 text-base outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${errors.gender ? "border-red-400" : "border-slate-200"}`}>
                     <option value="" disabled style={{ color: "#94a3b8" }}>Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option><option value="Prefer not to say">Prefer not to say</option>
                   </select>
                   {errors.gender && <p className="mt-1 text-xs text-red-600">{errors.gender}</p>}
