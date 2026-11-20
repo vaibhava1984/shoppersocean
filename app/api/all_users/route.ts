@@ -22,7 +22,7 @@ export async function POST() {
     return NextResponse.json({
       users: results.map((u) => {
         const registrationCountry = String(u.registration_country || "").toUpperCase();
-        const countryName = COUNTRIES.find((country) => country.code === registrationCountry)?.name || registrationCountry;
+        const countryName = COUNTRIES.find((country) => country.code === registrationCountry)?.name || (registrationCountry && registrationCountry !== "XX" && registrationCountry !== "T1" ? registrationCountry : "");
         const registrationCity = String(u.registration_city || "").trim();
         const registrationRegion = String(u.registration_region || "").trim();
         const territory = [registrationCity, registrationRegion, countryName].filter(Boolean).join(", ") || "Not captured at registration";
