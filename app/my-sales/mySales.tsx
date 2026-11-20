@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { ensureRevenueSchema } from "@/utils/revenue";
+import { COUNTRIES } from "@/utils/countries";
 import { fetchExchangeRates } from "@/utils/currency";
-import { getPaypalAccessToken, paypalApiUrl } from "@/utils/paypal";
+import { ensurePaypalSchema, getPaypalAccessToken, paypalApiUrl } from "@/utils/paypal";
+import SalesSummary from "./SalesSummary";
 import RevenueCalculator from "./RevenueCalculator";
 
 type Props = { authorId: string | null; isAdmin: boolean; fromDate?: string; toDate?: string };
 
 function saleTimestamp(sale: any) {
-  const value = sale.updated_at || sale.created_at;
+  const value = sale.payment_created_at || sale.updated_at || sale.created_at;
   const timestamp = value ? new Date(value).getTime() : NaN;
   return Number.isFinite(timestamp) ? timestamp : 0;
 }
@@ -35,6 +37,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
   const db = getD1();
   if (!db) throw new Error("Cloudflare D1 is not available");
   await ensureRevenueSchema(db);
+  await ensurePaypalSchema(db);
 
   const books = isAdmin
     ? ((await db.prepare("SELECT id,title,author_id FROM books WHERE COALESCE(is_deleted,0)=0 ORDER BY title ASC").all<{ id: string; title: string; author_id: string }>()).results || [])
@@ -48,11 +51,12 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
   if (ids.length) {
     const placeholders = ids.map(() => "?").join(",");
     const sql =
-      "SELECT o.id,o.book_id,o.created_at,o.status,b.title,p.amount,p.currency,p.updated_at " +
+      "SELECT o.id,o.book_id,o.created_at,o.status,b.title,p.id AS payment_id,p.amount,p.currency,p.created_at AS payment_created_at,p.updated_at,p.paypal_capture_id,p.paypal_order_id,p.paypal_gross_amount_inr,p.paypal_payer_country,p.payment_method,p.gateway_name,u.registration_country " +
       "FROM orders o JOIN books b ON b.id=o.book_id " +
-      "LEFT JOIN payments p ON p.order_id=o.id " +
+      "JOIN payments p ON p.order_id=o.id AND p.status='completed' " +
+      "LEFT JOIN users u ON u.id=o.user_id " +
       "WHERE o.book_id IN (" + placeholders + ") AND o.status='completed' " +
-      "ORDER BY COALESCE(p.updated_at,o.created_at) DESC";
+      "ORDER BY COALESCE(p.created_at,p.updated_at,o.created_at) DESC";
     sales = (await db.prepare(sql).bind(...ids).all<any>()).results || [];
   }
 
@@ -68,7 +72,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     }
   }
   const revenueRows = ids.length ? ((await db.prepare(
-    "SELECT p.id AS payment_id,p.amount,p.currency,p.gateway_fee_inr,p.gateway_fee_amount,p.gateway_fee_currency,p.gateway_fee_checked_at,p.razorpay_payment_id,p.paypal_capture_id,p.created_at,p.updated_at,o.created_at AS order_created_at,b.author_id AS book_author_id " +
+    "SELECT p.id AS payment_id,p.amount,p.currency,p.gateway_fee_inr,p.gateway_fee_amount,p.gateway_fee_currency,p.gateway_fee_checked_at,p.razorpay_payment_id,p.paypal_capture_id,p.paypal_order_id,p.paypal_gross_amount_inr,p.paypal_receivable_amount,p.paypal_receivable_currency,p.paypal_exchange_rate,p.paypal_exchange_source_currency,p.paypal_exchange_target_currency,p.paypal_payer_country,p.created_at,p.updated_at,o.created_at AS order_created_at,b.author_id AS book_author_id " +
     "FROM payments p JOIN orders o ON o.id=p.order_id JOIN books b ON b.id=p.book_id WHERE p.book_id IN (" + ids.map(() => "?").join(",") + ") AND p.status='completed' AND o.status='completed' ORDER BY COALESCE(p.updated_at,p.created_at,o.created_at) DESC"
   ).bind(...ids).all<any>()).results || []) : [];
 
@@ -86,50 +90,117 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
   };
   const staleBefore = Date.now() - 24 * 60 * 60 * 1000;
   let paypalToken = "";
+  const salesByPaymentId = new Map(sales.map((sale) => [String(sale.payment_id || ""), sale]));
   for (const row of revenueRows) {
     const checked = row.gateway_fee_checked_at ? new Date(row.gateway_fee_checked_at).getTime() : 0;
-    if (row.gateway_fee_inr != null && Number.isFinite(Number(row.gateway_fee_inr))) continue;
-    if (row.gateway_fee_amount != null && row.gateway_fee_currency) {
-      const savedFee = toINR(Number(row.gateway_fee_amount), String(row.gateway_fee_currency));
-      if (savedFee != null) {
-        await db.prepare("UPDATE payments SET gateway_fee_inr=? WHERE id=?").bind(savedFee,row.payment_id).run();
-        row.gateway_fee_inr = savedFee;
-        continue;
-      }
-    }
-    if (checked && checked > staleBefore) continue;
     try {
-      if (row.razorpay_payment_id && keyId && keySecret) {
-        const response = await fetch("https://api.razorpay.com/v1/payments/" + encodeURIComponent(String(row.razorpay_payment_id)), { headers: { Authorization: "Basic " + btoa(keyId + ":" + keySecret) }, cache: "no-store" });
+      if (row.paypal_capture_id) {
+        const needsSettlement = row.paypal_gross_amount_inr == null || row.gateway_fee_inr == null;
+        const needsCountry = !row.paypal_payer_country && Boolean(row.paypal_order_id);
+        if ((needsSettlement && (!checked || checked <= staleBefore)) || needsCountry) {
+          if (!paypalToken) paypalToken = await getPaypalAccessToken();
+          if (needsSettlement && (!checked || checked <= staleBefore)) {
+            const response = await fetch(paypalApiUrl("/v2/payments/captures/" + encodeURIComponent(String(row.paypal_capture_id))), {
+              headers: { Authorization: "Bearer " + paypalToken }, cache: "no-store"
+            });
+            const capture = await response.json() as Record<string, any>;
+            const breakdown = capture?.seller_receivable_breakdown || {};
+            const fee = breakdown.paypal_fee || null;
+            const feeInReceivable = breakdown.paypal_fee_in_receivable_currency || null;
+            const exchange = breakdown.exchange_rate || {};
+            const receivable = breakdown.receivable_amount || null;
+            const paymentCurrency = String(row.currency || "").toUpperCase();
+            const feeCurrency = String(fee?.currency_code || "").toUpperCase();
+            const feeAmount = Number(fee?.value);
+            const feeReceivableCurrency = String(feeInReceivable?.currency_code || "").toUpperCase();
+            const feeReceivableAmount = Number(feeInReceivable?.value);
+            const sourceCurrency = String(exchange?.source_currency || "").toUpperCase();
+            const targetCurrency = String(exchange?.target_currency || "").toUpperCase();
+            const exchangeRate = Number(exchange?.value);
+            let grossInr: number | null = null;
+            if (sourceCurrency === paymentCurrency && targetCurrency === "INR" && Number.isFinite(exchangeRate) && exchangeRate > 0) {
+              grossInr = Number(row.amount) * exchangeRate;
+            } else if (sourceCurrency === "INR" && targetCurrency === paymentCurrency && Number.isFinite(exchangeRate) && exchangeRate > 0) {
+              grossInr = Number(row.amount) / exchangeRate;
+            }
+            let feeInr: number | null = null;
+            if (feeReceivableCurrency === "INR" && Number.isFinite(feeReceivableAmount) && feeReceivableAmount >= 0) {
+              feeInr = feeReceivableAmount;
+            } else if (feeCurrency === "INR" && Number.isFinite(feeAmount) && feeAmount >= 0) {
+              feeInr = feeAmount;
+            } else if (feeCurrency === paymentCurrency && Number.isFinite(feeAmount) && feeAmount >= 0) {
+              if (sourceCurrency === paymentCurrency && targetCurrency === "INR" && exchangeRate > 0) feeInr = feeAmount * exchangeRate;
+              else if (paymentCurrency === "INR") feeInr = feeAmount;
+            }
+            const receivableCurrency = String(receivable?.currency_code || "").toUpperCase();
+            const receivableAmount = Number(receivable?.value);
+            if (grossInr == null && receivableCurrency === "INR" && Number.isFinite(receivableAmount) && feeInr != null) {
+              grossInr = receivableAmount + feeInr;
+            }
+            if (response.ok && capture?.id === row.paypal_capture_id) {
+              const checkedAt = new Date().toISOString();
+              await db.prepare(
+                "UPDATE payments SET gateway_fee_amount=?,gateway_fee_currency=?,gateway_fee_inr=COALESCE(?,gateway_fee_inr),gateway_name='PayPal',gateway_fee_checked_at=?,paypal_gross_amount_inr=COALESCE(?,paypal_gross_amount_inr),paypal_receivable_amount=?,paypal_receivable_currency=?,paypal_exchange_rate=?,paypal_exchange_source_currency=?,paypal_exchange_target_currency=? WHERE id=?"
+              ).bind(
+                fee && feeCurrency ? feeAmount : null,
+                feeCurrency || null,
+                feeInr,
+                checkedAt,
+                grossInr,
+                receivable && Number.isFinite(receivableAmount) ? receivableAmount : null,
+                receivableCurrency || null,
+                Number.isFinite(exchangeRate) && exchangeRate > 0 ? exchangeRate : null,
+                sourceCurrency || null,
+                targetCurrency || null,
+                row.payment_id
+              ).run();
+              if (grossInr != null) row.paypal_gross_amount_inr = grossInr;
+              if (feeInr != null) row.gateway_fee_inr = feeInr;
+              row.gateway_fee_checked_at = checkedAt;
+            }
+          }
+          if (needsCountry && row.paypal_order_id) {
+            const orderResponse = await fetch(paypalApiUrl("/v2/checkout/orders/" + encodeURIComponent(String(row.paypal_order_id))), {
+              headers: { Authorization: "Bearer " + paypalToken }, cache: "no-store"
+            });
+            const order = await orderResponse.json() as Record<string, any>;
+            const countryCode = String(order?.payer?.address?.country_code || "").toUpperCase();
+            if (orderResponse.ok && order?.id === row.paypal_order_id && /^[A-Z]{2}$/.test(countryCode)) {
+              await db.prepare("UPDATE payments SET paypal_payer_country=? WHERE id=?").bind(countryCode,row.payment_id).run();
+              row.paypal_payer_country = countryCode;
+            }
+          }
+        }
+        const sale = salesByPaymentId.get(String(row.payment_id));
+        if (sale) {
+          sale.paypal_gross_amount_inr = row.paypal_gross_amount_inr;
+          sale.paypal_payer_country = row.paypal_payer_country;
+        }
+      } else if (row.razorpay_payment_id && keyId && keySecret &&
+                 (row.gateway_fee_inr == null || !Number.isFinite(Number(row.gateway_fee_inr))) &&
+                 (!checked || checked <= staleBefore)) {
+        const response = await fetch("https://api.razorpay.com/v1/payments/" + encodeURIComponent(String(row.razorpay_payment_id)), {
+          headers: { Authorization: "Basic " + btoa(keyId + ":" + keySecret) }, cache: "no-store"
+        });
         const payment = await response.json() as Record<string, any>;
-        if (response.ok && payment?.id === row.razorpay_payment_id && String(payment.currency || "INR").toUpperCase() === "INR" && payment.fee != null && Number.isFinite(Number(payment.fee)) && Number.isFinite(Number(payment.tax || 0))) {
+        if (response.ok && payment?.id === row.razorpay_payment_id &&
+            String(payment.currency || "INR").toUpperCase() === "INR" &&
+            payment.fee != null && Number.isFinite(Number(payment.fee)) &&
+            Number.isFinite(Number(payment.tax || 0))) {
           const feeAmount = (Number(payment.fee) + Number(payment.tax || 0)) / 100;
           const checkedAt = new Date().toISOString();
-          await db.prepare("UPDATE payments SET gateway_fee_amount=?,gateway_fee_currency='INR',gateway_fee_inr=?,gateway_name='Razorpay',gateway_fee_checked_at=? WHERE id=?").bind(feeAmount,feeAmount,checkedAt,row.payment_id).run();
+          await db.prepare("UPDATE payments SET gateway_fee_amount=?,gateway_fee_currency='INR',gateway_fee_inr=?,gateway_name='Razorpay',gateway_fee_checked_at=? WHERE id=?")
+            .bind(feeAmount,feeAmount,checkedAt,row.payment_id).run();
           row.gateway_fee_amount=feeAmount; row.gateway_fee_currency="INR"; row.gateway_fee_inr=feeAmount; row.gateway_fee_checked_at=checkedAt;
         }
-      } else if (row.paypal_capture_id) {
-        if (!paypalToken) paypalToken = await getPaypalAccessToken();
-        const response = await fetch(paypalApiUrl("/v2/payments/captures/" + encodeURIComponent(String(row.paypal_capture_id))), { headers: { Authorization: "Bearer " + paypalToken }, cache: "no-store" });
-        const capture = await response.json() as Record<string, any>;
-        const fee = capture?.seller_receivable_breakdown?.paypal_fee;
-        const feeCurrency = String(fee?.currency_code || "").toUpperCase();
-        const feeAmount = Number(fee?.value);
-        const paymentCurrency = String(row.currency || "").toUpperCase();
-        const feeInr = feeCurrency === paymentCurrency ? toINR(feeAmount, feeCurrency) : null;
-        if (response.ok && capture?.id === row.paypal_capture_id && feeCurrency && feeCurrency === paymentCurrency && Number.isFinite(feeAmount) && feeAmount >= 0 && feeInr != null) {
-          const checkedAt = new Date().toISOString();
-          await db.prepare("UPDATE payments SET gateway_fee_amount=?,gateway_fee_currency=?,gateway_fee_inr=?,gateway_name='PayPal',gateway_fee_checked_at=? WHERE id=?").bind(feeAmount,feeCurrency,feeInr,checkedAt,row.payment_id).run();
-          row.gateway_fee_amount=feeAmount; row.gateway_fee_currency=feeCurrency; row.gateway_fee_inr=feeInr; row.gateway_fee_checked_at=checkedAt;
-        }
       }
-    } catch (error) { console.error("Could not reconcile gateway fee",row.payment_id,error); }
+    } catch (error) {
+      console.error("Could not reconcile payment settlement details",row.payment_id,error);
+    }
   }
 
   const monthlyMap = new Map<string, { revenue: number; complete: boolean }>();
   const yearlyMap = new Map<string, { revenue: number; complete: boolean }>();
-  const authorMonthlyMap = new Map<string, { revenue: number; complete: boolean }>();
-  const authorYearlyMap = new Map<string, { revenue: number; complete: boolean }>();
   const getPeriods = (date: Date) => {
     const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit" }).formatToParts(date);
     const year = parts.find((part) => part.type === "year")?.value || String(date.getUTCFullYear());
@@ -137,21 +208,20 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     return { month: year + "-" + month, year };
   };
   for (const row of revenueRows) {
-    const date = new Date(row.updated_at || row.created_at || row.order_created_at || "");
+    const date = new Date(row.created_at || row.updated_at || row.order_created_at || "");
     if (!Number.isFinite(date.getTime())) continue;
     const period = getPeriods(date);
-    const gross = toINR(Number(row.amount), String(row.currency || "INR"));
+    const gross = row.paypal_capture_id
+      ? (row.paypal_gross_amount_inr == null ? null : Number(row.paypal_gross_amount_inr))
+      : toINR(Number(row.amount), String(row.currency || "INR"));
     const fee = row.gateway_fee_inr == null ? NaN : Number(row.gateway_fee_inr);
     const valid = gross != null && gross >= 0 && Number.isFinite(fee) && fee >= 0;
     const net = valid ? Math.max(0, gross - fee) : 0;
     const isOwnBook = Boolean(isAdmin && authorId && String(row.book_author_id || "") === authorId);
     const earned = net * (isAdmin ? (isOwnBook ? 1 : 0.25) : 0.75);
-    const authorPreview = isAdmin ? (isOwnBook ? 0 : net * 0.75) : net * 0.75;
     for (const [map, key, amount] of [
       [monthlyMap, period.month, earned],
       [yearlyMap, period.year, earned],
-      [authorMonthlyMap, period.month, authorPreview],
-      [authorYearlyMap, period.year, authorPreview],
     ] as const) {
       const total = map.get(key) || { revenue: 0, complete: true };
       if (valid) total.revenue += amount; else total.complete = false;
@@ -166,54 +236,77 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
   for (let month = 1; month <= currentMonth; month++) {
     const period = `${currentYear}-${String(month).padStart(2, "0")}`;
     if (!monthlyMap.has(period)) monthlyMap.set(period, { revenue: 0, complete: true });
-    if (!authorMonthlyMap.has(period)) authorMonthlyMap.set(period, { revenue: 0, complete: true });
   }
   // Always offer 2025 and the current year, plus any earlier years with recorded sales.
   for (let year = Math.min(2025, currentYear); year <= currentYear; year++) {
     const period = String(year);
     if (!yearlyMap.has(period)) yearlyMap.set(period, { revenue: 0, complete: true });
-    if (!authorYearlyMap.has(period)) authorYearlyMap.set(period, { revenue: 0, complete: true });
   }
   const monthlyRevenue = Array.from(monthlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
   const yearlyRevenue = Array.from(yearlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
-  const authorMonthlyRevenue = Array.from(authorMonthlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
-  const authorYearlyRevenue = Array.from(authorYearlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
 
   const now = new Date();
-  const todayKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-  const todayCount = sales.filter((sale) => {
+  const istParts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+  const todayKey = `${istParts.find((part) => part.type === "year")?.value}-${istParts.find((part) => part.type === "month")?.value}-${istParts.find((part) => part.type === "day")?.value}`;
+  const shiftDateKey = (key: string, offset: number) => {
+    const [year, month, day] = key.split("-").map(Number);
+    const shifted = new Date(Date.UTC(year, month - 1, day + offset));
+    return `${shifted.getUTCFullYear()}-${String(shifted.getUTCMonth()+1).padStart(2,"0")}-${String(shifted.getUTCDate()).padStart(2,"0")}`;
+  };
+  const yesterdayKey = shiftDateKey(todayKey, -1);
+  const sevenDaysAgoKey = shiftDateKey(todayKey, -6);
+  const currentMonthPrefix = todayKey.slice(0, 7);
+  const dateKeyForSale = (sale: any) => {
     const ts = saleTimestamp(sale);
-    if (!ts) return false;
-    const date = new Date(ts);
-    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-    return key === todayKey;
-  }).length;
+    if (!ts) return "";
+    const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(new Date(ts));
+    return `${parts.find((part) => part.type === "year")?.value}-${parts.find((part) => part.type === "month")?.value}-${parts.find((part) => part.type === "day")?.value}`;
+  };
+  const saleAmountINR = (sale: any): number | null => {
+    if (sale.paypal_capture_id) {
+      const amount = Number(sale.paypal_gross_amount_inr);
+      return sale.paypal_gross_amount_inr != null && Number.isFinite(amount) && amount >= 0 ? amount : null;
+    }
+    const amount = Number(sale.amount);
+    return String(sale.currency || "").toUpperCase() === "INR" && Number.isFinite(amount) && amount >= 0 ? amount : null;
+  };
+  const summaryFor = (matches: any[]) => {
+    const result = { total: 0, razorpay: 0, paypal: 0, count: 0 };
+    for (const sale of matches) {
+      const amount = saleAmountINR(sale);
+      if (amount == null) continue;
+      result.total += amount;
+      result.count += 1;
+      const method = String(sale.payment_method || sale.gateway_name || (sale.paypal_capture_id ? "PayPal" : "Razorpay")).toLowerCase();
+      if (method.includes("paypal")) result.paypal += amount;
+      else result.razorpay += amount;
+    }
+    result.total = Number(result.total.toFixed(2));
+    result.razorpay = Number(result.razorpay.toFixed(2));
+    result.paypal = Number(result.paypal.toFixed(2));
+    return result;
+  };
+  const salesSummary = {
+    today: summaryFor(sales.filter((sale) => dateKeyForSale(sale) === todayKey)),
+    yesterday: summaryFor(sales.filter((sale) => dateKeyForSale(sale) === yesterdayKey)),
+    last7Days: summaryFor(sales.filter((sale) => {
+      const key = dateKeyForSale(sale);
+      return key >= sevenDaysAgoKey && key <= todayKey;
+    })),
+    thisMonth: summaryFor(sales.filter((sale) => dateKeyForSale(sale).slice(0, 7) === currentMonthPrefix)),
+  };
 
   const hasRange = Boolean(fromDate && toDate && fromDate <= toDate);
   const filteredSales = hasRange
     ? sales.filter((sale) => {
-        const ts = saleTimestamp(sale);
-        if (!ts) return false;
-        const date = new Date(ts);
-        const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-        return key >= fromDate && key <= toDate;
+        const key = dateKeyForSale(sale);
+        return key && key >= fromDate && key <= toDate;
       })
     : [];
 
   return (
     <main className="mx-auto max-w-5xl space-y-4 px-4 sm:px-6">
-      <section className="flex items-center justify-between gap-4 rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
-        <div>
-          <p className="text-sm font-medium text-slate-500">Sales Today</p>
-          <p className="mt-1 text-3xl font-bold tracking-tight text-slate-900">{todayCount}</p>
-          <p className="text-xs text-slate-500">{todayCount === 1 ? "completed sale" : "completed sales"}</p>
-        </div>
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-50 text-blue-700" aria-hidden="true">
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 5h16v15H4zM8 3v4m8-4v4M4 9h16M8 13h3m-3 3h6" />
-          </svg>
-        </div>
-      </section>
+      <SalesSummary {...salesSummary} />
 
       <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
         <h2 className="text-base font-semibold text-slate-900">Filter Sales by Date</h2>
@@ -241,12 +334,13 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
           </div>
           {filteredSales.length ? (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[560px] text-left text-sm">
+              <table className="w-full min-w-[680px] text-left text-sm">
                 <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
                   <tr>
                     <th className="px-4 py-3 font-semibold sm:px-5">Book Name</th>
                     <th className="px-4 py-3 font-semibold">Sale Price</th>
                     <th className="px-4 py-3 font-semibold sm:px-5">Sale Date &amp; Time</th>
+                    <th className="px-4 py-3 font-semibold sm:px-5">Country</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -256,7 +350,8 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
                         <Link className="text-blue-700 underline-offset-4 hover:underline" href={"/book/" + sale.book_id}>{sale.title}</Link>
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 font-semibold text-slate-900">{formatPrice(sale.amount, sale.currency)}</td>
-                      <td className="whitespace-nowrap px-4 py-3 text-slate-600 sm:px-5">{new Date(sale.updated_at || sale.created_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "medium" })}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-slate-600 sm:px-5">{new Date(sale.payment_created_at || sale.updated_at || sale.created_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "medium" })}</td>
+                      <td className="px-4 py-3 text-slate-700 sm:px-5">{COUNTRIES.find((country) => country.code === String(sale.paypal_payer_country || sale.registration_country || "").toUpperCase())?.name || "Not available"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -269,7 +364,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
       ) : (
         <p className="px-1 text-xs text-slate-500">Choose a from date and to date to view sales for that period.</p>
       )}
-      <RevenueCalculator monthly={monthlyRevenue} yearly={yearlyRevenue} authorMonthly={authorMonthlyRevenue} authorYearly={authorYearlyRevenue} isAdmin={isAdmin} />
+      <RevenueCalculator monthly={monthlyRevenue} yearly={yearlyRevenue} />
     </main>
   );
 }
