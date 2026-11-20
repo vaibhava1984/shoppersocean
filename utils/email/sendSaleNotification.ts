@@ -1,3 +1,5 @@
+import { COUNTRIES } from "@/utils/countries";
+
 function escapeHtml(value: unknown) {
   const entities: Record<string, string> = {
     "&": "&amp;",
@@ -15,13 +17,22 @@ export async function sendSaleNotification(input: {
   customerEmail: string;
   bookId: string;
   bookTitle: string;
+  customerName?: string;
+  saleCountry?: string | null;
+  saleRegion?: string | null;
+  saleCity?: string | null;
 }) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) throw new Error("RESEND_API_KEY is not configured");
 
   const paymentMethod = input.paymentMethod || "Razorpay";
+  const countryCode = String(input.saleCountry || "").trim().toUpperCase();
+  const countryName = COUNTRIES.find((country) => country.code === countryCode)?.name || (countryCode && countryCode !== "XX" && countryCode !== "T1" ? countryCode : "");
+  const saleLocation = [input.saleCity, input.saleRegion, countryName].map((value) => String(value || "").trim()).filter(Boolean).join(", ") || "Not available";
   const html = `<p><strong>New Sale details:</strong></p>
+    <p><strong>Customer name:</strong> ${escapeHtml(input.customerName || "Not available")}</p>
     <p><strong>Customer email:</strong> ${escapeHtml(input.customerEmail)}</p>
+    <p><strong>Actual purchase location:</strong> ${escapeHtml(saleLocation)}</p>
     <p><strong>Book ID:</strong> ${escapeHtml(input.bookId)}</p>
     <p><strong>Book Name:</strong> ${escapeHtml(input.bookTitle)}</p>
     <p><strong>${escapeHtml(paymentMethod)} payment ID:</strong> ${escapeHtml(input.paymentId)}</p>`;
