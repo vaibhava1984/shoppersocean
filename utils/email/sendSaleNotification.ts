@@ -42,8 +42,8 @@ export async function sendSaleNotification(input: {
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
-      // Browser verification, payment webhooks, and retries share this key so one
-      // captured purchase produces only one admin email.
+      // Browser verification and retries share this key so one captured purchase
+      // produces only one admin email.
       "Idempotency-Key": `sale-notification/${input.paymentId}`,
     },
     body: JSON.stringify({
