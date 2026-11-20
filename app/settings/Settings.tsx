@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -155,8 +156,8 @@ export default function Settings({ initialUser, isAdmin = false }: { initialUser
         </Card>
       )}
 
-      {showDeleteDialog && !isAdmin && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !deleting) setShowDeleteDialog(false); }}>
+      {showDeleteDialog && !isAdmin && typeof document !== "undefined" && createPortal((
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !deleting) setShowDeleteDialog(false); }}>
           <section role="alertdialog" aria-modal="true" aria-labelledby="delete-account-title" aria-describedby="delete-account-description" className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-red-100 bg-white shadow-2xl">
             <div className="bg-gradient-to-r from-rose-700 via-red-600 to-orange-500 px-6 py-5 text-white">
               <button type="button" aria-label="Close" disabled={deleting} onClick={() => setShowDeleteDialog(false)} className="absolute right-4 top-4 rounded-full p-1 text-white/90 hover:bg-white/20 disabled:opacity-50"><X className="h-5 w-5" /></button>
@@ -181,7 +182,7 @@ export default function Settings({ initialUser, isAdmin = false }: { initialUser
             </div>
           </section>
         </div>
-      )}
+      ), document.body)}
     </div>
   );
 }
