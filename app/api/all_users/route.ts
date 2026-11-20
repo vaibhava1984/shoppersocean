@@ -9,16 +9,22 @@ export async function POST() {
     const db = getD1();
     if (!db) return NextResponse.json({ error: "Cloudflare database is unavailable" }, { status: 503 });
 
-    // Keep the admin Users list consistent with sign-in eligibility:
-    // pending registrations must not appear until their email is confirmed.
+    // Ensure the registration-location columns exist for older D1 databases.
+    for (const column of ["registration_city TEXT", "registration_country TEXT"]) {
+      try { await db.prepare(`ALTER TABLE users ADD COLUMN ${column}`).run(); } catch {}
+    }
+    // Only display location supplied by Cloudflare at account creation, never
+    // a city typed by the user or a city entered later in an author application.
     const { results = [] } = await db.prepare(
-      "SELECT u.id,u.email,u.full_name,u.country,COALESCE(NULLIF(TRIM(u.city),''),(SELECT NULLIF(TRIM(aa.city),'') FROM author_applications aa WHERE aa.user_id=u.id ORDER BY aa.created_at DESC LIMIT 1)) AS city,u.phone,COALESCE(NULLIF(TRIM(u.address),''),(SELECT NULLIF(TRIM(p.address),'') FROM profiles p WHERE p.id=u.id LIMIT 1)) AS address,u.role,u.email_confirmed,u.created_at,u.updated_at FROM users u WHERE COALESCE(u.email_confirmed,0)=1 ORDER BY u.created_at DESC"
+      "SELECT u.id,u.email,u.full_name,u.registration_city,u.registration_country,u.phone,u.role,u.email_confirmed,u.created_at,u.updated_at FROM users u WHERE COALESCE(u.email_confirmed,0)=1 ORDER BY u.created_at DESC"
     ).all<any>();
 
     return NextResponse.json({
       users: results.map((u) => {
-        const countryName = COUNTRIES.find((country) => country.code === String(u.country || "").toUpperCase())?.name || u.country || "";
-        const territory = [u.city || "City not provided", u.address, countryName].filter((value, index, values) => Boolean(value) && values.indexOf(value) === index).join(", ");
+        const registrationCountry = String(u.registration_country || "").toUpperCase();
+        const countryName = COUNTRIES.find((country) => country.code === registrationCountry)?.name || registrationCountry;
+        const registrationCity = String(u.registration_city || "").trim();
+        const territory = [registrationCity, countryName].filter(Boolean).join(", ") || "Not captured at registration";
         return ({
         id: String(u.id),
         email: u.email || "",
@@ -30,8 +36,8 @@ export async function POST() {
         user_metadata: {
           full_name: u.full_name || "",
           country: countryName,
-          city: u.city || "",
-          address: u.address || "",
+          city: registrationCity,
+          address: "",
           territory: territory || "Not provided",
           phone: u.phone || "",
         },
