@@ -109,8 +109,11 @@ export async function POST(req: Request) {
     }
 
     const [userId, bookId] = String(unit.custom_id).split("|");
-    const payerCountryCode = String(paypalOrder?.payer?.address?.country_code || "").toUpperCase();
+    const payerAddress = paypalOrder?.payer?.address || unit?.shipping?.address || {};
+    const payerCountryCode = String(payerAddress?.country_code || "").toUpperCase();
     const validPayerCountry = /^[A-Z]{2}$/.test(payerCountryCode) ? payerCountryCode : null;
+    const saleRegion = String(payerAddress?.admin_area_1 || "").trim().slice(0,120);
+    const saleCity = String(payerAddress?.admin_area_2 || payerAddress?.city || "").trim().slice(0,120);
     const amount = Number(canonicalCapture.amount?.value);
     const currency = String(canonicalCapture.amount?.currency_code || "").toUpperCase();
     if (!userId || !bookId || currency !== "USD" || !Number.isFinite(amount) || amount <= 0 ||
@@ -176,6 +179,9 @@ export async function POST(req: Request) {
         }
       }
     }
+
+    await db.prepare("UPDATE payments SET sale_country=COALESCE(NULLIF(sale_country,''),?),sale_region=COALESCE(NULLIF(sale_region,''),?),sale_city=COALESCE(NULLIF(sale_city,''),?) WHERE paypal_order_id=? OR paypal_capture_id=?")
+      .bind(validPayerCountry,saleRegion || null,saleCity || null,orderId,captureId).run();
 
     await db.prepare(
       "UPDATE orders SET status = 'completed', updated_at = ? WHERE id = ? AND user_id = ?"
