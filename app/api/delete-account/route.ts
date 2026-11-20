@@ -72,18 +72,6 @@ export async function POST(request: Request) {
 
     const uid = user.id;
     const accountName = String(user.firstName ?? "").trim() || email;
-    // Notifications are best-effort and must never block account deletion.
-    try {
-      await addAdminNotification(db, {
-        type: "account_deleted",
-        title: "User account deleted",
-        message: accountName + " deleted their account.",
-        details: { userId: uid, email, name: accountName, deletedAt: new Date().toISOString() }
-      });
-    } catch (notificationError) {
-      console.error("Could not record account-deletion notification:", notificationError);
-    }
-
     // Remove published author works and their private file records before
     // deleting author rows (books.author_id and private_book_files.book_id are
     // enforced foreign keys in the live database).
@@ -132,6 +120,22 @@ export async function POST(request: Request) {
 
     // Removing the user row also removes the account from the admin Users list.
     await db.prepare("DELETE FROM users WHERE id=?").bind(uid).run();
+
+    // Verify the user row is actually gone before announcing a successful deletion.
+    // Failed or partial deletion attempts must never create a bell notification.
+    const remainingUser = await db.prepare("SELECT id FROM users WHERE id=? LIMIT 1").bind(uid).first<any>();
+    if (remainingUser) {
+      throw new Error("Account deletion did not remove the user record.");
+    }
+
+    // Record the notification only after successful removal of the account record.
+    // Notification failures remain best-effort and cannot reverse the deletion.
+    await addAdminNotification(db, {
+      type: "account_deleted",
+      title: "User account deleted",
+      message: accountName + " deleted their account.",
+      details: { userId: uid, email, name: accountName, deletedAt: new Date().toISOString() }
+    });
 
     // The account is deleted independently of email delivery.
     let emailSent = false;
