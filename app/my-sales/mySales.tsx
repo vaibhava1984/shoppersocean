@@ -51,7 +51,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
   if (ids.length) {
     const placeholders = ids.map(() => "?").join(",");
     const sql =
-      "SELECT o.id,o.book_id,o.created_at,o.status,b.title,p.id AS payment_id,p.amount,p.currency,p.created_at AS payment_created_at,p.updated_at,p.paypal_capture_id,p.paypal_order_id,p.paypal_gross_amount_inr,p.paypal_payer_country,p.payment_method,p.gateway_name,u.registration_country " +
+      "SELECT o.id,o.book_id,o.created_at,o.status,b.title,p.id AS payment_id,p.amount,p.currency,p.created_at AS payment_created_at,p.updated_at,p.paypal_capture_id,p.paypal_order_id,p.paypal_gross_amount_inr,p.paypal_payer_country,p.sale_country,p.payment_method,p.gateway_name,u.registration_country " +
       "FROM orders o JOIN books b ON b.id=o.book_id " +
       "JOIN payments p ON p.order_id=o.id AND p.status='completed' " +
       "LEFT JOIN users u ON u.id=o.user_id " +
@@ -166,7 +166,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
             const order = await orderResponse.json() as Record<string, any>;
             const countryCode = String(order?.payer?.address?.country_code || "").toUpperCase();
             if (orderResponse.ok && order?.id === row.paypal_order_id && /^[A-Z]{2}$/.test(countryCode)) {
-              await db.prepare("UPDATE payments SET paypal_payer_country=? WHERE id=?").bind(countryCode,row.payment_id).run();
+              await db.prepare("UPDATE payments SET paypal_payer_country=?,sale_country=COALESCE(NULLIF(sale_country,''),?) WHERE id=?").bind(countryCode,countryCode,row.payment_id).run();
               row.paypal_payer_country = countryCode;
             }
           }
@@ -354,7 +354,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 font-semibold text-slate-900">{formatPrice(sale.amount, sale.currency)}</td>
                       <td className="whitespace-nowrap px-4 py-3 text-slate-600 sm:px-5">{new Date(sale.payment_created_at || sale.updated_at || sale.created_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "medium" })}</td>
-                      <td className="px-4 py-3 text-slate-700 sm:px-5">{COUNTRIES.find((country) => country.code === String(sale.paypal_payer_country || sale.registration_country || "").toUpperCase())?.name || "Not available"}</td>
+                      <td className="px-4 py-3 text-slate-700 sm:px-5">{COUNTRIES.find((country) => country.code === String(sale.sale_country || sale.paypal_payer_country || sale.registration_country || "").toUpperCase())?.name || "Not available"}</td>
                     </tr>
                   ))}
                 </tbody>
