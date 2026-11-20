@@ -102,7 +102,7 @@ export default function AdminAccordion() {
 
       // Keep the embedded admin page within the available screen area so its
       // controls scroll inside the section instead of pushing the footer away.
-      const frameHeight = key === "Books" ? "calc(100dvh - 56px)" : "calc(100dvh - 112px)";
+      const frameHeight = key === "Books" || key === "Users" ? "calc(100dvh - 56px)" : "calc(100dvh - 112px)";
       frame.style.height = frameHeight;
       frame.style.minHeight = "0";
       frame.style.maxHeight = frameHeight;
@@ -267,7 +267,7 @@ export default function AdminAccordion() {
                 src={"/admin_panel/" + (activeSection?.path || "")}
                 onLoad={() => { prepareFrame(open); setFrameReady(true); }}
                 className="block w-full border-0 bg-white"
-                style={{ height: open === "Books" ? "calc(100dvh - 56px)" : "calc(100dvh - 112px)", minHeight: 0, maxHeight: open === "Books" ? "calc(100dvh - 56px)" : "calc(100dvh - 112px)", visibility: frameReady ? "visible" : "hidden" }}
+                style={{ height: open === "Books" || open === "Users" ? "calc(100dvh - 56px)" : "calc(100dvh - 112px)", minHeight: 0, maxHeight: open === "Books" || open === "Users" ? "calc(100dvh - 56px)" : "calc(100dvh - 112px)", visibility: frameReady ? "visible" : "hidden" }}
               />
             )}
           </div>
