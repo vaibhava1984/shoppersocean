@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     if (password.length < 6) return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
 
     const { getCloudflareContext } = await import('@opennextjs/cloudflare');
-    const { env } = await getCloudflareContext();
+    const { env, cf: requestCf } = await getCloudflareContext();
     const db = (env as any).DB as D1Database;
     const jwtSecret = (env as any).JWT_SECRET as string;
     const resendApiKey = (env as any).RESEND_API_KEY as string | undefined;
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     for (const column of ["gender TEXT", "registration_city TEXT", "registration_country TEXT"]) { try { await db.prepare(`ALTER TABLE users ADD COLUMN ${column}`).run(); } catch {} }
     // Cloudflare supplies the visitor geolocation on the incoming Worker request.
     // This is independent of the country value selected in the signup form.
-    const cf = (req as Request & { cf?: { city?: string; country?: string } }).cf;
+    const cf = (requestCf || (req as Request & { cf?: { city?: string; country?: string } }).cf) as { city?: string; country?: string } | undefined;
     const registrationCity = String(cf?.city || "").trim();
     const registrationCountry = String(cf?.country || req.headers.get("cf-ipcountry") || "").trim().toUpperCase();
 
