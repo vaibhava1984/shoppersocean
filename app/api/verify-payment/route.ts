@@ -173,9 +173,6 @@ export async function POST(req: Request) {
       "WHERE o.razorpay_order_id = ? OR p.razorpay_payment_id = ? LIMIT 1"
     ).bind(razorpayOrderId, razorpayPaymentId).first<Record<string, any>>();
 
-    const shouldNotifySale = paymentStatus === "completed" &&
-      (!existing || !existing.payment_row_id || String(existing.razorpay_payment_id) !== razorpayPaymentId);
-
     const rates = await fetchExchangeRates();
     const amountInINR = convertCurrency(originalAmount, originalCurrency, "INR", rates);
     const now = new Date().toISOString();
