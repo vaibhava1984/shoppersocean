@@ -90,7 +90,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
   };
   const staleBefore = Date.now() - 24 * 60 * 60 * 1000;
   let paypalToken = "";
-  const salesByPaymentId = new Map(sales.map((sale) => [String(sale.payment_id || ""), sale]));
+  const salesByPaymentId = new Map<string, any>(sales.map((sale) => [String(sale.payment_id || ""), sale] as [string, any]));
   for (const row of revenueRows) {
     const checked = row.gateway_fee_checked_at ? new Date(row.gateway_fee_checked_at).getTime() : 0;
     try {
