@@ -68,12 +68,17 @@ export async function POST(request: Request) {
 
     const uid = user.id;
     const accountName = String(user.firstName ?? "").trim() || email;
-    await addAdminNotification(db, {
-      type: "account_deleted",
-      title: "User account deleted",
-      message: accountName + " deleted their account.",
-      details: { userId: uid, email, name: accountName, deletedAt: new Date().toISOString() }
-    });
+    // Notifications are best-effort and must never block account deletion.
+    try {
+      await addAdminNotification(db, {
+        type: "account_deleted",
+        title: "User account deleted",
+        message: accountName + " deleted their account.",
+        details: { userId: uid, email, name: accountName, deletedAt: new Date().toISOString() }
+      });
+    } catch (notificationError) {
+      console.error("Could not record account-deletion notification:", notificationError);
+    }
 
     // Remove published author works and their private file records before
     // deleting author rows (books.author_id and private_book_files.book_id are
@@ -90,18 +95,40 @@ export async function POST(request: Request) {
       await db.prepare("DELETE FROM authors_interest_submission WHERE lower(email)=lower(?)").bind(email).run();
     }
 
-    // Discover every account-owned table so subscriptions, payment records,
-    // purchases, author submissions, sessions and game quotas are all removed.
+    // Delete account-owned rows in foreign-key dependency order (children first).
+    // The previous alphabetical deletion order could hit a foreign-key constraint
+    // and abort the request before the users row was removed.
     const { results: tableRows = [] } = await db.prepare(
       "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
     ).all<any>();
+    const accountTables: string[] = [];
     for (const row of tableRows) {
       const table = String(row.name || "");
-      if (!/^[A-Za-z0-9_]+$/.test(table) || table === "users" || table === "admin_notifications") continue;
+      if (!/^[A-Za-z0-9_]+$/.test(table) || ["users", "admin_notifications", "profiles"].includes(table)) continue;
       const { results: columns = [] } = await db.prepare(`PRAGMA table_info("${table}")`).all<any>();
-      if (columns.some((column: any) => column.name === "user_id")) {
-        await db.prepare(`DELETE FROM "${table}" WHERE user_id=?`).bind(uid).run();
+      if (columns.some((column: any) => column.name === "user_id")) accountTables.push(table);
+    }
+
+    const accountTableSet = new Set(accountTables);
+    const orderedTables: string[] = [];
+    const visiting = new Set<string>();
+    const visited = new Set<string>();
+    async function visitAccountTable(table: string) {
+      if (visited.has(table) || visiting.has(table)) return;
+      visiting.add(table);
+      const { results: foreignKeys = [] } = await db.prepare(`PRAGMA foreign_key_list("${table}")`).all<any>();
+      for (const foreignKey of foreignKeys) {
+        const parent = String(foreignKey.table || "");
+        if (accountTableSet.has(parent)) await visitAccountTable(parent);
       }
+      visiting.delete(table);
+      visited.add(table);
+      orderedTables.push(table);
+    }
+    for (const table of accountTables) await visitAccountTable(table);
+
+    for (const table of orderedTables) {
+      await db.prepare(`DELETE FROM "${table}" WHERE user_id=?`).bind(uid).run();
     }
 
     // auth_sessions references profiles, so profiles is deleted after the
