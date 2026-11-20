@@ -111,7 +111,13 @@ const ContactForm = ({
         setIsDeletingAccount(true);
         setDeleteError('');
         try {
-            const response = await fetch('/api/delete-account', { method: 'POST' });
+            const response = await fetch('/api/delete-account', {
+                method: 'POST',
+                credentials: 'same-origin',
+                cache: 'no-store',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ confirm: true }),
+            });
             const result = await response.json().catch(() => ({}));
             if (!response.ok) throw new Error(result.error || 'Unable to delete your account. Please try again.');
             await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin', cache: 'no-store' });
