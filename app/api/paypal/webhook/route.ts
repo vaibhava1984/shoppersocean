@@ -109,11 +109,12 @@ export async function POST(req: Request) {
     }
 
     const [userId, bookId] = String(unit.custom_id).split("|");
-    const payerAddress = paypalOrder?.payer?.address || unit?.shipping?.address || {};
-    const payerCountryCode = String(payerAddress?.country_code || "").toUpperCase();
+    const payerAddress = paypalOrder?.payer?.address || {};
+    const shippingAddress = unit?.shipping?.address || {};
+    const payerCountryCode = String(payerAddress?.country_code || shippingAddress?.country_code || "").toUpperCase();
     const validPayerCountry = /^[A-Z]{2}$/.test(payerCountryCode) ? payerCountryCode : null;
-    const saleRegion = String(payerAddress?.admin_area_1 || "").trim().slice(0,120);
-    const saleCity = String(payerAddress?.admin_area_2 || payerAddress?.city || "").trim().slice(0,120);
+    const saleRegion = String(payerAddress?.admin_area_1 || shippingAddress?.admin_area_1 || "").trim().slice(0,120);
+    const saleCity = String(payerAddress?.admin_area_2 || payerAddress?.city || shippingAddress?.admin_area_2 || shippingAddress?.city || "").trim().slice(0,120);
     const amount = Number(canonicalCapture.amount?.value);
     const currency = String(canonicalCapture.amount?.currency_code || "").toUpperCase();
     if (!userId || !bookId || currency !== "USD" || !Number.isFinite(amount) || amount <= 0 ||
@@ -143,7 +144,7 @@ export async function POST(req: Request) {
       "SELECT id, title FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1"
     ).bind(bookId).first<Record<string, any>>();
     const customer = await db.prepare(
-      "SELECT id, email FROM users WHERE id = ? LIMIT 1"
+      "SELECT id, email, full_name FROM users WHERE id = ? LIMIT 1"
     ).bind(userId).first<Record<string, any>>();
     if (!book || !customer) {
       return NextResponse.json({ error: "Purchase customer or book record is missing" }, { status: 503 });
@@ -193,6 +194,10 @@ export async function POST(req: Request) {
       paymentId: captureId,
       paymentMethod: "PayPal",
       customerEmail: String(customer.email || ""),
+      customerName: String(customer.full_name || ""),
+      saleCountry: validPayerCountry,
+      saleRegion,
+      saleCity,
       bookId,
       bookTitle: String(book.title || ""),
     });
