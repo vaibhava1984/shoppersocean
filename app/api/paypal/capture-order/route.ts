@@ -104,6 +104,8 @@ export async function POST(req: Request) {
 
     const now = new Date().toISOString();
     const captureId = String(capture.id);
+    const payerCountryCode = String(paypalOrder?.payer?.address?.country_code || "").toUpperCase();
+    const validPayerCountry = /^[A-Z]{2}$/.test(payerCountryCode) ? payerCountryCode : null;
     const existingPayment = await db.prepare(
       "SELECT id, order_id, user_id, book_id FROM payments WHERE paypal_order_id = ? OR paypal_capture_id = ? LIMIT 1"
     ).bind(paypalOrderId, captureId).first<Record<string, any>>();
@@ -117,14 +119,14 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "A conflicting PayPal payment record exists" }, { status: 409 });
       }
       await db.prepare(
-        "UPDATE payments SET status = 'completed', paypal_capture_id = ?, currency = 'USD', original_amount = ?, original_currency = 'USD', payment_method = 'PayPal', updated_at = ? WHERE id = ?"
-      ).bind(captureId, paidAmount, now, existingPayment.id).run();
+        "UPDATE payments SET status = 'completed', paypal_capture_id = ?, currency = 'USD', original_amount = ?, original_currency = 'USD', payment_method = 'PayPal', paypal_payer_country=COALESCE(?,paypal_payer_country), sale_country=COALESCE(NULLIF(sale_country,''),?), updated_at = ? WHERE id = ?"
+      ).bind(captureId, paidAmount, validPayerCountry, validPayerCountry, now, existingPayment.id).run();
     } else {
       try {
         await db.prepare(
           "INSERT INTO payments " +
-          "(id, order_id, user_id, book_id, amount, currency, status, razorpay_payment_id, razorpay_order_id, paypal_order_id, paypal_capture_id, original_amount, original_currency, payment_method, created_at, updated_at) " +
-          "VALUES (?, ?, ?, ?, ?, 'USD', 'completed', NULL, NULL, ?, ?, ?, 'USD', 'PayPal', ?, ?)"
+          "(id, order_id, user_id, book_id, amount, currency, status, razorpay_payment_id, razorpay_order_id, paypal_order_id, paypal_capture_id, original_amount, original_currency, payment_method, paypal_payer_country, sale_country, created_at, updated_at) " +
+          "VALUES (?, ?, ?, ?, ?, 'USD', 'completed', NULL, NULL, ?, ?, ?, 'USD', 'PayPal', ?, ?, ?, ?)"
         ).bind(
           crypto.randomUUID(),
           savedOrder.id,
@@ -134,6 +136,8 @@ export async function POST(req: Request) {
           paypalOrderId,
           captureId,
           paidAmount,
+          validPayerCountry,
+          validPayerCountry,
           now,
           now
         ).run();
