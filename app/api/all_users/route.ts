@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getD1 } from "@/utils/cloudflare/d1";
 import { requireAdmin } from "@/utils/auth/requireUser";
+import { COUNTRIES } from "@/utils/countries";
 
 export async function POST() {
   try {
@@ -33,7 +34,9 @@ export async function POST() {
     ).all<any>();
 
     return NextResponse.json({
-      users: results.map((u) => ({
+      users: results.map((u) => {
+        const countryName = COUNTRIES.find((country) => country.code === String(u.country || "").toUpperCase())?.name || u.country || "";
+        return ({
         id: String(u.id),
         email: u.email || "",
         phone: u.phone || null,
@@ -45,10 +48,11 @@ export async function POST() {
           full_name: u.full_name || "",
           country: u.country || "",
           address: u.address || "",
-          territory: u.author_territory || [u.address, u.country].filter(Boolean).join(", ") || u.country || "Not provided",
+          territory: u.author_territory || [u.address, countryName].filter(Boolean).join(", ") || countryName || "Not provided",
           phone: u.phone || "",
         },
-      }))
+      });
+      })
     }, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
     console.error("Admin users:", e);
