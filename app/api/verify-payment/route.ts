@@ -262,12 +262,13 @@ export async function POST(req: Request) {
       }
     }
 
+    // Cloudflare geolocation headers describe the purchaser request IP, not profile-form data.
     const saleCountry = String(req.headers.get("cf-ipcountry") || "").trim().toUpperCase();
-    if (/^[A-Z]{2}$/.test(saleCountry)) {
-      await db.prepare(
-        "UPDATE payments SET sale_country=COALESCE(NULLIF(sale_country,''),?) WHERE razorpay_order_id=? OR razorpay_payment_id=?"
-      ).bind(saleCountry,razorpayOrderId,razorpayPaymentId).run();
-    }
+    const saleRegion = String(req.headers.get("cf-region") || "").trim().slice(0,120);
+    const saleCity = String(req.headers.get("cf-ipcity") || "").trim().slice(0,120);
+    await db.prepare(
+      "UPDATE payments SET sale_country=COALESCE(NULLIF(sale_country,''),?),sale_region=COALESCE(NULLIF(sale_region,''),?),sale_city=COALESCE(NULLIF(sale_city,''),?) WHERE razorpay_order_id=? OR razorpay_payment_id=?"
+    ).bind(/^[A-Z]{2}$/.test(saleCountry) ? saleCountry : null,saleRegion || null,saleCity || null,razorpayOrderId,razorpayPaymentId).run();
 
     const finalOrder = await db.prepare(
       "SELECT id, user_id, book_id, amount, currency, status, razorpay_order_id, created_at, updated_at " +
