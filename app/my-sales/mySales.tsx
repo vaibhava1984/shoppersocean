@@ -66,8 +66,6 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
       ).bind(saved.paypal_order_id).first<any>();
       const completedOrder = String(saved.status).toLowerCase() === "completed";
       const missingCaptureRecord = completedOrder && (!existing || !existing.paypal_capture_id);
-      const needsRepair = completedOrder &&
-        (!existing || !existing.paypal_capture_id || existing.paypal_gross_amount_inr == null || existing.gateway_fee_inr == null || !existing.paypal_payer_country);
       const retryWindow = missingCaptureRecord ? 15 * 60 * 1000 : 6 * 60 * 60 * 1000;
       if (checkedAt > Date.now() - retryWindow) continue;
 
