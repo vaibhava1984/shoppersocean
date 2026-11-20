@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, LayoutDashboard, ShoppingCart, Home, BookOpen, PenTool, Users, UserCheck, ExternalLink } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, Home, BookOpen, PenTool, Users, UserCheck, ExternalLink } from "lucide-react";
 import Dashboard from "../components/adminPage/Dashboard";
 
 const sections = [
   { label: "Dashboard", path: "", icon: LayoutDashboard, dashboard: true },
-  { label: "Orders", path: "orders", icon: ShoppingCart },
   { label: "Home Section", path: "home_section", icon: Home },
   { label: "Books", path: "books", icon: BookOpen },
   { label: "Authors", path: "authors", icon: PenTool },
@@ -271,7 +270,7 @@ export default function AdminAccordion() {
               />
             )}
           </div>
-          {open !== "Books" && (
+          {open !== "Books" && open !== "Dashboard" && open !== "Users" && (
             <footer className="flex h-14 shrink-0 items-center justify-center border-t border-slate-200 bg-white px-3 py-2 sm:px-4">
             <button
               type="button"
