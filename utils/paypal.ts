@@ -24,6 +24,8 @@ export async function ensurePaypalSchema(db: any) {
       "ALTER TABLE payments ADD COLUMN paypal_exchange_target_currency TEXT",
       "ALTER TABLE payments ADD COLUMN paypal_payer_country TEXT",
       "ALTER TABLE payments ADD COLUMN sale_country TEXT",
+      "ALTER TABLE payments ADD COLUMN sale_region TEXT",
+      "ALTER TABLE payments ADD COLUMN sale_city TEXT",
       "CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_paypal_order_id ON orders(paypal_order_id) WHERE paypal_order_id IS NOT NULL",
       "CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_paypal_order_id ON payments(paypal_order_id) WHERE paypal_order_id IS NOT NULL",
       "CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_paypal_capture_id ON payments(paypal_capture_id) WHERE paypal_capture_id IS NOT NULL",
