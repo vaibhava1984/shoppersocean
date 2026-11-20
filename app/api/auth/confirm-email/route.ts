@@ -31,10 +31,10 @@ export async function GET(req: Request) {
     // Capture details before the conditional update. Only the request that changes
     // email_confirmed from 0 to 1 is allowed to create the admin notifications.
     const user = await db.prepare(
-      'SELECT id, email, full_name, country, gender, city, email_confirmed, created_at FROM users WHERE id = ? AND email = ?'
+      'SELECT id, email, full_name, registration_city, registration_region, registration_country, gender, email_confirmed, created_at FROM users WHERE id = ? AND email = ?'
     ).bind(payload.sub, payload.email.toLowerCase()).first<{
-      id: string; email: string; full_name: string | null; country: string | null;
-      gender: string | null; city: string | null; email_confirmed: number; created_at: string;
+      id: string; email: string; full_name: string | null; registration_city: string | null; registration_region: string | null; registration_country: string | null;
+      gender: string | null; email_confirmed: number; created_at: string;
     }>();
 
     if (!user) return new NextResponse(errorHtml, { status: 400, headers });
@@ -45,8 +45,9 @@ export async function GET(req: Request) {
 
     if (result.meta.changes > 0) {
       const name = String(user.full_name || '').trim();
-      const countryCode = String(user.country || '').trim().toUpperCase();
-      const countryName = COUNTRIES.find(c => c.code === countryCode)?.name || String(user.country || '').trim() || 'Not provided';
+      const countryCode = String(user.registration_country || '').trim().toUpperCase();
+      const countryName = COUNTRIES.find(c => c.code === countryCode)?.name || (countryCode && countryCode !== 'XX' && countryCode !== 'T1' ? countryCode : '') || 'Not available';
+      const actualLocation = [String(user.registration_city || '').trim(), String(user.registration_region || '').trim(), countryName === 'Not available' ? '' : countryName].filter(Boolean).join(', ') || 'Not available';
       const confirmedAt = new Date().toISOString();
 
       await addAdminNotification(db, {
@@ -55,7 +56,8 @@ export async function GET(req: Request) {
         message: (name || user.email) + ' confirmed their Shoppers Ocean account.',
         details: {
           userId: user.id, email: user.email, name, country: countryName,
-          gender: user.gender || '', city: user.city || '',
+          location: actualLocation,
+          gender: user.gender || '', city: user.registration_city || '', region: user.registration_region || '',
           createdAt: user.created_at, confirmedAt
         }
       });
@@ -73,7 +75,7 @@ export async function GET(req: Request) {
               '<p style="font-size:16px;"><strong>A new user has confirmed their Shoppers Ocean account on ' + new Date(confirmedAt).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' }) + ' at ' + new Date(confirmedAt).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST (GMT+5:30)</strong></p>' +
               '<p><strong>Name</strong><br>' + safeName + '</p>' +
               '<p><strong>Email</strong><br>' + escapeHtml(user.email) + '</p>' +
-              '<p><strong>Country</strong><br>' + escapeHtml(countryName) + '</p>' +
+              '<p><strong>Actual location at sign-up (Cloudflare IP geolocation)</strong><br>' + escapeHtml(actualLocation) + '</p>' +
               '</div>'
           });
           if (adminEmailError) console.error('Error sending confirmed-signup admin email:', adminEmailError);
