@@ -72,10 +72,15 @@ export async function POST(req: Request) {
         await db.prepare("INSERT INTO payments (id, order_id, user_id, book_id, amount, currency, status, razorpay_payment_id, razorpay_order_id, paypal_order_id, paypal_capture_id, cashfree_order_id, cashfree_payment_id, original_amount, original_currency, payment_method, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 'INR', 'completed', NULL, NULL, NULL, NULL, ?, ?, ?, 'USD', 'Cashfree', ?, ?)")
           .bind(crypto.randomUUID(), saved.id, identity.profile.id, saved.book_id, Number(saved.amount), orderId, paymentId, Number(payment.payment_amount || PRICE_USD), now, now).run();
       }
+      const saleCountryRaw = String(req.headers.get("cf-ipcountry") || "").trim().toUpperCase();
+      const saleCountry = /^[A-Z]{2}$/.test(saleCountryRaw) ? saleCountryRaw : null;
+      const saleRegion = String(req.headers.get("cf-region") || "").trim().slice(0,120);
+      const saleCity = String(req.headers.get("cf-ipcity") || "").trim().slice(0,120);
+      await db.prepare("UPDATE payments SET sale_country=COALESCE(NULLIF(sale_country,''),?),sale_region=COALESCE(NULLIF(sale_region,''),?),sale_city=COALESCE(NULLIF(sale_city,''),?) WHERE cashfree_order_id=? OR cashfree_payment_id=?").bind(saleCountry,saleRegion || null,saleCity || null,orderId,paymentId).run();
       await db.prepare("UPDATE orders SET status = 'completed', updated_at = ? WHERE id = ? AND user_id = ?").bind(now, saved.id, identity.profile.id).run();
       try {
-        const profile = await db.prepare("SELECT email FROM users WHERE id = ? LIMIT 1").bind(identity.profile.id).first<Record<string, any>>();
-        await sendSaleNotification({ paymentId, paymentMethod: "Cashfree", customerEmail: String(identity.profile.email || profile?.email || ""), bookId: String(saved.book_id), bookTitle: String(book.title || "") });
+        const profile = await db.prepare("SELECT email,full_name FROM users WHERE id = ? LIMIT 1").bind(identity.profile.id).first<Record<string, any>>();
+        await sendSaleNotification({ paymentId, paymentMethod: "Cashfree", customerEmail: String(identity.profile.email || profile?.email || ""), customerName: String(profile?.full_name || ""), saleCountry, saleRegion, saleCity, bookId: String(saved.book_id), bookTitle: String(book.title || "") });
       } catch (e) { console.error("Cashfree sale email failed:", e); }
       return NextResponse.json({ success: true, status: "completed", productId: String(saved.book_id) }, { headers: { "Cache-Control": "no-store" } });
     }
