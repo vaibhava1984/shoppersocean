@@ -76,7 +76,7 @@ export async function POST(req: Request) {
       const saleCountry = /^[A-Z]{2}$/.test(saleCountryRaw) ? saleCountryRaw : null;
       const saleRegion = String(req.headers.get("cf-region") || "").trim().slice(0,120);
       const saleCity = String(req.headers.get("cf-ipcity") || "").trim().slice(0,120);
-      await db.prepare("UPDATE payments SET sale_country=COALESCE(NULLIF(sale_country,''),?),sale_region=COALESCE(NULLIF(sale_region,''),?),sale_city=COALESCE(NULLIF(sale_city,''),?) WHERE cashfree_order_id=? OR cashfree_payment_id=?").bind(saleCountry,saleRegion || null,saleCity || null,orderId,paymentId).run();
+      await db.prepare("UPDATE payments SET sale_country=COALESCE(?,sale_country),sale_region=COALESCE(?,sale_region),sale_city=COALESCE(?,sale_city) WHERE cashfree_order_id=? OR cashfree_payment_id=?").bind(saleCountry,saleRegion || null,saleCity || null,orderId,paymentId).run();
       await db.prepare("UPDATE orders SET status = 'completed', updated_at = ? WHERE id = ? AND user_id = ?").bind(now, saved.id, identity.profile.id).run();
       try {
         const profile = await db.prepare("SELECT email,full_name FROM users WHERE id = ? LIMIT 1").bind(identity.profile.id).first<Record<string, any>>();
