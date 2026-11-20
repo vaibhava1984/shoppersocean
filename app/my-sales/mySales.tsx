@@ -168,6 +168,8 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
               start.setUTCDate(start.getUTCDate() - 1);
               const end = new Date(captureDate + "T23:59:59Z");
               end.setUTCDate(end.getUTCDate() + 1);
+              const nowForReport = new Date();
+              if (end.getTime() > nowForReport.getTime()) end.setTime(nowForReport.getTime());
               const params = new URLSearchParams({
                 transaction_id: String(capture.id),
                 start_date: start.toISOString(),
