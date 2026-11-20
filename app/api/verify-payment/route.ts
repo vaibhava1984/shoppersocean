@@ -91,7 +91,7 @@ export async function POST(req: Request) {
 
     // The live D1 schema uses the users table for the authenticated profile.
     const profile = await db
-      .prepare("SELECT id, email, phone, address FROM users WHERE id = ? LIMIT 1")
+      .prepare("SELECT id, email, full_name, phone, address FROM users WHERE id = ? LIMIT 1")
       .bind(userId)
       .first<Record<string, any>>();
 
@@ -284,17 +284,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Payment record could not be finalized" }, { status: 500 });
     }
 
-    if (shouldNotifySale) {
+    if (paymentStatus === "completed") {
       await addAdminNotification(db, {
         type: "purchase",
         title: "Book purchased successfully",
         message: String(profile.email || "A customer") + " purchased “" + String(book.title || "a book") + "”.",
-        details: { paymentId: razorpayPaymentId, orderId: razorpayOrderId, userId, customerEmail: String(profile.email || ""), bookId, bookTitle: String(book.title || ""), amount: Number(amountInINR), currency: "INR", purchasedAt: now }
+        details: { paymentId: razorpayPaymentId, orderId: razorpayOrderId, userId, customerName: String(profile.full_name || ""), customerEmail: String(profile.email || ""), saleCountry, saleRegion, saleCity, bookId, bookTitle: String(book.title || ""), amount: Number(amountInINR), currency: "INR", purchasedAt: now }
       });
       try {
         await sendSaleNotification({
           paymentId: razorpayPaymentId,
           customerEmail: String(profile.email || ""),
+          customerName: String(profile.full_name || ""),
+          saleCountry,
+          saleRegion,
+          saleCity,
           bookId,
           bookTitle: String(book.title || ""),
         });
