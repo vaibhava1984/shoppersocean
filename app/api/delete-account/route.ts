@@ -103,7 +103,7 @@ export async function POST(request: Request) {
     // The previous alphabetical deletion order could hit a foreign-key constraint
     // and abort the request before the users row was removed.
     const { results: tableRows = [] } = await db.prepare(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_cf_%' ORDER BY name"
     ).all<any>();
     const accountTables: string[] = [];
     for (const row of tableRows) {
@@ -113,9 +113,9 @@ export async function POST(request: Request) {
       if (columns.some((column: any) => column.name === "user_id")) accountTables.push(table);
     }
 
-    // Do not use PRAGMA foreign_key_list here: Cloudflare D1 rejects that
-    // introspection pragma at runtime (SQLITE_AUTH), which previously aborted
-    // every deletion before any account rows could be removed. The remaining
+    // Exclude Cloudflare internal tables: querying PRAGMA table_info on _cf_KV
+    // is rejected by D1 with SQLITE_AUTH. Including it aborts every deletion
+    // before account-owned rows can be removed. Also avoid foreign-key pragma introspection. The remaining
     // account-owned tables are already returned alphabetically. Their known FK
     // dependencies are handled explicitly above/below: auth_sessions is removed
     // here before profiles, and sessions/password_reset_tokens are removed here
