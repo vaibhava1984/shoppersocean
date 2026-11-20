@@ -155,7 +155,13 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
             grossInr = receivableAmount + feeInr;
           }
 
-          const buyerAddress = paypalOrder?.payer?.address || unit?.shipping?.address || paypalOrder?.payment_source?.paypal?.address || {};
+          const payerAddress = paypalOrder?.payer?.address || {};
+          const shippingAddress = unit?.shipping?.address || {};
+          const buyerAddress = {
+            admin_area_1: payerAddress.admin_area_1 || shippingAddress.admin_area_1,
+            admin_area_2: payerAddress.admin_area_2 || shippingAddress.admin_area_2,
+            city: payerAddress.city || shippingAddress.city,
+          };
           let buyerCountry = String(
             paypalOrder?.payment_source?.paypal?.address?.country_code ||
             paypalOrder?.payer?.address?.country_code ||
