@@ -46,6 +46,193 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
       : [];
 
   const ids = books.map((book) => book.id);
+
+  // Reconcile PayPal orders against PayPal itself before reading dashboard totals.
+  // Older successful checkouts may have an order row but no payments row when a
+  // browser callback/webhook was missed; do not depend on payments existing first.
+  if (ids.length) {
+    const placeholders = ids.map(() => "?").join(",");
+    const paypalOrders = (await db.prepare(
+      "SELECT o.id,o.user_id,o.book_id,o.amount,o.currency,o.status,o.paypal_order_id,o.created_at,o.paypal_reconciliation_checked_at " +
+      "FROM orders o WHERE o.book_id IN (" + placeholders + ") AND o.paypal_order_id IS NOT NULL " +
+      "ORDER BY o.created_at DESC"
+    ).bind(...ids).all<any>()).results || [];
+    const checkCutoff = Date.now() - 6 * 60 * 60 * 1000;
+    let reconciliationToken = "";
+    for (const saved of paypalOrders) {
+      const checkedAt = saved.paypal_reconciliation_checked_at ? new Date(saved.paypal_reconciliation_checked_at).getTime() : 0;
+      const existing = await db.prepare(
+        "SELECT id,paypal_capture_id,paypal_gross_amount_inr,gateway_fee_inr,paypal_payer_country FROM payments WHERE paypal_order_id=? LIMIT 1"
+      ).bind(saved.paypal_order_id).first<any>();
+      const needsRepair = String(saved.status).toLowerCase() === "completed" &&
+        (!existing || !existing.paypal_capture_id || existing.paypal_gross_amount_inr == null || existing.gateway_fee_inr == null || !existing.paypal_payer_country);
+      if (!needsRepair && checkedAt > checkCutoff) continue;
+
+      try {
+        if (!reconciliationToken) reconciliationToken = await getPaypalAccessToken();
+        const orderResponse = await fetch(paypalApiUrl("/v2/checkout/orders/" + encodeURIComponent(String(saved.paypal_order_id))), {
+          headers: { Authorization: "Bearer " + reconciliationToken }, cache: "no-store"
+        });
+        const paypalOrder = await orderResponse.json() as Record<string, any>;
+        if (!orderResponse.ok || paypalOrder?.id !== saved.paypal_order_id) {
+          throw new Error("PayPal order lookup failed (" + orderResponse.status + ")");
+        }
+
+        const unit = Array.isArray(paypalOrder.purchase_units) ? paypalOrder.purchase_units[0] : null;
+        const expectedCustomId = String(saved.user_id) + "|" + String(saved.book_id);
+        const paidCurrency = String(unit?.amount?.currency_code || "").toUpperCase();
+        const paidAmount = Number(unit?.amount?.value);
+        const expectedAmount = Number(saved.amount);
+        const capture = unit?.payments?.captures?.find((item: any) => String(item?.status || "").toUpperCase() === "COMPLETED");
+        if (String(paypalOrder.status || "").toUpperCase() === "COMPLETED" &&
+            String(unit?.custom_id || "") === expectedCustomId &&
+            paidCurrency === String(saved.currency || "").toUpperCase() &&
+            Number.isFinite(paidAmount) && Math.abs(paidAmount - expectedAmount) <= 0.001 &&
+            capture?.id && String(capture.status).toUpperCase() === "COMPLETED") {
+          let captureDetails: Record<string, any> = capture;
+          let breakdown = captureDetails?.seller_receivable_breakdown || {};
+          if (!breakdown.paypal_fee || !breakdown.gross_amount) {
+            const captureResponse = await fetch(paypalApiUrl("/v2/payments/captures/" + encodeURIComponent(String(capture.id))), {
+              headers: { Authorization: "Bearer " + reconciliationToken }, cache: "no-store"
+            });
+            const fetchedCapture = await captureResponse.json() as Record<string, any>;
+            if (captureResponse.ok && fetchedCapture?.id === capture.id) {
+              captureDetails = fetchedCapture;
+              breakdown = fetchedCapture.seller_receivable_breakdown || breakdown;
+            }
+          }
+
+          const actualExchange = breakdown.exchange_rate || {};
+          const sourceCurrency = String(actualExchange.source_currency || "").toUpperCase();
+          const targetCurrency = String(actualExchange.target_currency || "").toUpperCase();
+          const exchangeRate = Number(actualExchange.value);
+          const grossAmount = Number(breakdown.gross_amount?.value ?? capture.amount?.value);
+          const grossCurrency = String(breakdown.gross_amount?.currency_code || capture.amount?.currency_code || "").toUpperCase();
+          const paypalFee = breakdown.paypal_fee || null;
+          const feeAmount = paypalFee ? Number(paypalFee.value) : NaN;
+          const feeCurrency = String(paypalFee?.currency_code || "").toUpperCase();
+          const feeInReceivable = breakdown.paypal_fee_in_receivable_currency || null;
+          const feeReceivableAmount = feeInReceivable ? Number(feeInReceivable.value) : NaN;
+          const feeReceivableCurrency = String(feeInReceivable?.currency_code || "").toUpperCase();
+          const receivable = breakdown.receivable_amount || breakdown.net_amount || null;
+          const receivableAmount = receivable ? Number(receivable.value) : NaN;
+          const receivableCurrency = String(receivable?.currency_code || "").toUpperCase();
+          const captureTime = String(capture.create_time || captureDetails.create_time || paypalOrder.create_time || saved.created_at);
+          const captureDate = captureTime.slice(0, 10);
+
+          let effectiveUsdInrRate: number | null = null;
+          if (sourceCurrency === "USD" && targetCurrency === "INR" && Number.isFinite(exchangeRate) && exchangeRate > 0) {
+            effectiveUsdInrRate = exchangeRate;
+          } else if (sourceCurrency === "INR" && targetCurrency === "USD" && Number.isFinite(exchangeRate) && exchangeRate > 0) {
+            effectiveUsdInrRate = 1 / exchangeRate;
+          }
+
+          // If PayPal did not convert to INR, use the historical daily USD/INR
+          // rate for the capture date, never today's rate.
+          if (!effectiveUsdInrRate && /^\d{4}-\d{2}-\d{2}$/.test(captureDate)) {
+            try {
+              const historicalResponse = await fetch("https://api.frankfurter.dev/v1/" + captureDate + "?base=USD&symbols=INR", { cache: "no-store" });
+              const historical = await historicalResponse.json() as Record<string, any>;
+              const fallbackRate = Number(historical?.rates?.INR);
+              if (historicalResponse.ok && Number.isFinite(fallbackRate) && fallbackRate > 0) effectiveUsdInrRate = fallbackRate;
+            } catch {}
+          }
+
+          let grossInr: number | null = null;
+          if (grossCurrency === "INR" && Number.isFinite(grossAmount)) grossInr = grossAmount;
+          else if (grossCurrency === "USD" && effectiveUsdInrRate && Number.isFinite(grossAmount)) grossInr = grossAmount * effectiveUsdInrRate;
+
+          let feeInr: number | null = null;
+          if (feeReceivableCurrency === "INR" && Number.isFinite(feeReceivableAmount) && feeReceivableAmount >= 0) {
+            feeInr = feeReceivableAmount;
+          } else if (feeCurrency === "INR" && Number.isFinite(feeAmount) && feeAmount >= 0) {
+            feeInr = feeAmount;
+          } else if (feeCurrency === "USD" && effectiveUsdInrRate && Number.isFinite(feeAmount) && feeAmount >= 0) {
+            feeInr = feeAmount * effectiveUsdInrRate;
+          }
+          if (grossInr == null && receivableCurrency === "INR" && Number.isFinite(receivableAmount) && feeInr != null) {
+            grossInr = receivableAmount + feeInr;
+          }
+
+          let buyerCountry = String(
+            paypalOrder?.payment_source?.paypal?.address?.country_code ||
+            paypalOrder?.payer?.address?.country_code ||
+            unit?.shipping?.address?.country_code || ""
+          ).toUpperCase();
+
+          // PayPal's transaction reporting record is the authoritative fallback
+          // for historical payer country when the Orders response omits address.
+          if (!/^[A-Z]{2}$/.test(buyerCountry) && capture?.id && /^\d{4}-\d{2}-\d{2}$/.test(captureDate)) {
+            try {
+              const start = new Date(captureDate + "T00:00:00Z");
+              start.setUTCDate(start.getUTCDate() - 1);
+              const end = new Date(captureDate + "T23:59:59Z");
+              end.setUTCDate(end.getUTCDate() + 1);
+              const params = new URLSearchParams({
+                transaction_id: String(capture.id),
+                start_date: start.toISOString(),
+                end_date: end.toISOString(),
+                fields: "all",
+                page_size: "100",
+                page: "1"
+              });
+              const reportResponse = await fetch(paypalApiUrl("/v1/reporting/transactions?" + params.toString()), {
+                headers: { Authorization: "Bearer " + reconciliationToken }, cache: "no-store"
+              });
+              const report = await reportResponse.json() as Record<string, any>;
+              const detail = (report?.transaction_details || []).find((item: any) =>
+                String(item?.transaction_info?.transaction_id || "") === String(capture.id)
+              );
+              buyerCountry = String(detail?.payer_info?.country_code || "").toUpperCase();
+            } catch (reportError) {
+              console.warn("PayPal historical country lookup was unavailable", saved.paypal_order_id, reportError);
+            }
+          }
+          if (!/^[A-Z]{2}$/.test(buyerCountry)) buyerCountry = "";
+
+          const nowIso = new Date().toISOString();
+          const paymentId = existing?.id || crypto.randomUUID();
+          if (existing) {
+            await db.prepare(
+              "UPDATE payments SET status='completed',paypal_capture_id=?,amount=?,currency=?,original_amount=?,original_currency=?,payment_method='PayPal',gateway_name='PayPal',paypal_gross_amount_inr=COALESCE(?,paypal_gross_amount_inr),gateway_fee_amount=?,gateway_fee_currency=?,gateway_fee_inr=COALESCE(?,gateway_fee_inr),paypal_receivable_amount=?,paypal_receivable_currency=?,paypal_exchange_rate=?,paypal_exchange_source_currency=?,paypal_exchange_target_currency=?,paypal_payer_country=COALESCE(NULLIF(?,''),paypal_payer_country),sale_country=COALESCE(NULLIF(sale_country,''),NULLIF(?,'')),created_at=COALESCE(?,created_at),updated_at=? WHERE id=?"
+            ).bind(
+              String(capture.id), paidAmount, paidCurrency, paidAmount, paidCurrency,
+              grossInr, Number.isFinite(feeAmount) ? feeAmount : null, feeCurrency || null, feeInr,
+              Number.isFinite(receivableAmount) ? receivableAmount : null, receivableCurrency || null,
+              Number.isFinite(exchangeRate) && exchangeRate > 0 ? exchangeRate : null,
+              sourceCurrency || null, targetCurrency || null, buyerCountry, buyerCountry,
+              captureTime, nowIso, paymentId
+            ).run();
+          } else {
+            await db.prepare(
+              "INSERT INTO payments (id,order_id,user_id,book_id,amount,currency,status,razorpay_payment_id,razorpay_order_id,paypal_order_id,paypal_capture_id,original_amount,original_currency,payment_method,gateway_name,gateway_fee_amount,gateway_fee_currency,gateway_fee_inr,paypal_gross_amount_inr,paypal_receivable_amount,paypal_receivable_currency,paypal_exchange_rate,paypal_exchange_source_currency,paypal_exchange_target_currency,paypal_payer_country,sale_country,created_at,updated_at) " +
+              "VALUES (?,?,?,?,?,?,'completed',NULL,NULL,?,?,?,?, 'PayPal','PayPal',?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            ).bind(
+              paymentId, saved.id, saved.user_id, saved.book_id, paidAmount, paidCurrency,
+              saved.paypal_order_id, String(capture.id), paidAmount, paidCurrency,
+              Number.isFinite(feeAmount) ? feeAmount : null, feeCurrency || null, feeInr, grossInr,
+              Number.isFinite(receivableAmount) ? receivableAmount : null, receivableCurrency || null,
+              Number.isFinite(exchangeRate) && exchangeRate > 0 ? exchangeRate : null,
+              sourceCurrency || null, targetCurrency || null, buyerCountry || null, buyerCountry || null,
+              captureTime, nowIso
+            ).run();
+          }
+          await db.prepare("UPDATE orders SET status='completed',paypal_reconciliation_checked_at=?,updated_at=? WHERE id=?")
+            .bind(nowIso, nowIso, saved.id).run();
+        } else {
+          await db.prepare("UPDATE orders SET paypal_reconciliation_checked_at=? WHERE id=?")
+            .bind(new Date().toISOString(), saved.id).run();
+        }
+      } catch (reconcileError) {
+        console.error("PayPal sales reconciliation failed for order", saved.paypal_order_id, reconcileError);
+        try {
+          await db.prepare("UPDATE orders SET paypal_reconciliation_checked_at=? WHERE id=?")
+            .bind(new Date().toISOString(), saved.id).run();
+        } catch {}
+      }
+    }
+  }
+
   let sales: any[] = [];
 
   if (ids.length) {
