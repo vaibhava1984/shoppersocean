@@ -10,8 +10,8 @@ function escapeHtml(value: string) {
 
 export async function POST(req: Request) {
   try {
-    const { email, password, full_name, country, gender, city } = await req.json();
-    if (!email || !password || !full_name?.trim() || !country || !gender?.trim() || !city?.trim()) return NextResponse.json({ error: 'Full name, gender, country, city, email, and password are required' }, { status: 400 });
+    const { email, password, full_name, country, gender } = await req.json();
+    if (!email || !password || !full_name?.trim() || !country || !gender?.trim()) return NextResponse.json({ error: 'Full name, gender, country, email, and password are required' }, { status: 400 });
     if (password.length < 6) return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
 
     const { getCloudflareContext } = await import('@opennextjs/cloudflare');
@@ -20,7 +20,12 @@ export async function POST(req: Request) {
     const jwtSecret = (env as any).JWT_SECRET as string;
     const resendApiKey = (env as any).RESEND_API_KEY as string | undefined;
     const normalizedEmail = String(email).trim().toLowerCase();
-    for (const column of ["gender TEXT", "city TEXT"]) { try { await db.prepare(`ALTER TABLE users ADD COLUMN ${column}`).run(); } catch {} }
+    for (const column of ["gender TEXT", "registration_city TEXT", "registration_country TEXT"]) { try { await db.prepare(`ALTER TABLE users ADD COLUMN ${column}`).run(); } catch {} }
+    // Cloudflare supplies the visitor geolocation on the incoming Worker request.
+    // This is independent of the country value selected in the signup form.
+    const cf = (req as Request & { cf?: { city?: string; country?: string } }).cf;
+    const registrationCity = String(cf?.city || "").trim();
+    const registrationCountry = String(cf?.country || req.headers.get("cf-ipcountry") || "").trim().toUpperCase();
 
     const existing = await db.prepare('SELECT id FROM users WHERE email = ?').bind(normalizedEmail).first();
     if (existing) return NextResponse.json({ error: 'An account with this email already exists' }, { status: 409 });
@@ -29,8 +34,8 @@ export async function POST(req: Request) {
     const hashedPassword = await hashPassword(password);
     const now = new Date().toISOString();
 
-    await db.prepare('INSERT INTO users (id, email, password_hash, full_name, country, gender, city, email_confirmed, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)')
-      .bind(userId, normalizedEmail, hashedPassword, full_name.trim(), country, gender.trim(), city.trim(), now, now).run();
+    await db.prepare('INSERT INTO users (id, email, password_hash, full_name, country, gender, registration_city, registration_country, email_confirmed, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)')
+      .bind(userId, normalizedEmail, hashedPassword, full_name.trim(), country, gender.trim(), registrationCity || null, registrationCountry || null, now, now).run();
 
     let emailSent = false;
     if (resendApiKey) {
@@ -58,7 +63,7 @@ export async function POST(req: Request) {
       } catch (emailError) { console.error('Unexpected signup email error:', emailError); }
     } else console.error('RESEND_API_KEY is not configured; account was created without welcome email.');
 
-    const user = { id: userId, email: normalizedEmail, full_name: full_name.trim(), country, gender: gender.trim(), city: city.trim() };
+    const user = { id: userId, email: normalizedEmail, full_name: full_name.trim(), country, gender: gender.trim() };
     return NextResponse.json({ user, emailSent, emailConfirmed: false }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     console.error('Signup error:', error);
