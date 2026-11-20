@@ -353,7 +353,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
                         <Link className="text-blue-700 underline-offset-4 hover:underline" href={"/book/" + sale.book_id}>{sale.title}</Link>
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 font-semibold text-slate-900">{formatPrice(sale.amount, sale.currency)}</td>
-                      <td className="whitespace-nowrap px-4 py-3 text-slate-600 sm:px-5">{new Date(sale.payment_created_at || sale.updated_at || sale.created_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "medium" })}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-slate-600 sm:px-5">{new Date(sale.payment_created_at || sale.updated_at || sale.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "medium", timeZone: "Asia/Kolkata" })}</td>
                       <td className="px-4 py-3 text-slate-700 sm:px-5">{COUNTRIES.find((country) => country.code === String(sale.sale_country || sale.paypal_payer_country || sale.registration_country || "").toUpperCase())?.name || "Not available"}</td>
                     </tr>
                   ))}
