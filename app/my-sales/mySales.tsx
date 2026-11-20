@@ -64,9 +64,11 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
       const existing = await db.prepare(
         "SELECT id,paypal_capture_id,paypal_gross_amount_inr,gateway_fee_inr,paypal_payer_country FROM payments WHERE paypal_order_id=? LIMIT 1"
       ).bind(saved.paypal_order_id).first<any>();
-      const needsRepair = String(saved.status).toLowerCase() === "completed" &&
+      const completedOrder = String(saved.status).toLowerCase() === "completed";
+      const missingCaptureRecord = completedOrder && (!existing || !existing.paypal_capture_id);
+      const needsRepair = completedOrder &&
         (!existing || !existing.paypal_capture_id || existing.paypal_gross_amount_inr == null || existing.gateway_fee_inr == null || !existing.paypal_payer_country);
-      const retryWindow = needsRepair ? 15 * 60 * 1000 : 6 * 60 * 60 * 1000;
+      const retryWindow = missingCaptureRecord ? 15 * 60 * 1000 : 6 * 60 * 60 * 1000;
       if (checkedAt > Date.now() - retryWindow) continue;
 
       try {
