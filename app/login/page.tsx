@@ -80,7 +80,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
       if (error) {
         setIsSubmitting(false)
         if (error.code === "account_not_found") {
-          setErrors({ general: "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑" })
+          showDialog("No account found", "There is no account associated with this email address. Please create an account to continue.")
         } else if (error.code === "email_not_confirmed") {
           showDialog("Email confirmation required", "Your account is not signed in because your email address has not been confirmed. Please open the confirmation email sent to " + email.trim() + " and click Confirm your email before signing in.")
         } else if (error.code === "invalid_credentials") {
@@ -140,7 +140,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
   }
 
   function getAuthErrorMessage(code: string) {
-    if (code === "account_not_found") return "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑"
+    if (code === "account_not_found") return "There is no account associated with this email address. Please create an account to continue."
     if (code === "email_not_confirmed") return "Please confirm your email address and try again."
     if (code === "invalid_credentials") return "Oh dear! Either the password or the email address is incorrect. Sorry, try again 😑"
     if (code === "account_already_registered") return "An account with this email already exists. Please sign in or use a different email address."
