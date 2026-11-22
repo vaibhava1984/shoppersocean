@@ -131,8 +131,10 @@ export default function Login({ searchParams }: { searchParams: any }) {
         return
       }
 
-      showDialog(data.emailSent ? "Check your email" : "Account created — email needs attention", data.emailSent ? "Your account has been created, but you are not signed in yet. Please open the confirmation email we sent to " + email.trim() + " and click Confirm your email. You can sign in only after confirming your address." : "Your account has been created, but we could not send the confirmation email. Please contact Shoppers Ocean support before trying to sign in. Your account is not signed in yet.")
-      setIsSignIn(true)
+      showDialog(data.emailSent ? "Account created successfully" : "Account created — email needs attention", data.emailSent ? "Your account has been created. Please check your email to confirm your address. Taking you to the homepage..." : "Your account has been created, but we could not send the confirmation email. Please contact Shoppers Ocean support. Taking you to the homepage...")
+      window.setTimeout(() => {
+        window.location.replace("/")
+      }, 1400)
     } catch (error: any) {
       setIsSubmitting(false)
       setErrors({ general: error?.message || "An error occurred during sign up. Please try again." })
