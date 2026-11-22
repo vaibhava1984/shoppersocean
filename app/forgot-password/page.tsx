@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,6 +40,7 @@ export default function ForgotPasswordPage() {
           title: 'Password reset link sent',
           description: 'The password reset link has been sent to ' + email.trim() + '. Please check your inbox and spam folder. The link will expire in one hour.',
         });
+        window.setTimeout(() => router.replace('/'), 1200);
       } else {
         setError('We could not confirm that the reset email was sent. Please try again.');
       }
