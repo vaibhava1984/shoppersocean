@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     ).bind(email).first<{ id: string; email: string; full_name: string | null }>();
 
     if (!user) {
-      return NextResponse.json({ success: true }, { headers: { 'Cache-Control': 'no-store' } });
+      return NextResponse.json({ success: true, accountExists: false }, { headers: { 'Cache-Control': 'no-store' } });
     }
 
     const resetToken = await createJwt(
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Shoppers Ocean <noreply@shoppersocean.com>',
+        from: 'no-reply@shoppersocean.com',
         to: [user.email],
         subject: 'Password Reset - Shoppers Ocean',
         html: '<div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:20px;">' +
@@ -70,7 +70,7 @@ export async function POST(req: Request) {
       });
     }
 
-    return NextResponse.json({ success: true }, { headers: { 'Cache-Control': 'no-store' } });
+    return NextResponse.json({ success: true, accountExists: true, emailSent: true }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     console.error('Request reset error:', error);
     return NextResponse.json({ error: 'Failed to send reset email' }, { status: 500 });
