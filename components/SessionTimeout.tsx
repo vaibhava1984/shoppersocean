@@ -15,6 +15,9 @@ export default function SessionTimeout() {
 
   useEffect(() => {
     let checkInProgress = false;
+    // A running game is an active session even when its input is handled
+    // inside an iframe rather than by the top-level document.
+    let activeGameOpen = false;
 
     const readActivity = (): ActivityRecord | null => {
       try {
@@ -54,7 +57,7 @@ export default function SessionTimeout() {
     };
 
     const checkTimeout = async () => {
-      if (checkInProgress || document.visibilityState !== "visible") return;
+      if (checkInProgress || activeGameOpen || document.visibilityState !== "visible") return;
       checkInProgress = true;
       try {
         const response = await fetch("/api/auth/me", {
@@ -77,7 +80,9 @@ export default function SessionTimeout() {
         }
 
         if (Date.now() - activity.at >= IDLE_LIMIT_MS) {
-          await logoutForInactivity();
+          // Re-check the game flag immediately before signing out. A game may
+          // have opened while the /api/auth/me request was in flight.
+          if (!activeGameOpen) await logoutForInactivity();
         }
       } catch {
         // Network failures must not reset the inactivity clock.
@@ -92,6 +97,16 @@ export default function SessionTimeout() {
       if (activity?.userId) writeActivity(activity.userId);
     };
 
+    const onGameVisibility = (event: Event) => {
+      const wasOpen = activeGameOpen;
+      activeGameOpen = Boolean((event as CustomEvent<{ open?: boolean }>).detail?.open);
+      const activity = readActivity();
+      if (activity?.userId && (activeGameOpen || wasOpen)) {
+        // Refresh the idle clock when a game starts and when it closes.
+        writeActivity(activity.userId, true);
+      }
+    };
+
     const activityEvents = [
       "click", "keydown", "mousemove", "scroll", "touchstart",
       "pointerdown", "input", "change"
@@ -99,8 +114,9 @@ export default function SessionTimeout() {
     activityEvents.forEach(event =>
       window.addEventListener(event, recordActivity, { passive: true })
     );
+    window.addEventListener("shoppers-ocean:game-visibility", onGameVisibility);
 
-    // Embedded same-origin games report real player input through this shared
+    // Embedded same-origin games may also report player input through this
     // message contract. Accept messages only from an iframe actually embedded
     // on this page, so unrelated windows cannot keep the session alive.
     const onEmbeddedFrameActivity = (event: MessageEvent) => {
@@ -134,6 +150,7 @@ export default function SessionTimeout() {
 
     return () => {
       activityEvents.forEach(event => window.removeEventListener(event, recordActivity));
+      window.removeEventListener("shoppers-ocean:game-visibility", onGameVisibility);
       window.removeEventListener("message", onEmbeddedFrameActivity);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.clearInterval(timer);
