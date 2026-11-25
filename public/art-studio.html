@@ -57,7 +57,31 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
 @keyframes dsf{to{transform:translateY(40px) scale(1.08)}}
 @media(prefers-reduced-motion:reduce){#drawingStudio::before,#drawingStudio::after{animation:none}}
 @media(max-width:600px){#drawingStudio .logo,#drawingStudio .vol,#drawingStudio .xpbar{display:none}#drawingStudio .rail{width:48px;padding:4px}#drawingStudio{padding:5px;gap:5px}#drawingStudio .cell{padding:8px}#drawingStudio input[type=range]{width:80px}}
-\n/* Drawing Studio mobile-first HD redesign */\n#drawingStudio{height:var(--ds-h,100dvh);min-height:520px;gap:7px;padding:8px}\n#drawingStudio header{min-height:48px;flex-wrap:nowrap}\n#drawingStudio .mis{min-height:34px}\n#drawingStudio .studio-main{flex:1;min-height:0;display:flex;flex-direction:column;gap:7px;overflow:hidden}\n#drawingStudio .toolrail{width:100%;max-height:112px;flex:none;display:flex;flex-direction:row;flex-wrap:wrap;align-content:flex-start;gap:7px;padding:7px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}\n#drawingStudio .toolrail button{width:auto;min-width:62px;min-height:48px;padding:5px 8px;display:flex;flex-direction:column;justify-content:center;gap:2px;border-radius:12px}\n#drawingStudio .toolrail i{font-size:19px;line-height:1.1}\n#drawingStudio .toolrail small{font-size:10px;font-weight:700}\n#drawingStudio .palettebar{flex:none;min-height:62px;display:flex;align-items:center;gap:8px;padding:6px 9px;overflow:hidden}\n#drawingStudio .pal{min-width:0;grid-auto-flow:row;grid-template-rows:repeat(2,28px);grid-auto-columns:28px;grid-template-columns:repeat(auto-fill,28px);overflow-x:auto;overflow-y:hidden;max-height:64px}\n#drawingStudio .sw{width:27px;height:27px}\n#drawingStudio .ctl{flex:none;flex-direction:row;gap:8px}\n#drawingStudio input[type=range].size{width:90px}\n#drawingStudio .zoomctl{display:flex;align-items:center;gap:5px;flex:none}\n#drawingStudio .zoomctl button{padding:5px 10px;font-size:18px}\n#drawingStudio .zoomlabel{font-size:11px;min-width:34px;text-align:center}\n#drawingStudio .cell{flex:1;min-height:0;min-width:0;display:block;overflow:auto;overscroll-behavior:contain;padding:8px;touch-action:pan-x pan-y}\n#drawingStudio .stage{width:100%;max-width:none;aspect-ratio:var(--ar,1.6);height:auto;margin:0 auto;overflow:hidden;border-radius:10px;box-shadow:0 0 0 5px #f7d17b,0 0 0 8px #8a5516,0 18px 35px #000a}\n#drawingStudio .stage canvas{touch-action:none}\n#drawingStudio .fx{cursor:crosshair}\n#drawingStudio .toolrail button.on{background:linear-gradient(145deg,#fff2b5,#ff9a35);box-shadow:0 3px 0 #b95a0e,0 6px 12px #0005}\n@media(max-width:600px){#drawingStudio{padding:5px;gap:5px;min-height:460px}#drawingStudio .studio-main{gap:5px}#drawingStudio .toolrail{max-height:106px;gap:5px;padding:5px}#drawingStudio .toolrail button{min-width:54px;min-height:44px;padding:4px 6px}#drawingStudio .toolrail small{font-size:9px}#drawingStudio .palettebar{min-height:56px;padding:4px 6px;gap:5px}#drawingStudio .pal{grid-template-rows:repeat(2,23px);grid-auto-columns:23px;grid-template-columns:repeat(auto-fill,23px);gap:4px}#drawingStudio .sw{width:22px;height:22px}#drawingStudio input[type=range].size{width:62px}#drawingStudio .zoomctl{gap:3px}#drawingStudio .zoomctl button{padding:4px 8px}}\n</style>
+
+/* Drawing Studio mobile-first HD redesign */
+#drawingStudio{height:var(--ds-h,100dvh);min-height:520px;gap:7px;padding:8px}
+#drawingStudio header{min-height:48px;flex-wrap:nowrap}
+#drawingStudio .mis{min-height:34px}
+#drawingStudio .studio-main{flex:1;min-height:0;display:flex;flex-direction:column;gap:7px;overflow:hidden}
+#drawingStudio .toolrail{width:100%;max-height:112px;flex:none;display:flex;flex-direction:row;flex-wrap:wrap;align-content:flex-start;gap:7px;padding:7px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
+#drawingStudio .toolrail button{width:auto;min-width:62px;min-height:48px;padding:5px 8px;display:flex;flex-direction:column;justify-content:center;gap:2px;border-radius:12px}
+#drawingStudio .toolrail i{font-size:19px;line-height:1.1}
+#drawingStudio .toolrail small{font-size:10px;font-weight:700}
+#drawingStudio .palettebar{flex:none;min-height:62px;display:flex;align-items:center;gap:8px;padding:6px 9px;overflow:hidden}
+#drawingStudio .pal{min-width:0;grid-auto-flow:column;grid-template-rows:repeat(2,28px);grid-auto-columns:28px;overflow-x:auto;overflow-y:hidden;max-height:64px}
+#drawingStudio .sw{width:27px;height:27px}
+#drawingStudio .ctl{flex:none;flex-direction:row;gap:8px}
+#drawingStudio input[type=range].size{width:90px}
+#drawingStudio .zoomctl{display:flex;align-items:center;gap:5px;flex:none}
+#drawingStudio .zoomctl button{padding:5px 10px;font-size:18px}
+#drawingStudio .zoomlabel{font-size:11px;min-width:34px;text-align:center}
+#drawingStudio .cell{flex:1;min-height:0;min-width:0;display:block;overflow:auto;overscroll-behavior:contain;padding:8px;touch-action:pan-x pan-y}
+#drawingStudio .stage{width:100%;max-width:none;aspect-ratio:var(--ar,1.6);height:auto;margin:0 auto;overflow:hidden;border-radius:10px;box-shadow:0 0 0 5px #f7d17b,0 0 0 8px #8a5516,0 18px 35px #000a}
+#drawingStudio .stage canvas{touch-action:none}
+#drawingStudio .fx{cursor:crosshair}
+#drawingStudio .toolrail button.on{background:linear-gradient(145deg,#fff2b5,#ff9a35);box-shadow:0 3px 0 #b95a0e,0 6px 12px #0005}
+@media(max-width:600px){#drawingStudio{padding:5px;gap:5px;min-height:460px}#drawingStudio .studio-main{gap:5px}#drawingStudio .toolrail{max-height:106px;gap:5px;padding:5px}#drawingStudio .toolrail button{min-width:54px;min-height:44px;padding:4px 6px}#drawingStudio .toolrail small{font-size:9px}#drawingStudio .palettebar{min-height:56px;padding:4px 6px;gap:5px}#drawingStudio .pal{grid-auto-flow:column;grid-template-rows:repeat(2,23px);grid-auto-columns:23px;gap:4px}#drawingStudio .sw{width:22px;height:22px}#drawingStudio input[type=range].size{width:62px}#drawingStudio .zoomctl{gap:3px}#drawingStudio .zoomctl button{padding:4px 8px}}
+</style>
 </head>
 <body>
 
@@ -108,7 +132,11 @@ const base=q('.base'),draw=q('.draw'),fx=q('.fx');
 [base,draw,fx].forEach(c=>{c.width=W;c.height=H});
 const bx=base.getContext('2d'),dx=draw.getContext('2d',{willReadFrequently:true}),fc=fx.getContext('2d');
 
-let tool='pencil',color='#e4572e',size=8,solid=false,outline=null,zoom=1;\nconst cell=q('.cell'),stage=q('.stage');\nfunction applyZoom(){stage.style.width=(100*zoom)+'%';stage.style.setProperty('--zoom',zoom);q('.zoomlabel').textContent=Math.round(zoom*100)+'%'}\nq('.zoomin').onclick=()=>{zoom=Math.min(2.5,+(zoom+.2).toFixed(2));applyZoom()};\nq('.zoomout').onclick=()=>{zoom=Math.max(1,+(zoom-.2).toFixed(2));applyZoom()};
+let tool='pencil',color='#e4572e',size=8,solid=false,outline=null,zoom=1;
+const cell=q('.cell'),stage=q('.stage');
+function applyZoom(){stage.style.width=(100*zoom)+'%';stage.style.setProperty('--zoom',zoom);q('.zoomlabel').textContent=Math.round(zoom*100)+'%'}
+q('.zoomin').onclick=()=>{zoom=Math.min(2.5,+(zoom+.2).toFixed(2));applyZoom()};
+q('.zoomout').onclick=()=>{zoom=Math.max(1,+(zoom-.2).toFixed(2));applyZoom()};
 let down=false,start,last,mid,sprayT,undo=[],redo=[],panning=false,panOrigin=null;
 
 /* ---------- colouring book ---------- */
@@ -200,7 +228,9 @@ function style(c){
   c.strokeStyle=c.fillStyle=color;
   if(tool==='pencil'){c.lineWidth=Math.max(1.5,size*.5);c.globalAlpha=.95}
   else if(tool==='marker')c.lineWidth=size*2;
-  else if(tool==='brush'){c.lineWidth=size*1.5;c.shadowColor=color;c.shadowBlur=size*.9;c.globalAlpha=.9}\n  else if(tool==='watercolor'){c.lineWidth=size*3.2;c.shadowColor=color;c.shadowBlur=size*1.8;c.globalAlpha=.16}\n  else if(tool==='glitter'){c.lineWidth=size;c.shadowColor=color;c.shadowBlur=size*2;c.globalAlpha=.95}
+  else if(tool==='brush'){c.lineWidth=size*1.5;c.shadowColor=color;c.shadowBlur=size*.9;c.globalAlpha=.9}
+  else if(tool==='watercolor'){c.lineWidth=size*3.2;c.shadowColor=color;c.shadowBlur=size*1.8;c.globalAlpha=.16}
+  else if(tool==='glitter'){c.lineWidth=size;c.shadowColor=color;c.shadowBlur=size*2;c.globalAlpha=.95}
   else if(tool==='eraser'){c.globalCompositeOperation='destination-out';c.lineWidth=size*2.5;c.strokeStyle='#000'}
   else c.lineWidth=Math.max(2,size*.7);
 }
@@ -269,7 +299,8 @@ fx.addEventListener('pointermove',e=>{
   });
 });
 function end(e){
-  if(panning){panning=false;panOrigin=null;return}\n  if(!down)return;down=false;clearInterval(sprayT);award(isShape(tool)?3:1);
+  if(panning){panning=false;panOrigin=null;return}
+  if(!down)return;down=false;clearInterval(sprayT);award(isShape(tool)?3:1);
   if(isShape(tool)){style(dx);shape(dx,tool,start,pos(e))}
   else if(tool==='bubble'){dx.globalCompositeOperation='source-over';dx.drawImage(fx,0,0)}else if(tool==='marker'){dx.globalCompositeOperation='source-over';dx.globalAlpha=.55;dx.drawImage(fx,0,0);dx.globalAlpha=1}
   fc.clearRect(0,0,W,H);dx.globalCompositeOperation='source-over';dx.shadowBlur=0;dx.globalAlpha=1;
