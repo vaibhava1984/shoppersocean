@@ -281,13 +281,14 @@ function floodFill(p){
 }
 fx.addEventListener('pointerdown',e=>{
   if(e.button>0)return;e.preventDefault();fx.setPointerCapture(e.pointerId);
-  const p=pos(e);push();
+  const p=pos(e);if(tool!=='pan')push();
   if(tool==='fill'){floodFill(p);award(5);blip(520,.15);return}
   down=true;start=last=mid=p;fx.style.opacity=tool==='marker'?.55:1;
   if(tool==='spray'||tool==='glitter'){spray(p);sprayT=setInterval(()=>spray(last),18)}
   else if(tool==='bubble'){pts=[p];bub()}else if(tool==='pan'){panning=true;panOrigin={x:e.clientX,y:e.clientY,left:cell.scrollLeft,top:cell.scrollTop};return}else if(!isShape(tool)){const c=tool==='marker'?fc:dx;style(c);c.beginPath();c.moveTo(p.x,p.y);c.lineTo(p.x+.01,p.y);c.stroke()}
 });
 fx.addEventListener('pointermove',e=>{
+  if(panning&&panOrigin){cell.scrollLeft=panOrigin.left-(e.clientX-panOrigin.x);cell.scrollTop=panOrigin.top-(e.clientY-panOrigin.y);return}
   if(!down)return;
   if(isShape(tool)){fc.clearRect(0,0,W,H);style(fc);shape(fc,tool,start,pos(e));return}
   if(tool==='bubble'){pts.push(pos(e));bub();return}
@@ -299,7 +300,7 @@ fx.addEventListener('pointermove',e=>{
   });
 });
 function end(e){
-  if(panning){panning=false;panOrigin=null;return}
+  if(panning){panning=false;panOrigin=null;down=false;return}
   if(!down)return;down=false;clearInterval(sprayT);award(isShape(tool)?3:1);
   if(isShape(tool)){style(dx);shape(dx,tool,start,pos(e))}
   else if(tool==='bubble'){dx.globalCompositeOperation='source-over';dx.drawImage(fx,0,0)}else if(tool==='marker'){dx.globalCompositeOperation='source-over';dx.globalAlpha=.55;dx.drawImage(fx,0,0);dx.globalAlpha=1}
