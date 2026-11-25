@@ -96,7 +96,7 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
 #drawingStudio .toolrail small{font-size:9px;line-height:1.05;white-space:normal;text-align:center}
 #drawingStudio .palettebar{min-height:54px}
 #drawingStudio .cell{overflow:auto;display:block;touch-action:pan-y pan-x;-webkit-overflow-scrolling:touch;padding:8px}
-#drawingStudio .stage{width:100%;height:auto;min-height:calc(100% + 160px);aspect-ratio:var(--ar,1.6);margin:0 auto;touch-action:none}
+#drawingStudio .stage{width:100%;height:auto;aspect-ratio:var(--ar,1.6);margin:0 auto;touch-action:none}
 #drawingStudio .startscreen{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:linear-gradient(145deg,#160c35dd,#351477eF);backdrop-filter:blur(12px);padding:20px}
 #drawingStudio .startscreen.hidden{display:none}
 #drawingStudio .startcard{width:min(100%,330px);padding:28px 22px;text-align:center;border:1px solid #ffffff66;border-radius:26px;background:linear-gradient(145deg,#ffffff35,#ffffff12);box-shadow:0 22px 60px #0009,inset 0 1px 0 #ffffff77}
@@ -151,7 +151,6 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
       <button data-tool="fill" title="3D Fill"><i>🪣</i><small>3D Fill</small></button>
       <button data-tool="eraser" title="Eraser"><i>🧽</i><small>Eraser</small></button>
       <button data-tool="pan" title="Move canvas"><i>✋</i><small>Move</small></button>
-      <button class="solid" title="Raised paint effect"><i>🧊</i><small>Raised Paint</small></button>
       <button class="paper" title="Dark paper"><i>🌙</i><small>Paper</small></button>
       <button class="clear" title="Clear canvas"><i>🗑️</i><small>Clear</small></button>
       <button class="bk" title="Colouring book"><i>📖</i><small>Colouring Book</small></button>
@@ -328,6 +327,9 @@ const startScreen=q('.startscreen');
 function setRunning(on){
   started=true;paused=!on;
   startScreen.classList.toggle('hidden',on);
+  q('.startcard h2').textContent=on?'Drawing Studio':'Paused';
+  q('.startcard p').textContent=on?'Your creative space is ready.':'Your artwork is safe. Resume whenever you are ready.';
+  q('.bigstart').textContent=on?'▶ Start Drawing':'▶ Resume Drawing';
   q('.startbtn').textContent=on?'▶ Started':'▶ Resume';
   q('.pausebtn').disabled=!on;
   q('.pausebtn').textContent=on?'Ⅱ Pause':'Ⅱ Paused';
