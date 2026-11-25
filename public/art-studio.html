@@ -81,6 +81,46 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
 #drawingStudio .fx{cursor:crosshair}
 #drawingStudio .toolrail button.on{background:linear-gradient(145deg,#fff2b5,#ff9a35);box-shadow:0 3px 0 #b95a0e,0 6px 12px #0005}
 @media(max-width:600px){#drawingStudio{padding:5px;gap:5px;min-height:460px}#drawingStudio .studio-main{gap:5px}#drawingStudio .toolrail{max-height:106px;gap:5px;padding:5px}#drawingStudio .toolrail button{min-width:54px;min-height:44px;padding:4px 6px}#drawingStudio .toolrail small{font-size:9px}#drawingStudio .palettebar{min-height:56px;padding:4px 6px;gap:5px}#drawingStudio .pal{grid-auto-flow:column;grid-template-rows:repeat(2,23px);grid-auto-columns:23px;gap:4px}#drawingStudio .sw{width:22px;height:22px}#drawingStudio input[type=range].size{width:62px}#drawingStudio .zoomctl{gap:3px}#drawingStudio .zoomctl button{padding:4px 8px}}
+
+/* Corrected studio controls, start/pause flow and touch navigation */
+#drawingStudio{gap:6px;padding:7px}
+#drawingStudio .studio-header{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;min-height:46px;padding:6px}
+#drawingStudio .studio-header .logo{margin-right:auto;align-self:center}
+#drawingStudio .studio-header button{padding:7px 10px;font-size:12px}
+#drawingStudio .studio-header .startbtn{background:linear-gradient(145deg,#b7ffd3,#2acb83);box-shadow:0 3px 0 #087746}
+#drawingStudio .studio-header .pausebtn{background:linear-gradient(145deg,#ffe1a6,#ff9b43);box-shadow:0 3px 0 #a94b0c}
+#drawingStudio .studio-header .dl{background:linear-gradient(145deg,#b5e5ff,#398fe8);box-shadow:0 3px 0 #1f5aa8}
+#drawingStudio .toolrail{max-height:none;overflow:visible;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:repeat(2,46px);gap:5px;align-content:center}
+#drawingStudio .toolrail button{width:100%;min-width:0;height:44px;min-height:0;padding:3px 2px;display:flex;align-items:center;justify-content:center;gap:1px}
+#drawingStudio .toolrail i{font-size:17px}
+#drawingStudio .toolrail small{font-size:9px;line-height:1.05;white-space:normal;text-align:center}
+#drawingStudio .palettebar{min-height:54px}
+#drawingStudio .cell{overflow:auto;display:block;touch-action:pan-y pan-x;-webkit-overflow-scrolling:touch;padding:8px}
+#drawingStudio .stage{width:100%;height:auto;min-height:calc(100% + 160px);aspect-ratio:var(--ar,1.6);margin:0 auto;touch-action:none}
+#drawingStudio .startscreen{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:linear-gradient(145deg,#160c35dd,#351477eF);backdrop-filter:blur(12px);padding:20px}
+#drawingStudio .startscreen.hidden{display:none}
+#drawingStudio .startcard{width:min(100%,330px);padding:28px 22px;text-align:center;border:1px solid #ffffff66;border-radius:26px;background:linear-gradient(145deg,#ffffff35,#ffffff12);box-shadow:0 22px 60px #0009,inset 0 1px 0 #ffffff77}
+#drawingStudio .starticon{font-size:52px;filter:drop-shadow(0 8px 8px #0008)}
+#drawingStudio .startcard h2{font-size:25px;margin:10px 0 5px}
+#drawingStudio .startcard p{opacity:.85;margin:0 0 20px}
+#drawingStudio .bigstart{font-size:17px;font-weight:800;padding:13px 24px;background:linear-gradient(145deg,#c6ffe0,#28cb84);box-shadow:0 5px 0 #087746,0 12px 22px #0005}
+@media(max-width:600px){
+ #drawingStudio{padding:5px;gap:5px;min-height:460px}
+ #drawingStudio .studio-header{min-height:76px;gap:4px;padding:5px}
+ #drawingStudio .studio-header .logo{width:100%;text-align:center;font-size:14px;margin:0}
+ #drawingStudio .studio-header button{padding:6px 8px;font-size:11px}
+ #drawingStudio .studio-header .vol{display:none}
+ #drawingStudio .toolrail{grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:repeat(2,42px);gap:4px;padding:5px}
+ #drawingStudio .toolrail button{height:40px}
+ #drawingStudio .toolrail i{font-size:16px}
+ #drawingStudio .toolrail small{font-size:8px}
+ #drawingStudio .palettebar{min-height:52px;padding:4px;gap:4px}
+ #drawingStudio .pal{grid-template-rows:repeat(2,21px);grid-auto-columns:21px;gap:3px}
+ #drawingStudio .sw{width:20px;height:20px}
+ #drawingStudio .ctl{gap:4px}
+ #drawingStudio input[type=range].size{width:54px}
+ #drawingStudio .zoomctl button{padding:3px 6px}
+}
 </style>
 </head>
 <body>
@@ -88,15 +128,16 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
 <!-- ===== ART STUDIO PRO: copy from here to the end marker to embed ===== -->
 <div id="drawingStudio">
   <div class="toast"></div>
-  <header>
-    <b class="logo">🎨 Art Studio</b>
-    <div class="lvl">Lv <b class="lv">1</b><div class="xpbar"><i></i></div>⭐<b class="stars">0</b></div>
-    <button class="undo" disabled title="Undo">↶</button><button class="redo" disabled title="Redo">↷</button>
-    <span class="sp"></span>
-    <button class="mbtn" title="Music">🎵</button><input type="range" class="vol" min="0" max="100" value="50" aria-label="Music volume">
-    <button class="save" title="Save as PNG">💾 Save</button><button class="dl" title="Download as JPG">⬇ Download</button>
+  <header class="studio-header">
+    <b class="logo">🎨 Drawing Studio</b>
+    <button class="undo" disabled title="Undo">↶ Undo</button>
+    <button class="redo" disabled title="Redo">↷ Redo</button>
+    <button class="mbtn" title="Music on/off">🔇</button>
+    <input type="range" class="vol" min="0" max="100" value="35" aria-label="Music volume">
+    <button class="startbtn" type="button">▶ Start</button>
+    <button class="pausebtn" type="button" disabled>Ⅱ Pause</button>
+    <button class="dl" title="Download artwork">⬇ Download</button>
   </header>
-  <div class="mis"><span class="mtxt"></span><button class="mnew">🎯</button><button class="mdone">✅</button></div>
   <main class="studio-main">
     <nav class="rail toolrail" aria-label="Drawing tools">
       <button data-tool="pencil" title="Pencil"><i>✏️</i><small>Pencil</small></button>
@@ -105,11 +146,12 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
       <button data-tool="watercolor" title="Watercolour"><i>🎨</i><small>Watercolour</small></button>
       <button data-tool="spray" title="Airbrush"><i>💨</i><small>Airbrush</small></button>
       <button data-tool="glitter" title="Glitter"><i>✨</i><small>Glitter</small></button>
-      <button data-tool="bubble" title="3D Puff"><i>🫧</i><small>3D Puff</small></button>
+      <button data-tool="bubble" title="3D Puff Brush"><i>🫧</i><small>3D Puff</small></button>
+      <button data-tool="depth" title="3D Sculpt Brush"><i>🖋️</i><small>3D Sculpt</small></button>
       <button data-tool="fill" title="3D Fill"><i>🪣</i><small>3D Fill</small></button>
       <button data-tool="eraser" title="Eraser"><i>🧽</i><small>Eraser</small></button>
       <button data-tool="pan" title="Move canvas"><i>✋</i><small>Move</small></button>
-      <button class="solid" title="3D depth effect"><i>🧊</i><small>3D Depth</small></button>
+      <button class="solid" title="Raised paint effect"><i>🧊</i><small>Raised Paint</small></button>
       <button class="paper" title="Dark paper"><i>🌙</i><small>Paper</small></button>
       <button class="clear" title="Clear canvas"><i>🗑️</i><small>Clear</small></button>
       <button class="bk" title="Colouring book"><i>📖</i><small>Colouring Book</small></button>
@@ -121,6 +163,7 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
     </footer>
     <div class="cell"><div class="stage"><canvas class="base"></canvas><canvas class="draw"></canvas><canvas class="fx"></canvas></div></div>
   </main>
+  <div class="startscreen"><div class="startcard"><div class="starticon">🎨</div><h2>Drawing Studio</h2><p>Your creative space is ready.</p><button class="bigstart" type="button">▶ Start Drawing</button></div></div>
   <div class="modal" hidden><div class="sheet"><h2>📖 Colouring Book</h2><div class="book"></div><button class="close">Close</button></div></div>
 </div>
 <script>
@@ -228,7 +271,8 @@ function style(c){
   c.strokeStyle=c.fillStyle=color;
   if(tool==='pencil'){c.lineWidth=Math.max(1.5,size*.5);c.globalAlpha=.95}
   else if(tool==='marker')c.lineWidth=size*2;
-  else if(tool==='brush'){c.lineWidth=size*1.5;c.shadowColor=color;c.shadowBlur=size*.9;c.globalAlpha=.9}
+  else if(tool==='brush'){c.lineWidth=size*1.7;c.shadowColor=color;c.shadowBlur=size*1.1;c.globalAlpha=.92}
+  else if(tool==='depth'){c.lineWidth=size*2.1;c.shadowColor=shade(color,-.45);c.shadowBlur=size*1.7;c.globalAlpha=1}
   else if(tool==='watercolor'){c.lineWidth=size*3.2;c.shadowColor=color;c.shadowBlur=size*1.8;c.globalAlpha=.16}
   else if(tool==='glitter'){c.lineWidth=size;c.shadowColor=color;c.shadowBlur=size*2;c.globalAlpha=.95}
   else if(tool==='eraser'){c.globalCompositeOperation='destination-out';c.lineWidth=size*2.5;c.strokeStyle='#000'}
@@ -279,10 +323,37 @@ function floodFill(p){
     for(let j=0;j<3;j++)d[i+j]=s<0?C[j]*(1+s):C[j]+(255-C[j])*s;d[i+3]=255}
   dx.putImageData(dst,0,0);
 }
+let started=false,paused=false;
+const startScreen=q('.startscreen');
+function setRunning(on){
+  started=true;paused=!on;
+  startScreen.classList.toggle('hidden',on);
+  q('.startbtn').textContent=on?'▶ Started':'▶ Resume';
+  q('.pausebtn').disabled=!on;
+  q('.pausebtn').textContent=on?'Ⅱ Pause':'Ⅱ Paused';
+  fx.style.pointerEvents=on?'auto':'none';
+  if(on){if(musicOn)startMusic()}else stopMusic();
+}
+q('.startbtn').onclick=()=>setRunning(true);
+q('.bigstart').onclick=()=>setRunning(true);
+q('.pausebtn').onclick=()=>{if(!started)return;setRunning(false)};
+function drawDepthSegment(c,a,b,p,w){
+  c.save();c.lineCap=c.lineJoin='round';
+  const stroke=(col,width,blur,ox,oy,alpha=1)=>{
+    c.beginPath();c.moveTo(a.x+ox,a.y+oy);c.quadraticCurveTo((a.x+b.x)/2,(a.y+b.y)/2,p.x+ox,p.y+oy);
+    c.strokeStyle=col;c.lineWidth=width;c.shadowColor=col;c.shadowBlur=blur;c.globalAlpha=alpha;c.stroke();
+  };
+  stroke(shade(color,-.58),w*2.25,w*.9,w*.12,w*.22,.95);
+  stroke(shade(color,-.2),w*1.85,w*.35,0,w*.08,1);
+  stroke(color,w*1.5,w*.25,0,0,1);
+  stroke(shade(color,.5),w*.42,w*.2,-w*.13,-w*.16,.95);
+  c.restore();
+}
 fx.addEventListener('pointerdown',e=>{
-  if(e.button>0)return;e.preventDefault();fx.setPointerCapture(e.pointerId);
+  if(!started||paused||e.button>0)return;e.preventDefault();fx.setPointerCapture(e.pointerId);
   const p=pos(e);if(tool!=='pan')push();
-  if(tool==='fill'){floodFill(p);award(5);blip(520,.15);return}
+  if(!started||paused)return;
+  if(tool==='fill'){floodFill(p);blip(520,.15);return}
   down=true;start=last=mid=p;fx.style.opacity=tool==='marker'?.55:1;
   if(tool==='spray'||tool==='glitter'){spray(p);sprayT=setInterval(()=>spray(last),18)}
   else if(tool==='bubble'){pts=[p];bub()}else if(tool==='pan'){panning=true;panOrigin={x:e.clientX,y:e.clientY,left:cell.scrollLeft,top:cell.scrollTop};return}else if(!isShape(tool)){const c=tool==='marker'?fc:dx;style(c);c.beginPath();c.moveTo(p.x,p.y);c.lineTo(p.x+.01,p.y);c.stroke()}
@@ -296,12 +367,12 @@ fx.addEventListener('pointermove',e=>{
     const p=pos(ev);
     if(tool==='spray'||tool==='glitter'){last=p;spray(p);return}
     const m={x:(last.x+p.x)/2,y:(last.y+p.y)/2},c=tool==='marker'?fc:dx;
-    style(c);seg(c,mid,last,m);mid=m;last=p;
+    if(tool==='depth')drawDepthSegment(c,mid,last,p,size);else{style(c);seg(c,mid,last,m)}mid=m;last=p;
   });
 });
 function end(e){
   if(panning){panning=false;panOrigin=null;down=false;return}
-  if(!down)return;down=false;clearInterval(sprayT);award(isShape(tool)?3:1);
+  if(!down)return;down=false;clearInterval(sprayT);
   if(isShape(tool)){style(dx);shape(dx,tool,start,pos(e))}
   else if(tool==='bubble'){dx.globalCompositeOperation='source-over';dx.drawImage(fx,0,0)}else if(tool==='marker'){dx.globalCompositeOperation='source-over';dx.globalAlpha=.55;dx.drawImage(fx,0,0);dx.globalAlpha=1}
   fc.clearRect(0,0,W,H);dx.globalCompositeOperation='source-over';dx.shadowBlur=0;dx.globalAlpha=1;
@@ -322,16 +393,9 @@ function bub(){
 let xp=0;
 const MIS=['Draw a sunny day','Colour the cat','Paint a rainbow','Colour the butterfly','Draw a house with a heart','Make a puffy cloud','Colour the robot','Draw a night sky full of stars','Draw your favourite animal'];
 const toast=m=>{const e=q('.toast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)};
-function award(n){
-  const l0=1+xp/25|0;xp+=n;const l=1+xp/25|0;
-  q('.stars').textContent=xp;q('.lv').textContent=l;q('.xpbar i').style.width=(xp%25)*4+'%';
-  if(l>l0){toast('🎉 Level '+l+'!');[72,76,79,84].forEach((m,i)=>blip(440*2**((m-69)/12),.3,i*.12))}
-}
-q('.mnew').onclick=()=>q('.mtxt').textContent='Mission: '+MIS[Math.random()*MIS.length|0];
-q('.mdone').onclick=()=>{award(10);toast('⭐ Mission complete! +10');q('.mnew').click()};
-q('.mnew').click();
+function award(){ /* Drawing Studio has no levels or score system. */ }
 /* ---------- music & sound (generated live, no audio files) ---------- */
-let ac,mg,musicOn=true,run=false,tm,nt=0,st=0;
+let ac,mg,musicOn=false,run=false,tm,nt=0,st=0;
 const CH=[[48,[0,4,7]],[45,[0,3,7]],[41,[0,4,7]],[43,[0,4,7]]],PENT=[0,2,4,7,9];
 function initAudio(){
   if(ac)return;ac=new(window.AudioContext||window.webkitAudioContext)();
@@ -361,8 +425,8 @@ function blip(f,d,w=0){
   o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+d);
   o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d);
 }
-root.addEventListener('pointerdown',()=>{if(musicOn)startMusic()});
-q('.mbtn').onclick=e=>{musicOn=!musicOn;musicOn?startMusic():stopMusic();e.target.textContent=musicOn?'🎵':'🔇'};
+
+q('.mbtn').onclick=e=>{musicOn=!musicOn;if(musicOn&&started&&!paused)startMusic();else stopMusic();e.target.textContent=musicOn?'🎵':'🔇'};
 q('.vol').oninput=e=>{initAudio();mg.gain.value=e.target.value/100};
 fx.addEventListener('contextmenu',e=>e.preventDefault());
 })();
