@@ -45,13 +45,13 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
   return (
     <div ref={menuRef} className="mx-auto mt-3 w-full max-w-3xl px-1 pb-8">
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
-        <button type="button" onClick={() => toggle("genre")} aria-expanded={open === "genre"} className="min-h-[42px] rounded-lg border border-red-400 bg-red-600 px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-white shadow-[0_0_13px_rgba(255,255,255,0.65)] ring-1 ring-red-300 transition-all hover:bg-red-700 active:scale-95 sm:text-sm">
+        <button type="button" onClick={() => toggle("genre")} aria-expanded={open === "genre"} className="min-h-[42px] rounded-lg border border-blue-600 bg-blue-600 px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-white shadow-md shadow-blue-300/40 ring-1 ring-blue-300/50 transition-all hover:bg-blue-700 active:scale-95 sm:text-sm">
           Books by Genre
         </button>
-        <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="min-h-[42px] rounded-lg border border-red-400 bg-red-600 px-2 py-2 text-center text-[11px] font-extrabold not-italic text-white shadow-[0_0_13px_rgba(255,255,255,0.65)] ring-1 ring-red-300 transition-all hover:bg-red-700 active:scale-95 sm:text-sm">
+        <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="min-h-[42px] rounded-lg border border-blue-600 bg-blue-600 px-2 py-2 text-center text-[11px] font-extrabold not-italic text-white shadow-md shadow-blue-300/40 ring-1 ring-blue-300/50 transition-all hover:bg-blue-700 active:scale-95 sm:text-sm">
           Books by Authors
         </button>
-        <button type="button" onClick={() => toggle("language")} aria-expanded={open === "language"} className="min-h-[42px] rounded-lg border border-red-400 bg-red-600 px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-white shadow-[0_0_13px_rgba(255,255,255,0.65)] ring-1 ring-red-300 transition-all hover:bg-red-700 active:scale-95 sm:text-sm language-bob">
+        <button type="button" onClick={() => toggle("language")} aria-expanded={open === "language"} className="min-h-[42px] rounded-lg border border-blue-600 bg-blue-600 px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-white shadow-md shadow-blue-300/40 ring-1 ring-blue-300/50 transition-all hover:bg-blue-700 active:scale-95 sm:text-sm language-bob">
           Choose Your Language
         </button>
       </div>
