@@ -33,7 +33,7 @@ export default async function ReadEbooksPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <Header user={user} />
-      <section className="relative overflow-hidden bg-[#123d70] py-12 sm:py-16">
+      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 py-12 sm:py-16">
         <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-cyan-300/20 blur-3xl" />
         <div aria-hidden="true" className="pointer-events-none absolute -left-16 bottom-0 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl" />
         <div className="container relative mx-auto px-4 text-center sm:px-6 lg:px-8"><div className="mb-5"><Link href="/" className="inline-flex items-center rounded-full border border-white bg-white px-4 py-2 text-sm font-extrabold text-slate-900 shadow-[0_0_14px_rgba(255,255,255,0.65)] transition hover:bg-slate-100">← Back</Link></div>
