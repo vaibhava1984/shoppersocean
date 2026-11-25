@@ -23,6 +23,7 @@ const zones = [
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
   { icon: "🎲", name: "Classic Games", tone: "from-orange-500 via-rose-600 to-pink-700", action: "classic-games" },
   { icon: "🎵", name: "Music Zone", tone: "from-fuchsia-600 via-purple-700 to-indigo-900", note: "Explore instruments and make music", action: "music-zone" },
+  { icon: "🎨", name: "Drawing Studio", tone: "from-cyan-500 via-blue-600 to-violet-800", note: "Unleash your creativity in a colourful digital drawing space", action: "drawing-studio" },
 ];
 
 const entertainmentGroups = [
@@ -721,7 +722,7 @@ useEffect(() => {
                 <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Explore Our Worlds</h2>
                 <p className="mt-2 max-w-xl text-xs leading-5 text-slate-300 sm:text-sm">Choose a zone and enjoy its activities.</p>
               </div>
-              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">5 activity zones</span>
+              <span className="rounded-full border border-amber-300/50 bg-amber-300/15 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-100">6 activity zones</span>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {zones.map((zone, index) => (
@@ -852,6 +853,14 @@ useEffect(() => {
                   </>
                 )}
                 {classicQuotaNoticeFor !== null && <div className="w-full max-w-2xl"><GameQuotaNotice isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} /></div>}
+              </div>
+            )}
+            {selected.action === "drawing-studio" && (
+              <div className="mx-auto flex min-h-[55vh] w-full max-w-3xl flex-col items-center justify-center rounded-3xl border border-cyan-200 bg-gradient-to-br from-sky-50 via-white to-violet-50 p-6 text-center shadow-inner sm:p-10">
+                <span className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-600 to-violet-700 text-5xl text-white shadow-xl" aria-hidden="true">🎨</span>
+                <h3 className="mt-6 text-3xl font-black tracking-tight text-slate-900">Drawing Studio</h3>
+                <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600">Welcome to your creative space! The Drawing Studio game will be connected here in the next step.</p>
+                <span className="mt-5 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-xs font-extrabold text-cyan-800">Creative space · Coming together</span>
               </div>
             )}
             {selected.action === "music-zone" && (
