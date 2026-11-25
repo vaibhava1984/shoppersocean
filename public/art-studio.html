@@ -122,6 +122,25 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
  #drawingStudio .zoomctl button{padding:3px 6px}
 }
 
+
+/* Layout correction: give the complete palette its own space and let the drawing area grow below it */
+#drawingStudio{height:auto;min-height:100dvh;overflow:visible}
+#drawingStudio .studio-main{flex:none;min-height:0;overflow:visible;gap:9px}
+#drawingStudio .palettebar{min-height:190px;padding:10px;gap:9px}
+#drawingStudio .pal{grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:29px;gap:6px}
+#drawingStudio .sw{height:29px}
+#drawingStudio .cell{flex:none;width:100%;height:auto;min-height:62vh;overflow:visible;padding:10px}
+#drawingStudio .stage{width:100%;height:auto;aspect-ratio:var(--ar,1.6);max-width:none}
+@media(max-width:600px){
+ #drawingStudio{height:auto;min-height:100dvh;overflow:visible}
+ #drawingStudio .palettebar{min-height:250px;padding:9px;gap:8px}
+ #drawingStudio .pal{grid-template-columns:repeat(8,minmax(0,1fr));grid-auto-rows:27px;gap:5px}
+ #drawingStudio .sw{height:27px}
+ #drawingStudio .studio-main{flex:none;overflow:visible}
+ #drawingStudio .cell{min-height:62vh;padding:8px;overflow:visible}
+ #drawingStudio .stage{width:100%;height:auto;aspect-ratio:var(--ar,1.6)}
+}
+
 /* Requested usability refinements: full palette, pause menu and default sizes */
 #drawingStudio .studio-main{gap:6px}
 #drawingStudio .toolrail{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(2,42px);max-height:none;overflow:visible}
