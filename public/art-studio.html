@@ -239,7 +239,6 @@ pick(color);
 function setTool(t){tool=t;blip(660,.06);qa('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t))}
 qa('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
 q('.size').oninput=e=>{size=+e.target.value;q('.sv').textContent=size};
-q('.solid').onclick=e=>{solid=!solid;e.currentTarget.classList.toggle('on',solid)};
 
 /* ---------- history ---------- */
 const clone=()=>{const c=document.createElement('canvas');c.width=W;c.height=H;c.getContext('2d').drawImage(draw,0,0);return c};
