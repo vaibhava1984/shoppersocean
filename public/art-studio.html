@@ -121,6 +121,29 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
  #drawingStudio input[type=range].size{width:54px}
  #drawingStudio .zoomctl button{padding:3px 6px}
 }
+
+/* Requested usability refinements: full palette, pause menu and default sizes */
+#drawingStudio .studio-main{gap:6px}
+#drawingStudio .toolrail{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(2,42px);max-height:none;overflow:visible}
+#drawingStudio .palettebar{flex:none;display:flex;flex-direction:column;align-items:stretch;gap:7px;min-height:0;height:auto;padding:8px;overflow:visible}
+#drawingStudio .pal{width:100%;min-width:0;display:grid;grid-auto-flow:row;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:none;grid-auto-columns:auto;grid-auto-rows:25px;gap:5px;overflow:visible;max-height:none;padding:2px}
+#drawingStudio .sw{width:100%;height:25px;min-width:0;border-radius:8px}
+#drawingStudio .ctl{width:100%;justify-content:center;gap:14px}
+#drawingStudio .ctl input[type=range].size{width:min(42vw,180px)}
+#drawingStudio .zoomctl{justify-content:center}
+#drawingStudio .pausemenu{position:absolute;z-index:45;top:54px;right:12px;display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #ffffff66;border-radius:14px;background:linear-gradient(145deg,#2b185e,#100b2d);box-shadow:0 10px 28px #0009;color:#fff;font-weight:700}
+#drawingStudio .pausemenu[hidden]{display:none}
+#drawingStudio .pausemenu .resume{background:linear-gradient(145deg,#c6ffe0,#28cb84);box-shadow:0 3px 0 #087746}
+@media(max-width:600px){
+ #drawingStudio .toolrail{grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(2,40px);gap:4px}
+ #drawingStudio .palettebar{min-height:0;padding:6px;gap:5px}
+ #drawingStudio .pal{grid-template-columns:repeat(8,minmax(0,1fr));grid-auto-rows:24px;gap:4px}
+ #drawingStudio .sw{height:24px}
+ #drawingStudio .ctl{gap:9px}
+ #drawingStudio input[type=range].size{width:min(38vw,150px)}
+ #drawingStudio .pausemenu{top:48px;right:7px}
+}
+
 </style>
 </head>
 <body>
@@ -138,6 +161,7 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
     <button class="pausebtn" type="button" disabled>Ⅱ Pause</button>
     <button class="dl" title="Download artwork">⬇ Download</button>
   </header>
+  <div class="pausemenu" hidden><span>⏸ Drawing paused</span><button class="resume" type="button">▶ Resume</button></div>
   <main class="studio-main">
     <nav class="rail toolrail" aria-label="Drawing tools">
       <button data-tool="pencil" title="Pencil"><i>✏️</i><small>Pencil</small></button>
@@ -148,16 +172,14 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
       <button data-tool="glitter" title="Glitter"><i>✨</i><small>Glitter</small></button>
       <button data-tool="bubble" title="3D Puff Brush"><i>🫧</i><small>3D Puff</small></button>
       <button data-tool="depth" title="3D Sculpt Brush"><i>🖋️</i><small>3D Sculpt</small></button>
-      <button data-tool="fill" title="3D Fill"><i>🪣</i><small>3D Fill</small></button>
       <button data-tool="eraser" title="Eraser"><i>🧽</i><small>Eraser</small></button>
-      <button data-tool="pan" title="Move canvas"><i>✋</i><small>Move</small></button>
       <button class="paper" title="Dark paper"><i>🌙</i><small>Paper</small></button>
       <button class="clear" title="Clear canvas"><i>🗑️</i><small>Clear</small></button>
       <button class="bk" title="Colouring book"><i>📖</i><small>Colouring Book</small></button>
     </nav>
     <footer class="palettebar">
       <div class="pal"></div>
-      <div class="ctl"><input type="color" class="custom" value="#e4572e" aria-label="Custom colour"><span><input type="range" class="size" min="1" max="60" value="8"> <b class="sv">8</b></span></div>
+      <div class="ctl"><input type="color" class="custom" value="#e4572e" aria-label="Custom colour"><span><input type="range" class="size" min="1" max="60" value="20"> <b class="sv">20</b></span></div>
       <div class="zoomctl"><button class="zoomout" title="Zoom out">−</button><b class="zoomlabel">100%</b><button class="zoomin" title="Zoom in">+</button></div>
     </footer>
     <div class="cell"><div class="stage"><canvas class="base"></canvas><canvas class="draw"></canvas><canvas class="fx"></canvas></div></div>
@@ -174,7 +196,7 @@ const base=q('.base'),draw=q('.draw'),fx=q('.fx');
 [base,draw,fx].forEach(c=>{c.width=W;c.height=H});
 const bx=base.getContext('2d'),dx=draw.getContext('2d',{willReadFrequently:true}),fc=fx.getContext('2d');
 
-let tool='pencil',color='#e4572e',size=8,solid=false,outline=null,zoom=1;
+let tool='pencil',color='#e4572e',size=20,brushSize=20,eraserSize=20,solid=false,outline=null,zoom=1;
 const cell=q('.cell'),stage=q('.stage');
 function applyZoom(){stage.style.width=(100*zoom)+'%';stage.style.setProperty('--zoom',zoom);q('.zoomlabel').textContent=Math.round(zoom*100)+'%'}
 q('.zoomin').onclick=()=>{zoom=Math.min(2.5,+(zoom+.2).toFixed(2));applyZoom()};
@@ -236,9 +258,18 @@ q('.custom').oninput=e=>pick(e.target.value);
 pick(color);
 
 /* ---------- tools & UI ---------- */
-function setTool(t){tool=t;blip(660,.06);qa('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t))}
+function setTool(t){
+  tool=t;
+  size=t==='eraser'?eraserSize:brushSize;
+  q('.size').value=size;q('.sv').textContent=size;
+  qa('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===t));
+}
 qa('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));
-q('.size').oninput=e=>{size=+e.target.value;q('.sv').textContent=size};
+q('.size').oninput=e=>{
+  size=+e.target.value;
+  if(tool==='eraser')eraserSize=size;else brushSize=size;
+  q('.sv').textContent=size;
+};
 
 /* ---------- history ---------- */
 const clone=()=>{const c=document.createElement('canvas');c.width=W;c.height=H;c.getContext('2d').drawImage(draw,0,0);return c};
@@ -321,22 +352,21 @@ function floodFill(p){
   dx.putImageData(dst,0,0);
 }
 let started=false,paused=false;
-const startScreen=q('.startscreen');
+const startScreen=q('.startscreen'),pauseMenu=q('.pausemenu');
 function setRunning(on){
   started=true;paused=!on;
-  startScreen.classList.toggle('hidden',on);
-  q('.startcard h2').textContent=on?'Drawing Studio':'Paused';
-  q('.startcard p').textContent=on?'Your creative space is ready.':'Your artwork is safe. Resume whenever you are ready.';
-  q('.bigstart').textContent=on?'▶ Start Drawing':'▶ Resume Drawing';
+  if(!on)pauseMenu.hidden=false;
+  else pauseMenu.hidden=true;
   q('.startbtn').textContent=on?'▶ Started':'▶ Resume';
-  q('.pausebtn').disabled=!on;
+  q('.pausebtn').disabled=false;
   q('.pausebtn').textContent=on?'Ⅱ Pause':'Ⅱ Paused';
   fx.style.pointerEvents=on?'auto':'none';
   if(on){if(musicOn)startMusic()}else stopMusic();
 }
-q('.startbtn').onclick=()=>setRunning(true);
+q('.startbtn').onclick=()=>{if(!started)setRunning(true);else if(paused)setRunning(true)};
 q('.bigstart').onclick=()=>setRunning(true);
-q('.pausebtn').onclick=()=>{if(!started)return;setRunning(false)};
+q('.pausebtn').onclick=()=>{if(started&&!paused)setRunning(false)};
+q('.resume').onclick=()=>setRunning(true);
 function drawDepthSegment(c,a,b,p,w){
   c.save();c.lineCap=c.lineJoin='round';
   const stroke=(col,width,blur,ox,oy,alpha=1)=>{
@@ -420,14 +450,38 @@ function tick(){
 }
 function startMusic(){if(run)return;initAudio();ac.resume();run=true;nt=ac.currentTime+.1;tm=setInterval(tick,100)}
 function stopMusic(){run=false;clearInterval(tm)}
+function stopStudioAudio(){
+  musicOn=false;stopMusic();
+  q('.mbtn').textContent='🔇';
+  if(ac&&ac.state==='running')ac.suspend().catch(()=>{});
+}
 function blip(f,d,w=0){
   if(!ac)return;const t=ac.currentTime+w,o=ac.createOscillator(),g=ac.createGain();
   o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+d);
   o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d);
 }
 
-q('.mbtn').onclick=e=>{musicOn=!musicOn;if(musicOn&&started&&!paused)startMusic();else stopMusic();e.target.textContent=musicOn?'🎵':'🔇'};
+q('.mbtn').onclick=e=>{
+  musicOn=!musicOn;
+  if(musicOn&&started&&!paused){initAudio();ac.resume().then(startMusic)}
+  else stopMusic();
+  e.target.textContent=musicOn?'🎵':'🔇';
+};
 q('.vol').oninput=e=>{initAudio();mg.gain.value=e.target.value/100};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopStudioAudio()});
+window.addEventListener('pagehide',stopStudioAudio);
+window.addEventListener('blur',stopStudioAudio);
+root.addEventListener('click',e=>{
+  const b=e.target.closest('button');
+  if(!b||b.disabled||document.hidden)return;
+  try{
+    initAudio();ac.resume();
+    const t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
+    o.type='sine';o.frequency.setValueAtTime(620,t);o.frequency.exponentialRampToValueAtTime(245,t+.085);
+    g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.075,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+.11);
+    o.connect(g);g.connect(mg);o.start(t);o.stop(t+.12);
+  }catch(_){}
+});
 fx.addEventListener('contextmenu',e=>e.preventDefault());
 })();
 </script>
