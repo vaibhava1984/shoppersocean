@@ -254,7 +254,6 @@ function exportImg(type,ext){
   t.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='my-artwork'+ext;document.body.append(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(a.href),2000);award(5);toast('Saved '+ext+' ✔')},type,.95);
 }
-q('.save').onclick=()=>exportImg('image/png','.png');
 q('.dl').onclick=()=>exportImg('image/jpeg','.jpg');
 document.addEventListener('keydown',e=>{
   if(!(e.ctrlKey||e.metaKey)||e.target.matches('input[type=text],textarea'))return;
