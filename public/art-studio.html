@@ -355,8 +355,8 @@ let started=false,paused=false;
 const startScreen=q('.startscreen'),pauseMenu=q('.pausemenu');
 function setRunning(on){
   started=true;paused=!on;
-  if(!on)pauseMenu.hidden=false;
-  else pauseMenu.hidden=true;
+  startScreen.classList.toggle('hidden',on);
+  pauseMenu.hidden=on;
   q('.startbtn').textContent=on?'▶ Started':'▶ Resume';
   q('.pausebtn').disabled=false;
   q('.pausebtn').textContent=on?'Ⅱ Pause':'Ⅱ Paused';
