@@ -57,7 +57,7 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
 @keyframes dsf{to{transform:translateY(40px) scale(1.08)}}
 @media(prefers-reduced-motion:reduce){#drawingStudio::before,#drawingStudio::after{animation:none}}
 @media(max-width:600px){#drawingStudio .logo,#drawingStudio .vol,#drawingStudio .xpbar{display:none}#drawingStudio .rail{width:48px;padding:4px}#drawingStudio{padding:5px;gap:5px}#drawingStudio .cell{padding:8px}#drawingStudio input[type=range]{width:80px}}
-</style>
+\n/* Drawing Studio mobile-first HD redesign */\n#drawingStudio{height:var(--ds-h,100dvh);min-height:520px;gap:7px;padding:8px}\n#drawingStudio header{min-height:48px;flex-wrap:nowrap}\n#drawingStudio .mis{min-height:34px}\n#drawingStudio .studio-main{flex:1;min-height:0;display:flex;flex-direction:column;gap:7px;overflow:hidden}\n#drawingStudio .toolrail{width:100%;max-height:112px;flex:none;display:flex;flex-direction:row;flex-wrap:wrap;align-content:flex-start;gap:7px;padding:7px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}\n#drawingStudio .toolrail button{width:auto;min-width:62px;min-height:48px;padding:5px 8px;display:flex;flex-direction:column;justify-content:center;gap:2px;border-radius:12px}\n#drawingStudio .toolrail i{font-size:19px;line-height:1.1}\n#drawingStudio .toolrail small{font-size:10px;font-weight:700}\n#drawingStudio .palettebar{flex:none;min-height:62px;display:flex;align-items:center;gap:8px;padding:6px 9px;overflow:hidden}\n#drawingStudio .pal{min-width:0;grid-auto-flow:row;grid-template-rows:repeat(2,28px);grid-auto-columns:28px;grid-template-columns:repeat(auto-fill,28px);overflow-x:auto;overflow-y:hidden;max-height:64px}\n#drawingStudio .sw{width:27px;height:27px}\n#drawingStudio .ctl{flex:none;flex-direction:row;gap:8px}\n#drawingStudio input[type=range].size{width:90px}\n#drawingStudio .zoomctl{display:flex;align-items:center;gap:5px;flex:none}\n#drawingStudio .zoomctl button{padding:5px 10px;font-size:18px}\n#drawingStudio .zoomlabel{font-size:11px;min-width:34px;text-align:center}\n#drawingStudio .cell{flex:1;min-height:0;min-width:0;display:block;overflow:auto;overscroll-behavior:contain;padding:8px;touch-action:pan-x pan-y}\n#drawingStudio .stage{width:100%;max-width:none;aspect-ratio:var(--ar,1.6);height:auto;margin:0 auto;overflow:hidden;border-radius:10px;box-shadow:0 0 0 5px #f7d17b,0 0 0 8px #8a5516,0 18px 35px #000a}\n#drawingStudio .stage canvas{touch-action:none}\n#drawingStudio .fx{cursor:crosshair}\n#drawingStudio .toolrail button.on{background:linear-gradient(145deg,#fff2b5,#ff9a35);box-shadow:0 3px 0 #b95a0e,0 6px 12px #0005}\n@media(max-width:600px){#drawingStudio{padding:5px;gap:5px;min-height:460px}#drawingStudio .studio-main{gap:5px}#drawingStudio .toolrail{max-height:106px;gap:5px;padding:5px}#drawingStudio .toolrail button{min-width:54px;min-height:44px;padding:4px 6px}#drawingStudio .toolrail small{font-size:9px}#drawingStudio .palettebar{min-height:56px;padding:4px 6px;gap:5px}#drawingStudio .pal{grid-template-rows:repeat(2,23px);grid-auto-columns:23px;grid-template-columns:repeat(auto-fill,23px);gap:4px}#drawingStudio .sw{width:22px;height:22px}#drawingStudio input[type=range].size{width:62px}#drawingStudio .zoomctl{gap:3px}#drawingStudio .zoomctl button{padding:4px 8px}}\n</style>
 </head>
 <body>
 
@@ -73,33 +73,43 @@ html,body{margin:0;height:100%;overscroll-behavior:none;background:#150c33}
     <button class="save" title="Save as PNG">💾 Save</button><button class="dl" title="Download as JPG">⬇ Download</button>
   </header>
   <div class="mis"><span class="mtxt"></span><button class="mnew">🎯</button><button class="mdone">✅</button></div>
-  <main>
-    <nav class="rail" aria-label="Brushes"><button data-tool="pencil" title="Pencil"><i>✏️</i><small>Pencil</small></button><button data-tool="marker" title="Marker"><i>🖍️</i><small>Marker</small></button><button data-tool="brush" title="Brush"><i>🖌️</i><small>Brush</small></button><button data-tool="spray" title="Spray"><i>💨</i><small>Spray</small></button><button data-tool="bubble" title="3D Puff"><i>🫧</i><small>3D Puff</small></button><button data-tool="neon" title="Neon"><i>✨</i><small>Neon</small></button><button data-tool="fill" title="Fill 3D"><i>🪣</i><small>Fill 3D</small></button><button data-tool="eraser" title="Eraser"><i>🧽</i><small>Eraser</small></button></nav>
-    <div class="cell"><div class="stage"><canvas class="base"></canvas><canvas class="draw"></canvas><canvas class="fx"></canvas></div></div>
-    <nav class="rail" aria-label="Shapes and actions"><button data-tool="line" title="Line"><i>╱</i><small>Line</small></button><button data-tool="rect" title="Square"><i>▭</i><small>Square</small></button><button data-tool="circle" title="Circle"><i>◯</i><small>Circle</small></button><button data-tool="tri" title="Triangle"><i>△</i><small>Triangle</small></button><button data-tool="star" title="Star"><i>★</i><small>Star</small></button><button data-tool="heart" title="Heart"><i>♥</i><small>Heart</small></button>
-      <button class="solid" title="Solid 3D shapes"><i>🧊</i><small>Solid</small></button>
+  <main class="studio-main">
+    <nav class="rail toolrail" aria-label="Drawing tools">
+      <button data-tool="pencil" title="Pencil"><i>✏️</i><small>Pencil</small></button>
+      <button data-tool="marker" title="Marker"><i>🖍️</i><small>Marker</small></button>
+      <button data-tool="brush" title="Pro Brush"><i>🖌️</i><small>Pro Brush</small></button>
+      <button data-tool="watercolor" title="Watercolour"><i>🎨</i><small>Watercolour</small></button>
+      <button data-tool="spray" title="Airbrush"><i>💨</i><small>Airbrush</small></button>
+      <button data-tool="glitter" title="Glitter"><i>✨</i><small>Glitter</small></button>
+      <button data-tool="bubble" title="3D Puff"><i>🫧</i><small>3D Puff</small></button>
+      <button data-tool="fill" title="3D Fill"><i>🪣</i><small>3D Fill</small></button>
+      <button data-tool="eraser" title="Eraser"><i>🧽</i><small>Eraser</small></button>
+      <button data-tool="pan" title="Move canvas"><i>✋</i><small>Move</small></button>
+      <button class="solid" title="3D depth effect"><i>🧊</i><small>3D Depth</small></button>
       <button class="paper" title="Dark paper"><i>🌙</i><small>Paper</small></button>
-      <button class="clear" title="Clear"><i>🗑️</i><small>Clear</small></button>
-      <button class="bk" title="Colouring book"><i>📖</i><small>Book</small></button>
+      <button class="clear" title="Clear canvas"><i>🗑️</i><small>Clear</small></button>
+      <button class="bk" title="Colouring book"><i>📖</i><small>Colouring Book</small></button>
     </nav>
+    <footer class="palettebar">
+      <div class="pal"></div>
+      <div class="ctl"><input type="color" class="custom" value="#e4572e" aria-label="Custom colour"><span><input type="range" class="size" min="1" max="60" value="8"> <b class="sv">8</b></span></div>
+      <div class="zoomctl"><button class="zoomout" title="Zoom out">−</button><b class="zoomlabel">100%</b><button class="zoomin" title="Zoom in">+</button></div>
+    </footer>
+    <div class="cell"><div class="stage"><canvas class="base"></canvas><canvas class="draw"></canvas><canvas class="fx"></canvas></div></div>
   </main>
-  <footer>
-    <div class="pal"></div>
-    <div class="ctl"><input type="color" class="custom" value="#e4572e" aria-label="Custom colour"><span><input type="range" class="size" min="1" max="60" value="8"> <b class="sv">8</b></span></div>
-  </footer>
   <div class="modal" hidden><div class="sheet"><h2>📖 Colouring Book</h2><div class="book"></div><button class="close">Close</button></div></div>
 </div>
 <script>
 (()=>{
-const P=innerHeight>innerWidth,W=P?1280:1920,H=P?1600:1200;                         // canvas resolution: raise for even sharper exports
+const P=innerHeight>innerWidth,W=P?1800:2400,H=P?2400:1500;                         // canvas resolution: raise for even sharper exports
 const root=document.getElementById('drawingStudio');
 const q=s=>root.querySelector(s),qa=s=>[...root.querySelectorAll(s)];
 const base=q('.base'),draw=q('.draw'),fx=q('.fx');
 [base,draw,fx].forEach(c=>{c.width=W;c.height=H});
 const bx=base.getContext('2d'),dx=draw.getContext('2d',{willReadFrequently:true}),fc=fx.getContext('2d');
 
-let tool='pencil',color='#e4572e',size=8,solid=false,outline=null;
-let down=false,start,last,mid,sprayT,undo=[],redo=[];
+let tool='pencil',color='#e4572e',size=8,solid=false,outline=null,zoom=1;\nconst cell=q('.cell'),stage=q('.stage');\nfunction applyZoom(){stage.style.width=(100*zoom)+'%';stage.style.setProperty('--zoom',zoom);q('.zoomlabel').textContent=Math.round(zoom*100)+'%'}\nq('.zoomin').onclick=()=>{zoom=Math.min(2.5,+(zoom+.2).toFixed(2));applyZoom()};\nq('.zoomout').onclick=()=>{zoom=Math.max(1,+(zoom-.2).toFixed(2));applyZoom()};
+let down=false,start,last,mid,sprayT,undo=[],redo=[],panning=false,panOrigin=null;
 
 /* ---------- colouring book ---------- */
 let dark=false,ink='#26252d';
@@ -190,7 +200,7 @@ function style(c){
   c.strokeStyle=c.fillStyle=color;
   if(tool==='pencil'){c.lineWidth=Math.max(1.5,size*.5);c.globalAlpha=.95}
   else if(tool==='marker')c.lineWidth=size*2;
-  else if(tool==='neon'){c.lineWidth=Math.max(2,size*.6);c.strokeStyle=shade(color,.65);c.shadowColor=color;c.shadowBlur=size*2.4}else if(tool==='brush'){c.lineWidth=size*1.3;c.shadowColor=color;c.shadowBlur=size*.7;c.globalAlpha=.85}
+  else if(tool==='brush'){c.lineWidth=size*1.5;c.shadowColor=color;c.shadowBlur=size*.9;c.globalAlpha=.9}\n  else if(tool==='watercolor'){c.lineWidth=size*3.2;c.shadowColor=color;c.shadowBlur=size*1.8;c.globalAlpha=.16}\n  else if(tool==='glitter'){c.lineWidth=size;c.shadowColor=color;c.shadowBlur=size*2;c.globalAlpha=.95}
   else if(tool==='eraser'){c.globalCompositeOperation='destination-out';c.lineWidth=size*2.5;c.strokeStyle='#000'}
   else c.lineWidth=Math.max(2,size*.7);
 }
@@ -244,8 +254,8 @@ fx.addEventListener('pointerdown',e=>{
   const p=pos(e);push();
   if(tool==='fill'){floodFill(p);award(5);blip(520,.15);return}
   down=true;start=last=mid=p;fx.style.opacity=tool==='marker'?.55:1;
-  if(tool==='spray'){spray(p);sprayT=setInterval(()=>spray(last),18)}
-  else if(tool==='bubble'){pts=[p];bub()}else if(!isShape(tool)){const c=tool==='marker'?fc:dx;style(c);c.beginPath();c.moveTo(p.x,p.y);c.lineTo(p.x+.01,p.y);c.stroke()}
+  if(tool==='spray'||tool==='glitter'){spray(p);sprayT=setInterval(()=>spray(last),18)}
+  else if(tool==='bubble'){pts=[p];bub()}else if(tool==='pan'){panning=true;panOrigin={x:e.clientX,y:e.clientY,left:cell.scrollLeft,top:cell.scrollTop};return}else if(!isShape(tool)){const c=tool==='marker'?fc:dx;style(c);c.beginPath();c.moveTo(p.x,p.y);c.lineTo(p.x+.01,p.y);c.stroke()}
 });
 fx.addEventListener('pointermove',e=>{
   if(!down)return;
@@ -253,13 +263,13 @@ fx.addEventListener('pointermove',e=>{
   if(tool==='bubble'){pts.push(pos(e));bub();return}
   (e.getCoalescedEvents?e.getCoalescedEvents():[e]).forEach(ev=>{
     const p=pos(ev);
-    if(tool==='spray'){last=p;spray(p);return}
+    if(tool==='spray'||tool==='glitter'){last=p;spray(p);return}
     const m={x:(last.x+p.x)/2,y:(last.y+p.y)/2},c=tool==='marker'?fc:dx;
     style(c);seg(c,mid,last,m);mid=m;last=p;
   });
 });
 function end(e){
-  if(!down)return;down=false;clearInterval(sprayT);award(isShape(tool)?3:1);
+  if(panning){panning=false;panOrigin=null;return}\n  if(!down)return;down=false;clearInterval(sprayT);award(isShape(tool)?3:1);
   if(isShape(tool)){style(dx);shape(dx,tool,start,pos(e))}
   else if(tool==='bubble'){dx.globalCompositeOperation='source-over';dx.drawImage(fx,0,0)}else if(tool==='marker'){dx.globalCompositeOperation='source-over';dx.globalAlpha=.55;dx.drawImage(fx,0,0);dx.globalAlpha=1}
   fc.clearRect(0,0,W,H);dx.globalCompositeOperation='source-over';dx.shadowBlur=0;dx.globalAlpha=1;
