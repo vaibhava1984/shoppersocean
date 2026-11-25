@@ -856,11 +856,15 @@ useEffect(() => {
               </div>
             )}
             {selected.action === "drawing-studio" && (
-              <div className="mx-auto flex min-h-[55vh] w-full max-w-3xl flex-col items-center justify-center rounded-3xl border border-cyan-200 bg-gradient-to-br from-sky-50 via-white to-violet-50 p-6 text-center shadow-inner sm:p-10">
-                <span className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-600 to-violet-700 text-5xl text-white shadow-xl" aria-hidden="true">🎨</span>
-                <h3 className="mt-6 text-3xl font-black tracking-tight text-slate-900">Drawing Studio</h3>
-                <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600">Welcome to your creative space! The Drawing Studio game will be connected here in the next step.</p>
-                <span className="mt-5 rounded-full border border-cyan-200 bg-cyan-50 px-4 py-2 text-xs font-extrabold text-cyan-800">Creative space · Coming together</span>
+              <div className="mx-auto w-full min-w-0 overflow-hidden rounded-2xl border border-violet-300 bg-[#150c33] shadow-xl">
+                <iframe
+                  title="Drawing Studio"
+                  src="/art-studio.html"
+                  allow="autoplay; fullscreen"
+                  allowFullScreen
+                  className="block w-full border-0"
+                  style={{ height: "min(900px, calc(100dvh - 190px))", minHeight: "560px", touchAction: "pan-x pan-y pinch-zoom" }}
+                />
               </div>
             )}
             {selected.action === "music-zone" && (
