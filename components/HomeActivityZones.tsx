@@ -856,10 +856,12 @@ useEffect(() => {
             )}
             {selected.action === "music-zone" && (
               musicPianoStarted ? (
-                <style jsx global>{`#music-piano-shell{position:fixed;inset:0;z-index:10001;overflow:hidden;background:#000}#music-piano-shell iframe{display:block;width:100%;height:100%;border:0;background:#000;touch-action:none}@media (orientation:portrait){#music-piano-shell{inset:auto;top:0;left:100vw;width:100dvh;height:100vw;transform:rotate(90deg);transform-origin:top left}}`}</style>
-                <div id="music-piano-shell">
-                  <iframe title="Virtual Piano" src="/virtual-piano.html" allow="autoplay; fullscreen; screen-orientation" allowFullScreen />
-                </div>
+                <>
+                  <style jsx global>{`#music-piano-shell{position:fixed;inset:0;z-index:10001;overflow:hidden;background:#000}#music-piano-shell iframe{display:block;width:100%;height:100%;border:0;background:#000;touch-action:none}@media (orientation:portrait){#music-piano-shell{inset:auto;top:0;left:100vw;width:100dvh;height:100vw;transform:rotate(90deg);transform-origin:top left}}`}</style>
+                  <div id="music-piano-shell">
+                    <iframe title="Virtual Piano" src="/virtual-piano.html" allow="autoplay; fullscreen; screen-orientation" allowFullScreen />
+                  </div>
+                </>
               ) : (
                 <div className="mx-auto w-full max-w-sm">
                   <button type="button" onClick={() => void openMusicPiano()} className="group relative block aspect-square w-full overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-[#160d35] via-[#51217e] to-[#142d62] p-4 text-left shadow-2xl transition hover:-translate-y-1 hover:shadow-fuchsia-300/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-fuchsia-300">
