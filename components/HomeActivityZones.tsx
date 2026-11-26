@@ -856,8 +856,9 @@ useEffect(() => {
             )}
             {selected.action === "music-zone" && (
               musicPianoStarted ? (
-                <div className="fixed inset-0 z-[10001] overflow-hidden bg-black">
-                  <iframe title="Virtual Piano" src="/virtual-piano.html" allow="autoplay; fullscreen; screen-orientation" allowFullScreen className="block h-[100dvh] w-screen border-0 bg-black" style={{ width: "100vw", height: "100dvh", maxWidth: "100vw", touchAction: "none" }} />
+                <style jsx global>{`#music-piano-shell{position:fixed;inset:0;z-index:10001;overflow:hidden;background:#000}#music-piano-shell iframe{display:block;width:100%;height:100%;border:0;background:#000;touch-action:none}@media (orientation:portrait){#music-piano-shell{inset:auto;top:0;left:100vw;width:100dvh;height:100vw;transform:rotate(90deg);transform-origin:top left}}`}</style>
+                <div id="music-piano-shell">
+                  <iframe title="Virtual Piano" src="/virtual-piano.html" allow="autoplay; fullscreen; screen-orientation" allowFullScreen />
                 </div>
               ) : (
                 <div className="mx-auto w-full max-w-sm">
