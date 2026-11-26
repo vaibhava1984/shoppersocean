@@ -42,6 +42,7 @@ input[type=range]{width:70px;accent-color:var(--ac);touch-action:pan-x}
 #start p{margin:0;color:var(--mut);font-size:13px;max-width:420px}
 #go{font-size:18px;padding:14px 34px;background:var(--ac);color:#04121f;border:0;border-radius:40px;font-weight:700}
 #hint{position:absolute;right:14px;top:10px;font-size:11px;color:var(--mut);pointer-events:none}
+#stageNav{position:absolute;right:12px;top:34px;z-index:20;display:flex;gap:8px;pointer-events:auto}#stageNav button{width:46px;height:42px;padding:0;border:1px solid #78baff;border-radius:10px;background:#1769b5;color:#fff;font-size:25px;font-weight:800;box-shadow:0 3px 10px #0008;touch-action:manipulation}#stageNav button:active{background:#3194f5;transform:scale(.96)}
 #rt{position:absolute;left:50%;top:16px;transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:8px;padding:6px 16px;border-radius:30px;background:rgba(20,22,28,.82);backdrop-filter:blur(6px);border:1px solid #e5484d;color:#fff;font-size:15px;pointer-events:none;box-shadow:0 4px 14px #0008}
 #rt.show{display:flex}
 #rt i{width:11px;height:11px;border-radius:50%;background:#e5484d;animation:bl 1s infinite}
@@ -68,7 +69,7 @@ input[type=range]{width:70px;accent-color:var(--ac);touch-action:pan-x}
   <button id="fs">⛶</button>
  </div>
  <div id="playProgress" role="progressbar" aria-label="Playback progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="playProgressFill"></div></div>
- <div id="stage"><div id="rt"><i></i><b id="rtt">0:00</b></div><div id="hint">Pinch with two fingers to resize keys</div><div id="kb"></div></div>
+ <div id="stage"><div id="rt"><i></i><b id="rtt">0:00</b></div><div id="hint">Pinch with two fingers to resize keys</div><div id="stageNav" aria-label="Keyboard navigation"><button id="stagePrev" type="button" aria-label="Shift keyboard left">←</button><button id="stageNext" type="button" aria-label="Shift keyboard right">→</button></div><div id="kb"></div></div>
  <div id="start"><h1>🎹 Virtual Piano</h1><p>Tap to start. The piano will switch to landscape and go full screen.</p><button id="go">Press to Start Piano</button></div>
 </div>
 <div id="rl"></div>
@@ -322,7 +323,7 @@ $('sus').onclick=function(){sustain=!sustain;this.classList.toggle('on',sustain)
 function setT(v){trans=Math.max(-12,Math.min(12,v));$('xv').textContent=(trans>0?'+':'')+trans;}
 $('xm').onclick=function(){setT(trans-1)};$('xp').onclick=function(){setT(trans+1)};
 function moveKeyboard(direction){var distance=Math.max(1,stage.clientWidth-20)*.41;stage.scrollBy({left:direction*distance,behavior:'smooth'});}
-$('om').onclick=function(){moveKeyboard(-1)};$('op').onclick=function(){moveKeyboard(1)};
+$('om').onclick=function(){moveKeyboard(-1)};$('op').onclick=function(){moveKeyboard(1)};$('stagePrev').onclick=function(){moveKeyboard(-1)};$('stageNext').onclick=function(){moveKeyboard(1)};
 $('vol').oninput=function(){vol=+this.value;if(master)master.gain.value=vol;};
 $('lbl').onclick=function(){kb.classList.toggle('hide');this.classList.toggle('on')};
 $('fs').onclick=goFull;
