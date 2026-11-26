@@ -42,7 +42,7 @@ input[type=range]{width:70px;accent-color:var(--ac);touch-action:pan-x}
 #start p{margin:0;color:var(--mut);font-size:13px;max-width:420px}
 #go{font-size:18px;padding:14px 34px;background:var(--ac);color:#04121f;border:0;border-radius:40px;font-weight:700}
 #hint{position:absolute;right:14px;top:10px;font-size:11px;color:var(--mut);pointer-events:none}
-#stageNav{position:absolute;right:12px;top:34px;z-index:20;display:flex;gap:8px;pointer-events:auto}#stageNav button{width:46px;height:42px;padding:0;border:1px solid #78baff;border-radius:10px;background:#1769b5;color:#fff;font-size:25px;font-weight:800;box-shadow:0 3px 10px #0008;touch-action:manipulation}#stageNav button:active{background:#3194f5;transform:scale(.96)}
+#stageNav{position:absolute;right:12px;top:8px;z-index:1000!important;display:flex!important;gap:10px;pointer-events:auto}#stageNav button{display:flex!important;align-items:center;justify-content:center;width:54px;height:48px;padding:0;border:2px solid #9bd0ff;border-radius:11px;background:#0878d1;color:#fff;font-size:30px;font-weight:900;box-shadow:0 3px 12px #000b;touch-action:manipulation;pointer-events:auto}#stageNav button:active{background:#3194f5;transform:scale(.96)}
 #rt{position:absolute;left:50%;top:16px;transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:8px;padding:6px 16px;border-radius:30px;background:rgba(20,22,28,.82);backdrop-filter:blur(6px);border:1px solid #e5484d;color:#fff;font-size:15px;pointer-events:none;box-shadow:0 4px 14px #0008}
 #rt.show{display:flex}
 #rt i{width:11px;height:11px;border-radius:50%;background:#e5484d;animation:bl 1s infinite}
@@ -294,14 +294,18 @@ function releaseSustain(){sustained.forEach(function(v){v.stop(true)});sustained
 var st=document.createElement('style');st.textContent='.w.on{background:linear-gradient(#cfe4ff,#9cc3f0)!important}.b.on{background:linear-gradient(#3a7bc8,#0d3a70)!important}';document.head.appendChild(st);
 
 /* ---------- pointer input ---------- */
-var ptr={}, zoomPointers={}, keyZoom=1, pinchStart=0, pinchDistance=0;
-function pinchGap(){var ids=Object.keys(zoomPointers);if(ids.length<2)return 0;var a=zoomPointers[ids[0]],b=zoomPointers[ids[1]];return Math.hypot(a.x-b.x,a.y-b.y);}
-var stage=$("stage");
+var ptr={}, keyZoom=1, pinchStart=1, pinchDistance=0, stage=$("stage");
 function setKeyZoom(value){keyZoom=Math.max(.55,Math.min(3,value));var w=Math.max(1,stage.clientWidth-20)*3*keyZoom;kb.style.width=w+"px";kb.style.minWidth=w+"px";}
-stage.addEventListener("pointerdown",function(e){zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length===2){pinchStart=keyZoom;pinchDistance=pinchGap();Object.keys(ptr).forEach(function(id){noteOff(ptr[id]);delete ptr[id];});e.preventDefault();}},{passive:false});
-stage.addEventListener("pointermove",function(e){if(!(e.pointerId in zoomPointers))return;zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length>=2){var gap=pinchGap();if(pinchDistance>0){setKeyZoom(pinchStart*(gap/pinchDistance));e.preventDefault();}}},{passive:false});
-function clearZoomPointer(e){delete zoomPointers[e.pointerId];if(Object.keys(zoomPointers).length<2)pinchDistance=0;}
-window.addEventListener("pointerup",clearZoomPointer);window.addEventListener("pointercancel",clearZoomPointer);window.addEventListener("resize",function(){setKeyZoom(keyZoom)});setKeyZoom(1);
+function touchGap(touches){var a=touches[0],b=touches[1];return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);}
+stage.addEventListener("touchstart",function(e){
+ if(e.touches.length===2){pinchStart=keyZoom;pinchDistance=touchGap(e.touches);Object.keys(ptr).forEach(function(id){noteOff(ptr[id]);delete ptr[id];});e.preventDefault();}
+},{passive:false});
+stage.addEventListener("touchmove",function(e){
+ if(e.touches.length===2&&pinchDistance>0){setKeyZoom(pinchStart*(touchGap(e.touches)/pinchDistance));e.preventDefault();}
+},{passive:false});
+function resetPinch(e){if(e.touches.length<2)pinchDistance=0;}
+stage.addEventListener("touchend",resetPinch,{passive:true});stage.addEventListener("touchcancel",resetPinch,{passive:true});
+window.addEventListener("resize",function(){setKeyZoom(keyZoom)});setKeyZoom(1);
 function keyAt(x,y){var e=document.elementFromPoint(x,y);while(e&&e!==kb&&!(e.dataset&&e.dataset.m))e=e.parentNode;return e&&e.dataset&&e.dataset.m?+e.dataset.m:null;}
 kb.addEventListener('pointerdown',function(e){e.preventDefault();var m=keyAt(e.clientX,e.clientY);if(m===null)return;ptr[e.pointerId]=m;noteOn(m);});
 kb.addEventListener('pointermove',function(e){if(!(e.pointerId in ptr))return;var m=keyAt(e.clientX,e.clientY);var o=ptr[e.pointerId];if(m!==null&&m!==o){noteOff(o);ptr[e.pointerId]=m;noteOn(m);}});
