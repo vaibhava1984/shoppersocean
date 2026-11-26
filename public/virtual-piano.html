@@ -42,7 +42,6 @@ input[type=range]{width:70px;accent-color:var(--ac);touch-action:pan-x}
 #start p{margin:0;color:var(--mut);font-size:13px;max-width:420px}
 #go{font-size:18px;padding:14px 34px;background:var(--ac);color:#04121f;border:0;border-radius:40px;font-weight:700}
 #hint{position:absolute;right:14px;top:10px;font-size:11px;color:var(--mut);pointer-events:none}
-#stageNav{position:absolute;right:12px;top:8px;z-index:1000!important;display:flex!important;gap:10px;pointer-events:auto}#stageNav button{display:flex!important;align-items:center;justify-content:center;width:54px;height:48px;padding:0;border:2px solid #9bd0ff;border-radius:11px;background:#0878d1;color:#fff;font-size:30px;font-weight:900;box-shadow:0 3px 12px #000b;touch-action:manipulation;pointer-events:auto}#stageNav button:active{background:#3194f5;transform:scale(.96)}
 #rt{position:absolute;left:50%;top:16px;transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:8px;padding:6px 16px;border-radius:30px;background:rgba(20,22,28,.82);backdrop-filter:blur(6px);border:1px solid #e5484d;color:#fff;font-size:15px;pointer-events:none;box-shadow:0 4px 14px #0008}
 #rt.show{display:flex}
 #rt i{width:11px;height:11px;border-radius:50%;background:#e5484d;animation:bl 1s infinite}
@@ -56,11 +55,11 @@ input[type=range]{width:70px;accent-color:var(--ac);touch-action:pan-x}
 <div id="app">
  <div id="bar">
   <div class="logo">♪ PIANO</div>
-  <div class="grp"><select id="inst" aria-label="Select instrument"><option value="soft">Soft Piano</option><option value="grand" selected>Grand Piano</option><option value="electric">Electric Piano</option><option value="lead">Synth Lead</option><option value="pad">Warm Synth Pad</option><option value="strings">Strings</option><option value="bells">Music Bells</option><option value="organ">Organ</option><option value="brass">Brass</option><option value="synth">Synthesizer</option></select></div>
-  <div class="grp" aria-label="Keyboard note range"><button id="om" title="Shift to lower notes" aria-label="Shift to lower notes">←</button><button id="op" title="Shift to higher notes" aria-label="Shift to higher notes">→</button></div>
+  <div class="grp"><select id="inst"><option value="piano">Piano</option><option value="brass">Brass & Strings</option><option value="synth">Synthesizer</option></select></div>
   <div class="grp"><button id="sus">Sustain</button></div>
   <div class="grp"><button id="rec" class="rec">● Rec</button></div>
   <div class="grp"><span>Transpose</span><button id="xm">−</button><span class="val" id="xv">0</span><button id="xp">+</button></div>
+  <div class="grp" aria-label="Keyboard note range"><button id="om" title="Shift to lower notes" aria-label="Shift to lower notes">←</button><button id="op" title="Shift to higher notes" aria-label="Shift to higher notes">→</button></div>
   <div class="grp"><span>Vol</span><input type="range" id="vol" min="0" max="1" step=".05" value=".8"></div>
   <div class="grp"><select id="song"><option value="">Songs (LED guide)</option><option value="ode">Ode to Joy</option><option value="twinkle">Twinkle Twinkle</option><option value="mary">Mary Had a Little Lamb</option><option value="birthday">Happy Birthday</option></select></div>
   <div class="grp"><select id="tonic"><option value="-1">Scale…</option></select><select id="scale"></select></div>
@@ -69,10 +68,10 @@ input[type=range]{width:70px;accent-color:var(--ac);touch-action:pan-x}
   <button id="fs">⛶</button>
  </div>
  <div id="playProgress" role="progressbar" aria-label="Playback progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="playProgressFill"></div></div>
- <div id="stage"><div id="rt"><i></i><b id="rtt">0:00</b></div><div id="hint">Pinch with two fingers to resize keys</div><div id="stageNav" aria-label="Keyboard navigation"><button id="stagePrev" type="button" aria-label="Shift keyboard left">←</button><button id="stageNext" type="button" aria-label="Shift keyboard right">→</button></div><div id="kb"></div></div>
- <div id="start"><h1>🎹 Virtual Piano</h1><p>Tap to start. The piano will switch to landscape and go full screen.</p><button id="go">Press to Start Piano</button></div>
+ <div id="stage"><div id="rt"><i></i><b id="rtt">0:00</b></div><div id="hint">Pinch with two fingers to resize keys</div><div id="kb"></div></div>
 </div>
 <div id="rl"></div>
+<div id="start"><h1>🎹 Virtual Piano</h1><p>Tap to start. The piano will switch to landscape and go full screen.</p><button id="go">Press to Start Piano</button></div>
 <script>
 (function(){
 var NW=66, BASE=24, trans=0, inst='piano', sustain=false, bpm=100, vol=.8;
@@ -118,7 +117,7 @@ function ensure(){
   var conv=AC.createConvolver(), len=Math.floor(AC.sampleRate*.9), buf=AC.createBuffer(2,len,AC.sampleRate);
   for(var c=0;c<2;c++){var d=buf.getChannelData(c);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,4);}
   conv.buffer=buf; var wet=AC.createGain(); wet.gain.value=.09;
-  comp.threshold.setValueAtTime(-14,AC.currentTime); comp.knee.setValueAtTime(18,AC.currentTime); comp.ratio.setValueAtTime(5,AC.currentTime); comp.attack.setValueAtTime(.012,AC.currentTime); comp.release.setValueAtTime(.24,AC.currentTime);
+  comp.threshold.setValueAtTime(-8,AC.currentTime); comp.knee.setValueAtTime(12,AC.currentTime); comp.ratio.setValueAtTime(8,AC.currentTime); comp.attack.setValueAtTime(.004,AC.currentTime); comp.release.setValueAtTime(.18,AC.currentTime);
   master.connect(comp); master.connect(conv); conv.connect(wet); wet.connect(comp); comp.connect(AC.destination);
   recordDestination=AC.createMediaStreamDestination();comp.connect(recordDestination);
 }
@@ -194,49 +193,7 @@ function synthV(m){
     out.gain.cancelScheduledValues(n);out.gain.setValueAtTime(out.gain.value,n);out.gain.setTargetAtTime(.0001,n,r/3);
     nodes.forEach(function(o){try{o.stop(n+r+.3)}catch(e){}});}};
 }
-function toneVoice(m,profile){
-  var t=AC.currentTime,f=freq(m),out=AC.createGain(),filter=AC.createBiquadFilter(),nodes=[],stopped=false;
-  filter.type='lowpass';filter.frequency.setValueAtTime(Math.min(profile.cutoff||11000,f*(profile.filterMul||12)+900),t);filter.Q.value=profile.q||.35;
-  out.gain.setValueAtTime(.0001,t);out.connect(filter);filter.connect(master);
-  var partials=profile.partials, attack=profile.attack||.012, peak=profile.peak||.22;
-  partials.forEach(function(p,i){
-    var o=mk(p.type||'sine',f*(p.mul||i+1),p.detune||0),g=AC.createGain(),level=peak*(p.amp||0);
-    g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(level,t+attack);
-    if(p.decay){g.gain.setTargetAtTime(.0001,t+attack,Math.max(.035,p.decay/4));}
-    o.connect(g);g.connect(out);o.start(t);nodes.push(o);
-  });
-  out.gain.linearRampToValueAtTime(1,t+attack);
-  var release=profile.release||.2;
-  return {stop:function(sus){
-    if(stopped)return;stopped=true;var now=AC.currentTime,r=sus&&profile.hold!==false?Math.max(release,1.1):release;
-    out.gain.cancelScheduledValues(now);out.gain.setValueAtTime(Math.max(.0001,out.gain.value),now);out.gain.setTargetAtTime(.0001,now,Math.max(.018,r/3.5));
-    nodes.forEach(function(o){try{o.stop(now+r+.15)}catch(e){}});
-  }};
-}
-function bellVoice(m){
-  var t=AC.currentTime,f=freq(m),out=AC.createGain(),nodes=[],stopped=false;
-  out.gain.setValueAtTime(1,t);out.connect(master);
-  [[1,1,.9],[2, .34,.65],[3, .16,.42],[4.16,.09,.28],[5.4,.045,.2]].forEach(function(p){
-    var o=mk('sine',f*p[0],0),g=AC.createGain();g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.19*p[1],t+.004);g.gain.setTargetAtTime(.0001,t+.008,p[2]);
-    o.connect(g);g.connect(out);o.start(t);nodes.push(o);
-  });
-  return {stop:function(){if(stopped)return;stopped=true;var n=AC.currentTime;out.gain.setTargetAtTime(.0001,n,.035);nodes.forEach(function(o){try{o.stop(n+2.8)}catch(e){}});}};
-}
-function voice(m){
-  if(inst==='grand')return piano(m);
-  if(inst==='brass')return brassStr(m);
-  if(inst==='synth')return synthV(m);
-  if(inst==='bells')return bellVoice(m);
-  var profiles={
-    soft:{peak:.34,attack:.025,release:.28,cutoff:7200,partials:[{mul:1,amp:.72},{mul:2,amp:.18},{mul:3,amp:.055},{mul:4,amp:.018}]},
-    electric:{peak:.31,attack:.009,release:.2,cutoff:9000,partials:[{mul:1,amp:.72,type:'sine'},{mul:2.01,amp:.28,type:'sine'},{mul:3.98,amp:.12,type:'sine'},{mul:6,amp:.045,type:'triangle'}]},
-    lead:{peak:.16,attack:.008,release:.16,cutoff:5200,q:.7,partials:[{mul:1,amp:.8,type:'sawtooth',detune:-4},{mul:1,amp:.8,type:'sawtooth',detune:4},{mul:2,amp:.12,type:'sine'}]},
-    pad:{peak:.12,attack:.32,release:.65,cutoff:4200,q:.4,partials:[{mul:1,amp:.7,type:'sawtooth',detune:-8},{mul:1,amp:.7,type:'sawtooth',detune:8},{mul:2,amp:.12,type:'sine'}]},
-    strings:{peak:.14,attack:.22,release:.48,cutoff:5600,q:.5,partials:[{mul:1,amp:.72,type:'sawtooth',detune:-7},{mul:1,amp:.72,type:'sawtooth',detune:7},{mul:2,amp:.13,type:'sine'}]},
-    organ:{peak:.24,attack:.012,release:.09,cutoff:10000,partials:[{mul:1,amp:.65},{mul:2,amp:.32},{mul:3,amp:.18},{mul:4,amp:.1},{mul:6,amp:.045}]}
-  };
-  return toneVoice(m,profiles[inst]||profiles.soft);
-}
+function voice(m){return inst==='piano'?piano(m):inst==='brass'?brassStr(m):synthV(m);}
 function voiceOld(m){
   if(inst==='drums') return drum(m);
   var t=AC.currentTime, f=freq(m), out=AC.createGain(), nodes=[];
@@ -294,18 +251,14 @@ function releaseSustain(){sustained.forEach(function(v){v.stop(true)});sustained
 var st=document.createElement('style');st.textContent='.w.on{background:linear-gradient(#cfe4ff,#9cc3f0)!important}.b.on{background:linear-gradient(#3a7bc8,#0d3a70)!important}';document.head.appendChild(st);
 
 /* ---------- pointer input ---------- */
-var ptr={}, keyZoom=1, pinchStart=1, pinchDistance=0, stage=$("stage");
+var ptr={}, zoomPointers={}, keyZoom=1, pinchStart=0, pinchDistance=0;
+function pinchGap(){var ids=Object.keys(zoomPointers);if(ids.length<2)return 0;var a=zoomPointers[ids[0]],b=zoomPointers[ids[1]];return Math.hypot(a.x-b.x,a.y-b.y);}
+var stage=$("stage");
 function setKeyZoom(value){keyZoom=Math.max(.55,Math.min(3,value));var w=Math.max(1,stage.clientWidth-20)*3*keyZoom;kb.style.width=w+"px";kb.style.minWidth=w+"px";}
-function touchGap(touches){var a=touches[0],b=touches[1];return Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);}
-stage.addEventListener("touchstart",function(e){
- if(e.touches.length===2){pinchStart=keyZoom;pinchDistance=touchGap(e.touches);Object.keys(ptr).forEach(function(id){noteOff(ptr[id]);delete ptr[id];});e.preventDefault();}
-},{passive:false});
-stage.addEventListener("touchmove",function(e){
- if(e.touches.length===2&&pinchDistance>0){setKeyZoom(pinchStart*(touchGap(e.touches)/pinchDistance));e.preventDefault();}
-},{passive:false});
-function resetPinch(e){if(e.touches.length<2)pinchDistance=0;}
-stage.addEventListener("touchend",resetPinch,{passive:true});stage.addEventListener("touchcancel",resetPinch,{passive:true});
-window.addEventListener("resize",function(){setKeyZoom(keyZoom)});setKeyZoom(1);
+stage.addEventListener("pointerdown",function(e){zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length===2){pinchStart=keyZoom;pinchDistance=pinchGap();Object.keys(ptr).forEach(function(id){noteOff(ptr[id]);delete ptr[id];});e.preventDefault();}},{passive:false});
+stage.addEventListener("pointermove",function(e){if(!(e.pointerId in zoomPointers))return;zoomPointers[e.pointerId]={x:e.clientX,y:e.clientY};if(Object.keys(zoomPointers).length>=2){var gap=pinchGap();if(pinchDistance>0){setKeyZoom(pinchStart*(gap/pinchDistance));e.preventDefault();}}},{passive:false});
+function clearZoomPointer(e){delete zoomPointers[e.pointerId];if(Object.keys(zoomPointers).length<2)pinchDistance=0;}
+window.addEventListener("pointerup",clearZoomPointer);window.addEventListener("pointercancel",clearZoomPointer);window.addEventListener("resize",function(){setKeyZoom(keyZoom)});setKeyZoom(1);
 function keyAt(x,y){var e=document.elementFromPoint(x,y);while(e&&e!==kb&&!(e.dataset&&e.dataset.m))e=e.parentNode;return e&&e.dataset&&e.dataset.m?+e.dataset.m:null;}
 kb.addEventListener('pointerdown',function(e){e.preventDefault();var m=keyAt(e.clientX,e.clientY);if(m===null)return;ptr[e.pointerId]=m;noteOn(m);});
 kb.addEventListener('pointermove',function(e){if(!(e.pointerId in ptr))return;var m=keyAt(e.clientX,e.clientY);var o=ptr[e.pointerId];if(m!==null&&m!==o){noteOff(o);ptr[e.pointerId]=m;noteOn(m);}});
@@ -326,8 +279,8 @@ $('inst').onchange=function(){inst=this.value};
 $('sus').onclick=function(){sustain=!sustain;this.classList.toggle('on',sustain);if(!sustain)releaseSustain();};
 function setT(v){trans=Math.max(-12,Math.min(12,v));$('xv').textContent=(trans>0?'+':'')+trans;}
 $('xm').onclick=function(){setT(trans-1)};$('xp').onclick=function(){setT(trans+1)};
-function moveKeyboard(direction){var distance=Math.max(1,stage.clientWidth-20)*.41;stage.scrollBy({left:direction*distance,behavior:'smooth'});}
-$('om').onclick=function(){moveKeyboard(-1)};$('op').onclick=function(){moveKeyboard(1)};$('stagePrev').onclick=function(){moveKeyboard(-1)};$('stageNext').onclick=function(){moveKeyboard(1)};
+function moveKeyboard(direction){var distance=Math.max(1,stage.clientWidth-20)*.82;stage.scrollBy({left:direction*distance,behavior:'smooth'});}
+$('om').onclick=function(){moveKeyboard(-1)};$('op').onclick=function(){moveKeyboard(1)};
 $('vol').oninput=function(){vol=+this.value;if(master)master.gain.value=vol;};
 $('lbl').onclick=function(){kb.classList.toggle('hide');this.classList.toggle('on')};
 $('fs').onclick=goFull;
@@ -392,10 +345,9 @@ $('mine').onclick=function(){var box=$('rl'),all=[];try{all=JSON.parse(localStor
 /* ---------- fullscreen + landscape ---------- */
 function goFull(){var el=document.documentElement,f=el.requestFullscreen||el.webkitRequestFullscreen;
  var p;try{p=f&&f.call(el);}catch(e){}
- var lock=function(){try{if(screen.orientation&&screen.orientation.lock){var q=screen.orientation.lock('landscape');if(q&&q.catch)q.catch(function(){});}}catch(e){}};
+ var lock=function(){try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(function(){});}catch(e){}};
  if(p&&p.then)p.then(lock,lock);else lock();}
 $('go').onclick=function(){$('start').style.display='none';ensure();AC.resume();goFull();};
-window.addEventListener('orientationchange',function(){setTimeout(function(){setKeyZoom(keyZoom);},180);});
 
 setT(0);build();requestAnimationFrame(function(){stage.scrollLeft=Math.max(0,(stage.scrollWidth-stage.clientWidth)/2);});
 var activitySentAt=0;function reportParentActivity(){var now=Date.now();if(now-activitySentAt<900)return;activitySentAt=now;try{if(window.parent!==window)window.parent.postMessage({type:"shoppers-ocean-user-activity"},window.location.origin)}catch(e){}}
