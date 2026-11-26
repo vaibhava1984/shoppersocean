@@ -297,8 +297,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [classicGameStarted, setClassicGameStarted] = useState<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final" | null | false>(false);
   const classicGameStartedRef = useRef<"tic-tac-toe" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final" | null | false>(false);
   const classicGameInteractedRef = useRef(false);
-  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final"; sessionId: string; consumed: boolean } | null>(null);
-  const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
+  const classicGameSessionRef = useRef<{ gameType: "tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final"; sessionId: string; consumed: boolean } | null>(null);  const [classicQuota, setClassicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
   const pendingClassicQuotaRef = useRef<Record<string, number>>({});
   const [classicQuotaPopup, setClassicQuotaPopup] = useState(false);
   const [classicQuotaNoticeFor, setClassicQuotaNoticeFor] = useState<"tic" | "chess" | "snakes-ladders" | "ocean-solitaire" | "archery3d" | "ocean-carrom" | "urban-rider-final" | null>(null);
@@ -597,8 +596,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
         window.location.origin
       );
     };
-    window.addEventListener("message", handleSolitaireMessage);
-    return () => window.removeEventListener("message", handleSolitaireMessage);
+    window.addEventListener("message", handleSolitaireMessage);    return () => window.removeEventListener("message", handleSolitaireMessage);
   }, [classicGameStarted]);
   useEffect(() => {
     if (classicGameStarted !== "archery3d") return;
@@ -857,7 +855,6 @@ useEffect(() => {
             {selected.action === "music-zone" && (
               musicPianoStarted ? (
                 <>
-                  <style jsx global>{`#music-piano-shell{position:fixed;inset:0;z-index:10001;overflow:hidden;background:#000}#music-piano-shell iframe{display:block;width:100%;height:100%;border:0;background:#000;touch-action:none}@media (orientation:portrait){#music-piano-shell{inset:auto;top:0;left:100vw;width:100dvh;height:100vw;transform:rotate(90deg);transform-origin:top left}}`}</style>
                   <div id="music-piano-shell">
                     <iframe title="Virtual Piano" src="/virtual-piano.html" allow="autoplay; fullscreen; screen-orientation" allowFullScreen />
                   </div>
@@ -897,8 +894,7 @@ useEffect(() => {
                       <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-blue-700">English Master Quiz</span>
                     </button>
                     <button type="button" onClick={() => { if (!userId) { setSignInPopup(true); return; } window.history.pushState({ shoppersOceanLearning: true, shoppersOceanTool: "one-word-substitute" }, "", window.location.href); oneWordSubstituteOpenRef.current = true; setOneWordSubstituteOpen(true); }} className="group w-full rounded-2xl border border-sky-300 bg-gradient-to-br from-sky-50 via-white to-cyan-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-200">
-                      <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📚</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-sky-800">Open →</span></span>
-                      <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-sky-800">One Word Substitute</span>
+                      <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📚</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-sky-800">Open →</span></span>                      <span className="mt-3 block text-lg font-black text-slate-900 group-hover:text-sky-800">One Word Substitute</span>
                     </button>
                     <button type="button" onClick={() => { if (!userId) { setSignInPopup(true); return; } window.history.pushState({ shoppersOceanLearning: true, shoppersOceanTool: "confusing-words" }, "", window.location.href); confusingWordsOpenRef.current = true; setConfusingWordsOpen(true); }} className="group w-full rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-100 p-5 text-left shadow-md transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-200">
                       <span className="flex items-center justify-between gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-2xl shadow-sm">📖</span><span className="rounded-full bg-white/85 px-3 py-1 text-xs font-bold text-amber-800">Open →</span></span>
