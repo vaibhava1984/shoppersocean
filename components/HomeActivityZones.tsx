@@ -23,7 +23,6 @@ const zones = [
   { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
   { icon: "🎲", name: "Classic Games", tone: "from-orange-500 via-rose-600 to-pink-700", action: "classic-games" },
   { icon: "🎵", name: "Music Zone", tone: "from-fuchsia-600 via-purple-700 to-indigo-900", note: "Explore instruments and make music", action: "music-zone" },
-  { icon: "🎨", name: "Drawing Studio", tone: "from-cyan-500 via-blue-600 to-violet-800", note: "Unleash your creativity in a colourful digital drawing space", action: "drawing-studio" },
 ];
 
 const entertainmentGroups = [
@@ -853,18 +852,6 @@ useEffect(() => {
                   </>
                 )}
                 {classicQuotaNoticeFor !== null && <div className="w-full max-w-2xl"><GameQuotaNotice isPrivileged={classicQuota.isAdmin || classicQuota.isSubscribed} /></div>}
-              </div>
-            )}
-            {selected.action === "drawing-studio" && (
-              <div className="mx-auto w-full min-w-0 overflow-hidden rounded-2xl border border-violet-300 bg-[#150c33] shadow-xl">
-                <iframe
-                  title="Drawing Studio"
-                  src="/art-studio.html"
-                  allow="autoplay; fullscreen"
-                  allowFullScreen
-                  className="block w-full border-0"
-                  style={{ height: "min(900px, calc(100dvh - 190px))", minHeight: "560px", touchAction: "pan-x pan-y pinch-zoom" }}
-                />
               </div>
             )}
             {selected.action === "music-zone" && (
