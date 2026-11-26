@@ -467,3 +467,9 @@ html.ocean-search-page-enter body { animation: oceanPageDragIn .55s cubic-bezier
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-7px); }
 }
+
+
+/* Music Zone piano fullscreen shell; kept in the global stylesheet to avoid nested styled-jsx compilation. */
+#music-piano-shell{position:fixed;inset:0;z-index:10001;overflow:hidden;background:#000}
+#music-piano-shell iframe{display:block;width:100%;height:100%;border:0;background:#000;touch-action:none}
+@media (orientation:portrait){#music-piano-shell{inset:auto;top:0;left:100vw;width:100dvh;height:100vw;transform:rotate(90deg);transform-origin:top left}}
