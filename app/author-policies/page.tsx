@@ -6,7 +6,7 @@ import AuthorRegistrationAction from "@/components/AuthorRegistrationAction";
 
 export const metadata = {
   title: "Author Policies",
-  description: "Author registration policies and terms for Shoppers Ocean.",,
+  description: "Author registration policies and terms for Shoppers Ocean.",
   openGraph: { type: "website", images: [{ url: "/api/share-preview/policies", width: 1200, height: 630 }] },
   twitter: { card: "summary_large_image", images: ["/api/share-preview/policies"] },
 };
