@@ -18,11 +18,9 @@ import OneWordSubstitute from "@/components/OneWordSubstitute";
 import CorrectMyLanguage from "@/components/CorrectMyLanguage";
 
 const zones = [
-  { icon: "📚", name: "Flipbook World", tone: "from-sky-500 via-blue-600 to-indigo-700", note: "Open the existing Read E-books library", action: "books" },
-  { icon: "🎮", name: "Quiz World", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "A collection of quizzes, mysteries, technology and world challenges", action: "games" },
-  { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Existing English Master Quiz", action: "learning" },
+  { icon: "🎮", name: "Quiz World", tone: "from-violet-500 via-purple-600 to-indigo-800", note: "General Knowledge Quiz, Riddle Corner and Mystery Quiz", action: "games" },
+  { icon: "🎓", name: "Learning Academy", tone: "from-emerald-500 via-teal-600 to-cyan-800", note: "Explore four learning sections", action: "learning" },
   { icon: "🎲", name: "Classic Games", tone: "from-orange-500 via-rose-600 to-pink-700", action: "classic-games" },
-  { icon: "🎵", name: "Music Zone", tone: "from-fuchsia-600 via-purple-700 to-indigo-900", note: "Explore instruments and make music", action: "music-zone" },
 ];
 
 const entertainmentGroups = [
@@ -278,8 +276,9 @@ function ShareGameButton({ gameId, gameTitle, compact = false }: { gameId: strin
   const url = `https://shoppersocean.com/play/${encodeURIComponent(gameId)}?share=2`;
   return <ShareActionButton url={url} title={gameTitle} message={`Play ${gameTitle} on Shoppers Ocean!`} label="Share game" compact={compact} />;
 }
-export default function HomeActivityZones({ userId }: { userId: string | null }) {
-  const [activeZone, setActiveZone] = useState<number | null>(null);
+export default function HomeActivityZones({ userId, initialSection, standalone = false }: { userId: string | null; initialSection?: "games" | "learning" | "classic-games"; standalone?: boolean }) {
+  const initialZoneIndex = initialSection ? zones.findIndex(zone => zone.action === initialSection) : null;
+  const [activeZone, setActiveZone] = useState<number | null>(initialZoneIndex !== null && initialZoneIndex >= 0 ? initialZoneIndex : null);
   const [musicPianoStarted, setMusicPianoStarted] = useState(false);
   const musicPianoStartedRef = useRef(false);
   const [musicQuota, setMusicQuota] = useState<{ remainingByType: Record<string, number>; isAdmin: boolean; isSubscribed: boolean; loading: boolean }>({ remainingByType: {}, isAdmin: false, isSubscribed: false, loading: true });
@@ -317,7 +316,7 @@ export default function HomeActivityZones({ userId }: { userId: string | null })
   const [trivioRemaining, setTrivioRemaining] = useState(0);
   const [riddleRemaining, setRiddleRemaining] = useState(0);
   const [trivioQuotaLoading, setTrivioQuotaLoading] = useState(true);
-  const activeZoneRef = useRef<number | null>(null);
+  const activeZoneRef = useRef<number | null>(initialZoneIndex !== null && initialZoneIndex >= 0 ? initialZoneIndex : null);
   const activeQuizGameRef = useRef<string | null>(null);
   const activityTargetRef = useRef<HTMLDivElement | null>(null);
   const gameTargetRef = useRef<HTMLDivElement | null>(null);
@@ -697,7 +696,7 @@ useEffect(() => {
 
   return (
     <>
-    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${activeZone !== null || activeQuizGame !== null || Boolean(classicGameStarted) || musicPianoStarted || classicGameOpening ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
+    <section aria-label="Shoppers Ocean activity zones" onClickCapture={(event) => { const target = event.target as HTMLElement; const button = target.closest("button, a"); if (!button || target.closest("[data-answer-choice], [data-entertainment-hub], [data-tic-cell]")) return; playZoneTap(); }} className={`${standalone ? "relative min-h-[65vh] w-full overflow-visible" : activeZone !== null || activeQuizGame !== null || Boolean(classicGameStarted) || musicPianoStarted || classicGameOpening ? "fixed inset-0 z-[9999] h-[100dvh] w-full overflow-y-auto overscroll-contain" : "relative overflow-hidden border-y"} border-indigo-200 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 py-4 sm:py-6`}>
       {classicGameOpening && <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950 text-lg font-black text-white">Opening game…</div>}
       <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-3xl" />
@@ -748,7 +747,7 @@ useEffect(() => {
         ) : (
           <div ref={activityTargetRef} className="min-h-[55vh] scroll-mt-24 rounded-3xl border border-white/20 bg-white p-4 shadow-2xl sm:p-7" style={{ touchAction: "pan-x pan-y pinch-zoom", WebkitOverflowScrolling: "touch" }}>
             {!musicPianoStarted && !englishTopicOpen && !oneWordSubstituteOpen && (<div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-col items-start gap-2"><button type="button" onClick={() => { if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{classicGameStartedRef.current || activeQuizGame !== null || englishAcademyEntered || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button>{(classicGameStarted === "chess" || classicGameStarted === "snakes-ladders" || classicGameStarted === "ocean-solitaire" || classicGameStarted === "archery3d" || classicGameStarted === "ocean-carrom" || classicGameStarted === "urban-rider-final") && <p className="text-sm font-black text-indigo-800">{classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType[classicGameStarted === "chess" ? "chess" : classicGameStarted === "snakes-ladders" ? "snakes-ladders" : classicGameStarted === "archery3d" ? "archery3d" : classicGameStarted === "ocean-carrom" ? "ocean-carrom" : classicGameStarted === "urban-rider-final" ? "urban-rider-final" : "ocean-solitaire"] ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}</p>}</div>
+                <div className="flex flex-col items-start gap-2"><button type="button" onClick={() => { if (standalone) { window.location.assign("/"); return; } if (classicGameStartedRef.current || activeQuizGameRef.current !== null || activeZoneRef.current !== null || selected.action === "learning") window.history.back(); }} className="rounded-full border border-indigo-300 bg-gradient-to-r from-indigo-700 via-blue-700 to-cyan-600 px-5 py-2.5 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:brightness-110">{standalone ? "← Back to Home" : classicGameStartedRef.current || activeQuizGame !== null || englishAcademyEntered || selected.action === "learning" ? "← Back" : "← Back to all zones"}</button>{(classicGameStarted === "chess" || classicGameStarted === "snakes-ladders" || classicGameStarted === "ocean-solitaire" || classicGameStarted === "archery3d" || classicGameStarted === "ocean-carrom" || classicGameStarted === "urban-rider-final") && <p className="text-sm font-black text-indigo-800">{classicQuota.loading ? "Checking quota…" : formatFreeQuotaLabel(Number(classicQuota.remainingByType[classicGameStarted === "chess" ? "chess" : classicGameStarted === "snakes-ladders" ? "snakes-ladders" : classicGameStarted === "archery3d" ? "archery3d" : classicGameStarted === "ocean-carrom" ? "ocean-carrom" : classicGameStarted === "urban-rider-final" ? "urban-rider-final" : "ocean-solitaire"] ?? 0), classicQuota.isAdmin || classicQuota.isSubscribed, "game")}</p>}</div>
                 {activeQuizGame === null && !classicGameStarted && selected.action !== "games" && <span className={`rounded-full bg-gradient-to-r ${selected.tone} px-4 py-2 text-sm font-black text-white shadow`}>{selected.icon} {selected.name}</span>}
             </div>            )}
             {selected.action === "games" && (

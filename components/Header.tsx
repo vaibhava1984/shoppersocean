@@ -10,7 +10,9 @@ const navigationItems = [
   ["/", "Home"],
   ["/bookShelf", "User Panel"],
   ["/about", "About"],
-  ["/read-ebooks", "Read E-books"],
+  ["/quiz-world", "Quiz World"],
+  ["/learning-academy", "Learning Academy"],
+  ["/classic-games", "Classic Games"],
 ] as const;
 
 type HeaderProps = {
@@ -54,7 +56,7 @@ export default async function Header({ user }: HeaderProps) {
       <nav className="relative z-40 pointer-events-auto bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 shadow-md">
         <div className="container mx-auto px-2 sm:px-4 py-2">
           <div className="relative z-50 max-w-5xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2 sm:gap-3">
               {navigationItems.map(([href, label]) => (
                 href === "/" ? (
                   <a key={href} href="/" className={navigationButtonClass}>Home</a>
