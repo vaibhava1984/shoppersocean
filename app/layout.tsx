@@ -20,14 +20,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Shoppers Ocean",
-    title: "Shoppers Ocean | Digital Flipbooks, Games, Quizzes & Learning",
-    description: "Explore interactive multilingual flipbooks, online games, quizzes, learning activities and entertainment on Shoppers Ocean.",
     images: [{ url: socialImage, width: 1200, height: 630, alt: "Shoppers Ocean — Digital Flipbooks, Games, Quizzes & Learning" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shoppers Ocean — Play, Think, Discover & Read",
-    description: "Play. Connect. Compete. Your Next Favourite Escape Starts Here.",
     images: [socialImage],
   },
 };
