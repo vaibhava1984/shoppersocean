@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ game: str
   const id = game as GameId;
   const item = games[id];
   const url = `https://shoppersocean.com/games/${id}`;
-  const image = `https://shoppersocean.com/api/game-share-image/${id}?v=4`;
+  const image = `https://shoppersocean.com/homepage_hero%20(1).jpeg`;
   return {
     title: item.title,
     description: item.description,
