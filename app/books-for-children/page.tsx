@@ -5,7 +5,9 @@ import { SUPPORTED_BOOK_LANGUAGES } from "@/utils/languages"
 export const metadata = {
   title: "Children's Books in Multiple Languages | Shoppers Ocean",
   description: "Explore children's digital books on Shoppers Ocean and browse available titles by language.",
-  alternates: { canonical: "https://shoppersocean.com/books-for-children" },
+  alternates: { canonical: "https://shoppersocean.com/books-for-children" },,
+  openGraph: { type: "website", images: [{ url: "/api/share-preview/children", width: 1200, height: 630 }] },
+  twitter: { card: "summary_large_image", images: ["/api/share-preview/children"] },
 }
 
 export const dynamic = "force-dynamic"
