@@ -6,7 +6,7 @@ import type { Metadata, Viewport } from "next";
 
 // Canonical public origin and default social-sharing preview.
 const defaultUrl = "https://shoppersocean.com";
-const socialImage = "/opengraph-image";
+const socialImage = "/homepage_hero%20(1).jpeg";
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, maximumScale: 5, userScalable: true };
 
