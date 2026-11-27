@@ -5,7 +5,9 @@ import AuthorApplicationBanner from "@/app/components/AuthorApplicationBanner";
 export const metadata = {
     title: "Our Services | Flipbooks, Games, Quizzes & Learning | Shoppers Ocean",
     description: "Explore Shoppers Ocean services: interactive multilingual digital flipbooks, author publishing opportunities, online games, educational quizzes, learning activities and brain teasers.",
-    alternates: { canonical: "https://shoppersocean.com/services" },
+    alternates: { canonical: "https://shoppersocean.com/services" },,
+  openGraph: { type: "website", images: [{ url: "/api/share-preview/services", width: 1200, height: 630 }] },
+  twitter: { card: "summary_large_image", images: ["/api/share-preview/services"] },
 };
 
 const flipbookServices = [
