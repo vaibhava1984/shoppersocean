@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-type PeriodTotal = { period: string; revenue: number | null };
+type PeriodTotal = { period: string; revenue: number; pendingCount: number };
 type Props = { monthly: PeriodTotal[]; yearly: PeriodTotal[] };
 
 function formatRevenue(value: number) {
@@ -55,7 +55,7 @@ export default function RevenueCalculator({ monthly, yearly }: Props) {
   const options = view === "monthly" ? monthOptions : yearOptions;
   const totals = view === "monthly" ? monthly : yearly;
   const selectedTotal = totals.find((item) => item.period === selectedPeriod);
-  const isPending = selectedTotal?.revenue === null;
+  const pendingCount = selectedTotal?.pendingCount ?? 0;
 
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_8px_28px_rgba(15,23,42,0.06)]">
@@ -68,7 +68,7 @@ export default function RevenueCalculator({ monthly, yearly }: Props) {
           </div>
           <div className="min-w-0 flex-1">
             <h2 className="text-lg font-bold tracking-tight text-slate-900 sm:text-xl">Revenue Calculator</h2>
-            <p className="mt-1 text-sm leading-5 text-slate-500">View your net earnings by month or year, after confirmed payment gateway charges.</p>
+            <p className="mt-1 text-sm leading-5 text-slate-500">View your confirmed net earnings by month or year. Sales awaiting gateway-fee confirmation are listed separately.</p>
           </div>
         </div>
       </div>
@@ -100,10 +100,12 @@ export default function RevenueCalculator({ monthly, yearly }: Props) {
           <div className="relative">
 
             <p className="text-sm font-medium text-slate-300">{view === "monthly" ? monthLabel(selectedPeriod) : `Year ${selectedPeriod}`} · Net revenue</p>
-            <p className="mt-3 break-words text-3xl font-bold tracking-tight sm:text-4xl">{isPending ? "Pending" : formatRevenue(selectedTotal?.revenue ?? 0)}</p>
+            <p className="mt-3 break-words text-3xl font-bold tracking-tight sm:text-4xl">{formatRevenue(selectedTotal?.revenue ?? 0)}</p>
             <div className="mt-5 flex items-center gap-2 border-t border-white/10 pt-4 text-xs text-slate-300">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              {isPending ? "Waiting for payment fee confirmation" : "Net earnings for selected period"}
+              {pendingCount > 0
+                ? `${pendingCount} sale${pendingCount === 1 ? " is" : "s are"} awaiting payment fee confirmation. The amount above includes all sales with confirmed fees.`
+                : "Net earnings for selected period"}
             </div>
           </div>
         </div>

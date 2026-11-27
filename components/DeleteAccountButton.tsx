@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { AlertTriangle, Loader2, ShieldAlert, Trash2, X } from "lucide-react";
 
-export default function DeleteAccountButton() {
+export default function DeleteAccountButton({ isAdmin = false }: { isAdmin?: boolean }) {
   const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
@@ -30,6 +30,8 @@ export default function DeleteAccountButton() {
       setDeleting(false);
     }
   }
+
+  if (isAdmin) return null;
 
   return (
     <>

@@ -126,7 +126,7 @@ export default function Settings({ initialUser, isAdmin = false }: { initialUser
           <CardHeader><CardTitle className="flex items-center gap-2 text-red-700"><span aria-hidden="true">⚠️</span>Delete Account</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             <p className="text-sm leading-6 text-slate-600">If you no longer wish to use Shoppers Ocean, you can permanently delete your account. Please review the consequences before proceeding.</p>
-            <DeleteAccountButton />
+            <DeleteAccountButton isAdmin={isAdmin} />
           </CardContent>
         </Card>
       )}

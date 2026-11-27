@@ -411,8 +411,8 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     }
   }
 
-  const monthlyMap = new Map<string, { revenue: number; complete: boolean }>();
-  const yearlyMap = new Map<string, { revenue: number; complete: boolean }>();
+  const monthlyMap = new Map<string, { revenue: number; pendingCount: number }>();
+  const yearlyMap = new Map<string, { revenue: number; pendingCount: number }>();
   const getPeriods = (date: Date) => {
     const parts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit" }).formatToParts(date);
     const year = parts.find((part) => part.type === "year")?.value || String(date.getUTCFullYear());
@@ -435,8 +435,8 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
       [monthlyMap, period.month, earned],
       [yearlyMap, period.year, earned],
     ] as const) {
-      const total = map.get(key) || { revenue: 0, complete: true };
-      if (valid) total.revenue += amount; else total.complete = false;
+      const total = map.get(key) || { revenue: 0, pendingCount: 0 };
+      if (valid) total.revenue += amount; else total.pendingCount += 1;
       map.set(key, total);
     }
   }
@@ -447,15 +447,15 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
   const currentMonth = Number(currentParts.find((part) => part.type === "month")?.value || periodNow.getUTCMonth() + 1);
   for (let month = 1; month <= currentMonth; month++) {
     const period = `${currentYear}-${String(month).padStart(2, "0")}`;
-    if (!monthlyMap.has(period)) monthlyMap.set(period, { revenue: 0, complete: true });
+    if (!monthlyMap.has(period)) monthlyMap.set(period, { revenue: 0, pendingCount: 0 });
   }
   // Always offer 2025 and the current year, plus any earlier years with recorded sales.
   for (let year = Math.min(2025, currentYear); year <= currentYear; year++) {
     const period = String(year);
-    if (!yearlyMap.has(period)) yearlyMap.set(period, { revenue: 0, complete: true });
+    if (!yearlyMap.has(period)) yearlyMap.set(period, { revenue: 0, pendingCount: 0 });
   }
-  const monthlyRevenue = Array.from(monthlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
-  const yearlyRevenue = Array.from(yearlyMap, ([period, total]) => ({ period, revenue: total.complete ? Number(total.revenue.toFixed(2)) : null }));
+  const monthlyRevenue = Array.from(monthlyMap, ([period, total]) => ({ period, revenue: Number(total.revenue.toFixed(2)), pendingCount: total.pendingCount }));
+  const yearlyRevenue = Array.from(yearlyMap, ([period, total]) => ({ period, revenue: Number(total.revenue.toFixed(2)), pendingCount: total.pendingCount }));
 
   const now = new Date();
   const istParts = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
