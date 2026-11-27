@@ -23,17 +23,16 @@ export const metadata = {
   description: 'Discover interactive multilingual digital flipbooks, online games, quizzes, educational activities and brain challenges on Shoppers Ocean.',
   openGraph: {
     type: 'website',
-    url: 'https://shoppersocean.com',
     siteName: 'Shoppers Ocean',
     title: 'Shoppers Ocean | Digital Flipbooks, Games, Quizzes & Learning',
     description: 'Read interactive multilingual flipbooks, play online games, explore quizzes and enjoy learning activities on Shoppers Ocean.',
-    images: [{ url: 'https://shoppersocean.com/homepage_hero%20(1).jpeg', width: 1200, height: 630, alt: 'Shoppers Ocean — Digital Flipbooks, Games, Quizzes & Learning' }],
+    images: [{ url: 'https://shoppersocean.com/opengraph-image.png', width: 1200, height: 630, alt: 'Shoppers Ocean — Digital Flipbooks, Games, Quizzes & Learning' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Shoppers Ocean — Play, Think, Discover & Read',
     description: 'One Destination. Endless Ways to Enjoy.',
-    images: ['https://shoppersocean.com/homepage_hero%20(1).jpeg'],
+    images: ['https://shoppersocean.com/opengraph-image.png'],
   },
 }
 

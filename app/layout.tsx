@@ -6,7 +6,7 @@ import type { Metadata, Viewport } from "next";
 
 // Canonical public origin and default social-sharing preview.
 const defaultUrl = "https://shoppersocean.com";
-const socialImage = "/1.jpg?rev=2";
+const socialImage = "https://shoppersocean.com/opengraph-image.png";
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, maximumScale: 5, userScalable: true };
 
@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   description: "Discover interactive multilingual digital flipbooks, online games, quizzes, educational activities and brain challenges on Shoppers Ocean.",
   openGraph: {
     type: "website",
-    url: defaultUrl,
     siteName: "Shoppers Ocean",
     title: "Shoppers Ocean | Digital Flipbooks, Games, Quizzes & Learning",
     description: "Explore interactive multilingual flipbooks, online games, quizzes, learning activities and entertainment on Shoppers Ocean.",
