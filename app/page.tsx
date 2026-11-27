@@ -27,13 +27,13 @@ export const metadata = {
     siteName: 'Shoppers Ocean',
     title: 'Shoppers Ocean | Digital Flipbooks, Games, Quizzes & Learning',
     description: 'Read interactive multilingual flipbooks, play online games, explore quizzes and enjoy learning activities on Shoppers Ocean.',
-    images: [{ url: 'https://shoppersocean.com/1.jpg?rev=2', width: 1200, height: 630, alt: 'Shoppers Ocean — Digital Flipbooks, Games, Quizzes & Learning' }],
+    images: [{ url: 'https://shoppersocean.com/homepage_hero%20(1).jpeg', width: 1200, height: 630, alt: 'Shoppers Ocean — Digital Flipbooks, Games, Quizzes & Learning' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Shoppers Ocean — Play, Think, Discover & Read',
     description: 'One Destination. Endless Ways to Enjoy.',
-    images: ['https://shoppersocean.com/1.jpg?rev=2'],
+    images: ['https://shoppersocean.com/homepage_hero%20(1).jpeg'],
   },
 }
 
@@ -71,7 +71,7 @@ export default async function LandingPage() {
           isSubscribed={isSubscribed}
           buttonText="Explore Flipbooks"
           buttonLink="/bookShelf"
-          imageSrc="/1.jpg?rev=2"
+          imageSrc="/homepage_hero%20(1).jpeg"
           imageAlt="Shoppers Ocean featured hero image"
         />
       </div>
