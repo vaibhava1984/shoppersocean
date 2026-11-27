@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/utils/auth/session";
 
 export const metadata = {
   title: "Create Your Flipbook",
-  description: "Become a Shoppers Ocean author and create your digital flipbook.",,
+  description: "Become a Shoppers Ocean author and create your digital flipbook.",
   openGraph: { type: "website", images: [{ url: "/api/share-preview/authors", width: 1200, height: 630 }] },
   twitter: { card: "summary_large_image", images: ["/api/share-preview/authors"] },
 };
