@@ -26,13 +26,13 @@ export const metadata = {
     siteName: 'Shoppers Ocean',
     title: 'Shoppers Ocean | Digital Flipbooks, Games, Quizzes & Learning',
     description: 'Read interactive multilingual flipbooks, play online games, explore quizzes and enjoy learning activities on Shoppers Ocean.',
-    images: [{ url: 'https://shoppersocean.com/opengraph-image.png', width: 1200, height: 630, alt: 'Shoppers Ocean — Digital Flipbooks, Games, Quizzes & Learning' }],
+    images: [{ url: 'https://shoppersocean.com/opengraph-image', width: 1200, height: 630, alt: 'Shoppers Ocean — Digital Flipbooks, Games, Quizzes & Learning' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Shoppers Ocean — Play, Think, Discover & Read',
     description: 'One Destination. Endless Ways to Enjoy.',
-    images: ['https://shoppersocean.com/opengraph-image.png'],
+    images: ['https://shoppersocean.com/opengraph-image'],
   },
 }
 
