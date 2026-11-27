@@ -8,7 +8,7 @@ import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 export const metadata = {
     title: 'Privacy Policy | Shoppers Ocean',
     description: 'Read the Shoppers Ocean privacy policy to understand how information is handled when you use our website and services.',
-    alternates: { canonical: 'https://shoppersocean.com/privacy-policy' },,
+    alternates: { canonical: 'https://shoppersocean.com/privacy-policy' },
   openGraph: { type: "website", images: [{ url: "/api/share-preview/privacy", width: 1200, height: 630 }] },
   twitter: { card: "summary_large_image", images: ["/api/share-preview/privacy"] },
 }
