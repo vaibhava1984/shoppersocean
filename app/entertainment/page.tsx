@@ -7,7 +7,7 @@ import { getCurrentUser } from "@/utils/auth/session";
 export const metadata = {
   title: "Online Games, Quizzes & Brain Challenges | Shoppers Ocean",
   description: "Explore online games, knowledge quizzes, riddles and daily brain challenges in the Shoppers Ocean entertainment world.",
-  alternates: { canonical: "https://shoppersocean.com/entertainment" },,
+  alternates: { canonical: "https://shoppersocean.com/entertainment" },
   openGraph: { type: "website", images: [{ url: "/api/share-preview/entertainment", width: 1200, height: 630 }] },
   twitter: { card: "summary_large_image", images: ["/api/share-preview/entertainment"] },
 };
