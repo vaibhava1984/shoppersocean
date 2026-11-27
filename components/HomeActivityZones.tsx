@@ -273,7 +273,7 @@ function ShareActionButton({ url, title, message, label, compact = false, imageU
   );
 }
 function ShareGameButton({ gameId, gameTitle, compact = false }: { gameId: string; gameTitle: string; compact?: boolean }) {
-  const url = `https://shoppersocean.com/play/${encodeURIComponent(gameId)}?share=2`;
+  const url = `https://shoppersocean.com/games/${encodeURIComponent(gameId)}`;
   return <ShareActionButton url={url} title={gameTitle} message={`Play ${gameTitle} on Shoppers Ocean!`} label="Share game" compact={compact} />;
 }
 export default function HomeActivityZones({ userId, initialSection, standalone = false }: { userId: string | null; initialSection?: "games" | "learning" | "classic-games"; standalone?: boolean }) {
