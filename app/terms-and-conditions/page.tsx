@@ -8,7 +8,7 @@ import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 export const metadata = {
     title: 'Terms and Conditions | Shoppers Ocean',
     description: 'Read the terms and conditions governing the use of Shoppers Ocean, its digital books and online services.',
-    alternates: { canonical: 'https://shoppersocean.com/terms-and-conditions' },,
+    alternates: { canonical: 'https://shoppersocean.com/terms-and-conditions' },
   openGraph: { type: "website", images: [{ url: "/api/share-preview/terms", width: 1200, height: 630 }] },
   twitter: { card: "summary_large_image", images: ["/api/share-preview/terms"] },
 }
