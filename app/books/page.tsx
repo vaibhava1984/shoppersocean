@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   title: "Discover E-books Online in Multiple Languages | Shoppers Ocean",
   description:
     "Explore the Shoppers Ocean catalogue of e-books in multiple languages. Discover books by title, author, genre, and language, and open each book's public details page.",
-  alternates: { canonical: "https://shoppersocean.com/books" },
+  alternates: { canonical: "https://shoppersocean.com/books" },,
+  openGraph: { type: "website", images: [{ url: "/api/share-preview/books", width: 1200, height: 630 }] },
+  twitter: { card: "summary_large_image", images: ["/api/share-preview/books"] },
 };
 
 export const dynamic = "force-dynamic";
