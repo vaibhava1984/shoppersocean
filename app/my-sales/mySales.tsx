@@ -55,6 +55,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     const paypalOrders = (await db.prepare(
       "SELECT o.id,o.user_id,o.book_id,o.amount,o.currency,o.status,o.paypal_order_id,o.created_at,o.paypal_reconciliation_checked_at " +
       "FROM orders o WHERE o.book_id IN (" + placeholders + ") AND o.paypal_order_id IS NOT NULL " +
+      "AND NOT EXISTS (SELECT 1 FROM payments p WHERE p.paypal_capture_id IS NOT NULL AND (p.paypal_order_id=o.paypal_order_id OR p.order_id=o.id)) " +
       "ORDER BY o.created_at DESC"
     ).bind(...ids).all<any>()).results || [];
     const checkCutoff = Date.now() - 6 * 60 * 60 * 1000;
@@ -66,7 +67,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
       ).bind(saved.paypal_order_id).first<any>();
       const completedOrder = String(saved.status).toLowerCase() === "completed";
       const missingCaptureRecord = completedOrder && (!existing || !existing.paypal_capture_id);
-      const retryWindow = missingCaptureRecord ? 15 * 60 * 1000 : 6 * 60 * 60 * 1000;
+      const retryWindow = missingCaptureRecord ? 15 * 60 * 1000 : 24 * 60 * 60 * 1000;
       if (checkedAt > Date.now() - retryWindow) continue;
 
       try {
@@ -208,7 +209,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
           const paymentId = existing?.id || crypto.randomUUID();
           if (existing) {
             await db.prepare(
-              "UPDATE payments SET status='completed',paypal_capture_id=?,amount=?,currency=?,original_amount=?,original_currency=?,payment_method='PayPal',gateway_name='PayPal',paypal_gross_amount_inr=?,gateway_fee_amount=?,gateway_fee_currency=?,gateway_fee_inr=?,paypal_receivable_amount=?,paypal_receivable_currency=?,paypal_exchange_rate=?,paypal_exchange_source_currency=?,paypal_exchange_target_currency=?,paypal_payer_country=COALESCE(NULLIF(?,''),paypal_payer_country),sale_country=COALESCE(NULLIF(sale_country,''),NULLIF(?,'')),created_at=COALESCE(?,created_at),updated_at=? WHERE id=?"
+              "UPDATE payments SET status='completed',paypal_capture_id=?,amount=?,currency=?,original_amount=?,original_currency=?,payment_method='PayPal',gateway_name='PayPal',paypal_gross_amount_inr=COALESCE(?,paypal_gross_amount_inr),gateway_fee_amount=COALESCE(?,gateway_fee_amount),gateway_fee_currency=COALESCE(?,gateway_fee_currency),gateway_fee_inr=COALESCE(?,gateway_fee_inr),paypal_receivable_amount=COALESCE(?,paypal_receivable_amount),paypal_receivable_currency=COALESCE(?,paypal_receivable_currency),paypal_exchange_rate=COALESCE(?,paypal_exchange_rate),paypal_exchange_source_currency=COALESCE(?,paypal_exchange_source_currency),paypal_exchange_target_currency=COALESCE(?,paypal_exchange_target_currency),paypal_payer_country=COALESCE(NULLIF(?,''),paypal_payer_country),sale_country=COALESCE(NULLIF(sale_country,''),NULLIF(?,'')),created_at=COALESCE(?,created_at),updated_at=? WHERE id=?"
             ).bind(
               String(capture.id), paidAmount, paidCurrency, paidAmount, paidCurrency,
               grossInr, Number.isFinite(feeAmount) ? feeAmount : null, feeCurrency || null, feeInr,
@@ -281,7 +282,10 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
 
   const keyId = process.env.RAZORPAY_KEY_ID || "";
   const keySecret = process.env.RAZORPAY_KEY_SECRET || "";
-  const rates = await fetchExchangeRates();
+  const needsMarketRates = revenueRows.some((row) =>
+    !row.paypal_capture_id && String(row.currency || "").toUpperCase() !== "INR"
+  );
+  const rates = needsMarketRates ? await fetchExchangeRates() : {};
   const toINR = (amount: number, currency: string): number | null => {
     const code = String(currency || "").toUpperCase();
     if (!Number.isFinite(amount) || amount < 0 || !code) return null;
@@ -298,11 +302,11 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
     const checked = row.gateway_fee_checked_at ? new Date(row.gateway_fee_checked_at).getTime() : 0;
     try {
       if (row.paypal_capture_id) {
-        const needsSettlement = row.paypal_gross_amount_inr == null || row.gateway_fee_inr == null ||
+        const needsSettlement = (row.paypal_gross_amount_inr == null || row.gateway_fee_inr == null ||
           row.paypal_receivable_amount == null || !row.paypal_receivable_currency ||
-          (String(row.paypal_receivable_currency).toUpperCase() !== "INR" && row.paypal_exchange_rate == null);
-        const needsCountry = !row.paypal_payer_country && !row.sale_country && Boolean(row.paypal_order_id);
-        if (needsSettlement || needsCountry) {
+          (String(row.paypal_receivable_currency).toUpperCase() !== "INR" && row.paypal_exchange_rate == null)) &&
+          (!checked || checked <= Date.now() - 6 * 60 * 60 * 1000);
+        if (needsSettlement) {
           if (!paypalToken) paypalToken = await getPaypalAccessToken();
           if (needsSettlement) {
             const response = await fetch(paypalApiUrl("/v2/payments/captures/" + encodeURIComponent(String(row.paypal_capture_id))), {
@@ -313,7 +317,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
             const fee = breakdown.paypal_fee || null;
             const feeInReceivable = breakdown.paypal_fee_in_receivable_currency || null;
             const exchange = breakdown.exchange_rate || {};
-            const receivable = breakdown.receivable_amount || null;
+            const receivable = breakdown.receivable_amount || breakdown.net_amount || null;
             const paymentCurrency = String(row.currency || "").toUpperCase();
             const feeCurrency = String(fee?.currency_code || "").toUpperCase();
             const feeAmount = Number(fee?.value);
@@ -321,7 +325,19 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
             const feeReceivableAmount = Number(feeInReceivable?.value);
             const sourceCurrency = String(exchange?.source_currency || "").toUpperCase();
             const targetCurrency = String(exchange?.target_currency || "").toUpperCase();
-            const exchangeRate = Number(exchange?.value);
+            let exchangeRate = Number(exchange?.value);
+            const actualReceivableAmount = Number(breakdown.receivable_amount?.value);
+            const actualNetAmount = Number(breakdown.net_amount?.value);
+            const actualReceivableCurrency = String(breakdown.receivable_amount?.currency_code || "").toUpperCase();
+            const actualNetCurrency = String(breakdown.net_amount?.currency_code || "").toUpperCase();
+            if ((!Number.isFinite(exchangeRate) || exchangeRate <= 0) &&
+                actualReceivableCurrency === "INR" && actualNetCurrency === paymentCurrency &&
+                Number.isFinite(actualReceivableAmount) && actualReceivableAmount >= 0 &&
+                Number.isFinite(actualNetAmount) && actualNetAmount > 0) {
+              // Derive the actual PayPal settlement rate from PayPal's own net
+              // amount and the INR receivable it reports; never use market FX.
+              exchangeRate = actualReceivableAmount / actualNetAmount;
+            }
             let grossInr: number | null = null;
             if (sourceCurrency === paymentCurrency && targetCurrency === "INR" && Number.isFinite(exchangeRate) && exchangeRate > 0) {
               grossInr = Number(row.amount) * exchangeRate;
@@ -352,7 +368,7 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
             if (response.ok && capture?.id === row.paypal_capture_id) {
               const checkedAt = new Date().toISOString();
               await db.prepare(
-                "UPDATE payments SET gateway_fee_amount=?,gateway_fee_currency=?,gateway_fee_inr=COALESCE(?,gateway_fee_inr),gateway_name='PayPal',gateway_fee_checked_at=?,paypal_gross_amount_inr=COALESCE(?,paypal_gross_amount_inr),paypal_receivable_amount=?,paypal_receivable_currency=?,paypal_exchange_rate=?,paypal_exchange_source_currency=?,paypal_exchange_target_currency=? WHERE id=?"
+                "UPDATE payments SET gateway_fee_amount=COALESCE(?,gateway_fee_amount),gateway_fee_currency=COALESCE(?,gateway_fee_currency),gateway_fee_inr=COALESCE(?,gateway_fee_inr),gateway_name='PayPal',gateway_fee_checked_at=?,paypal_gross_amount_inr=COALESCE(?,paypal_gross_amount_inr),paypal_receivable_amount=COALESCE(?,paypal_receivable_amount),paypal_receivable_currency=COALESCE(?,paypal_receivable_currency),paypal_exchange_rate=COALESCE(?,paypal_exchange_rate),paypal_exchange_source_currency=COALESCE(?,paypal_exchange_source_currency),paypal_exchange_target_currency=COALESCE(?,paypal_exchange_target_currency) WHERE id=?"
               ).bind(
                 fee && feeCurrency ? feeAmount : null,
                 feeCurrency || null,
@@ -369,17 +385,6 @@ export default async function MySales({ authorId, isAdmin, fromDate = "", toDate
               if (grossInr != null) row.paypal_gross_amount_inr = grossInr;
               if (feeInr != null) row.gateway_fee_inr = feeInr;
               row.gateway_fee_checked_at = checkedAt;
-            }
-          }
-          if (needsCountry && row.paypal_order_id) {
-            const orderResponse = await fetch(paypalApiUrl("/v2/checkout/orders/" + encodeURIComponent(String(row.paypal_order_id))), {
-              headers: { Authorization: "Bearer " + paypalToken }, cache: "no-store"
-            });
-            const order = await orderResponse.json() as Record<string, any>;
-            const countryCode = String(order?.payer?.address?.country_code || "").toUpperCase();
-            if (orderResponse.ok && order?.id === row.paypal_order_id && /^[A-Z]{2}$/.test(countryCode)) {
-              await db.prepare("UPDATE payments SET paypal_payer_country=?,sale_country=COALESCE(NULLIF(sale_country,''),?) WHERE id=?").bind(countryCode,countryCode,row.payment_id).run();
-              row.paypal_payer_country = countryCode;
             }
           }
         }
