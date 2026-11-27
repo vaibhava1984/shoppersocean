@@ -9,7 +9,7 @@ import AuthorApplicationBanner from '@/app/components/AuthorApplicationBanner';
 export const metadata = {
     title: 'Contact Shoppers Ocean | Get in Touch',
     description: 'Contact Shoppers Ocean for questions about digital flipbooks, author opportunities, games, quizzes, learning activities and support.',
-    alternates: { canonical: 'https://shoppersocean.com/contact' },,
+    alternates: { canonical: 'https://shoppersocean.com/contact' },
   openGraph: { type: "website", images: [{ url: "/api/share-preview/contact", width: 1200, height: 630 }] },
   twitter: { card: "summary_large_image", images: ["/api/share-preview/contact"] },
 }
