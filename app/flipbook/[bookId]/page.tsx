@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ bookId: s
     const book = await db.prepare("SELECT title, description, cover_images FROM books WHERE id = ? AND COALESCE(is_deleted, 0) = 0 LIMIT 1").bind(bookId).first<Record<string, any>>();
     if (!book) return { title: "Flipbook not found | Shoppers Ocean", description: fallback };
     const title = String(book.title || "Digital Flipbook").trim();
-    const descriptionText = String(book.description || fallback).replace(/\\s+/g, " ").trim();
+    const descriptionText = String(book.description || fallback).replace(/\s+/g, " ").trim();
     const description = descriptionText.length > 200 ? descriptionText.slice(0, 197).trimEnd() + "..." : descriptionText;
     let covers: string[] = [];
     try {
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ bookId: s
       else if (typeof parsed === "string") covers = [parsed];
     } catch { if (typeof book.cover_images === "string" && book.cover_images) covers = [book.cover_images]; }
     const images = covers.slice(0, 2).map((image, index) => {
-      if (/^data:image\\/(png|jpe?g|webp|gif|avif);base64,/i.test(image)) return `https://shoppersocean.com/api/public/book-cover/${encodeURIComponent(bookId)}/${index}`;
+      if (/^data:image\/(png|jpe?g|webp|gif|avif);base64,/i.test(image)) return `https://shoppersocean.com/api/public/book-cover/${encodeURIComponent(bookId)}/${index}`;
       try { return new URL(image, "https://shoppersocean.com").toString(); } catch { return ""; }
     }).filter(Boolean);
     const canonical = `https://shoppersocean.com/flipbook/${encodeURIComponent(bookId)}`;
