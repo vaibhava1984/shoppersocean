@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     emoji: "🎮",
   };
   const url = "https://shoppersocean.com/play/" + encodeURIComponent(safeId);
-  const image = "https://shoppersocean.com/api/game-share-image/" + encodeURIComponent(safeId) + "?v=2";
+  const image = "https://shoppersocean.com/homepage_hero%20(1).jpeg";
   return { title: game.title + " | Shoppers Ocean", description: game.description, alternates: { canonical: url },
     openGraph: { type: "website", url, siteName: "Shoppers Ocean", title: game.title + " | Shoppers Ocean", description: game.description, images: [{ url: image, width: 1200, height: 630, alt: game.title + " game on Shoppers Ocean" }] },
     twitter: { card: "summary_large_image", title: game.title + " | Shoppers Ocean", description: game.description, images: [image] } };
