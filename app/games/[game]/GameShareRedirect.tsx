@@ -5,7 +5,7 @@ import { useEffect } from "react";
 export default function GameShareRedirect({ gameId, title }: { gameId: string; title: string }) {
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      window.location.replace(`/?game=${encodeURIComponent(gameId)}`);
+      window.location.replace(`/classic-games?game=${encodeURIComponent(gameId)}`);
     }, 900);
     return () => window.clearTimeout(timer);
   }, [gameId]);
@@ -16,7 +16,7 @@ export default function GameShareRedirect({ gameId, title }: { gameId: string; t
         <img src={`/games/${gameId}/opengraph-image`} alt={`${title} game preview`} className="aspect-[1200/630] w-full rounded-2xl object-cover" />
         <h1 className="mt-4 text-2xl font-black">{title}</h1>
         <p className="mt-2 text-sm text-white/75">Opening your game on Shoppers Ocean…</p>
-        <a href={`/?game=${encodeURIComponent(gameId)}`} className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-cyan-300 px-6 py-2 font-black text-slate-950">Play now</a>
+        <a href={`/classic-games?game=${encodeURIComponent(gameId)}`} className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-cyan-300 px-6 py-2 font-black text-slate-950">Play now</a>
       </div>
     </main>
   );

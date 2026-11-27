@@ -537,8 +537,8 @@ export default function HomeActivityZones({ userId, initialSection, standalone =
     const requestedGame = new URLSearchParams(window.location.search).get("game");
     const allowedGames = ["chess", "snakes-ladders", "ocean-solitaire", "tic-tac-toe", "archery3d", "ocean-carrom", "urban-rider-final"] as const;
     if (!requestedGame || !allowedGames.includes(requestedGame as typeof allowedGames[number])) return;
-    activeZoneRef.current = 3;
-    setActiveZone(3);
+    activeZoneRef.current = 2;
+    setActiveZone(2);
     if (!userId || sharedGameHandledRef.current) { if (!userId) setSignInPopup(true); return; }
     sharedGameHandledRef.current = true;
     void (async () => {
