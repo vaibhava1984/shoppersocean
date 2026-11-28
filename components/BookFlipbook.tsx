@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ArrowLeft, ArrowRight, Loader2, Share2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Loader2, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 declare global {
@@ -469,8 +469,8 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
             <canvas ref={canvasRef} className="block rounded select-none" style={{ touchAction: "pan-y pinch-zoom" }} draggable={false} />
             {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
-            <Button variant="ghost" size="icon" className="absolute bottom-[-2px] left-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 1)} aria-label="Previous page"><ArrowLeft className="h-8 w-8 stroke-[3.25]" /></Button>
-            <Button variant="ghost" size="icon" className="absolute bottom-[-2px] right-1 z-20 h-10 w-10 rounded-full bg-transparent p-0 text-slate-800 drop-shadow-[0_2px_3px_rgba(255,255,255,0.9)] hover:bg-transparent hover:text-slate-950 disabled:opacity-25" disabled={page >= pageCount || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page + 1)} aria-label="Next page"><ArrowRight className="h-8 w-8 stroke-[3.25]" /></Button>
+            <Button variant="ghost" size="icon" className="absolute bottom-[-6px] left-1 z-20 h-9 w-9 rounded-full border border-slate-300/80 bg-white/90 p-0 text-slate-800 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 1)} aria-label="Previous page"><ChevronLeft className="h-7 w-7 stroke-[2.6]" /></Button>
+            <Button variant="ghost" size="icon" className="absolute bottom-[-6px] right-1 z-20 h-9 w-9 rounded-full border border-slate-300/80 bg-white/90 p-0 text-slate-800 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-700 disabled:opacity-25" disabled={page >= pageCount || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page + 1)} aria-label="Next page"><ChevronRight className="h-7 w-7 stroke-[2.6]" /></Button>
           </div>
         </div>
       </div>
