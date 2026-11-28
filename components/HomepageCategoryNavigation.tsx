@@ -73,7 +73,6 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
           ))}
         </div>
       )}
-    </div>
       <style jsx>{`
         @keyframes flipbookMenuReveal {
           from { opacity: 0; transform: translateY(-7px); }
@@ -85,5 +84,6 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
           .flipbook-menu-panel, .flipbook-menu-item { animation: none; }
         }
       `}</style>
+    </div>
   )
 }
