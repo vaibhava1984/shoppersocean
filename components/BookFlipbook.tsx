@@ -42,6 +42,7 @@ function loadPdfJs(): Promise<NonNullable<Window['pdfjsLib']>> {
 
 export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const flipCanvasRef = useRef<HTMLCanvasElement>(null);
   const pageFrameRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<any>(null);
@@ -378,17 +379,29 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
   const changePage = async (next: number) => {
     if (next < 1 || next > pageCount || turning || rendering) return;
     const destination = next > page ? 'next' : 'prev';
-    const nextCanvas = canvasRef.current;
-    if (!nextCanvas) return;
-    setDragOffset(0); setTurnDirection(destination); setTurning(true); playPageTurnSound();
+    const incomingCanvas = flipCanvasRef.current;
+    if (!incomingCanvas || !canvasRef.current) return;
+    // Render the incoming page on a separate layer. The current page remains
+    // untouched underneath the animation, so the reader never flashes early.
+    incomingCanvas.width = 0;
+    incomingCanvas.height = 0;
     try {
-      await renderCanvasPage(next, nextCanvas);
+      await renderCanvasPage(next, incomingCanvas);
+      if (!incomingCanvas.width || !incomingCanvas.height) return;
+      setDragOffset(0);
+      setTurnDirection(destination);
+      setTurning(true);
+      playPageTurnSound();
       if (turnTimerRef.current) window.clearTimeout(turnTimerRef.current);
       turnTimerRef.current = window.setTimeout(() => {
-        setPage(next); setTurnDirection(null); setTurning(false); turnTimerRef.current = null;
-      }, 620);
+        setPage(next);
+        setTurnDirection(null);
+        setTurning(false);
+        turnTimerRef.current = null;
+      }, 720);
     } catch {
-      setTurnDirection(null); setTurning(false);
+      setTurnDirection(null);
+      setTurning(false);
     }
   };
 
@@ -474,13 +487,19 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
 
   const dragProgress = pageFrameRef.current?.clientWidth ? Math.max(-1, Math.min(1, dragOffset / pageFrameRef.current.clientWidth)) : 0;
   const dragAngle = dragProgress * 52;
-  const flipStyle: React.CSSProperties = {
-    transformOrigin: dragOffset < 0 || turnDirection === 'next' ? 'right center' : 'left center',
-    transform: turning ? `translateX(${turnDirection === 'next' ? '-1.5%' : '1.5%'}) rotateY(${turnDirection === 'next' ? -178 : 178}deg) scaleX(0.985)` : dragOffset !== 0 ? `translateX(${dragOffset * 0.045}px) rotateY(${dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})` : 'rotateY(0deg) scaleX(1)',
-    transition: isDragging ? 'none' : turning ? 'transform 620ms cubic-bezier(.22,.72,.24,1), box-shadow 620ms ease' : 'transform 280ms cubic-bezier(.22,.72,.24,1), box-shadow 280ms ease',
-    boxShadow: turning || dragOffset !== 0 ? '0 18px 34px rgba(15,23,42,.26)' : '0 16px 30px rgba(15,23,42,.18)',
-    backfaceVisibility: 'hidden', transformStyle: 'preserve-3d', touchAction: 'pan-y',
-  };
+  const pageTransform = turning
+    ? `rotateY(${turnDirection === 'next' ? -176 : 176}deg) scaleX(.985)`
+    : dragOffset !== 0
+      ? `translateX(${dragOffset * 0.045}px) rotateY(${dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})`
+      : 'rotateY(0deg) scaleX(1)';
+  const pageTransformOrigin = turning
+    ? (turnDirection === 'next' ? 'left center' : 'right center')
+    : (dragOffset < 0 ? 'right center' : 'left center');
+  const pageTransition = isDragging
+    ? 'none'
+    : turning
+      ? 'transform 720ms cubic-bezier(.32,.02,.22,1), filter 720ms ease'
+      : 'transform 280ms cubic-bezier(.22,.72,.24,1), filter 280ms ease';
   const displayedSliderPage = sliderPreviewPage ?? page;
   const sliderPercent = pageCount > 1 ? ((displayedSliderPage - 1) / (pageCount - 1)) * 100 : 0;
 
@@ -497,9 +516,10 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     <div data-flipbook-page-area="true" className={`relative flex min-h-0 items-center justify-center h-max max-h-[calc(100dvh-190px)] w-full touch-pan-y overflow-x-auto overflow-y-scroll overscroll-y-auto p-2 sm:p-4 ${portalToBody ? '!min-h-0 !min-w-0 !w-[min(94vw,980px)] max-w-[100vw] flex-none self-center overflow-hidden pointer-events-auto' : ''}`} style={{ height: portalToBody ? `calc(100dvh - ${desktopReaderTop + 150}px)` : "max-content", maxHeight: portalToBody ? `calc(100dvh - ${desktopReaderTop + 150}px)` : "calc(100dvh - 190px)", width: portalToBody ? "min(94vw, 980px)" : undefined, maxWidth: portalToBody ? "100vw" : undefined, marginLeft: portalToBody ? "auto" : undefined, marginRight: portalToBody ? "auto" : undefined, overflowX: portalToBody ? "visible" : "auto", overflowY: portalToBody ? "visible" : "scroll", WebkitOverflowScrolling: "touch", touchAction: zoom > 1 ? "pan-x pan-y pinch-zoom" : "pan-y pinch-zoom", overscrollBehaviorY: "auto", overscrollBehaviorX: "contain" }} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div ref={pageFrameRef} className="relative mx-auto flex h-max w-max min-w-full shrink-0 items-center justify-center" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={finishPointerDrag} onPointerCancel={finishPointerDrag}>
         <div className="relative flex h-max w-max min-w-full shrink-0 items-start justify-center" style={{ perspective: '1800px' }}>
-          <div className="relative flex h-max w-max min-w-full shrink-0 items-center justify-center overflow-visible rounded bg-white pb-12 shadow-2xl" style={{ ...flipStyle, zIndex: 2 }}>
-            <canvas ref={canvasRef} className="block rounded select-none" style={{ touchAction: "pan-y pinch-zoom" }} draggable={false} />
-            {turning && <div className="pointer-events-none absolute inset-y-0 right-0 w-[18%] rounded-l-[45%] bg-gradient-to-l from-black/10 via-white/10 to-transparent" style={{ opacity: 0.65 }} />}
+          <div className="relative flex h-max w-max min-w-full shrink-0 items-center justify-center overflow-visible rounded bg-white pb-12 shadow-2xl" style={{ zIndex: 2, transformStyle: 'preserve-3d' }}>
+            <canvas ref={flipCanvasRef} aria-hidden="true" className="pointer-events-none absolute left-0 top-0 z-[1] rounded select-none" style={{ opacity: turning ? 1 : 0, filter: turning ? 'brightness(.96)' : 'none' }} />
+            <canvas ref={canvasRef} className="relative z-[2] block rounded select-none" style={{ touchAction: "pan-y pinch-zoom", transform: pageTransform, transformOrigin: pageTransformOrigin, transition: pageTransition, filter: turning ? 'brightness(.88)' : 'none', backfaceVisibility: 'hidden', transformStyle: 'preserve-3d' }} draggable={false} />
+            {turning && <div className={`pointer-events-none absolute inset-y-0 z-[3] w-[28%] ${turnDirection === 'next' ? 'right-0 bg-gradient-to-l' : 'left-0 bg-gradient-to-r'} from-black/25 via-black/10 to-transparent`} style={{ opacity: 0.8, transition: 'opacity 720ms ease' }} />}
             {rendering && <div className="absolute inset-0 flex items-center justify-center bg-white/70 text-slate-700"><Loader2 className="animate-spin" /></div>}
             <Button type="button" variant="ghost" size="icon" className="absolute bottom-1 left-2 z-20 h-10 w-14 rounded-lg border-0 bg-transparent p-0 text-black shadow-none transition-transform duration-200 hover:scale-110 hover:bg-black/5 disabled:opacity-25" disabled={page <= 1 || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page - 1)} aria-label="Previous page"><svg viewBox="0 0 100 60" className="h-9 w-14 -scale-x-100" aria-hidden="true"><path d="M8 22 C29 7 59 7 78 22 L78 8 L98 30 L78 52 L78 38 C56 25 31 26 10 39 Z" fill="currentColor" /></svg></Button>
             <Button type="button" variant="ghost" size="icon" className="absolute bottom-1 right-2 z-20 h-10 w-14 rounded-lg border-0 bg-transparent p-0 text-black shadow-none transition-transform duration-200 hover:scale-110 hover:bg-black/5 disabled:opacity-25" disabled={page >= pageCount || turning || rendering} onPointerDown={(event) => event.stopPropagation()} onClick={() => changePage(page + 1)} aria-label="Next page"><svg viewBox="0 0 100 60" className="h-9 w-14" aria-hidden="true"><path d="M8 22 C29 7 59 7 78 22 L78 8 L98 30 L78 52 L78 38 C56 25 31 26 10 39 Z" fill="currentColor" /></svg></Button>
