@@ -487,14 +487,16 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
 
   const dragProgress = pageFrameRef.current?.clientWidth ? Math.max(-1, Math.min(1, dragOffset / pageFrameRef.current.clientWidth)) : 0;
   const dragAngle = dragProgress * 52;
+  // Forward turns move the visible sheet from right to left around its left edge.
+  // Backward turns reverse the direction around the right edge.
   const pageTransform = turning
-    ? `rotateY(${turnDirection === 'next' ? -176 : 176}deg) scaleX(.985)`
+    ? `rotateY(${turnDirection === 'next' ? 180 : -180}deg) scaleX(.985)`
     : dragOffset !== 0
-      ? `translateX(${dragOffset * 0.045}px) rotateY(${dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})`
+      ? `translateX(${dragOffset * 0.045}px) rotateY(${-dragAngle}deg) scaleX(${1 - Math.abs(dragProgress) * 0.025})`
       : 'rotateY(0deg) scaleX(1)';
   const pageTransformOrigin = turning
     ? (turnDirection === 'next' ? 'left center' : 'right center')
-    : (dragOffset < 0 ? 'right center' : 'left center');
+    : (dragOffset < 0 ? 'left center' : 'right center');
   const pageTransition = isDragging
     ? 'none'
     : turning
