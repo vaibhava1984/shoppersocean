@@ -82,8 +82,40 @@ export default function BookFlipbook({ bookId, title, onShareBook }: Props) {
     } catch {}
   }, []);
 
+  useEffect(() => {
+    const closeWhenAnotherBookOpens = (event: Event) => {
+      const nextBookId = (event as CustomEvent<{ bookId?: string }>).detail?.bookId;
+      if (!nextBookId || nextBookId === String(bookId)) return;
+      // Only one flipbook reader may remain open at a time across the book list.
+      ++renderRequestRef.current;
+      try { renderTaskRef.current?.cancel(); } catch {}
+      renderTaskRef.current = null;
+      pdfRef.current = null;
+      if (turnTimerRef.current !== null) window.clearTimeout(turnTimerRef.current);
+      turnTimerRef.current = null;
+      pageTurnAudioRef.current?.pause();
+      setOpened(false);
+      setReaderUrl('');
+      setPdfReady(false);
+      setError('');
+      setLoading(false);
+      setTurning(false);
+      setRendering(false);
+      setIsDragging(false);
+      setIsSliderDragging(false);
+      setSliderPreviewPage(null);
+      setDragOffset(0);
+      setTurnDirection(null);
+    };
+    window.addEventListener('shoppers-ocean:open-flipbook', closeWhenAnotherBookOpens);
+    return () => window.removeEventListener('shoppers-ocean:open-flipbook', closeWhenAnotherBookOpens);
+  }, [bookId]);
+
   const openReader = async () => {
     if (loading) return;
+    window.dispatchEvent(new CustomEvent('shoppers-ocean:open-flipbook', {
+      detail: { bookId: String(bookId) },
+    }));
     // On desktop, take the reader to this book's dedicated details page first.
     // The read=1 query opens the same reader there; mobile behavior stays unchanged.
     const isDesktop = window.matchMedia('(min-width: 768px)').matches;
