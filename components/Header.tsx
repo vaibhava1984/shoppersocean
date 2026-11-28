@@ -11,7 +11,6 @@ const navigationItems = [
   ["/", "Home"],
   ["/bookShelf", "Your Books"],
   ["/about", "About"],
-  ["/books-for-children", "Books for Children"],
   ["/quiz-world", "Quiz World"],
   ["/learning-academy", "Learning Academy"],
   ["/classic-games", "Classic Games"],
