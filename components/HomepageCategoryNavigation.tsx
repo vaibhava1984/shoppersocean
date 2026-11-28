@@ -55,19 +55,19 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
       </div>
 
       {open && (
-        <div className="flipbook-menu-panel mt-2 rounded-xl border border-blue-200 bg-white p-2 shadow-xl">
+        <div className="flipbook-menu-panel mt-2 rounded-xl border border-blue-950 bg-blue-800 p-2 shadow-xl">
           {open === "genre" && SUPPORTED_BOOK_GENRES.map((genre, index) => (
-            <Link key={genre} onClick={() => setOpen(null)} href={makeHref("genre", genre)} className="flipbook-menu-item mb-1 block rounded-lg border border-transparent px-4 py-2.5 !font-sans !text-sm !font-semibold !not-italic tracking-wide text-slate-800 transition-all duration-200 hover:border-blue-100 hover:bg-blue-50 hover:text-blue-800 hover:shadow-sm" style={{ animationDelay: `${index * 75}ms` }}>
+            <Link key={genre} onClick={() => setOpen(null)} href={makeHref("genre", genre)} className="flipbook-menu-item mb-1 block rounded-lg border border-blue-500/40 bg-blue-700 px-4 py-2.5 font-sans text-sm font-semibold not-italic tracking-wide text-white transition-colors hover:border-blue-300 hover:bg-blue-600 hover:text-white" style={{ animationDelay: `${index * 500}ms` }}>
               {genre}
             </Link>
           ))}
           {open === "author" && (authors.length > 0 ? sortedAuthors.map((author, index) => (
-            <Link key={author.author_id} onClick={() => setOpen(null)} href={makeHref("author", author.author_id)} className="flipbook-menu-item block rounded-lg px-4 py-2.5 !font-sans !text-sm !font-semibold !not-italic tracking-wide text-slate-800 transition-colors hover:bg-blue-50 hover:text-blue-800" style={{ animationDelay: `${index * 75}ms` }}>
+            <Link key={author.author_id} onClick={() => setOpen(null)} href={makeHref("author", author.author_id)} className="flipbook-menu-item mb-1 block rounded-lg border border-blue-500/40 bg-blue-700 px-4 py-2.5 font-sans text-sm font-semibold not-italic tracking-wide text-white transition-colors hover:border-blue-300 hover:bg-blue-600 hover:text-white" style={{ animationDelay: `${index * 500}ms` }}>
               {author.name}
             </Link>
           )) : <p className="px-4 py-3 font-sans text-sm font-semibold not-italic text-slate-700">No authors available yet.</p>)}
           {open === "language" && sortedLanguages.map((language, index) => (
-            <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} className="flipbook-menu-item block rounded-lg px-4 py-2.5 !font-sans !text-sm !font-semibold !not-italic tracking-wide text-slate-800 transition-colors hover:bg-blue-50 hover:text-blue-800" style={{ animationDelay: `${index * 75}ms` }}>
+            <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} className="flipbook-menu-item mb-1 block rounded-lg border border-blue-500/40 bg-blue-700 px-4 py-2.5 font-sans text-sm font-semibold not-italic tracking-wide text-white transition-colors hover:border-blue-300 hover:bg-blue-600 hover:text-white" style={{ animationDelay: `${index * 500}ms` }}>
               {language}
             </Link>
           ))}
@@ -79,7 +79,7 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
           to { opacity: 1; transform: translateY(0); }
         }
         .flipbook-menu-panel { animation: flipbookMenuReveal 0.5s ease both; }
-        .flipbook-menu-item { animation: flipbookMenuReveal 0.5s ease both; }
+        .flipbook-menu-item { opacity: 0; animation: flipbookMenuReveal 0.5s ease both; }
         @media (prefers-reduced-motion: reduce) {
           .flipbook-menu-panel, .flipbook-menu-item { animation: none; }
         }
