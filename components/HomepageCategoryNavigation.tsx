@@ -43,47 +43,36 @@ export default function HomepageCategoryNavigation({ authors, languages }: Props
   return (
     <div ref={menuRef} className="mx-auto mt-3 w-full max-w-3xl px-1 pb-8">
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
-        <button type="button" onClick={() => toggle("genre")} aria-expanded={open === "genre"} className="!min-h-[42px] rounded-lg border border-blue-800/40 !bg-blue-600 px-2 py-2 text-center !font-sans !text-xs !font-extrabold !not-italic tracking-wide !text-white shadow-md transition-all duration-200 hover:!bg-blue-700 active:scale-95 sm:!text-sm">
+        <button type="button" onClick={() => toggle("genre")} aria-expanded={open === "genre"} className="min-h-[42px] rounded-lg border border-slate-300 bg-white px-2 py-2 text-center font-serif text-xs font-black tracking-wide text-[#111111] shadow-md ring-1 ring-black/10 transition-all hover:border-slate-500 hover:bg-white active:scale-95 sm:text-sm">
           Books by Genre
         </button>
-        <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="!min-h-[42px] rounded-lg border border-blue-800/40 !bg-blue-600 px-2 py-2 text-center !font-sans !text-xs !font-extrabold !not-italic tracking-wide !text-white shadow-md transition-all duration-200 hover:!bg-blue-700 active:scale-95 sm:!text-sm">
+        <button type="button" onClick={() => toggle("author")} aria-expanded={open === "author"} className="min-h-[42px] rounded-lg bg-white px-2 py-2 text-center font-serif text-xs font-black tracking-wide text-[#111111] shadow-md ring-1 ring-black/10 transition-all active:scale-95 sm:text-sm">
           Books by Authors
         </button>
-        <button type="button" onClick={() => toggle("language")} aria-expanded={open === "language"} className="!min-h-[42px] rounded-lg border border-blue-800/40 !bg-blue-600 px-2 py-2 text-center !font-sans !text-[11px] !font-extrabold !not-italic tracking-wide !text-white shadow-md transition-all duration-200 hover:!bg-blue-700 active:scale-95 sm:!text-sm">
+        <button type="button" onClick={() => toggle("language")} aria-expanded={open === "language"} className="min-h-[42px] rounded-lg border border-slate-300 bg-white px-2 py-2 text-center font-serif text-[11px] font-black tracking-tight text-[#050505] shadow-md ring-1 ring-black/10 transition-all hover:border-slate-500 hover:bg-white active:scale-95 sm:text-sm language-bob">
           Choose Your Language
         </button>
       </div>
 
       {open && (
-        <div className="flipbook-menu-panel mt-2 rounded-xl border border-blue-950 bg-blue-800 p-2 shadow-xl">
-          {open === "genre" && SUPPORTED_BOOK_GENRES.map((genre, index) => (
-            <Link key={genre} onClick={() => setOpen(null)} href={makeHref("genre", genre)} className="flipbook-menu-item mb-1 block rounded-lg border border-blue-500/40 bg-blue-700 px-4 py-2.5 font-sans text-sm font-semibold not-italic tracking-wide text-white transition-colors hover:border-blue-300 hover:bg-blue-600 hover:text-white" style={{ animationDelay: `${index * 500}ms` }}>
+        <div className="mt-2 rounded-xl border border-slate-200 bg-white p-2 shadow-lg">
+          {open === "genre" && SUPPORTED_BOOK_GENRES.map((genre) => (
+            <Link key={genre} onClick={() => setOpen(null)} href={makeHref("genre", genre)} className="mb-1 block rounded-lg border border-transparent px-4 py-2.5 font-serif text-sm font-bold tracking-wide text-[#111111] transition-all hover:border-slate-200 hover:bg-white hover:text-black hover:shadow-sm">
               {genre}
             </Link>
           ))}
-          {open === "author" && (authors.length > 0 ? sortedAuthors.map((author, index) => (
-            <Link key={author.author_id} onClick={() => setOpen(null)} href={makeHref("author", author.author_id)} className="flipbook-menu-item mb-1 block rounded-lg border border-blue-500/40 bg-blue-700 px-4 py-2.5 font-sans text-sm font-semibold not-italic tracking-wide text-white transition-colors hover:border-blue-300 hover:bg-blue-600 hover:text-white" style={{ animationDelay: `${index * 500}ms` }}>
+          {open === "author" && (authors.length > 0 ? sortedAuthors.map((author) => (
+            <Link key={author.author_id} onClick={() => setOpen(null)} href={makeHref("author", author.author_id)} className="block rounded-lg px-4 py-2.5 font-serif text-sm font-bold tracking-wide text-[#111111] transition-colors hover:bg-white hover:text-black">
               {author.name}
             </Link>
-          )) : <p className="px-4 py-3 font-sans text-sm font-semibold not-italic text-slate-700">No authors available yet.</p>)}
-          {open === "language" && sortedLanguages.map((language, index) => (
-            <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} className="flipbook-menu-item mb-1 block rounded-lg border border-blue-500/40 bg-blue-700 px-4 py-2.5 font-sans text-sm font-semibold not-italic tracking-wide text-white transition-colors hover:border-blue-300 hover:bg-blue-600 hover:text-white" style={{ animationDelay: `${index * 500}ms` }}>
+          )) : <p className="px-4 py-3 font-serif text-sm font-semibold text-[#111111]">No authors available yet.</p>)}
+          {open === "language" && sortedLanguages.map((language) => (
+            <Link key={language} onClick={() => setOpen(null)} href={makeHref("language", language)} className="block rounded-lg px-4 py-2.5 text-sm font-bold text-black hover:bg-blue-50">
               {language}
             </Link>
           ))}
         </div>
       )}
-      <style jsx>{`
-        @keyframes flipbookMenuReveal {
-          from { opacity: 0; transform: translateY(-7px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .flipbook-menu-panel { animation: flipbookMenuReveal 0.5s ease both; }
-        .flipbook-menu-item { opacity: 0; animation: flipbookMenuReveal 0.5s ease both; }
-        @media (prefers-reduced-motion: reduce) {
-          .flipbook-menu-panel, .flipbook-menu-item { animation: none; }
-        }
-      `}</style>
     </div>
   )
 }
